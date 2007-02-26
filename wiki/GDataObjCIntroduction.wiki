@@ -1,0 +1,76 @@
+#summary Developer introduction to the GData Objective-C Client Framework
+
+= Introduction to GData for Cocoa Developers =
+
+GData is Google's API allowing client software to access and manipulate data hosted by Google services.
+
+The GData Objective-C Client Framework enables developers for Mac OS X to easily write native Cocoa applications.  The framework handles
+
+  * XML parsing and generation
+  * Networking
+  * Sign-in for Google accounts
+  * Service-specific protocols and query generation
+
+
+= Requirements =
+
+The GData Framework requires Mac OS X 10.4 (due to dependencies on NSXMLDocument.)
+
+
+= GData Basics =
+
+Servers respond to client GData requests with *feeds* that include lists of *entries*. For example, a request for all of a user's calendars would return a Calendar feed with a list of entries, where each entry represents one calendar.  A request for all events in one calendar would return a Calendar Event feed with a list of entries, with each entry representing one of the user's scheduled events.
+
+Each feed and entry is composed of *elements*, which represent either standard Atom XML elements, or custom-defined GData elements.
+
+Feeds, entries, and elements are derived from `GDataObject`, the base class that implements XML parsing and generation.
+
+Google web application interactions are handled by *service* objects.  For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, with one entry 
+{{{
+  service = [[GDataServiceGoogleCalendar alloc] init];
+    
+  [service setUserAgent:@"MyCalendarApp"];
+  [service setUserCredentialsWithUsername:username
+                                 password:password];
+
+  [service fetchCalendarFeedForUsername:username
+                               delegate:self
+                      didFinishSelector:@selector(service:feedFetcher:finishedWithFeed:)
+                        didFailSelector:@selector(service:feedFetcher:failedWithError:)];
+}}}
+Service objects maintain cookies and track data modification dates to minimize server loads, so it's best to reuse a service object for sequences of server requests.
+
+Here is what the callback from a successful fetch of the calendar list might look like.  This callback example just prints the title of the user's first calendar.
+
+{{{
+- (void)service:(GDataServiceGoogleCalendar *)service
+    feedFetcher:(GDataHTTPFetcher *)fetcher
+ finishedWithFeed:(GDataFeedCalendar *)feed {
+  
+  if ([[feed entries] count] > 0) {
+    GDataEntryCalendar *firstCalendar = [[feed entries] objectAtIndex:0];
+    NSString *title = [[firstCalendar title] stringValue];
+    
+    NSLog(@"first calendar's title:%@", title);
+  }
+}
+}}}
+
+Feeds and entries typically contain *links* to themselves or to other objects. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
+
+{{{
+    NSArray *entryLinks = [firstCalendar links];
+    GDataLink *link = [entryLinks alternateLink];
+    NSString *href = [link href];
+    if ([href length] > 0) {
+      [service fetchCalendarEventFeedWithURL:[NSURL URLWithString:href]
+                                    delegate:self
+                           didFinishSelector:@selector(service:eventsFetcher:finishedWithEntries:)
+                             didFailSelector:@selector(service:eventsFetcher:failedWithError:)];
+    }
+}}}
+
+GData provides convenience categories on NSArray for retrieving individual links, as the example above shows in retrieving the "alt" link from the entry's array of links.  A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the entry's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
+
+Query example...
+
