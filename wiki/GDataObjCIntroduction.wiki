@@ -2,7 +2,7 @@
 
 = Introduction to GData for Cocoa Developers =
 
-GData is Google's API allowing client software to access and manipulate data hosted by Google services.
+[http://code.google.com/apis/gdata/index.html GData] is Google's API allowing client software to access and manipulate data hosted by Google services.
 
 The GData Objective-C Client Framework enables developers for Mac OS X to easily write native Cocoa applications.  The framework handles
 
@@ -12,20 +12,31 @@ The GData Objective-C Client Framework enables developers for Mac OS X to easily
   * Service-specific protocols and query generation
 
 
-= Requirements =
+== Requirements ==
 
-The GData Framework requires Mac OS X 10.4 (due to dependencies on NSXMLDocument.)
+The GData Framework requires Mac OS X 10.4 due to dependencies on NSXMLDocument.
 
 
-= GData Basics =
+== Adding GData to a project ==
+
+GData is provided as a built framework, suitable for inclusion in a Cocoa application bundle's Frameworks folder.  To add GData to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
+
+Source files referring to GData objects should include the GData headers as 
+
+#import "GData/GData.h"
+
+The GData source code and the project for building the framework is also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in the application project.
+
+
+== GData Basics ==
 
 Servers respond to client GData requests with *feeds* that include lists of *entries*. For example, a request for all of a user's calendars would return a Calendar feed with a list of entries, where each entry represents one calendar.  A request for all events in one calendar would return a Calendar Event feed with a list of entries, with each entry representing one of the user's scheduled events.
 
-Each feed and entry is composed of *elements*, which represent either standard Atom XML elements, or custom-defined GData elements.
+Each feed and entry is composed of *elements*.  Elements represent either standard Atom XML elements, or custom-defined GData elements.
 
-Feeds, entries, and elements are derived from `GDataObject`, the base class that implements XML parsing and generation.
+Feeds, entries, and elements are derived from *GDataObject*, the base class that implements XML parsing and generation.
 
-Google web application interactions are handled by *service* objects.  For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, with one entry 
+Google web application interactions are handled by *service* objects.  For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, where each entry describes one of the user's calendars.
 {{{
   service = [[GDataServiceGoogleCalendar alloc] init];
     
@@ -41,20 +52,29 @@ Google web application interactions are handled by *service* objects.  For examp
 Service objects maintain cookies and track data modification dates to minimize server loads, so it's best to reuse a service object for sequences of server requests.
 
 Here is what the callback from a successful fetch of the calendar list might look like.  This callback example just prints the title of the user's first calendar.
-
 {{{
 - (void)service:(GDataServiceGoogleCalendar *)service
     feedFetcher:(GDataHTTPFetcher *)fetcher
  finishedWithFeed:(GDataFeedCalendar *)feed {
   
   if ([[feed entries] count] > 0) {
+
     GDataEntryCalendar *firstCalendar = [[feed entries] objectAtIndex:0];
-    NSString *title = [[firstCalendar title] stringValue];
+    GDataTextConstruct *titleTextConstruct = [firstCalendar title];
+    NSString *title = [titleTextConstruct stringValue];
     
     NSLog(@"first calendar's title:%@", title);
   }
 }
 }}}
+
+Service objects include a variety of methods for interacting with the service. Typically, the interactions include some or all of these activities:
+  * fetching a feed
+  * fetching an entry from a feed
+  * inserting an entry into a feed
+  * updating (replacing) an entry in a feed
+  * deleting an entry or a feed
+  * performing a batch operation of inserting, updating, or deleting entries
 
 Feeds and entries typically contain *links* to themselves or to other objects. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
 
@@ -72,5 +92,92 @@ Feeds and entries typically contain *links* to themselves or to other objects. F
 
 GData provides convenience categories on NSArray for retrieving individual links, as the example above shows in retrieving the "alt" link from the entry's array of links.  A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the entry's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
 
-Query example...
+Service-specific *query* objects can generate URLs with parameters appropriate for restricting a feed's entries. For example, a query could request a feed of Calendar events between specific dates, or of database items of a specified category.  Here is an example of a query to retrieve the first 5 events from a user's calendar:
+{{{
+- (void)beginFetchingFiveEventsFromCalendar:(GDataEntryCalendar *)calendar {
+    
+  NSURL *feedURL = [NSURL URLWithString:[[[calendar links] alternateLink] href]];
+  
+  GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+  [queryCal setStartIndex:1];
+  [queryCal setMaxResults:5];
+  
+  GDataServiceGoogleCalendar *service = [self calendarService];
+  [service fetchCalendarEventFeedWithURL:[queryCal URL]
+                                delegate:self
+                       didFinishSelector:@selector(service:queryTodayFetcher:finishedWithEntries:)
+                         didFailSelector:@selector(service:queryTodayFetcher:failedWithError:)];
+}
+}}}
+
+
+=== Creating GDataObjects from scratch ===
+
+Typically GDataObjects are created by the framework from XML returned from a server, but occasionally it is useful to create one from scratch.  This snippet shows how to create a new event to add to a user's calendar:
+{{{
+- (void)addAnEventToCalendar:(GDataEntryCalendar *)calendar {
+  
+  // make a new event
+  GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];
+  
+  // set a title, description, and author
+  [newEvent setTitle:[GDataTextConstruct textConstructWithString:@"Meeting"]];
+  [newEvent setSummary:[GDataTextConstruct textConstructWithString:@"Today's discussion"]];
+
+  GDataPerson *authorPerson = [GDataPerson personWithName:@"Fred Flintstone"
+                                                    email:@"fred.flinstone@spurious.xxx.com"];
+  [newEvent addAuthor:authorPerson];
+  
+  // start time now, end time in an hour
+  NSDate *anHourFromNow = [NSDate dateWithTimeIntervalSinceNow:60*60];
+  GDataDateTime *startDateTime = [GDataDateTime dateTimeWithDate:[NSDate date]
+                                                        timeZone:[NSTimeZone systemTimeZone]];
+  GDataDateTime *endDateTime = [GDataDateTime dateTimeWithDate:anHourFromNow
+                                                      timeZone:[NSTimeZone systemTimeZone]];
+  GDataReminder *reminder = [GDataReminder reminder];
+  [reminder setMinutes:@"10"];
+  
+  // reminder 10 minutes before the event
+  GDataWhen *when = [GDataWhen whenWithStartTime:startDateTime
+                                         endTime:endDateTime];
+  [when addReminders:reminder];
+
+  [newEvent addTime:when];  
+
+  // add it to the user's calendar
+  NSURL *feedURL = [NSURL URLWithString:[[[calendar links] alternateLink] href]];
+  
+  GDataServiceGoogleCalendar *service = [self calendarService];
+  [service fetchCalendarEventByInsertingEntry:newEvent
+                                   forFeedURL:feedURL
+                                     delegate:self
+                            didFinishSelector:@selector(service:eventAdder:addedEntry:)
+                              didFailSelector:@selector(service:eventAdder:failedWithError:)];
+}
+}}}
+
+
+== Future topics: ==
+
+  * Authentication and captchas
+  * Last-modified status (304) and service data caching
+  * GDataHTTPFetcher
+  * open-source rules for building/shipping
+  * warning about server support being turned off for misbehaving apps
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
