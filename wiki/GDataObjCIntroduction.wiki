@@ -1,4 +1,5 @@
 #summary Developer introduction to the GData Objective-C Client Framework
+#labels Featured
 
 = Introduction to GData for Cocoa Developers =
 
@@ -164,7 +165,6 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   * GDataHTTPFetcher
   * open-source rules for building/shipping
   * warning about server support being turned off for misbehaving apps
-
 
 
 
