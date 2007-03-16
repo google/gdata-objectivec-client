@@ -24,9 +24,9 @@ GData is provided as a built framework, suitable for inclusion in a Cocoa applic
 
 Source files referring to GData objects should include the GData headers as 
 
-#import "GData/GData.h"
+`#import "GData/GData.h"`
 
-The GData source code and the project for building the framework is also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in the application project.
+The GData source code and the project for building the framework is also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
 
 == GData Basics ==
@@ -71,11 +71,11 @@ Here is what the callback from a successful fetch of the calendar list might loo
 
 Service objects include a variety of methods for interacting with the service. Typically, the interactions include some or all of these activities:
   * fetching a feed
-  * fetching an entry from a feed
   * inserting an entry into a feed
   * updating (replacing) an entry in a feed
   * deleting an entry or a feed
-  * performing a batch operation of inserting, updating, or deleting entries
+  * performing queries to obtain a subset of the feed's entries
+  * performing a [http://code.google.com/apis/gdata/batch.html batch operation] of inserting, updating, and deleting entries
 
 Feeds and entries typically contain *links* to themselves or to other objects. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
 
@@ -104,15 +104,15 @@ Service-specific *query* objects can generate URLs with parameters appropriate f
   [queryCal setMaxResults:5];
   
   GDataServiceGoogleCalendar *service = [self calendarService];
-  [service fetchCalendarEventFeedWithURL:[queryCal URL]
-                                delegate:self
-                       didFinishSelector:@selector(service:queryTodayFetcher:finishedWithEntries:)
-                         didFailSelector:@selector(service:queryTodayFetcher:failedWithError:)];
+  [service fetchCalendarQuery:queryCal
+                     delegate:self
+            didFinishSelector:@selector(service:queryTodayFetcher:finishedWithEntries:)
+              didFailSelector:@selector(service:queryTodayFetcher:failedWithError:)];
 }
 }}}
 
 
-=== Creating GDataObjects from scratch ===
+== Creating GDataObjects from scratch ==
 
 Typically GDataObjects are created by the framework from XML returned from a server, but occasionally it is useful to create one from scratch.  This snippet shows how to create a new event to add to a user's calendar:
 {{{
@@ -160,11 +160,12 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 
 == Future topics: ==
 
-  * Authentication and captchas
+  * [http://code.google.com/apis/gdata/auth.html Authentication] and captchas
   * Last-modified status (304) and service data caching
   * GDataHTTPFetcher
-  * open-source rules for building/shipping
-  * warning about server support being turned off for misbehaving apps
+
+
+
 
 
 
