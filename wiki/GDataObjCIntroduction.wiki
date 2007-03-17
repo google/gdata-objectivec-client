@@ -180,7 +180,7 @@ The service can optionally remember the dated responses in a cache and provide t
 [service setShouldCacheDatedData:YES];
 }}}
 
-The service will thereafter call the delegate's service:fetcher:finishedWithObject method with duplicates of the original response rather than call the failure method with a status 304 error.  Calling `[service setShouldCacheDatedData:NO]` will purge the cache.
+The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service setShouldCacheDatedData:NO]` to purge the cache.
 
 
 == Future topics: ==
