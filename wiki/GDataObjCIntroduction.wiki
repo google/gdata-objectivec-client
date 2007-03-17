@@ -135,10 +135,11 @@ Typically GDataObjects are created by the framework from XML returned from a ser
                                                         timeZone:[NSTimeZone systemTimeZone]];
   GDataDateTime *endDateTime = [GDataDateTime dateTimeWithDate:anHourFromNow
                                                       timeZone:[NSTimeZone systemTimeZone]];
+
+  // reminder 10 minutes before the event
   GDataReminder *reminder = [GDataReminder reminder];
   [reminder setMinutes:@"10"];
   
-  // reminder 10 minutes before the event
   GDataWhen *when = [GDataWhen whenWithStartTime:startDateTime
                                          endTime:endDateTime];
   [when addReminders:reminder];
@@ -162,7 +163,7 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 
 GData servers typically provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
 
-Your service delegate will see this in its service:fetcher:failedWithError: method.  The application handles it like this:
+Your service delegate will see the "Not modified" response in its service:fetcher:failedWithError: method.  The application handles it like this:
 
 {{{
 - (void)service:(GDataServiceBase *)service fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
@@ -186,7 +187,6 @@ The service will thereafter call the delegate's service:fetcher:finishedWithObje
 
   * [http://code.google.com/apis/gdata/auth.html Authentication] and captchas
   * GDataHTTPFetcher
-
 
 
 
