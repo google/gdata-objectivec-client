@@ -106,8 +106,8 @@ Service-specific *query* objects can generate URLs with parameters appropriate f
   GDataServiceGoogleCalendar *service = [self calendarService];
   [service fetchCalendarQuery:queryCal
                      delegate:self
-            didFinishSelector:@selector(service:queryTodayFetcher:finishedWithEntries:)
-              didFailSelector:@selector(service:queryTodayFetcher:failedWithError:)];
+            didFinishSelector:@selector(service:fetcher:finishedWithEntries:)
+              didFailSelector:@selector(service:fetcher:failedWithError:)];
 }
 }}}
 
@@ -161,7 +161,7 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 
 == Status 304 and service data caching ==
 
-GData servers typically provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
+GData servers provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
 
 Your service delegate will see the "Not modified" response in its service:fetcher:failedWithError: method.  The application handles it like this:
 
@@ -175,7 +175,7 @@ Your service delegate will see the "Not modified" response in its service:fetche
 }
 }}}
 
-The service can optionally remember the dated responses in a cache and provide them to the application instead of calling the failure method.  To enable the caching, the application shoud call
+The service can optionally remember the dated responses in a cache and provide them to the application instead of calling the failure method.  To enable the caching, the application should call
 {{{
 [service setShouldCacheDatedData:YES];
 }}}
@@ -187,6 +187,7 @@ The service will thereafter call the delegate's service:fetcher:finishedWithObje
 
   * [http://code.google.com/apis/gdata/auth.html Authentication] and captchas
   * GDataHTTPFetcher
+
 
 
 
