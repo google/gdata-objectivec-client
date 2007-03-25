@@ -1,4 +1,5 @@
 #summary Project Roadmap
+#labels Featured
 
 = Supported in 1.0 =
 
@@ -16,5 +17,4 @@ Picasa Web Albums
 Service improvements for upload progress monitoring, multi-part MIME uploads
 
 Other client services, by popular demand
-
 
