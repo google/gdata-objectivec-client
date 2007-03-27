@@ -37,7 +37,9 @@ Each feed and entry is composed of *elements*.  Elements represent either standa
 
 Feeds, entries, and elements are derived from *GDataObject*, the base class that implements XML parsing and generation.
 
-Google web application interactions are handled by *service* objects.  For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, where each entry describes one of the user's calendars.
+Google web application interactions are handled by *service objects*.  A single transaction with a service is tracked with a *service ticket*.
+
+For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, where each entry describes one of the user's calendars.
 {{{
   service = [[GDataServiceGoogleCalendar alloc] init];
     
@@ -45,18 +47,21 @@ Google web application interactions are handled by *service* objects.  For examp
   [service setUserCredentialsWithUsername:username
                                  password:password];
 
-  [service fetchCalendarFeedForUsername:username
-                               delegate:self
-                      didFinishSelector:@selector(service:feedFetcher:finishedWithFeed:)
-                        didFailSelector:@selector(service:feedFetcher:failedWithError:)];
+  GDataServiceTicket *ticket;
+  ticket = [service fetchCalendarFeedForUsername:username
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithFeed:)
+                                 didFailSelector:@selector(ticket:failedWithError:)];
 }}}
 Service objects maintain cookies and track data modification dates to minimize server loads, so it's best to reuse a service object for sequences of server requests.
 
+The application may choose to retain the ticket following the fetch call so the user can cancel the service request.  The ticket is valid so long as the application retains it.
+To cancel a fetch in progress, call `[ticket cancelTicket]`.  Once the finished or failed callback has been called, the ticket is no longer useful and may be released.
+
 Here is what the callback from a successful fetch of the calendar list might look like.  This callback example just prints the title of the user's first calendar.
 {{{
-- (void)service:(GDataServiceGoogleCalendar *)service
-    feedFetcher:(GDataHTTPFetcher *)fetcher
- finishedWithFeed:(GDataFeedCalendar *)feed {
+- (void)ticket:(GDataServiceTicket *)ticket
+finishedWithFeed:(GDataFeedCalendar *)feed {
   
   if ([[feed entries] count] > 0) {
 
@@ -82,22 +87,25 @@ Feeds and entries typically contain *links* to themselves or to other objects. F
 {{{
     NSArray *entryLinks = [firstCalendar links];
     GDataLink *link = [entryLinks alternateLink];
-    NSString *href = [link href];
-    if ([href length] > 0) {
-      [service fetchCalendarEventFeedWithURL:[NSURL URLWithString:href]
+    NSURL* linkURL = [link URL];
+
+    if (linkURL != nil) {
+      [service fetchCalendarEventFeedWithURL:linkURL
                                     delegate:self
-                           didFinishSelector:@selector(service:eventsFetcher:finishedWithEntries:)
-                             didFailSelector:@selector(service:eventsFetcher:failedWithError:)];
+                           didFinishSelector:@selector(eventsTicket:finishedWithEntries:)
+                             didFailSelector:@selector(eventsTicket:failedWithError:)];
     }
 }}}
 
-GData provides convenience categories on NSArray for retrieving individual links, as the example above shows in retrieving the "alt" link from the entry's array of links.  A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the entry's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
+GData provides convenience categories on NSArray for retrieving individual links, as the example above shows in retrieving the "alt" link from the entry's array of links.  
+
+A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
 
 Service-specific *query* objects can generate URLs with parameters appropriate for restricting a feed's entries. For example, a query could request a feed of Calendar events between specific dates, or of database items of a specified category.  Here is an example of a query to retrieve the first 5 events from a user's calendar:
 {{{
 - (void)beginFetchingFiveEventsFromCalendar:(GDataEntryCalendar *)calendar {
     
-  NSURL *feedURL = [NSURL URLWithString:[[[calendar links] alternateLink] href]];
+  NSURL *feedURL = [[[calendar links] alternateLink] URL];
   
   GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal setStartIndex:1];
@@ -106,8 +114,8 @@ Service-specific *query* objects can generate URLs with parameters appropriate f
   GDataServiceGoogleCalendar *service = [self calendarService];
   [service fetchCalendarQuery:queryCal
                      delegate:self
-            didFinishSelector:@selector(service:fetcher:finishedWithEntries:)
-              didFailSelector:@selector(service:fetcher:failedWithError:)];
+            didFinishSelector:@selector(queryTicket:finishedWithEntries:)
+              didFailSelector:@selector(queryTicket:failedWithError:)];
 }
 }}}
 
@@ -147,14 +155,14 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   [newEvent addTime:when];  
 
   // add it to the user's calendar
-  NSURL *feedURL = [NSURL URLWithString:[[[calendar links] alternateLink] href]];
-  
+  NSURL *feedURL = [[[calendar links] alternateLink] URL];
+ 
   GDataServiceGoogleCalendar *service = [self calendarService];
   [service fetchCalendarEventByInsertingEntry:newEvent
                                    forFeedURL:feedURL
                                      delegate:self
-                            didFinishSelector:@selector(service:eventAdder:addedEntry:)
-                              didFailSelector:@selector(service:eventAdder:failedWithError:)];
+                            didFinishSelector:@selector(ticket:addedEntry:)
+                              didFailSelector:@selector(ticket:failedWithError:)];
 }
 }}}
 
@@ -163,10 +171,10 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 
 GData servers provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
 
-Your service delegate will see the "Not modified" response in its service:fetcher:failedWithError: method.  The application handles it like this:
+Your service delegate will see the "Not modified" response in its ticket:failedWithError: method.  The application handles it like this:
 
 {{{
-- (void)service:(GDataServiceBase *)service fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+- (void)ticket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error {
   if ([error code] == kGDataHTTPFetcherStatusNotModified) { // status 304
     // no change since previous request
   } else {
@@ -186,7 +194,15 @@ The service will thereafter call the delegate's service:fetcher:finishedWithObje
 == Future topics: ==
 
   * [http://code.google.com/apis/gdata/auth.html Authentication] and captchas
-  * GDataHTTPFetcher
+
+
+
+
+
+
+
+
+
 
 
 
