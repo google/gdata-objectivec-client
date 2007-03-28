@@ -161,8 +161,8 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   [service fetchCalendarEventByInsertingEntry:newEvent
                                    forFeedURL:feedURL
                                      delegate:self
-                            didFinishSelector:@selector(ticket:addedEntry:)
-                              didFailSelector:@selector(ticket:failedWithError:)];
+                            didFinishSelector:@selector(addTicket:addedEntry:)
+                              didFailSelector:@selector(addTicket:failedWithError:)];
 }
 }}}
 
@@ -171,7 +171,7 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 
 GData servers provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
 
-Your service delegate will see the "Not modified" response in its ticket:failedWithError: method.  The application handles it like this:
+Your service delegate will see the "Not modified" response in its `ticket:failedWithError:` method.  The application handles it like this:
 
 {{{
 - (void)ticket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error {
@@ -190,24 +190,58 @@ The service can optionally remember the dated responses in a cache and provide t
 
 The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service setShouldCacheDatedData:NO]` to purge the cache.
 
+== Authentication errors and captchas ==
 
-== Future topics: ==
+[http://code.google.com/apis/gdata/auth.html Authenticating] the user with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
 
-  * [http://code.google.com/apis/gdata/auth.html Authentication] and captchas
+The most common authentication error is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
 
+If fetching returns an authentication error string indicating a captcha is required, your application should download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
 
+To handle captchas, the fetch failed method might look something like this:
 
+{{{
+- (void)ticket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error {
+  
+  if ([error code] == kGDataBadAuthentication) {
+    
+    NSDictionary *userInfo = [error userInfo];
+    NSString *authError = [userInfo authenticationError];
+    
+    if ([authError isEqual:kGDataServiceErrorCaptchaRequired]) {
+  
+      // URL for a captcha image (200x70 pixels)
 
+      NSURL *captchaURL = [userInfo captchaURL];
+      NSString *captchaToken = [userInfo captchaToken];
+      
+      // a synchronous read of the image is simple, as shown here,
+      // but to be nice to users, you can use GDataHTTPFetcher for
+      // an easy asynchronous fetch of the data instead
 
+      NSData *imageData = [NSData dataWithContentsOfURL:captchaURL];
+      if (imageData) {
+        NSImage *image = [[[NSImage alloc] initWithData:imageData] autorelease];
+ 
+        [self askUserToSolveCaptchaImage:image 
+                               withToken:captchaToken];
 
+        // pass the token and user's captcha answer later to the service, like
+        //   [service setCaptchaToken:captchaToken captchaAnswer:theUserAnswer]
+        // prior to retrying the fetch
+     }
+    } else {
+      // invalid username or password
+    }
+  } else {
+    // some other error authenticating or retrieving the GData object
+    // or a 304 status indicating the data has not been modified since it
+    // was previously fetched
+  }
+}
+}}}
 
-
-
-
-
-
-
-
+_Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
 
 
