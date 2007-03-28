@@ -196,7 +196,14 @@ The service will thereafter call the delegate's service:fetcher:finishedWithObje
 
 The most common authentication error is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
 
-If fetching returns an authentication error string indicating a captcha is required, your application should download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
+It is optional for your application to handle captcha requests. One easy way to handle them is to just open the Google's unlock captcha web page in the user's web browser.
+
+{{{
+NSURL *captchaUnlockURL = [NSURL URLWithString:@"https://www.google.com/accounts/DisplayUnlockCaptcha"];
+[[NSWorkspace sharedWorkspace] openURL:captchaUnlockURL];
+}}}
+
+For the best user experience in handling captcha requests, your application can download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
 
 To handle captchas, the fetch failed method might look something like this:
 
@@ -243,12 +250,7 @@ To handle captchas, the fetch failed method might look something like this:
 
 _Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
-
-
-
-
-
-
+Documentation on authentication for GData is available [http://code.google.com/apis/gdata/auth.html here].
 
 
 
