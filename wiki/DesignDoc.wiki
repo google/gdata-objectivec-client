@@ -130,7 +130,7 @@ caring.  Because GDataLink derives from GDataObject, the GDataLink
 object will automatically parse and maintain and copy and compare
 any GDataWebContents contained within.
 
-For extensions declared for descendant objects, Objective-C categories are useful to provide relevant accessors.  The extension declared above, where GDataLinks may contain GDataWebContents, is unknown to GDataLinks themselves.  The calendar event entry thus provides a category on GDataLink as the accessor for the extension:
+For extensions declared for descendant objects, Objective-C categories are useful to provide relevant accessors.  The extension declared above, where GDataLinks may contain GDataWebContents, is unknown to GDataLinks themselves.  The calendar event entry thus provides an Objective-C category on GDataLink as the accessor for the extension:
 {{{
 @implementation GDataLink (GDataCalendarEntryEventExtensions)
 - (NSArray *)webContents {
@@ -177,7 +177,7 @@ Similarly, the feed class will specify the class of the entries to be created fo
 
 Sometimes, XML parsing is done without knowing in advance what the class of the XML object should be.  This happens when a service method may be used to retrieve multiple classes of objects, or when an XML feed or entry is embedded inside of an element.
 
-To identify dynamically what class to use to parse XML when no class is specified, GDataObject uses [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/Articles/QueryingXML.html XPath] to inspect [http://code.google.com/apis/gdata/elements.html#Introduction category] child elements in the XML. Feed and entry classes may register in their 
+To identify dynamically what class to use to parse XML when no class is specified, GDataObject uses [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/Articles/QueryingXML.html XPath] to inspect [http://code.google.com/apis/gdata/elements.html#Introduction category child elements] in the XML. Feed and entry classes may register in their 
 +[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods the scheme and/or term attribute values identifying XML which can be parsed by the class. A spreadsheet cell class registers itself this way:
 {{{
 + (void)load {
@@ -194,16 +194,33 @@ to match the cell's category element,
 
 == Service Classes ==
 
-tbw
+Service classes handle network transactions and [http://code.google.com/apis/gdata/auth.html user authentication].
+
+From the application's perspective, the model should be simple:
+  # Initiate a fetch via a URL or a query, receive a service ticket
+  # Wait for a callback with a GData object or an error, or else use the ticket to cancel the fetch.
+
+The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided.
+
+Authentication to Google Services is implemented by the GDataServiceGoogle subclass.  A authenticated fetch handled by GDataServiceGoogle represents several kind of sequences of HTTP transactions. For example, a fetch may be
+
+  * Authenticate the username and password with the auth server, get an auth token
+  * Pass the auth token with the GData request to the service's server
+
+Or, it may be
+
+  * Re-use a previous auth token in a request to the service, get a token expired error
+  * Re-authenticate the username and password, get an auth token
+  * Pass the new auth token to the service's server
+
 
 == Query Classes ==
 
 tbw
 
+== Fetcher ==
+
+
 == Deconstructing an Example Object: GDataTextConstruct ==
 
 tbw
-
-
-
-
