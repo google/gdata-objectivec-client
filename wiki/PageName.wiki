@@ -1,0 +1,60 @@
+#summary GData Objective-C Client Framework Design Document
+
+= Document Audience =
+
+The audience for this document is developers who will be maintaining
+or extending the GData Objective-C Client Framework.
+
+Readers should already be familiar with the introductory document GDataObjCIntroduction.
+
+= Project Goals =
+
+The GData framework is intended to make it easy for Cocoa applications to interact with Google services.
+
+The framework handles parsing and generation of XML, http network transactions, and authentication (account sign-in).
+
+The framework does not provide user-interface, but the object interfaces should work smoothly with KVC and Cocoa bindings.
+
+The framework relies on AppKit's NSXMLDocument for parsing and generating XML text. Internally, the framework builds GData objects from and generates NSXMLNodes.
+
+= Framework Objects =
+
+The framework defines these kinds of objects:
+
+  * Elements, which can be created by or generate XML.  Elements include
+    * Entries, derived from GDataEntryBase
+    * Feeds, derived from GDataFeedBase, containing lists of entries
+    * Individual data types, which may optionally be usable as extensions
+
+  * Data-type helpers, such as GDataDateTime
+
+  * Services, which handle sign-in and networking
+    * Service tickets, which track server requests and responses
+
+  * Queries, which provide a convenient way to create request URLs
+
+= GDataObjects =
+
+Objects in the framework which parse or generate XML are derived from the base class GDataObject.  Each subclass of GDataObject should implement these methods:
+
+{{{
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent; // parses the XML
+- (NSXMLElement *)XMLElement; // generates the XML
+}}}
+along with these usual NSObject methods,
+{{{
+- (id)copyWithZone:(NSZone *)zone;
+- (NSString *)description; // entries and feeds may implement -itemsForDescription instead
+- (id)copyWithZone:(NSZone *)zone; (be sure to call superclass)
+- (BOOL)isEqual:(GDataObject *)other; (be sure to call superclass)
+}}}
+
+= Contents of the GDataObject base class =
+
+
+
+Each GDataObject includes a userData member that is reserved for use by the client application.
+
+= The Extension Model =
+
