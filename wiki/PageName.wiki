@@ -87,14 +87,14 @@ The GDataObject base class includes a wide variety of methods for these tasks:
 Extensions enable an element to contain children about which the element
 may know no details.
 
-Typically, entries add extensions to themselves. For example, during initialization, a Calendar
+Typically, entries add extensions to themselves. For example, during initialization, a calendar
 entry declares it may contain a color:
 {{{
 [self addExtensionDeclarationForParentClass:[GDataEntryCalendar class]
                                  childClass:[GDataColorProperty class]];
 }}}
 This lets the base class handle much of the work of managing the child
-element.  The Calendar entry can still provide accessor methods to get
+element.  The calendar entry can still provide accessor methods to get
 to the extension by calling into the base class, as in
 {{{
 - (GDataColorProperty *)color {
@@ -126,8 +126,53 @@ The GDataObject base class tracks parents for each object to enable it to look d
 
 == Dynamic Object Generation ==
 
+Parsing XML requires knowing what kind of objects to create for that XML.  Typically, the class of a feed object will be known by the Service object fetching it.  For example, the calendar service class fetches a calendar by specifying the class of the feed, !GDataFeedCalendar:
+
+{{{
+- (GDataServiceTicket *)fetchCalendarFeedWithURL:(NSURL *)feedURL
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector
+                                 didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedFeedWithURL:feedURL 
+                                   feedClass:[GDataFeedCalendar class]
+                                    delegate:delegate
+                           didFinishSelector:finishedSelector
+                             didFailSelector:failedSelector];
+}
+}}} 
+
+Similarly, the feed class will specify the class of the entries to be created for it. Naturally, the calendar feed class expects calendar entries:
+
+{{{
+- (Class)classForEntries {
+  return [GDataEntryCalendar class];
+}
+}}}
+
+Sometimes, XML parsing is done without knowing in advance what the class of the XML object should be.  This happens when a service method may be used to retrieve multiple classes of objects, or when an XML feed or entry is embedded inside of an element.
+
+To identify what class to use to parse XML when no class is specified, GDataObject looks at [http://code.google.com/apis/gdata/elements.html#Introduction category] child elements in the XML. Feed and entry classes can declare in their 
++[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods what scheme and term attribute values matches identify proper XML which can be parsed by the class. A spreadsheet cell class does it this way:
+{{{
++ (void)load {
+  [GDataObject registerEntryClass:[self class]
+            forCategoryWithScheme:nil 
+                             term:@"http://schemas.google.com/spreadsheets/2006#cell"];
+}
+}}}
+
+
+ 
 
 == Deconstructing an Example Object: GDataTextConstruct ==
+
+== Service Classes ==
+
+== Query Classes ==
+
+
+
 
 
 
