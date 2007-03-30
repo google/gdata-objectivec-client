@@ -7,7 +7,7 @@ or extending the GData Objective-C Client Framework.
 
 Readers should already be familiar with the introductory document GDataObjCIntroduction.
 
-= Project Goals =
+== Project Goals ==
 
 The GData framework is intended to make it easy for Cocoa applications to interact with Google services.
 
@@ -59,10 +59,10 @@ The GDataObject base class manages many kinds of data for each instance.  To pre
   The element's qualified name is saved from the original parsed XML, and reused during XML generation.  Extensions also declare a default element name for use in objects which were not initialzed from XML.
   
   * Parent
-  The parent object in the GData hierarchy is used only when looking for appropriate extension class declarations during parsing.
+  The parent object in the GData hierarchy is used only when looking for appropriate extension class declarations during parsing.  It may be nil.
 
   * Namespaces
-  Namespaces are stored as an NSDictionary of mappings from prefix (like "gd") to URI (like "http://schemas.google.com/g/2005").  At a minimum, the root GData element must declare appropriate namespaces for its XMLElement method to generate an XML tree.
+  Namespaces are stored as an NSDictionary of mappings from prefix (like "gd") to URI (like "!http://schemas.google.com/g/2005").  At a minimum, the root GData element must declare appropriate namespaces for its XMLElement method to generate an XML tree.
 
   * Extension declarations
   Each GData object can specify a list of allowable extensions for itself and its descendant elements.  See "The Extension Model" below for more detail.
@@ -84,7 +84,51 @@ The GDataObject base class includes a wide variety of methods for these tasks:
   * Dynamic object class identification (see "Dynamic Object Generation" below)
 
 == The Extension Model ==
+Extensions enable an element to contain children about which the element
+may know no details.
+
+Typically, entries add extensions to themselves. For example, during initialization, a Calendar
+entry declares it may contain a color:
+{{{
+[self addExtensionDeclarationForParentClass:[GDataEntryCalendar class]
+                                 childClass:[GDataColorProperty class]];
+}}}
+This lets the base class handle much of the work of managing the child
+element.  The Calendar entry can still provide accessor methods to get
+to the extension by calling into the base class, as in
+{{{
+- (GDataColorProperty *)color {
+  return (GDataColorProperty *) 
+    [self objectForExtensionClass:[GDataColorProperty class]];
+}
+
+- (void)setColor:(GDataColorProperty *)val {
+  [self setObject:val forExtensionClass:[GDataColorProperty class]];
+}
+}}}
+The real purpose of extensions is to allow elements to contain children
+they may not know about.  For example, a !CalendarEventEntry declares
+that GDataLinks contained within the calendar event entry may contain
+GDataWebContent elements:
+{{{
+[self addExtensionDeclarationForParentClass:[GDataLink class]
+                                 childClass:[GDataWebContent class]];  
+}}}
+The !CalendarEvent has extended GDataLinks without GDataLinks knowing or
+caring.  Because GDataLink derives from GDataObject, the GDataLink
+object will automatically parse and maintain and copy and compare
+the GDataWebContents contained within.
+
+Typically, elements that declare extensions for themselves will also have accessors for those extensions, such as the `color:` and `setColor:` methods shown above.
+
+
+The GDataObject base class tracks parents for each object to enable it to look during parsing at the extensions declared higher up the object tree.
 
 == Dynamic Object Generation ==
 
+
 == Deconstructing an Example Object: GDataTextConstruct ==
+
+
+
+
