@@ -1,4 +1,4 @@
-#summary Developer introduction to the GData Objective-C Client Framework
+#summary Developer Introduction to the GData Objective-C Client Framework
 #labels Featured
 
 = Introduction to GData for Cocoa Developers =
@@ -251,7 +251,6 @@ To handle captchas, the fetch failed method might look something like this:
 _Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
 Documentation on authentication for GData is available [http://code.google.com/apis/gdata/auth.html here].
-
 
 
 
