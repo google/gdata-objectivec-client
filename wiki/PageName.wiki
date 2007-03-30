@@ -15,7 +15,7 @@ The framework handles parsing and generation of XML, http network transactions, 
 
 The framework does not provide user-interface, but the object interfaces should work smoothly with KVC and Cocoa bindings.
 
-The framework relies on AppKit's NSXMLDocument for parsing and generating XML text. Internally, the framework builds GData objects from and generates NSXMLNodes.
+The framework relies on AppKit's NSXMLDocument for parsing and generating XML text. Internally, the framework builds GData objects from trees of NSXMLNodes, and generates trees of NSXMLNodes.
 
 == Framework Objects ==
 
@@ -152,8 +152,8 @@ Similarly, the feed class will specify the class of the entries to be created fo
 
 Sometimes, XML parsing is done without knowing in advance what the class of the XML object should be.  This happens when a service method may be used to retrieve multiple classes of objects, or when an XML feed or entry is embedded inside of an element.
 
-To identify what class to use to parse XML when no class is specified, GDataObject looks at [http://code.google.com/apis/gdata/elements.html#Introduction category] child elements in the XML. Feed and entry classes can declare in their 
-+[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods what scheme and term attribute values matches identify proper XML which can be parsed by the class. A spreadsheet cell class does it this way:
+To identify dynamically what class to use to parse XML when no class is specified, GDataObject uses [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/Articles/QueryingXML.html XPath] to inspect [http://code.google.com/apis/gdata/elements.html#Introduction category] child elements in the XML. Feed and entry classes can register in their 
++[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods what scheme and/or term attribute values matches identify XML which can be parsed by the class. A spreadsheet cell class registers itself this way:
 {{{
 + (void)load {
   [GDataObject registerEntryClass:[self class]
@@ -170,6 +170,9 @@ To identify what class to use to parse XML when no class is specified, GDataObje
 == Service Classes ==
 
 == Query Classes ==
+
+
+
 
 
 
