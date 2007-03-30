@@ -1,6 +1,6 @@
 #summary GData Objective-C Client Framework Design Document
 
-= Document Audience =
+== Document Audience ==
 
 The audience for this document is developers who will be maintaining
 or extending the GData Objective-C Client Framework.
@@ -17,7 +17,7 @@ The framework does not provide user-interface, but the object interfaces should 
 
 The framework relies on AppKit's NSXMLDocument for parsing and generating XML text. Internally, the framework builds GData objects from and generates NSXMLNodes.
 
-= Framework Objects =
+== Framework Objects ==
 
 The framework defines these kinds of objects:
 
@@ -33,28 +33,58 @@ The framework defines these kinds of objects:
 
   * Queries, which provide a convenient way to create request URLs
 
-= GDataObjects =
+== GDataObjects ==
 
 Objects in the framework which parse or generate XML are derived from the base class GDataObject.  Each subclass of GDataObject should implement these methods:
 
 {{{
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent; // parses the XML
-- (NSXMLElement *)XMLElement; // generates the XML
+- (NSXMLElement *)XMLElement; // generates the XML; should begin by calling GDataObject's XMLElementWithExtensionsAndDefaultName
 }}}
 along with these usual NSObject methods,
 {{{
-- (id)copyWithZone:(NSZone *)zone;
-- (NSString *)description; // entries and feeds may implement -itemsForDescription instead
 - (id)copyWithZone:(NSZone *)zone; (be sure to call superclass)
 - (BOOL)isEqual:(GDataObject *)other; (be sure to call superclass)
+- (NSString *)description; // entries and feeds may implement -itemsForDescription instead
 }}}
 
-= Contents of the GDataObject base class =
+GDataObjects contain no XML data (that is, they retain no XML nodes from the parse tree) _except_ for any unknown elements and attributes.  Unknown elements and attributes are the data which was not recognized during GData parsing of the XML tree.
 
+== Contents of the GDataObject base class ==
 
+The GDataObject base class manages many kinds of data for each instance.  To preserve this data, derived classes must call into the base class
 
-Each GDataObject includes a userData member that is reserved for use by the client application.
+  * Element name
+  The element's qualified name is saved from the original parsed XML, and reused during XML generation.  Extensions also declare a default element name for use in objects which were not initialzed from XML.
+  
+  * Parent
+  The parent object in the GData hierarchy is used only when looking for appropriate extension class declarations during parsing.
 
-= The Extension Model =
+  * Namespaces
+  Namespaces are stored as an NSDictionary of mappings from prefix (like "gd") to URI (like "http://schemas.google.com/g/2005").  At a minimum, the root GData element must declare appropriate namespaces for its XMLElement method to generate an XML tree.
 
+  * Extension declarations
+  Each GData object can specify a list of allowable extensions for itself and its descendant elements.  See "The Extension Model" below for more detail.
+
+  * Extension instances
+  Operations on extension instances (creation during XML parsing, XML generation, copying, comparison) are handled automatically by GDataObject for subclasses, so long as the subclasses call the needed superclasses.
+
+  * Unknown elements and unknown attributes
+  At the outset of parsing the XML tree, all of an element's child elements and attributes are added to lists of unknown XMLNodes.  The XMLNodes are removed from the lists of unknowns as they are parsed.  Any remaining NSXMLNodes remaining in the lists of unknowns are retained, and re-added during XML generation. 
+
+  * User data
+  The userData field is available for client use.  It is retained by the GDataObject but otherwise ignored.
+
+The GDataObject base class includes a wide variety of methods for these tasks:
+  * Typical NSObject methods (copyWithZone, isEqual, setters, getters, and so on)
+  * XML tree parsing
+  * XML tree generation
+  * Extension element management
+  * Dynamic object class identification (see "Dynamic Object Generation" below)
+
+== The Extension Model ==
+
+== Dynamic Object Generation ==
+
+== Deconstructing an Example Object: GDataTextConstruct ==
