@@ -200,23 +200,40 @@ From the application's perspective, the model should be simple:
   # Initiate a fetch via a URL or a query, receive a service ticket
   # Wait for a callback with a GData object or an error, or else use the ticket to cancel the fetch.
 
-The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided.
+The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided by the base class.
 
-Authentication to Google Services is implemented by the GDataServiceGoogle subclass.  A authenticated fetch handled by GDataServiceGoogle represents several kind of sequences of HTTP transactions. For example, a fetch may be
+Authentication to Google Services is implemented by the GDataServiceGoogle subclass.  A authenticated fetch handled by GDataServiceGoogle represents several kind of sequences of HTTP transactions.  We call a sequence a "ticket."  For example, a ticket may include:
 
   * Authenticate the username and password with the auth server, get an auth token
   * Pass the auth token with the GData request to the service's server
 
-Or, it may be
+Or, a ticket may instead be this sequence:
 
   * Re-use a previous auth token in a request to the service, get a token expired error
   * Re-authenticate the username and password, get an auth token
   * Pass the new auth token to the service's server
 
+Along with other parameters, a ticket carries along a Service Ticket object which retains pointers to the service, and to the two GDataHTTPFetcher objects that carry out authentication and GData requests.  
+
+The service object does not maintain pointers to GDataHTTPFetchers or tickets; those are just retained by the underlying NSURLConnections while they are pending (and may also be retained by the application, if it retains the ticket.)
+
+A service object does retain references to data that applies to a series of tickets:
+  * username and password
+  * a fetchHistory object, which holds cookies, last-modified dates, and optionally caches received, dated data for the GDataHTTPFetcher
+  * a userAgent string to identify the requesting application, mostly for server-side logging
+  * an optional application-supplied userData value, used to initialize the userData in future tickets
+
+Because requests to the GData server may need to be reissued if a pre-existing token has become invalid, all parameters to an authenticated GData request are packaged up as a "retry invocation" and passed along for the sequence of http transactions (except on a second request to the GData service, at which point no further retries are possible.)
+
+The base service class GDataServiceBase simply makes a request to a GData server, creates a GData object with the returned data, and calls back to the application.
+
+The authentication subclass, GDataServiceGoogle, makes requests to the authentication server, adds the authentication token to the requests created by the base class, and intercepts errors returns to the base class to handle invalid token errors.
+
+Specific GData service-specific subclasses add type-appropriate interfaces for the individual services, but are otherwise shallow wrappers around GDataServiceGoogle.
 
 == Query Classes ==
 
-tbw
+GDataQuery is a simple class that maintains a list of key-value pairs, and generates a URL with the pairs appended as parameters. It also allows applications to specify category filters for queries.  GData service-specific subclasses provide convenient accessors for the query parameters unique to the individual services.
 
 == Fetcher ==
 
