@@ -1,5 +1,7 @@
 #summary GData Objective-C Client Framework Design Document
 
+= GData Objective-C Client Framework Design Document =
+
 == Document Audience ==
 
 The audience for this document is developers who will be maintaining
