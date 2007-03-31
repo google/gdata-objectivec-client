@@ -1,4 +1,5 @@
 #summary GData Objective-C Client Framework Design Document
+#labels Featured
 
 = GData Objective-C Client Framework Design Document =
 
@@ -9,11 +10,13 @@ or extending the GData Objective-C Client Framework.
 
 Readers should already be familiar with [GDataObjCIntroduction Developer Introduction to the GData Objective-C Client Framework].
 
+The final section of this document examines the implementation of a single GData element class, and may be a good starting point for readers who learn best from examples.
+
 == Project Goals ==
 
 The GData framework is intended to make it easy for Cocoa applications to interact with Google services.
 
-The framework handles parsing and generation of XML, http network transactions, and authentication (signing in to Google accounts).
+The framework handles parsing and generation of XML, HTTP network transactions, and authentication (signing in to Google accounts).
 
 The framework does not provide any user interface, but the object interfaces should work smoothly with KVC and Cocoa bindings.
 
@@ -56,25 +59,27 @@ GDataObjects contain no XML data (that is, they retain no XMLNodes from the pars
 
 == Contents of the GDataObject base class ==
 
-The GDataObject base class manages many kinds of data for each instance.  To preserve this data, derived classes must call into the base class for XML parsing and generation, and to copy or compare instances of the class.
+The GDataObject base class manages many kinds of data for each instance.  To preserve this data, derived classes _must_ call into the base class for XML parsing and generation, and to copy or compare instances of the class.
+
+Each GDataObject may have these properties:
 
   * Element name
-  The element's qualified name is saved from the original parsed XML, and reused during XML generation.  Extensions also declare a default element name for use in objects which were not initialzed from XML.
+  The element's qualified name is saved from the original parsed XML, and reused during XML generation.  Extensions also declare a default element name for use in objects which were not initialized from XML.
   
   * Parent
   The parent object in the GData hierarchy is used only when looking for appropriate extension class declarations during parsing.  It may be nil.
 
   * Namespaces
-  Namespaces are stored as an NSDictionary of mappings from prefix (like "gd") to URI (like "http://schemas.google.com/g/2005").  At a minimum, the root GData element must declare appropriate namespaces for its XMLElement method to generate an XML tree.
+  Namespaces are stored as an NSDictionary of mappings from prefix (like "gd") to URI (like "http://schemas.google.com/g/2005").  At a minimum, the root GDataObject element must declare appropriate namespaces for its XMLElement method to generate an XML tree.
 
   * Extension declarations
   Each GData object can specify a list of allowable extensions for itself and its descendant elements.  See "The Extension Model" below for more detail.
 
   * Extension instances
-  Operations on extension instances (creation during XML parsing, XML generation, copying, comparison) are handled automatically by GDataObject for subclasses, so long as the subclasses call the needed superclasses.
+  Operations on extension instances (such as extension creation during XML parsing, XML generation, copying, and comparison) are handled by GDataObject for subclasses, so long as the subclasses call the superclass methods.
 
   * Unknown elements and unknown attributes
-  At the outset of parsing the XML tree, all of an element's child elements and attributes are added to lists of unknown XMLNodes.  The XMLNodes are removed from the lists of unknowns as they are parsed.  Any remaining NSXMLNodes remaining in the lists of unknowns are retained, and re-added during XML generation. 
+  At the outset of parsing the XML tree, all of an element's child elements and attributes are added to lists of unknown XMLNodes.  The XMLNodes are removed from the lists of unknowns as they are parsed.  Any remaining NSXMLNodes remaining in the lists of unknowns are retained, and are re-added during XML generation. 
 
   * User data
   The userData field is available for client use.  It is retained by the GDataObject but otherwise ignored.
@@ -97,8 +102,7 @@ entry declares it may contain a color:
                                  childClass:[GDataColorProperty class]];
 }}}
 This lets the base class handle much of the work of managing the child
-element.  The calendar entry can still provide accessor methods to get
-to the extension by calling into the base class, as in
+element.  The calendar entry can still provide accessor methods for the extension by calling into the base class, as shown here:
 {{{
 - (GDataColorProperty *)color {
   return (GDataColorProperty *) 
@@ -130,7 +134,7 @@ caring.  Because GDataLink derives from GDataObject, the GDataLink
 object will automatically parse and maintain and copy and compare
 any GDataWebContents contained within.
 
-For extensions declared for descendant objects, Objective-C categories are useful to provide relevant accessors.  The extension declared above, where GDataLinks may contain GDataWebContents, is unknown to GDataLinks themselves.  The calendar event entry thus provides an Objective-C category on GDataLink as the accessor for the extension:
+For extensions declared for descendant objects, Objective-C categories are useful for providing relevant accessors.  The extension declared above, where GDataLinks may contain GDataWebContents, is unknown to GDataLinks themselves.  The calendar event entry thus provides an Objective-C category on GDataLink as the accessor for the extension:
 {{{
 @implementation GDataLink (GDataCalendarEntryEventExtensions)
 - (NSArray *)webContents {
@@ -147,7 +151,7 @@ For extensions declared for descendant objects, Objective-C categories are usefu
 @end
 }}}
 
-The GDataObject base class stores the parent for each object to enable it to look during parsing for extensions declared higher up the object tree.
+The GDataObject base class stores the parent for each object to enable it to search during parsing for extensions declared higher up the object tree.
 
 == Dynamic Object Generation ==
 
@@ -197,47 +201,47 @@ to match the cell's category element,
 Service classes handle network transactions and [http://code.google.com/apis/gdata/auth.html user authentication].
 
 From the application's perspective, the model should be simple:
-  # Initiate a fetch via a URL or a query, receive a service ticket
+  # Initiate a fetch via a URL or a query, receive a service ticket.
   # Wait for a callback with a GData object or an error, or else use the ticket to cancel the fetch.
 
 The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided by the base class.
 
-Authentication to Google Services is implemented by the GDataServiceGoogle subclass.  A authenticated fetch handled by GDataServiceGoogle represents several kind of sequences of HTTP transactions.  We call a sequence a "ticket."  For example, a ticket may include:
+Authentication to Google services is implemented by the GDataServiceGoogle subclass.  An authenticated fetch handled by GDataServiceGoogle can be one of several kinds of sequences of HTTP transactions.  We call a sequence a "ticket."  For example, a ticket may include:
 
   * Authenticate the username and password with the auth server, get an auth token
-  * Pass the auth token with the GData request to the service's server
+  * Pass the auth token with the GData request to the service's server, get XML for a GDataObject
 
 Or, a ticket may instead be this sequence:
 
   * Re-use a previous auth token in a request to the service, get a token expired error
-  * Re-authenticate the username and password, get an auth token
-  * Pass the new auth token to the service's server
+  * Re-authenticate the username and password, get a new auth token
+  * Pass the new auth token to the service's server, get XML for a GDataObject
 
-Along with other parameters, a ticket carries along a Service Ticket object which retains pointers to the service, and to the two GDataHTTPFetcher objects that carry out authentication and GData requests.  
+A GDataServiceTicket object retains pointers to the service that issued it, and to the GDataHTTPFetcher objects that carry out authentication and GData requests.  
 
-The service object does not maintain pointers to GDataHTTPFetchers or tickets; those are just retained by the underlying NSURLConnections while they are pending (and may also be retained by the application, if it retains the ticket.)
+The service object _does not_ maintain pointers to GDataHTTPFetchers or tickets; those are just retained by the underlying NSURLConnections while they are pending (and may also be retained by the application, if it retains the ticket.)
 
-A service object does retain references to data that applies to a series of tickets:
+A service object _does_ retain references to data that applies to a series of tickets:
   * username and password
-  * a fetchHistory object, which holds cookies, last-modified dates, and optionally caches received, dated data for the GDataHTTPFetcher
+  * a fetch history dictionary, which holds cookies, last-modified dates, and caches of received, dated data for the GDataHTTPFetcher (see "Fetcher" below)
   * a userAgent string to identify the requesting application, mostly for server-side logging
-  * an optional application-supplied userData value, used to initialize the userData in future tickets
+  * an optional application-supplied userData value, used to initialize the userData property of future tickets
 
-Because requests to the GData server may need to be reissued if a pre-existing token has become invalid, all parameters to an authenticated GData request are packaged up as a "retry invocation" and passed along for the sequence of http transactions (except on a second request to the GData service, at which point no further retries are possible.)
+Because requests to the GData server may need to be reissued if a pre-existing token has become invalid, all parameters to an authenticated GData request are packaged up as a "retry invocation" and passed along for the sequence of HTTP transactions (except on a second request to the GData service, at which point no further retries are possible.)
 
 The base service class GDataServiceBase simply makes a request to a GData server, creates a GData object with the returned data, and calls back to the application.
 
 The authentication subclass, GDataServiceGoogle, makes requests to the authentication server, adds the authentication token to the requests created by the base class, and intercepts errors returns to the base class to handle invalid token errors.
 
-Specific GData service-specific subclasses add type-appropriate interfaces for the individual services, but are otherwise shallow wrappers around GDataServiceGoogle.
+GData service-specific subclasses add type-appropriate interfaces for the individual services, but are otherwise shallow wrappers around GDataServiceGoogle.
 
 == Query Classes ==
 
-GDataQuery is a simple class that maintains a list of key-value pairs, and generates a URL with the pairs appended as parameters. It also allows applications to specify category filters for queries.  GData service-specific subclasses provide convenient accessors for the query parameters unique to the individual services.
+GDataQuery is a simple class that maintains a list of key-value pairs, and generates a URL with the pairs appended as parameters. It also allows applications to specify category filters for queries.  GData service-specific query subclasses provide convenient accessors for the query parameters unique to the individual services.
 
 == Fetcher ==
 
-GDataHTTPFetcher is a wrapper around !AppKit's standard http transaction class, [http://developer.apple.com/documentation/Cocoa/Conceptual/URLLoadingSystem/index.html NSURLConnection].  Like NSURLConnection, GDataHTTPFetcher does one-shot http retrievals; instances cannot be reused for additional fetches.
+The utility class GDataHTTPFetcher is a wrapper around !AppKit's standard HTTP transaction class, [http://developer.apple.com/documentation/Cocoa/Conceptual/URLLoadingSystem/index.html NSURLConnection].  Like NSURLConnection, GDataHTTPFetcher does one-shot http retrievals; instances cannot be reused for additional fetches.
 
 GDataHTTPFetcher accumulates response data for the client application, and allows each fetch to specify unique finished and failure selectors (so fetches initiated by different methods in the same object can have unique callback methods as well.)
 
@@ -246,7 +250,7 @@ If the user of GDataHTTPFetcher provides a mutable dictionary as fetchHistory, t
   * "Last-Modified" header values
   * caches of data that was accompanied by "Last-Modified" headers.
 
-GDataHTTPFetcher considers server response status of 300 and greater to be errors, and calls the client application's failureMethod.
+GDataHTTPFetcher considers server response status of 300 and greater to be errors, and calls the client application's failure callback.
 
 == Deconstructing an Element Object: GDataTextConstruct ==
 
@@ -255,7 +259,7 @@ Most of the classes in the GData framework are extension element objects descend
 
 GDataTextConstruct holds three strings from the XML: content, lang, and type. The element title varies and has no standard value. The XML for a text construct may look like this:
 {{{
-<title type="text">Event title</title>
+<title type="text">Team Meeting</title>
 }}}
 
 This is easy to represent with a subclass of GDataObject:
@@ -266,6 +270,7 @@ This is easy to represent with a subclass of GDataObject:
   NSString *type_; // text, text/plain, html, text/html, xhtml, or other things
 }
 }}}
+Note that we use a unique ivar naming convention by appending a trailing underscore.
 
 Each element should have a convenience method allowing an application to easily create an autoreleased instance from scratch.  GDataTextElement provides this:
 
@@ -279,7 +284,7 @@ Each element should have a convenience method allowing an application to easily 
 
 Convenience methods for entry and feed classes should also set the namespaces for those elements, as entries and feeds are typically the root elements for XML generation.  For example, the calendar feed object's convenience method performs `[feed setNamespaces:[GDataEntryCalendar calendarNamespaces]]`.
 
-The `init` method for an element may need to set defaults for properties that should never be uninitialized:
+The `init` method for an element may need to set defaults for properties that should never be left uninitialized:
 {{{
 - (id)init {
   self = [super init];
@@ -310,7 +315,7 @@ GDataObject subclasses must be able to be initialized from XML as well:
 
 Note that `initWithXMLElement:parent:` _always_ calls its superclass to parse the XML, such as with `stringForAttributeName:` and `stringValueFromElement:` here. This allows the base class to track which attributes and child elements have been parsed.
 
-The `dealloc` method will release any objects retained by the class.
+The NSObject `dealloc` method will release any objects retained by the class.
 {{{
 - (void)dealloc {
   [content_ release];
@@ -356,7 +361,7 @@ Implementing the NSObject method `description` method aids debugging.
 }}}
 XML generation is done by the element's XMLElement method. This always begins with a call to `XMLElementWithExtensionsAndDefaultName:` to create an XML element preloaded with children from extension instances.  Unlike most defined elements, GDataTextConstruct does not have a useful default name; the generated name for the element in the XML will set when the element is created, either from XML or by the application.
 
-Typically, `XMLElement` will add to the NSXMLElement object by calling methods in the GDataObject base class, but this is not mandatory; NSXMLElement methods may be used directly.  
+Typically, `XMLElement` will add to the NSXMLElement object by calling methods in the GDataObject base class, but this is not mandatory. Unlike in parsing in `initWithXMLElement:parent:`, NSXMLElement methods _may_ be used directly here.  
 
 {{{
 - (NSXMLElement *)XMLElement {
