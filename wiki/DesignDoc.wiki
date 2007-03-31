@@ -237,7 +237,18 @@ GDataQuery is a simple class that maintains a list of key-value pairs, and gener
 
 == Fetcher ==
 
+GDataHTTPFetcher is a wrapper around !AppKit's standard http transaction class, [http://developer.apple.com/documentation/Cocoa/Conceptual/URLLoadingSystem/index.html NSURLConnection].  Like NSURLConnection, GDataHTTPFetcher does one-shot http retrievals; instances cannot be reused for additional fetches.
+
+GDataHTTPFetcher accumulates response data for the client application, and allows each fetch to specify unique finished and failure selectors (so fetches initiated by different methods in the same object can have unique callback methods as well.)
+
+If the user of GDataHTTPFetcher provides a mutable dictionary as fetchHistory, then the dictionary is used for maintaining state across fetches, including
+  * cookies, to avoid sharing or interacting with Safari's cookies
+  * "Last-Modified" header values
+  * caches of data that was accompanied by "Last-Modified" headers.
+
+GDataHTTPFetcher considers server response status of 300 and greater to be errors, and calls the client application's failureMethod.
 
 == Deconstructing an Example Object: GDataTextConstruct ==
 
 tbw
+
