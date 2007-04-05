@@ -196,6 +196,16 @@ to match the cell's category element,
           term="http://schemas.google.com/spreadsheets/2006#cell"/>
 }}}
 
+A service fetch request may specify the object class as nil or kGDataUseRegisteredClass to allocate the object according to the returned XML's category:
+
+{{{
+  ticket = [self fetchAuthenticatedFeedWithURL:feedURL 
+                                     feedClass:kGDataUseRegisteredClass
+                                      delegate:delegate
+                             didFinishSelector:finishedSelector
+                               didFailSelector:failedSelector];
+}}}
+
 == Service Classes ==
 
 Service classes handle network transactions and [http://code.google.com/apis/gdata/auth.html user authentication].
@@ -408,6 +418,7 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
+
 
 
 
