@@ -1,20 +1,20 @@
-#summary GData Objective-C Client Framework Design Document
+#summary Google Data APIs Objective-C Client Library Design Document
 #labels Featured
 
-= GData Objective-C Client Framework Design Document =
+= Google Data APIs Objective-C Client Library Design Document =
 
 == Document Audience ==
 
 The audience for this document is developers who will be maintaining
-or extending the GData Objective-C Client Framework.
+or extending the Google Data APIs Objective-C Client Library.
 
-Readers should already be familiar with [GDataObjCIntroduction Developer Introduction to the GData Objective-C Client Framework].
+Readers should already be familiar with [GDataObjCIntroduction Developer Introduction to the Google Data Objective-C Client Library].
 
 The final section of this document examines the implementation of a single GData element class, and may be a good starting point for readers who learn best from examples.
 
 == Project Goals ==
 
-The GData framework is intended to make it easy for Cocoa applications to interact with Google services.
+The Objective-C Google Data APIs Client Library is intended to make it easy for Cocoa applications to interact with Google services.
 
 The framework handles parsing and generation of XML, HTTP network transactions, and authentication (signing in to Google accounts).
 
@@ -418,7 +418,6 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
-
 
 
 
