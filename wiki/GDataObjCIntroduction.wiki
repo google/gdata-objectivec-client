@@ -1,11 +1,11 @@
 #summary Developer Introduction to the GData Objective-C Client Framework
 #labels Featured
 
-= Introduction to GData for Cocoa Developers =
+= Introduction to Google Data APIs for Cocoa Developers =
 
-[http://code.google.com/apis/gdata/index.html GData] is Google's API allowing client software to access and manipulate data hosted by Google services.
+[http://code.google.com/apis/gdata/index.html Google Data APIs] allow client software to access and manipulate data hosted by Google services.
 
-The GData Objective-C Client Framework enables developers for Mac OS X to easily write native Cocoa applications.  The framework handles
+The Google Data APIs Objective-C Client Library is a Mac OS X framework that enables developers for Mac OS X to easily write native Cocoa applications.  The framework handles
 
   * XML parsing and generation
   * Networking
@@ -15,12 +15,12 @@ The GData Objective-C Client Framework enables developers for Mac OS X to easily
 
 == Requirements ==
 
-The GData Framework requires Mac OS X 10.4 due to dependencies on NSXMLDocument.
+The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 due to dependencies on NSXMLDocument.
 
 
-== Adding GData to a project ==
+== Adding Google Data APIs to a project ==
 
-GData is provided as a built framework, suitable for inclusion in a Cocoa application bundle's Frameworks folder.  To add GData to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
+The Google Data APIs Objective-C Client Library is provided as a built framework, suitable for inclusion in a Cocoa application bundle's Frameworks folder.  To add the framework to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
 
 Source files referring to GData objects should include the GData headers as 
 
@@ -29,7 +29,7 @@ Source files referring to GData objects should include the GData headers as
 The GData source code and the project for building the framework is also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
 
-== GData Basics ==
+== Google Data APIs Basics ==
 
 Servers respond to client GData requests with *feeds* that include lists of *entries*. For example, a request for all of a user's calendars would return a Calendar feed with a list of entries, where each entry represents one calendar.  A request for all events in one calendar would return a Calendar Event feed with a list of entries, with each entry representing one of the user's scheduled events.
 
@@ -250,7 +250,7 @@ To handle captchas, the fetch failed method might look something like this:
 
 _Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
-Documentation on authentication for GData is available [http://code.google.com/apis/gdata/auth.html here].
+Documentation on authentication for Google Data APIs is available [http://code.google.com/apis/gdata/auth.html here].
 
 
 
