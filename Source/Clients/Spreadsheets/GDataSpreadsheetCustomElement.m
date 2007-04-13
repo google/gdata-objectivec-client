@@ -1,0 +1,131 @@
+/* Copyright (c) 2007 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+#import "GDataSpreadsheetCustomElement.h"
+
+@implementation GDataSpreadsheetCustomElement 
+
+// arbitrary spreadsheet custom tag, like
+//  <gsx:e-mail>fitz@gmail.com</gsx:e-mail>
+//
+// http://code.google.com/apis/spreadsheets/reference.html#gsx_reference
+
+// this object may be an extension, so declare its extension characteristics
+
++ (NSString *)extensionElementURI       { return @"http://schemas.google.com/spreadsheets/2006/extended"; }
++ (NSString *)extensionElementPrefix    { return @"gsx"; }
++ (NSString *)extensionElementLocalName { 
+  // wildcard * matches all elements with the proper namespace URI
+  return @"*"; 
+}
+
++ (GDataSpreadsheetCustomElement *)elementWithName:(NSString *)name
+                                       stringValue:(NSString *)stringValue {
+  
+  GDataSpreadsheetCustomElement *obj = [[[GDataSpreadsheetCustomElement alloc] init] autorelease];
+  [obj setName:name];
+  [obj setstringValue:stringValue];
+  
+  // we don't want the element to have the default name gsx:*
+  [obj setElementName:[NSString stringWithFormat:@"%@:%@", 
+    [self extensionElementPrefix], name]];
+  return obj;
+}
+
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent {
+  self = [super initWithXMLElement:element
+                            parent:parent];
+  if (self) {
+        
+    name_ = [[element localName] copy];
+    stringValue_ = [[self stringValueFromElement:element] copy];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [name_ release];
+  [stringValue_ release];
+  [super dealloc];
+}
+
+#pragma mark -
+
+
+
+- (id)copyWithZone:(NSZone *)zone {
+  GDataSpreadsheetCustomElement* newObj = [super copyWithZone:zone];
+  
+  [newObj setName:name_];
+  [newObj setstringValue:stringValue_];
+  
+  return newObj;
+}
+
+- (BOOL)isEqual:(GDataSpreadsheetCustomElement *)other {
+  
+  if (self == other) return YES;
+  if (![other isKindOfClass:[GDataSpreadsheetCustomElement class]]) return NO;
+  
+  return [super isEqual:other]
+    && AreEqualOrBothNil([self name], [other name])
+    && AreEqualOrBothNil([self stringValue], [other stringValue]);
+}
+
+- (NSString *)description {
+  NSMutableArray *items = [NSMutableArray array];
+  
+  [self addToArray:items objectDescriptionIfNonNil:name_ withName:@"name"];
+  [self addToArray:items objectDescriptionIfNonNil:stringValue_ withName:@"stringValue"];
+  
+  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+    [self class], self, [items componentsJoinedByString:@" "]];
+}
+
+- (NSXMLElement *)XMLElement {
+
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:[self elementName]];
+   
+  if (stringValue_) {
+    [element addStringValue:stringValue_];
+  }
+  
+  return element;
+}
+
+#pragma mark -
+
+- (NSString *)name {
+  return name_;
+}
+
+- (void)setName:(NSString *)str {
+  [name_ autorelease];
+  name_ = [str copy];
+}
+
+- (NSString *)stringValue {
+  return stringValue_;
+}
+
+- (void)setstringValue:(NSString *)str {
+  [stringValue_ autorelease];
+  stringValue_ = [str copy];
+}
+
+@end
+
+

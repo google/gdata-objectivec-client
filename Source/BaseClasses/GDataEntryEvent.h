@@ -1,0 +1,138 @@
+/* Copyright (c) 2007 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+//
+//  GDataEntryEvent.h
+//
+
+#import <Cocoa/Cocoa.h>
+
+#import "GDataEntryBase.h"
+#import "GDataLink.h"
+
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAENTRYEVENT_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN NSString* kGDataCategoryEvent _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event");
+
+_EXTERN NSString *kGDataEventStatusConfirmed _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.confirmed");
+_EXTERN NSString *kGDataEventStatusTentative _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.tentative");
+_EXTERN NSString *kGDataEventStatusCanceled _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.canceled");
+
+_EXTERN NSString *kGDataEventTransparencyTransparent _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.transparent");
+_EXTERN NSString *kGDataEventTransparencyOpaque _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.opaque");
+
+_EXTERN NSString *kGDataEventVisibilityDefault _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.default");
+_EXTERN NSString *kGDataEventVisibilityPublic _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.public");
+_EXTERN NSString *kGDataEventVisibilityPrivate _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.private");
+_EXTERN NSString *kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.confidental");
+
+
+#import "GDataValueConstruct.h"
+#import "GDataWhen.h"
+
+#import "GDataReminder.h"
+#import "GDataRecurrence.h"
+#import "GDataRecurrenceException.h"
+#import "GDataOriginalEvent.h"
+#import "GDataComment.h"
+#import "GDataWhere.h"
+#import "GDataWho.h"
+
+// EventEntry extensions
+
+// These extensions are just subclasses of GDataValueConstruct.
+// We're creating them as unique subclasses so they can exist
+// separately in the extensions list, which stores found extensions
+// by class.
+
+@interface GDataEventStatus : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataVisibility : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataTransparency : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+// EventEntry categories for extensions
+
+// We're defining Reminders as extensions to When elements.
+// This category on When elements will simpify access to those
+// reminders that are found inside When elements.
+
+@interface GDataWhen (GDataCalendarEntryEventExtensions)
+- (NSArray *)reminders;
+- (void)setReminders:(NSArray *)arr;
+- (void)addReminders:(GDataReminder *)obj;
+@end
+
+@interface GDataEntryEvent : GDataEntryBase {
+}
+
+- (GDataRecurrence *)recurrence;
+- (void)setRecurrence:(GDataRecurrence *)obj;
+
+- (NSArray *)recurrenceExceptions;
+- (void)setRecurrenceExceptions:(NSArray *)arr;
+- (void)addRecurrenceException:(GDataRecurrenceException *)obj;
+
+- (GDataOriginalEvent *)originalEvent;
+- (void)setOriginalEvent:(GDataOriginalEvent *)event;
+
+- (GDataComment *)comment;
+- (void)setComment:(GDataComment *)event;
+
+- (NSArray *)reminders;
+- (void)setReminders:(NSArray *)array;
+- (void)addReminder:(GDataReminder *)obj;
+
+- (GDataValueConstruct *)eventStatus;
+- (void)setEventStatus:(GDataValueConstruct *)eventStatus;
+
+- (GDataValueConstruct *)transparency;
+- (void)setTransparency:(GDataValueConstruct *)str;
+
+- (GDataValueConstruct *)visibility;
+- (void)setVisibility:(GDataValueConstruct *)str;
+
+- (NSArray *)times;
+- (void)setTimes:(NSArray *)array;
+- (void)addTime:(GDataWhen *)obj;
+
+- (NSArray *)participants;
+- (void)setParticipants:(NSArray *)array;
+- (void)addParticipant:(GDataWho *)obj;
+
+- (NSArray *)locations;
+- (void)setLocations:(NSArray *)array;
+- (void)addLocation:(GDataWhere *)obj;
+@end
