@@ -262,6 +262,46 @@ If the user of GDataHTTPFetcher provides a mutable dictionary as fetchHistory, t
 
 GDataHTTPFetcher considers server response status of 300 and greater to be errors, and calls the client application's failure callback.
 
+== Coding and nomenclature conventions ==
+
+=== Coding conventions ===
+
+In general, Cocoa naming and style conventions are followed.  Formatting should be consistent, and lines should be under 80 columns wherever practical.
+
+ivars in the framework follow the Google convention of a trailing underscore (like `NSMutableArray *entries_;`). ivars in non-framework code, such as the sample applications, have a leading character m (like `GDataFeedSpreadsheet *mSpreadsheetFeed;`).
+
+=== Class names ===
+
+Entry, feed, service, and query classes are named consistently, with derived classes having increasingly specific names. For example, a service class inheritance tree looks like
+{{{
+GDataServiceBase
+GDataServiceGoogle
+GDataServiceGoogleCalendar
+}}}
+and an entry class inheritance tree looks like
+{{{
+GDataEntryBase
+GDataEntryEvent
+GDataEntryCalendarEvent
+}}}
+=== Using "Google" ===
+
+Within the framework, the name fragment "Google" is used in these circumstances only:
+  * Service classes which authenticate the user for Google services
+  * Google Base-specific classes
+
+=== Using "Base" ===
+
+The word "base" is used to mean "base class, designed for subclassing" except for Google Base-related class files.
+
+=== Unit tests ===
+
+Reasonable unit tests should included for all classes of XML elements, services, and queries.
+
+=== TODOs ===
+
+To-do items should be rare, and should include the name of the submitter, as in `TODO(grobbins)`
+
 == Deconstructing an Element Object: GDataTextConstruct ==
 
 Most of the classes in the GData framework are extension element objects descended from GDataObject.  This section will examine a typical example, GDataTextConstruct.
@@ -418,6 +458,8 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
+
+
 
 
 
