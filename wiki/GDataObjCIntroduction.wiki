@@ -17,6 +17,9 @@ The Google Data APIs Objective-C Client Library is a Mac OS X framework that ena
 
 The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 due to dependencies on NSXMLDocument.
 
+== Example Applications ==
+
+The Examples directory contains example applications showing typical interactions with Google services using the framework.  The applications act as simple browsers for the structure of feed and entry classes for each service.  The !WindowController source files of the samples were written with typical Cocoa idioms to serve as quick introductions to use of the APIs.  
 
 == Adding Google Data APIs to a project ==
 
@@ -251,6 +254,12 @@ To handle captchas, the fetch failed method might look something like this:
 _Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
 Documentation on authentication for Google data APIs is available [http://code.google.com/apis/gdata/auth.html here].
+
+
+
+
+
+
 
 
 
