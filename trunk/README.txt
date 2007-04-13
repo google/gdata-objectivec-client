@@ -1,3 +1,4 @@
-Information on using the Objective-C GData framework is avaliable at
+Information on using the Goodle Data APIs Objective-C Client Library 
+is avaliable at
 
 http://code.google.com/p/gdata-objectivec-client/
