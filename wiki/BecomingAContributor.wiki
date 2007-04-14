@@ -14,7 +14,7 @@ Follow either of the two links above to access the appropriate CLA and instructi
 
 ==Submitting Patches==
 
-  # Join the Google Data APIs Objective-C Client Library [http://groups.google.com/group/gdata-objectivec-client-framework/ discussion group].
+  # Join the Google Data APIs Objective-C Client Library [http://groups.google.com/group/gdata-objectivec-client/ discussion group].
   # Decide which code you want to submit. A submission should be a set of changes that addresses one issue in the Google Data APIs Objective-C Client Library [http://code.google.com/p/gdata-objectivec-client/issues/list issue tracker]. Please don't mix more than one logical change per submittal, because it makes the history hard to follow. If you want to make a change that doesn't have a corresponding issue in the issue tracker, please create one.
   # Also, coordinate with team members that are listed on the issue in question. This ensures that work isn't being duplicated and communicating your plan early also generally leads to better patches.
   # Ensure that your code adheres to the library source code style.
