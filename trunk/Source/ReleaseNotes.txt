@@ -10,3 +10,4 @@ Release 1.0.0
 Initial public release.  Includes standard base elements, entry, feed,
 service, and query classes, and unit tests.  Includes classes for
 Calendar, Google Base, Spreadsheets.
+
