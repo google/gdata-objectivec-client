@@ -1,9 +1,10 @@
+#summary Steps needed to contribute and submit patches
 #labels Featured
 =How to become a contributor and submit patches=
 
 ==Contributor License Agreements==
 
-We'd love to accept your code patches! However, before we can take them, we have to jump through a couple of legal hurdles.
+We'd love to accept your code patches. However, before we can take them, we have to jump through a couple of legal hurdles.
 
 Please fill out either the individual or corporate Contributor License Agreement.
 
@@ -21,3 +22,4 @@ Follow either of the two links above to access the appropriate CLA and instructi
   # Ensure that there are unit tests for your code.
   # Sign a Contributor License Agreement.
   # Attach the code to the issue it addresses. For brand new files, attach the whole file. For patches to existing files, attach a Subversion diff (that is, svn diff).
+
