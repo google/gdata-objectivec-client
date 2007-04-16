@@ -1,4 +1,4 @@
-#summary Developer Introduction to the Google Data APIs Objective-C Client Library
+#summary Introduction for Objective-C Developers
 #labels Featured
 
 = Introduction to Google Data APIs for Cocoa Developers =
