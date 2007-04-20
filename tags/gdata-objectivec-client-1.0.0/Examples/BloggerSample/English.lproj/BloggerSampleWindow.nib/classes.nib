@@ -1,0 +1,57 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addPostClicked = id; 
+                deletePostClicked = id; 
+                getBlogsClicked = id; 
+                updatePostClicked = id; 
+            }; 
+            CLASS = BloggerSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAddPostButton = NSButton; 
+                mBlogsProgressIndicator = NSProgressIndicator; 
+                mBlogsResultTextField = NSTextField; 
+                mBlogsTable = NSTableView; 
+                mDeletePostButton = NSButton; 
+                mEntriesProgressIndicator = NSProgressIndicator; 
+                mEntriesResultTextField = NSTextField; 
+                mEntriesTable = NSTableView; 
+                mEntryEditField = NSTextField; 
+                mPasswordField = NSSecureTextField; 
+                mUpdatePostButton = NSButton; 
+                mUpdateProgressIndicator = NSProgressIndicator; 
+                mUsernameField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            ACTIONS = {
+                addPostClicked = id; 
+                deletePostClicked = id; 
+                getBlogsClicked = id; 
+                updatePostClicked = id; 
+            }; 
+            CLASS = CalendarSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAddPostButton = NSButton; 
+                mBlogsProgressIndicator = NSProgressIndicator; 
+                mBlogsResultTextField = NSTextField; 
+                mBlogsTable = NSTableView; 
+                mDeletePostButton = NSButton; 
+                mEntriesProgressIndicator = NSProgressIndicator; 
+                mEntriesResultTextField = NSTextField; 
+                mEntriesTable = NSTableView; 
+                mEntryEditField = NSTextField; 
+                mPasswordField = NSSecureTextField; 
+                mUpdatePostButton = NSButton; 
+                mUsernameField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

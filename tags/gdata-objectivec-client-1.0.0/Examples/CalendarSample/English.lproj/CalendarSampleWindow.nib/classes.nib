@@ -1,0 +1,36 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addEventClicked = id; 
+                cancelCalendarFetchClicked = id; 
+                cancelEventFetchClicked = id; 
+                deleteEventClicked = id; 
+                editEventClicked = id; 
+                getCalendarClicked = id; 
+                queryTodayClicked = id; 
+            }; 
+            CLASS = CalendarSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAddEventButton = NSButton; 
+                mCalendarCancelButton = NSButton; 
+                mCalendarProgressIndicator = NSProgressIndicator; 
+                mCalendarResultTextField = NSTextView; 
+                mCalendarTable = NSTableView; 
+                mDeleteEventButton = NSButton; 
+                mEditEventButton = NSButton; 
+                mEventCancelButton = NSButton; 
+                mEventProgressIndicator = NSProgressIndicator; 
+                mEventResultTextField = NSTextView; 
+                mEventTable = NSTableView; 
+                mPasswordField = NSSecureTextField; 
+                mQueryTodayEventButton = NSButton; 
+                mUsernameField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
