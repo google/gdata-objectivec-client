@@ -346,6 +346,9 @@
 - (void)setAuthors:(NSArray *)authors {
   [authors_ autorelease];
   authors_ = [authors mutableCopy];
+  
+  [authors_ makeObjectsPerformSelector:@selector(setElementName:)
+                            withObject:@"author"];
 }
 
 - (void)addAuthor:(GDataPerson *)authorElement {
