@@ -152,27 +152,27 @@
 
 #pragma mark Actual iVars
 
-- (GDataValueConstruct *)eventStatus {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataEventStatus class]];
+- (GDataEventStatus *)eventStatus {
+  return (GDataEventStatus *) [self objectForExtensionClass:[GDataEventStatus class]];
 }
 
-- (void)setEventStatus:(GDataValueConstruct *)val {
+- (void)setEventStatus:(GDataEventStatus *)val {
   [self setObject:val forExtensionClass:[GDataEventStatus class]];
 }
 
-- (GDataValueConstruct *)transparency {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataTransparency class]];
+- (GDataTransparency *)transparency {
+  return (GDataTransparency *) [self objectForExtensionClass:[GDataTransparency class]];
 }
 
-- (void)setTransparency:(GDataValueConstruct *)val {
+- (void)setTransparency:(GDataTransparency *)val {
   [self setObject:val forExtensionClass:[GDataTransparency class]];
 }
 
-- (GDataValueConstruct *)visibility {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataVisibility class]];
+- (GDataVisibility *)visibility {
+  return (GDataVisibility *) [self objectForExtensionClass:[GDataVisibility class]];
 }
 
-- (void)setVisibility:(GDataValueConstruct *)val {
+- (void)setVisibility:(GDataVisibility *)val {
   [self setObject:val forExtensionClass:[GDataVisibility class]];
 }
 

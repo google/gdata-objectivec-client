@@ -7,6 +7,7 @@
                 cancelEventFetchClicked = id; 
                 deleteEventClicked = id; 
                 editEventClicked = id; 
+                entrySegmentClicked = id; 
                 getCalendarClicked = id; 
                 queryTodayClicked = id; 
             }; 
@@ -20,6 +21,7 @@
                 mCalendarTable = NSTableView; 
                 mDeleteEventButton = NSButton; 
                 mEditEventButton = NSButton; 
+                mEntrySegmentedControl = NSSegmentedControl; 
                 mEventCancelButton = NSButton; 
                 mEventProgressIndicator = NSProgressIndicator; 
                 mEventResultTextField = NSTextView; 
@@ -30,7 +32,8 @@
             }; 
             SUPERCLASS = NSWindowController; 
         }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
     ); 
     IBVersion = 1; 
 }

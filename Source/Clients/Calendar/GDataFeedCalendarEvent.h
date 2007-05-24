@@ -21,7 +21,7 @@
 
 #import "GDataFeedEvent.h"
 
-@class GDataValueConstruct;
+@class GDataTimeZoneProperty;
 
 @interface GDataFeedCalendarEvent : GDataFeedEvent {
 }
@@ -35,7 +35,7 @@
 
 #pragma mark -
 
-- (GDataValueConstruct *)timeZoneName;
-- (void)setTimeZoneName:(GDataValueConstruct *)val;
+- (GDataTimeZoneProperty *)timeZoneName;
+- (void)setTimeZoneName:(GDataTimeZoneProperty *)val;
 
 @end

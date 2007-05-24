@@ -58,6 +58,11 @@
 		4F14B1310B13A5B40072EBB8 /* GDataFeedBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B12B0B13A5B40072EBB8 /* GDataFeedBase.m */; };
 		4F14B1320B13A5B40072EBB8 /* GDataFeedEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B12D0B13A5B40072EBB8 /* GDataFeedEvent.m */; };
 		4F14B1330B13A5B40072EBB8 /* GDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B12E0B13A5B40072EBB8 /* GDataObject.m */; };
+		4F16E51C0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F16E51B0BF4EAE200FB548C /* GDataMIMEDocument.m */; };
+		4F16E51D0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F16E51B0BF4EAE200FB548C /* GDataMIMEDocument.m */; };
+		4F16E51E0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F16E51B0BF4EAE200FB548C /* GDataMIMEDocument.m */; };
+		4F16E5200BF4EAE900FB548C /* GDataMIMEDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F16E51F0BF4EAE900FB548C /* GDataMIMEDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F16E5AC0BF4F1B200FB548C /* GDataMIMEDocumentTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F16E5AB0BF4F1B200FB548C /* GDataMIMEDocumentTest.m */; };
 		4F1AD6530B7025A900DC0485 /* GDataGoogleBaseAttribute.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AD6520B7025A900DC0485 /* GDataGoogleBaseAttribute.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1AD6550B7025B000DC0485 /* GDataGoogleBaseAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AD6540B7025B000DC0485 /* GDataGoogleBaseAttribute.m */; };
 		4F1AD6570B7025B000DC0485 /* GDataGoogleBaseAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AD6540B7025B000DC0485 /* GDataGoogleBaseAttribute.m */; };
@@ -113,6 +118,112 @@
 		4F1ADA940B7168B200DC0485 /* GDataEntryGoogleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AD7220B71485800DC0485 /* GDataEntryGoogleBase.m */; };
 		4F1ADA950B7168B200DC0485 /* GDataFeedGoogleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F1AD9830B71659E00DC0485 /* GDataFeedGoogleBase.m */; };
 		4F1ADAB10B7168F300DC0485 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		4F25E9FC0BE9667B007C0836 /* GDataEntryACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */; };
+		4F25E9FD0BE9667B007C0836 /* GDataFeedACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */; };
+		4F25E9FE0BE9667B007C0836 /* GDataACLScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F90BE9667B007C0836 /* GDataACLScope.m */; };
+		4F25E9FF0BE9667B007C0836 /* GDataACLRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */; };
+		4F25EA000BE9667B007C0836 /* GDataEntryACL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F25EA010BE9667B007C0836 /* GDataEntryACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */; };
+		4F25EA020BE9667B007C0836 /* GDataFeedACL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F25EA030BE9667B007C0836 /* GDataFeedACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */; };
+		4F25EA040BE9667B007C0836 /* GDataACLScope.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F25E9F80BE9667B007C0836 /* GDataACLScope.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F25EA050BE9667B007C0836 /* GDataACLScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F90BE9667B007C0836 /* GDataACLScope.m */; };
+		4F25EA060BE9667B007C0836 /* GDataACLRole.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F25E9FA0BE9667B007C0836 /* GDataACLRole.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F25EA070BE9667B007C0836 /* GDataACLRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */; };
+		4F25EA080BE9667B007C0836 /* GDataEntryACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */; };
+		4F25EA090BE9667B007C0836 /* GDataFeedACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */; };
+		4F25EA0A0BE9667B007C0836 /* GDataACLScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F90BE9667B007C0836 /* GDataACLScope.m */; };
+		4F25EA0B0BE9667B007C0836 /* GDataACLRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */; };
+		4F2B94D90BFA61C100A70CB3 /* GDataGatherInputStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94D80BFA61C000A70CB3 /* GDataGatherInputStreamTest.m */; };
+		4F2B94DC0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */; };
+		4F2B94DD0BFA61D700A70CB3 /* GDataGatherInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F2B94DA0BFA61D700A70CB3 /* GDataGatherInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F2B94DE0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */; };
+		4F2B94DF0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */; };
+		4F2ED9050C04C1A5007CD756 /* FeedPhotosUserEntry1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F2ED9040C04C1A5007CD756 /* FeedPhotosUserEntry1.xml */; };
+		4F35DE590C023B770038AE68 /* GDataGeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4B0C023B770038AE68 /* GDataGeo.m */; };
+		4F35DE5A0C023B770038AE68 /* GDataNormalPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */; };
+		4F35DE5B0C023B770038AE68 /* GDataMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */; };
+		4F35DE5C0C023B770038AE68 /* GDataMediaKeywords.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE510C023B770038AE68 /* GDataMediaKeywords.m */; };
+		4F35DE5D0C023B770038AE68 /* GDataMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE530C023B770038AE68 /* GDataMediaGroup.m */; };
+		4F35DE5E0C023B770038AE68 /* GDataMediaContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE550C023B770038AE68 /* GDataMediaContent.m */; };
+		4F35DE5F0C023B770038AE68 /* GDataMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE570C023B770038AE68 /* GDataMediaCredit.m */; };
+		4F35DE600C023B770038AE68 /* GDataGeo.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE4A0C023B770038AE68 /* GDataGeo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE610C023B770038AE68 /* GDataGeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4B0C023B770038AE68 /* GDataGeo.m */; };
+		4F35DE620C023B770038AE68 /* GDataNormalPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */; };
+		4F35DE630C023B770038AE68 /* GDataNormalPlayTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE4E0C023B770038AE68 /* GDataNormalPlayTime.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE640C023B770038AE68 /* GDataMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */; };
+		4F35DE650C023B770038AE68 /* GDataMediaThumbnail.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE500C023B770038AE68 /* GDataMediaThumbnail.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE660C023B770038AE68 /* GDataMediaKeywords.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE510C023B770038AE68 /* GDataMediaKeywords.m */; };
+		4F35DE670C023B770038AE68 /* GDataMediaKeywords.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE520C023B770038AE68 /* GDataMediaKeywords.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE680C023B770038AE68 /* GDataMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE530C023B770038AE68 /* GDataMediaGroup.m */; };
+		4F35DE690C023B770038AE68 /* GDataMediaGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE540C023B770038AE68 /* GDataMediaGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE6A0C023B770038AE68 /* GDataMediaContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE550C023B770038AE68 /* GDataMediaContent.m */; };
+		4F35DE6B0C023B770038AE68 /* GDataMediaContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE560C023B770038AE68 /* GDataMediaContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE6C0C023B770038AE68 /* GDataMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE570C023B770038AE68 /* GDataMediaCredit.m */; };
+		4F35DE6D0C023B770038AE68 /* GDataMediaCredit.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE580C023B770038AE68 /* GDataMediaCredit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DE6E0C023B770038AE68 /* GDataGeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4B0C023B770038AE68 /* GDataGeo.m */; };
+		4F35DE6F0C023B770038AE68 /* GDataNormalPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */; };
+		4F35DE700C023B770038AE68 /* GDataMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */; };
+		4F35DE710C023B770038AE68 /* GDataMediaKeywords.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE510C023B770038AE68 /* GDataMediaKeywords.m */; };
+		4F35DE720C023B770038AE68 /* GDataMediaGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE530C023B770038AE68 /* GDataMediaGroup.m */; };
+		4F35DE730C023B770038AE68 /* GDataMediaContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE550C023B770038AE68 /* GDataMediaContent.m */; };
+		4F35DE740C023B770038AE68 /* GDataMediaCredit.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE570C023B770038AE68 /* GDataMediaCredit.m */; };
+		4F35DE920C023B880038AE68 /* GDataEXIFTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE770C023B880038AE68 /* GDataEXIFTags.m */; };
+		4F35DE930C023B880038AE68 /* GDataEntryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE790C023B880038AE68 /* GDataEntryPhoto.m */; };
+		4F35DE940C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7B0C023B880038AE68 /* GDataEntryPhotoTag.m */; };
+		4F35DE950C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7D0C023B880038AE68 /* GDataEntryPhotoAlbum.m */; };
+		4F35DE960C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7E0C023B880038AE68 /* GDataEntryPhotoComment.m */; };
+		4F35DE970C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE810C023B880038AE68 /* GDataEntryPhotoUser.m */; };
+		4F35DE980C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE830C023B880038AE68 /* GDataEntryPhotoBase.m */; };
+		4F35DE990C023B880038AE68 /* GDataFeedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE850C023B880038AE68 /* GDataFeedPhoto.m */; };
+		4F35DE9A0C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE870C023B880038AE68 /* GDataFeedPhotoAlbum.m */; };
+		4F35DE9B0C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE890C023B880038AE68 /* GDataFeedPhotoUser.m */; };
+		4F35DE9C0C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8B0C023B880038AE68 /* GDataFeedPhotoBase.m */; };
+		4F35DE9D0C023B880038AE68 /* GDataPhotoElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8D0C023B880038AE68 /* GDataPhotoElements.m */; };
+		4F35DE9E0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8F0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m */; };
+		4F35DE9F0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE910C023B880038AE68 /* GDataQueryPicasaWeb.m */; };
+		4F35DEA00C023B880038AE68 /* GDataEXIFTags.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE760C023B880038AE68 /* GDataEXIFTags.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEA10C023B880038AE68 /* GDataEXIFTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE770C023B880038AE68 /* GDataEXIFTags.m */; };
+		4F35DEA20C023B880038AE68 /* GDataEntryPhoto.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE780C023B880038AE68 /* GDataEntryPhoto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEA30C023B880038AE68 /* GDataEntryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE790C023B880038AE68 /* GDataEntryPhoto.m */; };
+		4F35DEA40C023B880038AE68 /* GDataEntryPhotoTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE7A0C023B880038AE68 /* GDataEntryPhotoTag.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEA50C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7B0C023B880038AE68 /* GDataEntryPhotoTag.m */; };
+		4F35DEA60C023B880038AE68 /* GDataEntryPhotoAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE7C0C023B880038AE68 /* GDataEntryPhotoAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEA70C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7D0C023B880038AE68 /* GDataEntryPhotoAlbum.m */; };
+		4F35DEA80C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7E0C023B880038AE68 /* GDataEntryPhotoComment.m */; };
+		4F35DEA90C023B880038AE68 /* GDataEntryPhotoComment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE7F0C023B880038AE68 /* GDataEntryPhotoComment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEAA0C023B880038AE68 /* GDataEntryPhotoUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE800C023B880038AE68 /* GDataEntryPhotoUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEAB0C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE810C023B880038AE68 /* GDataEntryPhotoUser.m */; };
+		4F35DEAC0C023B880038AE68 /* GDataEntryPhotoBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE820C023B880038AE68 /* GDataEntryPhotoBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEAD0C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE830C023B880038AE68 /* GDataEntryPhotoBase.m */; };
+		4F35DEAE0C023B880038AE68 /* GDataFeedPhoto.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE840C023B880038AE68 /* GDataFeedPhoto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEAF0C023B880038AE68 /* GDataFeedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE850C023B880038AE68 /* GDataFeedPhoto.m */; };
+		4F35DEB00C023B880038AE68 /* GDataFeedPhotoAlbum.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE860C023B880038AE68 /* GDataFeedPhotoAlbum.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEB10C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE870C023B880038AE68 /* GDataFeedPhotoAlbum.m */; };
+		4F35DEB20C023B880038AE68 /* GDataFeedPhotoUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE880C023B880038AE68 /* GDataFeedPhotoUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEB30C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE890C023B880038AE68 /* GDataFeedPhotoUser.m */; };
+		4F35DEB40C023B880038AE68 /* GDataFeedPhotoBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE8A0C023B880038AE68 /* GDataFeedPhotoBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEB50C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8B0C023B880038AE68 /* GDataFeedPhotoBase.m */; };
+		4F35DEB60C023B880038AE68 /* GDataPhotoElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE8C0C023B880038AE68 /* GDataPhotoElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEB70C023B880038AE68 /* GDataPhotoElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8D0C023B880038AE68 /* GDataPhotoElements.m */; };
+		4F35DEB80C023B880038AE68 /* GDataServiceGooglePicasaWeb.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE8E0C023B880038AE68 /* GDataServiceGooglePicasaWeb.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEB90C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8F0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m */; };
+		4F35DEBA0C023B880038AE68 /* GDataQueryPicasaWeb.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F35DE900C023B880038AE68 /* GDataQueryPicasaWeb.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35DEBB0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE910C023B880038AE68 /* GDataQueryPicasaWeb.m */; };
+		4F35DEBC0C023B880038AE68 /* GDataEXIFTags.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE770C023B880038AE68 /* GDataEXIFTags.m */; };
+		4F35DEBD0C023B880038AE68 /* GDataEntryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE790C023B880038AE68 /* GDataEntryPhoto.m */; };
+		4F35DEBE0C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7B0C023B880038AE68 /* GDataEntryPhotoTag.m */; };
+		4F35DEBF0C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7D0C023B880038AE68 /* GDataEntryPhotoAlbum.m */; };
+		4F35DEC00C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE7E0C023B880038AE68 /* GDataEntryPhotoComment.m */; };
+		4F35DEC10C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE810C023B880038AE68 /* GDataEntryPhotoUser.m */; };
+		4F35DEC20C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE830C023B880038AE68 /* GDataEntryPhotoBase.m */; };
+		4F35DEC30C023B880038AE68 /* GDataFeedPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE850C023B880038AE68 /* GDataFeedPhoto.m */; };
+		4F35DEC40C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE870C023B880038AE68 /* GDataFeedPhotoAlbum.m */; };
+		4F35DEC50C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE890C023B880038AE68 /* GDataFeedPhotoUser.m */; };
+		4F35DEC60C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8B0C023B880038AE68 /* GDataFeedPhotoBase.m */; };
+		4F35DEC70C023B880038AE68 /* GDataPhotoElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8D0C023B880038AE68 /* GDataPhotoElements.m */; };
+		4F35DEC80C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE8F0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m */; };
+		4F35DEC90C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE910C023B880038AE68 /* GDataQueryPicasaWeb.m */; };
 		4F37E9F50B7972920019C173 /* GDataQueryGoogleBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F37E9F30B7972920019C173 /* GDataQueryGoogleBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F37E9F60B7972920019C173 /* GDataQueryGoogleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F37E9F40B7972920019C173 /* GDataQueryGoogleBase.m */; };
 		4F37E9F80B7972920019C173 /* GDataQueryGoogleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F37E9F40B7972920019C173 /* GDataQueryGoogleBase.m */; };
@@ -200,7 +311,13 @@
 		4F38F70E0B66ED8700B24B81 /* GDataWhere.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14AED70B138E330072EBB8 /* GDataWhere.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F70F0B66ED8700B24B81 /* GDataWho.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14AE8C0B138B710072EBB8 /* GDataWho.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F8530B66F98500B24B81 /* GDataWhen.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F38F8520B66F98500B24B81 /* GDataWhen.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F777E070C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */; };
 		4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */; };
+		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FA1C5C20C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
+		4FA1C5C30C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
+		4FA1C5C40C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
+		4FA1C6D00C038E89006D556A /* FeedPhotosAlbumPhoto1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C67D0C0389D4006D556A /* FeedPhotosAlbumPhoto1.xml */; };
 		4FA3BE8F0B97A15F001C1943 /* GDataAtomPubControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BE8E0B97A15F001C1943 /* GDataAtomPubControl.m */; };
 		4FA3BE900B97A15F001C1943 /* GDataAtomPubControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BE8E0B97A15F001C1943 /* GDataAtomPubControl.m */; };
 		4FA3BE910B97A15F001C1943 /* GDataAtomPubControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA3BE8E0B97A15F001C1943 /* GDataAtomPubControl.m */; };
@@ -221,6 +338,11 @@
 		4FA9CB320B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB330B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB370B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB730D50BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */; };
+		4FB730DC0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
+		4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB730DE0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
+		4FB730DF0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
 		4FD23A470B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */; };
 		4FD23A480B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */; };
 		4FD23A490B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */; };
@@ -412,6 +534,10 @@
 		4F14B12D0B13A5B40072EBB8 /* GDataFeedEvent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedEvent.m; path = BaseClasses/GDataFeedEvent.m; sourceTree = "<group>"; };
 		4F14B12E0B13A5B40072EBB8 /* GDataObject.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataObject.m; path = BaseClasses/GDataObject.m; sourceTree = "<group>"; };
 		4F14B13A0B13A6150072EBB8 /* GDataUnitTests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = "GDataUnitTests-Info.plist"; path = "Resources/GDataUnitTests-Info.plist"; sourceTree = "<group>"; };
+		4F16E51B0BF4EAE200FB548C /* GDataMIMEDocument.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMIMEDocument.m; path = Networking/GDataMIMEDocument.m; sourceTree = "<group>"; };
+		4F16E51F0BF4EAE900FB548C /* GDataMIMEDocument.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMIMEDocument.h; path = Networking/GDataMIMEDocument.h; sourceTree = "<group>"; };
+		4F16E5AB0BF4F1B200FB548C /* GDataMIMEDocumentTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMIMEDocumentTest.m; path = Tests/GDataMIMEDocumentTest.m; sourceTree = "<group>"; };
+		4F16E5AF0BF4F1BB00FB548C /* GDataMIMEDocumentTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMIMEDocumentTest.h; path = Tests/GDataMIMEDocumentTest.h; sourceTree = "<group>"; };
 		4F1AD6520B7025A900DC0485 /* GDataGoogleBaseAttribute.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseAttribute.h; path = Clients/GoogleBase/GDataGoogleBaseAttribute.h; sourceTree = "<group>"; };
 		4F1AD6540B7025B000DC0485 /* GDataGoogleBaseAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseAttribute.m; path = Clients/GoogleBase/GDataGoogleBaseAttribute.m; sourceTree = "<group>"; };
 		4F1AD7200B71484F00DC0485 /* GDataEntryGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryGoogleBase.h; path = Clients/GoogleBase/GDataEntryGoogleBase.h; sourceTree = "<group>"; };
@@ -420,14 +546,77 @@
 		4F1AD90C0B71607400DC0485 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Tests/main.m; sourceTree = "<group>"; };
 		4F1AD9830B71659E00DC0485 /* GDataFeedGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedGoogleBase.m; path = Clients/GoogleBase/GDataFeedGoogleBase.m; sourceTree = "<group>"; };
 		4F1AD9870B7165A700DC0485 /* GDataFeedGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedGoogleBase.h; path = Clients/GoogleBase/GDataFeedGoogleBase.h; sourceTree = "<group>"; };
+		4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryACL.h; path = ACL/GDataEntryACL.h; sourceTree = "<group>"; };
+		4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryACL.m; path = ACL/GDataEntryACL.m; sourceTree = "<group>"; };
+		4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedACL.h; path = ACL/GDataFeedACL.h; sourceTree = "<group>"; };
+		4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedACL.m; path = ACL/GDataFeedACL.m; sourceTree = "<group>"; };
+		4F25E9F80BE9667B007C0836 /* GDataACLScope.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataACLScope.h; path = ACL/GDataACLScope.h; sourceTree = "<group>"; };
+		4F25E9F90BE9667B007C0836 /* GDataACLScope.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataACLScope.m; path = ACL/GDataACLScope.m; sourceTree = "<group>"; };
+		4F25E9FA0BE9667B007C0836 /* GDataACLRole.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataACLRole.h; path = ACL/GDataACLRole.h; sourceTree = "<group>"; };
+		4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataACLRole.m; path = ACL/GDataACLRole.m; sourceTree = "<group>"; };
+		4F2B94D70BFA61C000A70CB3 /* GDataGatherInputStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGatherInputStreamTest.h; path = Tests/GDataGatherInputStreamTest.h; sourceTree = "<group>"; };
+		4F2B94D80BFA61C000A70CB3 /* GDataGatherInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGatherInputStreamTest.m; path = Tests/GDataGatherInputStreamTest.m; sourceTree = "<group>"; };
+		4F2B94DA0BFA61D700A70CB3 /* GDataGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGatherInputStream.h; path = Networking/GDataGatherInputStream.h; sourceTree = "<group>"; };
+		4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGatherInputStream.m; path = Networking/GDataGatherInputStream.m; sourceTree = "<group>"; };
 		4F2E11F10BA778C900237907 /* DevelopmentTestApplication-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = "DevelopmentTestApplication-Info.plist"; path = "Resources/DevelopmentTestApplication-Info.plist"; sourceTree = "<group>"; };
 		4F2E11F20BA778D700237907 /* GDataFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = "GDataFramework-Info.plist"; path = "Resources/GDataFramework-Info.plist"; sourceTree = "<group>"; };
+		4F2ED9040C04C1A5007CD756 /* FeedPhotosUserEntry1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedPhotosUserEntry1.xml; path = Tests/FeedPhotosUserEntry1.xml; sourceTree = "<group>"; };
+		4F35DE4A0C023B770038AE68 /* GDataGeo.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGeo.h; path = Geo/GDataGeo.h; sourceTree = "<group>"; };
+		4F35DE4B0C023B770038AE68 /* GDataGeo.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGeo.m; path = Geo/GDataGeo.m; sourceTree = "<group>"; };
+		4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTime.m; path = Media/GDataNormalPlayTime.m; sourceTree = "<group>"; };
+		4F35DE4E0C023B770038AE68 /* GDataNormalPlayTime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataNormalPlayTime.h; path = Media/GDataNormalPlayTime.h; sourceTree = "<group>"; };
+		4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaThumbnail.m; path = Media/GDataMediaThumbnail.m; sourceTree = "<group>"; };
+		4F35DE500C023B770038AE68 /* GDataMediaThumbnail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaThumbnail.h; path = Media/GDataMediaThumbnail.h; sourceTree = "<group>"; };
+		4F35DE510C023B770038AE68 /* GDataMediaKeywords.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaKeywords.m; path = Media/GDataMediaKeywords.m; sourceTree = "<group>"; };
+		4F35DE520C023B770038AE68 /* GDataMediaKeywords.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaKeywords.h; path = Media/GDataMediaKeywords.h; sourceTree = "<group>"; };
+		4F35DE530C023B770038AE68 /* GDataMediaGroup.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaGroup.m; path = Media/GDataMediaGroup.m; sourceTree = "<group>"; };
+		4F35DE540C023B770038AE68 /* GDataMediaGroup.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaGroup.h; path = Media/GDataMediaGroup.h; sourceTree = "<group>"; };
+		4F35DE550C023B770038AE68 /* GDataMediaContent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaContent.m; path = Media/GDataMediaContent.m; sourceTree = "<group>"; };
+		4F35DE560C023B770038AE68 /* GDataMediaContent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaContent.h; path = Media/GDataMediaContent.h; sourceTree = "<group>"; };
+		4F35DE570C023B770038AE68 /* GDataMediaCredit.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaCredit.m; path = Media/GDataMediaCredit.m; sourceTree = "<group>"; };
+		4F35DE580C023B770038AE68 /* GDataMediaCredit.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaCredit.h; path = Media/GDataMediaCredit.h; sourceTree = "<group>"; };
+		4F35DE760C023B880038AE68 /* GDataEXIFTags.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEXIFTags.h; path = Clients/Photos/GDataEXIFTags.h; sourceTree = "<group>"; };
+		4F35DE770C023B880038AE68 /* GDataEXIFTags.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEXIFTags.m; path = Clients/Photos/GDataEXIFTags.m; sourceTree = "<group>"; };
+		4F35DE780C023B880038AE68 /* GDataEntryPhoto.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhoto.h; path = Clients/Photos/GDataEntryPhoto.h; sourceTree = "<group>"; };
+		4F35DE790C023B880038AE68 /* GDataEntryPhoto.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhoto.m; path = Clients/Photos/GDataEntryPhoto.m; sourceTree = "<group>"; };
+		4F35DE7A0C023B880038AE68 /* GDataEntryPhotoTag.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhotoTag.h; path = Clients/Photos/GDataEntryPhotoTag.h; sourceTree = "<group>"; };
+		4F35DE7B0C023B880038AE68 /* GDataEntryPhotoTag.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhotoTag.m; path = Clients/Photos/GDataEntryPhotoTag.m; sourceTree = "<group>"; };
+		4F35DE7C0C023B880038AE68 /* GDataEntryPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhotoAlbum.h; path = Clients/Photos/GDataEntryPhotoAlbum.h; sourceTree = "<group>"; };
+		4F35DE7D0C023B880038AE68 /* GDataEntryPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhotoAlbum.m; path = Clients/Photos/GDataEntryPhotoAlbum.m; sourceTree = "<group>"; };
+		4F35DE7E0C023B880038AE68 /* GDataEntryPhotoComment.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhotoComment.m; path = Clients/Photos/GDataEntryPhotoComment.m; sourceTree = "<group>"; };
+		4F35DE7F0C023B880038AE68 /* GDataEntryPhotoComment.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhotoComment.h; path = Clients/Photos/GDataEntryPhotoComment.h; sourceTree = "<group>"; };
+		4F35DE800C023B880038AE68 /* GDataEntryPhotoUser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhotoUser.h; path = Clients/Photos/GDataEntryPhotoUser.h; sourceTree = "<group>"; };
+		4F35DE810C023B880038AE68 /* GDataEntryPhotoUser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhotoUser.m; path = Clients/Photos/GDataEntryPhotoUser.m; sourceTree = "<group>"; };
+		4F35DE820C023B880038AE68 /* GDataEntryPhotoBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryPhotoBase.h; path = Clients/Photos/GDataEntryPhotoBase.h; sourceTree = "<group>"; };
+		4F35DE830C023B880038AE68 /* GDataEntryPhotoBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPhotoBase.m; path = Clients/Photos/GDataEntryPhotoBase.m; sourceTree = "<group>"; };
+		4F35DE840C023B880038AE68 /* GDataFeedPhoto.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedPhoto.h; path = Clients/Photos/GDataFeedPhoto.h; sourceTree = "<group>"; };
+		4F35DE850C023B880038AE68 /* GDataFeedPhoto.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedPhoto.m; path = Clients/Photos/GDataFeedPhoto.m; sourceTree = "<group>"; };
+		4F35DE860C023B880038AE68 /* GDataFeedPhotoAlbum.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedPhotoAlbum.h; path = Clients/Photos/GDataFeedPhotoAlbum.h; sourceTree = "<group>"; };
+		4F35DE870C023B880038AE68 /* GDataFeedPhotoAlbum.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedPhotoAlbum.m; path = Clients/Photos/GDataFeedPhotoAlbum.m; sourceTree = "<group>"; };
+		4F35DE880C023B880038AE68 /* GDataFeedPhotoUser.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedPhotoUser.h; path = Clients/Photos/GDataFeedPhotoUser.h; sourceTree = "<group>"; };
+		4F35DE890C023B880038AE68 /* GDataFeedPhotoUser.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedPhotoUser.m; path = Clients/Photos/GDataFeedPhotoUser.m; sourceTree = "<group>"; };
+		4F35DE8A0C023B880038AE68 /* GDataFeedPhotoBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedPhotoBase.h; path = Clients/Photos/GDataFeedPhotoBase.h; sourceTree = "<group>"; };
+		4F35DE8B0C023B880038AE68 /* GDataFeedPhotoBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedPhotoBase.m; path = Clients/Photos/GDataFeedPhotoBase.m; sourceTree = "<group>"; };
+		4F35DE8C0C023B880038AE68 /* GDataPhotoElements.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataPhotoElements.h; path = Clients/Photos/GDataPhotoElements.h; sourceTree = "<group>"; };
+		4F35DE8D0C023B880038AE68 /* GDataPhotoElements.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataPhotoElements.m; path = Clients/Photos/GDataPhotoElements.m; sourceTree = "<group>"; };
+		4F35DE8E0C023B880038AE68 /* GDataServiceGooglePicasaWeb.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceGooglePicasaWeb.h; path = Clients/Photos/GDataServiceGooglePicasaWeb.h; sourceTree = "<group>"; };
+		4F35DE8F0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGooglePicasaWeb.m; path = Clients/Photos/GDataServiceGooglePicasaWeb.m; sourceTree = "<group>"; };
+		4F35DE900C023B880038AE68 /* GDataQueryPicasaWeb.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryPicasaWeb.h; path = Clients/Photos/GDataQueryPicasaWeb.h; sourceTree = "<group>"; };
+		4F35DE910C023B880038AE68 /* GDataQueryPicasaWeb.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryPicasaWeb.m; path = Clients/Photos/GDataQueryPicasaWeb.m; sourceTree = "<group>"; };
 		4F37E9F30B7972920019C173 /* GDataQueryGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryGoogleBase.h; path = Clients/GoogleBase/GDataQueryGoogleBase.h; sourceTree = "<group>"; };
 		4F37E9F40B7972920019C173 /* GDataQueryGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryGoogleBase.m; path = Clients/GoogleBase/GDataQueryGoogleBase.m; sourceTree = "<group>"; };
 		4F38F6A60B66E91D00B24B81 /* GData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F38F8520B66F98500B24B81 /* GDataWhen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataWhen.h; path = Elements/GDataWhen.h; sourceTree = "<group>"; };
+		4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTimeTest.m; path = Tests/GDataNormalPlayTimeTest.m; sourceTree = "<group>"; };
+		4F777E060C03DA4E00058FA1 /* GDataNormalPlayTimeTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataNormalPlayTimeTest.h; path = Tests/GDataNormalPlayTimeTest.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
 		4F9708750BC5C35100C5B1C0 /* GDataServiceTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceTest.h; path = Tests/GDataServiceTest.h; sourceTree = "<group>"; };
+		4FA1C5BF0C037446006D556A /* GDataEntryContent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryContent.h; path = Elements/GDataEntryContent.h; sourceTree = "<group>"; };
+		4FA1C5C10C03744A006D556A /* GDataEntryContent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryContent.m; path = Elements/GDataEntryContent.m; sourceTree = "<group>"; };
+		4FA1C67D0C0389D4006D556A /* FeedPhotosAlbumPhoto1.xml */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; name = FeedPhotosAlbumPhoto1.xml; path = Tests/FeedPhotosAlbumPhoto1.xml; sourceTree = "<group>"; };
+		4FA1C67E0C0389D4006D556A /* FeedPhotosPhotoComment1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedPhotosPhotoComment1.xml; path = Tests/FeedPhotosPhotoComment1.xml; sourceTree = "<group>"; };
+		4FA1C67F0C0389D4006D556A /* FeedPhotosUserTag1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedPhotosUserTag1.xml; path = Tests/FeedPhotosUserTag1.xml; sourceTree = "<group>"; };
+		4FA1C6800C0389D4006D556A /* FeedPhotosUserAlbum1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedPhotosUserAlbum1.xml; path = Tests/FeedPhotosUserAlbum1.xml; sourceTree = "<group>"; };
 		4FA3BE8E0B97A15F001C1943 /* GDataAtomPubControl.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataAtomPubControl.m; path = Elements/GDataAtomPubControl.m; sourceTree = "<group>"; };
 		4FA3BE940B97A169001C1943 /* GDataAtomPubControl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataAtomPubControl.h; path = Elements/GDataAtomPubControl.h; sourceTree = "<group>"; };
 		4FA9C9F50B740B6E00DA5920 /* GDataGoogleBaseMetadataAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseMetadataAttribute.m; path = Clients/GoogleBase/GDataGoogleBaseMetadataAttribute.m; sourceTree = "<group>"; };
@@ -438,6 +627,10 @@
 		4FA9CA820B74288B00DA5920 /* GDataGoogleBaseMetadataAttributeList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseMetadataAttributeList.h; path = Clients/GoogleBase/GDataGoogleBaseMetadataAttributeList.h; sourceTree = "<group>"; };
 		4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseMetadataItemType.m; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.m; sourceTree = "<group>"; };
 		4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseMetadataItemType.h; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.h; sourceTree = "<group>"; };
+		4FB730D30BE27A82000C493E /* GDataProgressMonitorInputStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStreamTest.h; path = Tests/GDataProgressMonitorInputStreamTest.h; sourceTree = "<group>"; };
+		4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStreamTest.m; path = Tests/GDataProgressMonitorInputStreamTest.m; sourceTree = "<group>"; };
+		4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStream.h; path = Networking/GDataProgressMonitorInputStream.h; sourceTree = "<group>"; };
+		4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStream.m; path = Networking/GDataProgressMonitorInputStream.m; sourceTree = "<group>"; };
 		4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseSnippetTest1.xml; path = Tests/FeedGoogleBaseSnippetTest1.xml; sourceTree = "<group>"; };
 		4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemTypesTest1.xml; path = Tests/FeedGoogleBaseItemTypesTest1.xml; sourceTree = "<group>"; };
 		4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemCountsTest1.xml; path = Tests/FeedGoogleBaseItemCountsTest1.xml; sourceTree = "<group>"; };
@@ -457,11 +650,11 @@
 		4FDEA5920B39DE77007ACFE3 /* GData.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GData.h; sourceTree = "<group>"; };
 		4FDEA5930B39DE8E007ACFE3 /* GDataServiceGoogle.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceGoogle.h; path = BaseClasses/GDataServiceGoogle.h; sourceTree = "<group>"; };
 		4FDEA5940B39DE8E007ACFE3 /* GDataServiceGoogle.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogle.m; path = BaseClasses/GDataServiceGoogle.m; sourceTree = "<group>"; };
-		4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataHTTPFetcher.m; path = BaseClasses/GDataHTTPFetcher.m; sourceTree = "<group>"; };
-		4FDEA5980B39DE99007ACFE3 /* GDataHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataHTTPFetcher.h; path = BaseClasses/GDataHTTPFetcher.h; sourceTree = "<group>"; };
+		4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataHTTPFetcher.m; path = Networking/GDataHTTPFetcher.m; sourceTree = "<group>"; };
+		4FDEA5980B39DE99007ACFE3 /* GDataHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataHTTPFetcher.h; path = Networking/GDataHTTPFetcher.h; sourceTree = "<group>"; };
 		4FDF27610B1F80BF00DFCF57 /* GDataElementsTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataElementsTest.m; path = Tests/GDataElementsTest.m; sourceTree = "<group>"; };
 		4FDF27620B1F80BF00DFCF57 /* GDataElementsTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataElementsTest.h; path = Tests/GDataElementsTest.h; sourceTree = "<group>"; };
-		4FDF2E450B21120F00DFCF57 /* GDataFeedTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedTest.m; path = Tests/GDataFeedTest.m; sourceTree = "<group>"; };
+		4FDF2E450B21120F00DFCF57 /* GDataFeedTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedTest.m; path = Tests/GDataFeedTest.m; sourceTree = "<group>"; };
 		4FDF2E490B21121800DFCF57 /* GDataFeedTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedTest.h; path = Tests/GDataFeedTest.h; sourceTree = "<group>"; };
 		4FE81F6F0B250E8600D8C135 /* GDataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQuery.h; path = BaseClasses/GDataQuery.h; sourceTree = "<group>"; };
 		4FE81F700B250E8600D8C135 /* GDataQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQuery.m; path = BaseClasses/GDataQuery.m; sourceTree = "<group>"; };
@@ -592,9 +785,14 @@
 				4F0AAADD0BCAF3D700504521 /* GDataFramework.m */,
 				4F14B1240B13A59E0072EBB8 /* BaseClasses */,
 				4F14AA7E0B1283660072EBB8 /* Elements */,
+				4FB730D70BE27A92000C493E /* Networking */,
+				4F25E9F30BE9667A007C0836 /* ACL */,
+				4F35DE4C0C023B770038AE68 /* Media */,
+				4F35DE490C023B770038AE68 /* Geo */,
 				4F14AA7C0B1282E60072EBB8 /* Calendar */,
 				4F1AD6120B70256300DC0485 /* GoogleBase */,
 				4FEBA68E0BB362E5005710DA /* Spreadsheets */,
+				4F35DE750C023B880038AE68 /* Photos */,
 			);
 			name = "GData Sources";
 			sourceTree = "<group>";
@@ -615,6 +813,14 @@
 				4FD7B7210BC5922C00C578E1 /* GDataTestHTTPServer.py */,
 				4F0AAAD90BCAF3C900504521 /* GDataFrameworkTest.m */,
 				4F0AAADA0BCAF3C900504521 /* GDataFrameworkTest.h */,
+				4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */,
+				4F777E060C03DA4E00058FA1 /* GDataNormalPlayTimeTest.h */,
+				4FB730D30BE27A82000C493E /* GDataProgressMonitorInputStreamTest.h */,
+				4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */,
+				4F16E5AF0BF4F1BB00FB548C /* GDataMIMEDocumentTest.h */,
+				4F16E5AB0BF4F1B200FB548C /* GDataMIMEDocumentTest.m */,
+				4F2B94D70BFA61C000A70CB3 /* GDataGatherInputStreamTest.h */,
+				4F2B94D80BFA61C000A70CB3 /* GDataGatherInputStreamTest.m */,
 				4FD23A390B8FDB17007C0AD4 /* XML Files */,
 			);
 			name = "Unit Tests";
@@ -677,6 +883,8 @@
 				4F14AF680B13975E0072EBB8 /* GDataValueConstruct.m */,
 				4F14AF820B1397DB0072EBB8 /* GDataExtendedProperty.h */,
 				4F14AF830B1397DB0072EBB8 /* GDataExtendedProperty.m */,
+				4FA1C5BF0C037446006D556A /* GDataEntryContent.h */,
+				4FA1C5C10C03744A006D556A /* GDataEntryContent.m */,
 				4F14AF940B13983C0072EBB8 /* GDataRecurrence.h */,
 				4F14AF950B13983C0072EBB8 /* GDataRecurrence.m */,
 				4F14AF9E0B1398BF0072EBB8 /* GDataRecurrenceException.m */,
@@ -732,8 +940,6 @@
 				4FE822E60B26594300D8C135 /* GDataServiceBase.m */,
 				4FDEA5930B39DE8E007ACFE3 /* GDataServiceGoogle.h */,
 				4FDEA5940B39DE8E007ACFE3 /* GDataServiceGoogle.m */,
-				4FDEA5980B39DE99007ACFE3 /* GDataHTTPFetcher.h */,
-				4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */,
 			);
 			name = BaseClasses;
 			sourceTree = "<group>";
@@ -763,6 +969,84 @@
 			name = GoogleBase;
 			sourceTree = "<group>";
 		};
+		4F25E9F30BE9667A007C0836 /* ACL */ = {
+			isa = PBXGroup;
+			children = (
+				4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */,
+				4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */,
+				4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */,
+				4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */,
+				4F25E9F80BE9667B007C0836 /* GDataACLScope.h */,
+				4F25E9F90BE9667B007C0836 /* GDataACLScope.m */,
+				4F25E9FA0BE9667B007C0836 /* GDataACLRole.h */,
+				4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */,
+			);
+			name = ACL;
+			sourceTree = "<group>";
+		};
+		4F35DE490C023B770038AE68 /* Geo */ = {
+			isa = PBXGroup;
+			children = (
+				4F35DE4A0C023B770038AE68 /* GDataGeo.h */,
+				4F35DE4B0C023B770038AE68 /* GDataGeo.m */,
+			);
+			name = Geo;
+			sourceTree = "<group>";
+		};
+		4F35DE4C0C023B770038AE68 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */,
+				4F35DE4E0C023B770038AE68 /* GDataNormalPlayTime.h */,
+				4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */,
+				4F35DE500C023B770038AE68 /* GDataMediaThumbnail.h */,
+				4F35DE510C023B770038AE68 /* GDataMediaKeywords.m */,
+				4F35DE520C023B770038AE68 /* GDataMediaKeywords.h */,
+				4F35DE530C023B770038AE68 /* GDataMediaGroup.m */,
+				4F35DE540C023B770038AE68 /* GDataMediaGroup.h */,
+				4F35DE550C023B770038AE68 /* GDataMediaContent.m */,
+				4F35DE560C023B770038AE68 /* GDataMediaContent.h */,
+				4F35DE570C023B770038AE68 /* GDataMediaCredit.m */,
+				4F35DE580C023B770038AE68 /* GDataMediaCredit.h */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
+		4F35DE750C023B880038AE68 /* Photos */ = {
+			isa = PBXGroup;
+			children = (
+				4F35DE760C023B880038AE68 /* GDataEXIFTags.h */,
+				4F35DE770C023B880038AE68 /* GDataEXIFTags.m */,
+				4F35DE780C023B880038AE68 /* GDataEntryPhoto.h */,
+				4F35DE790C023B880038AE68 /* GDataEntryPhoto.m */,
+				4F35DE7A0C023B880038AE68 /* GDataEntryPhotoTag.h */,
+				4F35DE7B0C023B880038AE68 /* GDataEntryPhotoTag.m */,
+				4F35DE7C0C023B880038AE68 /* GDataEntryPhotoAlbum.h */,
+				4F35DE7D0C023B880038AE68 /* GDataEntryPhotoAlbum.m */,
+				4F35DE7E0C023B880038AE68 /* GDataEntryPhotoComment.m */,
+				4F35DE7F0C023B880038AE68 /* GDataEntryPhotoComment.h */,
+				4F35DE800C023B880038AE68 /* GDataEntryPhotoUser.h */,
+				4F35DE810C023B880038AE68 /* GDataEntryPhotoUser.m */,
+				4F35DE820C023B880038AE68 /* GDataEntryPhotoBase.h */,
+				4F35DE830C023B880038AE68 /* GDataEntryPhotoBase.m */,
+				4F35DE840C023B880038AE68 /* GDataFeedPhoto.h */,
+				4F35DE850C023B880038AE68 /* GDataFeedPhoto.m */,
+				4F35DE860C023B880038AE68 /* GDataFeedPhotoAlbum.h */,
+				4F35DE870C023B880038AE68 /* GDataFeedPhotoAlbum.m */,
+				4F35DE880C023B880038AE68 /* GDataFeedPhotoUser.h */,
+				4F35DE890C023B880038AE68 /* GDataFeedPhotoUser.m */,
+				4F35DE8A0C023B880038AE68 /* GDataFeedPhotoBase.h */,
+				4F35DE8B0C023B880038AE68 /* GDataFeedPhotoBase.m */,
+				4F35DE8C0C023B880038AE68 /* GDataPhotoElements.h */,
+				4F35DE8D0C023B880038AE68 /* GDataPhotoElements.m */,
+				4F35DE8E0C023B880038AE68 /* GDataServiceGooglePicasaWeb.h */,
+				4F35DE8F0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m */,
+				4F35DE900C023B880038AE68 /* GDataQueryPicasaWeb.h */,
+				4F35DE910C023B880038AE68 /* GDataQueryPicasaWeb.m */,
+			);
+			name = Photos;
+			sourceTree = "<group>";
+		};
 		4FA9C7410B72AB1600DA5920 /* Test Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -771,9 +1055,29 @@
 			name = "Test Tool";
 			sourceTree = "<group>";
 		};
+		4FB730D70BE27A92000C493E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				4FDEA5980B39DE99007ACFE3 /* GDataHTTPFetcher.h */,
+				4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */,
+				4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */,
+				4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */,
+				4F2B94DA0BFA61D700A70CB3 /* GDataGatherInputStream.h */,
+				4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */,
+				4F16E51F0BF4EAE900FB548C /* GDataMIMEDocument.h */,
+				4F16E51B0BF4EAE200FB548C /* GDataMIMEDocument.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		4FD23A390B8FDB17007C0AD4 /* XML Files */ = {
 			isa = PBXGroup;
 			children = (
+				4FA1C67D0C0389D4006D556A /* FeedPhotosAlbumPhoto1.xml */,
+				4FA1C67E0C0389D4006D556A /* FeedPhotosPhotoComment1.xml */,
+				4FA1C67F0C0389D4006D556A /* FeedPhotosUserTag1.xml */,
+				4FA1C6800C0389D4006D556A /* FeedPhotosUserAlbum1.xml */,
+				4F2ED9040C04C1A5007CD756 /* FeedPhotosUserEntry1.xml */,
 				4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */,
 				4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */,
 				4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */,
@@ -901,6 +1205,35 @@
 				4F089FD20BC31A3500B17DC7 /* GDataEntryMessage.h in Headers */,
 				4F08A0170BC323E900B17DC7 /* GDataFeedMessage.h in Headers */,
 				4F0AAADF0BCAF3D700504521 /* GDataFramework.h in Headers */,
+				4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */,
+				4F25EA000BE9667B007C0836 /* GDataEntryACL.h in Headers */,
+				4F25EA020BE9667B007C0836 /* GDataFeedACL.h in Headers */,
+				4F25EA040BE9667B007C0836 /* GDataACLScope.h in Headers */,
+				4F25EA060BE9667B007C0836 /* GDataACLRole.h in Headers */,
+				4F16E5200BF4EAE900FB548C /* GDataMIMEDocument.h in Headers */,
+				4F2B94DD0BFA61D700A70CB3 /* GDataGatherInputStream.h in Headers */,
+				4F35DE600C023B770038AE68 /* GDataGeo.h in Headers */,
+				4F35DE630C023B770038AE68 /* GDataNormalPlayTime.h in Headers */,
+				4F35DE650C023B770038AE68 /* GDataMediaThumbnail.h in Headers */,
+				4F35DE670C023B770038AE68 /* GDataMediaKeywords.h in Headers */,
+				4F35DE690C023B770038AE68 /* GDataMediaGroup.h in Headers */,
+				4F35DE6B0C023B770038AE68 /* GDataMediaContent.h in Headers */,
+				4F35DE6D0C023B770038AE68 /* GDataMediaCredit.h in Headers */,
+				4F35DEA00C023B880038AE68 /* GDataEXIFTags.h in Headers */,
+				4F35DEA20C023B880038AE68 /* GDataEntryPhoto.h in Headers */,
+				4F35DEA40C023B880038AE68 /* GDataEntryPhotoTag.h in Headers */,
+				4F35DEA60C023B880038AE68 /* GDataEntryPhotoAlbum.h in Headers */,
+				4F35DEA90C023B880038AE68 /* GDataEntryPhotoComment.h in Headers */,
+				4F35DEAA0C023B880038AE68 /* GDataEntryPhotoUser.h in Headers */,
+				4F35DEAC0C023B880038AE68 /* GDataEntryPhotoBase.h in Headers */,
+				4F35DEAE0C023B880038AE68 /* GDataFeedPhoto.h in Headers */,
+				4F35DEB00C023B880038AE68 /* GDataFeedPhotoAlbum.h in Headers */,
+				4F35DEB20C023B880038AE68 /* GDataFeedPhotoUser.h in Headers */,
+				4F35DEB40C023B880038AE68 /* GDataFeedPhotoBase.h in Headers */,
+				4F35DEB60C023B880038AE68 /* GDataPhotoElements.h in Headers */,
+				4F35DEB80C023B880038AE68 /* GDataServiceGooglePicasaWeb.h in Headers */,
+				4F35DEBA0C023B880038AE68 /* GDataQueryPicasaWeb.h in Headers */,
+				4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -993,6 +1326,8 @@
 				4FEBA6F70BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml in Resources */,
 				4F08A1060BC32E3D00B17DC7 /* FeedMessageTest1.xml in Resources */,
 				4FD7B7220BC5922C00C578E1 /* GDataTestHTTPServer.py in Resources */,
+				4FA1C6D00C038E89006D556A /* FeedPhotosAlbumPhoto1.xml in Resources */,
+				4F2ED9050C04C1A5007CD756 /* FeedPhotosUserEntry1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1103,6 +1438,39 @@
 				4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */,
 				4F0AAADB0BCAF3C900504521 /* GDataFrameworkTest.m in Sources */,
 				4F0AAADE0BCAF3D700504521 /* GDataFramework.m in Sources */,
+				4FB730D50BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m in Sources */,
+				4FB730DC0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */,
+				4F25E9FC0BE9667B007C0836 /* GDataEntryACL.m in Sources */,
+				4F25E9FD0BE9667B007C0836 /* GDataFeedACL.m in Sources */,
+				4F25E9FE0BE9667B007C0836 /* GDataACLScope.m in Sources */,
+				4F25E9FF0BE9667B007C0836 /* GDataACLRole.m in Sources */,
+				4F16E51C0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */,
+				4F16E5AC0BF4F1B200FB548C /* GDataMIMEDocumentTest.m in Sources */,
+				4F2B94D90BFA61C100A70CB3 /* GDataGatherInputStreamTest.m in Sources */,
+				4F2B94DC0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */,
+				4F35DE590C023B770038AE68 /* GDataGeo.m in Sources */,
+				4F35DE5A0C023B770038AE68 /* GDataNormalPlayTime.m in Sources */,
+				4F35DE5B0C023B770038AE68 /* GDataMediaThumbnail.m in Sources */,
+				4F35DE5C0C023B770038AE68 /* GDataMediaKeywords.m in Sources */,
+				4F35DE5D0C023B770038AE68 /* GDataMediaGroup.m in Sources */,
+				4F35DE5E0C023B770038AE68 /* GDataMediaContent.m in Sources */,
+				4F35DE5F0C023B770038AE68 /* GDataMediaCredit.m in Sources */,
+				4F35DE920C023B880038AE68 /* GDataEXIFTags.m in Sources */,
+				4F35DE930C023B880038AE68 /* GDataEntryPhoto.m in Sources */,
+				4F35DE940C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */,
+				4F35DE950C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */,
+				4F35DE960C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */,
+				4F35DE970C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */,
+				4F35DE980C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */,
+				4F35DE990C023B880038AE68 /* GDataFeedPhoto.m in Sources */,
+				4F35DE9A0C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */,
+				4F35DE9B0C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */,
+				4F35DE9C0C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */,
+				4F35DE9D0C023B880038AE68 /* GDataPhotoElements.m in Sources */,
+				4F35DE9E0C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */,
+				4F35DE9F0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
+				4FA1C5C20C03744A006D556A /* GDataEntryContent.m in Sources */,
+				4F777E070C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1182,6 +1550,35 @@
 				4F089FD00BC31A2F00B17DC7 /* GDataEntryMessage.m in Sources */,
 				4F08A01D0BC323F300B17DC7 /* GDataFeedMessage.m in Sources */,
 				4F0AAAE10BCAF3D700504521 /* GDataFramework.m in Sources */,
+				4FB730DF0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */,
+				4F25EA080BE9667B007C0836 /* GDataEntryACL.m in Sources */,
+				4F25EA090BE9667B007C0836 /* GDataFeedACL.m in Sources */,
+				4F25EA0A0BE9667B007C0836 /* GDataACLScope.m in Sources */,
+				4F25EA0B0BE9667B007C0836 /* GDataACLRole.m in Sources */,
+				4F16E51E0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */,
+				4F2B94DF0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */,
+				4F35DE6E0C023B770038AE68 /* GDataGeo.m in Sources */,
+				4F35DE6F0C023B770038AE68 /* GDataNormalPlayTime.m in Sources */,
+				4F35DE700C023B770038AE68 /* GDataMediaThumbnail.m in Sources */,
+				4F35DE710C023B770038AE68 /* GDataMediaKeywords.m in Sources */,
+				4F35DE720C023B770038AE68 /* GDataMediaGroup.m in Sources */,
+				4F35DE730C023B770038AE68 /* GDataMediaContent.m in Sources */,
+				4F35DE740C023B770038AE68 /* GDataMediaCredit.m in Sources */,
+				4F35DEBC0C023B880038AE68 /* GDataEXIFTags.m in Sources */,
+				4F35DEBD0C023B880038AE68 /* GDataEntryPhoto.m in Sources */,
+				4F35DEBE0C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */,
+				4F35DEBF0C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */,
+				4F35DEC00C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */,
+				4F35DEC10C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */,
+				4F35DEC20C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */,
+				4F35DEC30C023B880038AE68 /* GDataFeedPhoto.m in Sources */,
+				4F35DEC40C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */,
+				4F35DEC50C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */,
+				4F35DEC60C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */,
+				4F35DEC70C023B880038AE68 /* GDataPhotoElements.m in Sources */,
+				4F35DEC80C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */,
+				4F35DEC90C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
+				4FA1C5C40C03744A006D556A /* GDataEntryContent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1260,6 +1657,35 @@
 				4F089FCF0BC31A2F00B17DC7 /* GDataEntryMessage.m in Sources */,
 				4F08A01C0BC323F300B17DC7 /* GDataFeedMessage.m in Sources */,
 				4F0AAAE00BCAF3D700504521 /* GDataFramework.m in Sources */,
+				4FB730DE0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */,
+				4F25EA010BE9667B007C0836 /* GDataEntryACL.m in Sources */,
+				4F25EA030BE9667B007C0836 /* GDataFeedACL.m in Sources */,
+				4F25EA050BE9667B007C0836 /* GDataACLScope.m in Sources */,
+				4F25EA070BE9667B007C0836 /* GDataACLRole.m in Sources */,
+				4F16E51D0BF4EAE200FB548C /* GDataMIMEDocument.m in Sources */,
+				4F2B94DE0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */,
+				4F35DE610C023B770038AE68 /* GDataGeo.m in Sources */,
+				4F35DE620C023B770038AE68 /* GDataNormalPlayTime.m in Sources */,
+				4F35DE640C023B770038AE68 /* GDataMediaThumbnail.m in Sources */,
+				4F35DE660C023B770038AE68 /* GDataMediaKeywords.m in Sources */,
+				4F35DE680C023B770038AE68 /* GDataMediaGroup.m in Sources */,
+				4F35DE6A0C023B770038AE68 /* GDataMediaContent.m in Sources */,
+				4F35DE6C0C023B770038AE68 /* GDataMediaCredit.m in Sources */,
+				4F35DEA10C023B880038AE68 /* GDataEXIFTags.m in Sources */,
+				4F35DEA30C023B880038AE68 /* GDataEntryPhoto.m in Sources */,
+				4F35DEA50C023B880038AE68 /* GDataEntryPhotoTag.m in Sources */,
+				4F35DEA70C023B880038AE68 /* GDataEntryPhotoAlbum.m in Sources */,
+				4F35DEA80C023B880038AE68 /* GDataEntryPhotoComment.m in Sources */,
+				4F35DEAB0C023B880038AE68 /* GDataEntryPhotoUser.m in Sources */,
+				4F35DEAD0C023B880038AE68 /* GDataEntryPhotoBase.m in Sources */,
+				4F35DEAF0C023B880038AE68 /* GDataFeedPhoto.m in Sources */,
+				4F35DEB10C023B880038AE68 /* GDataFeedPhotoAlbum.m in Sources */,
+				4F35DEB30C023B880038AE68 /* GDataFeedPhotoUser.m in Sources */,
+				4F35DEB50C023B880038AE68 /* GDataFeedPhotoBase.m in Sources */,
+				4F35DEB70C023B880038AE68 /* GDataPhotoElements.m in Sources */,
+				4F35DEB90C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */,
+				4F35DEBB0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
+				4FA1C5C30C03744A006D556A /* GDataEntryContent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

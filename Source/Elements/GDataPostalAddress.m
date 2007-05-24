@@ -47,6 +47,9 @@
                                     fromElement:element]];
     
     [self setStringValue:[self stringValueFromElement:element]]; // ? should we strip leading/trailing whitespace? strip per line or just for the whole block?
+    
+    [self setRel:[self stringForAttributeName:@"rel"
+                                  fromElement:element]];
   }
   return self;
 }
@@ -54,6 +57,7 @@
 - (void)dealloc {
   [label_ release];
   [value_ release];
+  [rel_ release];
   [super dealloc];
 }
 
@@ -61,6 +65,7 @@
   GDataPostalAddress* newObj = [super copyWithZone:zone];
   [newObj setLabel:label_];
   [newObj setStringValue:value_];
+  [newObj setRel:rel_];
   return newObj;
 }
 
@@ -70,7 +75,8 @@
   
   return [super isEqual:other]
     && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
+    && AreEqualOrBothNil([self stringValue], [other stringValue])
+    && AreEqualOrBothNil([self rel], [other rel]);
 }
 
 - (NSString *)description {
@@ -78,6 +84,7 @@
   
   [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
+  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
   
   return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
     [self class], self, [items componentsJoinedByString:@" "]];
@@ -88,6 +95,7 @@
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:postalAddress"];
   
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
+  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
   
   if ([self stringValue]) {
     [element addStringValue:[self stringValue]];
@@ -112,6 +120,15 @@
 - (void)setStringValue:(NSString *)str {
   [value_ autorelease];
   value_ = [str copy];
+}
+
+- (NSString *)rel {
+  return rel_; 
+}
+
+- (void)setRel:(NSString *)str {
+  [rel_ autorelease];
+  rel_ = [str copy];
 }
 
 @end

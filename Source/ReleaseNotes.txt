@@ -1,13 +1,39 @@
 Objective-C GData Framework Release Notes
 
 Project site:     http://code.google.com/p/gdata-objectivec-client/
-Discussion group: http://groups.google.com/group/gdata-objectivec-client
+DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 
+Changes since 1.0.0
+
+- Added photos, media, and geo data classes, and Picasa Web Albums service
+  classes
+
+- Interfaces now use proper subclasses of GDataValueConstruct to ensure
+  that XML element names are generated from objects created from scratch.  
+  
+- The XMLElement extension methods may now pass nil as default name to
+  their superclass to use the extension's defined default name.
+  
+- Added ACL feed support, and ACL display and editing in Calendar sample
+  
+- GDataAtomPubControl convenience creator adds the "app" namespace for the
+  element
+  
+- Fixed some incorrect selector signatures in the Blogger sample
+
+- Changed GDataHTTPFetcher to allow redirects from http to https
+
+- Upload of http data may now be monitored with progress callbacks
+
+- GData fetcher now can respond to proxy credential challenges
+
+- Entry content is now a GDataEntryContent object rather than a text construct
+  
+  
 Release 1.0.0
 16-April-2007
 
 Initial public release.  Includes standard base elements, entry, feed,
 service, and query classes, and unit tests.  Includes classes for
 Calendar, Google Base, Spreadsheets.
-

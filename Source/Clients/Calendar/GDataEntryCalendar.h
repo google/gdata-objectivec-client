@@ -35,11 +35,26 @@
 
 // http://code.google.com/apis/calendar/reference.html#Elements  Says:
 // "accessLevel must be one of the following:"
-_EXTERN NSString* kGDataCalendarAccessNone _INITIALIZE_AS(@"none");
-_EXTERN NSString* kGDataCalendarAccessRead _INITIALIZE_AS(@"read");
-_EXTERN NSString* kGDataCalendarAccessFreeBusy _INITIALIZE_AS(@"freebusy");
-_EXTERN NSString* kGDataCalendarAccessContributor _INITIALIZE_AS(@"contributor");
-_EXTERN NSString* kGDataCalendarAccessOwner _INITIALIZE_AS(@"owner");
+_EXTERN NSString* const kGDataCalendarAccessNone        _INITIALIZE_AS(@"none");
+_EXTERN NSString* const kGDataCalendarAccessRead        _INITIALIZE_AS(@"read");
+_EXTERN NSString* const kGDataCalendarAccessFreeBusy    _INITIALIZE_AS(@"freebusy");
+_EXTERN NSString* const kGDataCalendarAccessRespond     _INITIALIZE_AS(@"respond");
+_EXTERN NSString* const kGDataCalendarAccessOverride    _INITIALIZE_AS(@"override");
+_EXTERN NSString* const kGDataCalendarAccessContributor _INITIALIZE_AS(@"contributor");
+_EXTERN NSString* const kGDataCalendarAccessEditor      _INITIALIZE_AS(@"editor");
+_EXTERN NSString* const kGDataCalendarAccessOwner       _INITIALIZE_AS(@"owner");
+_EXTERN NSString* const kGDataCalendarAccessRoot        _INITIALIZE_AS(@"root");
+
+// GDataACLRole values
+_EXTERN NSString* const kGDataRoleCalendarNone        _INITIALIZE_AS(@"none"); // no prefix
+_EXTERN NSString* const kGDataRoleCalendarRead        _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#read");
+_EXTERN NSString* const kGDataRoleCalendarFreeBusy    _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#freebusy");
+_EXTERN NSString* const kGDataRoleCalendarRespond     _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#respond");
+_EXTERN NSString* const kGDataRoleCalendarOverride    _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#override");
+_EXTERN NSString* const kGDataRoleCalendarContributor _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#contributor");
+_EXTERN NSString* const kGDataRoleCalendarEditor      _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#editor");
+_EXTERN NSString* const kGDataRoleCalendarOwner       _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#owner");
+_EXTERN NSString* const kGDataRoleCalendarRoot        _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#root");
 
 @class GDataWhen;
 @class GDataWhere;
@@ -97,14 +112,14 @@ _EXTERN NSString* kGDataCalendarAccessOwner _INITIALIZE_AS(@"owner");
 - (BOOL)isSelected;
 - (void)setIsSelected:(BOOL)flag;
 
-- (GDataValueConstruct *)timeZoneName;
-- (void)setTimeZoneName:(GDataValueConstruct *)theString;
+- (GDataTimeZoneProperty *)timeZoneName;
+- (void)setTimeZoneName:(GDataTimeZoneProperty *)theString;
 
-- (GDataValueConstruct *)overrideName;
-- (void)setOverrideName:(GDataValueConstruct *)theString;
+- (GDataOverrideNameProperty *)overrideName;
+- (void)setOverrideName:(GDataOverrideNameProperty *)theString;
 
-- (GDataValueConstruct *)accessLevel;
-- (void)setAccessLevel:(GDataValueConstruct *)accessLevel;
+- (GDataAccessLevelProperty *)accessLevel;
+- (void)setAccessLevel:(GDataAccessLevelProperty *)accessLevel;
 
 - (NSArray *)whens;
 - (void)setWhens:(NSArray *)array;

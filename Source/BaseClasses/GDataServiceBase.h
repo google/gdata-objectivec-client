@@ -48,6 +48,7 @@ enum {
   GDataServiceBase *service_;
   id userData_;
   GDataHTTPFetcher *objectFetcher_;
+  SEL uploadProgressSelector_;
   BOOL hasCalledCallback_;
 }
 
@@ -68,6 +69,9 @@ enum {
 - (GDataHTTPFetcher *)objectFetcher;
 - (void)setObjectFetcher:(GDataHTTPFetcher *)fetcher;
 
+- (void)setUploadProgressSelector:(SEL)progressSelector;
+- (SEL)uploadProgressSelector;
+
 - (BOOL)hasCalledCallback;
 - (void)setHasCalledCallback:(BOOL)flag;
 
@@ -82,6 +86,8 @@ enum {
   NSMutableData *password_;
   
   NSString *serviceUserData_; // initial value for userData in future tickets
+  
+  SEL serviceUploadProgressSelector_; // optional
   
   BOOL shouldCacheDatedData_;
 }
@@ -139,7 +145,7 @@ enum {
                                  didFinishSelector:(SEL)finishedSelector
                                    didFailSelector:(SEL)failedSelector;
 
-  // Turn on data caching to receive a copy of previously-retrieved objects.
+// Turn on data caching to receive a copy of previously-retrieved objects.
 // Otherwise, fetches may return status 304 (No Change) rather than actual data
 - (void)setShouldCacheDatedData:(BOOL)flag;
 - (BOOL)shouldCacheDatedData;  
@@ -154,6 +160,20 @@ enum {
 // method will return the value.
 - (void)setServiceUserData:(id)userData;
 - (id)serviceUserData;
+
+// The service uploadProgressSelector becomes the initial value for each future
+// ticket's uploadProgressSelector.
+//
+// The optional uploadProgressSelector will be called in the delegate as bytes
+// are uploaded to the server.  It should have a signature matching
+//
+// - (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+//   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+//        ofTotalByteCount:(unsigned long long)dataLength;
+//
+// The progress method can obtain the ticket by calling [stream monitorSource];
+- (void)setServiceUploadProgressSelector:(SEL)progressSelector;
+- (SEL)serviceUploadProgressSelector;
 
 // credentials
 - (void)setUserCredentialsWithUsername:(NSString *)username

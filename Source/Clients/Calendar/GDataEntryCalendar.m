@@ -176,27 +176,27 @@
   
 }
 
-- (GDataValueConstruct *)accessLevel {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataAccessLevelProperty class]];
+- (GDataAccessLevelProperty *)accessLevel {
+  return (GDataAccessLevelProperty *) [self objectForExtensionClass:[GDataAccessLevelProperty class]];
 }
 
-- (void)setAccessLevel:(GDataValueConstruct *)val {
+- (void)setAccessLevel:(GDataAccessLevelProperty *)val {
   [self setObject:val forExtensionClass:[GDataAccessLevelProperty class]];
 }
 
-- (GDataValueConstruct *)timeZoneName {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataTimeZoneProperty class]];
+- (GDataTimeZoneProperty *)timeZoneName {
+  return (GDataTimeZoneProperty *) [self objectForExtensionClass:[GDataTimeZoneProperty class]];
 }
 
-- (void)setTimeZoneName:(GDataValueConstruct *)val {
+- (void)setTimeZoneName:(GDataTimeZoneProperty *)val {
   [self setObject:val forExtensionClass:[GDataTimeZoneProperty class]];
 }
 
-- (GDataValueConstruct *)overrideName {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataOverrideNameProperty class]];
+- (GDataOverrideNameProperty *)overrideName {
+  return (GDataOverrideNameProperty *) [self objectForExtensionClass:[GDataOverrideNameProperty class]];
 }
 
-- (void)setOverrideName:(GDataValueConstruct *)val {
+- (void)setOverrideName:(GDataOverrideNameProperty *)val {
   [self setObject:val forExtensionClass:[GDataOverrideNameProperty class]];
 }
 

@@ -95,7 +95,7 @@
     [self setContent:[self objectForChildOfElement:element
                                      qualifiedName:@"content"
                                       namespaceURI:kGDataNamespaceAtom
-                                       objectClass:[GDataTextConstruct class]]];
+                                       objectClass:[GDataEntryContent class]]];
     
     [self setRightsString:[self objectForChildOfElement:element
                                           qualifiedName:@"rights"
@@ -179,9 +179,14 @@
   [self addToArray:items objectDescriptionIfNonNil:[summary_ stringValue] withName:@"summary"];
   [self addToArray:items objectDescriptionIfNonNil:[content_ stringValue] withName:@"content"];
 
-  [self addToArray:items arrayCountIfNonEmpty:links_ withName:@"links"];
   [self addToArray:items arrayCountIfNonEmpty:authors_ withName:@"authors"];
   [self addToArray:items arrayCountIfNonEmpty:categories_ withName:@"categories"];
+  
+  if ([links_ count]) {
+    NSArray *linkNames = [GDataLink linkNamesFromLinks:links_];
+    NSString *linksStr = [linkNames componentsJoinedByString:@","];
+    [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
+  }
 
   [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
 
@@ -296,11 +301,11 @@
   [summary_ setElementName:@"summary"];
 }
 
-- (GDataTextConstruct *)content {
+- (GDataEntryContent *)content {
   return content_; 
 }
 
-- (void)setContent:(GDataTextConstruct *)theContent {
+- (void)setContent:(GDataEntryContent *)theContent {
   [content_ autorelease];
   content_ = [theContent copy];
 

@@ -101,7 +101,7 @@
 
 - (NSXMLElement *)XMLElement {
   
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"GDataPerson"];  // author typically; is this ever "person"?
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil]; // author, typically
   
   [self addToElement:element childWithStringValueIfNonEmpty:[self name]     withName:@"name"];
   [self addToElement:element childWithStringValueIfNonEmpty:[self URI]      withName:@"uri"];

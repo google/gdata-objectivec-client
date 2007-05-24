@@ -202,6 +202,30 @@
   return nil;
 }
 
+// utility method
+
++ (NSArray *)linkNamesFromLinks:(NSArray *)links {
+  // we'll make a list of short, readable link names
+  // by grabbing the rel values, and removing anything before
+  // the last pound sign if there is one
+  
+  NSMutableArray *names = [NSMutableArray array];
+  
+  NSEnumerator *linkEnum = [links objectEnumerator];
+  GDataLink *link;
+  while ((link = [linkEnum nextObject]) != nil) {
+    
+    NSString *rel = [link rel];
+    NSRange range = [rel rangeOfString:@"#" options:NSBackwardsSearch];
+    if (range.location != NSNotFound) {
+      NSString *suffix = [rel substringFromIndex:(1 + range.location)];
+      [names addObject:suffix];
+    } else {
+      [names addObject:rel];
+    }
+  }
+  return names;
+}
 @end
 
 @implementation NSArray(GDataLinkArray)
@@ -245,6 +269,10 @@
 
 - (GDataLink *)editLink {
   return [self linkWithRelAttributeValue:@"edit"]; 
+}
+
+- (GDataLink *)mediaEditLink {
+  return [self linkWithRelAttributeValue:@"media-edit"]; 
 }
 
 - (GDataLink *)alternateLink {

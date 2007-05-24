@@ -54,6 +54,8 @@
 
 - (void)parseExtensionsForElement:(NSXMLElement *)element;
 
+- (NSString *)qualifiedNameForExtensionClass:(Class)class;
+
 - (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element;
 
 + (Class)classForCategoryWithScheme:(NSString *)scheme
@@ -148,6 +150,16 @@
   [doc setCharacterEncoding:@"UTF-8"];
   return doc;
 }
+
+- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
+                            length:(unsigned long long *)outLength
+                           headers:(NSDictionary **)outHeaders {
+  // subclasses may return a data stream representing this object
+  // for uploading
+  return NO; 
+}
+
+#pragma mark -
 
 - (void)setElementName:(NSString *)name {
   [elementName_ release];
@@ -302,8 +314,29 @@
 // own attributes and children to the element returned by this method
 - (NSXMLElement *)XMLElementWithExtensionsAndDefaultName:(NSString *)defaultName {
   
+  // use the name from the XML
   NSString *elementName = [self elementName]; 
-  if (!elementName) elementName = defaultName;
+  if (!elementName) {
+    
+    // if no name from the XML, use the name our class's XML element
+    // routine supplied as a default
+    if (defaultName) {
+      elementName = defaultName;
+    } else {
+      // if no default name from the class, and this class is an extension, 
+      // use the extension's default element name
+      if ([[self class] conformsToProtocol:@protocol(GDataExtension)]) {
+        elementName = [self qualifiedNameForExtensionClass:[self class]];
+      } else {
+        // if not an extension, just use the class name
+        elementName = NSStringFromClass([self class]); 
+#if DEBUG
+        NSLog(@"GDataObject generating XML element with unknown name for class %@",
+              elementName);
+#endif
+      }
+    }
+  }
   
   NSXMLElement *element = [NSXMLNode elementWithName:elementName];
   [self addNamespacesToElement:element];
@@ -640,6 +673,15 @@ objectDescriptionIfNonNil:(id)obj
   return nil;
 }
 
+- (NSNumber *)doubleNumberValueFromElement:(NSXMLElement *)element {
+  NSString *str = [self stringValueFromElement:element];
+  if ([str length] > 0) {
+    NSNumber *number = [NSNumber numberWithDouble:[str doubleValue]];
+    return number;
+  }
+  return nil;
+}
+
 #pragma mark attribute parsing
 
 - (NSXMLNode *)attributeForName:(NSString *)attributeName 
@@ -805,7 +847,7 @@ objectDescriptionIfNonNil:(id)obj
 
 // objectForExtensionClass: returns the first element of the array
 // of extension objects of the specified class, or nil
-- (GDataObject *)objectForExtensionClass:(Class)class {
+- (id)objectForExtensionClass:(Class)class {
   NSArray *array = [extensions_ objectForKey:class];
   if ([array count] > 0) {    
     return [array objectAtIndex:0]; 

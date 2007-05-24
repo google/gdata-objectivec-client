@@ -22,7 +22,7 @@
 @implementation GDataTextConstruct
 // For typed text, like: <title type="text">Event title</title>
 
-+ (GDataTextConstruct *)textConstructWithString:(NSString *)str {
++ (id)textConstructWithString:(NSString *)str {
   GDataTextConstruct *obj = [[[GDataTextConstruct alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
@@ -89,7 +89,7 @@
 
 - (NSXMLElement *)XMLElement {
   
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"GDataTextConstruct"];
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
 
   if ([[self stringValue] length]) {
     [element addStringValue:[self stringValue]];

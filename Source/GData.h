@@ -20,8 +20,11 @@
 #import "GDataFramework.h"
 
 // utility classes
-#import "GDataHTTPFetcher.h"
 #import "GDataDateTime.h"
+#import "GDataHTTPFetcher.h"
+#import "GDataProgressMonitorInputStream.h"
+#import "GDataGatherInputStream.h"
+#import "GDataMIMEDocument.h"
 
 // base classes
 #import "GDataObject.h"
@@ -57,6 +60,7 @@
 #import "GDataReminder.h"
 #import "GDataTextConstruct.h"
 #import "GDataValueConstruct.h"
+#import "GDataEntryContent.h"
 #import "GDataWhen.h"
 #import "GDataWhere.h"
 #import "GDataWho.h"
@@ -65,6 +69,23 @@
 #import "GDataBatchInterrupted.h"
 #import "GDataBatchOperation.h"
 #import "GDataBatchStatus.h"
+
+// ACL
+#import "GDataACLScope.h"
+#import "GDataACLRole.h"
+#import "GDataEntryACL.h"
+#import "GDataFeedACL.h"
+
+// Media
+#import "GDataNormalPlayTime.h"
+#import "GDataMediaContent.h"
+#import "GDataMediaCredit.h"
+#import "GDataMediaGroup.h"
+#import "GDataMediaKeywords.h"
+#import "GDataMediaThumbnail.h"
+
+// Geo
+#import "GDataGeo.h"
 
 // Google Calendar
 #import "GDataWebContent.h"
@@ -95,3 +116,19 @@
 #import "GDataFeedSpreadsheet.h"
 #import "GDataServiceGoogleSpreadsheet.h"
 #import "GDataQuerySpreadsheet.h"
+
+// Google Photos/Picasa Web
+#import "GDataPhotoElements.h"
+#import "GDataEXIFTags.h"
+#import "GDataEntryPhotoBase.h"
+#import "GDataEntryPhoto.h"
+#import "GDataEntryPhotoAlbum.h"
+#import "GDataEntryPhotoComment.h"
+#import "GDataEntryPhotoTag.h"
+#import "GDataEntryPhotoUser.h"
+#import "GDataFeedPhotoBase.h"
+#import "GDataFeedPhoto.h"
+#import "GDataFeedPhotoAlbum.h"
+#import "GDataFeedPhotoUser.h"
+#import "GDataServiceGooglePicasaWeb.h"
+#import "GDataQueryPicasaWeb.h"

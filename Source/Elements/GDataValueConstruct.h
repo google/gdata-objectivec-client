@@ -29,7 +29,14 @@
   NSString *value_;
 }
 
-+ (GDataValueConstruct *)valueWithString:(NSString *)str;
+// convenience functions: subclasses may call into these and
+// return the result, cast to the appropriate type
++ (id)valueWithString:(NSString *)str;
++ (id)valueWithNumber:(NSNumber *)num;
++ (id)valueWithInt:(int)val;
++ (id)valueWithLongLong:(long long)val;
++ (id)valueWithDouble:(double)val;
++ (id)valueWithBool:(BOOL)flag;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
@@ -42,15 +49,19 @@
 - (NSString *)attributeName; // defaults to "value", subclasses can override
 
 // subclass value utilities
+- (NSNumber *)intNumberValue;
 - (int)intValue;
 - (void)setIntValue:(int)val;
 
+- (NSNumber *)longLongNumberValue;
 - (long long)longLongValue;
 - (void)setLongLongValue:(long long)val;
 
+- (NSNumber *)doubleNumberValue;
 - (double)doubleValue;
 - (void)setDoubleValue:(double)value;
 
+- (NSNumber *)boolNumberValue;
 - (BOOL)boolValue;
 - (void)setBoolValue:(BOOL)flag;
 
@@ -65,5 +76,5 @@
 // an element with a value=true or false attribute, as in
 //   <gCal:sendEventNotifications value="true"/>
 @interface GDataBoolValueConstruct : GDataValueConstruct
-+ (GDataBoolValueConstruct *)boolValueWithBool:(BOOL)flag;
++ (id)boolValueWithBool:(BOOL)flag;
 @end

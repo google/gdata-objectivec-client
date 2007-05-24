@@ -32,6 +32,7 @@
 @interface GDataPostalAddress : GDataObject <NSCopying, GDataExtension> {
   NSString *label_;
   NSString *value_;
+  NSString *rel_;
 }
 
 + (GDataPostalAddress *)postalAddressWithString:(NSString *)str;
@@ -45,4 +46,6 @@
 - (void)setLabel:(NSString *)str;
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
+- (NSString *)rel;
+- (void)setRel:(NSString *)str;
 @end

@@ -46,6 +46,8 @@
                                     fromElement:element]];
     [self setAddress:[self stringForAttributeName:@"address"
                                       fromElement:element]];    
+    [self setRel:[self stringForAttributeName:@"rel"
+                                  fromElement:element]];
   }
   return self;
 }
@@ -53,6 +55,7 @@
 - (void)dealloc {
   [label_ release];
   [address_ release];
+  [rel_ release];
   [super dealloc];
 }
 
@@ -60,6 +63,7 @@
   GDataEmail* newObj = [super copyWithZone:zone];
   [newObj setLabel:label_];
   [newObj setAddress:address_];
+  [newObj setRel:rel_];
   return newObj; 
 }
 
@@ -69,7 +73,8 @@
   
   return [super isEqual:other]
     && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self address], [other address]);
+    && AreEqualOrBothNil([self address], [other address])
+    && AreEqualOrBothNil([self rel], [other rel]);
 }
 
 - (NSString *)description {
@@ -77,6 +82,7 @@
   
   [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
+  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
   
   return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
     [self class], self, [items componentsJoinedByString:@" "]];
@@ -88,6 +94,7 @@
   
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
   [self addToElement:element attributeValueIfNonNil:[self address] withName:@"address"];
+  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
     
   return element;
 }
@@ -108,6 +115,15 @@
 - (void)setAddress:(NSString *)str {
   [address_ autorelease];
   address_ = [str copy];
+}
+
+- (NSString *)rel {
+  return rel_; 
+}
+
+- (void)setRel:(NSString *)str {
+  [rel_ autorelease];
+  rel_ = [str copy];
 }
 
 @end

@@ -30,6 +30,7 @@
 @interface GDataEmail : GDataObject <NSCopying, GDataExtension> {
   NSString* label_; 
   NSString* address_;
+  NSString *rel_;
 }
 + (GDataEmail *)emailWithLabel:(NSString *)label
                        address:(NSString *)address;
@@ -41,4 +42,6 @@
 - (void)setLabel:(NSString *)str;
 - (NSString *)address;
 - (void)setAddress:(NSString *)str;
+- (NSString *)rel;
+- (void)setRel:(NSString *)str;
 @end

@@ -21,12 +21,14 @@
 #import "GDataServiceBase.h"
 #import "GDataFeedCalendar.h"
 #import "GDataFeedCalendarEvent.h"
+#import "GDataProgressMonitorInputStream.h"
 
 static NSString* const kCallbackDelegateKey = @"delegate";
 static NSString* const kCallbackObjectClassKey = @"objectClass";
 static NSString* const kCallbackFinishedSelectorKey = @"finishedSelector";
 static NSString* const kCallbackFailedSelectorKey = @"failedSelector";
 static NSString* const kCallbackTicketKey = @"ticket";
+static NSString* const kCallbackStreamDataKey = @"streamData";
 
 NSString* const kCallbackRetryInvocationKey = @"retryInvocation";
 
@@ -54,7 +56,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                          finishedSelector:(SEL)finishedSelector
                                            failedSelector:(SEL)failedSelector
                                           retryInvocation:(NSInvocation *)retryInvocation
-                                                   ticket:(GDataServiceTicketBase *)ticket;
+                                                   ticket:(GDataServiceTicketBase *)ticket
+                                               streamData:(NSData *)data;
 
 @end
 
@@ -115,32 +118,103 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, failedSelector, @encode(GDataServiceTicketBase *), @encode(NSError *), 0);
-  
+
   NSMutableURLRequest *request = [self requestForURL:feedURL httpMethod:httpMethod];
+  
+  // we need to create a ticket unless one was created earlier (like during
+  // authentication)
+  if (!ticket) {
+    ticket = [GDataServiceTicketBase ticketForService:self];
+    [ticket setUserData:serviceUserData_];
+    [ticket setUploadProgressSelector:serviceUploadProgressSelector_];
+  }
+  
+  AssertSelectorNilOrImplementedWithArguments(delegate, [ticket uploadProgressSelector],
+                                              @encode(GDataProgressMonitorInputStream *), @encode(unsigned long long), 
+                                              @encode(unsigned long long), 0);
+    
+  NSInputStream *uploadStream = nil;
+  NSData *dataToRetain = nil;
+  
+  if (objectToPost) {
+    
+    // An upload object may provide a custom input stream, such as for 
+    // multi-part MIME or media uploads.  If it lacks a custom stream, 
+    // we'll make a stream from the XML data of the object.
+
+    NSInputStream *contentInputStream = nil;
+    unsigned long long contentLength = 0;
+    NSDictionary *contentHeaders = nil;
+
+    if ([objectToPost generateContentInputStream:&contentInputStream
+                                          length:&contentLength
+                                         headers:&contentHeaders]) {
+      // there is a stream
+      
+      // add the content-specific headers, if any
+      NSEnumerator *keyEnum = [contentHeaders keyEnumerator];
+      NSString *key;
+      while ((key = [keyEnum nextObject]) != nil) {
+        NSString *value = [contentHeaders objectForKey:key];
+        [request setValue:value forHTTPHeaderField:key];
+      }
+      
+    } else {
+      
+      // we'll make a default input stream from the XML data
+      NSString* xmlString = [[objectToPost XMLElement] XMLString];    
+      NSData* xmlData = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
+
+      contentInputStream = [NSInputStream inputStreamWithData:xmlData];
+      contentLength = [xmlData length];
+      
+      // NSInputStream fails to retain or copy its data in 10.4, so we will
+      // retain it in the callback dictionary.  We won't use the data in the
+      // callbacks at all, but retaining it will ensure it's still around until
+      // the upload completes.
+      //
+      // If it weren't for this bug in NSInputStream, we could just have
+      // GDataObject's -contentInputStream method create the input stream for
+      // us, so this service class wouldn't ever need to call XMLElement.
+      dataToRetain = xmlData; 
+    }
+
+    uploadStream = contentInputStream;
+    
+    SEL progressSelector = [ticket uploadProgressSelector];
+    if (progressSelector != nil) {
+      
+      // the caller is monitoring the upload progress, so wrap the input stream
+      // with an input stream that will call back to the delegate's progress
+      // selector
+      GDataProgressMonitorInputStream* monitoredInputStream;
+      
+      monitoredInputStream = [GDataProgressMonitorInputStream inputStreamWithStream:contentInputStream
+                                                                             length:contentLength];
+      [monitoredInputStream setDelegate:nil];
+      [monitoredInputStream setMonitorDelegate:delegate];
+      [monitoredInputStream setMonitorSelector:progressSelector];
+      [monitoredInputStream setMonitorSource:ticket];
+      
+      uploadStream = monitoredInputStream;
+    }
+    
+    NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
+    [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
+  }
   
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
   
+  if (uploadStream) {
+    [fetcher setPostStream:uploadStream]; 
+  }
+
   // add cookie and last-modified-since history
   [fetcher setFetchHistory:fetchHistory_];
   
   // when the server gives us a "Not Modified" error, have the fetcher
   // just pass us the cached data from the previous call, if any
   [fetcher setShouldCacheDatedData:shouldCacheDatedData_];
-  
-  // add XML data to upload
-  if (objectToPost) {
-    NSString* xmlString = [[objectToPost XMLElement] XMLString];    
-    NSData* xmlData = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [fetcher setPostData:xmlData];
-  }
-
-  // we need to create a ticket unless one was created earlier (like for
-  // authentication)
-  if (!ticket) {
-    ticket = [GDataServiceTicketBase ticketForService:self];
-    [ticket setUserData:serviceUserData_];
-  }
   
   // remember the object fetcher in the ticket
   [ticket setObjectFetcher:fetcher];
@@ -151,7 +225,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                                             finishedSelector:finishedSelector
                                                               failedSelector:failedSelector
                                                              retryInvocation:retryInvocation
-                                                                      ticket:ticket];
+                                                                      ticket:ticket
+                                                                  streamData:dataToRetain];
   [fetcher setUserData:callbackDict];
   
   // add username/password
@@ -309,7 +384,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                          finishedSelector:(SEL)finishedSelector
                                            failedSelector:(SEL)failedSelector
                                           retryInvocation:(NSInvocation *)retryInvocation
-                                                   ticket:(GDataServiceTicketBase *)ticket {
+                                                   ticket:(GDataServiceTicketBase *)ticket
+                                               streamData:(NSData *)data {
   
   NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
   
@@ -328,6 +404,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   if (ticket) [callbackDict setValue:ticket
                               forKey:kCallbackTicketKey];
+  
+  // the stream data is retained only because of an NSInputStream but in 
+  // 10.4, as described below
+  if (data) [callbackDict setValue:data forKey:kCallbackStreamDataKey];
+  
   return callbackDict;
 }
 
@@ -542,6 +623,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return serviceUserData_;
 }
 
+- (void)setServiceUploadProgressSelector:(SEL)progressSelector {
+  serviceUploadProgressSelector_ = progressSelector; 
+}
+
+- (SEL)serviceUploadProgressSelector {
+  return serviceUploadProgressSelector_;
+}
+
 #pragma mark -
 
 // we want to percent-escape some of the characters that are otherwise
@@ -628,6 +717,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)setUserData:(id)obj {
   [userData_ autorelease];
   userData_ = [obj retain];
+}
+
+- (void)setUploadProgressSelector:(SEL)progressSelector {
+  uploadProgressSelector_ = progressSelector; 
+}
+
+- (SEL)uploadProgressSelector {
+  return uploadProgressSelector_;
 }
 
 - (GDataHTTPFetcher *)objectFetcher {

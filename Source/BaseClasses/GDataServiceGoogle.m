@@ -241,6 +241,7 @@ enum {
   
   GDataServiceTicket *ticket = [GDataServiceTicket authTicketForService:self];
   [ticket setUserData:serviceUserData_];
+  [ticket setUploadProgressSelector:serviceUploadProgressSelector_];
   
   NSMethodSignature *signature = [self methodSignatureForSelector:theSEL];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];

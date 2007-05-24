@@ -32,7 +32,7 @@
     
     // copy data from the event to our dialog's controls
     NSString *title = [[mEvent title] stringValue];
-    NSString *desc = [[mEvent summary] stringValue];
+    NSString *desc = [[mEvent content] stringValue];
     NSString *author = nil;
     NSString *authorEmail = nil;
     
@@ -141,7 +141,7 @@
   }
   
   [newEvent setTitle:[GDataTextConstruct textConstructWithString:title]];
-  [newEvent setSummary:[GDataTextConstruct textConstructWithString:desc]];
+  [newEvent setContent:[GDataTextConstruct textConstructWithString:desc]];
   
   NSMutableArray *authors = [NSMutableArray array];
   if ([creator length]) {

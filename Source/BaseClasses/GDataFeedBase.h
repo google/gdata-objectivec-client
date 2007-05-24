@@ -56,7 +56,7 @@
   NSMutableArray *entries_;
 }
 
-+ (GDataFeedBase *)feedWithXMLData:(NSData *)data;
++ (id)feedWithXMLData:(NSData *)data;
 - (id)initWithData:(NSData *)data;
 
 // subclasses override initFeed to set up their ivars
