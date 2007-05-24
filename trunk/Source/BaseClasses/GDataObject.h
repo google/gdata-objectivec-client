@@ -174,6 +174,10 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 
 - (NSXMLDocument *)XMLDocument; // returns this XMLElement wrapped in an NSXMLDocument
 
+- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
+                            length:(unsigned long long *)outLength
+                           headers:(NSDictionary **)outHeaders;
+
 - (void)initExtensionDeclarations; // subclasses may override this to declare extensions
 
 // setters/getters
@@ -215,7 +219,7 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 
 // accessing actual extensions in this object
 - (NSArray *)objectsForExtensionClass:(Class)class;
-- (GDataObject *)objectForExtensionClass:(Class)class;
+- (id)objectForExtensionClass:(Class)class;
 
 // replacing or adding actual extensions in this object
 - (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class;
@@ -294,6 +298,8 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 - (GDataDateTime *)dateTimeFromElement:(NSXMLElement *)element;
 
 - (NSNumber *)intNumberValueFromElement:(NSXMLElement *)element;
+
+- (NSNumber *)doubleNumberValueFromElement:(NSXMLElement *)element;
 
 // attribute parsing
 - (NSString *)stringForAttributeName:(NSString *)attributeName

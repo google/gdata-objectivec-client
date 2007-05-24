@@ -20,6 +20,7 @@
 #import <Cocoa/Cocoa.h>
 
 #import "GDataObject.h"
+#import "GDataValueConstruct.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -51,8 +52,20 @@ _EXTERN NSString* kGDataWhoMessageTo      _INITIALIZE_AS(@"http://schemas.google
 _EXTERN NSString* kGDataWhoMessageCC      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.cc");
 _EXTERN NSString* kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.bcc");
 
-@class GDataValueConstruct;
 @class GDataEntryLink;
+
+@interface GDataAttendeeStatus : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataAttendeeType : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
 
 // a who entry, as in
 // <gd:who rel="http://schemas.google.com/g/2005#event.organizer" valueString="Greg Robbins" email="test@coldnose.net">
@@ -64,8 +77,8 @@ _EXTERN NSString* kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.google
   NSString *rel_;
   NSString *email_;
   NSString *valueString_; // name.  Note: accessors for this are stringValue/setStringValue
-  GDataValueConstruct *attendeeType_;
-  GDataValueConstruct *attendeeStatus_;
+  GDataAttendeeType *attendeeType_;
+  GDataAttendeeStatus *attendeeStatus_;
   GDataEntryLink *entryLink_;
 }
 
@@ -81,10 +94,10 @@ _EXTERN NSString* kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.google
 - (void)setEmail:(NSString *)str;
 - (NSString *)stringValue; // gets the "valueString" XML attribute
 - (void)setStringValue:(NSString *)str; // sets the "valueString" XML attribute
-- (GDataValueConstruct *)attendeeType;
-- (void)setAttendeeType:(GDataValueConstruct *)val;
-- (GDataValueConstruct *)attendeeStatus;
-- (void)setAttendeeStatus:(GDataValueConstruct *)val;
+- (GDataAttendeeType *)attendeeType;
+- (void)setAttendeeType:(GDataAttendeeType *)val;
+- (GDataAttendeeStatus *)attendeeStatus;
+- (void)setAttendeeStatus:(GDataAttendeeStatus *)val;
 - (GDataEntryLink *)entryLink;
 - (void)setEntryLink:(GDataEntryLink *)entryLink;
 @end

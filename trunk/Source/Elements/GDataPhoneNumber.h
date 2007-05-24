@@ -31,6 +31,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+// Note: kGDataContactMobile, kGDataContactHome, and kGDataContactWork are
+// equivalent to kGDataPhoneNumberMobile, kGDataPhoneNumberHome, kGDataPhoneNumberWork
+
 _EXTERN NSString* kGDataPhoneNumberMobile  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#mobile");
 _EXTERN NSString* kGDataPhoneNumberHome  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home");
 _EXTERN NSString* kGDataPhoneNumberWork  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");

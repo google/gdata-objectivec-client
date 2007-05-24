@@ -32,6 +32,12 @@
 + (GDataAtomPubControl *)atomPubControlWithIsDraft:(BOOL)isDraft {
   GDataAtomPubControl *obj = [[[GDataAtomPubControl alloc] init] autorelease];
   [obj setIsDraft:isDraft];
+  
+  // add the "app" namespace
+  NSDictionary *namespace = [NSDictionary dictionaryWithObject:kGDataNamespaceAtomPub 
+                                                        forKey:kGDataNamespaceAtomPubPrefix];
+  [obj setNamespaces:namespace];
+
   return obj;
 }
 

@@ -73,6 +73,24 @@
 //        Status codes are at <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
 //
 // 
+// Proxies:
+//
+// Proxy handling is invisible so long as the system has a valid credential
+// in the keychain, which is normally true (else most NSURL-based apps would
+// have difficulty.)  But when there is a proxy authetication error, the 
+// the fetcher will call the failedWithNetworkError: method with the
+// NSURLChallenge in the error's userInfo. The error method can get the 
+// challenge info like this:
+//
+//  NSURLAuthenticationChallenge *challenge 
+//     = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
+//  BOOL isProxyChallenge = [[challenge protectionSpace] isProxy];
+//
+// If a proxy error occurs, you can ask the user for the proxy username/password
+// and call fetcher's setProxyCredential: to provide those for the
+// next attempt to fetch.
+//
+//
 // Cookies:
 //
 // There are three supported mechanisms for remembering cookies between fetches.
@@ -143,6 +161,7 @@
 
 // notifications 
 _EXTERN NSString* kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
+_EXTERN NSString* kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
 
 
 // fetch history mutable dictionary keys
@@ -171,7 +190,9 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSURLConnection *connection_;    // while connection_ is non-nil, delegate_ is retained
   NSMutableData *downloadedData_;
   NSURLCredential *credential_;     // username & password
+  NSURLCredential *proxyCredential_; // credential supplied to proxy servers
   NSData *postData_;
+  NSInputStream *postStream_;
   NSURLResponse *response_;         // set in connection:didReceiveResponse:
   id delegate_;                     // WEAK (though retained during an open connection)
   SEL finishedSEL_;                 // should by implemented by delegate
@@ -203,9 +224,20 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSURLCredential *)credential;
 - (void)setCredential:(NSURLCredential *)theCredential;
 
-// if post data is not set, then a GET retrieval method is assumed
+// setting the proxy credential is optional; it is used if the connection 
+// receives an authentication challenge from a proxy
+- (NSURLCredential *)proxyCredential;
+- (void)setProxyCredential:(NSURLCredential *)theCredential;
+
+
+// if post data or stream is not set, then a GET retrieval method is assumed
 - (NSData *)postData;
 - (void)setPostData:(NSData *)theData;
+
+// beware: In 10.4, NSInputStream fails to copy or retain
+// the data it was initialized with, contrary to docs
+- (NSInputStream *)postStream;
+- (void)setPostStream:(NSInputStream *)theStream;
 
 - (int)cookieStorageMethod;
 - (void)setCookieStorageMethod:(int)method;

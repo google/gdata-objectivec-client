@@ -115,14 +115,14 @@ _EXTERN NSString *kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http://sche
 - (void)setReminders:(NSArray *)array;
 - (void)addReminder:(GDataReminder *)obj;
 
-- (GDataValueConstruct *)eventStatus;
-- (void)setEventStatus:(GDataValueConstruct *)eventStatus;
+- (GDataEventStatus *)eventStatus;
+- (void)setEventStatus:(GDataEventStatus *)eventStatus;
 
-- (GDataValueConstruct *)transparency;
-- (void)setTransparency:(GDataValueConstruct *)str;
+- (GDataTransparency *)transparency;
+- (void)setTransparency:(GDataTransparency *)str;
 
-- (GDataValueConstruct *)visibility;
-- (void)setVisibility:(GDataValueConstruct *)str;
+- (GDataVisibility *)visibility;
+- (void)setVisibility:(GDataVisibility *)str;
 
 - (NSArray *)times;
 - (void)setTimes:(NSArray *)array;

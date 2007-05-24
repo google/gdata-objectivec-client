@@ -35,7 +35,14 @@
                         " xmlns:gs='http://schemas.google.com/spreadsheets/2006' "
                         " xmlns:gsx='http://schemas.google.com/spreadsheets/2006/extended' "
                         " xmlns:batch='http://schemas.google.com/gdata/batch' "
-                        " xmlns:app='http://purl.org/atom/app#'";
+                        " xmlns:app='http://purl.org/atom/app#'"
+                        " xmlns:media='http://search.yahoo.com/mrss/'" 
+                        " xmlns:gphoto='http://schemas.google.com/photos/2007'"
+                        " xmlns:exif='http://schemas.google.com/photos/exif/2007'"
+                        " xmlns:geo='http://www.w3.org/2003/01/geo/wgs84_pos#'"
+                        " xmlns:georss='http://www.georss.org/georss'"
+                        " xmlns:gml='http://www.opengis.net/gml' ";
+  
   return kNamespaceString;
 }
 
@@ -199,8 +206,9 @@
       
       NSString *result = [GDataElementsTest valueInObject:obj2 forKeyPathIncludingArrays:keyPath];
       
-      STAssertTrue(AreEqualOrBothNil(result, expectedValue), @"failed %@ testing:\n %@ \n!= \n %@", 
-                   obj2, result, expectedValue);
+      STAssertTrue(AreEqualOrBothNil(result, expectedValue), 
+                   @"failed %@ testing key path %@:\n %@ \n!= \n %@", 
+                   obj2, keyPath, result, expectedValue);
       
       if ([keyPath hasPrefix:@"unknownChildren"]) testedForUnknownChildren = YES;
       if ([keyPath hasPrefix:@"unknownAttributes"]) testedForUnknownAttributes = YES;
@@ -445,6 +453,17 @@
     { @"GDataBoolValueConstruct", @"<construct value='true'/>" },
     { @"boolValue.stringValue", @"1" },
     { @"", @"" },
+    
+    { @"GDataEntryContent", @"<content src='http://lh.google.com/image/Car.jpg' type='image/jpeg'/>" },
+    { @"sourceURI", @"http://lh.google.com/image/Car.jpg" },
+    { @"type", @"image/jpeg" },
+    { @"", @"" },
+      
+    { @"GDataEntryContent", @"<title type='text' xml:lang='en'>Event title</title>" },
+    { @"stringValue", @"Event title" },
+    { @"lang", @"en" },
+    { @"type", @"text" },
+    { @"", @"" },
       
     { @"GDataWhen", @"<gd:when startTime='2005-06-06' endTime='2005-06-07' "
           "valueString='This weekend'/>" },
@@ -603,6 +622,274 @@
   
 }
 
+- (void)testMediaElements {
+  
+  ElementTestKeyPathValues tests[] =
+  {     
+    { @"GDataMediaContent", @"<media:content url='http://www.foo.com/movie.mov' "
+        " fileSize='12216320' type='video/quicktime' medium='video' isDefault='true' "
+        " expression='full' bitrate='128' framerate='25.1' samplingrate='44.1'"
+        " channels='2' duration='185' height='200' width='300' "
+        " lang='en' />" },
+    { @"URLString", @"http://www.foo.com/movie.mov" },
+    { @"fileSize.stringValue", @"12216320" },
+    { @"type", @"video/quicktime" },
+    { @"medium", @"video" },
+    { @"isDefault.stringValue", @"1" },
+    { @"expression", @"full" },
+    { @"bitrate.stringValue", @"128" },
+    { @"framerate.stringValue", @"25.1" },
+    { @"samplingrate.stringValue", @"44.1" },
+    { @"channels.stringValue", @"2" },
+    { @"duration.stringValue", @"185" },
+    { @"height.stringValue", @"200" },
+    { @"width.stringValue", @"300" },
+    { @"lang", @"en" },
+    { @"", @"" },
+    
+    { @"GDataMediaThumbnail", @"<media:thumbnail url='http://www.foo.com/keyframe.jpg' "
+          " width='75' height='50' time='12:05:01.123' />" },
+    { @"URLString", @"http://www.foo.com/keyframe.jpg" },
+    { @"width.stringValue", @"75" },
+    { @"height.stringValue", @"50" },
+    { @"time.timeOffsetInMilliseconds.stringValue", @"43501123" },
+    { @"", @"" },
+    
+    { @"GDataMediaKeywords", @"<media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>" },
+    { @"keywords.0", @"kitty" },
+    { @"keywords.2", @"big dog" },
+    { @"keywords.@count.stringValue", @"5" },
+    { @"", @"" },
+    
+    { @"GDataMediaCredit", @"<media:credit role='producer' scheme='urn:ebu'>entity name</media:credit>" },
+    { @"role", @"producer" },
+    { @"scheme", @"urn:ebu" },
+    { @"stringValue", @"entity name" },
+    { @"", @"" },
+    
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
+
+}
+
+- (void)testPhotoElements {
+  
+  ElementTestKeyPathValues tests[] =
+  {     
+    { @"GDataPhotoAlbumID", @"<gphoto:albumid>5024425138</gphoto:albumid>" },
+    { @"stringValue", @"5024425138" },
+    { @"", @"" },
+      
+    { @"GDataPhotoCommentCount", @"<gphoto:commentCount>11</gphoto:commentCount>" },
+    { @"intValue.stringValue", @"11" }, // test the int accessor
+    { @"", @"" },
+      
+    { @"GDataPhotoCommentingEnabled", @"<gphoto:commentingEnabled>true</gphoto:commentingEnabled>" },
+    { @"stringValue", @"true" },
+    { @"boolValue.stringValue", @"1" }, // test the bool accessor, too
+    { @"", @"" },
+      
+    { @"GDataPhotoGPhotoID", @"<gphoto:id>512131187</gphoto:id>" },
+    { @"stringValue", @"512131187" },
+    { @"", @"" },
+      
+    { @"GDataPhotoMaxPhotosPerAlbum", @"<gphoto:maxPhotosPerAlbum>1000</gphoto:maxPhotosPerAlbum>" },
+    { @"intValue.stringValue", @"1000" },
+    { @"", @"" },
+      
+    { @"GDataPhotoNickname", @"<gphoto:nickname>Jane Smith</gphoto:nickname>" },
+    { @"stringValue", @"Jane Smith" },
+    { @"", @"" },
+      
+    { @"GDataPhotoQuotaUsed", @"<gphoto:quotacurrent>312459331</gphoto:quotacurrent>" },
+    { @"longLongValue.stringValue", @"312459331" },
+    { @"", @"" },
+      
+    { @"GDataPhotoQuotaLimit", @"<gphoto:quotalimit>1385222385</gphoto:quotalimit>" },
+    { @"longLongValue.stringValue", @"1385222385" },
+    { @"", @"" },
+      
+    { @"GDataPhotoThumbnail", @"<gphoto:thumbnail>http://picasaweb.google.com/image/.../Hello.jpg</gphoto:thumbnail>" },
+    { @"stringValue", @"http://picasaweb.google.com/image/.../Hello.jpg" },
+    { @"", @"" },
+      
+    { @"GDataPhotoUser", @"<gphoto:user>Jane</gphoto:user>" },
+    { @"stringValue", @"Jane" },
+    { @"", @"" },
+      
+    { @"GDataPhotoAccess", @"<gphoto:access>private</gphoto:access>" },
+    { @"stringValue", @"private" },
+    { @"", @"" },
+
+    { @"GDataPhotoBytesUsed", @"<gphoto:bytesUsed>11876307</gphoto:bytesUsed>" },
+    { @"longLongValue.stringValue", @"11876307" },
+    { @"", @"" },
+      
+    { @"GDataPhotoLocation", @"<gphoto:location>Tokyo, Japan</gphoto:location>" },
+    { @"stringValue", @"Tokyo, Japan" },
+    { @"", @"" },
+      
+    { @"GDataPhotoName", @"<gphoto:name>mytrip</gphoto:name> " },
+    { @"stringValue", @"mytrip" },
+    { @"", @"" },
+      
+    { @"GDataPhotoNumberUsed", @"<gphoto:numphotos>237</gphoto:numphotos>" },
+    { @"intValue.stringValue", @"237" },
+    { @"", @"" },
+      
+    { @"GDataPhotoNumberLeft", @"<gphoto:numphotosremaining>763</gphoto:numphotosremaining>" },
+    { @"intValue.stringValue", @"763" },
+    { @"", @"" },
+      
+    { @"GDataPhotoChecksum", @"<gphoto:checksum>987123</gphoto:checksum>" },
+    { @"stringValue", @"987123" },
+    { @"", @"" },
+      
+    { @"GDataPhotoClient", @"<gphoto:client>Picasa1.2</gphoto:client>" },
+    { @"stringValue", @"Picasa1.2" },
+    { @"", @"" },
+      
+    { @"GDataPhotoHeight", @"<gphoto:height>1200</gphoto:height>" },
+    { @"longLongValue.stringValue", @"1200" },
+    { @"", @"" },
+      
+    { @"GDataPhotoPosition", @"<gphoto:position>10</gphoto:position>" },
+    { @"intValue.stringValue", @"10" },
+    { @"", @"" },
+      
+    { @"GDataPhotoRotation", @"<gphoto:rotation>90</gphoto:rotation>" },
+    { @"intValue.stringValue", @"90" },
+    { @"", @"" },
+      
+    { @"GDataPhotoSize", @"<gphoto:size>149351</gphoto:size>" },
+    { @"longLongValue.stringValue", @"149351" },
+    { @"", @"" },
+      
+    { @"GDataPhotoTimestamp", @"<gphoto:timestamp>1168640584000</gphoto:timestamp>" },
+    { @"longLongValue.stringValue", @"1168640584000" },
+    { @"", @"" },
+      
+    { @"GDataPhotoVersion", @"<gphoto:version>v22838</gphoto:version>" },
+    { @"stringValue", @"v22838" },
+    { @"", @"" },
+      
+    { @"GDataPhotoWidth", @"<gphoto:width>1600</gphoto:width>" },
+    { @"longLongValue.stringValue", @"1600" },
+    { @"", @"" },
+      
+    { @"GDataPhotoPhotoID", @"<gphoto:photoid>301521187</gphoto:photoid>" },
+    { @"stringValue", @"301521187" },
+    { @"", @"" },
+      
+    { @"GDataPhotoWeight", @"<gphoto:weight>3</gphoto:weight>" },
+    { @"intValue.stringValue", @"3" },
+    { @"", @"" },
+    
+    { @"GDataEXIFTags", @"<exif:tags><exif:fstop>0.0</exif:fstop>"
+      "<exif:make>Nokia</exif:make><exif:model>6133</exif:model>"
+      "<exif:distance>0.0</exif:distance><exif:exposure>0.0</exif:exposure>"
+      "<exif:model>Second Model</exif:model><exif:flash>true</exif:flash>"
+      "</exif:tags>" }, // intentional second copy of "model" tag
+    { @"tags.@count.stringValue", @"7" },
+    { @"tagDictionary.make", @"Nokia" },
+    { @"tagDictionary.model", @"6133" }, // first instance of "model" tag
+    { @"", @"" },
+      
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
+  
+}
+
+- (void)testGeo {
+  ElementTestKeyPathValues tests[] =
+  {     
+    // test explicit types - here we specify which subclass of GDataGeo
+    // to instantiate
+    { @"GDataGeoW3CPoint", @"<geo:Point><geo:lat>55.701</geo:lat>"
+        "<geo:long>12.552</geo:long></geo:Point>" },
+    { @"latitude.stringValue", @"55.701" },
+    { @"longitude.stringValue", @"12.552" },
+    { @"isPoint.stringValue", @"1" },
+    { @"", @"" },
+      
+    { @"GDataGeoRSSPoint", @"<georss:point>45.256 -71.92</georss:point>" },
+    { @"latitude.stringValue", @"45.256" },
+    { @"longitude.stringValue", @"-71.92" },
+    { @"", @"" },
+      
+    { @"GDataGeoRSSWhere", @"<georss:where><gml:Point><gml:pos>45.256 -71.92"
+        "</gml:pos></gml:Point></georss:where>" },
+    { @"latitude.stringValue", @"45.256" },
+    { @"longitude.stringValue", @"-71.92" },
+    { @"", @"" },
+    
+    // test GDataGeo for implicit types - here we use
+    // a test class which incorporates uses GDataGeo's utilities for 
+    // determining the subclass of GDataGeo to instantiate
+    //
+    // GDataGeoTestClass is defined below in this file
+    { @"GDataGeoTestClass", @"<GDataGeoTestClass><geo:Point><geo:lat>55.701</geo:lat>" // W3CPoint
+        "<geo:long>12.552</geo:long></geo:Point></GDataGeoTestClass>" },
+    { @"geoLocation.latitude.stringValue", @"55.701" },
+    { @"geoLocation.longitude.stringValue", @"12.552" },
+    { @"", @"" },
+      
+    { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:point>0.256 -71.92"
+        "</georss:point></GDataGeoTestClass>" }, // RSSPoint
+    { @"geoLocation.latitude.stringValue", @"0.256" },
+    { @"geoLocation.longitude.stringValue", @"-71.92" },
+    { @"", @"" },
+      
+    { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:where><gml:Point><gml:pos>-1.256 -71.92" // RSSWhere
+      "</gml:pos></gml:Point></georss:where></GDataGeoTestClass>" },
+    { @"geoLocation.latitude.stringValue", @"-1.256" },
+    { @"geoLocation.longitude.stringValue", @"-71.92" },
+    { @"", @"" },
+    
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
+  
+}
+
+
+- (void)testPicasaWebQuery {
+  
+  GDataQueryPicasaWeb *pwaQuery1;
+  pwaQuery1 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
+                                                   albumID:@"12345"
+                                                 albumName:nil
+                                                   photoID:@"987654321"];
+  [pwaQuery1 setKind:kGDataPicasaWebKindPhoto];
+  [pwaQuery1 setAccess:kGDataPicasaWebAccessPrivate];
+  [pwaQuery1 setThumbsize:80];
+    
+  NSURL* resultURL1 = [pwaQuery1 URL];
+  NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
+    "user/fredflintstone/albumid/12345/photoid/987654321?"
+    "thumbsize=80&access=private&kind=photo";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+                       @"PWA query 1 generation error");
+  
+
+  GDataQueryPicasaWeb *pwaQuery2; 
+  pwaQuery2 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
+                                                   albumID:nil
+                                                 albumName:@"froggy photos"
+                                                   photoID:nil];  
+  NSURL* resultURL2 = [pwaQuery2 URL];
+  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/fredflintstone/album/froggy%20photos";
+  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+                       @"PWA query 2 generation error");
+}
+
+
+
 - (void)testChangedNamespace {
   
   // We'll allocate three objects which are equivalent except for 
@@ -648,6 +935,37 @@
                        [obj0 XMLElement], [obj1 XMLElement]);
   STAssertEqualObjects(obj1, obj2, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
                        [obj1 XMLElement], [obj2 XMLElement]);
+}
+
+@end
+
+// class for testing GDataGeo (used above)
+@interface GDataGeoTestClass : GDataObject
+@end
+
+@implementation GDataGeoTestClass
+
+- (void)initExtensionDeclarations {
+  [super initExtensionDeclarations];
+  
+  [GDataGeo addGeoExtensionDeclarationsToObject:self
+                                 forParentClass:[self class]];
+}
+
+- (NSXMLElement *)XMLElement {
+  
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"GDataGeoTestClass"];
+  return element;
+}
+
+#pragma mark -
+
+- (GDataGeo *)geoLocation {
+  return [GDataGeo geoLocationForObject:self];
+}
+
+- (void)setGeoLocation:(GDataGeo *)geo {
+  [GDataGeo setGeoLocation:geo forObject:self];
 }
 
 @end

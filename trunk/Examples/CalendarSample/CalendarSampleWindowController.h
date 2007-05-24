@@ -40,6 +40,8 @@
   IBOutlet NSButton *mEditEventButton;
   IBOutlet NSButton *mQueryTodayEventButton;
   
+  IBOutlet NSSegmentedControl *mEntrySegmentedControl;
+  
   GDataFeedCalendar *mCalendarFeed;
   GDataServiceTicket *mCalendarFetchTicket;
   NSError *mCalendarFetchError;
@@ -47,6 +49,10 @@
   GDataFeedCalendarEvent *mEventFeed;
   GDataServiceTicket *mEventFetchTicket;
   NSError *mEventFetchError;
+
+  GDataFeedACL *mACLFeed;
+  GDataServiceTicket *mACLFetchTicket;
+  NSError *mACLFetchError;
 }
 
 + (CalendarSampleWindowController *)sharedCalendarSampleWindowController;
@@ -60,5 +66,7 @@
 - (IBAction)editEventClicked:(id)sender;
 - (IBAction)deleteEventClicked:(id)sender;
 - (IBAction)queryTodayClicked:(id)sender;
+
+- (IBAction)entrySegmentClicked:(id)sender;
 
 @end

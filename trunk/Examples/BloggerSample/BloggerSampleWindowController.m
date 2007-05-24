@@ -272,8 +272,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
   [service fetchAuthenticatedFeedWithURL:url
                                feedClass:kGDataUseRegisteredClass
                                 delegate:self
-                       didFinishSelector:@selector(service:feedFetcher:finishedWithFeed:)
-                         didFailSelector:@selector(service:feedFetcher:failedWithError:)];
+                       didFinishSelector:@selector(feedTicket:finishedWithFeed:)
+                         didFailSelector:@selector(feedTicket:failedWithError:)];
   
   [self updateUI];
 
@@ -284,8 +284,7 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 //
 
 // finished blog list successfully
-- (void)service:(GDataServiceGoogle *)service
-    feedFetcher:(GDataHTTPFetcher *)fetcher
+- (void)feedTicket:(GDataServiceTicket *)ticket
  finishedWithFeed:(GDataFeedBase *)object {
   
   [self setBlogsFeed:object];
@@ -296,9 +295,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 } 
 
 // failed
-- (void)service:(GDataServiceGoogle *)service
-    feedFetcher:(GDataHTTPFetcher *)fetcher
-failedWithError:(NSError *)error {
+- (void)feedTicket:(GDataServiceTicket *)ticket
+   failedWithError:(NSError *)error {
   
   [self setBlogsFeed:nil];
   [self setBlogsFetchError:error];    
@@ -329,8 +327,8 @@ failedWithError:(NSError *)error {
       [service fetchAuthenticatedFeedWithURL:[NSURL URLWithString:href]
                                    feedClass:kGDataUseRegisteredClass
                                     delegate:self
-                           didFinishSelector:@selector(service:entriesFetcher:finishedWithEntries:)
-                             didFailSelector:@selector(service:entriesFetcher:failedWithError:)];
+                           didFinishSelector:@selector(fetchEntriesTicket:finishedWithEntries:)
+                             didFailSelector:@selector(fetchEntriesTicket:failedWithError:)];
       [self updateUI];  
     }
   }
@@ -342,8 +340,7 @@ failedWithError:(NSError *)error {
 //
 
 // fetched entry list successfully
-- (void)service:(GDataServiceGoogle *)service
-  entriesFetcher:(GDataHTTPFetcher *)fetcher
+- (void)fetchEntriesTicket:(GDataServiceTicket *)ticket
  finishedWithEntries:(GDataFeedBase *)object {
   
   [self setEntriesFeed:object];
@@ -355,8 +352,7 @@ failedWithError:(NSError *)error {
 } 
 
 // failed
-- (void)service:(GDataServiceGoogle *)service
-  entriesFetcher:(GDataHTTPFetcher *)fetcher
+- (void)fetchEntriesTicket:(GDataServiceTicket *)ticket
 failedWithError:(NSError *)error {
   
   [self setEntriesFeed:nil];
@@ -380,7 +376,7 @@ failedWithError:(NSError *)error {
   [newEntry setContent:[GDataTextConstruct textConstructWithString:content]];
   [newEntry addAuthor:[GDataPerson personWithName:@"Blogger Sample App"
                                             email:nil]];
-  
+    
   NSURL* postURL = [[[[self selectedBlog] links] postLink] URL];
   if (postURL) {
     mIsEntriesFetchPending = YES;
@@ -390,16 +386,16 @@ failedWithError:(NSError *)error {
     [service fetchAuthenticatedEntryByInsertingEntry:newEntry
                                         forFeedURL:postURL
                                            delegate:self
-                                  didFinishSelector:@selector(ticket:finishedWithEntry:)
-                                    didFailSelector:@selector(ticket:failedWithError:)];  
+                                  didFinishSelector:@selector(addEntryTicket:finishedWithEntry:)
+                                    didFailSelector:@selector(addEntryTicket:failedWithError:)];  
     
     [self updateUI];
   }
 }
 
 // succeeded
-- (void)ticket:(GDataServiceTicket *)ticket
- finishedWithEntry:(GDataEntryBase *)addedEntry {
+- (void)addEntryTicket:(GDataServiceTicket *)ticket
+     finishedWithEntry:(GDataEntryBase *)addedEntry {
   
   NSBeginAlertSheet(@"Add", nil, nil, nil,
                     [self window], nil, nil,
@@ -414,8 +410,8 @@ failedWithError:(NSError *)error {
 } 
 
 // failed
-- (void)ticket:(GDataServiceTicket *)ticket
-failedWithError:(NSError *)error {
+- (void)addEntryTicket:(GDataServiceTicket *)ticket
+       failedWithError:(NSError *)error {
   
   GDataEntryBase *addedEntry = [ticket userData];
   NSBeginAlertSheet(@"Add", nil, nil, nil,

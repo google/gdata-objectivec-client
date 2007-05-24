@@ -67,7 +67,9 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
   [request_ release];
   [downloadedData_ release];
   [credential_ release];
+  [proxyCredential_ release];
   [postData_ release];
+  [postStream_ release];
   [response_ release];
   [userData_ release];
   [fetchHistory_ release];
@@ -115,11 +117,17 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
   networkFailedSEL_ = networkFailedSEL;
   statusFailedSEL_ = statusFailedSEL;
   
-  if (postData_) {
+  if (postData_ || postStream_) {
     if ([request_ HTTPMethod] == nil || [[request_ HTTPMethod] isEqual:@"GET"]) {
       [request_ setHTTPMethod:@"POST"];
     }
-    [request_ setHTTPBody:postData_];
+    
+    if (postData_) {
+      [request_ setHTTPBody:postData_];
+    } else {
+      [request_ setHTTPBodyStream:postStream_]; 
+    }
+
   }
   
   if (fetchHistory_) {
@@ -133,7 +141,11 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
     NSDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
     NSString* urlString = [[request_ URL] absoluteString];
     NSString* lastModifiedStr = [lastModifiedDict objectForKey:urlString];
-    if (lastModifiedStr && [request_ HTTPBody] == nil) {
+    
+    // servers don't want last-modified-ifs on POSTs, so check for a body
+    if (lastModifiedStr 
+        && [request_ HTTPBody] == nil
+        && [request_ HTTPBodyStream] == nil) {
       
       [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
     }
@@ -262,11 +274,22 @@ CannotBeginFetch:
     NSURL *redirectURL = [redirectRequest URL];
     NSURL *url = [newRequest URL];
     
-    // disallow scheme changes (say, from https to http)
-    NSString *oldScheme = [url scheme];
+    // disallow scheme changes (say, from https to http)    
+    NSString *redirectScheme = [url scheme];
+    NSString *newScheme = [redirectURL scheme];
     NSString *newResourceSpecifier = [redirectURL resourceSpecifier];
     
-    NSString *newUrlString = [NSString stringWithFormat:@"%@:%@", oldScheme, newResourceSpecifier];
+    if ([redirectScheme caseInsensitiveCompare:@"http"] == NSOrderedSame
+        && newScheme != nil
+        && [newScheme caseInsensitiveCompare:@"https"] == NSOrderedSame) {
+      
+      // allow the change from http to https
+      redirectScheme = newScheme; 
+    }
+    
+    NSString *newUrlString = [NSString stringWithFormat:@"%@:%@",
+      redirectScheme, newResourceSpecifier];
+    
     NSURL *newURL = [NSURL URLWithString:newUrlString];
     [newRequest setURL:newURL];
 
@@ -345,22 +368,46 @@ CannotBeginFetch:
 -(void)connection:(NSURLConnection *)connection
        didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
   
-  if (credential_ && [challenge previousFailureCount] <= 2) {
+  if ([challenge previousFailureCount] <= 2) {
     
-    // Try the credential
-    [[challenge sender] useCredential:credential_ forAuthenticationChallenge:challenge];
+    NSURLCredential *credential = credential_;
     
-  } else {
+    if ([[challenge protectionSpace] isProxy]) {
+      credential = proxyCredential_;
+    }
     
-    // If we don't have credentials, or we've already failed auth 3x...
-    [[challenge sender] cancelAuthenticationChallenge:challenge];
+    // Here, if credential is still nil, then we *could* try to get it from
+    // NSURLCredentialStorage's defaultCredentialForProtectionSpace:.
+    // We don't, because we're assuming:
+    //
+    // - for server credentials, we only want ones supplied by the program
+    //   calling http fetcher
+    // - for proxy credentials, if one were necessary and available in the
+    //   keychain, it would've been found automatically by NSURLConnection
+    //   and this challenge delegate method never would've been called
+    //   anyway
     
-    NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherErrorDomain
-                                         code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
-                                     userInfo:nil];
-
-    [self connection:connection didFailWithError:error];
+    if (credential) {
+      // try the credential
+      [[challenge sender] useCredential:credential
+             forAuthenticationChallenge:challenge];
+      return;
+    } 
   }
+  
+  // If we don't have credentials, or we've already failed auth 3x...
+  [[challenge sender] cancelAuthenticationChallenge:challenge];
+  
+  // report the error, putting the challenge as a value in the userInfo
+  // dictionary
+  NSDictionary *userInfo = [NSDictionary dictionaryWithObject:challenge
+                                                       forKey:kGDataHTTPFetcherErrorChallengeKey];
+  
+  NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherErrorDomain
+                                       code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
+                                   userInfo:userInfo];
+  
+  [self connection:connection didFailWithError:error];  
 }
 
 
@@ -510,6 +557,15 @@ CannotBeginFetch:
   credential_ = [theCredential retain]; 
 }
 
+- (NSURLCredential *)proxyCredential {
+  return proxyCredential_;
+}
+
+- (void)setProxyCredential:(NSURLCredential *)theCredential {
+  [proxyCredential_ autorelease];
+  proxyCredential_ = [theCredential retain]; 
+}
+
 - (NSData *)postData {
   return postData_; 
 }
@@ -517,6 +573,15 @@ CannotBeginFetch:
 - (void)setPostData:(NSData *)theData {
   [postData_ autorelease]; 
   postData_ = [theData retain];
+}
+
+- (NSInputStream *)postStream {
+  return postStream_; 
+}
+
+- (void)setPostStream:(NSInputStream *)theStream {
+  [postStream_ autorelease]; 
+  postStream_ = [theStream retain];
 }
 
 - (int)cookieStorageMethod {

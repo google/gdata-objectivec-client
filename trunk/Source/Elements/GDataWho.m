@@ -21,7 +21,19 @@
 #import "GDataWho.h"
 
 #import "GDataEntryLink.h"
-#import "GDataValueConstruct.h"
+
+@implementation GDataAttendeeStatus
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"attendeeStatus"; }
+@end
+
+@implementation GDataAttendeeType
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"attendeeType"; }
+@end
+
 
 @implementation GDataWho
 // a who entry, as in
@@ -59,11 +71,11 @@
     [self setAttendeeType:[self objectForChildOfElement:element
                                           qualifiedName:@"gd:attendeeType"
                                            namespaceURI:kGDataNamespaceGData
-                                            objectClass:[GDataValueConstruct class]]];
+                                            objectClass:[GDataAttendeeType class]]];
     [self setAttendeeStatus:[self objectForChildOfElement:element
                                             qualifiedName:@"gd:attendeeStatus"
                                              namespaceURI:kGDataNamespaceGData
-                                              objectClass:[GDataValueConstruct class]]];
+                                              objectClass:[GDataAttendeeStatus class]]];
     [self setEntryLink:[self objectForChildOfElement:element
                                        qualifiedName:@"gd:entryLink"
                                         namespaceURI:kGDataNamespaceGData
@@ -168,20 +180,20 @@
   valueString_ = [str copy];
 }
 
-- (GDataValueConstruct *)attendeeType {
+- (GDataAttendeeType *)attendeeType {
   return attendeeType_;
 }
 
-- (void)setAttendeeType:(GDataValueConstruct *)val {
+- (void)setAttendeeType:(GDataAttendeeType *)val {
   [attendeeType_ autorelease];
   attendeeType_ = [val copy];
 }
 
-- (GDataValueConstruct *)attendeeStatus {
+- (GDataAttendeeStatus *)attendeeStatus {
   return attendeeStatus_;
 }
 
-- (void)setAttendeeStatus:(GDataValueConstruct *)val {
+- (void)setAttendeeStatus:(GDataAttendeeStatus *)val {
   [attendeeStatus_ autorelease];
   attendeeStatus_ = [val copy];
 }

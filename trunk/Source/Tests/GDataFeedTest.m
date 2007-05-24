@@ -485,6 +485,250 @@
   [self runTests:tests];
 }
 
+- (void)testPhotosFeeds {
+  
+  // TODO: test geoLocation
+  
+  // Test a non-ASCII character and some html characters in a TextConstruct.  
+  // We'll allocate it dynamically since source code cannot contain non-ASCII.
+  NSString *template = @"Test %C Alb%Cm";
+  NSString *photoAlbumName = [NSString stringWithFormat:template, 
+    0x262F, 0x00FC]; // yin yang, u with umlaut
+  
+  // Non-ascii photo description, includes the Wheel of Dharma
+  NSString *photoDescriptionText = [NSString stringWithFormat:
+    @"Caption for the car %C photo", 0x2638];  
+
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Feed of a user's albums
+    //
+    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserAlbum1.xml" },
+
+    // GDataFeedPhotosAlbum paths
+    { @"username", @"TestdomainTestAccount" },
+    { @"nickname", @"Greg" },
+    { @"thumbnail", @"hasPrefix:http://lh3.google.com/image/TestdomainTestAccount" },
+    { @"quotaLimit.stringValue", @"1073741824" },
+    { @"quotaUsed.stringValue", @"108303" },
+    { @"maxPhotosPerAlbum.stringValue", @"500" },
+    { @"categories.0.term", kGDataCategoryPhotosUser },
+
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+
+    // GDataEntryPhotoAlbum paths
+    { @"entries.0.categories.0.term", kGDataCategoryPhotosAlbum },
+
+    { @"entries.0.mediaGroup.mediaTitle.stringValue", photoAlbumName },
+    { @"entries.0.mediaGroup.mediaDescription.stringValue", @"Album description" },
+    { @"entries.0.mediaGroup.mediaCredits.0.stringValue", @"Greg" },
+    { @"entries.0.mediaGroup.mediaContents.0.medium", @"image" },
+    { @"entries.0.mediaGroup.mediaContents.0.type", @"image/jpeg" },
+    { @"entries.0.mediaGroup.mediaContents.0.URLString", @"hasPrefix:http://lh5.google.com/image/TestdomainTestAccount" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.height.stringValue", @"160" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.URLString", @"hasPrefix:http://lh5.google.com/image/TestdomainTestAccount" },
+
+    { @"entries.0.GPhotoID", @"5067143575034336993" },
+    { @"entries.0.name", @"TestAlbM" },
+    { @"entries.0.access", @"public" },
+    { @"entries.0.photosUsed.stringValue", @"2" },
+    { @"entries.0.commentCount.stringValue", @"0" },
+    { @"entries.0.bytesUsed.stringValue", @"108303" },
+    { @"entries.0.nickname", @"Greg" },
+    { @"entries.0.photosLeft.stringValue", @"498" },
+    { @"entries.0.commentsEnabled.stringValue", @"1" },
+    { @"entries.0.location", @"Album Site" },
+    { @"entries.0.timestamp.dateValue.description", @"2007-05-21 00:00:00 -0700" },
+    { @"entries.0.username", @"TestdomainTestAccount" },
+    { @"entries.0.identifier", @"http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993" },
+    { @"entries.0.title.type", @"text" },
+    { @"entries.0.title.stringValue", photoAlbumName },
+    { @"entries.0.photoDescription.stringValue", @"Album description" },
+    { @"entries.0.rightsString.stringValue", @"public" },
+
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of an album's photos
+    //
+    { @"GDataFeedPhotoAlbum", @"Tests/FeedPhotosAlbumPhoto1.xml" },
+
+    // GDataFeedPhotoAlbum - feed paths
+    { @"GPhotoID", @"5067143575034336993" },
+    { @"name", @"TestAlbM" },
+    { @"access", @"public" },
+    { @"photosUsed.stringValue", @"2" },
+    { @"commentCount.stringValue", @"0" },
+    { @"bytesUsed.stringValue", @"108303" },
+    { @"nickname", @"Greg" },
+    { @"photosLeft.stringValue", @"498" },
+    { @"commentsEnabled.stringValue", @"1" },
+    { @"location", @"Album Site" },
+    { @"timestamp.dateValue.description", @"2007-05-21 00:00:00 -0700" },
+    { @"username", @"TestdomainTestAccount" },
+    { @"identifier", @"http://picasaweb.google.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993" },
+    { @"title.type", @"text" },
+    { @"title.stringValue", photoAlbumName },
+    { @"photoDescription.stringValue", @"Album description" },
+    { @"rights.stringValue", @"public" },
+    { @"categories.0.term", kGDataCategoryPhotosAlbum },
+
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+
+    // GDataEntryPhoto - entry paths
+    { @"entries.0.categories.0.term", kGDataCategoryPhotosPhoto },
+
+    { @"entries.0.position.stringValue", @"1.1" },
+    { @"entries.0.checksum", @"23512309abbs298" },
+    { @"entries.0.GPhotoID", @"5067143579329304306" },
+    { @"entries.0.version", @"1179786875940336" },
+    { @"entries.0.albumID", @"5067143575034336993" },
+    { @"entries.0.client", @"Picasa 2.6" },
+    { @"entries.0.width.stringValue", @"660" },
+    { @"entries.0.height.stringValue", @"433" },
+    { @"entries.0.commentsEnabled.stringValue", @"1" },
+    { @"entries.0.size.stringValue", @"87225" },
+    { @"entries.0.commentCount.stringValue", @"1" },
+    { @"entries.0.timestamp.dateValue.description", @"2007-05-21 15:25:01 -0700" },
+    { @"entries.0.title.stringValue", @"Car.jpg" },
+    { @"entries.0.photoDescription.stringValue", photoDescriptionText },
+    { @"entries.0.content.sourceURI", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg" },
+    { @"entries.0.content.type", @"image/jpeg" },
+
+    { @"entries.0.mediaGroup.mediaTitle.stringValue", @"Car.jpg" },
+    { @"entries.0.mediaGroup.mediaDescription.stringValue", photoDescriptionText },
+    { @"entries.0.mediaGroup.mediaCredits.0.stringValue", @"Greg" },
+    { @"entries.0.mediaGroup.mediaContents.0.medium", @"image" },
+    { @"entries.0.mediaGroup.mediaContents.0.type", @"image/jpeg" },
+    { @"entries.0.mediaGroup.mediaContents.0.URLString", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.height.stringValue", @"47" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.width.stringValue", @"72" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.URLString", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=72" },
+    { @"entries.0.mediaGroup.mediaKeywords.0.stringValue", @"headlight, red car" },
+
+    { @"entries.0.EXIFTags.tagDictionary.exposure", @"0.0080" },
+    { @"entries.0.EXIFTags.tagDictionary.imageUniqueID", @"d8a9e8fd57a384d216f4b2a853d654fc" },
+
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of a photo's comments
+    //
+    { @"GDataFeedPhoto", @"Tests/FeedPhotosPhotoComment1.xml" },
+
+    // GDataFeedPhoto - feed paths
+    { @"generator.URI", @"http://picasaweb.google.com/" },
+    { @"generator.name", @"Picasaweb" },
+    { @"generator.version", @"1.00" },
+    { @"EXIFTags.tagDictionary.exposure", @"0.0080" },
+    { @"categories.0.term", kGDataCategoryPhotosPhoto },
+    { @"EXIFTags.tagDictionary.imageUniqueID", @"d8a9e8fd57a384d216f4b2a853d654fc" },
+    { @"position.stringValue", @"1.1" },
+    { @"checksum", @"23512309abbs298" },
+    { @"GPhotoID", @"5067143579329304306" },
+    { @"version", @"1179786875940336" },
+    { @"albumID", @"5067143575034336993" },
+    { @"client", @"Picasa 2.6" },
+    { @"width.stringValue", @"660" },
+    { @"height.stringValue", @"433" },
+    { @"commentsEnabled.stringValue", @"1" },
+    { @"size.stringValue", @"87225" },
+    { @"commentCount.stringValue", @"1" },
+    { @"timestamp.dateValue.description", @"2007-05-21 15:25:01 -0700" },
+    { @"title.stringValue", @"Car.jpg" },
+    { @"photoDescription.stringValue", photoDescriptionText },
+    { @"icon", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=288" },
+
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+
+    // GDataEntryPhotoComment - entry paths
+    { @"entries.0.photoID", @"5067143579329304306" },
+    { @"entries.0.GPhotoID", @"5067146044640532244" }, 
+    { @"entries.0.categories.0.term", kGDataCategoryPhotosComment },
+
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of a user's tags
+    //
+
+    // GDataFeedPhotoUser - feed paths
+
+    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserTag1.xml" },
+    { @"username", @"TestdomainTestAccount" },
+    { @"nickname", @"Greg" },
+    { @"thumbnail", @"hasPrefix:http://lh3.google.com/image/TestdomainTestAccount" },
+    { @"quotaLimit.stringValue", @"1073741824" },
+    { @"quotaUsed.stringValue", @"108303" },
+    { @"maxPhotosPerAlbum.stringValue", @"500" },
+    { @"categories.0.term", kGDataCategoryPhotosUser },
+
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+
+    // GDataEntryPhotoTag - entry paths
+    
+    { @"entries.0.title.stringValue", @"headlight" },
+    { @"entries.0.photoDescription.stringValue", @"headlight" }, 
+    { @"entries.0.categories.0.term", kGDataCategoryPhotosTag },
+
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    { @"entries.1.title.stringValue", @"red car" },
+    { @"entries.1.photoDescription.stringValue", @"red car" }, 
+    { @"entries.1.categories.0.term", kGDataCategoryPhotosTag },
+
+    { @"entries.1.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.1.unknownChildren.@count.stringValue", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of a user entry
+    //
+    // This is really a fake feed created by requesting just a single
+    // user entry from the picasa server, using
+    // GET http://picasaweb.google.com/data/entry/api/user/<username>
+    //
+    
+    // GDataFeedPhotoUser - feed paths (none)
+      
+    // GDataEntryPhotoUser - entry paths
+    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserEntry1.xml" },
+
+    { @"entries.0.nickname", @"Greg" },
+    { @"entries.0.username", @"TestdomainTestAccount" }, 
+    { @"entries.0.thumbnail", @"hasPrefix:http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo" },
+    { @"entries.0.identifier", @"http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount" },
+    { @"entries.0.categories.0.term", kGDataCategoryPhotosUser },
+      
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+    
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
+  };
+  
+  [self runTests:tests];
+}
+
+
+
 - (void)testMessageFeed {
   
   TestKeyPathValues tests[] =
@@ -492,30 +736,69 @@
     //
     // Message Feed
     //
-    { @"GDataFeedMessage", @"Tests/FeedMessageTest1.xml" },
-      
+  { @"GDataFeedMessage", @"Tests/FeedMessageTest1.xml" },
+    
     // GDataFeedMessage paths
-    { @"links.0.href", @"hasPrefix:http://www.google.com/calendar/feeds/default" },
-    { @"categories.0.term", kGDataMessage },
-      
-    { @"unknownAttributes.@count.stringValue", @"0" },
-    { @"unknownChildren.@count.stringValue", @"0" },
-
+  { @"links.0.href", @"hasPrefix:http://www.google.com/calendar/feeds/default" },
+  { @"categories.0.term", kGDataMessage },
+    
+  { @"unknownAttributes.@count.stringValue", @"0" },
+  { @"unknownChildren.@count.stringValue", @"0" },
+    
     // GDataEntryMessage paths
-    { @"entries.0.categories.0.term", kGDataMessage },
-    { @"entries.0.categories.1.term", kGDataMessageSent },
-    { @"entries.0.identifier", @"http://mymail.example.com/feeds/jo/home/full/e1a2af06df8a563edf9d32ec9fd61e03f7f3b67b" },
-    { @"entries.0.content.stringValue", @"Hi, Fritz -- The information you're looking for is on p. 47." },
-    { @"entries.0.title.stringValue", @"Re: Info?" },
-    { @"entries.0.participants.0.rel", kGDataWhoMessageFrom },
-    { @"entries.0.participants.1.rel", kGDataWhoMessageTo },
-      
-    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
-    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+  { @"entries.0.categories.0.term", kGDataMessage },
+  { @"entries.0.categories.1.term", kGDataMessageSent },
+  { @"entries.0.identifier", @"http://mymail.example.com/feeds/jo/home/full/e1a2af06df8a563edf9d32ec9fd61e03f7f3b67b" },
+  { @"entries.0.content.stringValue", @"Hi, Fritz -- The information you're looking for is on p. 47." },
+  { @"entries.0.title.stringValue", @"Re: Info?" },
+  { @"entries.0.participants.0.rel", kGDataWhoMessageFrom },
+  { @"entries.0.participants.1.rel", kGDataWhoMessageTo },
+    
+  { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+  { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+    
+  { @"", @"" }, // end of feed
+    
+  { nil, nil } // end of test array
+  };
+  
+  [self runTests:tests];
+}
 
-    { @"", @"" }, // end of feed
-      
-    { nil, nil } // end of test array
+- (void)testACLFeed {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // ACL Feed
+    //
+  { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
+    
+    // GDataFeedACL paths
+  { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
+  { @"links.0.rel", kGDataLinkRelControlledObject },
+  { @"categories.0.term", kGDataCategoryACL },
+  { @"categories.0.scheme", kGDataCategoryScheme },
+    
+  { @"unknownAttributes.@count.stringValue", @"0" },
+  { @"unknownChildren.@count.stringValue", @"0" },
+    
+    // GDataEntryACL paths (scope and role are the main elements)
+  { @"entries.0.categories.0.term", kGDataCategoryACL },
+  { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com" },
+  { @"entries.0.content.stringValue", @"" },
+  { @"entries.0.links.1.rel", @"edit" },
+  { @"entries.0.scope.type", @"user" },
+  { @"entries.0.scope.value", @"test@gmail.com" },
+  { @"entries.0.role.value", @"http://schemas.google.com/gCal/2005#owner" },
+    
+  { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+  { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    
+  { @"", @"" }, // end of feed
+    
+  { nil, nil } // end of test array
   };
   
   [self runTests:tests];

@@ -40,7 +40,7 @@
                                    childClass:[GDataBatchOperation class]];  
 }
 
-+ (GDataFeedBase *)feedWithXMLData:(NSData *)data {
++ (id)feedWithXMLData:(NSData *)data {
   return [[[[self class] alloc] initWithData:data] autorelease];
 }
 
@@ -127,6 +127,19 @@
                                           qualifiedName:@"category"
                                            namespaceURI:kGDataNamespaceAtom
                                             objectClass:[GDataCategory class]]];
+  
+  [self setRights:[self objectForChildOfElement:root
+                                  qualifiedName:@"rights"
+                                   namespaceURI:kGDataNamespaceAtom
+                                    objectClass:[GDataTextConstruct class]]];
+  
+  [self setIcon:[[self childWithQualifiedName:@"icon" 
+                                 namespaceURI:kGDataNamespaceAtom
+                                  fromElement:root] stringValue]]; 
+
+  [self setLogo:[[self childWithQualifiedName:@"logo" 
+                                 namespaceURI:kGDataNamespaceAtom
+                                  fromElement:root] stringValue]]; 
   
   NSXMLElement *totElement = [self childWithQualifiedName:@"openSearch:totalResults"
                                              namespaceURI:kGDataNamespaceOpenSearch
@@ -259,10 +272,15 @@
   [self addToArray:items objectDescriptionIfNonNil:[rights_ stringValue] withName:@"rights"];
   [self addToArray:items objectDescriptionIfNonNil:[updatedDate_ stringValue] withName:@"updated"];
   
-  [self addToArray:items arrayCountIfNonEmpty:links_ withName:@"links"];
   [self addToArray:items arrayCountIfNonEmpty:authors_ withName:@"authors"];
   [self addToArray:items arrayCountIfNonEmpty:contributors_ withName:@"contributors"];
   [self addToArray:items arrayCountIfNonEmpty:categories_ withName:@"categories"];
+  
+  if ([links_ count]) {
+    NSArray *linkNames = [GDataLink linkNamesFromLinks:links_];
+    NSString *linksStr = [linkNames componentsJoinedByString:@","];
+    [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
+  }  
   
   // these are present but not very useful most of the time...
   // [self addToArray:items objectDescriptionIfNonNil:totalResults_ withName:@"totalResults"];
@@ -307,8 +325,6 @@
   [self addToElement:element XMLElementsForArray:authors_];
   [self addToElement:element XMLElementsForArray:contributors_];
   [self addToElement:element XMLElementsForArray:categories_];
-  
-  [self addToElement:element childWithStringValueIfNonEmpty:logo_ withName:@"logo"];
   
   if ([self updatedDate]) {
     NSString *updatedDateStr = [[self updatedDate] RFC3339String];
@@ -589,7 +605,7 @@
 // extensions for Atom publishing control
 
 - (GDataAtomPubControl *)atomPubControl {
-  return (GDataAtomPubControl *) [self objectForExtensionClass:[GDataAtomPubControl class]];
+  return [self objectForExtensionClass:[GDataAtomPubControl class]];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
@@ -599,7 +615,7 @@
 // extensions for batch support
 
 - (GDataBatchOperation *)batchOperation {
-  return (GDataBatchOperation *) [self objectForExtensionClass:[GDataBatchOperation class]];
+  return [self objectForExtensionClass:[GDataBatchOperation class]];
 }
 
 - (void)setBatchOperation:(GDataBatchOperation *)obj {

@@ -28,7 +28,7 @@
   NSString *type_; // text, text/plain, html, text/html, xhtml, or other things
 }
 
-+ (GDataTextConstruct *)textConstructWithString:(NSString *)str;
++ (id)textConstructWithString:(NSString *)str;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;

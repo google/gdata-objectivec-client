@@ -61,11 +61,11 @@
 
 #pragma mark -
 
-- (GDataValueConstruct *)timeZoneName {
-  return (GDataValueConstruct *) [self objectForExtensionClass:[GDataTimeZoneProperty class]];
+- (GDataTimeZoneProperty *)timeZoneName {
+  return (GDataTimeZoneProperty *) [self objectForExtensionClass:[GDataTimeZoneProperty class]];
 }
 
-- (void)setTimeZoneName:(GDataValueConstruct *)val {
+- (void)setTimeZoneName:(GDataTimeZoneProperty *)val {
  [self setObject:val forExtensionClass:[GDataTimeZoneProperty class]];
 }
 @end

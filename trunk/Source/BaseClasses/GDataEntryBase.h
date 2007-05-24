@@ -38,6 +38,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 #import "GDataDateTime.h"
 #import "GDataTextConstruct.h"
+#import "GDataEntryContent.h"
 #import "GDataPerson.h"
 #import "GDataCategory.h"
 #import "GDataBatchOperation.h"
@@ -56,7 +57,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
   GDataDateTime *updatedDate_;
   GDataTextConstruct *title_;
   GDataTextConstruct *summary_;
-  GDataTextConstruct *content_;
+  GDataEntryContent *content_;
   GDataTextConstruct *rightsString_;
   NSMutableArray *links_; // GDataLink objects
   NSMutableArray *authors_; // GDataPerson objects
@@ -94,8 +95,8 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (GDataTextConstruct *)summary;
 - (void)setSummary:(GDataTextConstruct *)theSummary;
 
-- (GDataTextConstruct *)content;
-- (void)setContent:(GDataTextConstruct *)theContent;
+- (GDataEntryContent *)content;
+- (void)setContent:(GDataEntryContent *)theContent;
 
 - (GDataTextConstruct *)rightsString;
 - (void)setRightsString:(GDataTextConstruct *)theRightsString;

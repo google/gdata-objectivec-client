@@ -79,6 +79,10 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 // convert the href string into an URL
 - (NSURL *)URL;
 
+// utility method
+
+// get a list of short names for links in the array
++ (NSArray *)linkNamesFromLinks:(NSArray *)links;
 @end
 
 @interface NSArray(GDataLinkArray)
@@ -89,6 +93,7 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 - (GDataLink *)feedLink;
 - (GDataLink *)postLink;
 - (GDataLink *)editLink;
+- (GDataLink *)mediaEditLink;
 - (GDataLink *)alternateLink;
 - (GDataLink *)selfLink;
 - (GDataLink *)nextLink;

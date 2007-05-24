@@ -26,11 +26,49 @@
 // or return nil for it to indicate the value is
 // in the child node text)
 
-+ (GDataValueConstruct *)valueWithString:(NSString *)str {
-  GDataValueConstruct* obj = [[[GDataValueConstruct alloc] init] autorelease];
+
+// convenience functions
+//
+// subclasses may re-use call into these convenience functions
+// and coerce the return type appropriately
+
++ (id)valueWithString:(NSString *)str {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
+
++ (id)valueWithNumber:(NSNumber *)num {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  [obj setStringValue:[num stringValue]];
+  return obj;
+}
+
++ (id)valueWithInt:(int)val {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  [obj setIntValue:val];
+  return obj;
+}
+
++ (id)valueWithLongLong:(long long)val {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  [obj setLongLongValue:val];
+  return obj;
+}
+
++ (id)valueWithDouble:(double)val {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  [obj setDoubleValue:val];
+  return obj;
+}
+
++ (id)valueWithBool:(BOOL)flag {
+  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  [obj setBoolValue:flag];
+  return obj;
+}
+
+#pragma mark -
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
@@ -79,7 +117,8 @@
 }
 
 - (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"GDataValueConstruct"];
+  
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
 
   NSString *attrName = [self attributeName];
   
@@ -126,6 +165,10 @@
   return nil;
 }
 
+- (NSNumber *)intNumberValue {
+  return [NSNumber numberWithInt:[self intValue]];
+}
+
 - (void)setIntValue:(int)val {
   NSString *str = [[NSNumber numberWithInt:val] stringValue];
   [self setStringValue:str];
@@ -141,6 +184,10 @@
     }
   }
   return nil;
+}
+
+- (NSNumber *)longLongNumberValue {
+  return [NSNumber numberWithLongLong:[self longLongValue]];
 }
 
 - (void)setLongLongValue:(long long)val {
@@ -160,6 +207,10 @@
   return nil;
 }
 
+- (NSNumber *)doubleNumberValue {
+  return [NSNumber numberWithDouble:[self doubleValue]];
+}
+
 - (void)setDoubleValue:(double)val {
   NSString *str = [[NSNumber numberWithDouble:val] stringValue];
   [self setStringValue:str];
@@ -173,10 +224,13 @@
   return NO;
 }
 
+- (NSNumber *)boolNumberValue {
+  return [NSNumber numberWithBool:[self boolValue]];
+}
+
 - (void)setBoolValue:(BOOL)flag {
   [self setStringValue:(flag ? @"true" : @"false")];
 }
-
 
 @end
 
@@ -189,10 +243,8 @@
 
 @implementation GDataBoolValueConstruct // derives from GDataValueConstruct
 
-+ (GDataBoolValueConstruct *)boolValueWithBool:(BOOL)flag {
-  GDataBoolValueConstruct* obj = [[[GDataBoolValueConstruct alloc] init] autorelease];
-  [obj setBoolValue:flag];
-  return obj;
++ (id)boolValueWithBool:(BOOL)flag {
+  return [super valueWithBool:flag];
 }
 
 
