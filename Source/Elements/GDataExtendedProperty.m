@@ -73,7 +73,7 @@
 }
 
 - (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:extendedValue"];
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:extendedProperty"];
   
   [self addToElement:element attributeValueIfNonNil:[self value] withName:@"value"];
   [self addToElement:element attributeValueIfNonNil:[self name] withName:@"name"];

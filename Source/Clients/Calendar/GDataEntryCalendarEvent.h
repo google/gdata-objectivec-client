@@ -22,6 +22,7 @@
 #import "GDataEntryEvent.h"
 #import "GDataWho.h"
 #import "GDataLink.h"
+#import "GDataExtendedProperty.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -84,6 +85,10 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 - (BOOL)isQuickAdd;
 - (void)setIsQuickAdd:(BOOL)flag;
 
+- (NSArray *)extendedProperties;
+- (void)setExtendedProperties:(NSArray *)arr;	
+- (void)addExtendedProperty:(GDataExtendedProperty *)obj;
+  
 - (GDataLink *)webContentLink;
 - (GDataWebContent *)webContent;
 @end
