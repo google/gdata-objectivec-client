@@ -41,6 +41,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 #import "GDataEntryContent.h"
 #import "GDataPerson.h"
 #import "GDataCategory.h"
+#import "GDataDeleted.h"
 #import "GDataBatchOperation.h"
 #import "GDataBatchID.h"
 #import "GDataBatchStatus.h"
@@ -113,12 +114,15 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
 
+// extension for entries which may include deleted elements
+- (BOOL)isDeleted;
+- (void)setIsDeleted:(BOOL)isDeleted;
+
 // extensions for Atom publishing control
 - (GDataAtomPubControl *)atomPubControl;
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj;
 
-// Batch support
-
+// batch support
 + (NSDictionary *)batchNamespaces;
 
 - (GDataBatchOperation *)batchOperation;

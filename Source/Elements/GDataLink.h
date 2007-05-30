@@ -93,7 +93,7 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 - (GDataLink *)feedLink;
 - (GDataLink *)postLink;
 - (GDataLink *)editLink;
-- (GDataLink *)mediaEditLink;
+- (GDataLink *)editMediaLink;
 - (GDataLink *)alternateLink;
 - (GDataLink *)selfLink;
 - (GDataLink *)nextLink;

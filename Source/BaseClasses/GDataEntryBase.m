@@ -42,6 +42,10 @@
   [super initExtensionDeclarations];
   
   Class entryClass = [self class];
+  
+  // deletion marking support
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataDeleted class]];
 
   // atom publishing control support
   [self addExtensionDeclarationForParentClass:entryClass
@@ -375,6 +379,22 @@
   
   if (![categories_ containsObject:obj]) {
     [categories_ addObject:obj];
+  }
+}
+
+// extension for deletion marking
+- (BOOL)isDeleted {
+  GDataDeleted *deleted = [self objectForExtensionClass:[GDataDeleted class]];
+  return (deleted != nil);
+}
+
+- (void)setIsDeleted:(BOOL)isDeleted {
+  if (isDeleted) {
+    // set the extension
+    [self setObject:[GDataDeleted deleted] forExtensionClass:[GDataDeleted class]]; 
+  } else {
+    // remove the extension
+    [self setObject:nil forExtensionClass:[GDataDeleted class]]; 
   }
 }
 

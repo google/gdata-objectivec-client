@@ -292,6 +292,11 @@
     { @"unknownChildren.@count.stringValue", @"2" },
     { @"", @"" },
     
+    { @"GDataDeleted", @"<gd:deleted/>" },
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+    { @"", @"" },
+    
     { @"GDataContactSection", @"<gd:contactSection label=\"Work\"> "
       "<gd:email address=\"jo@example.com\" />"
       "<gd:phoneNumber rel=\"http://schemas.google.com/g/2005#work\">(650) 555-1212</gd:phoneNumber> "
