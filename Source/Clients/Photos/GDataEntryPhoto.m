@@ -79,8 +79,6 @@
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataEXIFTags class]];
 
-  [GDataGeo addGeoExtensionDeclarationsToObject:self
-                                 forParentClass:entryClass];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -98,8 +96,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self size] withName:@"size"];
   [self addToArray:items objectDescriptionIfNonNil:[self timestamp] withName:@"timestamp"];
   [self addToArray:items objectDescriptionIfNonNil:[self version] withName:@"version"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
 
   [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
   [self addToArray:items objectDescriptionIfNonNil:[self EXIFTags] withName:@"exifTags"];
@@ -332,16 +328,6 @@
 
 - (void)setMediaGroup:(GDataMediaGroup *)obj {
   [self setObject:obj forExtensionClass:[GDataMediaGroup class]];
-}
-
-#pragma mark -
-
-- (GDataGeo *)geoLocation {
-  return [GDataGeo geoLocationForObject:self];
-}
-
-- (void)setGeoLocation:(GDataGeo *)geo {
-  [GDataGeo setGeoLocation:geo forObject:self];
 }
 
 #pragma mark -
