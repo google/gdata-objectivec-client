@@ -489,8 +489,6 @@
 
 - (void)testPhotosFeeds {
   
-  // TODO: test geoLocation
-  
   // Test a non-ASCII character and some html characters in a TextConstruct.  
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
   NSString *template = @"Test %C Alb%Cm";

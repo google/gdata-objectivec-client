@@ -71,10 +71,7 @@
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataPhotoLocation class]];
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataMediaGroup class]];
-  
-  [GDataGeo addGeoExtensionDeclarationsToObject:self
-                                 forParentClass:entryClass];
+                                   childClass:[GDataMediaGroup class]];  
 }
 
 - (id)init {
@@ -101,7 +98,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self photosLeft] withName:@"photosLeft"];
   [self addToArray:items objectDescriptionIfNonNil:[self photosUsed] withName:@"photosUsed"];
   [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
-  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
   return items;
 }
@@ -219,14 +215,6 @@
 - (void)setUsername:(NSString *)str {
   GDataPhotoUser *obj = [GDataPhotoUser valueWithString:str];
   [self setObject:obj forExtensionClass:[obj class]];  
-}
-
-- (GDataGeo *)geoLocation {
-  return [GDataGeo geoLocationForObject:self];
-}
-
-- (void)setGeoLocation:(GDataGeo *)geo {
-  [GDataGeo setGeoLocation:geo forObject:self];
 }
 
 - (GDataMediaGroup *)mediaGroup {

@@ -66,9 +66,6 @@
 - (NSNumber *)width; // long long
 - (void)setWidth:(NSNumber *)num;
 
-- (GDataGeo *)geoLocation;
-- (void)setGeoLocation:(GDataGeo *)geo;
-
 - (GDataMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataMediaGroup *)obj;
 
