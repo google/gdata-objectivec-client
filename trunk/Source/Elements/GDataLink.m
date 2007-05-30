@@ -271,8 +271,8 @@
   return [self linkWithRelAttributeValue:@"edit"]; 
 }
 
-- (GDataLink *)mediaEditLink {
-  return [self linkWithRelAttributeValue:@"media-edit"]; 
+- (GDataLink *)editMediaLink {
+  return [self linkWithRelAttributeValue:@"edit-media"]; 
 }
 
 - (GDataLink *)alternateLink {

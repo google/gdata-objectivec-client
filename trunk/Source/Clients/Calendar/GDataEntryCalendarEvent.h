@@ -86,9 +86,9 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 - (void)setIsQuickAdd:(BOOL)flag;
 
 - (NSArray *)extendedProperties;
-- (void)setExtendedProperties:(NSArray *)arr;	
+- (void)setExtendedProperties:(NSArray *)arr;
 - (void)addExtendedProperty:(GDataExtendedProperty *)obj;
-  
+
 - (GDataLink *)webContentLink;
 - (GDataWebContent *)webContent;
 @end

@@ -201,7 +201,9 @@
     { @"entries.0.locations.0.rel", nil },
     { @"entries.1.recurrence.stringValue", @"hasPrefix:DTSTART;VALUE=DATE:20061120" },
     { @"entries.1.reminders.0.minutes", @"10" },
+    { @"entries.1.isDeleted.stringValue", @"0" },
     { @"entries.3.locations.0.stringValue", @"Seattle" },
+    { @"entries.3.isDeleted.stringValue", @"1" },
         
     { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
     { @"entries.0.unknownChildren.@count.stringValue", @"0" },

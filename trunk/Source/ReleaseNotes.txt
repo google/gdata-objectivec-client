@@ -30,7 +30,10 @@ Changes since 1.0.0
 
 - Entry content is now a GDataEntryContent object rather than a text construct
   
-  
+- Add accidentally omitted extendedProperty interfaces to 
+  GDataEntryCalendarEvent and fix extendedProperty default element
+  name (thanks iwankerl)
+   
 Release 1.0.0
 16-April-2007
 

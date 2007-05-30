@@ -203,6 +203,23 @@
 @end
 
 @implementation GDataGeo
+
++ (NSDictionary *)geoNamespaces {
+  
+  NSMutableDictionary *namespaces = [NSMutableDictionary dictionary];
+  
+  [namespaces setObject:kGDataNamespaceGeoRSS
+                 forKey:kGDataNamespaceGeoRSSPrefix]; // "georss"
+  
+  [namespaces setObject:kGDataNamespaceGeoW3C 
+                 forKey:kGDataNamespaceGeoW3CPrefix]; // "geo"
+  
+  [namespaces setObject:kGDataNamespaceGeoGML
+                 forKey:kGDataNamespaceGeoGMLPrefix]; // "gml"
+  
+  return namespaces;  
+}
+
 + (id)geoWithLatitude:(double)latitude
             longitude:(double)longitude {
   GDataGeo* obj = [[[[self class] alloc] init] autorelease];

@@ -53,6 +53,8 @@ _EXTERN NSString* kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
   NSArray *values_; // One or more pairs of doubles (NSNumbers)
 }
 
++ (NSDictionary *)geoNamespaces;
+
 + (id)geoWithLatitude:(double)latitude
             longitude:(double)longitude;
 

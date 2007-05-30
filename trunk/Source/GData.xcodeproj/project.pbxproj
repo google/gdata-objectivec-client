@@ -370,6 +370,10 @@
 		4FDEA5990B39DE99007ACFE3 /* GDataHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */; };
 		4FDF27630B1F80BF00DFCF57 /* GDataElementsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF27610B1F80BF00DFCF57 /* GDataElementsTest.m */; };
 		4FDF2E460B21120F00DFCF57 /* GDataFeedTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDF2E450B21120F00DFCF57 /* GDataFeedTest.m */; };
+		4FE289300C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
+		4FE289310C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
+		4FE289320C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
+		4FE289360C078E7C00F12BDB /* GDataDeleted.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE289350C078E7C00F12BDB /* GDataDeleted.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE81F710B250E8600D8C135 /* GDataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE81F700B250E8600D8C135 /* GDataQuery.m */; };
 		4FE8203F0B26104600D8C135 /* GDataQueryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8203E0B26104600D8C135 /* GDataQueryTest.m */; };
 		4FE8216F0B262DA000D8C135 /* GDataQueryCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8216E0B262DA000D8C135 /* GDataQueryCalendar.m */; };
@@ -656,6 +660,8 @@
 		4FDF27620B1F80BF00DFCF57 /* GDataElementsTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataElementsTest.h; path = Tests/GDataElementsTest.h; sourceTree = "<group>"; };
 		4FDF2E450B21120F00DFCF57 /* GDataFeedTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedTest.m; path = Tests/GDataFeedTest.m; sourceTree = "<group>"; };
 		4FDF2E490B21121800DFCF57 /* GDataFeedTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedTest.h; path = Tests/GDataFeedTest.h; sourceTree = "<group>"; };
+		4FE2892F0C078E7200F12BDB /* GDataDeleted.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataDeleted.m; path = Elements/GDataDeleted.m; sourceTree = "<group>"; };
+		4FE289350C078E7C00F12BDB /* GDataDeleted.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDeleted.h; path = Elements/GDataDeleted.h; sourceTree = "<group>"; };
 		4FE81F6F0B250E8600D8C135 /* GDataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQuery.h; path = BaseClasses/GDataQuery.h; sourceTree = "<group>"; };
 		4FE81F700B250E8600D8C135 /* GDataQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQuery.m; path = BaseClasses/GDataQuery.m; sourceTree = "<group>"; };
 		4FE8203D0B26104600D8C135 /* GDataQueryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryTest.h; path = Tests/GDataQueryTest.h; sourceTree = "<group>"; };
@@ -864,6 +870,8 @@
 				4F14AE140B12A73A0072EBB8 /* GDataFeedLink.m */,
 				4F14ADB90B12A5C20072EBB8 /* GDataCategory.m */,
 				4F14ADBA0B12A5C20072EBB8 /* GDataCategory.h */,
+				4FE289350C078E7C00F12BDB /* GDataDeleted.h */,
+				4FE2892F0C078E7200F12BDB /* GDataDeleted.m */,
 				4F14AE8B0B138B710072EBB8 /* GDataWho.m */,
 				4F14AE8C0B138B710072EBB8 /* GDataWho.h */,
 				4F14AE9F0B138CA90072EBB8 /* GDataWhere.h */,
@@ -1234,6 +1242,7 @@
 				4F35DEB80C023B880038AE68 /* GDataServiceGooglePicasaWeb.h in Headers */,
 				4F35DEBA0C023B880038AE68 /* GDataQueryPicasaWeb.h in Headers */,
 				4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */,
+				4FE289360C078E7C00F12BDB /* GDataDeleted.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1471,6 +1480,7 @@
 				4F35DE9F0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
 				4FA1C5C20C03744A006D556A /* GDataEntryContent.m in Sources */,
 				4F777E070C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m in Sources */,
+				4FE289310C078E7200F12BDB /* GDataDeleted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1579,6 +1589,7 @@
 				4F35DEC80C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */,
 				4F35DEC90C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
 				4FA1C5C40C03744A006D556A /* GDataEntryContent.m in Sources */,
+				4FE289320C078E7200F12BDB /* GDataDeleted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1686,6 +1697,7 @@
 				4F35DEB90C023B880038AE68 /* GDataServiceGooglePicasaWeb.m in Sources */,
 				4F35DEBB0C023B880038AE68 /* GDataQueryPicasaWeb.m in Sources */,
 				4FA1C5C30C03744A006D556A /* GDataEntryContent.m in Sources */,
+				4FE289300C078E7200F12BDB /* GDataDeleted.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

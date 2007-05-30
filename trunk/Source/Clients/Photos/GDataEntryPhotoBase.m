@@ -19,7 +19,8 @@
 
 #define GDATAPHOTOBASE_DEFINE_GLOBALS 1
 #import "GDataEntryPhotoBase.h"
-
+#import "GDataMediaGroup.h"
+#import "GDataGeo.h"
 
 @implementation GDataEntryPhotoBase
 
@@ -32,6 +33,12 @@
   
   [namespaces setObject:kGDataNamespacePhotosEXIF 
                  forKey:kGDataNamespacePhotosEXIFPrefix]; // "exif"
+
+  [namespaces setObject:kGDataNamespaceMedia
+                 forKey:kGDataNamespaceMediaPrefix]; // "media"
+  
+  [namespaces addEntriesFromDictionary:[GDataGeo geoNamespaces]]; // geo, georss, gml
+  
   return namespaces;  
 }
 

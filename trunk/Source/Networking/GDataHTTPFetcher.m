@@ -372,7 +372,7 @@ CannotBeginFetch:
     
     NSURLCredential *credential = credential_;
     
-    if ([[challenge protectionSpace] isProxy]) {
+    if ([[challenge protectionSpace] isProxy] && proxyCredential_ != nil) {
       credential = proxyCredential_;
     }
     
