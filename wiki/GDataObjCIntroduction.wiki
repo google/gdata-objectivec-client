@@ -169,6 +169,33 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 }
 }}}
 
+== Upload progress monitoring ==
+
+When uploading large blocks of data, such as photos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
+
+{{{
+SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+[service setServiceUploadProgressSelector:progressSel];
+
+// then do the fetch
+//   GDataServiceTicket *ticket = [service fetch...];
+
+// If future tickets should not use the progress callback, 
+// set the selector in the service back to nil
+
+[service setServiceUploadProgressSelector:nil];
+}}}
+
+The callback is a method with a signature matching this:
+{{{
+- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+   ofTotalByteCount:(unsigned long long)dataLength {
+
+  // The progress method can obtain the ticket by 
+  // calling [stream monitorSource];
+}
+}}}
 
 == Status 304 and service data caching ==
 
@@ -254,6 +281,9 @@ To handle captchas, the fetch failed method might look something like this:
 _Tip_: to force a captcha request from the server for testing, provide an invalid e-mail address as the username several times in a row.
 
 Documentation on authentication for Google data APIs is available [http://code.google.com/apis/gdata/auth.html here].
+
+
+
 
 
 
