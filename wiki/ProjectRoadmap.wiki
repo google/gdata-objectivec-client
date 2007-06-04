@@ -1,20 +1,17 @@
 #summary Project Roadmap
 #labels Featured
 
-= Supported in 1.0 =
+= Supported in 1.1 =
 
 Base classes (feed, entry, elements, service, query, batch)
 
-Client-specific classes for Calendar, Spreadsheets, !GoogleBase
+Domain classes (ACL, partial Media, partial Geo)
+
+Client-specific classes for Calendar, Spreadsheets, !GoogleBase, !PicasaWeb
 
 Blogger support via base classes (see !BloggerSample application in the Examples directory)
 
 
 = Future Development =
 
-Picasa Web Albums
-
-Service improvements for upload progress monitoring, multi-part MIME uploads
-
 Other client services, by popular demand
-
