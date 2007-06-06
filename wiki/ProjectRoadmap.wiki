@@ -14,4 +14,11 @@ Blogger support via base classes (see !BloggerSample application in the Examples
 
 = Future Development =
 
+Implement remainder of Media element classes
+
+Add Blogger feed, entry, and service classes rather than rely on generic base classes
+
+Provide standard sign-in sheet nibs and controller
+
 Other client services, by popular demand
+
