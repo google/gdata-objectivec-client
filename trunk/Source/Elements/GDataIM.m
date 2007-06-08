@@ -84,7 +84,7 @@
   
   [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
-  [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"protocol"];
+  [self addToArray:items objectDescriptionIfNonNil:protocol_ withName:@"protocol"];
   
   return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
     [self class], self, [items componentsJoinedByString:@" "]];

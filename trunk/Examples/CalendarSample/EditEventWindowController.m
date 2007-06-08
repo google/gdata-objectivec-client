@@ -33,16 +33,7 @@
     // copy data from the event to our dialog's controls
     NSString *title = [[mEvent title] stringValue];
     NSString *desc = [[mEvent content] stringValue];
-    NSString *author = nil;
-    NSString *authorEmail = nil;
     
-    NSArray *authors = [mEvent authors];
-    if ([authors count] > 0) {
-      GDataPerson *authorPerson = [authors objectAtIndex:0];
-      author = [authorPerson name];
-      authorEmail = [authorPerson email];
-    }
-
     GDataDateTime *startTime = nil;
     GDataDateTime *endTime = nil;
     
@@ -64,8 +55,6 @@
     
     if (title) [mTitleField setStringValue:title];
     if (desc) [mDescriptionField setStringValue:desc];
-    if (author) [mCreatorField setStringValue:author];
-    if (authorEmail) [mCreatorEmailField setStringValue:authorEmail];
     
     if (startTime) {
       [mStartDatePicker setDateValue:[startTime date]];
@@ -129,8 +118,6 @@
   // copy from our dialog's controls into a copy of the original event
   NSString *title = [mTitleField stringValue];
   NSString *desc = [mDescriptionField stringValue];
-  NSString *creator = [mCreatorField stringValue];
-  NSString *creatorEmail = [mCreatorEmailField stringValue];
   NSString *reminderMin = [mReminderMinutesField stringValue];
   
   GDataEntryCalendarEvent *newEvent;
@@ -142,14 +129,6 @@
   
   [newEvent setTitle:[GDataTextConstruct textConstructWithString:title]];
   [newEvent setContent:[GDataTextConstruct textConstructWithString:desc]];
-  
-  NSMutableArray *authors = [NSMutableArray array];
-  if ([creator length]) {
-    GDataPerson *authorPerson = [GDataPerson personWithName:creator
-                                                      email:creatorEmail];
-    [authors addObject:authorPerson];
-  }
-  [newEvent setAuthors:authors];
   
   // times
   GDataDateTime *startDateTime = [GDataDateTime dateTimeWithDate:[mStartDatePicker dateValue]

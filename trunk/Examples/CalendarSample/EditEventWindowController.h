@@ -24,8 +24,6 @@
 @interface EditEventWindowController : NSWindowController {
   IBOutlet NSTextField *mTitleField;
   IBOutlet NSTextField *mDescriptionField;
-  IBOutlet NSTextField *mCreatorField;
-  IBOutlet NSTextField *mCreatorEmailField;
   IBOutlet NSTextField *mReminderMinutesField;
   IBOutlet NSDatePicker *mStartDatePicker;
   IBOutlet NSDatePicker *mEndDatePicker;

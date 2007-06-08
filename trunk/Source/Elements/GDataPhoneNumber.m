@@ -34,7 +34,7 @@
 
 + (GDataPhoneNumber *)phoneNumberWithString:(NSString *)str {
   GDataPhoneNumber *obj = [[[GDataPhoneNumber alloc] init] autorelease];
-  [obj setPhoneNumber:str];
+  [obj setStringValue:str];
   return obj;
 }
 
@@ -50,7 +50,7 @@
     [self setURI:[self stringForAttributeName:@"uri"
                                   fromElement:element]];
     
-    [self setPhoneNumber:[self stringValueFromElement:element]];
+    [self setStringValue:[self stringValueFromElement:element]];
   }
   return self;
 }
@@ -68,7 +68,7 @@
   [newObj setLabel:label_];
   [newObj setURI:uri_];
   [newObj setRel:rel_];
-  [newObj setPhoneNumber:phoneNumber_];
+  [newObj setStringValue:phoneNumber_];
   return newObj;
 }
 
@@ -80,7 +80,7 @@
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self URI], [other URI])
-    && AreEqualOrBothNil([self phoneNumber], [other phoneNumber]);
+    && AreEqualOrBothNil([self stringValue], [other stringValue]);
 }
 
 - (NSString *)description {
@@ -103,8 +103,8 @@
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
   [self addToElement:element attributeValueIfNonNil:[self URI] withName:@"uri"];
 
-  if ([self phoneNumber]) {
-    [element addStringValue:[self phoneNumber]];
+  if ([self stringValue]) {
+    [element addStringValue:[self stringValue]];
   }
   
   return element;
@@ -137,11 +137,11 @@
   uri_ = [str copy];
 }
 
-- (NSString *)phoneNumber {
+- (NSString *)stringValue {
   return phoneNumber_; 
 }
 
-- (void)setPhoneNumber:(NSString *)str {
+- (void)setStringValue:(NSString *)str {
   [phoneNumber_ autorelease];
   phoneNumber_ = [str copy];
 }
