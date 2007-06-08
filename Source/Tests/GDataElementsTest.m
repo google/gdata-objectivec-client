@@ -306,8 +306,8 @@
       "<gd:im protocol=\"sip\" address=\"foo@bar.example.com\"/>"
       "<gd:im protocol=\"aim\" address=\"fred the monster\"/> </gd:contactSection>" },
     { @"emails.0.address", @"jo@example.com" },
-    { @"phoneNumbers.0.phoneNumber", @"(650) 555-1212" },
-    { @"phoneNumbers.1.phoneNumber", @"(650) 555-1214" },
+    { @"phoneNumbers.0.stringValue", @"(650) 555-1212" },
+    { @"phoneNumbers.1.stringValue", @"(650) 555-1214" },
     { @"geoPts.0.label", @"fuzz" },
     { @"geoPts.0.lat.stringValue", @"37.42" },
     { @"geoPts.0.time.RFC3339String", @"2006-11-28T08:00:00-08:00" },
@@ -393,7 +393,7 @@
     { @"rel", kGDataPhoneNumberWork },
     { @"URI", @"tel:+1-425-555-8080;ext=52585" },
     { @"label", @"work" },
-    { @"phoneNumber", @"(425) 555-8080 ext. 52585" },
+    { @"stringValue", @"(425) 555-8080 ext. 52585" },
     { @"", @"" },
     
     { @"GDataPostalAddress", @"<gd:postalAddress label='work'>500 West 45th Street\nNew York, NY 10036</gd:postalAddress>" },

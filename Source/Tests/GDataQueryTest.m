@@ -31,7 +31,7 @@
   GDataDateTime* dateTime1 = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-29T07:35:59.000Z"];
   GDataDateTime* dateTime2 = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-30T07:35:59.000Z"];
   GDataDateTime* dateTime3 = [GDataDateTime dateTimeWithRFC3339String:@"2006-04-29T07:35:59.000Z"];
-  GDataDateTime* dateTime4 = [GDataDateTime dateTimeWithRFC3339String:@"2006-04-30T07:35:59.000Z"];
+  GDataDateTime* dateTime4 = [GDataDateTime dateTimeWithRFC3339String:@"2007-06-25T13:37:54.146+07:00"];
   
   // test query with feed URL but no params
   GDataQuery* query1 = [GDataQuery queryWithFeedURL:feedURL];
@@ -54,7 +54,7 @@
   
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2006-04-30T07:35:59Z"
+    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2007-06-25T13:37:54%2B07:00"
     "&published-min=2006-03-29T07:35:59Z&published-max=2006-03-30T07:35:59Z"
     "&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
@@ -88,7 +88,7 @@
   NSURL* resultURL2a = [query2 URL];
   NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/basic/"
     "-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/Zonk4"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2006-04-30T07:35:59Z&published-min=2006-03-29T07:35:59Z"
+    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2007-06-25T13:37:54%2B07:00&published-min=2006-03-29T07:35:59Z"
     "&published-max=2006-03-30T07:35:59Z&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
   
   STAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
@@ -166,6 +166,36 @@
     "orderby=column:foostuff&sq=ipm%3C4+and+hours%3E40&reverse=true";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Spreadsheet query 2 generation error");
+}
+
+- (void)testURLParameterEncoding {
+  
+  // test all characters between 0x20 and 0x7f
+  NSString *fullAsciiParam = @" !\"#$%&'()*+,-./"
+    "0123456789:;<=>?@"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
+    "abcdefghijklmnopqrstuvwxyz{|}~";
+  
+  // full URL encoding leaves +, =, and other URL-legal symbols intact
+  NSString *fullEncoded = @"%20!%22%23$%25&'()*+,-./"
+    "0123456789:;%3C=%3E?@"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60"
+    "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
+  
+  // parameter encoding encodes these too: "/+?&='"
+  // and encodes a space as a plus
+  NSString *paramEncoded = @"+!%22%23$%25%26%27()*%2B,-.%2F"
+    "0123456789:;%3C%3D%3E%3F@"
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60"
+    "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
+
+  NSString *resultFull, *resultParam;
+  
+  resultFull = [GDataQuery stringByURLEncodingString:fullAsciiParam];
+  STAssertEqualObjects(resultFull, fullEncoded, @"URL full encoding error");
+  
+  resultParam = [GDataQuery stringByURLEncodingStringParameter:fullAsciiParam];
+  STAssertEqualObjects(resultParam, paramEncoded, @"URL param encoding error");
 }
 
 @end

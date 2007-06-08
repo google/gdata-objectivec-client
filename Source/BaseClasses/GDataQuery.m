@@ -160,6 +160,7 @@
   [query setFullTextQueryString:fullTextQueryString_];
   [query setAuthor:author_];
   [query setOrderBy:orderBy_];
+  [query setShouldShowDeleted:shouldShowDeleted_];
   [query setPublishedMinDateTime:publishedMinDateTime_];
   [query setPublishedMaxDateTime:publishedMaxDateTime_];
   [query setUpdatedMinDateTime:updatedMinDateTime_];
@@ -225,6 +226,14 @@
 - (void)setOrderBy:(NSString *)str {
   [orderBy_ autorelease];  
   orderBy_ = [str copy];
+}
+
+- (BOOL)shouldShowDeleted {
+  return shouldShowDeleted_;
+}
+
+- (void)setShouldShowDeleted:(BOOL)flag {
+  shouldShowDeleted_ = flag; 
 }
 
 - (GDataDateTime *)publishedMinDateTime {
@@ -348,31 +357,35 @@
     [queryItems addObject:orderByItem];
   }
   
+  if (shouldShowDeleted_) {
+    [queryItems addObject:@"showdeleted=true"];
+  }
+  
   GDataDateTime *minUpdatedDate = [self updatedMinDateTime];
   if (minUpdatedDate) {
     NSString *minUpdateDateItem = [NSString stringWithFormat:@"updated-min=%@",
-      [minUpdatedDate RFC3339String]];
+      [GDataQuery stringByURLEncodingStringParameter:[minUpdatedDate RFC3339String]]];
     [queryItems addObject:minUpdateDateItem];
   }
   
   GDataDateTime *maxUpdatedDate = [self updatedMaxDateTime];
   if (maxUpdatedDate) {
     NSString *maxUpdateDateItem = [NSString stringWithFormat:@"updated-max=%@",
-      [maxUpdatedDate RFC3339String]];
+      [GDataQuery stringByURLEncodingStringParameter:[maxUpdatedDate RFC3339String]]];
     [queryItems addObject:maxUpdateDateItem];
   }
   
   GDataDateTime *minPublishedDate = [self publishedMinDateTime];
   if (minPublishedDate) {
     NSString *minPublishedDateItem = [NSString stringWithFormat:@"published-min=%@",
-      [minPublishedDate RFC3339String]];
+      [GDataQuery stringByURLEncodingStringParameter:[minPublishedDate RFC3339String]]];
     [queryItems addObject:minPublishedDateItem];
   }
   
   GDataDateTime *maxPublishedDate = [self publishedMaxDateTime];
   if (maxPublishedDate) {
     NSString *maxPublishedDateItem = [NSString stringWithFormat:@"published-max=%@",
-      [maxPublishedDate RFC3339String]];
+      [GDataQuery stringByURLEncodingStringParameter:[maxPublishedDate RFC3339String]]];
     [queryItems addObject:maxPublishedDateItem];
   }
   
@@ -394,9 +407,9 @@
   while ((paramKey = [paramEnum nextObject]) != nil) {
     NSString *paramValue = [customParameters valueForKey:paramKey];
     
-    NSString *param = [NSString stringWithFormat:@"%@=%@", 
-      paramKey, paramValue];
-    NSString *paramItem = [GDataQuery stringByURLEncodingStringParameter:param];
+    NSString *paramItem = [NSString stringWithFormat:@"%@=%@",
+      [GDataQuery stringByURLEncodingStringParameter:paramKey],
+      [GDataQuery stringByURLEncodingStringParameter:paramValue]];
 
     [queryItems addObject:paramItem];
   }
@@ -448,21 +461,40 @@
 }
 
 + (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
-  NSMutableString *mutableStr = [NSMutableString stringWithString:str];
   
-  // %-escape +, then replace spaces with plusses
-  [mutableStr replaceOccurrencesOfString:@"+"
-                              withString:@"%2B"
-                                 options:0 
-                                   range:NSMakeRange(0, [mutableStr length])];
-  [mutableStr replaceOccurrencesOfString:@" "
-                              withString:@"+"
-                                 options:0 
-                                   range:NSMakeRange(0, [mutableStr length])];
-  NSString *encodedStr = [self stringByURLEncodingString:mutableStr];
-  return encodedStr;
-  
-}
+  // NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
+  // some characters that should be escaped in URL parameters; we'll use CFURL
+  // to force the encoding of those
+  //
+  // We'll explictly leave spaces unescaped now, and replace them with +'s
+  //
+  // should we escape colons in parameters as well?
 
+  NSString *resultStr = str;
+
+  CFStringRef originalString = (CFStringRef) str;
+  CFStringRef leaveUnescaped = CFSTR(" ");
+  CFStringRef forceEscaped = CFSTR("/+?&='");
+  
+  CFStringRef escapedStr;
+  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                       originalString,
+                                                       leaveUnescaped, 
+                                                       forceEscaped,
+                                                       kCFStringEncodingUTF8);
+  
+  if (escapedStr) {
+    NSMutableString *mutableStr = [NSMutableString stringWithString:(NSString *)escapedStr];
+    CFRelease(escapedStr);
+
+    // replace spaces with plusses
+    [mutableStr replaceOccurrencesOfString:@" "
+                                withString:@"+"
+                                   options:0
+                                     range:NSMakeRange(0, [mutableStr length])];
+    resultStr = mutableStr;
+  }
+  return resultStr;
+}
 
 @end

@@ -39,6 +39,8 @@ _EXTERN NSString* kGDataPhoneNumberHome  _INITIALIZE_AS(@"http://schemas.google.
 _EXTERN NSString* kGDataPhoneNumberWork  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");
 _EXTERN NSString* kGDataPhoneNumberInternalExtensions  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#internal-extension");
 _EXTERN NSString* kGDataPhoneNumberFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#fax");
+_EXTERN NSString* kGDataPhoneNumberHomeFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home_fax");
+_EXTERN NSString* kGDataPhoneNumberWorkFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_fax");
 _EXTERN NSString* kGDataPhoneNumberPager  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#pager");
 _EXTERN NSString* kGDataPhoneNumberCar  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#car");
 _EXTERN NSString* kGDataPhoneNumberSatellite  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#satellite");
@@ -71,6 +73,6 @@ _EXTERN NSString* kGDataPhoneNumberOther  _INITIALIZE_AS(@"http://schemas.google
 - (void)setLabel:(NSString *)str;
 - (NSString *)URI;
 - (void)setURI:(NSString *)str;
-- (NSString *)phoneNumber;
-- (void)setPhoneNumber:(NSString *)str;
+- (NSString *)stringValue;
+- (void)setStringValue:(NSString *)str;
 @end

@@ -193,6 +193,10 @@
   }
 
   [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
+  
+  if ([self isDeleted]) {
+    [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:@"deleted"]; 
+  }
 
   return items;
 }

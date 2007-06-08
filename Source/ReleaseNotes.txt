@@ -4,6 +4,16 @@ Project site:     http://code.google.com/p/gdata-objectivec-client/
 DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 
+Changes since 1.1.0
+
+- Calendar sample app no longer attempts to set the author value for an event,
+  as the author is always the authenticated user
+  
+- Fixed escaping algorithm for query parameter generation.
+
+
+Release 1.1.0
+4-June-2007
 Changes since 1.0.0
 
 - Added photos, media, and geo data classes, and Picasa Web Albums service
@@ -33,6 +43,7 @@ Changes since 1.0.0
 - Add accidentally omitted extendedProperty interfaces to 
   GDataEntryCalendarEvent and fix extendedProperty default element
   name (thanks iwankerl)
+   
    
 Release 1.0.0
 16-April-2007

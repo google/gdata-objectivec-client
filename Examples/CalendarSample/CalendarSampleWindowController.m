@@ -553,13 +553,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   // make a new event
   GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];
   
-  // set a title, description, and author
+  // set a title and description (the author is the authenticated user adding
+  // the entry)
   [newEvent setTitle:[GDataTextConstruct textConstructWithString:@"Sample Added Event"]];
   [newEvent setContent:[GDataTextConstruct textConstructWithString:@"Description of sample added event"]];
-  
-  GDataPerson *authorPerson = [GDataPerson personWithName:@"Fred Flintstone"
-                                                    email:@"fred.flinstone@bounce.spuriousmail.com"];
-  [newEvent addAuthor:authorPerson];
   
   // start time now, end time in an hour, reminder 10 minutes before
   NSDate *anHourFromNow = [NSDate dateWithTimeIntervalSinceNow:60*60];

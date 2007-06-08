@@ -5,8 +5,6 @@
             CLASS = EditEventWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
-                mCreatorEmailField = NSTextField; 
-                mCreatorField = NSTextField; 
                 mDescriptionField = NSTextField; 
                 mEndDatePicker = NSDatePicker; 
                 mReminderMinutesField = NSTextField; 
