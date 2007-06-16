@@ -282,21 +282,34 @@ _Tip_: to force a captcha request from the server for testing, provide an invali
 
 Documentation on authentication for Google data APIs is available [http://code.google.com/apis/gdata/auth.html here].
 
+== Proxy Authentication ==
 
+In corporate or institutional settings where a password-protected proxy is in use, a proxy error may show up in the failure callback.  It would have constant error domain and code values, as shown here:
+{{{
+- (void)fetchTicket:(GDataServiceTicket *)ticket
+    failedWithError:(NSError *)error {
+  
+  if ([error code] == kGDataHTTPFetcherErrorAuthenticationChallengeFailed
+      && [[error domain] isEqual:kGDataHTTPFetcherErrorDomain]) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    NSURLAuthenticationChallenge *challenge;
+    challenge = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
+  }
+  ...
+}
+}}}
+If you want to handle such errors, use the
+challenge object to display a dialog showing information about the host and requesting
+account and password credentials for the proxy.  The proxy credentials can then
+be passed to the ticket's authentication fetcher:
+{{{
+ticket = [service fetchFeed...];
+if (proxyAccountName && proxyPassword) {
+  NSURLCredential *cred;
+  cred = [NSURLCredential credentialWithUser:proxyAccountName
+                                    password:proxyPassword
+                                 persistence:NSURLCredentialPersistencePermanent];
+  [[ticket authFetcher] setProxyCredential:cred];
+}
+}}}
 
