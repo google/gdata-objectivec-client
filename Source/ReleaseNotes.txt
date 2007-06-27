@@ -6,10 +6,18 @@ DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framewo
 
 Changes since 1.1.0
 
+- Added support for Google Code Search
+
+- Fixed escaping algorithm for query parameter generation.
+
 - Calendar sample app no longer attempts to set the author value for an event,
   as the author is always the authenticated user
   
-- Fixed escaping algorithm for query parameter generation.
+- Removed method for retrieving a calendar event feed for a username
+
+- Added ascending order parameter to Query base class
+
+- Added more Calendar query parameters
 
 
 Release 1.1.0

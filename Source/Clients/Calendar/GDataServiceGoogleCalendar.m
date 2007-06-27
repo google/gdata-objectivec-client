@@ -50,26 +50,6 @@
                         didFailSelector:failedSelector];
 }
 
-- (GDataServiceTicket *)fetchCalendarEventFeedForUsername:(NSString *)username
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector {
-  
-  // the calendar feed is the base feed plus the username
-  NSString *usernameEscaped = [self stringByURLEncoding:username];
-  
-  NSString *rootURLString = [self serviceRootURLString];
-  NSString *feedURLString = [rootURLString stringByAppendingFormat:@"%@", 
-    usernameEscaped];
-  
-  NSURL *url = [NSURL URLWithString:feedURLString];
-  
-  return [self fetchCalendarEventFeedWithURL:url
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
 - (GDataServiceTicket *)fetchCalendarFeedWithURL:(NSURL *)feedURL
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector

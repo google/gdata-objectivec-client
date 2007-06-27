@@ -45,6 +45,7 @@
   [query2 setFullTextQueryString:@"Darcy"];
   [query2 setAuthor:@"Fred Flintstone"];
   [query2 setOrderBy:@"random"];
+  [query2 setIsAscendingOrder:YES];
   [query2 setPublishedMinDateTime:dateTime1];
   [query2 setPublishedMaxDateTime:dateTime2];
   [query2 setUpdatedMinDateTime:dateTime3];
@@ -54,8 +55,9 @@
   
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2007-06-25T13:37:54%2B07:00"
-    "&published-min=2006-03-29T07:35:59Z&published-max=2006-03-30T07:35:59Z"
+    "?q=Darcy&author=Fred+Flintstone&orderby=random&sortorder=ascending"
+    "&updated-min=2006-04-29T07%3A35%3A59Z&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
+    "&published-min=2006-03-29T07%3A35%3A59Z&published-max=2006-03-30T07%3A35%3A59Z"
     "&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
   
@@ -88,9 +90,10 @@
   NSURL* resultURL2a = [query2 URL];
   NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/basic/"
     "-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/Zonk4"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&updated-min=2006-04-29T07:35:59Z&updated-max=2007-06-25T13:37:54%2B07:00&published-min=2006-03-29T07:35:59Z"
-    "&published-max=2006-03-30T07:35:59Z&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
-  
+    "?q=Darcy&author=Fred+Flintstone&orderby=random&sortorder=ascending"
+    "&updated-min=2006-04-29T07%3A35%3A59Z&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00&published-min=2006-03-29T07%3A35%3A59Z"
+    "&published-max=2006-03-30T07%3A35%3A59Z&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
+    
   STAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
   //NSLog(@"======+++++> %@", [[resultURL2a absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
   
@@ -105,9 +108,21 @@
   
   NSURL* resultURLC1 = [queryCal URL];
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "start-index=10&max-results=20&start-min=2006-03-29T07:35:59Z&start-max=2006-03-30T07:35:59Z";
-  STAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Category filter generation error");
-
+    "start-index=10&max-results=20&start-min=2006-03-29T07%3A35%3A59Z&start-max=2006-03-30T07%3A35%3A59Z";
+  STAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
+  
+  GDataQueryCalendar* queryCal2 = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+  [queryCal2 setRecurrenceExpansionStartTime:dateTime1];
+  [queryCal2 setRecurrenceExpansionEndTime:dateTime1];
+  [queryCal2 setShouldQueryAllFutureEvents:YES];
+  [queryCal2 setShouldExpandRecurrentEvents:YES];
+  
+  NSURL* resultURLC2 = [queryCal2 URL];
+  NSString *expectedC2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
+    "singleevents=true&futureevents=true&recurrence-expansion-start="
+    "2006-03-29T07%3A35%3A59Z&recurrence-expansion-end=2006-03-29T07%3A35%3A59Z";
+  STAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
+  
 }
 
 - (void)testGDataGoogleBaseQuery {
@@ -121,7 +136,7 @@
   
   NSURL* resultURLGB1 = [queryGB1 URL];
   NSString *expectedGB1 = @"http://www.google.com/base/feeds/snippets/?"
-    "orderby=modification_time&max-values=7&sortorder=ascending";
+    "orderby=modification_time&sortorder=ascending&max-values=7";
   STAssertEqualObjects([resultURLGB1 absoluteString], expectedGB1, @"Google Base query 1 generation error");
   
   // Try a "bq" base query
@@ -151,7 +166,7 @@
   
   NSURL* resultURL1 = [query1 URL];
   NSString *expected1 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
-    "max-row=7&min-col=2&max-col=12&min-row=3&range=A1:B2&return-empty=true";
+    "max-row=7&min-col=2&max-col=12&min-row=3&range=A1%3AB2&return-empty=true";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Spreadsheet query 1 generation error");
 
@@ -163,9 +178,39 @@
   
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
-    "orderby=column:foostuff&sq=ipm%3C4+and+hours%3E40&reverse=true";
+    "orderby=column%3Afoostuff&sq=ipm%3C4+and+hours%3E40&reverse=true";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Spreadsheet query 2 generation error");
+}
+
+- (void)testPicasaWebQuery {
+  
+  GDataQueryPicasaWeb *pwaQuery1;
+  pwaQuery1 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
+                                                   albumID:@"12345"
+                                                 albumName:nil
+                                                   photoID:@"987654321"];
+  [pwaQuery1 setKind:kGDataPicasaWebKindPhoto];
+  [pwaQuery1 setAccess:kGDataPicasaWebAccessPrivate];
+  [pwaQuery1 setThumbsize:80];
+  
+  NSURL* resultURL1 = [pwaQuery1 URL];
+  NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
+    "user/fredflintstone/albumid/12345/photoid/987654321?"
+    "thumbsize=80&access=private&kind=photo";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+                       @"PWA query 1 generation error");
+  
+  
+  GDataQueryPicasaWeb *pwaQuery2; 
+  pwaQuery2 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
+                                                   albumID:nil
+                                                 albumName:@"froggy photos"
+                                                   photoID:nil];  
+  NSURL* resultURL2 = [pwaQuery2 URL];
+  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/fredflintstone/album/froggy%20photos";
+  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+                       @"PWA query 2 generation error");
 }
 
 - (void)testURLParameterEncoding {
@@ -182,10 +227,10 @@
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60"
     "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
   
-  // parameter encoding encodes these too: "/+?&='"
+  // parameter encoding encodes these too: "!*'();:@&=+$,/?%#[]"
   // and encodes a space as a plus
-  NSString *paramEncoded = @"+!%22%23$%25%26%27()*%2B,-.%2F"
-    "0123456789:;%3C%3D%3E%3F@"
+  NSString *paramEncoded = @"+%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F"
+    "0123456789%3A%3B%3C%3D%3E%3F%40"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60"
     "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
 

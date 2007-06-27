@@ -79,6 +79,8 @@
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataEXIFTags class]];
 
+  [GDataGeo addGeoExtensionDeclarationsToObject:self
+                                 forParentClass:entryClass];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -99,7 +101,7 @@
 
   [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
   [self addToArray:items objectDescriptionIfNonNil:[self EXIFTags] withName:@"exifTags"];
-
+  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
   
   return items;
 }
@@ -331,6 +333,14 @@
 }
 
 #pragma mark -
+
+- (GDataGeo *)geoLocation {
+  return [GDataGeo geoLocationForObject:self];
+}
+
+- (void)setGeoLocation:(GDataGeo *)geo {
+  [GDataGeo setGeoLocation:geo forObject:self];
+}
 
 // EXIF tag support
 - (GDataEXIFTags *)EXIFTags {

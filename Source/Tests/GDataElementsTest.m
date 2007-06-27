@@ -36,6 +36,7 @@
                         " xmlns:gsx='http://schemas.google.com/spreadsheets/2006/extended' "
                         " xmlns:batch='http://schemas.google.com/gdata/batch' "
                         " xmlns:app='http://purl.org/atom/app#'"
+                        " xmlns:gcs='http://schemas.google.com/codesearch/2006'"
                         " xmlns:media='http://search.yahoo.com/mrss/'" 
                         " xmlns:gphoto='http://schemas.google.com/photos/2007'"
                         " xmlns:exif='http://schemas.google.com/photos/exif/2007'"
@@ -627,6 +628,38 @@
   
 }
 
+- (void)testCodeSearchElements {
+  
+  ElementTestKeyPathValues tests[] =
+  {     
+    { @"GDataCodeSearchFile", @"<gcs:file "
+      "name='3c-libwww-5.4.0/Library/src/wwwsys.h'/>" },
+    { @"name", @"3c-libwww-5.4.0/Library/src/wwwsys.h" },
+    { @"", @"" },
+      
+    { @"GDataCodeSearchPackage", @"<gcs:package "
+      "name='w3c-libwww-5.4.0.zip' "
+      "uri='http://www.w3.org/Library/Distribution/w3c-libwww-5.4.0.zip'/>" },
+    { @"name", @"w3c-libwww-5.4.0.zip" },
+    { @"URI", @"http://www.w3.org/Library/Distribution/w3c-libwww-5.4.0.zip" },
+    { @"", @"" },
+      
+    { @"GDataCodeSearchMatch", @"<gcs:match "
+      "lineNumber='23' type='text/html'>"
+      "found &lt;b&gt; query &lt;/b&gt;</gcs:match>" },
+    { @"lineNumberString", @"23" },
+    { @"type", @"text/html" },
+    { @"stringValue", @"found <b> query </b>" }, 
+    // note: this is properly unescaped for us by the XMLNode
+    { @"", @"" },
+      
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
+}
+
+
 - (void)testMediaElements {
   
   ElementTestKeyPathValues tests[] =
@@ -860,37 +893,6 @@
   
   [self runElementTests:tests];
   
-}
-
-
-- (void)testPicasaWebQuery {
-  
-  GDataQueryPicasaWeb *pwaQuery1;
-  pwaQuery1 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
-                                                   albumID:@"12345"
-                                                 albumName:nil
-                                                   photoID:@"987654321"];
-  [pwaQuery1 setKind:kGDataPicasaWebKindPhoto];
-  [pwaQuery1 setAccess:kGDataPicasaWebAccessPrivate];
-  [pwaQuery1 setThumbsize:80];
-    
-  NSURL* resultURL1 = [pwaQuery1 URL];
-  NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
-    "user/fredflintstone/albumid/12345/photoid/987654321?"
-    "thumbsize=80&access=private&kind=photo";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
-                       @"PWA query 1 generation error");
-  
-
-  GDataQueryPicasaWeb *pwaQuery2; 
-  pwaQuery2 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
-                                                   albumID:nil
-                                                 albumName:@"froggy photos"
-                                                   photoID:nil];  
-  NSURL* resultURL2 = [pwaQuery2 URL];
-  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/fredflintstone/album/froggy%20photos";
-  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
-                       @"PWA query 2 generation error");
 }
 
 

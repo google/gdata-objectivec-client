@@ -50,6 +50,7 @@
   NSString *fullTextQueryString_;
   NSString *author_;
   NSString *orderBy_;
+  int sortOrder_; // +1, -1, or 0 for unspecified
   BOOL shouldShowDeleted_;
   GDataDateTime *publishedMinDateTime_;
   GDataDateTime *publishedMaxDateTime_;
@@ -84,6 +85,9 @@
 
 - (NSString *)orderBy;
 - (void)setOrderBy:(NSString *)author;
+
+- (BOOL)isAscendingOrder;
+- (void)setIsAscendingOrder:(BOOL)flag;
 
 - (BOOL)shouldShowDeleted;
 - (void)setShouldShowDeleted:(BOOL)flag;

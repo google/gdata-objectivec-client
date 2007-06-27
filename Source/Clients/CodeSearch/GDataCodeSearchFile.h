@@ -14,21 +14,30 @@
 */
 
 //
-//  GDataQueryGoogleBase.h
+//  GDataCodeSearchFile.h
 //
 
 #import <Cocoa/Cocoa.h>
-#import "GDataQuery.h"
+#import "GDataObject.h"
 
-@interface GDataQueryGoogleBase : GDataQuery 
+// For code search files, like
+//
+//  <gcs:file name="w3c-libwww-5.4.0/Library/src/wwwsys.h"/>
+//
+// See http://code.google.com/apis/codesearch/reference.html
 
-+ (GDataQueryGoogleBase *)googleBaseQueryWithFeedURL:(NSURL *)feedURL;
+@interface GDataCodeSearchFile : GDataObject <NSCopying, GDataExtension> {
+  NSString *name_;
+}
 
-- (NSString *)googleBaseQuery;
-- (void)setGoogleBaseQuery:(NSString *)str;
++ (id)fileWithName:(NSString *)name;
 
-- (int)maxValues;
-- (void)setMaxValues:(int)val;
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent;
+
+- (NSXMLElement *)XMLElement;
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
 
 @end
-

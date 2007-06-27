@@ -487,7 +487,44 @@
   [self runTests:tests];
 }
 
+- (void)testCodeSearchFeed {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Feed of a user's albums
+    //
+    { @"GDataFeedCodeSearch", @"Tests/FeedCodeSearchTest1.xml" },
+      
+    // GDataFeedCodeSearch paths
+    { @"authors.0.name", @"Google Code Search" },
+    { @"authors.0.URI", @"http://www.google.com/codesearch" },
+
+    // GDataEntryCodeSearch paths
+    { @"entries.0.package.name", @"http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz" },
+    { @"entries.0.package.URI", @"http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz" },
+
+    { @"entries.1.package.name", @"http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz" },
+    { @"entries.1.package.URI", @"http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz" },
+    { @"entries.1.file.name", @"Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t" },
+    { @"entries.1.matches.0.lineNumberString", @"131" },
+    { @"entries.1.matches.0.type", @"text/html" },
+    { @"entries.1.matches.0.stringValue", @"hasPrefix:<pre>my %fellowship" },
+    { @"entries.1.matches.1.lineNumberString", @"132" },
+    { @"entries.1.matches.1.type", @"text/html" },
+    { @"entries.1.matches.1.stringValue", @"hasPrefix:<pre>is(%fellowship&lt;hobbit&gt;" },
+      
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
+  };
+  
+  [self runTests:tests];
+}
+
 - (void)testPhotosFeeds {
+  
+  // TODO: test geoLocation once we have a good sample of it
   
   // Test a non-ASCII character and some html characters in a TextConstruct.  
   // We'll allocate it dynamically since source code cannot contain non-ASCII.

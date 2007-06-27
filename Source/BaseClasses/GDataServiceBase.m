@@ -288,11 +288,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   // if we created the object (or we got empty data back, as from a GData
   // delete resource request) then we succeeded
   if (object != nil || dataLength == 0) {
-    [delegate performSelector:finishedSelector
-                   withObject:ticket
-                   withObject:object];
+    if (finishedSelector) {
+      [delegate performSelector:finishedSelector
+                     withObject:ticket
+                     withObject:object];
 
-    [ticket setHasCalledCallback:YES];
+    }
+    [ticket setFetchedObject:object];
     
   } else {
     if (error == nil) {
@@ -300,12 +302,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                   code:kGDataCouldNotConstructObjectError
                               userInfo:nil]; 
     }
-    [delegate performSelector:failedSelector
-                   withObject:ticket
-                   withObject:error];
-
-    [ticket setHasCalledCallback:YES];
+    if (failedSelector) {
+      [delegate performSelector:failedSelector
+                     withObject:ticket
+                     withObject:error];
+    }
+    [ticket setFetchError:error];
   }  
+
+  [ticket setHasCalledCallback:YES];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
@@ -331,30 +336,30 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *failedSelectorStr = [callbackDict objectForKey:kCallbackFailedSelectorKey];
   SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
   
-  if (failedSelector) {
-      
-    NSDictionary *userInfo = nil;
-    
-    if ([data length]) {
-      // typically, along with a failure status code is a string describing the 
-      // problem
-      NSString *failureStr = [[[NSString alloc] initWithData:data
-                                                     encoding:NSUTF8StringEncoding] autorelease];
-      if (failureStr) {
-        userInfo = [NSDictionary dictionaryWithObject:failureStr
-                                               forKey:@"error"];
-      }
+  NSDictionary *userInfo = nil;
+  
+  if ([data length]) {
+    // typically, along with a failure status code is a string describing the 
+    // problem
+    NSString *failureStr = [[[NSString alloc] initWithData:data
+                                                   encoding:NSUTF8StringEncoding] autorelease];
+    if (failureStr) {
+      userInfo = [NSDictionary dictionaryWithObject:failureStr
+                                             forKey:@"error"];
     }
+  }
     
-    NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain 
-                                         code:status
-                                     userInfo:userInfo];
+  NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain 
+                                       code:status
+                                   userInfo:userInfo];
+  if (failedSelector) {
     [delegate performSelector:failedSelector
                    withObject:ticket
                    withObject:error];
-
-    [ticket setHasCalledCallback:YES];
   }
+  
+  [ticket setFetchError:error];
+  [ticket setHasCalledCallback:YES];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithNetworkError:(NSError *)error {
@@ -374,9 +379,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [delegate performSelector:failedSelector
                    withObject:ticket
                    withObject:error]; 
-    
-    [ticket setHasCalledCallback:YES];
   }  
+  [ticket setFetchError:error];
+  [ticket setHasCalledCallback:YES];
 }
 
 - (NSMutableDictionary *)callbackDictionaryForObjectClass:(Class)objectClass
@@ -405,7 +410,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (ticket) [callbackDict setValue:ticket
                               forKey:kCallbackTicketKey];
   
-  // the stream data is retained only because of an NSInputStream but in 
+  // the stream data is retained only because of an NSInputStream bug in 
   // 10.4, as described below
   if (data) [callbackDict setValue:data forKey:kCallbackStreamDataKey];
   
@@ -420,6 +425,31 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 }
 
+- (BOOL)waitForTicket:(GDataServiceTicketBase *)ticket
+              timeout:(NSTimeInterval)timeoutInSeconds
+        fetchedObject:(GDataObject **)outObjectOrNil 
+                error:(NSError **)outErrorOrNil {
+  
+  NSDate* giveUpDate = [NSDate dateWithTimeIntervalSinceNow:timeoutInSeconds];
+  
+  // loop until the fetch completes with an object or an error,
+  // or until the timeout has expired
+  while (![ticket hasCalledCallback]
+         && [giveUpDate timeIntervalSinceNow] > 0) {
+    
+    // run the current run loop 1/1000 of a second to give the networking
+    // code a chance to work
+    NSDate *stopDate = [NSDate dateWithTimeIntervalSinceNow:0.001];
+    [[NSRunLoop currentRunLoop] runUntilDate:stopDate]; 
+  }
+  
+  GDataObject *fetchedObject = [ticket fetchedObject];
+  
+  if (outObjectOrNil) *outObjectOrNil = fetchedObject;
+  if (outErrorOrNil)  *outErrorOrNil = [ticket fetchError];
+  
+  return (fetchedObject != nil);
+}
 
 #pragma mark -
 
@@ -635,23 +665,32 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 // we want to percent-escape some of the characters that are otherwise
 // considered legal in URLs when we pass them as parameters
+//
+// Unlike [GDataQuery stringByURLEncodingStringParameter] this does not
+// replace spaces with + characters
+//
+// Reference: http://www.ietf.org/rfc/rfc3986.txt
+
 - (NSString *)stringByURLEncoding:(NSString *)param {
   
-  // make sure ':', '/', '+', '?', '&', '=', or ''' get handled
-  CFStringRef const dontEscapeStr = NULL;
-  CFStringRef const doEscapeStr = CFSTR(":/+?&='");
+  NSString *resultStr = param;
   
-  CFStringRef escapedStr =
-    CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-        (CFStringRef)param, dontEscapeStr, doEscapeStr, kCFStringEncodingUTF8);
+  CFStringRef originalString = (CFStringRef) param;
+  CFStringRef leaveUnescaped = NULL;
+  CFStringRef forceEscaped = CFSTR("!*'();:@&=+$,/?%#[]");
   
-  // we want to return an autoreleased string, but autoreleasing a CFString
-  // could run afoul of ObjC 2.0.
-  NSString *result = [NSString stringWithString:(NSString *)escapedStr];
+  CFStringRef escapedStr;
+  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                       originalString,
+                                                       leaveUnescaped, 
+                                                       forceEscaped,
+                                                       kCFStringEncodingUTF8);
   
-  CFRelease(escapedStr);
-  
-  return result;
+  if (escapedStr) {
+    resultStr = [NSString stringWithString:(NSString *)escapedStr];
+    CFRelease(escapedStr);
+  }
+  return resultStr;
 }
 
 // return a generic name and version for the current application; this avoids
@@ -686,6 +725,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [service_ release];
   [userData_ release];
   [objectFetcher_ release];
+  [fetchedObject_ release];
+  [fetchError_ release];
   
   [super dealloc];
 }
@@ -742,6 +783,24 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (BOOL)hasCalledCallback {
   return hasCalledCallback_;  
+}
+
+- (void)setFetchedObject:(GDataObject *)obj {
+  [fetchedObject_ autorelease];
+  fetchedObject_ = [obj retain];
+}
+
+- (GDataObject *)fetchedObject {
+  return fetchedObject_;
+}
+
+- (void)setFetchError:(NSError *)error {
+  [fetchError_ autorelease];
+  fetchError_ = [error retain];
+}
+
+- (NSError *)fetchError {
+  return fetchError_; 
 }
 
 - (void)setHasCalledCallback:(BOOL)flag {
