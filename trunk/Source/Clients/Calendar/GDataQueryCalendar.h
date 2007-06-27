@@ -17,6 +17,9 @@
 //  GDataQueryCalendar.h
 //
 
+// Calendar-specific query params, per 
+//   http://code.google.com/apis/calendar/reference.html#Parameters
+
 #import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
@@ -30,5 +33,18 @@
 - (GDataDateTime *)maximumStartTime;
 - (void)setMaximumStartTime:(GDataDateTime *)dateTime;
 
+- (GDataDateTime *)recurrenceExpansionStartTime;
+- (void)setRecurrenceExpansionStartTime:(GDataDateTime *)dateTime;
+
+- (GDataDateTime *)recurrenceExpansionEndTime;
+- (void)setRecurrenceExpansionEndTime:(GDataDateTime *)dateTime;
+
+// querying all future events overrides any parameters for
+// start-min, start-max, and recurrence expansion start and end times
+- (BOOL)shouldQueryAllFutureEvents;
+- (void)setShouldQueryAllFutureEvents:(BOOL)dateTime;
+
+- (BOOL)shouldExpandRecurrentEvents;
+- (void)setShouldExpandRecurrentEvents:(BOOL)dateTime;
 @end
 

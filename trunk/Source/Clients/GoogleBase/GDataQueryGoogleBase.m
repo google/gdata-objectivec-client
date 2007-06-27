@@ -39,17 +39,6 @@ NSString *const kBQParamName = @"bq";
   [self addCustomParameterWithName:kBQParamName value:str];
 }
 
-- (BOOL)isAscendingOrder {
-  NSString *str =  [self orderBy];
-  return str && [str isEqual:@"ascending"];
-}
-
-- (void)setIsAscendingOrder:(BOOL)flag {
-  NSString *param = (flag ? @"ascending" : @"descending");
-  [self addCustomParameterWithName:kSortByParamName
-                             value:param];
-}
-
 - (int)maxValues {
   int maxVal = 0;
   NSString *str =  [[self customParameters] objectForKey:kMaxValuesParamName];

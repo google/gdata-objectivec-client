@@ -117,6 +117,13 @@
 #import "GDataServiceGoogleSpreadsheet.h"
 #import "GDataQuerySpreadsheet.h"
 
+// Code Search
+#import "GDataCodeSearchFile.h"
+#import "GDataCodeSearchPackage.h"
+#import "GDataCodeSearchMatch.h"
+#import "GDataEntryCodeSearch.h"
+#import "GDataFeedCodeSearch.h"
+
 // Google Photos/Picasa Web
 #import "GDataPhotoElements.h"
 #import "GDataEXIFTags.h"

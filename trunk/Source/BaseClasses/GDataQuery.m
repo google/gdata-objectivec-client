@@ -160,6 +160,7 @@
   [query setFullTextQueryString:fullTextQueryString_];
   [query setAuthor:author_];
   [query setOrderBy:orderBy_];
+  if (sortOrder_ != 0) [query setIsAscendingOrder:(sortOrder_ > 0)];
   [query setShouldShowDeleted:shouldShowDeleted_];
   [query setPublishedMinDateTime:publishedMinDateTime_];
   [query setPublishedMaxDateTime:publishedMaxDateTime_];
@@ -226,6 +227,14 @@
 - (void)setOrderBy:(NSString *)str {
   [orderBy_ autorelease];  
   orderBy_ = [str copy];
+}
+
+- (BOOL)isAscendingOrder {
+  return sortOrder_ > 0; 
+}
+
+- (void)setIsAscendingOrder:(BOOL)flag {
+  sortOrder_ = (flag ? 1 : -1); 
 }
 
 - (BOOL)shouldShowDeleted {
@@ -357,6 +366,12 @@
     [queryItems addObject:orderByItem];
   }
   
+  if (sortOrder_ != 0) {
+    NSString *param = (sortOrder_ > 0 ? @"ascending" : @"descending");
+    NSString *sortOrderItem = [NSString stringWithFormat:@"sortorder=%@", param];
+    [queryItems addObject:sortOrderItem];
+  }
+  
   if (shouldShowDeleted_) {
     [queryItems addObject:@"showdeleted=true"];
   }
@@ -463,18 +478,18 @@
 + (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
   
   // NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
-  // some characters that should be escaped in URL parameters; we'll use CFURL
-  // to force the encoding of those
+  // some characters that should be escaped in URL parameters, like / and ?; 
+  // we'll use CFURL to force the encoding of those
   //
   // We'll explictly leave spaces unescaped now, and replace them with +'s
   //
-  // should we escape colons in parameters as well?
+  // Reference: http://www.ietf.org/rfc/rfc3986.txt
 
   NSString *resultStr = str;
 
   CFStringRef originalString = (CFStringRef) str;
   CFStringRef leaveUnescaped = CFSTR(" ");
-  CFStringRef forceEscaped = CFSTR("/+?&='");
+  CFStringRef forceEscaped = CFSTR("!*'();:@&=+$,/?%#[]");
   
   CFStringRef escapedStr;
   escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,

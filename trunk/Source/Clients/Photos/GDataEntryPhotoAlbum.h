@@ -62,6 +62,9 @@
 - (NSString *)username;
 - (void)setUsername:(NSString *)obj;
 
+- (GDataGeo *)geoLocation;
+- (void)setGeoLocation:(GDataGeo *)geo;
+
 - (GDataMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataMediaGroup *)obj;
 @end

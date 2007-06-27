@@ -49,6 +49,8 @@ enum {
   id userData_;
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
+  GDataObject *fetchedObject_;
+  NSError *fetchError_;
   BOOL hasCalledCallback_;
 }
 
@@ -74,6 +76,12 @@ enum {
 
 - (BOOL)hasCalledCallback;
 - (void)setHasCalledCallback:(BOOL)flag;
+
+- (void)setFetchedObject:(GDataObject *)obj;
+- (GDataObject *)fetchedObject;
+
+- (void)setFetchError:(NSError *)error;
+- (NSError *)fetchError;
 
 - (int)statusCode;  // server status from object fetch
 @end
@@ -180,6 +188,24 @@ enum {
                               password:(NSString *)password;
 - (NSString *)username;
 - (NSString *)password;
+
+// Wait synchronously for fetch to complete (strongly discouraged)
+// 
+// This just runs the current event loop until the fetch completes
+// or the timout limit is reached.  This may discard unexpected events
+// that occur while spinning, so it's really not appropriate for use
+// in serious applications.
+//
+// Returns true if an object was successfully fetched.  If the wait
+// timed out, returns false and the returned error is nil.
+//
+// The returned object or error, if any, will be already autoreleased
+//
+// This routine will likely be removed in some future releases of the library.
+- (BOOL)waitForTicket:(GDataServiceTicketBase *)ticket
+              timeout:(NSTimeInterval)timeoutInSeconds
+        fetchedObject:(GDataObject **)outObjectOrNil
+                error:(NSError **)outErrorOrNil;  
 
 // internal utilities
 - (NSString *)stringByURLEncoding:(NSString *)param;

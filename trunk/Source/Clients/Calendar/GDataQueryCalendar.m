@@ -19,18 +19,24 @@
 
 #import "GDataQueryCalendar.h"
 
+// query params per
+//   http://code.google.com/apis/calendar/reference.html#Parameters
+
 NSString *const kMinimumStartTimeParamName  = @"start-min";
 NSString *const kMaximumStartTimeParamName  = @"start-max";
+NSString *const kRecurrenceExpansionStartTimeParamName  = @"recurrence-expansion-start";
+NSString *const kRecurrenceExpansionEndTimeParamName  = @"recurrence-expansion-end";
+NSString *const kFutureEventsParamName  = @"futureevents";
+NSString *const kSingleEventsParamName = @"singleevents";
 
 @implementation GDataQueryCalendar
-
 
 + (GDataQueryCalendar *)calendarQueryWithFeedURL:(NSURL *)feedURL {
   return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 - (GDataDateTime *)minimumStartTime {
-  NSString *str =  [[self customParameters] objectForKey:kMinimumStartTimeParamName];
+  NSString *str = [[self customParameters] objectForKey:kMinimumStartTimeParamName];
   if (str) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
   }
@@ -43,7 +49,7 @@ NSString *const kMaximumStartTimeParamName  = @"start-max";
 }
 
 - (GDataDateTime *)maximumStartTime {
-  NSString *str =  [[self customParameters] objectForKey:kMaximumStartTimeParamName];
+  NSString *str = [[self customParameters] objectForKey:kMaximumStartTimeParamName];
   if (str) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
   }
@@ -53,6 +59,56 @@ NSString *const kMaximumStartTimeParamName  = @"start-max";
 - (void)setMaximumStartTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kMaximumStartTimeParamName
                              value:[dateTime RFC3339String]];
+}
+
+- (GDataDateTime *)recurrenceExpansionStartTime {
+  NSString *str = [[self customParameters] objectForKey:kRecurrenceExpansionStartTimeParamName];
+  if (str) {
+    return [GDataDateTime dateTimeWithRFC3339String:str];
+  }
+  return nil;
+}
+
+- (void)setRecurrenceExpansionStartTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kRecurrenceExpansionStartTimeParamName
+                             value:[dateTime RFC3339String]];
+}
+
+- (GDataDateTime *)recurrenceExpansionEndTime {
+  NSString *str = [[self customParameters] objectForKey:kRecurrenceExpansionEndTimeParamName];
+  if (str) {
+    return [GDataDateTime dateTimeWithRFC3339String:str];
+  }
+  return nil;
+}
+
+- (void)setRecurrenceExpansionEndTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kRecurrenceExpansionEndTimeParamName
+                             value:[dateTime RFC3339String]];
+}
+
+- (BOOL)shouldQueryAllFutureEvents {
+  NSString *val = [[self customParameters] objectForKey:kFutureEventsParamName];
+  return (val != nil) && 
+    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+}
+
+- (void)setShouldQueryAllFutureEvents:(BOOL)flag {
+  NSString *value = (flag ? @"true" : nil);
+  [self addCustomParameterWithName:kFutureEventsParamName
+                             value:value]; // nil value removes the parameter
+}
+
+- (BOOL)shouldExpandRecurrentEvents {
+  NSString *val = [[self customParameters] objectForKey:kSingleEventsParamName];
+  return (val != nil) && 
+    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+}
+
+- (void)setShouldExpandRecurrentEvents:(BOOL)flag {
+  NSString *value = (flag ? @"true" : nil);
+  [self addCustomParameterWithName:kSingleEventsParamName
+                             value:value]; // nil value removes the parameter
 }
 
 @end
