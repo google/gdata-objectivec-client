@@ -343,6 +343,10 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 - (IBAction)addTagClicked:(id)sender {
   [self addTagToSelectedPhoto]; 
 }
+
+- (IBAction)loggingCheckboxClicked:(id)sender {
+  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+}
 #pragma mark -
 
 // get an album service object with the current username/password

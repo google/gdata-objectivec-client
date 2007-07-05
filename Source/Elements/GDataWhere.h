@@ -21,6 +21,21 @@
 
 #import "GDataObject.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAWHERE_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// rel values
+_EXTERN NSString *kGDataEventWhereEventLocation _INITIALIZE_AS(nil); // use the enclosing event's location
+_EXTERN NSString *kGDataEventWhereAlternate _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.alternate");
+_EXTERN NSString *kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.parking");
+
 @class GDataEntryLink;
 
 // where element, as in

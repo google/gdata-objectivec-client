@@ -11,6 +11,7 @@
                 cancelPhotoFetchClicked = id; 
                 deleteClicked = id; 
                 getAlbumClicked = id; 
+                loggingCheckboxClicked = id; 
             }; 
             CLASS = PicasaWebSampleWindowController; 
             LANGUAGE = ObjC; 

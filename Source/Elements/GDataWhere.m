@@ -17,6 +17,7 @@
 //  GDataWhere.m
 //
 
+#define GDATAWHERE_DEFINE_GLOBALS 1
 #import "GDataWhere.h"
 
 #import "GDataEntryLink.h"

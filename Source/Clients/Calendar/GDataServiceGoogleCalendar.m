@@ -62,6 +62,24 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchCalendarEntryByInsertingEntry:(GDataEntryCalendar *)entryToInsert
+                                                forFeedURL:(NSURL *)calendarFeedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector {
+  
+  if ([entryToInsert namespaces] == nil) {
+    [entryToInsert setNamespaces:[GDataEntryCalendar calendarNamespaces]]; 
+  }
+  
+  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
+                                            forFeedURL:calendarFeedURL
+                                              delegate:delegate
+                                     didFinishSelector:finishedSelector
+                                       didFailSelector:failedSelector];
+  
+}
+
 - (GDataServiceTicket *)fetchCalendarEventFeedWithURL:(NSURL *)feedURL
                                              delegate:(id)delegate
                                     didFinishSelector:(SEL)finishedSelector

@@ -75,6 +75,14 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector;
 
+// finished callback (see above) is passed a GDataEntryCalendar
+- (GDataServiceTicket *)fetchCalendarEntryByInsertingEntry:(GDataEntryCalendar *)entryToInsert
+                                                forFeedURL:(NSURL *)calendarFeedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector;  
+
+
 // finished callback (see above) is passed a GDataFeedCalendarEvent
 - (GDataServiceTicket *)fetchCalendarEventFeedWithURL:(NSURL *)feedURL
                                              delegate:(id)delegate
@@ -82,7 +90,6 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
                                       didFailSelector:(SEL)failedSelector;
 
 // finished callback (see above) is passed the GDataEntryCalendarEvent
-//
 - (GDataServiceTicket *)fetchCalendarEventByInsertingEntry:(GDataEntryCalendarEvent *)entryToInsert
                                                 forFeedURL:(NSURL *)calendarEventFeedURL
                                                   delegate:(id)delegate

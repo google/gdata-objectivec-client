@@ -20,6 +20,7 @@
 #define GDATAHTTPFETCHER_DEFINE_GLOBALS 1
 
 #import "GDataHTTPFetcher.h"
+#import "GDataHTTPFetcherLogging.h"
 
 NSString* const kGDataLastModifiedHeader = @"Last-Modified";
 NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
@@ -31,7 +32,7 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
 - (void)setCookies:(NSArray *)newCookies
            inArray:(NSMutableArray *)cookieStorageArray;
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
-
+- (void)handleCookiesForResponse:(NSURLResponse *)response;
 @end
 
 @implementation GDataHTTPFetcher
@@ -70,6 +71,7 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
   [proxyCredential_ release];
   [postData_ release];
   [postStream_ release];
+  [loggedStreamData_ release];
   [response_ release];
   [userData_ release];
   [fetchHistory_ release];
@@ -125,9 +127,17 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
     if (postData_) {
       [request_ setHTTPBody:postData_];
     } else {
+      
+      // if logging is enabled, it needs a buffer to accumulate data from any
+      // NSInputStream used for uploading.  Logging will wrap the input
+      // stream with a stream that lets us keep a copy the data being read.
+      if ([GDataHTTPFetcher isLoggingEnabled] && postStream_ != nil) {
+        loggedStreamData_ = [[NSMutableData alloc] init];
+        [self logCapturePostStream];
+      }
+      
       [request_ setHTTPBodyStream:postStream_]; 
     }
-
   }
   
   if (fetchHistory_) {
@@ -304,6 +314,9 @@ CannotBeginFetch:
       }
     }
     redirectRequest = newRequest;
+    
+    // save cookies from the response
+    [self handleCookiesForResponse:redirectResponse];
   }
   return redirectRequest;
 }
@@ -319,10 +332,17 @@ CannotBeginFetch:
   [self setResponse:response];
 
   // save cookies from the response
+  [self handleCookiesForResponse:response];  
+}
+
+
+// handleCookiesForResponse: handles storage of cookies for responses passed to
+// connection:willSendRequest:redirectResponse: and connection:didReceiveResponse:
+- (void)handleCookiesForResponse:(NSURLResponse *)response {
   
   if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodSystemDefault) {
     
-   // do nothing special for NSURLConnection's default storage mechanism
+    // do nothing special for NSURLConnection's default storage mechanism
     
   } else if ([response respondsToSelector:@selector(allHeaderFields)]) {
     
@@ -338,11 +358,11 @@ CannotBeginFetch:
         
         NSMutableArray *cookieArray = nil;
         
-        // static cookies are stored in gGDataFetcherStaticCookies; fetchHistory cookies
-        // are stored in fetchHistory_'s kGDataHTTPFetcherHistoryCookiesKey
+        // static cookies are stored in gGDataFetcherStaticCookies; fetchHistory 
+        // cookies are stored in fetchHistory_'s kGDataHTTPFetcherHistoryCookiesKey
         
         if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodStatic) {
-
+          
           cookieArray = gGDataFetcherStaticCookies;
           
         } else if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodFetchHistory
@@ -497,6 +517,8 @@ CannotBeginFetch:
 
   [[self retain] autorelease]; // in case the callback releases us
   
+  [self logFetchWithError:nil];
+  
   int status = [self statusAfterHandlingNotModifiedError];
   
   // if there's an error status and the client gave us a status error
@@ -524,6 +546,8 @@ CannotBeginFetch:
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 
+  [self logFetchWithError:nil];
+  
   if (networkFailedSEL_) {
     [[self retain] autorelease]; // in case the callback releases us
 

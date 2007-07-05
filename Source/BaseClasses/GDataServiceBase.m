@@ -134,6 +134,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                               @encode(unsigned long long), 0);
     
   NSInputStream *uploadStream = nil;
+  NSData *uploadData = nil;
   NSData *dataToRetain = nil;
   
   if (objectToPost) {
@@ -145,6 +146,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     NSInputStream *contentInputStream = nil;
     unsigned long long contentLength = 0;
     NSDictionary *contentHeaders = nil;
+    
+    SEL progressSelector = [ticket uploadProgressSelector];
 
     if ([objectToPost generateContentInputStream:&contentInputStream
                                           length:&contentLength
@@ -161,27 +164,33 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       
     } else {
       
-      // we'll make a default input stream from the XML data
-      NSString* xmlString = [[objectToPost XMLElement] XMLString];    
-      NSData* xmlData = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
-
-      contentInputStream = [NSInputStream inputStreamWithData:xmlData];
+      NSData* xmlData = [[objectToPost XMLDocument] XMLData];
       contentLength = [xmlData length];
       
-      // NSInputStream fails to retain or copy its data in 10.4, so we will
-      // retain it in the callback dictionary.  We won't use the data in the
-      // callbacks at all, but retaining it will ensure it's still around until
-      // the upload completes.
-      //
-      // If it weren't for this bug in NSInputStream, we could just have
-      // GDataObject's -contentInputStream method create the input stream for
-      // us, so this service class wouldn't ever need to call XMLElement.
-      dataToRetain = xmlData; 
+      if (progressSelector == nil) {
+        // there is no progress selector; we can post plain NSData, which
+        // is simpler because it survives http redirects
+        uploadData = xmlData;
+        
+      } else {
+        // there is a progress selector, so we need to be posting a stream
+        //
+        // we'll make a default input stream from the XML data
+        contentInputStream = [NSInputStream inputStreamWithData:xmlData];
+        
+        // NSInputStream fails to retain or copy its data in 10.4, so we will
+        // retain it in the callback dictionary.  We won't use the data in the
+        // callbacks at all, but retaining it will ensure it's still around until
+        // the upload completes.
+        //
+        // If it weren't for this bug in NSInputStream, we could just have
+        // GDataObject's -contentInputStream method create the input stream for
+        // us, so this service class wouldn't ever need to call XMLElement.
+        dataToRetain = xmlData; 
+      }
     }
 
     uploadStream = contentInputStream;
-    
-    SEL progressSelector = [ticket uploadProgressSelector];
     if (progressSelector != nil) {
       
       // the caller is monitoring the upload progress, so wrap the input stream
@@ -207,8 +216,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   if (uploadStream) {
     [fetcher setPostStream:uploadStream]; 
+  } else if (uploadData) {
+    [fetcher setPostData:uploadData]; 
   }
-
+  
   // add cookie and last-modified-since history
   [fetcher setFetchHistory:fetchHistory_];
   

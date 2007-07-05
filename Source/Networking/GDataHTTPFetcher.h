@@ -193,6 +193,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
   NSData *postData_;
   NSInputStream *postStream_;
+  NSMutableData *loggedStreamData_;
   NSURLResponse *response_;         // set in connection:didReceiveResponse:
   id delegate_;                     // WEAK (though retained during an open connection)
   SEL finishedSEL_;                 // should by implemented by delegate
