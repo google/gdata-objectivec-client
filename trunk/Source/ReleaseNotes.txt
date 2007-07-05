@@ -8,7 +8,11 @@ Changes since 1.1.0
 
 - Added support for Google Code Search
 
+- Added http logging (see GDataHTTPFetcherLogging.h)
+
 - Fixed escaping algorithm for query parameter generation.
+
+- Store cookies on redirects (thanks riggle)
 
 - Calendar sample app no longer attempts to set the author value for an event,
   as the author is always the authenticated user
@@ -18,6 +22,11 @@ Changes since 1.1.0
 - Added ascending order parameter to Query base class
 
 - Added more Calendar query parameters
+
+- Authentication errors are now also returned in the userInfo with the "error"
+  key (thanks ghulands)
+  
+- Add rel constants for GDataWhere (thanks riggle)
 
 
 Release 1.1.0

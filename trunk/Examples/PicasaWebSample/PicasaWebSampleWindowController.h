@@ -72,4 +72,5 @@
 - (IBAction)addTagClicked:(id)sender;
 - (IBAction)addCommentClicked:(id)sender;
 
+- (IBAction)loggingCheckboxClicked:(id)sender;
 @end

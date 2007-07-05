@@ -29,6 +29,9 @@
   NSString *name_;
 }
 
++ (id)propertyWithName:(NSString *)name
+                 value:(NSString *)value;
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
 

@@ -139,3 +139,37 @@
 }
 @end
 
+@implementation NSArray(GDataCategoryArray)
+
+// return all categories with the specified scheme
+- (NSArray *)categoriesWithScheme:(NSString *)scheme {
+  
+  NSMutableArray *matches = [NSMutableArray array];
+  NSEnumerator *enumerator = [self objectEnumerator];
+  GDataCategory *category;
+  
+  while ((category = [enumerator nextObject]) != nil) {
+    NSString *scheme = [category scheme];
+    if (scheme != nil && [scheme isEqual:scheme]) {
+      [matches addObject:category];
+    }
+  }
+  return matches;
+}
+
+// return all categories whose schemes have the specified prefix
+- (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix {
+  NSMutableArray *matches = [NSMutableArray array];
+  NSEnumerator *enumerator = [self objectEnumerator];
+  GDataCategory *category;
+  
+  while ((category = [enumerator nextObject]) != nil) {
+    NSString *scheme = [category scheme];
+    if (scheme != nil && [scheme hasPrefix:prefix]) {
+      [matches addObject:category];
+    }
+  }
+  return matches;
+}
+
+@end

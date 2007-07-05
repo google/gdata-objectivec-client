@@ -50,3 +50,9 @@
 - (void)setLabelLang:(NSString *)str;
 
 @end
+
+@interface NSArray(GDataCategoryArray)
+// utilities for extracting a subset of categories
+- (NSArray *)categoriesWithScheme:(NSString *)scheme;
+- (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix;
+@end

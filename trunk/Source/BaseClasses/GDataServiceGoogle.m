@@ -173,13 +173,15 @@ enum {
 
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
   
-  NSDictionary *userInfo = nil;
+  NSMutableDictionary *userInfo = nil;
   if ([data length]) {
     // put user-readable error info into the error object
     NSString *failureInfoStr = [[[NSString alloc] initWithData:data
                                                       encoding:NSUTF8StringEncoding] autorelease];
     if (failureInfoStr) {
-      userInfo = [GDataServiceGoogle dictionaryWithResponseString:failureInfoStr];
+      // parse each line of x=y into an entry in a dictionary
+      NSDictionary *responseDict = [GDataServiceGoogle dictionaryWithResponseString:failureInfoStr];
+      userInfo = [NSMutableDictionary dictionaryWithDictionary:responseDict];
       
       // look for the partial-path URL to a captch image (which the user
       // can retrieve from the userInfo later with the -captchaURL method)
@@ -187,11 +189,19 @@ enum {
       if ([str length] > 0) {
         
         // since we know the sign-in domain now, make a string with the full URL
-        userInfo = [[userInfo mutableCopy] autorelease];
         NSString *captchaURLString = [NSString stringWithFormat:@"https://%@/accounts/%@",
           [self signInDomain], str];
         
-        [userInfo setValue:captchaURLString forKey:kCaptchaFullURLKey];
+        [userInfo setObject:captchaURLString forKey:kCaptchaFullURLKey];
+      }
+      
+      // The auth server returns errors as "Error" but generally the library
+      // provides errors in the userInfo as "error".  We'll copy over the
+      // auth server's error to "error" as a convenience to clients, and hope
+      // few are confused about why the error appears twice in the dictionary.
+      NSString *authErrStr = [userInfo authenticationError];
+      if (authErrStr != nil && [userInfo objectForKey:@"error"] == nil) {
+        [userInfo setObject:authErrStr forKey:@"error"];
       }
     }
   }

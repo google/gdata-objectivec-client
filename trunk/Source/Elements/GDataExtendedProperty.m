@@ -27,6 +27,15 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"extendedProperty"; }
 
++ (id)propertyWithName:(NSString *)name
+                 value:(NSString *)value {
+
+  GDataExtendedProperty* obj = [[[GDataExtendedProperty alloc] init] autorelease];
+  [obj setName:name];
+  [obj setValue:value];
+  return obj;
+}
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
   self = [super initWithXMLElement:element
@@ -73,7 +82,7 @@
 }
 
 - (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:extendedProperty"];
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
   
   [self addToElement:element attributeValueIfNonNil:[self value] withName:@"value"];
   [self addToElement:element attributeValueIfNonNil:[self name] withName:@"name"];

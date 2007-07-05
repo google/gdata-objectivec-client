@@ -81,7 +81,7 @@
     
     numBytesRead_ += numRead;
     
-    if (monitorDelegate_) {
+    if (monitorDelegate_ && monitorSelector_) {
       
       // call the monitor delegate with the number of bytes read and the
       // total bytes read
