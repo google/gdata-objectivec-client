@@ -47,6 +47,7 @@ enum {
 @interface GDataServiceTicketBase : NSObject {
   GDataServiceBase *service_;
   id userData_;
+  NSDictionary *surrogates_;
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
   GDataObject *fetchedObject_;
@@ -67,6 +68,9 @@ enum {
 
 - (id)userData;
 - (void)setUserData:(id)obj;
+
+- (NSDictionary *)surrogates;
+- (void)setSurrogates:(NSDictionary *)dict;
 
 - (GDataHTTPFetcher *)objectFetcher;
 - (void)setObjectFetcher:(GDataHTTPFetcher *)fetcher;
@@ -94,6 +98,7 @@ enum {
   NSMutableData *password_;
   
   NSString *serviceUserData_; // initial value for userData in future tickets
+  NSDictionary *serviceSurrogates_; // initial value for surrogates in future tickets
   
   SEL serviceUploadProgressSelector_; // optional
   
@@ -168,6 +173,21 @@ enum {
 // method will return the value.
 - (void)setServiceUserData:(id)userData;
 - (id)serviceUserData;
+
+// Set the surrogates to be used for future tickets.  Surrogates are subclasses
+// to be used instead of standard classes when creating objects from the XML.
+// For example, this code will make the framework generate objects
+// using MyCalendarEntrySubclass instead of GDataEntryCalendar and
+// MyCalendarEventSubclass instead of GDataEntryCalendarEvent.
+//
+//  NSDictionary *surrogates = [NSDictionary dictionaryWithObjectsAndKeys:
+//    [MyCalendarEntrySubclass class], [GDataEntryCalendar class],
+//    [MyCalendarEventSubclass class], [GDataEntryCalendarEvent class],
+//    nil];
+//  [calendarService setServiceSurrogates:surrogates];
+//
+- (NSDictionary *)serviceSurrogates;
+- (void)setServiceSurrogates:(NSDictionary *)dict;
 
 // The service uploadProgressSelector becomes the initial value for each future
 // ticket's uploadProgressSelector.

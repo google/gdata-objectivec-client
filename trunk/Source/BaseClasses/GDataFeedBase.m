@@ -165,21 +165,17 @@
   // allocate individual entries
   Class entryClass = [self classForEntries];
   
-  if ([rootName isEqual:@"entry"]) {
-    // for add & modify we'll get back XML with single entry, not a feed
-    id entry = [[[entryClass alloc] initWithXMLElement:root
-                                                parent:self] autorelease];
-    if (entry) {
-      [self addEntry:entry];
-    }
-  } else {
-    // create entries of the proper class from each "entry" element
-    NSArray *entries = [self objectsForChildrenOfElement:root
-                                           qualifiedName:@"entry"
-                                            namespaceURI:kGDataNamespaceAtom
-                                             objectClass:entryClass];
-    [self setEntries:entries];
-  }          
+#if DEBUG
+  NSAssert1([rootName isEqual:@"feed"], 
+            @"initing a feed from a non-feed element (%@)", rootName);
+#endif
+  
+  // create entries of the proper class from each "entry" element
+  NSArray *entries = [self objectsForChildrenOfElement:root
+                                         qualifiedName:@"entry"
+                                          namespaceURI:kGDataNamespaceAtom
+                                           objectClass:entryClass];
+  [self setEntries:entries];
 }
 
 

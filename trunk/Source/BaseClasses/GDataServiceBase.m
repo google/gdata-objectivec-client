@@ -126,6 +126,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (!ticket) {
     ticket = [GDataServiceTicketBase ticketForService:self];
     [ticket setUserData:serviceUserData_];
+    [ticket setSurrogates:serviceSurrogates_];
     [ticket setUploadProgressSelector:serviceUploadProgressSelector_];
   }
   
@@ -285,8 +286,18 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       if (!objectClass) {
         objectClass = [GDataObject objectClassForXMLElement:root]; 
       }
+      
+      // see if the top-level class for the XML is listed in the surrogates; 
+      // if so, instantiate the surrogate class instead
+      NSDictionary *surrogates = [ticket surrogates];
+      Class baseSurrogate = [surrogates objectForKey:objectClass];
+      if (baseSurrogate) {
+        objectClass = baseSurrogate; 
+      }
+
       object = [[[objectClass alloc] initWithXMLElement:root
-                                                 parent:nil] autorelease];
+                                                 parent:nil
+                                             surrogates:surrogates] autorelease];
     } else {
 #if DEBUG
       NSString *invalidXML = [[[NSString alloc] initWithData:data
@@ -664,6 +675,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return serviceUserData_;
 }
 
+- (NSDictionary *)serviceSurrogates {
+  return serviceSurrogates_;
+}
+
+- (void)setServiceSurrogates:(NSDictionary *)dict {
+  [serviceSurrogates_ autorelease]; 
+  serviceSurrogates_ = [dict retain];
+}
+
 - (void)setServiceUploadProgressSelector:(SEL)progressSelector {
   serviceUploadProgressSelector_ = progressSelector; 
 }
@@ -735,6 +755,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)dealloc {
   [service_ release];
   [userData_ release];
+  [surrogates_ release];
   [objectFetcher_ release];
   [fetchedObject_ release];
   [fetchError_ release];
@@ -769,6 +790,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)setUserData:(id)obj {
   [userData_ autorelease];
   userData_ = [obj retain];
+}
+
+- (NSDictionary *)surrogates {
+  return surrogates_;
+}
+
+- (void)setSurrogates:(NSDictionary *)dict {
+  [surrogates_ autorelease]; 
+  surrogates_ = [dict retain];
 }
 
 - (void)setUploadProgressSelector:(SEL)progressSelector {

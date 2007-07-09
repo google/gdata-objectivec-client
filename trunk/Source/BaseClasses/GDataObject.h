@@ -162,12 +162,24 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
   NSMutableArray *unknownChildren_;    
   NSMutableArray *unknownAttributes_;  
   
+  // mapping of standard classes to user's surrogate subclasses, used when
+  // creating objects from XML
+  NSDictionary *surrogates_;
+  
   // anything defined by the client; retained but not used internally
   id userData_; 
 }
 
 - (id)copyWithZone:(NSZone *)zone;
 
+// this init method should  be used only when creating the base of a tree
+// containing surrogates (the surrogate map is a dictionary of
+// standard GDataObject classes to replacement subclasses); this method
+// calls through to [self initWithXMLElement:parent:]
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent
+              surrogates:(NSDictionary *)surrogates;
+  
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent; // subclasses must override
 - (NSXMLElement *)XMLElement; // subclasses must override
@@ -196,6 +208,10 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 - (void)setParent:(GDataObject *)obj;
 - (GDataObject *)parent;
 
+// surrogate lists for when alloc'ing classes from XML
+- (void)setSurrogates:(NSDictionary *)surrogates;
+- (NSDictionary *)surrogates;
+
 // userData is available for client use; retained by GDataObject
 - (void)setUserData:(id)obj; 
 - (id)userData;
@@ -208,7 +224,7 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 - (void)setUnknownAttributes:(NSArray *)arr;
 - (NSArray *)unknownAttributes;
 
-
+  
 //
 // Extensions
 //
@@ -288,6 +304,10 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 - (NSXMLElement *)childWithQualifiedName:(NSString *)localName
                             namespaceURI:(NSString *)namespaceURI
                              fromElement:(NSXMLElement *)parentElement;
+
+// searches up the parent tree to find a surrogate for the standard class; 
+// if there is  no surrogate, returns the standard class itself
+- (Class)classOrSurrogateForClass:(Class)standardClass;
 
 // element parsing
 

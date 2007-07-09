@@ -21,6 +21,18 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid_issue_with_ocunit.html
 
+@interface MyGDataFeedSpreadsheetSurrogate: GDataFeedSpreadsheet
+- (NSString *)mySurrogateFeedName;
+@end
+
+@interface MyGDataEntrySpreadsheetSurrogate: GDataEntrySpreadsheet
+- (NSString *)mySurrogateEntryName;
+@end
+
+@interface MyGDataLinkSurrogate: GDataLink
+- (NSString *)mySurrogateLinkName;
+@end
+
 @implementation GDataServiceTest
 
 static int kServerPortNumber = 54579;
@@ -173,6 +185,51 @@ static int gFetchCounter = 0;
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   
   
+  //
+  // test:  download feed only, no auth, surrogate feed class
+  //
+  [self resetFetchResponse];
+
+  NSDictionary *surrogates = [NSDictionary dictionaryWithObjectsAndKeys:
+    [MyGDataFeedSpreadsheetSurrogate class], [GDataFeedSpreadsheet class],
+    [MyGDataEntrySpreadsheetSurrogate class], [GDataEntrySpreadsheet class],
+    [MyGDataLinkSurrogate class], [GDataLink class],
+    nil];
+  [service_ setServiceSurrogates:surrogates];
+  
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:feedURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  // we'll call into the GDataObject to get its ID to confirm it's good
+  
+  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+                       sheetID, @"fetching %@", feedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  
+  // be sure we really got an instance of the surrogate feed, entry, and
+  // link classes
+  MyGDataFeedSpreadsheetSurrogate *feed = (MyGDataFeedSpreadsheetSurrogate *)fetchedObject_;
+  STAssertEqualObjects([feed mySurrogateFeedName],
+                       @"mySurrogateFeedNameBar", @"fetching %@ with surrogate", feedURL);
+  
+  MyGDataEntrySpreadsheetSurrogate *entry = [[feed entries] objectAtIndex:0];
+  STAssertEqualObjects([entry mySurrogateEntryName],
+                       @"mySurrogateEntryNameFoo", @"fetching %@ with surrogate", feedURL);
+  
+  MyGDataLinkSurrogate *link = [[entry links] objectAtIndex:0];
+  STAssertEqualObjects([link mySurrogateLinkName],
+                       @"mySurrogateLinkNameBaz", @"fetching %@ with surrogate", feedURL);
+  
+  [service_ setServiceSurrogates:nil];
+
   //
   // test:  download feed only, successful auth, with custom ticket userdata
   //
@@ -412,3 +469,22 @@ static int gFetchCounter = 0;
 }
 
 @end
+
+@implementation MyGDataFeedSpreadsheetSurrogate
+- (NSString *)mySurrogateFeedName {
+  return @"mySurrogateFeedNameBar";
+}
+@end
+
+@implementation MyGDataEntrySpreadsheetSurrogate
+- (NSString *)mySurrogateEntryName {
+  return @"mySurrogateEntryNameFoo";
+}
+@end
+
+@implementation MyGDataLinkSurrogate
+- (NSString *)mySurrogateLinkName {
+  return @"mySurrogateLinkNameBaz";
+}
+@end
+

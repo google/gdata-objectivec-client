@@ -92,7 +92,7 @@ _EXTERN NSString *kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http://sche
 @interface GDataWhen (GDataCalendarEntryEventExtensions)
 - (NSArray *)reminders;
 - (void)setReminders:(NSArray *)arr;
-- (void)addReminders:(GDataReminder *)obj;
+- (void)addReminder:(GDataReminder *)obj;
 @end
 
 @interface GDataEntryEvent : GDataEntryBase {
