@@ -73,6 +73,18 @@
   return self;
 }
 
+// this init routine is only used when passing in a top-level surrogates
+// dictionary.
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent
+              surrogates:(NSDictionary *)surrogates {
+  
+  [self setSurrogates:surrogates];
+  
+  return [self initWithXMLElement:element
+                           parent:parent];
+}
+
 // subclasses will typically override initWithXMLElement:parent:
 // and do their own parsing after this method returns
 - (id)initWithXMLElement:(NSXMLElement *)element
@@ -131,6 +143,7 @@
   [extensions_ release];
   [unknownChildren_ release];
   [unknownAttributes_ release];
+  [surrogates_ release];
   [userData_ release];
   [super dealloc]; 
 }
@@ -230,6 +243,15 @@
   return unknownAttributes_; 
 }
 
+- (void)setSurrogates:(NSDictionary *)surrogates {
+  [surrogates_ autorelease];
+  surrogates_ = [surrogates retain];
+}
+
+- (NSDictionary *)surrogates {
+  return surrogates_; 
+}
+
 - (void)setUserData:(id)userData {
   [userData_ autorelease];
   userData_ = [userData retain];
@@ -313,6 +335,17 @@
 // this is called by the XMLElement method of subclasses; they will add their
 // own attributes and children to the element returned by this method
 - (NSXMLElement *)XMLElementWithExtensionsAndDefaultName:(NSString *)defaultName {
+  
+#if 0
+  // code sometimes useful for finding unparsed xml; this can be turned on
+  // during testing
+  if ([unknownAttributes_ count]) {
+    NSLog(@"%@ %lX: unknown attributes %@\n%@\n", [self class], self, unknownAttributes_, self);
+  }
+  if ([unknownChildren_ count]) {
+    NSLog(@"%@ %lX: unknown children %@\n%@\n", [self class], self, unknownChildren_, self);
+  }
+#endif
   
   // use the name from the XML
   NSString *elementName = [self elementName]; 
@@ -459,6 +492,24 @@ objectDescriptionIfNonNil:(id)obj
   return dict;
 }
 
+// classOrSurrogateForClass searches this object instance and all parent 
+// instances for a user surrogate for the supplied class, and returns 
+// the surrogate, or else the supplied class if no surrogate is found for it
+- (Class)classOrSurrogateForClass:(Class)standardClass {
+  
+  GDataObject *currentObject = self;
+  for (currentObject = self;
+       currentObject != nil;
+       currentObject = [currentObject parent]) {
+    
+    // look for an object with a surrogates dict containing the standardClass
+    NSDictionary *currentSurrogates = [currentObject surrogates];
+    
+    Class surrogate = [currentSurrogates objectForKey:standardClass];
+    if (surrogate) return surrogate;
+  }
+  return standardClass;
+}
 
 // The following routines which parse XML elements remove the parsed elements
 // from the list of unknowns.
@@ -484,6 +535,8 @@ objectDescriptionIfNonNil:(id)obj
       // type from the XML
       objectClass = [GDataObject objectClassForXMLElement:element];
     }
+    
+    objectClass = [self classOrSurrogateForClass:objectClass];
     
     object = [[[objectClass alloc] initWithXMLElement:element
                                                parent:self] autorelease];
@@ -586,6 +639,8 @@ objectDescriptionIfNonNil:(id)obj
       objectClass = [GDataObject objectClassForXMLElement:objElement];
     }
     
+    objectClass = [self classOrSurrogateForClass:objectClass];
+
     id obj = [[[objectClass alloc] initWithXMLElement:objElement
                                                parent:self] autorelease];
     if (obj) {
@@ -986,6 +1041,12 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 #pragma mark Dynamic GDataObject 
+
+// Dynamic object generation is used when the class being created is nil.
+//
+// These maps are populated by +load routines in feeds and entries.
+// They specify category elements which identify the class of feed or entry
+// to be created for a blob of XML.
 
 static NSMutableDictionary *gFeedClassCategoryMap = nil;
 static NSMutableDictionary *gEntryClassCategoryMap = nil;

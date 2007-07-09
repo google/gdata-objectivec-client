@@ -62,7 +62,7 @@
   [self setObjects:arr forExtensionClass:[GDataReminder class]];
 }
 
-- (void)addReminders:(GDataReminder *)obj {
+- (void)addReminder:(GDataReminder *)obj {
   [self addObject:obj forExtensionClass:[GDataReminder class]];
 }
 @end

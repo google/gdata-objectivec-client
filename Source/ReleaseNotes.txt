@@ -10,6 +10,9 @@ Changes since 1.1.0
 
 - Added http logging (see GDataHTTPFetcherLogging.h)
 
+- Added routines to let library users override standard classes
+  with their own surrogate subclasses (see GDataServiceBase.h)
+
 - Fixed escaping algorithm for query parameter generation.
 
 - Store cookies on redirects (thanks riggle)
@@ -22,6 +25,8 @@ Changes since 1.1.0
 - Added ascending order parameter to Query base class
 
 - Added more Calendar query parameters
+
+- Changed addReminders: to addReminder: (thanks riggle)
 
 - Authentication errors are now also returned in the userInfo with the "error"
   key (thanks ghulands)
