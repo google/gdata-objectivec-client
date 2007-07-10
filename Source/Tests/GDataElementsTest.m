@@ -471,6 +471,21 @@
     { @"type", @"text" },
     { @"", @"" },
       
+    { @"GDataWebContent", @"<gCal:webContent width='300' height='136' "
+      "url='http://google.com/ig/modules/datetime.xml'>"
+      "<gCal:webContentGadgetPref name='color' value='green' />"
+      "<gCal:webContentGadgetPref name='sin' value='greed' /></gCal:webContent>" },
+      
+    { @"height.stringValue", @"136" },
+    { @"width.stringValue", @"300" },
+    { @"URLString", @"http://google.com/ig/modules/datetime.xml" },
+
+    { @"gadgetPreferences.0.name", @"color" },
+    { @"gadgetPreferences.0.value", @"green" },
+    { @"gadgetPreferenceDictionary.color", @"green" },
+    { @"gadgetPreferenceDictionary.sin", @"greed" },
+    { @"", @"" },
+    
     { @"GDataWhen", @"<gd:when startTime='2005-06-06' endTime='2005-06-07' "
           "valueString='This weekend'/>" },
     { @"startTime.RFC3339String", @"2005-06-06" },

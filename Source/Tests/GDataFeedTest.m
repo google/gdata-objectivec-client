@@ -378,8 +378,8 @@
     // There is one entry
     { @"entries.0.identifier", @"http://spreadsheets.google.com/feeds/spreadsheets/private/full/o04181601172097104111.497668944883620000" },
     { @"entries.0.updatedDate.RFC3339String", @"2007-03-22T23:25:53Z" },
-    { @"entries.0.categories.0.scheme", kGDataCategorySchemeSpreadsheet },
-    { @"entries.0.categories.0.term", kGDataCategorySpreadsheet },
+    { @"entries.0.categories.2.scheme", kGDataCategorySchemeSpreadsheet },
+    { @"entries.0.categories.2.term", kGDataCategorySpreadsheet },
     { @"entries.0.title.stringValue", @"My Test Spreadsheet" },
     
     { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
