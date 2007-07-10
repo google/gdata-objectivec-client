@@ -82,8 +82,6 @@
 
 - (void)setupFromXMLElement:(NSXMLElement *)root {
   
-  NSString* rootName = [root name];
-  
   [self setGenerator:[self objectForChildOfElement:root
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
@@ -166,8 +164,8 @@
   Class entryClass = [self classForEntries];
   
 #if DEBUG
-  NSAssert1([rootName isEqual:@"feed"], 
-            @"initing a feed from a non-feed element (%@)", rootName);
+  NSAssert1([[root name] isEqual:@"feed"], 
+            @"initing a feed from a non-feed element (%@)", [root name]);
 #endif
   
   // create entries of the proper class from each "entry" element
@@ -382,33 +380,45 @@
   return title_; 
 }
 
-- (void)setTitle:(GDataTextConstruct *)str {
+- (void)setTitle:(GDataTextConstruct *)theTitle {
   [title_ autorelease];
-  title_ = [str copy];
+  title_ = [theTitle copy];
   
   [title_ setElementName:@"title"];
+}
+
+- (void)setTitleWithString:(NSString *)str {
+  [self setTitle:[GDataTextConstruct textConstructWithString:str]];
 }
 
 - (GDataTextConstruct *)subtitle {
   return subtitle_; 
 }
 
-- (void)setSubtitle:(GDataTextConstruct *)str {
+- (void)setSubtitle:(GDataTextConstruct *)theSubtitle {
   [subtitle_ autorelease];
-  subtitle_ = [str copy];
+  subtitle_ = [theSubtitle copy];
 
   [subtitle_ setElementName:@"subtitle"];
+}
+
+- (void)setSubtitleWithString:(NSString *)str {
+  [self setSubtitle:[GDataTextConstruct textConstructWithString:str]]; 
 }
 
 - (GDataTextConstruct *)rights {
   return rights_; 
 }
 
-- (void)setRights:(GDataTextConstruct *)str {
+- (void)setRights:(GDataTextConstruct *)theRights {
   [rights_ autorelease];
-  rights_ = [str copy];
+  rights_ = [theRights copy];
   
   [rights_ setElementName:@"rights"];
+}
+
+- (void)setRightsWithString:(NSString *)str {
+  [self setRights:[GDataTextConstruct textConstructWithString:str]]; 
 }
 
 - (NSString *)icon {

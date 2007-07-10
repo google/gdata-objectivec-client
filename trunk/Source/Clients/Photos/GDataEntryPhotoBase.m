@@ -88,4 +88,8 @@
   [self setSummary:obj];
 }
 
+- (void)setPhotoDescriptionWithString:(NSString *)str {
+  [self setSummary:[GDataTextConstruct textConstructWithString:str]];
+}
+
 @end

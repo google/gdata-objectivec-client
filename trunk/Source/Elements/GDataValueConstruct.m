@@ -162,7 +162,7 @@
       return result; 
     }
   }
-  return nil;
+  return 0;
 }
 
 - (NSNumber *)intNumberValue {
@@ -183,7 +183,7 @@
       return result; 
     }
   }
-  return nil;
+  return 0;
 }
 
 - (NSNumber *)longLongNumberValue {
@@ -204,7 +204,7 @@
       return result; 
     }
   }
-  return nil;
+  return 0;
 }
 
 - (NSNumber *)doubleNumberValue {

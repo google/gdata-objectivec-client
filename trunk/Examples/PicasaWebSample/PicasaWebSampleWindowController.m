@@ -558,8 +558,8 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     GDataEntryPhoto *newEntry = [GDataEntryPhoto photoEntry];
     
     // set a title, description, and timestamp
-    [newEntry setTitle:[GDataTextConstruct textConstructWithString:photoName]];    
-    [newEntry setPhotoDescription:[GDataTextConstruct textConstructWithString:photoPath]];    
+    [newEntry setTitleWithString:photoName];
+    [newEntry setPhotoDescriptionWithString:photoPath];    
     [newEntry setTimestamp:[GDataPhotoTimestamp timestampWithDate:[NSDate date]]];
     
     // attach the NSData and set the MIME type for the photo

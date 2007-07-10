@@ -34,4 +34,5 @@
   // like in the Java library, we'll rename subtitle as description
 - (GDataTextConstruct *)photoDescription;
 - (void)setPhotoDescription:(GDataTextConstruct *)obj;
+- (void)setPhotoDescriptionWithString:(NSString *)str;
 @end

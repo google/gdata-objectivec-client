@@ -127,8 +127,8 @@
     newEvent = [GDataEntryCalendarEvent calendarEvent];
   }
   
-  [newEvent setTitle:[GDataTextConstruct textConstructWithString:title]];
-  [newEvent setContent:[GDataTextConstruct textConstructWithString:desc]];
+  [newEvent setTitleWithString:title];
+  [newEvent setContentWithString:desc];
   
   // times
   GDataDateTime *startDateTime = [GDataDateTime dateTimeWithDate:[mStartDatePicker dateValue]

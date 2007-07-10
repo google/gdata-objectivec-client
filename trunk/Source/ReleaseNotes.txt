@@ -12,6 +12,9 @@ Changes since 1.1.0
 
 - Added routines to let library users override standard classes
   with their own surrogate subclasses (see GDataServiceBase.h)
+  
+- Added convenience setters for methods that take GDataTextContruct.
+  For example, framework now supports setTitleWithString:.
 
 - Fixed escaping algorithm for query parameter generation.
 
@@ -32,6 +35,10 @@ Changes since 1.1.0
   key (thanks ghulands)
   
 - Add rel constants for GDataWhere (thanks riggle)
+
+- Return proper numeric types in GDataValueConstruct methods (thanks riggle)
+
+- Fixed bugs in finding the proper class to instantiate from a category in XML
 
 
 Release 1.1.0
