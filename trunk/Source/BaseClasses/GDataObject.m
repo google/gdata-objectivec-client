@@ -1106,13 +1106,16 @@ forCategoryWithScheme:scheme
 
 // classForCategoryWithScheme does the work for feedClassForCategory
 // and entryClassForCategory below.  This method searches the entry 
-// or feed map for a class with a matching category.  scheme and term
-// can be nil as wildcards.
+// or feed map for a class with a matching category.  
+//
+// If the registration of the class specified a value, then the corresponding
+// parameter values |scheme| or |term| must match and not be nil.
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
                             fromMap:(NSDictionary *)map {
   
-  
+  // |scheme| and |term| are from the XML that we're using to look up
+  // a registered class
   NSEnumerator *classEnumerator = [map keyEnumerator];
   Class foundClass;
   while ((foundClass = [classEnumerator nextObject]) != nil) {
@@ -1122,8 +1125,11 @@ forCategoryWithScheme:scheme
     NSString *foundScheme = [foundCategory scheme];
     NSString *foundTerm = [foundCategory term];
     
-    if ((!foundScheme || !scheme || [foundScheme isEqual:scheme])
-        && (!foundTerm || !term || [foundTerm isEqual:term])) {
+    // |foundScheme| and |foundTerm| are values found in the registration map;
+    // if they are non-nil, the values in the XML must be non-nil and matching
+    
+    if ((!foundScheme || [scheme isEqual:foundScheme])
+      && (!foundTerm || [term isEqual:foundTerm])) {
       
       return foundClass;
     }
@@ -1204,7 +1210,6 @@ forCategoryWithScheme:scheme
       
       // step through the category elements, looking for one that matches
       // a registered feed or entry class
-      
       for (int idx = 0; idx < [nodes count]; idx++) {
         NSString *scheme = nil;
         NSString *term = nil;
@@ -1230,13 +1235,12 @@ forCategoryWithScheme:scheme
           if (isFeed) {
             result = [GDataObject feedClassForCategoryWithScheme:scheme 
                                                             term:term];
-            break;
+            if (result) break;
           } else {
             result = [GDataObject entryClassForCategoryWithScheme:scheme 
                                                              term:term];
-            break;
+            if (result) break;
           }
-          
         }
       }
     }

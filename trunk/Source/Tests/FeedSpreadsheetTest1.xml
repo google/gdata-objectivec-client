@@ -2,6 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     <id>http://spreadsheets.google.com/feeds/spreadsheets/private/full</id>
     <updated>2007-03-22T23:53:26.423Z</updated>
+    <category scheme="fool me once" />
+    <category term="fool me once more" />
     <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#spreadsheet"/>
     <title type="text">Available Spreadsheets - test@foo.net</title>
     <link href="http://docs.google.com" rel="alternate" type="text/html"/>
@@ -16,6 +18,8 @@
     <entry>
         <id>http://spreadsheets.google.com/feeds/spreadsheets/private/full/o04181601172097104111.497668944883620000</id>
         <updated>2007-03-22T23:25:53.055Z</updated>
+        <category term="fool me twice"/>
+        <category scheme="fool me twice more"/>
         <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#spreadsheet"/>
         <title type="text">My Test Spreadsheet</title>
         <content type="text">My Test Spreadsheet</content>
