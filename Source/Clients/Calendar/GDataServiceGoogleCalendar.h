@@ -52,7 +52,7 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
 // then insert it into the calendar:
 //
 //  GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];
-//  [newEvent setContent:[GDataTextConstruct textConstructWithString:@"Party today at 4pm"]];
+//  [newEvent setContentWithString:@"Party today at 4pm"];
 //  [newEvent setIsQuickAdd:YES];
 //
 // then pass the event to fetchCalendarEventByInsertingEntry:

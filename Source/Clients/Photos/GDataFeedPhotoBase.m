@@ -73,5 +73,8 @@
   [self setSubtitle:obj];
 }
 
+- (void)setPhotoDescriptionWithString:(NSString *)str {
+  [self setSubtitle:[GDataTextConstruct textConstructWithString:str]]; 
+}
 
 @end

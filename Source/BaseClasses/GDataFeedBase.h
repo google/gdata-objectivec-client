@@ -78,13 +78,16 @@
 - (void)setIdentifier:(NSString *)theString;
 
 - (GDataTextConstruct *)title;
-- (void)setTitle:(GDataTextConstruct *)str;
+- (void)setTitle:(GDataTextConstruct *)theTitle;
+- (void)setTitleWithString:(NSString *)str;
 
 - (GDataTextConstruct *)subtitle;
-- (void)setSubtitle:(GDataTextConstruct *)str;
+- (void)setSubtitle:(GDataTextConstruct *)theSubtitle;
+- (void)setSubtitleWithString:(NSString *)str;
 
 - (GDataTextConstruct *)rights;
-- (void)setRights:(GDataTextConstruct *)str;
+- (void)setRights:(GDataTextConstruct *)theRights;
+- (void)setRightsWithString:(NSString *)str;
 
 - (NSString *)icon;
 - (void)setIcon:(NSString *)theString;

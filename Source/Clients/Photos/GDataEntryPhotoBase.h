@@ -56,4 +56,5 @@ _EXTERN NSString* kGDataCategoryPhotosComment  _INITIALIZE_AS(@"http://schemas.g
 // like in the Java library, we'll rename summary as description
 - (GDataTextConstruct *)photoDescription;
 - (void)setPhotoDescription:(GDataTextConstruct *)obj;
+- (void)setPhotoDescriptionWithString:(NSString *)str;
 @end

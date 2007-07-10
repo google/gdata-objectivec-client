@@ -298,6 +298,10 @@
   [title_ setElementName:@"title"];
 }
 
+- (void)setTitleWithString:(NSString *)str {
+  [self setTitle:[GDataTextConstruct textConstructWithString:str]]; 
+}
+
 - (GDataTextConstruct *)summary {
   return summary_; 
 }
@@ -307,6 +311,10 @@
   summary_ = [theSummary copy];
 
   [summary_ setElementName:@"summary"];
+}
+
+- (void)setSummaryWithString:(NSString *)str {
+  [self setSummary:[GDataTextConstruct textConstructWithString:str]];  
 }
 
 - (GDataEntryContent *)content {
@@ -320,6 +328,10 @@
   [content_ setElementName:@"content"];
 }
 
+- (void)setContentWithString:(NSString *)str {
+  [self setContent:[GDataEntryContent textConstructWithString:str]];  
+}
+
 - (GDataTextConstruct *)rightsString {
   return rightsString_; 
 }
@@ -329,6 +341,10 @@
   rightsString_ = [theRightsString copy];
   
   [rightsString_ setElementName:@"rights"];
+}
+
+- (void)setRightsStringWithString:(NSString *)str {
+  [self setRightsString:[GDataTextConstruct textConstructWithString:str]]; 
 }
 
 - (NSArray *)links {

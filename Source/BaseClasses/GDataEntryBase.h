@@ -92,15 +92,19 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 - (GDataTextConstruct *)title;
 - (void)setTitle:(GDataTextConstruct *)theTitle;
+- (void)setTitleWithString:(NSString *)str;
 
 - (GDataTextConstruct *)summary;
 - (void)setSummary:(GDataTextConstruct *)theSummary;
+- (void)setSummaryWithString:(NSString *)str;
 
 - (GDataEntryContent *)content;
 - (void)setContent:(GDataEntryContent *)theContent;
+- (void)setContentWithString:(NSString *)str;
 
 - (GDataTextConstruct *)rightsString;
 - (void)setRightsString:(GDataTextConstruct *)theRightsString;
+- (void)setRightsStringWithString:(NSString *)str;
 
 - (NSArray *)links;
 - (void)setLinks:(NSArray *)links;

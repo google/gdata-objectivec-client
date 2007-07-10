@@ -372,7 +372,7 @@ failedWithError:(NSError *)error {
   NSString *title = @"New Post";
   NSString *content = [mEntryEditField stringValue];
   
-  [newEntry setTitle:[GDataTextConstruct textConstructWithString:title]];
+  [newEntry setTitleWithString:title];
   [newEntry setContent:[GDataTextConstruct textConstructWithString:content]];
   [newEntry addAuthor:[GDataPerson personWithName:@"Blogger Sample App"
                                             email:nil]];
