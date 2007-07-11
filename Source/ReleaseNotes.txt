@@ -18,6 +18,8 @@ Changes since 1.1.0
 
 - Fixed escaping algorithm for query parameter generation.
 
+- Added support for Calendar web content gadget preferences
+
 - Store cookies on redirects (thanks riggle)
 
 - Calendar sample app no longer attempts to set the author value for an event,

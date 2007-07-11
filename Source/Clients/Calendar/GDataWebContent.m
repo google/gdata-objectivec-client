@@ -20,12 +20,26 @@
 #import "GDataWebContent.h"
 #import "GDataEntryCalendarEvent.h"
 
+@implementation GDataWebContentGadgetPref
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"webContentGadgetPref"; }
+@end
+
 @implementation GDataWebContent 
 // Calendar Web Content element, inside a <link>, as in
 //
-// <gCal:webContent url="http://www.google.com/logos/july4th06.gif" width="276" height="120" />
+// <gCal:webContent url="http://www.google.com/logos/july4th06.gif" 
+//                  width="276" height="120" >
+//      <gCal:webContentGadgetPref name="color" value="green" />
+//      <gCal:webContentGadgetPref name="military_time" value="false" />
+// </gCal:webContent>
 //
-// view-source:http://code.google.com/apis/gdata/calendar.html#gCalwebContent
+// http://code.google.com/apis/gdata/calendar.html#gCalwebContent
+
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"webContent"; }
 
 + (GDataWebContent *)webContentWithURL:(NSString *)urlString
                                  width:(int)width
@@ -35,6 +49,15 @@
   [obj setWidth:[NSNumber numberWithInt:width]];
   [obj setHeight:[NSNumber numberWithInt:height]];
   return obj;
+}
+
+- (void)initExtensionDeclarations {
+  
+  [super initExtensionDeclarations];
+  
+  // gadget preference support
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataWebContentGadgetPref class]];
 }
 
 - (id)initWithXMLElement:(NSXMLElement *)element
@@ -84,6 +107,24 @@
   [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
   [self addToArray:items objectDescriptionIfNonNil:url_ withName:@"URL"];
   
+  // make an array of name=value items for gadget prefs
+  NSArray *prefs = [self gadgetPreferences];
+  NSMutableArray *prefsItems = [NSMutableArray array];
+  int numPrefs = [prefs count];
+  
+  if (numPrefs) {
+    for (int idx = 0; idx < numPrefs; idx++) {
+      GDataWebContentGadgetPref *pref = [prefs objectAtIndex:idx];
+      
+      NSString *str = [NSString stringWithFormat:@"%@=%@", 
+        [pref name], [pref value]];
+      
+      [prefsItems addObject:str];
+    }
+    NSString *allPrefs = [prefsItems componentsJoinedByString:@","];
+    [self addToArray:items objectDescriptionIfNonNil:allPrefs withName:@"gadgetPrefs"];
+  }
+  
   return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
     [self class], self, [items componentsJoinedByString:@" "]];
 }
@@ -98,10 +139,6 @@
   
   return element;
 }
-
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
-+ (NSString *)extensionElementLocalName { return @"webContent"; }
 
 - (NSNumber *)height {
   return height_; 
@@ -129,5 +166,38 @@
   [url_ autorelease];
   url_ = [str copy];
 }
+
+// extensions
+
+- (NSArray *)gadgetPreferences {
+  return [self objectsForExtensionClass:[GDataWebContentGadgetPref class]]; 
+}
+
+- (void)setGadgetPreferences:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataWebContentGadgetPref class]];
+}
+
+- (void)addGadgetPreference:(GDataWebContentGadgetPref *)obj {
+  [self addObject:obj forExtensionClass:[GDataWebContentGadgetPref class]];  
+}
+
+// returning a dictionary simplifies key-value coding access
+- (NSDictionary *)gadgetPreferenceDictionary {
+  
+  // step through all preferences and add their name/values to a dictionary
+  NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+  
+  NSArray *prefs = [self gadgetPreferences];
+  int numPrefs = [prefs count];
+  
+  for (int idx = 0; idx < numPrefs; idx++) {
+    GDataWebContentGadgetPref *pref = [prefs objectAtIndex:idx];
+    [dictionary setObject:[pref value] forKey:[pref name]];
+  }
+
+  return dictionary;
+}
+
+
 @end
 

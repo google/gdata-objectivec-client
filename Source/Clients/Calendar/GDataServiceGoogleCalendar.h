@@ -31,7 +31,16 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+// default feed of calendars
 _EXTERN NSString* kGDataGoogleCalendarDefaultFeed _INITIALIZE_AS(@"http://www.google.com/calendar/feeds/default");
+
+// owned calendars; supports inserting and deleting calendars
+_EXTERN NSString* kGDataGoogleCalendarDefaultOwnCalendarsFeed _INITIALIZE_AS(@"http://www.google.com/calendar/feeds/default/owncalendars/full");
+
+// subscribed calendars; insert adds a subscription, delete removes a subscription
+_EXTERN NSString* kGDataGoogleCalendarDefaultAllCalendarsFeed _INITIALIZE_AS(@"http://www.google.com/calendar/feeds/default/allcalendars/full");
+
+// calendar events feed
 _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"http://www.google.com/calendar/feeds/default/private/full");
 
 @class GDataEntryCalendar;
