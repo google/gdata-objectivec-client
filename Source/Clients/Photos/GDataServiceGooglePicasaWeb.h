@@ -31,6 +31,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+// feed of all Picasa Web photos, useful for queries searching for photos
+_EXTERN NSString* kGDataPicasaWebAllFeed _INITIALIZE_AS(@"http://picasaweb.google.com/data/feed/api/all");
+
 _EXTERN NSString* kGDataPicasaWebAccessAll _INITIALIZE_AS(@"all");
 _EXTERN NSString* kGDataPicasaWebAccessPublic _INITIALIZE_AS(@"public");
 _EXTERN NSString* kGDataPicasaWebAccessPrivate _INITIALIZE_AS(@"private");

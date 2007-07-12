@@ -17,6 +17,18 @@
 //  GDataQueryPicasaWeb.h
 //
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAQUERYPICASAWEB_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN int kGDataPicasaWebImageSizeDownloadable _INITIALIZE_AS(-1);
+
 #import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
@@ -37,5 +49,17 @@
 
 - (void)setThumbsize:(int)val;
 - (int)thumbsize;
+
+// imageSize is the imgmax parameter; see documentation for legal values,
+// and explanation of which sizes may be cropped or embedded into web pages
+//
+// Pass kGDataPicasaWebImageSizeDownloadable to specify that links should be
+// for the native download size for each photo ("imgmax=d")
+- (void)setImageSize:(int)val;
+- (int)imageSize;
+
+- (void)setTag:(NSString *)tag;
+- (NSString *)tag;
+  
 @end
 

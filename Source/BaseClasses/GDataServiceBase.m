@@ -250,7 +250,16 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                         didFailWithStatusSelector:@selector(objectFetcher:failedWithStatus:data:)
                          didFailWithErrorSelector:@selector(objectFetcher:failedWithNetworkError:)];
   
-  return didFetch ? ticket : nil;
+  // If something weird happens and the networking callbacks have been called
+  // already synchronously, we don't want to return the ticket since the caller 
+  // will never know when to stop retaining it, so we'll make sure the
+  // success/failure callbacks have not yet been called by checking the
+  // ticket
+  if (!didFetch || [ticket hasCalledCallback]) {
+    return nil; 
+  }
+    
+  return ticket;
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -822,6 +831,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [objectFetcher_ statusCode];  
 }
 
+- (void)setHasCalledCallback:(BOOL)flag {
+  hasCalledCallback_ = flag; 
+}
+
 - (BOOL)hasCalledCallback {
   return hasCalledCallback_;  
 }
@@ -842,10 +855,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (NSError *)fetchError {
   return fetchError_; 
-}
-
-- (void)setHasCalledCallback:(BOOL)flag {
-  hasCalledCallback_ = flag; 
 }
 
 @end

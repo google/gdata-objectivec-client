@@ -2,23 +2,32 @@
     IBClasses = (
         {
             ACTIONS = {
+                addCalendarClicked = id; 
                 addEventClicked = id; 
+                calendarSegmentClicked = id; 
                 cancelCalendarFetchClicked = id; 
                 cancelEventFetchClicked = id; 
+                deleteCalendarClicked = id; 
                 deleteEventClicked = id; 
                 editEventClicked = id; 
                 entrySegmentClicked = id; 
                 getCalendarClicked = id; 
+                loggingCheckboxClicked = id; 
                 queryTodayClicked = id; 
+                renameCalendarClicked = id; 
             }; 
             CLASS = CalendarSampleWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                mAddCalendarButton = NSButton; 
                 mAddEventButton = NSButton; 
                 mCalendarCancelButton = NSButton; 
+                mCalendarNameField = NSTextField; 
                 mCalendarProgressIndicator = NSProgressIndicator; 
                 mCalendarResultTextField = NSTextView; 
+                mCalendarSegmentedControl = NSSegmentedControl; 
                 mCalendarTable = NSTableView; 
+                mDeleteCalendarButton = NSButton; 
                 mDeleteEventButton = NSButton; 
                 mEditEventButton = NSButton; 
                 mEntrySegmentedControl = NSSegmentedControl; 
@@ -28,6 +37,7 @@
                 mEventTable = NSTableView; 
                 mPasswordField = NSSecureTextField; 
                 mQueryTodayEventButton = NSButton; 
+                mRenameCalendarButton = NSButton; 
                 mUsernameField = NSTextField; 
             }; 
             SUPERCLASS = NSWindowController; 

@@ -80,6 +80,24 @@
   
 }
 
+- (GDataServiceTicket *)fetchCalendarEntryByUpdatingEntry:(GDataEntryCalendar *)entryToUpdate
+                                              forEntryURL:(NSURL *)calendarEntryEditURL
+                                                 delegate:(id)delegate
+                                        didFinishSelector:(SEL)finishedSelector
+                                          didFailSelector:(SEL)failedSelector {
+  
+  if ([entryToUpdate namespaces] == nil) {
+    [entryToUpdate setNamespaces:[GDataEntryCalendar calendarNamespaces]]; 
+  }
+  
+  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
+                                          forEntryURL:calendarEntryEditURL
+                                             delegate:delegate
+                                    didFinishSelector:finishedSelector
+                                      didFailSelector:failedSelector];
+  
+}
+
 - (GDataServiceTicket *)fetchCalendarEventFeedWithURL:(NSURL *)feedURL
                                              delegate:(id)delegate
                                     didFinishSelector:(SEL)finishedSelector

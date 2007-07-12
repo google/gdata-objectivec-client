@@ -29,6 +29,12 @@
   IBOutlet NSProgressIndicator *mCalendarProgressIndicator;
   IBOutlet NSTextView *mCalendarResultTextField;
   IBOutlet NSButton *mCalendarCancelButton;
+  
+  IBOutlet NSSegmentedControl *mCalendarSegmentedControl;
+  IBOutlet NSButton *mAddCalendarButton;
+  IBOutlet NSButton *mRenameCalendarButton;
+  IBOutlet NSButton *mDeleteCalendarButton;
+  IBOutlet NSTextField *mCalendarNameField;
 
   IBOutlet NSTableView *mEventTable;
   IBOutlet NSProgressIndicator *mEventProgressIndicator;
@@ -62,11 +68,18 @@
 - (IBAction)cancelCalendarFetchClicked:(id)sender;
 - (IBAction)cancelEventFetchClicked:(id)sender;
 
+- (IBAction)calendarSegmentClicked:(id)sender;
+- (IBAction)addCalendarClicked:(id)sender;
+- (IBAction)renameCalendarClicked:(id)sender;
+- (IBAction)deleteCalendarClicked:(id)sender;
+
 - (IBAction)addEventClicked:(id)sender;
 - (IBAction)editEventClicked:(id)sender;
 - (IBAction)deleteEventClicked:(id)sender;
 - (IBAction)queryTodayClicked:(id)sender;
 
 - (IBAction)entrySegmentClicked:(id)sender;
+
+- (IBAction)loggingCheckboxClicked:(id)sender;
 
 @end
