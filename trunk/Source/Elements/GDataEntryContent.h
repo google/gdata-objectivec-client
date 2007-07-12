@@ -32,6 +32,13 @@
   NSString *src_;
 }
 
+
+// Note: most content elements are plain text constructs, and can be
+//       created with [GDataEntryContent textConstructWithString:str]
+//
+// +contentWithSourceURI is just for creating content elements with 
+// src attributes
+
 + (id)contentWithSourceURI:(NSString *)str type:(NSString *)type;
 
 - (id)initWithXMLElement:(NSXMLElement *)element

@@ -15,6 +15,8 @@ Changes since 1.1.0
   
 - Added convenience setters for methods that take GDataTextContruct.
   For example, framework now supports setTitleWithString:.
+  
+- Added new PicasaWeb query parameters and all-photos feed URL string.
 
 - Fixed escaping algorithm for query parameter generation.
 

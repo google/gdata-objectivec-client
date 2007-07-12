@@ -317,7 +317,14 @@ CannotBeginFetch:
     
     // save cookies from the response
     [self handleCookiesForResponse:redirectResponse];
-  }
+    
+    // log the response we just received
+    [self setResponse:redirectResponse];
+    [self logFetchWithError:nil];
+
+    // update the request for future logging
+    [self setRequest:redirectRequest];
+}
   return redirectRequest;
 }
 

@@ -193,24 +193,34 @@
   [pwaQuery1 setKind:kGDataPicasaWebKindPhoto];
   [pwaQuery1 setAccess:kGDataPicasaWebAccessPrivate];
   [pwaQuery1 setThumbsize:80];
+  [pwaQuery1 setImageSize:32];
+  [pwaQuery1 setTag:@"dog"];
   
   NSURL* resultURL1 = [pwaQuery1 URL];
   NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
-    "thumbsize=80&access=private&kind=photo";
+    "kind=photo&tag=dog&thumbsize=80&access=private&imgmax=32";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"PWA query 1 generation error");
-  
+  STAssertEquals([pwaQuery1 imageSize], 32, @"image size error");
   
   GDataQueryPicasaWeb *pwaQuery2; 
   pwaQuery2 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
                                                    albumID:nil
                                                  albumName:@"froggy photos"
                                                    photoID:nil];  
+  [pwaQuery2 setImageSize:kGDataPicasaWebImageSizeDownloadable];
+  
   NSURL* resultURL2 = [pwaQuery2 URL];
-  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/fredflintstone/album/froggy%20photos";
+  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/"
+    "fredflintstone/album/froggy%20photos?imgmax=d";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"PWA query 2 generation error");
+  
+  // image size special cases mapping -1 to "d" and back; test that we get back
+  // -1
+  STAssertEquals([pwaQuery2 imageSize], kGDataPicasaWebImageSizeDownloadable,
+                 @"image size error (2)");
 }
 
 - (void)testURLParameterEncoding {

@@ -17,12 +17,18 @@
 //  GDataQueryPicasaWeb.m
 //
 
+#define GDATAQUERYPICASAWEB_DEFINE_GLOBALS 1
 #import "GDataQueryPicasaWeb.h"
+
 #import "GDataServiceGooglePicasaWeb.h"
 
 NSString *const kKindParamName = @"kind";
 NSString *const kAccessParamName = @"access";
 NSString *const kThumbsizeParamName = @"thumbsize";
+NSString *const kImageSizeParamName = @"imgmax";
+NSString *const kTagParamName = @"tag";
+
+NSString *const kImageSizeOriginalPhoto = @"d";
 
 @implementation GDataQueryPicasaWeb
 
@@ -78,5 +84,34 @@ NSString *const kThumbsizeParamName = @"thumbsize";
   return [[self customParameters] objectForKey:kAccessParamName];
 }
 
+- (void)setImageSize:(int)val {
+  NSString *valStr;
+  
+  if (val == kGDataPicasaWebImageSizeDownloadable) {
+    valStr = kImageSizeOriginalPhoto; // imgmax=d
+  } else {
+    valStr = [self stringParamForInt:val]; 
+  }
+  
+  [self addCustomParameterWithName:kImageSizeParamName
+                             value:valStr]; 
+}
 
+- (int)imageSize {
+  NSString *valStr = [[self customParameters] objectForKey:kImageSizeParamName];
+
+  if ([valStr isEqual:kImageSizeOriginalPhoto]) {
+    return kGDataPicasaWebImageSizeDownloadable;
+  }
+  return [valStr intValue];
+}
+
+- (void)setTag:(NSString *)str {
+  [self addCustomParameterWithName:kTagParamName
+                             value:str];
+}
+
+- (NSString *)tag {
+  return [[self customParameters] objectForKey:kTagParamName];
+}
 @end
