@@ -16,6 +16,8 @@
 //
 //  GDataGeoPt.h
 //
+//  NOTE: As of July 2007, GDataGeoPt is deprecated.  Use GDataGeo instead.
+//
 
 #import <Cocoa/Cocoa.h>
 

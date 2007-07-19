@@ -158,6 +158,10 @@ enum {
                                  didFinishSelector:(SEL)finishedSelector
                                    didFailSelector:(SEL)failedSelector;
 
+// reset the last modified dates to avoid getting a Not Modified status
+// based on prior queries
+- (void)clearLastModifiedDates;
+  
 // Turn on data caching to receive a copy of previously-retrieved objects.
 // Otherwise, fetches may return status 304 (No Change) rather than actual data
 - (void)setShouldCacheDatedData:(BOOL)flag;

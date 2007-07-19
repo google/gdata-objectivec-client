@@ -103,7 +103,7 @@
 }
 
 - (void)addAttribute:(GDataGoogleBaseMetadataAttribute *)attribute {
-  [self setObject:attribute forExtensionClass:[GDataGoogleBaseMetadataAttribute class]]; 
+  [self addObject:attribute forExtensionClass:[GDataGoogleBaseMetadataAttribute class]]; 
 }
 
 @end

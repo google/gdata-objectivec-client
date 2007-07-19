@@ -16,6 +16,8 @@
 //
 //  GDataGeoPt.m
 //
+//  NOTE: As of July 2007, GDataGeoPt is deprecated.  Use GDataGeo instead.
+//
 
 #import "GDataGeoPt.h"
 #import "GDataDateTime.h"

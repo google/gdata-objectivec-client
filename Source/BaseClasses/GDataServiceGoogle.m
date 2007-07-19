@@ -270,8 +270,6 @@ enum {
   NSInvocation *noRetryInvocation = nil;
   [invocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationIndex];
   
-  [invocation retainArguments];
-  
   if ([username_ length] == 0) {
     // There's no username, so we can proceed to fetch.  We won't be retrying 
     // this invocation if it fails.
@@ -292,6 +290,8 @@ enum {
   } else {
     // we need to authenticate first.  We won't be retrying this invocation if 
     // it fails.
+    [invocation retainArguments];
+    
     result = [self authenticateThenInvoke:invocation];
   }
   return result;

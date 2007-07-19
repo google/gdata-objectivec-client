@@ -94,9 +94,8 @@ _EXTERN NSString* kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 - (void)setMediaThumbnails:(NSArray *)array;
 - (void)addMediaThumbnail:(GDataMediaThumbnail *)attribute;
 
-- (NSArray *)mediaKeywords;
-- (void)setMediaKeywords:(NSArray *)array;
-- (void)addMediaKeywords:(GDataMediaKeywords *)attribute;
+- (GDataMediaKeywords *)mediaKeywords;
+- (void)setMediaKeywords:(GDataMediaKeywords *)obj;
 
 - (GDataMediaDescription *)mediaDescription;
 - (void)setMediaDescription:(GDataMediaDescription *)obj;

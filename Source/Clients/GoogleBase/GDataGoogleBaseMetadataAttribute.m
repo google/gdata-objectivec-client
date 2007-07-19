@@ -161,7 +161,7 @@
 }
 
 - (void)addValue:(GDataGoogleBaseMetadataValue *)value {
-  [self setObject:value forExtensionClass:[GDataGoogleBaseMetadataValue class]]; 
+  [self addObject:value forExtensionClass:[GDataGoogleBaseMetadataValue class]]; 
 }
 
 @end

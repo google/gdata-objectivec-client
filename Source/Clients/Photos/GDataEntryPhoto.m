@@ -147,7 +147,7 @@
                             length:(unsigned long long *)outLength
                            headers:(NSDictionary **)outHeaders {
   
-  if ([photoUploadData_ length] == 0) {
+  if ([[self photoData] length] == 0) {
     // if there's no photo data, just fall back on GDataObject's
     // XML stream generation
     return [super generateContentInputStream:outInputStream
@@ -166,7 +166,7 @@
   NSString *photoContentType = photoMIMEType_ ? photoMIMEType_ : @"image/jpeg";
   NSDictionary *binHeader = [NSDictionary dictionaryWithObject:photoContentType
                                                         forKey:@"Content-Type"];
-  NSData *binBody = photoUploadData_;
+  NSData *binBody = [self photoData];
   
   GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
   
