@@ -667,6 +667,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return shouldCacheDatedData_; 
 }
 
+// reset the last modified dates to avoid getting a Not Modified status
+// based on prior queries
+- (void)clearLastModifiedDates {
+  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
+  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey]; 
+}
+
 // The service userData becomes the initial value for each future ticket's
 // userData.
 //

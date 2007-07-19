@@ -648,7 +648,7 @@
     { @"entries.0.mediaGroup.mediaThumbnails.0.height.stringValue", @"47" },
     { @"entries.0.mediaGroup.mediaThumbnails.0.width.stringValue", @"72" },
     { @"entries.0.mediaGroup.mediaThumbnails.0.URLString", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=72" },
-    { @"entries.0.mediaGroup.mediaKeywords.0.stringValue", @"headlight, red car" },
+    { @"entries.0.mediaGroup.mediaKeywords.stringValue", @"headlight, red car" },
 
     { @"entries.0.EXIFTags.tagDictionary.exposure", @"0.0080" },
     { @"entries.0.EXIFTags.tagDictionary.imageUniqueID", @"d8a9e8fd57a384d216f4b2a853d654fc" },

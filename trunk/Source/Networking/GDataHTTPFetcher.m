@@ -27,6 +27,7 @@ NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
 
 NSMutableArray* gGDataFetcherStaticCookies = nil;
+Class gGDataFetcherConnectionClass = nil;
                    
 @interface GDataHTTPFetcher (PrivateMethods)
 - (void)setCookies:(NSArray *)newCookies
@@ -178,9 +179,9 @@ NSMutableArray* gGDataFetcherStaticCookies = nil;
   }
   
   // finally, start the connection
-  
-  connection_ = [[NSURLConnection connectionWithRequest:request_
-                                                        delegate:self] retain];
+  Class connectionClass = [[self class] connectionClass];
+  connection_ = [[connectionClass connectionWithRequest:request_
+                                               delegate:self] retain];
   if (!connection_) {
     NSAssert(connection_ != nil, @"beginFetchWithDelegate could not create a connection");
     goto CannotBeginFetch;
@@ -701,6 +702,17 @@ CannotBeginFetch:
 - (void)setUserData:(id)theObj {
   [userData_ autorelease]; 
   userData_ = [theObj retain];
+}
+
++ (Class)connectionClass {
+  if (gGDataFetcherConnectionClass == nil) {
+    gGDataFetcherConnectionClass = [NSURLConnection class]; 
+  }
+  return gGDataFetcherConnectionClass; 
+}
+
++ (void)setConnectionClass:(Class)theClass {
+  gGDataFetcherConnectionClass = theClass;
 }
 
 #pragma mark Cookies

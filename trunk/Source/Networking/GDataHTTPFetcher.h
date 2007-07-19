@@ -313,4 +313,10 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (id)userData;
 - (void)setUserData:(id)theObj;
 
+// users who wish to replace GDataHTTPFetcher's use of NSURLConnection 
+// can do so globally here.  The replacement should be a subclass of
+// NSURLConnection.
++ (Class)connectionClass;
++ (void)setConnectionClass:(Class)theClass;
+
 @end

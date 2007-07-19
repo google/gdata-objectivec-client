@@ -39,8 +39,7 @@
   NSString *usernameEscaped = [self stringByURLEncoding:username];
   
   NSString *rootURLString = [self serviceRootURLString];
-  NSString *feedURLString = [rootURLString stringByAppendingFormat:@"%@", 
-    usernameEscaped];
+  NSString *feedURLString = [rootURLString stringByAppendingString:usernameEscaped];
   
   NSURL *url = [NSURL URLWithString:feedURLString];
   

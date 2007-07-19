@@ -143,7 +143,7 @@
 }
 
 - (void)addMediaContent:(GDataMediaContent *)attribute {
-  [self setObject:attribute forExtensionClass:[GDataMediaContent class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaContent class]]; 
 }
 
 // MediaCredits
@@ -158,7 +158,7 @@
 }
 
 - (void)addMediaCredit:(GDataMediaCredit *)attribute {
-  [self setObject:attribute forExtensionClass:[GDataMediaCredit class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaCredit class]]; 
 }
 
 // MediaThumbnails
@@ -173,22 +173,19 @@
 }
 
 - (void)addMediaThumbnail:(GDataMediaThumbnail *)attribute {
-  [self setObject:attribute forExtensionClass:[GDataMediaThumbnail class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaThumbnail class]]; 
 }
 
 // MediaKeywords
 
-- (NSArray *)mediaKeywords {
-  NSArray *array = [self objectsForExtensionClass:[GDataMediaKeywords class]];
-  return array;
+- (GDataMediaKeywords *)mediaKeywords {
+  GDataMediaKeywords *obj = 
+      [self objectForExtensionClass:[GDataMediaKeywords class]];
+  return obj;
 }
 
-- (void)setMediaKeywords:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaKeywords class]]; 
-}
-
-- (void)addMediaKeywords:(GDataMediaKeywords *)attribute {
-  [self setObject:attribute forExtensionClass:[GDataMediaKeywords class]]; 
+- (void)setMediaKeywords:(GDataMediaKeywords *)obj {
+  [self setObject:obj forExtensionClass:[GDataMediaKeywords class]]; 
 }
 
 // MediaDescription

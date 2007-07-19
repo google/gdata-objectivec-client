@@ -6,9 +6,13 @@ DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framewo
 
 Changes since 1.1.0
 
+Additions
+
 - Added support for Google Code Search
 
 - Added http logging (see GDataHTTPFetcherLogging.h)
+
+- Added ability to provide a connection class for GDataHTTPFetcher
 
 - Added routines to let library users override standard classes
   with their own surrogate subclasses (see GDataServiceBase.h)
@@ -18,31 +22,44 @@ Changes since 1.1.0
   
 - Added new PicasaWeb query parameters and all-photos feed URL string.
 
-- Fixed escaping algorithm for query parameter generation.
-
 - Added support for Calendar web content gadget preferences
 
-- Store cookies on redirects (thanks riggle)
-
-- Calendar sample app no longer attempts to set the author value for an event,
-  as the author is always the authenticated user
-  
-- Removed method for retrieving a calendar event feed for a username
+- Added support for add/update/remove calendars and calendar subscriptions
 
 - Added ascending order parameter to Query base class
 
 - Added more Calendar query parameters
-
-- Changed addReminders: to addReminder: (thanks riggle)
 
 - Authentication errors are now also returned in the userInfo with the "error"
   key (thanks ghulands)
   
 - Add rel constants for GDataWhere (thanks riggle)
 
+- Added a call to clear the last-modified dates tracked by the service object
+
+
+Bugs Fixed
+
+- Fixed escaping algorithm for query parameter generation.
+
+- Calendar sample app no longer attempts to set the author value for an event,
+  as the author is always the authenticated user
+  
+- Removed method for retrieving a calendar event feed for a username
+
+- Changed addReminders: to addReminder: (thanks riggle)
+
 - Return proper numeric types in GDataValueConstruct methods (thanks riggle)
 
 - Fixed bugs in finding the proper class to instantiate from a category in XML
+
+- Store cookies on redirects (thanks riggle)
+
+- Fixed some addExtension methods
+
+- Fixed extra retain on arguments during pre-authenticated fetches
+
+- Allow subclasses of GDataEntryPhoto to override photoData method
 
 
 Release 1.1.0
