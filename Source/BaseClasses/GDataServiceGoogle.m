@@ -267,8 +267,10 @@ enum {
   [invocation setArgument:&failedSelector   atIndex:kInvocationFailedSelectorIndex];
   [invocation setArgument:&ticket           atIndex:kInvocationTicketIndex];
   
-  NSInvocation *noRetryInvocation = nil;
+  NSValue *noRetryInvocation = nil;
   [invocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationIndex];
+  
+  [invocation retainArguments];
   
   if ([username_ length] == 0) {
     // There's no username, so we can proceed to fetch.  We won't be retrying 
@@ -282,7 +284,9 @@ enum {
     // If the auth token has expired, we'll be retrying this same invocation
     // after getting a fresh token
     
-    [invocation setArgument:&invocation 
+    NSValue *invocationValue = [NSValue valueWithNonretainedObject:invocation];
+    
+    [invocation setArgument:&invocationValue 
                     atIndex:kInvocationRetryInvocationIndex]; 
     [invocation invoke];
     [invocation getReturnValue:&result];
@@ -290,7 +294,6 @@ enum {
   } else {
     // we need to authenticate first.  We won't be retrying this invocation if 
     // it fails.
-    [invocation retainArguments];
     
     result = [self authenticateThenInvoke:invocation];
   }
@@ -305,11 +308,13 @@ enum {
   if (status == kTokenExpired) {
     
     NSDictionary *callbackDict = [fetcher userData];
-    NSInvocation *retryInvocation = [callbackDict objectForKey:kCallbackRetryInvocationKey];
+    
+    NSValue *retryInvocationValue = [callbackDict objectForKey:kCallbackRetryInvocationKey];
+    NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
     if (retryInvocation) {
       
       // avoid an infinite loop: remove the retry invocation before re-invoking
-      NSInvocation *noRetryInvocation = nil;
+      NSValue *noRetryInvocation = nil;
       [retryInvocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationIndex];
       
       [self authenticateThenInvoke:retryInvocation];
