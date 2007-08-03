@@ -1,0 +1,33 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                cancelDocListFetchClicked = id; 
+                getDocListClicked = id; 
+                loggingCheckboxClicked = id; 
+                stopUploadClicked = id; 
+                uploadFileClicked = id; 
+                viewSelectedDocClicked = id; 
+            }; 
+            CLASS = DocsSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mDocListCancelButton = NSButton; 
+                mDocListProgressIndicator = NSProgressIndicator; 
+                mDocListResultTextField = NSTextView; 
+                mDocListTable = NSTableView; 
+                mPasswordField = NSSecureTextField; 
+                mStopUploadButton = NSButton; 
+                mUploadFileButton = NSButton; 
+                mUploadProgressIndicator = NSProgressIndicator; 
+                mUploadingTextField = NSTextField; 
+                mUsernameField = NSTextField; 
+                mViewSelectedDocButton = NSButton; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}
