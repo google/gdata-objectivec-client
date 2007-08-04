@@ -169,6 +169,26 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 }
 }}}
 
+== Adding custom data to GDataObject instances ==
+
+Your application can add data to any instance of a GDataObject (such as entry and feed objects, as well as individual elements) in three ways.
+
+Each GDataObject has methods `setUserData:` and `userData` to set and retrieve a single NSObject.
+
+An application can set and retrieve objects as named properties of any GDataObject instance with the methods `setProperty:forKey:` and `propertyForKey:`.  Note that property names beginning with an underscore are reserved by the library and should not be used by applications.
+
+Finally, applications may subclass GDataObjects to add fields and methods.  To have your subclasses be instantiated in place of the standard object class during the parsing of XML following a fetch, call `setServiceSurrogates:`, as demonstrated here:
+
+{{{
+NSDictionary *surrogates = [NSDictionary dictionaryWithObjectsAndKeys:
+  [MyEntryPhoto class], [GDataEntryPhoto class],
+  [MyEntryAlbum class], [GDataEntryPhotoAlbum class],
+  nil];
+
+service = [[GDataServiceGooglePicasaWeb alloc] init];
+[service setServiceSurrogates:surrogates];
+}}}
+
 == Upload progress monitoring ==
 
 When uploading large blocks of data, such as photos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
@@ -218,7 +238,7 @@ The service can optionally remember the dated responses in a cache and provide t
 [service setShouldCacheDatedData:YES];
 }}}
 
-The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service setShouldCacheDatedData:NO]` to purge the cache.
+The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
 
 == Authentication errors and captchas ==
 
@@ -312,4 +332,16 @@ if (proxyAccountName && proxyPassword) {
   [[ticket authFetcher] setProxyCredential:cred];
 }
 }}}
+
+== Logging http server traffic ==
+
+Debugging GData transactions is often easier when you can browse the XML being sent back and forth over the network.  To make this convenient, the framework can save copies of the server traffic, including http headers, to files in a local directory.  Your application should call
+
+{{{
+[GDataHTTPFetcher setIsLoggingEnabled:YES]
+}}}
+
+to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugLogs in the current user's Desktop folder, though the path to another folder can be specified with the `+setLoggingDirectory:` method.
+
+To view the most recently saved logs, use a web browser to open the symlink named !My_App_Name_http_log_newest.html (for whatever your application's name is) in the logging directory.  Note that Camino and Firefox display XML in a more useful fashion than does Safari.
 
