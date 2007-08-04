@@ -959,6 +959,37 @@
                        [obj1 XMLElement], [obj2 XMLElement]);
 }
 
+- (void)testProperties {
+    
+  NSString * const xml = @"<entry xmlns=\"http://www.w3.org/2005/Atom\""
+  " xmlns:gd=\"http://schemas.google.com/g/2005\"  >"
+  " <gd:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
+  "<gd:feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
+  "</gd:feedLink>  </gd:comments> </entry>";
+  
+  GDataObject *obj = [self GDataObjectForClassName:[GDataComment class]
+                                          XMLString:xml
+                    shouldWrapWithNamespaceAndEntry:NO];
+  STAssertNotNil(obj, @"%@", obj);
+  
+  NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+    @"0", @"zero", @"1", @"one", nil];
+  
+  // set all properties
+  [obj setProperties:dict];
+  
+  // change one property
+  [obj setProperty:@"2" forKey:@"two"];
+  
+  // delete one property
+  [obj setProperty:nil forKey:@"zero"];
+  
+  STAssertNil([obj propertyForKey:@"zero"], @"prop 0 problem");
+  STAssertEqualObjects([obj propertyForKey:@"one"], @"1", @"prop 1 problem");
+  STAssertEqualObjects([obj propertyForKey:@"two"], @"2", @"prop 2 problem");
+}
+
+
 @end
 
 // class for testing GDataGeo (used above)

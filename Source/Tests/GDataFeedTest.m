@@ -23,7 +23,6 @@
 #import "GDataEntryCalendarEvent.h"
 #import "GDataElementsTest.h"
 
-
 @implementation GDataFeedTest
 
 - (void)runTests:(TestKeyPathValues *)tests {
@@ -803,6 +802,45 @@
   [self runTests:tests];
 }
 
+
+- (void)testDocListFeed {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Docs Feed
+    //
+    { @"GDataFeedDocList", @"Tests/FeedDocListTest1.xml" },
+    
+    { @"identifier", @"http://docs.google.com/feeds/documents/private/full" },
+
+    // Docs Entries.  The elements are all standard atom protocol elements,
+    // so we are just interested that the proper entry class has been 
+    // instantiated 
+    { @"entries.0.className", @"GDataEntryStandardDoc" },
+    { @"entries.0.categories.0.term", @"http://schemas.google.com/docs/2007#document"},
+    { @"entries.0.categories.0.label", @"document"},
+
+    { @"entries.1.className", @"GDataEntrySpreadsheetDoc" },
+    { @"entries.1.categories.0.term", @"http://schemas.google.com/docs/2007#spreadsheet"},
+    { @"entries.1.categories.0.label", @"spreadsheet"},
+    
+    { @"entries.2.className", @"GDataEntryPresentationDoc" },
+    { @"entries.2.categories.0.term", @"http://schemas.google.com/docs/2007#presentation"},
+    { @"entries.2.categories.0.label", @"presentation"},
+  
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+      
+      
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
+  };
+  [self runTests:tests];
+};
+  
+
 - (void)testACLFeed {
   
   TestKeyPathValues tests[] =
@@ -810,33 +848,33 @@
     //
     // ACL Feed
     //
-  { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
-    
-    // GDataFeedACL paths
-  { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
-  { @"links.0.rel", kGDataLinkRelControlledObject },
-  { @"categories.0.term", kGDataCategoryACL },
-  { @"categories.0.scheme", kGDataCategoryScheme },
-    
-  { @"unknownAttributes.@count.stringValue", @"0" },
-  { @"unknownChildren.@count.stringValue", @"0" },
-    
-    // GDataEntryACL paths (scope and role are the main elements)
-  { @"entries.0.categories.0.term", kGDataCategoryACL },
-  { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com" },
-  { @"entries.0.content.stringValue", @"" },
-  { @"entries.0.links.1.rel", @"edit" },
-  { @"entries.0.scope.type", @"user" },
-  { @"entries.0.scope.value", @"test@gmail.com" },
-  { @"entries.0.role.value", @"http://schemas.google.com/gCal/2005#owner" },
-    
-  { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
-  { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+    { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
+      
+      // GDataFeedACL paths
+    { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
+    { @"links.0.rel", kGDataLinkRelControlledObject },
+    { @"categories.0.term", kGDataCategoryACL },
+    { @"categories.0.scheme", kGDataCategoryScheme },
+      
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+      
+      // GDataEntryACL paths (scope and role are the main elements)
+    { @"entries.0.categories.0.term", kGDataCategoryACL },
+    { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com" },
+    { @"entries.0.content.stringValue", @"" },
+    { @"entries.0.links.1.rel", @"edit" },
+    { @"entries.0.scope.type", @"user" },
+    { @"entries.0.scope.value", @"test@gmail.com" },
+    { @"entries.0.role.value", @"http://schemas.google.com/gCal/2005#owner" },
+      
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
 
-    
-  { @"", @"" }, // end of feed
-    
-  { nil, nil } // end of test array
+      
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
   };
   
   [self runTests:tests];

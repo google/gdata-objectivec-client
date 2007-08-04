@@ -189,8 +189,16 @@ enum {
       if ([str length] > 0) {
         
         // since we know the sign-in domain now, make a string with the full URL
-        NSString *captchaURLString = [NSString stringWithFormat:@"https://%@/accounts/%@",
-          [self signInDomain], str];
+        NSString *captchaURLString;
+        
+        if ([str hasPrefix:@"http:"] || [str hasPrefix:@"https:"]) {
+          // the server gave us a full URL
+          captchaURLString = str;
+        } else {
+          // the server gave us a relative URL
+          captchaURLString = [NSString stringWithFormat:@"https://%@/accounts/%@",
+            [self signInDomain], str];
+        }
         
         [userInfo setObject:captchaURLString forKey:kCaptchaFullURLKey];
       }

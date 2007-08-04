@@ -24,10 +24,7 @@
 #import "GDataMediaGroup.h"
 #import "GDataEXIFTags.h"
 
-@interface GDataEntryPhoto : GDataEntryPhotoBase {
-  NSData *photoUploadData_; 
-  NSString *photoMIMEType_;
-}
+@interface GDataEntryPhoto : GDataEntryPhotoBase
 
 + (GDataEntryPhoto *)photoEntry;
 
@@ -37,10 +34,6 @@
 
 - (void)setPhotoMIMEType:(NSString *)str;
 - (NSString *)photoMIMEType;
-
-- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
-                            length:(unsigned long long *)outLength
-                           headers:(NSDictionary **)outHeaders;
 
 // getters and setters
 

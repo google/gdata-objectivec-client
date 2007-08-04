@@ -20,6 +20,7 @@
 #define GDATAENTRYBASE_DEFINE_GLOBALS 1
 
 #import "GDataEntryBase.h"
+#import "GDataMIMEDocument.h"
 
 @implementation GDataEntryBase
 
@@ -136,6 +137,9 @@
   [links_ release];
   [authors_ release];
   [categories_ release];
+  [uploadData_ release];
+  [uploadMIMEType_ release];
+  [uploadSlug_ release];
   [super dealloc];
 }
 
@@ -153,7 +157,10 @@
     && AreEqualOrBothNil([self content], [other content])
     && AreEqualOrBothNil([self rightsString], [other rightsString])
     && AreEqualOrBothNil([self authors], [other authors])
-    && AreEqualOrBothNil([self categories], [other categories]);
+    && AreEqualOrBothNil([self categories], [other categories])
+    && AreEqualOrBothNil([self uploadData], [other uploadData])
+    && AreEqualOrBothNil([self uploadMIMEType], [other uploadMIMEType])
+    && AreEqualOrBothNil([self uploadSlug], [other uploadSlug]);
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -171,6 +178,9 @@
   [newEntry setLinks:[self links]];
   [newEntry setAuthors:[self authors]];
   [newEntry setCategories:[self categories]];
+  [newEntry setUploadData:[self uploadData]];
+  [newEntry setUploadMIMEType:[self uploadMIMEType]];
+  [newEntry setUploadSlug:[self uploadSlug]];
   
   return newEntry;
 }
@@ -193,6 +203,13 @@
   }
 
   [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
+  
+  [self addToArray:items objectDescriptionIfNonNil:uploadMIMEType_ withName:@"MIMEType"];
+  [self addToArray:items objectDescriptionIfNonNil:uploadSlug_ withName:@"slug"];
+  if (uploadData_) {
+    NSString *str = [NSString stringWithFormat:@"%u_bytes", [uploadData_ length]];
+    [self addToArray:items objectDescriptionIfNonNil:str withName:@"UploadData"];
+  }
   
   if ([self isDeleted]) {
     [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:@"deleted"]; 
@@ -241,6 +258,61 @@
   [self addToElement:element XMLElementsForArray:[self categories]];
   
   return element;
+}
+
+#pragma mark -
+
+- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
+                            length:(unsigned long long *)outLength
+                           headers:(NSDictionary **)outHeaders {
+  
+  // check if a subclass is providing data
+  NSData *uploadData = [self uploadData];
+  NSString *uploadMIMEType = [self uploadMIMEType];
+  
+  if ([uploadData length] == 0 || [uploadMIMEType length] == 0) {
+    // if there's no upload data, just fall back on GDataObject's
+    // XML stream generation
+    return [super generateContentInputStream:outInputStream
+                                      length:outLength
+                                     headers:outHeaders];
+  }
+  
+  // make a MIME document with an XML part and a binary part
+  NSDictionary* xmlHeader;
+  xmlHeader = [NSDictionary dictionaryWithObject:@"application/atom+xml"
+                                          forKey:@"Content-Type"];
+  NSString *xmlString = [[self XMLElement] XMLString];
+  NSData *xmlBody = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
+  
+  NSDictionary *binHeader = [NSDictionary dictionaryWithObject:uploadMIMEType
+                                                        forKey:@"Content-Type"];
+  
+  GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
+  
+  [doc addPartWithHeaders:xmlHeader body:xmlBody];
+  [doc addPartWithHeaders:binHeader body:uploadData];
+  
+  // generate the input stream, and make a header which includes the
+  // boundary used between parts of the mime document
+  NSString *partBoundary = nil; // typically this will be END_OF_PART
+  
+  [doc generateInputStream:outInputStream
+                    length:outLength
+                  boundary:&partBoundary];
+  
+  NSString *streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
+  NSString *streamType = [NSString stringWithFormat:streamTypeTemplate,
+    partBoundary];
+  NSString *slug = [self uploadSlug];
+  
+  *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+    streamType, @"Content-Type",
+    @"1.0", @"MIME-Version", 
+    slug, @"Slug", // slug may be nil
+    nil];
+  
+  return YES;
 }
 
 #pragma mark -
@@ -400,6 +472,71 @@
   if (![categories_ containsObject:obj]) {
     [categories_ addObject:obj];
   }
+}
+
+// Multipart MIME Uploading
+
+- (NSData *)uploadData {
+  return uploadData_;
+}
+
+- (void)setUploadData:(NSData *)data {
+  [uploadData_ autorelease];
+  uploadData_ = [data retain];
+}
+
+- (NSString *)uploadMIMEType {
+  return uploadMIMEType_;
+}
+
+- (void)setUploadMIMEType:(NSString *)str {
+  [uploadMIMEType_ autorelease];
+  uploadMIMEType_ = [str copy];
+}
+
+- (NSString *)uploadSlug {
+  return uploadSlug_;
+}
+
+- (void)setUploadSlug:(NSString *)str {
+  [uploadSlug_ autorelease];
+  uploadSlug_ = [str copy];
+}
+
+// utility routine to convert a file path to the file's MIME type using
+// Mac OS X's UTI database
++ (NSString *)MIMETypeForFileAtPath:(NSString *)path
+                    defaultMIMEType:(NSString *)defaultType {
+  
+  NSString *result = defaultType;
+  
+  // convert the path to an FSRef
+  FSRef fileFSRef;
+  Boolean isDirectory;
+  OSStatus err = FSPathMakeRef((UInt8 *) [path fileSystemRepresentation], 
+                               &fileFSRef, &isDirectory);
+  if (err == noErr) {
+    
+    // get the UTI (content type) for the FSRef    
+    CFStringRef fileUTI;
+    err = LSCopyItemAttribute(&fileFSRef, kLSRolesAll, kLSItemContentType, 
+                              (CFTypeRef *)&fileUTI);
+    if (err == noErr) {
+      
+      // get the MIME type for the UTI
+      CFStringRef mimeTypeTag;
+      mimeTypeTag = UTTypeCopyPreferredTagWithClass(fileUTI, 
+                                                    kUTTagClassMIMEType);
+      if (mimeTypeTag) {
+        
+        // convert the CFStringRef to an autoreleased NSString (ObjC 2.0-safe)
+        result = [NSString stringWithString:(NSString *)mimeTypeTag]; 
+        CFRelease(mimeTypeTag);
+      }
+      CFRelease(fileUTI);
+    }
+  }
+  return result;
 }
 
 // extension for deletion marking

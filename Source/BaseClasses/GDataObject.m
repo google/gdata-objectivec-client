@@ -145,6 +145,7 @@
   [unknownAttributes_ release];
   [surrogates_ release];
   [userData_ release];
+  [userProperties_ release];
   [super dealloc]; 
 }
 
@@ -252,6 +253,8 @@
   return surrogates_; 
 }
 
+#pragma mark userData and properties
+
 - (void)setUserData:(id)userData {
   [userData_ autorelease];
   userData_ = [userData retain];
@@ -261,6 +264,39 @@
   // be sure the returned pointer has the life of the autorelease pool,
   // in case self is released immediately
   return [[userData_ retain] autorelease];
+}
+
+- (void)setProperties:(NSDictionary *)dict {
+  [userProperties_ autorelease];
+  userProperties_ = [dict mutableCopy];
+}
+
+- (NSDictionary *)properties {
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[userProperties_ retain] autorelease];
+}
+
+- (void)setProperty:(id)obj forKey:(NSString *)key {
+  
+  if (obj == nil) {
+    // user passed in nil, so delete the property
+    [userProperties_ removeObjectForKey:key];
+  } else {
+    // be sure the property dictionary exists
+    if (userProperties_ == nil) {
+      userProperties_ = [[NSMutableDictionary alloc] init];
+    }
+    [userProperties_ setObject:obj forKey:key];
+  }
+}
+
+- (id)propertyForKey:(NSString *)key {
+  id obj = [userProperties_ objectForKey:key];
+  
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[obj retain] autorelease];
 }
 
 #pragma mark XML generation helpers
@@ -627,22 +663,23 @@ objectDescriptionIfNonNil:(id)obj
     }
   }
   
-  // step through all chid elements and create an appropriate GData object
+  // step through all child elements and create an appropriate GData object
   NSEnumerator *objEnumerator = [objElements objectEnumerator];
   NSXMLElement *objElement;
-  
+    
   while ((objElement = [objEnumerator nextObject]) != nil) {
     
-    if (objectClass == nil) {
+    Class elementClass = objectClass;
+    if (elementClass == nil) {
       // if the object is a feed or an entry, we might be able to determine the
-      // type from the XML
-      objectClass = [GDataObject objectClassForXMLElement:objElement];
+      // type for this element from the XML
+      elementClass = [GDataObject objectClassForXMLElement:objElement];
     }
     
-    objectClass = [self classOrSurrogateForClass:objectClass];
+    elementClass = [self classOrSurrogateForClass:elementClass];
 
-    id obj = [[[objectClass alloc] initWithXMLElement:objElement
-                                               parent:self] autorelease];
+    id obj = [[[elementClass alloc] initWithXMLElement:objElement
+                                                parent:self] autorelease];
     if (obj) {
       [objects addObject:obj];
     }
@@ -1309,7 +1346,6 @@ forCategoryWithScheme:scheme
 - (NSString *)description {
   return [NSString stringWithFormat:@"%@: {%@ can contain %@}", 
     [self class], parentClass_, childClass_];
-
 }
 
 - (Class)parentClass {

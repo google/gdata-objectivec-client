@@ -50,6 +50,7 @@ enum {
   NSDictionary *surrogates_;
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
+  GDataObject *postedObject_;
   GDataObject *fetchedObject_;
   NSError *fetchError_;
   BOOL hasCalledCallback_;
@@ -80,6 +81,9 @@ enum {
 
 - (BOOL)hasCalledCallback;
 - (void)setHasCalledCallback:(BOOL)flag;
+
+- (void)setPostedObject:(GDataObject *)obj;
+- (GDataObject *)postedObject;
 
 - (void)setFetchedObject:(GDataObject *)obj;
 - (GDataObject *)fetchedObject;

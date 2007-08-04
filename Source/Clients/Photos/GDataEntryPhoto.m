@@ -19,7 +19,6 @@
 
 #import "GDataEntryPhoto.h"
 #import "GDataPhotoElements.h"
-#import "GDataMIMEDocument.h"
 
 @implementation GDataEntryPhoto
 
@@ -115,85 +114,24 @@
   return self;
 }
 
-- (void)dealloc {
-  [photoUploadData_ release];
-  [photoMIMEType_ release];
-  [super dealloc];
-}
-
 #pragma mark -
 
 // binary photo uploading
 
 - (void)setPhotoData:(NSData *)data {
-  [photoUploadData_ autorelease];
-  photoUploadData_ = [data retain];  
+  [self setUploadData:data];
 }
 
 - (NSData *)photoData {
-  return photoUploadData_; 
+  return [self uploadData];
 }
 
 - (void)setPhotoMIMEType:(NSString *)str {
-  [photoMIMEType_ autorelease];
-  photoMIMEType_ = [str copy];
+  [self setUploadMIMEType:str];
 }
 
 - (NSString *)photoMIMEType {
-  return photoMIMEType_;
-}
-
-- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
-                            length:(unsigned long long *)outLength
-                           headers:(NSDictionary **)outHeaders {
-  
-  if ([[self photoData] length] == 0) {
-    // if there's no photo data, just fall back on GDataObject's
-    // XML stream generation
-    return [super generateContentInputStream:outInputStream
-                                      length:outLength
-                                     headers:outHeaders];
-  }
-  
-  // make a MIME document with an XML part and a binary part
-  NSDictionary* xmlHeader;
-  xmlHeader = [NSDictionary dictionaryWithObject:@"application/atom+xml"
-                                          forKey:@"Content-Type"];
-  NSString *xmlString = [[self XMLElement] XMLString];
-  NSData *xmlBody = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
-  
-  
-  NSString *photoContentType = photoMIMEType_ ? photoMIMEType_ : @"image/jpeg";
-  NSDictionary *binHeader = [NSDictionary dictionaryWithObject:photoContentType
-                                                        forKey:@"Content-Type"];
-  NSData *binBody = [self photoData];
-  
-  GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
-  
-  [doc addPartWithHeaders:xmlHeader body:xmlBody];
-  
-  if ([binBody length] > 0) {
-    [doc addPartWithHeaders:binHeader body:binBody];
-  }
-  
-  // generate the input stream, and make a header which includes the
-  // boundary used between parts of the mime document
-  NSString *partBoundary = nil; // typically this will be END_OF_PART
-  
-  [doc generateInputStream:outInputStream
-                    length:outLength
-                  boundary:&partBoundary];
-
-  NSString *streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
-  NSString *streamType = [NSString stringWithFormat:streamTypeTemplate,
-    partBoundary];
-
-  *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-    streamType, @"Content-Type",
-    @"1.0", @"MIME-Version", 
-    nil];
-  
-  return YES;
+  return [self uploadMIMEType];
 }
 
 #pragma mark -

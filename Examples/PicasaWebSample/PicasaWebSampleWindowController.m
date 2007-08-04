@@ -565,7 +565,8 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     // attach the NSData and set the MIME type for the photo
     [newEntry setPhotoData:photoData];
     
-    NSString *mimeType = [self MIMETypeForPhotoAtPath:photoPath];
+    NSString *mimeType = [GDataEntryBase MIMETypeForFileAtPath:photoPath
+                                               defaultMIMEType:@"image/jpeg"];
     [newEntry setPhotoMIMEType:mimeType];
     
     // get the feed URL for the album we're inserting the photo into
@@ -632,41 +633,6 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
                     nil, nil, @"Photo add failed: %@", error);
   
   [mUploadProgressIndicator setDoubleValue:0.0];
-}
-
-// utility routine to convert a file path to the file's MIME type using
-// Mac OS X's UTI database
-- (NSString *)MIMETypeForPhotoAtPath:(NSString *)path {
-  
-  NSString *result = @"image/jpeg"; // default to jpeg
-  
-  // conver the path to an FSRef
-  FSRef fileFSRef;
-  Boolean isDirectory;
-  OSStatus err = FSPathMakeRef((UInt8 *) [path fileSystemRepresentation], 
-                               &fileFSRef, &isDirectory);
-  if (err == noErr) {
-    
-    // get the UTI (content type) for the FSRef    
-    CFStringRef fileUTI;
-    err = LSCopyItemAttribute(&fileFSRef, kLSRolesAll, kLSItemContentType, 
-                              (CFTypeRef *)&fileUTI);
-    if (err == noErr) {
-      
-      // get the MIME type for the UTI
-      CFStringRef mimeTypeTag;
-      mimeTypeTag = UTTypeCopyPreferredTagWithClass(fileUTI, 
-                                                    kUTTagClassMIMEType);
-      if (mimeTypeTag) {
-        
-        // convert the CFStringRef to an autoreleased NSString (ObjC 2.0-safe)
-        result = [NSString stringWithString:(NSString *)mimeTypeTag]; 
-        CFRelease(mimeTypeTag);
-      }
-      CFRelease(fileUTI);
-    }
-  }
-  return result;
 }
 
 #pragma mark Delete a photo

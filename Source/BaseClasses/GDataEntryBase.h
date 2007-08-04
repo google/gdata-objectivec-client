@@ -63,6 +63,10 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
   NSMutableArray *links_; // GDataLink objects
   NSMutableArray *authors_; // GDataPerson objects
   NSMutableArray *categories_; // GDataCategory objects
+
+  NSData *uploadData_;
+  NSString *uploadMIMEType_;
+  NSString *uploadSlug_; // for http slug (filename) header when uploading
 }
 
 + (NSDictionary *)baseGDataNamespaces;
@@ -117,6 +121,19 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (NSArray *)categories;
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
+
+// Multipart MIME Upload
+- (NSData *)uploadData;
+- (void)setUploadData:(NSData *)data;
+
+- (NSString *)uploadMIMEType;
+- (void)setUploadMIMEType:(NSString *)str;
+
+- (NSString *)uploadSlug; // for http slug (filename) header when uploading
+- (void)setUploadSlug:(NSString *)str;
+
++ (NSString *)MIMETypeForFileAtPath:(NSString *)path
+                    defaultMIMEType:(NSString *)defaultType;
 
 // extension for entries which may include deleted elements
 - (BOOL)isDeleted;
