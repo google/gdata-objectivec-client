@@ -49,8 +49,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 
 @interface GDataServiceBase (PrivateMethods)
-- (NSString *)defaultApplicationIdentifier;
-
 - (NSMutableDictionary *)callbackDictionaryForObjectClass:(Class)objectClass
                                                  delegate:(id)delegate
                                          finishedSelector:(SEL)finishedSelector
@@ -139,7 +137,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSData *dataToRetain = nil;
   
   if (objectToPost) {
-    
+
+    [ticket setPostedObject:objectToPost];
+
     // An upload object may provide a custom input stream, such as for 
     // multi-part MIME or media uploads.  If it lacks a custom stream, 
     // we'll make a stream from the XML data of the object.
@@ -740,14 +740,48 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return resultStr;
 }
 
+// return a default process name suitable for GData and http 
+- (NSString *)cleanProcessName {
+  
+  NSMutableString *procName = [NSMutableString stringWithString:
+    [[NSProcessInfo processInfo] processName]];
+  
+  // make a proper token from the process name 
+  // per http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html
+  // and http://www.mozilla.org/build/user-agent-strings.html
+  
+  // replace spaces with underscores
+  [procName replaceOccurrencesOfString:@" "
+                            withString:@"_"
+                               options:0
+                                 range:NSMakeRange(0, [procName length])];
+
+  // delete http token separators and remaining whitespace
+  NSString *const kSeparators = @"()<>@,;:\\\"/[]?={}";
+  
+  NSMutableCharacterSet *charsToDelete;
+  charsToDelete = [[[NSCharacterSet whitespaceAndNewlineCharacterSet] mutableCopy] autorelease];
+  [charsToDelete addCharactersInString:kSeparators];
+  
+  while (true) {
+    NSRange separatorRange = [procName rangeOfCharacterFromSet:charsToDelete];
+    if (separatorRange.location == NSNotFound) break;
+  
+    [procName deleteCharactersInRange:separatorRange];
+  }; 
+  
+  return procName;
+}
+
 // return a generic name and version for the current application; this avoids
 // anonymous server transactions.  Applications should call setUserAgent
 // to avoid the need for this method to be used.
 - (NSString *)defaultApplicationIdentifier {
-  NSString *procName = [[NSProcessInfo processInfo] processName];
+  NSString *procName = [self cleanProcessName];
+  
   NSString *version = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
   if (!version || [version isEqual:@"CFBundleShortVersionString"]) {
-    version = @"version?";    
+    version = @"version_unknown";    
   }
   NSString *result = [NSString stringWithFormat:@"%@/%@", procName, version];
   return result;
@@ -773,6 +807,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [userData_ release];
   [surrogates_ release];
   [objectFetcher_ release];
+  [postedObject_ release];
   [fetchedObject_ release];
   [fetchError_ release];
   
@@ -844,6 +879,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (BOOL)hasCalledCallback {
   return hasCalledCallback_;  
+}
+
+- (void)setPostedObject:(GDataObject *)obj {
+  [postedObject_ autorelease];
+  postedObject_ = [obj retain];
+}
+
+- (GDataObject *)postedObject {
+  return postedObject_;
 }
 
 - (void)setFetchedObject:(GDataObject *)obj {

@@ -118,6 +118,15 @@
 #import "GDataServiceGoogleSpreadsheet.h"
 #import "GDataQuerySpreadsheet.h"
 
+// Google Doc List
+#import "GDataEntryDocBase.h"
+#import "GDataEntryStandardDoc.h"
+#import "GDataEntrySpreadsheetDoc.h"
+#import "GDataEntryPresentationDoc.h"
+#import "GDataFeedDocList.h"
+#import "GDataServiceGoogleDocs.h"
+#import "GDataQueryDocs.h"
+
 // Code Search
 #import "GDataCodeSearchFile.h"
 #import "GDataCodeSearchPackage.h"

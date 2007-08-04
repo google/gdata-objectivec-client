@@ -93,7 +93,6 @@
     && AreEqualOrBothNil([self type], [other type])
     && AreEqualOrBothNil([self href], [other href])
     && AreEqualOrBothNil([self hrefLang], [other hrefLang])
-    && AreEqualOrBothNil([self type], [other type])
     && AreEqualOrBothNil([self title], [other title])
     && AreEqualOrBothNil([self titleLang], [other titleLang])
     && AreEqualOrBothNil([self resourceLength], [other resourceLength]);
@@ -231,13 +230,23 @@
 @implementation NSArray(GDataLinkArray)
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue {
   
+  return [self linkWithRel:relValue type:nil];
+}
+
+// Find the first link with the given rel and type values. Either argument
+// may be nil, which means "match any value".
+- (GDataLink *)linkWithRel:(NSString *)relValue type:(NSString *)typeValue {
+  
   NSEnumerator *linkEnumerator = [self objectEnumerator]; 
   GDataLink *link;
   
   while ((link = [linkEnumerator nextObject]) != nil) {
     
-    NSString *attrValue = [link rel];
-    if (attrValue && [attrValue isEqual:relValue]) {
+    NSString *foundRelValue = [link rel];
+    NSString *foundTypeValue = [link type];
+    
+    if ((relValue == nil || AreEqualOrBothNil(relValue, foundRelValue))
+        && (typeValue == nil || AreEqualOrBothNil(typeValue, foundTypeValue))) {
       return link;
     }
   }
@@ -291,9 +300,12 @@
   return [self linkWithRelAttributeValue:@"previous"]; 
 }
 
+- (GDataLink *)HTMLLink {
+  return [self linkWithRel:@"alternate" type:@"text/html"];
+}
+
 - (GDataLink *)batchLink {
   return [self linkWithRelAttributeValue:kGDataLinkRelBatch]; 
 }
-
 @end
 

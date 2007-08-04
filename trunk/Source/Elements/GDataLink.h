@@ -90,6 +90,8 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel;
 - (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix;
 
+- (GDataLink *)linkWithRel:(NSString *)relValue type:(NSString *)typeValue;
+
 - (GDataLink *)feedLink;
 - (GDataLink *)postLink;
 - (GDataLink *)editLink;
@@ -98,5 +100,6 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 - (GDataLink *)selfLink;
 - (GDataLink *)nextLink;
 - (GDataLink *)previousLink;
+- (GDataLink *)HTMLLink;
 - (GDataLink *)batchLink;
 @end

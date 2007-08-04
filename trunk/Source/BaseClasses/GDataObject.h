@@ -166,8 +166,10 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
   // creating objects from XML
   NSDictionary *surrogates_;
   
-  // anything defined by the client; retained but not used internally
+  // anything defined by the client; retained but not used internally; not 
+  // copied by copyWithZone:
   id userData_; 
+  NSMutableDictionary *userProperties_;
 }
 
 - (id)copyWithZone:(NSZone *)zone;
@@ -212,9 +214,18 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 - (void)setSurrogates:(NSDictionary *)surrogates;
 - (NSDictionary *)surrogates;
 
-// userData is available for client use; retained by GDataObject
+// userData is available for client use; retained by GDataObject, but not 
+// copied by the copyWithZone
 - (void)setUserData:(id)obj; 
 - (id)userData;
+
+// properties are supported for client convenience, but are not copied by
+// copyWithZone.  Properties keys beginning with _ are reserved by the library.
+- (void)setProperties:(NSDictionary *)dict;
+- (NSDictionary *)properties;
+
+- (void)setProperty:(id)obj forKey:(NSString *)key; // pass nil obj to remove property
+- (id)propertyForKey:(NSString *)key;
 
 // XMLNode children not parsed; primarily for internal use by the framework
 - (void)setUnknownChildren:(NSArray *)arr;

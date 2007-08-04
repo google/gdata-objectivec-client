@@ -10,12 +10,19 @@ Additions
 
 - Added support for Google Code Search
 
+- Added support for Google Docs document list
+
 - Added http logging (see GDataHTTPFetcherLogging.h)
 
 - Added ability to provide a connection class for GDataHTTPFetcher
 
 - Added routines to let library users override standard classes
   with their own surrogate subclasses (see GDataServiceBase.h)
+  
+- Added setProperty:forKey: and propertyForKey: to GDataObject so users can
+  easily attach any data without subclassing
+  
+- The ticket now retains the posted object for the convenience of the callbacks
   
 - Added convenience setters for methods that take GDataTextContruct.
   For example, framework now supports setTitleWithString:.
@@ -37,6 +44,7 @@ Additions
 
 - Added a call to clear the last-modified dates tracked by the service object
 
+- Added HTMLLink convenience accessor
 
 Bugs Fixed
 
@@ -60,6 +68,8 @@ Bugs Fixed
 - Fixed extra retain on arguments during pre-authenticated fetches
 
 - Allow subclasses of GDataEntryPhoto to override photoData method
+
+- Ensure default application identifier is valid for an http useragent
 
 
 Release 1.1.0
