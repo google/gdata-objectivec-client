@@ -189,6 +189,36 @@ service = [[GDataServiceGooglePicasaWeb alloc] init];
 [service setServiceSurrogates:surrogates];
 }}}
 
+== Uploading files ==
+
+Some services allow uploading of a file when inserting an entry into a feed.  Uploading requires setting the upload data and MIME type in the entry. Some services also require a *slug* as the file name.  
+
+This snippet shows the basic steps for uploading a spreadsheet document.
+
+{{{
+GDataEntrySpreadsheetDoc *newEntry = [GDataEntrySpreadsheetDoc documentEntry];
+  
+NSData *data = [NSData dataWithContentsOfFile:spreadsheetPath];
+if (data) {
+  NSString *fileName = [spreadsheetPath lastPathComponent];
+  
+  [newEntry setUploadSlug:filename];
+  [newEntry setUploadData:data];
+  [newEntry setUploadMIMEType:@"application/vnd.ms-excel"];
+
+  NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
+  [newEntry setTitleWithString:title];
+  
+  NSURL *postURL = [[[docListFeed links] postLink] URL];
+
+  ticket = [service fetchDocEntryByInsertingEntry:newEntry
+                                       forFeedURL:postURL
+                                         delegate:self
+                                didFinishSelector:finishedSel
+                                  didFailSelector:failedSel];
+}
+}}}
+
 == Upload progress monitoring ==
 
 When uploading large blocks of data, such as photos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
