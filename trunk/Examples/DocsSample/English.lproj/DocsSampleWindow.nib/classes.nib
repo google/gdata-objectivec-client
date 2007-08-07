@@ -3,6 +3,7 @@
         {
             ACTIONS = {
                 cancelDocListFetchClicked = id; 
+                downloadSelectedDocClicked = id; 
                 getDocListClicked = id; 
                 loggingCheckboxClicked = id; 
                 stopUploadClicked = id; 
@@ -16,6 +17,7 @@
                 mDocListProgressIndicator = NSProgressIndicator; 
                 mDocListResultTextField = NSTextView; 
                 mDocListTable = NSTableView; 
+                mDownloadSelectedDocButton = NSButton; 
                 mPasswordField = NSSecureTextField; 
                 mStopUploadButton = NSButton; 
                 mUploadFileButton = NSButton; 

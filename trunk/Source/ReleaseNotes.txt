@@ -71,6 +71,9 @@ Bugs Fixed
 
 - Ensure default application identifier is valid for an http useragent
 
+- Fixed convenience method for GDataTextConstruct to return subclass type
+  (thanks ghulands)
+
 
 Release 1.1.0
 4-June-2007
