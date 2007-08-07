@@ -35,4 +35,6 @@ _EXTERN NSString* kGDataNamespaceDocuments       _INITIALIZE_AS(@"http://schemas
 
 @interface GDataEntryDocBase : GDataEntryBase
 + (NSDictionary *)baseDocumentNamespaces;
+
++ (id)documentEntry;
 @end

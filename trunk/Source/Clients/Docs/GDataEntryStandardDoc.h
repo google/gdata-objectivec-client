@@ -34,6 +34,5 @@
 _EXTERN NSString* kGDataCategoryStandardDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#document");
 
 @interface GDataEntryStandardDoc : GDataEntryDocBase
-+ (GDataEntryStandardDoc *)standardDocEntry;
 @end
 

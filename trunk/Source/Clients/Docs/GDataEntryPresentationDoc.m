@@ -22,17 +22,6 @@
 
 @implementation GDataEntryPresentationDoc
 
-+ (GDataEntryPresentationDoc *)presentationDocEntry {
-  
-  GDataEntryPresentationDoc *entry = [[[GDataEntryPresentationDoc alloc] init] autorelease];
-  
-  [entry setNamespaces:[GDataEntryPresentationDoc baseDocumentNamespaces]];
-  
-  return entry;
-}
-
-#pragma mark -
-
 + (void)load {
   [GDataObject registerEntryClass:[self class]
             forCategoryWithScheme:kGDataCategoryScheme

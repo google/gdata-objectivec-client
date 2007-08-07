@@ -22,17 +22,6 @@
 
 @implementation GDataEntryStandardDoc
 
-+ (GDataEntryStandardDoc *)standardDocEntry {
-  
-  GDataEntryStandardDoc *entry = [[[GDataEntryStandardDoc alloc] init] autorelease];
-  
-  [entry setNamespaces:[GDataEntryStandardDoc baseDocumentNamespaces]];
-  
-  return entry;
-}
-
-#pragma mark -
-
 + (void)load {
   [GDataObject registerEntryClass:[self class]
             forCategoryWithScheme:kGDataCategoryScheme
