@@ -22,17 +22,6 @@
 
 @implementation GDataEntrySpreadsheetDoc
 
-+ (GDataEntrySpreadsheetDoc *)spreadsheetDocEntry {
-  
-  GDataEntrySpreadsheetDoc *entry = [[[GDataEntrySpreadsheetDoc alloc] init] autorelease];
-  
-  [entry setNamespaces:[GDataEntrySpreadsheetDoc baseDocumentNamespaces]];
-  
-  return entry;
-}
-
-#pragma mark -
-
 + (void)load {
   [GDataObject registerEntryClass:[self class]
             forCategoryWithScheme:kGDataCategoryScheme

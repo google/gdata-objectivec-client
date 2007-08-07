@@ -34,6 +34,5 @@
 _EXTERN NSString* kGDataCategoryPresentationDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#presentation");
 
 @interface GDataEntryPresentationDoc : GDataEntryDocBase
-+ (GDataEntryPresentationDoc *)presentationDocEntry;
 @end
 

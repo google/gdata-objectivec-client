@@ -32,4 +32,13 @@
   return namespaces;  
 }
 
++ (id)documentEntry {
+  
+  GDataEntryDocBase *entry = [[[[self class] alloc] init] autorelease];
+  
+  [entry setNamespaces:[self baseDocumentNamespaces]];
+  
+  return entry;
+}
+
 @end

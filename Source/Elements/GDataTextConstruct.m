@@ -23,7 +23,7 @@
 // For typed text, like: <title type="text">Event title</title>
 
 + (id)textConstructWithString:(NSString *)str {
-  GDataTextConstruct *obj = [[[GDataTextConstruct alloc] init] autorelease];
+  GDataTextConstruct *obj = [[[[self class] alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
