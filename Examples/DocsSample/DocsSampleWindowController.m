@@ -100,6 +100,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // docList list display
   [mDocListTable reloadData]; 
   
+  GDataEntryDocBase *selectedDoc = [self selectedDoc];
+  
   // spin indicator when retrieving feed
   BOOL isFetchingDocList = (mDocListFetchTicket != nil);
   if (isFetchingDocList) {
@@ -114,16 +116,18 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (mDocListFetchError) {
     docResultStr = [mDocListFetchError description];
   } else {
-    GDataEntryDocBase *doc = [self selectedDoc];
-    if (doc) {
-      docResultStr = [doc description];
+    if (selectedDoc) {
+      docResultStr = [selectedDoc description];
     }
   }
   [mDocListResultTextField setString:docResultStr];
   
   // enable the button for viewing the selected doc in a browser
-  BOOL doesDocHaveHTMLLink = ([[[self selectedDoc] links] HTMLLink] != nil);
+  BOOL doesDocHaveHTMLLink = ([[selectedDoc links] HTMLLink] != nil);
   [mViewSelectedDocButton setEnabled:doesDocHaveHTMLLink];
+  
+  BOOL doesDocHaveHTMLContent = ([[[selectedDoc content] type] isEqual:@"text/html"]);
+  [mDownloadSelectedDocButton setEnabled:doesDocHaveHTMLContent];
   
   // enable uploading buttons 
   BOOL isUploading = (mUploadTicket != nil);
@@ -176,6 +180,69 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [[NSWorkspace sharedWorkspace] openURL:docURL];
   } else {
     NSBeep(); 
+  }
+}
+
+- (IBAction)downloadSelectedDocClicked:(id)sender {
+  
+  GDataEntryDocBase *doc = [self selectedDoc];
+  
+  NSString *sourceURI = [[doc content] sourceURI];
+  if (sourceURI) {
+    
+    NSString *title = [[doc title] stringValue];
+    
+    NSString *filename = [NSString stringWithFormat:@"%@.html", title];
+    
+    SEL endSel = @selector(saveSheetDidEnd:returnCode:contextInfo:);
+    
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    [savePanel beginSheetForDirectory:nil
+                                 file:filename
+                       modalForWindow:[self window]
+                        modalDelegate:self
+                       didEndSelector:endSel
+                          contextInfo:nil];
+  } else {
+    NSBeep(); 
+  }
+}
+
+- (void)saveSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSOKButton) {
+    // user clicked OK
+    
+    NSString *sourceURI = [[[self selectedDoc] content] sourceURI];
+    NSURL *url = [NSURL URLWithString:sourceURI];
+    if (url) {
+      
+      // read the document's contents synchronously from the network
+      //
+      // note that if the document isn't published with public access, 
+      // then this will require that we be signed into the account in Safari; 
+      // otherwise, it will receive an error html page
+      NSError *error = nil;
+      NSData *data = [NSData dataWithContentsOfURL:url
+                                           options:NSUncachedRead
+                                             error:&error];
+      if (error != nil) {
+        NSLog(@"Error retrieving file: %@", error);
+        NSBeep();
+        
+      } else {
+        // save the file to the local path specified by the user
+        NSString *savePath = [panel filename];
+        
+        BOOL didWrite = [data writeToFile:savePath
+                                  options:NSAtomicWrite 
+                                    error:&error];
+        if (!didWrite) {
+          NSLog(@"Error saving file: %@", error);
+          NSBeep();
+        }
+      }
+    }
   }
 }
 
@@ -389,7 +456,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
   if (mimeType && entryClass) {
     
-    GDataEntryDocBase *newEntry = [[[entryClass alloc] init] autorelease];
+    GDataEntryDocBase *newEntry = [entryClass documentEntry];
     
     NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
     [newEntry setTitleWithString:title];
