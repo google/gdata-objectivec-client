@@ -60,6 +60,12 @@ _EXTERN NSString* kGDataGoogleBaseUserItemsFeed  _INITIALIZE_AS(@"http://www.goo
                                    didFailSelector:(SEL)failedSelector;  
 
 // finished callback (see above) is passed a GDataEntryGoogleBase
+- (GDataServiceTicket *)fetchGoogleBaseEntryWithURL:(NSURL *)entryURL
+                                           delegate:(id)delegate
+                                  didFinishSelector:(SEL)finishedSelector
+                                    didFailSelector:(SEL)failedSelector;  
+
+// finished callback (see above) is passed a GDataEntryGoogleBase
 - (GDataServiceTicket *)fetchGoogleBaseEntryByInsertingEntry:(GDataEntryGoogleBase *)entryToInsert
                                                   forFeedURL:(NSURL *)googleBaseFeedURL
                                                     delegate:(id)delegate

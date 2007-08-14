@@ -71,6 +71,10 @@ Bugs Fixed
 
 - Ensure default application identifier is valid for an http useragent
 
+- When a service is asked to retrieve a feed and actually fetches an entry,
+  the service no longer creates a feed to contain the entry, so clients must
+  be explicit about whether a feed or an entry is expected
+
 - Fixed convenience method for GDataTextConstruct to return subclass type
   (thanks ghulands)
 
