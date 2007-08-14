@@ -133,8 +133,8 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];
   
   // set a title, description, and author
-  [newEvent setTitle:[GDataTextConstruct textConstructWithString:@"Meeting"]];
-  [newEvent setSummary:[GDataTextConstruct textConstructWithString:@"Today's discussion"]];
+  [newEvent setTitleWithString:@"Meeting"];
+  [newEvent setSummaryWithString:@"Today's discussion"];
 
   GDataPerson *authorPerson = [GDataPerson personWithName:@"Fred Flintstone"
                                                     email:@"fred.flinstone@spurious.xxx.com"];
@@ -374,4 +374,3 @@ Debugging GData transactions is often easier when you can browse the XML being s
 to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugLogs in the current user's Desktop folder, though the path to another folder can be specified with the `+setLoggingDirectory:` method.
 
 To view the most recently saved logs, use a web browser to open the symlink named !My_App_Name_http_log_newest.html (for whatever your application's name is) in the logging directory.  Note that Camino and Firefox display XML in a more useful fashion than does Safari.
-
