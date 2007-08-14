@@ -164,7 +164,7 @@
   Class entryClass = [self classForEntries];
   
 #if DEBUG
-  NSAssert1([[root name] isEqual:@"feed"], 
+  NSAssert1([[root localName] isEqual:@"feed"], 
             @"initing a feed from a non-feed element (%@)", [root name]);
 #endif
   

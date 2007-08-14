@@ -157,8 +157,8 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     
   [service fetchGoogleBaseQuery:query
                              delegate:self
-                    didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                      didFailSelector:@selector(feedTicket:failedWithError:)];
+                    didFinishSelector:@selector(ticket:finishedWithObject:)
+                      didFailSelector:@selector(ticket:failedWithError:)];
   
   [mBaseQueryURLField setStringValue:[[query URL] absoluteString]];
   
@@ -168,19 +168,19 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
 - (IBAction)getItemTypesClicked:(id)sender {
   NSString *itemTypesString = [mItemTypesField stringValue];
   
-  NSString *googleBaseSnippetsFeed = [kGDataGoogleBaseItemTypesFeed // "http://base.google.com/base/feeds/itemtypes/"
+  NSString *googleBaseSnippetsEntry = [kGDataGoogleBaseItemTypesFeed // "http://base.google.com/base/feeds/itemtypes/"
                      stringByAppendingFormat:@"/%@", itemTypesString];
-  NSURL *feedURL = [NSURL URLWithString:googleBaseSnippetsFeed];
+  NSURL *entryURL = [NSURL URLWithString:googleBaseSnippetsEntry];
   
   mIsGoogleBaseFetchPending = YES;
-
+  
   GDataServiceGoogleBase *service = [self googleBaseService];
   [service setUserCredentialsWithUsername:nil
                                  password:nil];
-  [service fetchGoogleBaseFeedWithURL:feedURL
-                             delegate:self
-                    didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                      didFailSelector:@selector(feedTicket:failedWithError:)];
+  [service fetchGoogleBaseEntryWithURL:entryURL
+                              delegate:self
+                     didFinishSelector:@selector(ticket:finishedWithObject:)
+                       didFailSelector:@selector(ticket:failedWithError:)];
   
   [self updateUI];
 }
@@ -199,8 +199,8 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
                                  password:nil];
   [service fetchGoogleBaseFeedWithURL:feedURL
                              delegate:self
-                    didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                      didFailSelector:@selector(feedTicket:failedWithError:)];
+                    didFinishSelector:@selector(ticket:finishedWithObject:)
+                      didFailSelector:@selector(ticket:failedWithError:)];
   
   [self updateUI];
 }
@@ -232,25 +232,39 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   
   [service fetchGoogleBaseFeedWithURL:feedURL
                              delegate:self
-                    didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                      didFailSelector:@selector(feedTicket:failedWithError:)];
+                    didFinishSelector:@selector(ticket:finishedWithObject:)
+                      didFailSelector:@selector(ticket:failedWithError:)];
   
   [self updateUI];
 }
 
-- (void)feedTicket:(GDataServiceTicket *)ticket
-  finishedWithFeed:(GDataFeedGoogleBase *)object {
+- (void)ticket:(GDataServiceTicket *)ticket
+  finishedWithObject:(GDataObject *)object {
   
-  [self setGoogleBaseFeed:object];
-  [self setGoogleBaseFetchError:nil];    
+  GDataFeedGoogleBase *feed;
   
+  if ([object isKindOfClass:[GDataEntryGoogleBase class]]) {
+    // the fetch was for an entry, not a feed; wrap the entry in a feed
+    // for our user interface
+    
+    feed = [GDataFeedGoogleBase googleBaseFeed];
+    
+    [feed addEntry:(GDataEntryGoogleBase *) object];
+  } else {
+    // the object was a Google Base feed
+    feed = (GDataFeedGoogleBase *) object; 
+  }
+
+  [self setGoogleBaseFeed:feed];
+  [self setGoogleBaseFetchError:nil];
+    
   mIsGoogleBaseFetchPending = NO;
   
   // select an appropriate tab by checking for attributes, metadata attributes,
   // or a metadata attribute list in the first entry
-  if ([[object entries] count]) {
+  if ([[feed entries] count]) {
     int tabIndex;
-    GDataEntryGoogleBase *entry = [[object entries] objectAtIndex:0];
+    GDataEntryGoogleBase *entry = [[feed entries] objectAtIndex:0];
     
     if ([[entry attributes] count]) {
       tabIndex = 0;
@@ -266,7 +280,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   [self updateUI];
 } 
 
-- (void)feedTicket:(GDataServiceTicket *)ticket
+- (void)ticket:(GDataServiceTicket *)ticket
    failedWithError:(NSError *)error {
   
   [self setGoogleBaseFeed:nil];

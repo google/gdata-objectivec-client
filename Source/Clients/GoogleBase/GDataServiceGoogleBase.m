@@ -50,6 +50,18 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchGoogleBaseEntryWithURL:(NSURL *)entryURL
+                                           delegate:(id)delegate
+                                  didFinishSelector:(SEL)finishedSelector
+                                    didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:[GDataEntryGoogleBase class]
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)fetchGoogleBaseEntryByInsertingEntry:(GDataEntryGoogleBase *)entryToInsert
                                                   forFeedURL:(NSURL *)googleBaseFeedURL
                                                     delegate:(id)delegate
