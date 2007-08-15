@@ -198,9 +198,10 @@ This snippet shows the basic steps for uploading a spreadsheet document.
 {{{
 GDataEntrySpreadsheetDoc *newEntry = [GDataEntrySpreadsheetDoc documentEntry];
   
-NSData *data = [NSData dataWithContentsOfFile:spreadsheetPath];
+NSString *path = @"/mySpreadsheet.xls";
+NSData *data = [NSData dataWithContentsOfFile:path];
 if (data) {
-  NSString *fileName = [spreadsheetPath lastPathComponent];
+  NSString *fileName = [path lastPathComponent];
   
   [newEntry setUploadSlug:filename];
   [newEntry setUploadData:data];
