@@ -4,6 +4,28 @@ Project site:     http://code.google.com/p/gdata-objectivec-client/
 DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 
+Changes since 1.2.0
+
+Additions
+
+- Added kGDataLinkRelWebContent (thanks riggle)
+
+- Calendar events now have separate methods for recurrence and non-recurrence
+  reminders, and calling setRecurrence will move the reminders appropriately
+  
+- Added spreadsheet worksheet methods for setting row and column limits,
+  and default values for those in new spreadsheets
+
+Bugs Fixed
+
+- Framework is now built with install location of @loader_path/../Frameworks...
+  instead of @executable_path/../Frameworks/... so it can be loaded by other
+  bundles such as plug-ins.
+  
+- Fixed PicasaWeb feed URL parameter escaping.
+
+Release 1.2.0
+15-August-2007
 Changes since 1.1.0
 
 Additions

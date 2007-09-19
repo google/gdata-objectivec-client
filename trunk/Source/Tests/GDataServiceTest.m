@@ -84,6 +84,8 @@ static int kServerPortNumber = 54579;
   
   [ticket_ release];
   ticket_ = nil;
+  
+  retryCounter_ = 0;
 }
 
 - (void)tearDown {
@@ -114,6 +116,14 @@ static int kServerPortNumber = 54579;
   // we can expect the Python http server to find it too
   NSString *filePath = [NSString stringWithFormat:@"Tests/%@", name];
   
+  
+  // we exclude the "?status=" that would indicate that the URL
+  // should cause a retryable error
+  NSRange range = [filePath rangeOfString:@"?status="];
+  if (range.length > 0) {
+    filePath = [filePath substringToIndex:range.location]; 
+  }
+
   // we exclude the ".auth" extension that would indicate that the URL
   // should be tested with authentication
   if ([[filePath pathExtension] isEqual:@"auth"]) {
@@ -466,6 +476,134 @@ static int gFetchCounter = 0;
   fetcherError_ = [error retain]; // save the error
   
   ++gFetchCounter;
+}
+
+- (void)testRetryFetches {
+  
+  // an ".auth" extension tells the server to require the success auth token,
+  // but the server will ignore the .auth extension when looking for the file
+  NSURL *authFeedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml?status=503"];
+  
+  [service_ setIsServiceRetryEnabled:YES];
+  
+  //
+  // test: retry until timeout, then expect failure to be passed to the callback
+  //
+  
+  [service_ setServiceMaxRetryInterval:5.]; // retry intervals of 1, 2, 4
+  [service_ setServiceRetrySelector:@selector(stopRetryTicket:willRetry:forError:)];
+
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:authFeedStatusURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [ticket_ setUserData:[NSNumber numberWithInt:1000]]; // lots of retries
+  
+  [self waitForFetch];
+  
+  STAssertNil(fetchedObject_, @"obtained object unexpectedly");
+  STAssertEquals([fetcherError_ code], 503, 
+                 @"fetcherError_ should be 503, was %@", fetcherError_);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 3, 
+               @"retry count should be 3, was %d", 
+               [[ticket_ objectFetcher] retryCount]);
+  
+  //
+  // test:  retry twice, then give up
+  //
+  [self resetFetchResponse];
+
+  [service_ setServiceMaxRetryInterval:10.]; // retry intervals of 1, 2, 4, 8
+  [service_ setServiceRetrySelector:@selector(stopRetryTicket:willRetry:forError:)];
+
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:authFeedStatusURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  // set userData to the number of retries allowed
+  [ticket_ setUserData:[NSNumber numberWithInt:2]];
+  
+  [self waitForFetch];
+  
+  STAssertNil(fetchedObject_, @"obtained object unexpectedly");
+  STAssertEquals([fetcherError_ code], 503, 
+                 @"fetcherError_ should be 503, was %@", fetcherError_);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 2, 
+                 @"retry count should be 2, was %d", 
+                 [[ticket_ objectFetcher] retryCount]);
+  
+  //
+  // test:  retry, making the request succeed on the first retry
+  // by fixing the URL
+  //
+  [self resetFetchResponse];
+  
+  [service_ setServiceMaxRetryInterval:100.]; 
+  [service_ setServiceRetrySelector:@selector(fixRequestRetryTicket:willRetry:forError:)];
+  
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:authFeedStatusURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  STAssertNotNil(fetchedObject_, @"should have obtained fetched object");
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 1, 
+                 @"retry count should be 1, was %d", 
+                 [[ticket_ objectFetcher] retryCount]);
+  
+  //
+  // test:  download feed only, no auth, surrogate feed class
+  //
+  [self resetFetchResponse];
+}  
+
+-(BOOL)stopRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
+  
+  GDataHTTPFetcher *fetcher = [ticket currentFetcher];
+  [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
+  
+  int count = [fetcher retryCount];
+  int allowedRetryCount = [[ticket userData] intValue];
+
+  BOOL shouldRetry = (count < allowedRetryCount);
+  
+  STAssertEquals([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]),
+                 @"unexpected next retry interval (expected %f, was %f)",
+                 pow(2.0, [fetcher retryCount]),
+                 [fetcher nextRetryInterval]);
+  
+  return shouldRetry;
+}
+
+-(BOOL)fixRequestRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
+  
+  GDataHTTPFetcher *fetcher = [ticket currentFetcher];
+  [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
+  
+  STAssertEquals([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]),
+                 @"unexpected next retry interval (expected %f, was %f)",
+                 pow(2.0, [fetcher retryCount]),
+                 [fetcher nextRetryInterval]);
+  
+  // fix it - change the request to a URL which does not have a status value
+  NSURL *authFeedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml"]; 
+  [fetcher setRequest:[NSURLRequest requestWithURL:authFeedStatusURL]];
+  
+  return YES; // do the retry fetch; it should succeed now
 }
 
 @end

@@ -44,19 +44,27 @@ enum {
 
 @class GDataServiceBase;
 
+//
+// ticket base class
+//
 @interface GDataServiceTicketBase : NSObject {
   GDataServiceBase *service_;
   id userData_;
   NSDictionary *surrogates_;
+  GDataHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
+  BOOL isRetryEnabled_;
+  SEL retrySEL_;
+  NSTimeInterval maxRetryInterval_;
+  
   GDataObject *postedObject_;
   GDataObject *fetchedObject_;
   NSError *fetchError_;
   BOOL hasCalledCallback_;
 }
 
-+ (GDataServiceTicketBase *)ticketForService:(GDataServiceBase *)service;
++ (id)ticketForService:(GDataServiceBase *)service;
 
 - (id)initWithService:(GDataServiceBase *)service;
 
@@ -73,11 +81,23 @@ enum {
 - (NSDictionary *)surrogates;
 - (void)setSurrogates:(NSDictionary *)dict;
 
+- (GDataHTTPFetcher *)currentFetcher; // object or auth fetcher, if active
+- (void)setCurrentFetcher:(GDataHTTPFetcher *)fetcher;
+
 - (GDataHTTPFetcher *)objectFetcher;
 - (void)setObjectFetcher:(GDataHTTPFetcher *)fetcher;
 
 - (void)setUploadProgressSelector:(SEL)progressSelector;
 - (SEL)uploadProgressSelector;
+
+- (BOOL)isRetryEnabled;
+- (void)setIsRetryEnabled:(BOOL)flag;
+
+- (SEL)retrySelector;
+- (void)setRetrySelector:(SEL)theSel;
+
+- (NSTimeInterval)maxRetryInterval;
+- (void)setMaxRetryInterval:(NSTimeInterval)secs;
 
 - (BOOL)hasCalledCallback;
 - (void)setHasCalledCallback:(BOOL)flag;
@@ -94,6 +114,11 @@ enum {
 - (int)statusCode;  // server status from object fetch
 @end
 
+
+//
+// service base class
+//
+
 @interface GDataServiceBase : NSObject {
   NSString *userAgent_;
   NSMutableDictionary *fetchHistory_;
@@ -106,6 +131,10 @@ enum {
   
   SEL serviceUploadProgressSelector_; // optional
   
+  BOOL isServiceRetryEnabled_;      // user allows auto-retries
+  SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
+  NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
+
   BOOL shouldCacheDatedData_;
 }
 
@@ -211,6 +240,25 @@ enum {
 - (void)setServiceUploadProgressSelector:(SEL)progressSelector;
 - (SEL)serviceUploadProgressSelector;
 
+
+// retrying; see comments on retry support at the top of GDataHTTPFetcher.
+- (BOOL)isServiceRetryEnabled;
+- (void)setIsServiceRetryEnabled:(BOOL)flag;
+
+// retry selector is optional for retries. 
+//
+// If present, it should have the signature:
+//   -(BOOL)ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
+// and return YES to cause a retry.  Note that unlike the GDataHTTPFetcher retry
+// selector, this selector's first argument is a ticket, not a fetcher.
+// The current fetcher can be retrived with [ticket currentFetcher]
+
+- (SEL)serviceRetrySelector;
+- (void)setServiceRetrySelector:(SEL)theSel;
+
+- (NSTimeInterval)serviceMaxRetryInterval;
+- (void)setServiceMaxRetryInterval:(NSTimeInterval)secs;
+
 // credentials
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password;
@@ -243,6 +291,9 @@ enum {
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data;
 
 - (NSString *)defaultApplicationIdentifier;
+
+- (BOOL)invokeRetrySelector:(SEL)retrySelector delegate:(id)delegate ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)willRetry error:(NSError *)error;
+  
 
 @end
 

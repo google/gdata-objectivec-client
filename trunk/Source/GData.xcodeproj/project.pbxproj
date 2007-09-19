@@ -1898,21 +1898,30 @@
 		1DEB913F08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = (
 					ppc,
 					i386,
 				);
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DEPLOYMENT_POSTPROCESSING = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_OPTIMIZATION_LEVEL = "-O0";
-				GCC_PRECOMPILE_PREFIX_HEADER = 1;
-				GCC_PREFIX_HEADER = "$(PREFIX_HEADER)";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(GCC_PREPROCESSOR_DEFINITIONS)",
+					_GLIBCXX_DEBUG_PEDANTIC,
+					_GLIBCXX_DEBUG,
+					_GLIBCPP_CONCEPT_CHECKS,
+				);
 				GCC_VERSION_i386 = 4.0;
 				GCC_VERSION_ppc = 3.3;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
@@ -1924,184 +1933,154 @@
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
+					"-Wendif-labels",
+					"-Wnewline-eof",
 				);
+				ZERO_LINK = NO;
 			};
 			name = Debug;
 		};
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = (
 					ppc,
 					i386,
 				);
+				COPY_PHASE_STRIP = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = Os;
-				GCC_PRECOMPILE_PREFIX_HEADER = 1;
-				GCC_PREFIX_HEADER = "$(PREFIX_HEADER)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_VERSION_i386 = 4.0;
 				GCC_VERSION_ppc = 3.3;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = Resources/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_i386 = 10.4;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
+				OTHER_CFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-DNDEBUG=1",
+					"-Wno-unused-variable",
+				);
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				SDKROOT_i386 = /Developer/SDKs/MacOSX10.4u.sdk;
 				SDKROOT_ppc = /Developer/SDKs/MacOSX10.4u.sdk;
+				STRIP_STYLE = all;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
+					"-Wendif-labels",
+					"-Wnewline-eof",
 				);
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 		4F14A9E00B1276B70072EBB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
+				ARCHS = "$(NATIVE_ARCH)";
+				DEPLOYMENT_POSTPROCESSING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
 				INFOPLIST_FILE = "Resources/GDataUnitTests-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Cocoa,
 					"-framework",
 					SenTestingKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = GDataUnitTests;
+				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
-				ZERO_LINK = NO;
 			};
 			name = Debug;
 		};
 		4F14A9E10B1276B70072EBB8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				ARCHS = "$(NATIVE_ARCH)";
+				DEPLOYMENT_POSTPROCESSING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
 				INFOPLIST_FILE = "Resources/GDataUnitTests-Info.plist";
-				INSTALL_PATH = "$(USER_LIBRARY_DIR)/Bundles";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Cocoa,
 					"-framework",
 					SenTestingKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = GDataUnitTests;
+				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 		4F1AD9090B71606100DC0485 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
-				INSTALL_PATH = "$(HOME)/bin";
-				PREBINDING = NO;
 				PRODUCT_NAME = DevelopmentTestTool;
-				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};
 		4F1AD90A0B71606100DC0485 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
-				INSTALL_PATH = "$(HOME)/bin";
-				PREBINDING = NO;
 				PRODUCT_NAME = DevelopmentTestTool;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 		4F38F7120B66EF2C00B24B81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Resources/GDataFramework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 					"-framework",
 					AppKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = GData;
-				ZERO_LINK = YES;
+				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
 		};
 		4F38F7130B66EF2C00B24B81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				COPY_PHASE_STRIP = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = s;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/AppKit.framework/Headers/AppKit.h";
 				INFOPLIST_FILE = "Resources/GDataFramework-Info.plist";
-				INSTALL_PATH = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				INSTALL_PATH = "@loader_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
 					"-framework",
 					AppKit,
 				);
-				PREBINDING = NO;
 				PRODUCT_NAME = GData;
-				ZERO_LINK = NO;
+				STRIP_STYLE = "non-global";
 			};
 			name = Release;
 		};

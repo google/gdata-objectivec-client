@@ -98,6 +98,9 @@ _EXTERN NSString *kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http://sche
 @interface GDataEntryEvent : GDataEntryBase {
 }
 
+// a side-effect of calling setRecurrence is to switch reminder elements
+// between recurrence (in the event) and non-recurrence (in the first 
+// event time)
 - (GDataRecurrence *)recurrence;
 - (void)setRecurrence:(GDataRecurrence *)obj;
 
@@ -111,9 +114,19 @@ _EXTERN NSString *kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http://sche
 - (GDataComment *)comment;
 - (void)setComment:(GDataComment *)event;
 
+// these reminder methods will call the recurrence or non-recurrence
+// methods depending on the presence of a recurrence element
 - (NSArray *)reminders;
 - (void)setReminders:(NSArray *)array;
 - (void)addReminder:(GDataReminder *)obj;
+
+- (NSArray *)recurrenceReminders;
+- (void)setRecurrenceReminders:(NSArray *)array;
+- (void)addRecurrenceReminder:(GDataReminder *)obj;
+
+- (NSArray *)nonRecurrenceReminders;
+- (void)setNonRecurrenceReminders:(NSArray *)array;
+- (void)addNonRecurrenceReminder:(GDataReminder *)obj;
 
 - (GDataEventStatus *)eventStatus;
 - (void)setEventStatus:(GDataEventStatus *)eventStatus;

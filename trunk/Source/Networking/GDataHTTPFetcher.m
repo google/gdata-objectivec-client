@@ -28,12 +28,19 @@ NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
 NSMutableArray* gGDataFetcherStaticCookies = nil;
 Class gGDataFetcherConnectionClass = nil;
+
+const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
                    
 @interface GDataHTTPFetcher (PrivateMethods)
 - (void)setCookies:(NSArray *)newCookies
            inArray:(NSMutableArray *)cookieStorageArray;
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
+- (BOOL)shouldRetryNowForStatus:(int)status error:(NSError *)error;
+- (void)destroyRetryTimer;
+- (void)beginRetryTimer;
+- (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs;
+- (void)retryFetch;
 @end
 
 @implementation GDataHTTPFetcher
@@ -57,8 +64,7 @@ Class gGDataFetcherConnectionClass = nil;
 
     request_ = [request mutableCopy];
     
-    [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodStatic];
-        
+    [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodStatic];        
   }
   return self;
 }
@@ -76,7 +82,8 @@ Class gGDataFetcherConnectionClass = nil;
   [response_ release];
   [userData_ release];
   [fetchHistory_ release];
-
+  [self destroyRetryTimer];
+  
   [super dealloc];
 }
 
@@ -101,7 +108,8 @@ Class gGDataFetcherConnectionClass = nil;
   AssertSelectorNilOrImplementedWithArguments(delegate, statusFailedSEL, @encode(GDataHTTPFetcher *), @encode(int), @encode(NSData *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, networkFailedSEL, @encode(GDataHTTPFetcher *), @encode(NSError *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, receivedDataSEL_, @encode(GDataHTTPFetcher *), @encode(NSData *), 0);
-  
+  AssertSelectorNilOrImplementedWithArguments(delegate, retrySEL_, @encode(GDataHTTPFetcher *), @encode(BOOL), @encode(NSError *), 0);
+    
   if (connection_ != nil) {
     NSAssert1(connection_ != nil, @"fetch object %@ being reused; this should never happen", self);
     goto CannotBeginFetch;
@@ -215,9 +223,10 @@ CannotBeginFetch:
   return NO;
 }
 
-// Returns YES if this is in the process of fetching a URL
+// Returns YES if this is in the process of fetching a URL, or waiting to 
+// retry
 - (BOOL)isFetching {
-  return (connection_ != nil); 
+  return (connection_ != nil || retryTimer_ != nil); 
 }
 
 // Returns the status code set in connection:didReceiveResponse:
@@ -239,6 +248,8 @@ CannotBeginFetch:
 
 // Cancel the fetch of the URL that's currently in progress.
 - (void)stopFetching {
+  [self destroyRetryTimer];
+
   if (connection_) {
     // in case cancelling the connection calls this recursively, we want
     // to ensure that we'll only release the connection and delegate once,
@@ -256,6 +267,17 @@ CannotBeginFetch:
   }
 }
 
+- (void)retryFetch {
+  
+  id holdDelegate = [[delegate_ retain] autorelease];
+  
+  [self stopFetching];
+  
+  [self beginFetchWithDelegate:holdDelegate
+             didFinishSelector:finishedSEL_
+     didFailWithStatusSelector:statusFailedSEL_
+      didFailWithErrorSelector:networkFailedSEL_];
+}
 
 #pragma mark NSURLConnection Delegate Methods
 
@@ -533,41 +555,250 @@ CannotBeginFetch:
   // selector, then call that selector
   if (status >= 300 && statusFailedSEL_) {
     
-    NSMethodSignature *signature = [delegate_ methodSignatureForSelector:statusFailedSEL_];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setSelector:statusFailedSEL_];
-    [invocation setTarget:delegate_];
-    [invocation setArgument:&self atIndex:2];
-    [invocation setArgument:&status atIndex:3];
-    [invocation setArgument:&downloadedData_ atIndex:4];
-    [invocation invoke];
+    if ([self shouldRetryNowForStatus:status error:nil]) {
       
+      [self beginRetryTimer];
+      
+    } else {
+      
+      // not retrying
+      NSMethodSignature *signature = [delegate_ methodSignatureForSelector:statusFailedSEL_];
+      NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+      [invocation setSelector:statusFailedSEL_];
+      [invocation setTarget:delegate_];
+      [invocation setArgument:&self atIndex:2];
+      [invocation setArgument:&status atIndex:3];
+      [invocation setArgument:&downloadedData_ atIndex:4];
+      [invocation invoke];
+
+      [self stopFetching];
+    }
+    
   } else if (finishedSEL_) {
-     
+    
+    // successful http status (under 300)
     [delegate_ performSelector:finishedSEL_
                     withObject:self
                     withObject:downloadedData_];
+    [self stopFetching];
   }
-
-  [self stopFetching];
+  
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 
   [self logFetchWithError:nil];
   
-  if (networkFailedSEL_) {
-    [[self retain] autorelease]; // in case the callback releases us
-
-    [delegate_ performSelector:networkFailedSEL_ 
-                    withObject:self 
-                    withObject:error];
-  }
+  if ([self shouldRetryNowForStatus:0 error:error]) {
+    
+    [self beginRetryTimer];
+    
+  } else {    
   
-  [self stopFetching];
+    if (networkFailedSEL_) {
+      [[self retain] autorelease]; // in case the callback releases us
+
+      [delegate_ performSelector:networkFailedSEL_ 
+                      withObject:self 
+                      withObject:error];
+    }
+    
+    [self stopFetching];
+  }
+}
+
+#pragma mark Retries
+
+- (BOOL)isRetryError:(NSError *)error {
+  
+  struct retryRecord {
+    NSString *const domain;
+    int code;
+  };
+  
+  struct retryRecord retries[] = {
+    { kGDataHTTPFetcherStatusDomain, 408 }, // request timeout
+    { kGDataHTTPFetcherStatusDomain, 503 }, // service unavailable
+    { kGDataHTTPFetcherStatusDomain, 504 }, // request timeout
+    { NSURLErrorDomain, NSURLErrorTimedOut },
+    { NSURLErrorDomain, NSURLErrorNetworkConnectionLost },
+    { nil, 0 }
+  };
+
+  // NSError's isEqual always returns false for equal but distinct instances
+  // of NSError, so we have to compare the domain and code values explicitly
+
+  for (int idx = 0; retries[idx].domain != nil; idx++) {
+    
+    if ([[error domain] isEqual:retries[idx].domain]
+        && [error code] == retries[idx].code) {
+     
+      return YES;
+    }
+  }
+  return NO;
 }
 
 
+// shouldRetryNowForStatus:error: returns YES if the user has enabled retries
+// and the status or error is one that is suitable for retrying.  "Suitable"
+// means either the isRetryError:'s list contains the status or error, or the
+// user's retrySelector: is present and returns YES when called.
+- (BOOL)shouldRetryNowForStatus:(int)status
+                          error:(NSError *)error {
+  
+  if ([self isRetryEnabled]) {
+    
+    if ([self nextRetryInterval] < [self maxRetryInterval]) {
+      
+      if (error == nil) {
+        // make an error for the status
+       error = [NSError errorWithDomain:kGDataHTTPFetcherStatusDomain
+                                   code:status
+                               userInfo:nil]; 
+      }
+      
+      BOOL willRetry = [self isRetryError:error];
+      
+      if (retrySEL_) {
+        NSMethodSignature *signature = [delegate_ methodSignatureForSelector:retrySEL_];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation setSelector:retrySEL_];
+        [invocation setTarget:delegate_];
+        [invocation setArgument:&self atIndex:2];
+        [invocation setArgument:&willRetry atIndex:3];
+        [invocation setArgument:&error atIndex:4];
+        [invocation invoke];
+        
+        [invocation getReturnValue:&willRetry];
+      }
+      
+      return willRetry;
+    }
+  }
+  
+  return NO;
+}
+
+- (void)beginRetryTimer {
+  
+  NSTimeInterval nextInterval = [self nextRetryInterval];
+  NSTimeInterval maxInterval = [self maxRetryInterval];
+
+  NSTimeInterval newInterval = MIN(nextInterval, maxInterval);
+    
+  [self primeTimerWithNewTimeInterval:newInterval];
+}
+
+- (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs {
+  
+  [self destroyRetryTimer];
+  
+  lastRetryInterval_ = secs;
+  
+  retryTimer_ = [NSTimer scheduledTimerWithTimeInterval:secs
+                                  target:self
+                                selector:@selector(retryTimerFired:)
+                                userInfo:nil
+                                 repeats:NO];
+  [retryTimer_ retain];
+}
+
+- (void)retryTimerFired:(NSTimer *)timer {
+
+  [self destroyRetryTimer];
+  
+  retryCount_++;
+
+  [self retryFetch];
+}
+
+- (void)destroyRetryTimer {
+  
+  [retryTimer_ invalidate];
+  [retryTimer_ autorelease];
+  retryTimer_ = nil;  
+}
+
+- (unsigned int)retryCount {
+  return retryCount_; 
+}
+
+- (NSTimeInterval)nextRetryInterval {
+  // the next wait interval is the factor (2.0) times the last interval,  
+  // but never less than the minimum interval
+  NSTimeInterval secs = lastRetryInterval_ * retryFactor_;
+  secs = MIN(secs, maxRetryInterval_);
+  secs = MAX(secs, minRetryInterval_);
+  
+  return secs;
+}
+
+- (BOOL)isRetryEnabled {
+  return isRetryEnabled_;  
+}
+
+- (void)setIsRetryEnabled:(BOOL)flag {
+  
+  if (flag && !isRetryEnabled_) {
+    // We defer initializing these until the user calls setIsRetryEnabled
+    // to avoid seeding the random number generator if it's not needed.
+    // However, it means min and max intervals for this fetcher are reset
+    // as a side effect of calling setIsRetryEnabled.
+    //
+    // seed the random value, and make an initial retry interval
+    // random between 1.0 and 2.0 seconds
+    srandomdev(); 
+    [self setMinRetryInterval:0.0]; 
+    [self setMaxRetryInterval:kDefaultMaxRetryInterval];
+    [self setRetryFactor:2.0];
+    lastRetryInterval_ = 0.0;
+  }
+  isRetryEnabled_ = flag; 
+}; 
+
+- (SEL)retrySelector {
+  return retrySEL_; 
+}
+
+- (void)setRetrySelector:(SEL)theSelector {
+  retrySEL_ = theSelector;  
+}
+
+- (NSTimeInterval)maxRetryInterval {
+  return maxRetryInterval_;  
+}
+
+- (void)setMaxRetryInterval:(NSTimeInterval)secs {
+  if (secs > 0) {
+    maxRetryInterval_ = secs; 
+  } else {
+    maxRetryInterval_ = kDefaultMaxRetryInterval; 
+  }
+}
+
+- (double)minRetryInterval {
+  return minRetryInterval_;  
+}
+
+- (void)setMinRetryInterval:(NSTimeInterval)secs {
+  if (secs > 0) {
+    minRetryInterval_ = secs; 
+  } else {
+    // set min interval to a random value between 1.0 and 2.0 seconds
+    // so that if multiple clients start retrying at the same time, they'll
+    // repeat at different times and avoid overloading the server
+    minRetryInterval_ = 1.0 + ((double)(random() & 0x0FFFF) / (double) 0x0FFFF);
+  }
+}
+
+- (double)retryFactor {
+  return retryFactor_; 
+}
+
+- (void)setRetryFactor:(double)multiplier {
+  retryFactor_ = multiplier; 
+}
 
 #pragma mark Getters and Setters
 

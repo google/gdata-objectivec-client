@@ -96,8 +96,8 @@
   
   NSString* expectedResultString = [NSString stringWithFormat:
     @"\r\n--%@\r\n"
-    "hfoo: bar\r\n"
     "hfaz: baz\r\n"
+    "hfoo: bar\r\n"
     "\r\n"    // Newline after headers.
     "Hi mom"
     "\r\n--%@--\r\n", boundary, boundary];
@@ -152,8 +152,8 @@
     
   NSString* expectedResultString = [NSString stringWithFormat:
     @"\r\n--%@\r\n"
-    "hfoo: bar\r\n"
     "hfaz: baz\r\n"
+    "hfoo: bar\r\n"
     "\r\n"    // Newline after headers.
     "Hi mom"
     "\r\n--%@\r\n"
@@ -215,8 +215,8 @@
   
   NSString* expectedResultString = [NSString stringWithFormat:
     @"\r\n--%@\r\n"
-    "hfoo: bar\r\n"
     "hfaz: baz\r\n"
+    "hfoo: bar\r\n"
     "\r\n"    // Newline after headers.
     "Hi mom END_OF_PART"  // intentional conflict
     "\r\n--%@\r\n"

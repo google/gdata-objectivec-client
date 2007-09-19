@@ -55,11 +55,15 @@
   NSString *query = @"";
   NSMutableArray *queryItems = [NSMutableArray array];
   if (feedKindOrNil) {
+    feedKindOrNil = [GDataQuery stringByURLEncodingStringParameter:feedKindOrNil];
+    
     NSString *kindStr = [NSString stringWithFormat:@"kind=%@", feedKindOrNil];
     [queryItems addObject:kindStr];
   }
   
   if (accessOrNil) {
+    accessOrNil = [GDataQuery stringByURLEncodingStringParameter:accessOrNil];
+    
     NSString *accessStr = [NSString stringWithFormat:@"access=%@", accessOrNil];
     [queryItems addObject:accessStr];
   }
@@ -67,13 +71,14 @@
   if ([queryItems count]) {
     NSString *queryList = [queryItems componentsJoinedByString:@"&"];
     
-    query = [NSString stringWithFormat:@"?%@",
-      [GDataQuery stringByURLEncodingStringParameter:queryList]];
+    query = [NSString stringWithFormat:@"?%@", queryList];
   }
   
-  NSString *template = @"http://picasaweb.google.com/data/feed/api/user/%@%@%@%@%@";
+  NSString *root = [self serviceRootURLString];
+  
+  NSString *template = @"%@feed/api/user/%@%@%@%@%@";
   NSString *urlString = [NSString stringWithFormat:template,
-    [GDataQuery stringByURLEncodingString:userID], 
+    root, [GDataQuery stringByURLEncodingString:userID], 
     albumID, albumName, photo, query];
   
   return [NSURL URLWithString:urlString];
@@ -153,6 +158,10 @@
 
 - (NSString *)serviceID {
   return @"lh2";
+}
+
++ (NSString *)serviceRootURLString {
+  return @"http://picasaweb.google.com/data/"; 
 }
 
 @end

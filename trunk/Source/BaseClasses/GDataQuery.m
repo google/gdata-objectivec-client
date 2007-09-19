@@ -416,8 +416,13 @@
     [queryItems addObject:maxResultsItem];
   }
 
+  // sort the custom parameter keys so that we have deterministic parameter
+  // order for unit tests
   NSDictionary *customParameters = [self customParameters];
-  NSEnumerator *paramEnum = [customParameters keyEnumerator];
+  NSArray *customKeys = [customParameters allKeys];
+  NSArray *sortedCustomKeys = [customKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+  
+  NSEnumerator *paramEnum = [sortedCustomKeys objectEnumerator];
   id paramKey;
   while ((paramKey = [paramEnum nextObject]) != nil) {
     NSString *paramValue = [customParameters valueForKey:paramKey];

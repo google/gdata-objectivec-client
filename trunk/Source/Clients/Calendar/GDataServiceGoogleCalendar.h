@@ -50,7 +50,7 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
 // These routines are all simple wrappers around GDataServiceGoogle methods.
 
 // finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)fetcher finishedWithObject:(GDataObject *)object;
+//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
 // failedSelector has signature like:
 //   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
