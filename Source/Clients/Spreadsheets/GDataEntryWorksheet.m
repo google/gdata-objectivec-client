@@ -77,6 +77,10 @@
   if (self) {
     [self addCategory:[GDataCategory categoryWithScheme:kGDataCategorySchemeSpreadsheet
                                                    term:kGDataCategoryWorksheet]];
+
+    // set a default row & column count, as in the Java
+    [self setRowCount:100];
+    [self setColumnCount:20];
   }
   return self;
 }
@@ -84,17 +88,25 @@
 #pragma mark -
 
 - (int)rowCount {
-  GDataRowCount *rowCount = 
-    (GDataRowCount *) [self objectForExtensionClass:[GDataRowCount class]];
+  GDataRowCount *rowCount = [self objectForExtensionClass:[GDataRowCount class]];
   
   return [rowCount count];
 }
 
+- (void)setRowCount:(int)val {
+  GDataRowCount *obj = [GDataRowCount rowCountWithInt:val];
+  [self setObject:obj forExtensionClass:[GDataRowCount class]];
+}
+
 - (int)columnCount {
-  GDataColumnCount *columnCount = 
-    (GDataColumnCount *) [self objectForExtensionClass:[GDataColumnCount class]];
+  GDataColumnCount *columnCount = [self objectForExtensionClass:[GDataColumnCount class]];
   
   return [columnCount count];
+}
+
+- (void)setColumnCount:(int)val {
+  GDataColumnCount *obj = [GDataColumnCount columnCountWithInt:val];
+  [self setObject:obj forExtensionClass:[GDataColumnCount class]];
 }
 
 @end

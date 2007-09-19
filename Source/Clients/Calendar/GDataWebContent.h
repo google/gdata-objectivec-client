@@ -21,6 +21,19 @@
 #import "GDataObject.h"
 #import "GDataExtendedProperty.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAWEBCONTENT_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN NSString* kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005/webContent");
+
+
 // Calendar Web Content element, inside a <link>, as in
 //
 // <gCal:webContent url="http://www.google.com/logos/july4th06.gif" 

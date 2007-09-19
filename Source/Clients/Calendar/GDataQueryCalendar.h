@@ -46,5 +46,9 @@
 
 - (BOOL)shouldExpandRecurrentEvents;
 - (void)setShouldExpandRecurrentEvents:(BOOL)dateTime;
+
+- (NSString *)currentTimeZoneName;
+- (void)setCurrentTimeZoneName:(NSString *)str;
+  
 @end
 

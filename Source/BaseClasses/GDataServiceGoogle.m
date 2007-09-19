@@ -56,6 +56,7 @@ enum {
   [captchaToken_ release];
   [captchaAnswer_ release];
   [authToken_ release];  
+  [accountType_ release];
   [signInDomain_ release];
   [serviceID_ release];
   [super dealloc]; 
@@ -93,12 +94,13 @@ enum {
       userAgent = [self defaultApplicationIdentifier];
     }
     
-    NSString *postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=HOSTED_OR_GOOGLE";
+    NSString *postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=%@";
     NSString *postString = [NSString stringWithFormat:postTemplate, 
       [self stringByURLEncoding:[self username]],
       [self stringByURLEncoding:password],
       [self stringByURLEncoding:userAgent],
-      [self serviceID]];
+      [self serviceID],
+      [self accountType]];
     
     if ([captchaToken_ length] > 0 && [captchaAnswer_ length] > 0) {
       NSString *captchaTemplate = @"&logintoken=%@&logincaptcha=%@";
@@ -117,7 +119,15 @@ enum {
     
     [fetcher setUserData:invocation]; 
     
+    [fetcher setIsRetryEnabled:[ticket isRetryEnabled]];
+    [fetcher setMaxRetryInterval:[ticket maxRetryInterval]];
+    
+    if ([ticket retrySelector]) {
+      [fetcher setRetrySelector:@selector(authFetcher:willRetry:forError:)];
+    }
+    
     [ticket setAuthFetcher:fetcher];
+    [ticket setCurrentFetcher:fetcher];
     
     [fetcher beginFetchWithDelegate:self
                   didFinishSelector:@selector(authFetcher:finishedWithData:)
@@ -149,6 +159,7 @@ enum {
 
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
   
+  // authentication fetch completed
   NSString* responseString = [[[NSString alloc] initWithData:data
                                                     encoding:NSUTF8StringEncoding] autorelease];
   NSDictionary *responseDict = [GDataServiceGoogle dictionaryWithResponseString:responseString];
@@ -157,9 +168,16 @@ enum {
   [authToken_ release];
   authToken_ = [authToken retain];
   
+  NSInvocation *invocation = [fetcher userData];
+
+  // set the currentFetcher to nil before we move on to doing an object fetch
+  GDataServiceTicket *ticket;
+  
+  [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
+  [ticket setCurrentFetcher:nil];  
+  
   if ([authToken_ length] > 0) {
     // now invoke the actual fetch
-    NSInvocation *invocation = [fetcher userData];
     [invocation invoke];
   } else {
     // there was no auth token    
@@ -239,6 +257,31 @@ enum {
                  withObject:error];  
 
   [ticket setHasCalledCallback:YES];
+  [ticket setCurrentFetcher:nil];
+}
+
+// The auth fetcher may call into this retry method; this one invokes the
+// selector provided by the user.
+- (BOOL)authFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
+  
+  NSInvocation *invocation = [fetcher userData];
+  
+  id delegate;
+  GDataServiceTicket *ticket;
+  
+  [invocation getArgument:&delegate       atIndex:kInvocationDelegateIndex];
+  [invocation getArgument:&ticket         atIndex:kInvocationTicketIndex];
+  
+  SEL retrySelector = [ticket retrySelector];
+  if (retrySelector) {
+    
+    willRetry = [self invokeRetrySelector:retrySelector
+                                 delegate:delegate
+                                   ticket:ticket
+                                willRetry:willRetry
+                                    error:error];
+  }  
+  return willRetry;
 }
 
 // This is the main routine for invoking transactions with with Google services.  
@@ -257,10 +300,7 @@ enum {
   
   SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocation:ticket:);
   
-  GDataServiceTicket *ticket = [GDataServiceTicket authTicketForService:self];
-  [ticket setUserData:serviceUserData_];
-  [ticket setSurrogates:serviceSurrogates_];
-  [ticket setUploadProgressSelector:serviceUploadProgressSelector_];
+  GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
   
   NSMethodSignature *signature = [self methodSignatureForSelector:theSEL];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -506,6 +546,18 @@ enum {
   serviceID_ = [str copy];
 }
 
+- (NSString *)accountType {
+  if (accountType_) {
+    return accountType_; 
+  }
+  return @"HOSTED_OR_GOOGLE";
+}
+
+- (void)setAccountType:(NSString *)str {
+  [accountType_ autorelease];
+  accountType_ = [str copy];
+}
+
 - (NSString *)signInDomain {
   if (signInDomain_) {
     return signInDomain_; 
@@ -561,9 +613,6 @@ enum {
 
 
 @implementation GDataServiceTicket
-+ (GDataServiceTicket *)authTicketForService:(GDataServiceGoogle *)service {
-  return [[[self alloc] initWithService:service] autorelease]; 
-}
 
 - (void)dealloc {
   [authFetcher_ release];

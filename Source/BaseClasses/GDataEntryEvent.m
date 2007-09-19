@@ -181,6 +181,17 @@
 }
 
 - (void)setRecurrence:(GDataRecurrence *)obj {
+  BOOL hadRecurrence = ([self recurrence] != nil);
+  BOOL willHaveRecurrence = (obj != nil);
+  
+  if (hadRecurrence && !willHaveRecurrence) {
+    [self setNonRecurrenceReminders:[self recurrenceReminders]];
+    [self setRecurrenceReminders:nil];
+  } else if (!hadRecurrence && willHaveRecurrence) {
+    [self setRecurrenceReminders:[self nonRecurrenceReminders]];
+    [self setNonRecurrenceReminders:nil];
+  }
+  
   [self setObject:obj forExtensionClass:[GDataRecurrence class]];
 }
 
@@ -212,28 +223,67 @@
   [self setObject:obj forExtensionClass:[GDataComment class]];
 }
 
+- (NSArray *)recurrenceReminders {
+    return [self objectsForExtensionClass:[GDataReminder class]];
+}
+
+- (void)setRecurrenceReminders:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataReminder class]];
+}
+
+- (void)addRecurrenceReminder:(GDataReminder *)obj {
+  [self addObject:obj forExtensionClass:[GDataReminder class]];
+}
+
+- (NSArray *)nonRecurrenceReminders {
+  NSArray *whens = [self times];
+  if ([whens count] > 0) {
+    GDataWhen *when = [whens objectAtIndex:0];
+    NSArray *reminders = [when objectsForExtensionClass:[GDataReminder class]];
+    return reminders;
+  }
+  return nil;
+}
+
+- (void)setNonRecurrenceReminders:(NSArray *)array {
+  NSArray *whens = [self times];
+  if ([whens count] > 0) {
+    GDataWhen *when = [whens objectAtIndex:0];
+    [when setReminders:array];
+  }
+}
+
+- (void)addNonRecurrenceReminder:(GDataReminder *)obj {
+  NSArray *whens = [self times];
+  if ([whens count] > 0) {
+    GDataWhen *when = [whens objectAtIndex:0];
+    [when addReminder:obj];
+  } 
+}
+
 - (NSArray *)reminders {
   if ([self recurrence] != nil) {
-    // for recurrence events, reminders are at the top level
-    return [self objectsForExtensionClass:[GDataReminder class]];
+    return [self recurrenceReminders];
   } else {
-    // for regular events, reminders are inside the When objects
-    NSArray *whens = [self times];
-    if ([whens count] > 0) {
-      GDataWhen *when = [whens objectAtIndex:0];
-      NSArray *reminders = [when objectsForExtensionClass:[GDataReminder class]];
-      return reminders;
-    }
+    return [self nonRecurrenceReminders];
   }
   return nil;
 }
 
 - (void)setReminders:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataReminder class]];
+  if ([self recurrence] != nil) {
+    [self setRecurrenceReminders:array];
+  } else {
+    [self setNonRecurrenceReminders:array];
+  }
 }
 
 - (void)addReminder:(GDataReminder *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  if ([self recurrence] != nil) {
+    [self addRecurrenceReminder:obj];
+  } else {
+    [self addNonRecurrenceReminder:obj];
+  }
 }
 
 - (NSArray *)times {

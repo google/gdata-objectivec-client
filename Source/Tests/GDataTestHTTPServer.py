@@ -126,14 +126,24 @@ class SimpleServer(BaseHTTPRequestHandler):
         headerType = "text/plain"
         
       else:
-        #
-        # it's an object fetch; read and return the XML file
-        #
-        f = open("." + self.path)
-        resultString = f.read()
-        f.close()
-        resultStatus = 200
-        headerType = "application/atom+xml"
+        # queries that have something like "?status=456" should fail with the
+        # status code
+        searchResult = re.search("(status=)([0-9]+)", self.path)
+        if searchResult:
+          status = searchResult.group(2)
+          self.send_error(int(status),
+            "Test HTTP server status parameter: %s" % self.path)
+          return
+
+        else:
+          #
+          # it's an object fetch; read and return the XML file
+          #
+          f = open("." + self.path)
+          resultString = f.read()
+          f.close()
+          resultStatus = 200
+          headerType = "application/atom+xml"
         
       self.send_response(resultStatus)
       self.send_header("Content-type", headerType)

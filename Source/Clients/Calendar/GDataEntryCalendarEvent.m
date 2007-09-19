@@ -193,9 +193,11 @@
 }
 
 - (GDataLink *)webContentLink {
-  NSString *schema = @"http://schemas.google.com/gCal/2005/webContent";
   NSArray *links = [self links];
-  GDataLink *webContentLink = [links linkWithRelAttributeValue:schema];
+
+  GDataLink *webContentLink;
+  webContentLink = [links linkWithRelAttributeValue:kGDataLinkRelWebContent];
+
   return webContentLink;
 }
 

@@ -108,7 +108,7 @@
   
   NSURL* resultURLC1 = [queryCal URL];
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "start-index=10&max-results=20&start-min=2006-03-29T07%3A35%3A59Z&start-max=2006-03-30T07%3A35%3A59Z";
+    "start-index=10&max-results=20&start-max=2006-03-30T07%3A35%3A59Z&start-min=2006-03-29T07%3A35%3A59Z";
   STAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
   
   GDataQueryCalendar* queryCal2 = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
@@ -116,11 +116,13 @@
   [queryCal2 setRecurrenceExpansionEndTime:dateTime1];
   [queryCal2 setShouldQueryAllFutureEvents:YES];
   [queryCal2 setShouldExpandRecurrentEvents:YES];
+  [queryCal2 setCurrentTimeZoneName:@"America/Los Angeles"];
   
   NSURL* resultURLC2 = [queryCal2 URL];
   NSString *expectedC2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "singleevents=true&futureevents=true&recurrence-expansion-start="
-    "2006-03-29T07%3A35%3A59Z&recurrence-expansion-end=2006-03-29T07%3A35%3A59Z";
+    "ctz=America%2FLos_Angeles&futureevents=true&"
+    "recurrence-expansion-end=2006-03-29T07%3A35%3A59Z&"
+    "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&singleevents=true";
   STAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
   
 }
@@ -166,7 +168,7 @@
   
   NSURL* resultURL1 = [query1 URL];
   NSString *expected1 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
-    "max-row=7&min-col=2&max-col=12&min-row=3&range=A1%3AB2&return-empty=true";
+    "max-col=12&max-row=7&min-col=2&min-row=3&range=A1%3AB2&return-empty=true";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Spreadsheet query 1 generation error");
 
@@ -178,7 +180,7 @@
   
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
-    "orderby=column%3Afoostuff&sq=ipm%3C4+and+hours%3E40&reverse=true";
+    "orderby=column%3Afoostuff&reverse=true&sq=ipm%3C4+and+hours%3E40";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Spreadsheet query 2 generation error");
 }
@@ -199,7 +201,7 @@
   NSURL* resultURL1 = [pwaQuery1 URL];
   NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
-    "kind=photo&tag=dog&thumbsize=80&access=private&imgmax=32";
+    "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"PWA query 1 generation error");
   STAssertEquals([pwaQuery1 imageSize], 32, @"image size error");

@@ -55,6 +55,9 @@ _EXTERN NSString* kGDataPicasaWebKindTag _INITIALIZE_AS(@"tag");
 
 @interface GDataServiceGooglePicasaWeb : GDataServiceGoogle 
 
+
++ (NSString *)serviceRootURLString;
+
 // utility for making a feed URL.  To set other query parameters, use the
 // methods in GDataQueryPicasaWeb instead of this
 + (NSURL *)picasaWebFeedURLForUserID:(NSString *)userID

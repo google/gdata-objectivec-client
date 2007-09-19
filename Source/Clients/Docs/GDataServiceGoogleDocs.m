@@ -21,10 +21,9 @@
 #import "GDataServiceGoogleDocs.h"
 #import "GDataEntryDocBase.h"
 #import "GDataQueryDocs.h"
+#import "GDataFeedDocList.h"
 
 // These routines are all simple wrappers around GDataServiceGoogle methods
-
-@class GDataFeedDocList;
 
 @implementation GDataServiceGoogleDocs
 

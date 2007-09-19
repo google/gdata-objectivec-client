@@ -143,6 +143,54 @@
 // If supplied by the server, the anticipated total download size is available as
 //    [[myFetcher response] expectedContentLength] (may be -1 for unknown 
 //    download sizes.)
+//
+//
+// Automatic retrying of fetches
+//
+// The fetcher can optionally create a timer and reattempt certain kinds of
+// fetch failures (status codes 408, request timeout; 503, service unavailable;
+// 504, gateway timeout; networking errors NSURLErrorTimedOut and 
+// NSURLErrorNetworkConnectionLost.)  The user may set a retry selector to
+// customize the type of errors which will be retried.
+//
+// Retries are done in an exponential-backoff fashion (that is, after 1 second, 
+// 2, 4, 8, and so on.)
+//
+// Enabling automatic retries looks like this:
+//  [myFetcher setIsRetryEnabled:YES];
+//
+// With retries enabled, the success or failure callbacks are called only
+// when no more retries will be attempted. Calling the fetcher's stopFetching
+// method will terminate the retry timer, without the finished or failure
+// selectors being invoked.
+//
+// Optionally, the client may set the maximum retry interval:
+//  [myFetcher setMaxRetryInterval:60.]; // in seconds; default is 600 seconds
+//
+// Also optionally, the client may provide a callback selector to determine
+// if a status code or other error should be retried.
+//  [myFetcher setRetrySelector:@selector(myFetcher:willRetry:forError:)];
+//
+// If set, the retry selector should have the signature:
+//   -(BOOL)fetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
+// and return YES to set the retry timer or NO to fail without additional 
+// fetch attempts.
+//
+// The retry method may return the |suggestedWillRetry| argument to get the
+// default retry behavior.  Server status codes are present in the
+// error argument, and have the domain kGDataHTTPFetcherStatusDomain. The 
+// user's method may look something like this:
+//
+//  -(BOOL)myFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
+//
+//    // perhaps examine [error domain] and [error code], or [fetcher retryCount]
+//    //
+//    // return YES to start the retry timer, NO to proceed to the failure
+//    // callback, or |suggestedWillRetry| to get default behavior for the
+//    // current error domain and code values.
+//    return suggestedWillRetry;
+//  }
+
 
 
 #pragma once
@@ -160,8 +208,9 @@
 #endif 
 
 // notifications 
-_EXTERN NSString* kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
-_EXTERN NSString* kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
+_EXTERN NSString* const kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
+_EXTERN NSString* const kGDataHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.HTTPStatus");
+_EXTERN NSString* const kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
 
 
 // fetch history mutable dictionary keys
@@ -204,14 +253,23 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
   int cookieStorageMethod_;         // constant from above
+  
+  BOOL isRetryEnabled_;             // user wants auto-retry
+  SEL retrySEL_;                    // optional; set with setRetrySelector
+  NSTimer *retryTimer_;
+  unsigned int retryCount_;
+  NSTimeInterval maxRetryInterval_; // default 600 seconds
+  NSTimeInterval minRetryInterval_; // random between 1 and 2 seconds
+  NSTimeInterval retryFactor_;      // default interval multiplier is 2
+  NSTimeInterval lastRetryInterval_;
 }
 
 /// create a fetcher
 //
-/// httpFetcherWithRequest will return an autoreleased fetcher, but if
-/// the connection is successfully created, the connection should retain the
-/// fetcher for the life of the connection as well. So the caller doesn't have
-/// to retain the fetcher explicitly unless they want to be able to cancel it.
+// httpFetcherWithRequest will return an autoreleased fetcher, but if
+// the connection is successfully created, the connection should retain the
+// fetcher for the life of the connection as well. So the caller doesn't have
+// to retain the fetcher explicitly unless they want to be able to cancel it.
 + (GDataHTTPFetcher *)httpFetcherWithRequest:(NSURLRequest *)request;
 
 // designated initializer
@@ -254,6 +312,44 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
 - (SEL)receivedDataSelector;
 - (void)setReceivedDataSelector:(SEL)theSelector;
+
+
+// retrying; see comments at the top of the file.  Calling 
+// setIsRetryEnabled(YES) resets the min and max retry intervals.
+- (BOOL)isRetryEnabled;
+- (void)setIsRetryEnabled:(BOOL)flag;
+
+// retry selector is optional for retries. 
+//
+// If present, it should have the signature:
+//   -(BOOL)fetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
+// and return YES to cause a retry.  See comments at the top of this file.
+- (SEL)retrySelector;
+- (void)setRetrySelector:(SEL)theSel;
+
+// retry intervals must be strictly less than maxRetryInterval, else
+// they will be limited to maxRetryInterval and no further retries will
+// be attempted.  Setting maxRetryInterval to 0.0 will reset it to the
+// default value, 600 seconds.
+- (NSTimeInterval)maxRetryInterval;
+- (void)setMaxRetryInterval:(NSTimeInterval)secs;
+
+// Starting retry interval.  Setting minRetryInterval to 0.0 will reset it
+// to a random value between 1.0 and 2.0 seconds.  Clients should normally not
+// call this except for unit testing.
+- (NSTimeInterval)minRetryInterval;
+- (void)setMinRetryInterval:(NSTimeInterval)secs;
+
+// Multiplier used to increase the interval between retries, typically 2.0.
+// Clients should not need to call this.
+- (double)retryFactor;
+- (void)setRetryFactor:(double)multiplier;
+
+// number of retries attempted
+- (unsigned int)retryCount;
+
+// interval delay to precede next retry
+- (NSTimeInterval)nextRetryInterval;
 
 /// Begin fetching the request.  
 //

@@ -28,6 +28,7 @@ NSString *const kRecurrenceExpansionStartTimeParamName  = @"recurrence-expansion
 NSString *const kRecurrenceExpansionEndTimeParamName  = @"recurrence-expansion-end";
 NSString *const kFutureEventsParamName  = @"futureevents";
 NSString *const kSingleEventsParamName = @"singleevents";
+NSString *const kCurrentTimeZoneParamName = @"ctz";
 
 @implementation GDataQueryCalendar
 
@@ -109,6 +110,25 @@ NSString *const kSingleEventsParamName = @"singleevents";
   NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kSingleEventsParamName
                              value:value]; // nil value removes the parameter
+}
+
+- (NSString *)currentTimeZoneName {
+  NSString *str = [[self customParameters] objectForKey:kCurrentTimeZoneParamName];
+  return str;
+}
+
+- (void)setCurrentTimeZoneName:(NSString *)str {
+  
+  // replace underscores with spaces in the param value
+  NSMutableString *mutable = [NSMutableString stringWithString:str];
+  
+  [mutable replaceOccurrencesOfString:@" "
+                           withString:@"_"
+                              options:0
+                                range:NSMakeRange(0, [str length])];
+  
+  [self addCustomParameterWithName:kCurrentTimeZoneParamName
+                             value:mutable];
 }
 
 @end
