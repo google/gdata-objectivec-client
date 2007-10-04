@@ -189,6 +189,8 @@ service = [[GDataServiceGooglePicasaWeb alloc] init];
 [service setServiceSurrogates:surrogates];
 }}}
 
+These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can will retain arbitrary data for users.
+
 == Uploading files ==
 
 Some services allow uploading of a file when inserting an entry into a feed.  Uploading requires setting the upload data and MIME type in the entry. Some services also require a *slug* as the file name.  
