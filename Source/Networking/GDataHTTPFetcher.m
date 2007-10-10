@@ -912,7 +912,7 @@ CannotBeginFetch:
 - (void)setShouldCacheDatedData:(BOOL)flag {
   shouldCacheDatedData_ = flag;
   if (!flag) {
-    [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey]; 
+    [self clearDatedDataHistory];
   }
 }
 
@@ -920,7 +920,7 @@ CannotBeginFetch:
   return shouldCacheDatedData_; 
 }
 
-  // delete last-modified dates and cached data from the fetch history
+// delete last-modified dates and cached data from the fetch history
 - (void)clearDatedDataHistory {
   [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
   [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey]; 

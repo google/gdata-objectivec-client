@@ -57,6 +57,34 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 + (NSString *)extensionElementLocalName;
 @end
 
+@interface GDataSyncEventProperty : GDataBoolValueConstruct <GDataExtension>
+// sync scenario, where iCal UID and sequence number are honored during
+// insert and update
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataSequenceProperty : GDataValueConstruct <GDataExtension>
+// GData schema extension describing sequence number of an event.
+// The sequence number is a non-negative integer and is described in
+// section 4.8.7.4 of RFC 2445.
+// Currently this is only a read-only entry.
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataICalUIDProperty : GDataValueConstruct <GDataExtension>
+// GData schema extension describing the UID in the ical export of the event.
+// The value can be an arbitrary string and is described in section 4.8.4.7
+// of RFC 2445. This value is different from the value of the event ID.
+// Currently a read-only entry.
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
 // CalendarEventEntry categories for extensions
 @interface GDataWho (GDataCalendarEntryEventExtensions)
 - (NSArray *)resourceProperties;
@@ -84,6 +112,16 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 
 - (BOOL)isQuickAdd;
 - (void)setIsQuickAdd:(BOOL)flag;
+
+// for sync events, the iCal UID and sequence number need to be honored
+- (BOOL)isSyncEvent;
+- (void)setIsSyncEvent:(BOOL)flag;  
+
+- (NSString *)iCalUID;
+- (void)setICalUID:(NSString *)str;
+
+- (NSNumber *)sequenceNumber; // int
+- (void)setSequenceNumber:(NSNumber *)num;
 
 - (NSArray *)extendedProperties;
 - (void)setExtendedProperties:(NSArray *)arr;

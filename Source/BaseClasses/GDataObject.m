@@ -1295,6 +1295,40 @@ forCategoryWithScheme:scheme
 - (void)addStringValue:(NSString *)str {
   // NSXMLNode's setStringValue: wipes out other children, so we'll use this
   // instead
+  
+  // Ensure that null characters are not present in the string, since they would
+  // lead to XML that likely will make servers unhappy.  (Are null characters
+  // ever legal in XML?)
+  //
+  // Why not assert on debug builds for the caller when the string has a null?
+  // The nulls may never be present in the data until the program is deployed
+  // to users.  This will make it less likely that null-laden XML might be
+  // generated for users and sent to servers.
+  //
+  // Since we generate our XML directly from the elements with
+  // XMLData, we won't later have a good chance to look for and clean out
+  // the nulls.
+  
+  static NSString *nullStr = nil;
+  if (!nullStr) {
+    nullStr = [[NSString alloc] initWithFormat:@"%C", 0];
+  }
+  
+  NSRange range = [str rangeOfString:nullStr];
+  if (range.location != NSNotFound) {
+    
+#if DEBUG
+    NSLog(@"GDataObject: Removing NULL from XML element string \"%@\"", str);
+#endif
+    
+    NSMutableString *mutable = [NSMutableString stringWithString:str];
+    [mutable replaceOccurrencesOfString:nullStr
+                             withString:@""
+                                options:0
+                                  range:NSMakeRange(0, [mutable length])];
+    str = mutable;
+  }
+  
   NSXMLNode *strNode = [NSXMLNode textWithStringValue:str];
   [self addChild:strNode];
 }

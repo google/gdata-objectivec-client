@@ -40,7 +40,8 @@
 - (void)fetchSelectedCalendarEvents;
 - (void)addAnEvent;
 - (void)editSelectedEvent;
-- (void)deleteSelectedEvent;
+- (void)deleteSelectedEvents;
+- (void)batchDeleteSelectedEvents;
 - (void)queryTodaysEvents;
 
 - (void)fetchSelectedCalendarACLEntries;
@@ -50,7 +51,8 @@
 
 - (GDataServiceGoogleCalendar *)calendarService;
 - (GDataEntryCalendar *)selectedCalendar;
-- (GDataEntryCalendarEvent *)selectedEvent;
+- (GDataEntryCalendarEvent *)singleSelectedEvent;
+- (NSArray *)selectedEvents;
 - (GDataEntryACL *)selectedACLEntry;
 
 - (BOOL)isACLSegmentSelected;
@@ -202,7 +204,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     eventResultStr = [error description];
   } else {
     if (isEventDisplay) {
-      GDataEntryCalendarEvent *event = [self selectedEvent];
+      GDataEntryCalendarEvent *event = [self singleSelectedEvent];
       if (event) {
         eventResultStr = [event description];
       }
@@ -226,16 +228,36 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     ([[[self selectedCalendar] links] ACLLink] != nil);
     
   if (isEventDisplay) {
-    // Events segment is selected 
-    BOOL isSelectedEntryEditable = 
-      ([[[self selectedEvent] links] editLink] != nil);
-
-    [mDeleteEventButton setEnabled:isSelectedEntryEditable];
-    [mEditEventButton setEnabled:isSelectedEntryEditable];
     
     [mAddEventButton setEnabled:isCalendarSelected];
     [mQueryTodayEventButton setEnabled:isCalendarSelected];
+
+    // Events segment is selected 
+    NSArray *selectedEvents = [self selectedEvents];
+    unsigned int numberOfSelectedEvents = [selectedEvents count];
     
+    NSString *deleteTitle = (numberOfSelectedEvents <= 1) ?
+      @"Delete Entry" : @"Delete Entries"; 
+    [mDeleteEventButton setTitle:deleteTitle];
+
+    if (numberOfSelectedEvents == 1) {
+      
+      // 1 selected event
+      GDataEntryCalendarEvent *event = [selectedEvents objectAtIndex:0];
+      BOOL isSelectedEntryEditable = 
+        ([[event links] editLink] != nil);
+
+      [mDeleteEventButton setEnabled:isSelectedEntryEditable];
+      [mEditEventButton setEnabled:isSelectedEntryEditable];
+      
+    } else {
+      // zero or many selected events
+      BOOL canBatchEdit = ([[mEventFeed links] batchLink] != nil);
+      BOOL canDeleteAll = (canBatchEdit && numberOfSelectedEvents > 1);
+      
+      [mDeleteEventButton setEnabled:canDeleteAll];
+      [mEditEventButton setEnabled:NO];
+    }
   } else {
     // ACL segment is selected
     BOOL isEditableACLEntrySelected = 
@@ -358,7 +380,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 - (IBAction)deleteEventClicked:(id)sender {
   if ([self isEventsSegmentSelected]) {
-    [self deleteSelectedEvent];
+    [self deleteSelectedEvents];
   } else {
     [self deleteSelectedACLEntry];
   }
@@ -392,7 +414,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleCalendar alloc] init];
     
-    [service setUserAgent:@"SampleCalendarApp"];
+    [service setUserAgent:@"Google-SampleCalendarApp-1.0"];
     [service setShouldCacheDatedData:YES];
   }
 
@@ -419,21 +441,31 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   return nil;
 }
 
-// get the event selected in the bottom list, or nil if none
-- (GDataEntryCalendarEvent *)selectedEvent {
+// get the events selected in the bottom list, or nil if none
+- (NSArray *)selectedEvents {
   
   if ([self isEventsSegmentSelected]) {
     
+    NSIndexSet *indexes = [mEventTable selectedRowIndexes];
     NSArray *events = [mEventFeed entries];
-    int rowIndex = [mEventTable selectedRow];
-    if ([events count] > 0 && rowIndex > -1) {
-      
-      GDataEntryCalendarEvent *event = [events objectAtIndex:rowIndex];
-      return event;
+    NSArray *selectedEvents = [events objectsAtIndexes:indexes];
+    
+    if ([selectedEvents count] > 0) {
+      return selectedEvents;
     }
   }
   return nil;
 }
+
+- (GDataEntryCalendarEvent *)singleSelectedEvent {
+  
+  NSArray *selectedEvents = [self selectedEvents];
+  if ([selectedEvents count] == 1) {
+    return [selectedEvents objectAtIndex:0]; 
+  }
+  return nil;
+}
+
 
 // get the event selected in the bottom list, or nil if none
 - (GDataEntryACL *)selectedACLEntry {
@@ -862,7 +894,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 - (void)editSelectedEvent {
   
   // display the event edit dialog
-  GDataEntryCalendarEvent *event = [self selectedEvent];
+  GDataEntryCalendarEvent *event = [self singleSelectedEvent];
   if (event) {
     EditEventWindowController *controller = [[EditEventWindowController alloc] init];
     [controller runModalForTarget:self
@@ -917,18 +949,32 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   
 }
 
-#pragma mark Delete an event
+#pragma mark Delete selected events
 
-- (void)deleteSelectedEvent {
+- (void)deleteSelectedEvents {
   
-  GDataEntryCalendarEvent *event = [self selectedEvent];
-  if (event) {
+  NSArray *events = [self selectedEvents];
+  unsigned int numberOfSelectedEvents = [events count];
+  
+  if (numberOfSelectedEvents == 1) {
+    
+    // 1 event selected
+    GDataEntryCalendarEvent *event = [events objectAtIndex:0];
+    
     // make the user confirm that the selected event should be deleted
     NSBeginAlertSheet(@"Delete Event", @"Delete", @"Cancel", nil,
                       [self window], self, 
                       @selector(deleteSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the event \"%@\"?",
                       [event title]);
+    
+  } else if (numberOfSelectedEvents >= 1) {
+    
+    NSBeginAlertSheet(@"Delete Events", @"Delete", @"Cancel", nil,
+                      [self window], self, 
+                      @selector(batchDeleteSheetDidEnd:returnCode:contextInfo:),
+                      nil, nil, @"Delete %d events?",
+                      numberOfSelectedEvents);
   }
 }
 
@@ -938,7 +984,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (returnCode == NSAlertDefaultReturn) {
     
     // delete the event
-    GDataEntryCalendarEvent *event = [self selectedEvent];
+    GDataEntryCalendarEvent *event = [self singleSelectedEvent];
     GDataLink *link = [[event links] editLink];
     
     if (link) {
@@ -973,6 +1019,117 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                     nil, nil, @"Event delete failed: %@", error);
   
 }
+
+// delete dialog callback
+- (void)batchDeleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSAlertDefaultReturn) {
+    // delete the events
+    [self batchDeleteSelectedEvents];
+  }
+}
+
+- (void)batchDeleteSelectedEvents {
+  
+  NSArray *selectedEvents = [self selectedEvents];
+  
+  for (int idx = 0; idx < [selectedEvents count]; idx++) {
+    
+    GDataEntryCalendarEvent *event = [selectedEvents objectAtIndex:idx];
+    
+    // add a batch ID to this entry
+    static int staticID = 0;
+    NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
+    [event setBatchID:[GDataBatchID batchIDWithString:batchID]];
+    
+    // we don't need to add the batch operation to the entries since
+    // we're putting it in the feed to apply to all entries
+    
+    // we could force an error on an item by nuking the entry's identifier
+    //   if (idx == 1) { [event setIdentifier:nil]; }
+  }
+
+  NSURL *batchURL = [[[mEventFeed links] batchLink] URL];
+  if (batchURL != nil && [selectedEvents count] > 0) {
+    
+    // make a batch feed object: add entries, and since
+    // we are doing the same operation for all entries in the feed, 
+    // add the operation
+    
+    GDataFeedCalendarEvent *batchFeed = [GDataFeedCalendarEvent calendarEventFeed];
+    [batchFeed setEntriesWithEntries:selectedEvents];
+    
+    GDataBatchOperation *op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationDelete];
+    [batchFeed setBatchOperation:op];    
+    
+    // now do the usual steps for authenticating for this service, and issue
+    // the fetch
+    
+    GDataServiceGoogleCalendar *service = [self calendarService];
+    
+    [service fetchCalendarEventBatchFeedWithBatchFeed:batchFeed
+                                      forBatchFeedURL:batchURL
+                                             delegate:self
+                                    didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:)
+                                      didFailSelector:@selector(batchDeleteTicket:failedWithError:)];
+  } else {
+    // the button shouldn't be enabled when we can't batch delete, so we
+    // shouldn't get here
+    NSBeep();
+  }
+}
+
+- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
+   finishedWithFeed:(GDataFeedCalendarEvent *)feed {
+  
+  // step through all the entries in the response feed, 
+  // and build a string reporting each
+  
+  // show the http status to start (should be 200)
+  NSMutableString *reportStr = [NSMutableString stringWithFormat:@"http status:%d\n\n", 
+    [ticket statusCode]];
+  
+  NSArray *responseEntries = [feed entries];
+  for (int idx = 0; idx < [responseEntries count]; idx++) {
+    
+    GDataEntryCalendarEvent *entry = [responseEntries objectAtIndex:idx];
+    GDataBatchID *batchID = [entry batchID];
+    
+    // report the batch ID, entry title, and status for each item
+    NSString *title= [[entry title] stringValue];
+    [reportStr appendFormat:@"%@: %@\n", [batchID stringValue], title];
+    
+    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+    if (interrupted) {
+      [reportStr appendFormat:@"%@\n", [interrupted description]];
+    }
+    
+    GDataBatchStatus *status = [entry batchStatus];
+    if (status) {
+      [reportStr appendFormat:@"%d %@\n", [[status code] intValue], [status reason]];
+    }
+    [reportStr appendString:@"\n"];
+  }
+  
+  NSBeginAlertSheet(@"Batch delete completed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Delete completed.\n%@", reportStr);
+  
+  // re-fetch the selected calendar's events
+  [self fetchSelectedCalendar];
+  [self updateUI];
+}
+
+- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+  
+  NSBeginAlertSheet(@"Batch delete failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Delete failed: %@", error);  
+  
+  [self updateUI];
+}
+
 
 #pragma mark Query today's events
 

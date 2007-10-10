@@ -76,4 +76,15 @@ _EXTERN NSString* kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"http:
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector
                                      didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a batch result feed
+//
+// status may also be present inside the individual entries
+// as GDataBatchStatus and GDataBatchInterrupted elements
+- (GDataServiceTicket *)fetchSpreadsheetFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                          forBatchFeedURL:(NSURL *)feedURL
+                                                 delegate:(id)delegate
+                                        didFinishSelector:(SEL)finishedSelector
+                                          didFailSelector:(SEL)failedSelector;
+
 @end

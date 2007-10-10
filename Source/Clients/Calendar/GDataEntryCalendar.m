@@ -70,6 +70,9 @@
     [GDataEntryBase baseGDataNamespaces]];
 
   [namespaces setObject:kGDataNamespaceGCal forKey:kGDataNamespaceGCalPrefix];
+  
+  [namespaces addEntriesFromDictionary:[GDataEntryBase batchNamespaces]];
+
   return namespaces;
 }
 

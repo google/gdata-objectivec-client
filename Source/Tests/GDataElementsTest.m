@@ -959,6 +959,17 @@
                        [obj1 XMLElement], [obj2 XMLElement]);
 }
 
+- (void)testNullCharacterRemoval {
+  NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C", 0];
+  
+  GDataTextConstruct *tc = [GDataTextConstruct textConstructWithString:str];
+  NSXMLElement *elem = [tc XMLElement];
+  NSString *elemStr = [elem XMLString];
+  
+  STAssertEqualObjects(elemStr, @"<GDataTextConstruct type=\"text\">bunnyrabbit"
+                       "</GDataTextConstruct>", @"failed to remove null");
+}
+
 - (void)testProperties {
     
   NSString * const xml = @"<entry xmlns=\"http://www.w3.org/2005/Atom\""

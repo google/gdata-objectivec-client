@@ -363,7 +363,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGooglePicasaWeb alloc] init];
     
-    [service setUserAgent:@"SamplePicasaWebApp"];
+    [service setUserAgent:@"Google-SamplePicasaWebApp-1.0"];
     [service setShouldCacheDatedData:YES];
   }
 

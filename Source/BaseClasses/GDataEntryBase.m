@@ -253,8 +253,8 @@
     [element addChild:[NSXMLNode elementWithName:@"updated"
                                      stringValue:[[self updatedDate] RFC3339String]]];
   }
-  [self addToElement:element XMLElementsForArray:links_];
-  [self addToElement:element XMLElementsForArray:authors_];
+  [self addToElement:element XMLElementsForArray:[self links]];
+  [self addToElement:element XMLElementsForArray:[self authors]];
   [self addToElement:element XMLElementsForArray:[self categories]];
   
   return element;

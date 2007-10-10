@@ -179,6 +179,19 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchCalendarEventBatchFeedWithBatchFeed:(GDataFeedCalendarEvent *)batchFeed
+                                                 forBatchFeedURL:(NSURL *)feedURL
+                                                        delegate:(id)delegate
+                                               didFinishSelector:(SEL)finishedSelector
+                                                 didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
+                                   forBatchFeedURL:feedURL
+                                          delegate:delegate
+                                 didFinishSelector:finishedSelector
+                                   didFailSelector:failedSelector];
+}
+
 - (NSString *)serviceID {
   return @"cl";
 }

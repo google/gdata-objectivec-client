@@ -45,6 +45,7 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
 
 @class GDataEntryCalendar;
 @class GDataEntryCalendarEvent;
+@class GDataFeedCalendarEvent;
 @class GDataQueryCalendar;
 
 // These routines are all simple wrappers around GDataServiceGoogle methods.
@@ -136,4 +137,14 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
                                 didFinishSelector:(SEL)finishedSelector
                                   didFailSelector:(SEL)failedSelector;
 
+// finished callback (see above) is passed a batch result feed
+//
+// status may also be present inside the individual entries
+// as GDataBatchStatus and GDataBatchInterrupted elements
+- (GDataServiceTicket *)fetchCalendarEventBatchFeedWithBatchFeed:(GDataFeedCalendarEvent *)batchFeed
+                                                 forBatchFeedURL:(NSURL *)feedURL
+                                                        delegate:(id)delegate
+                                               didFinishSelector:(SEL)finishedSelector
+                                                 didFailSelector:(SEL)failedSelector;
+  
 @end

@@ -90,8 +90,10 @@
   
   NSString *keywordsStr = [GDataMediaKeywords stringFromKeywords:keywords_];
   // stringFromKeywords returns nil if keywords is nil or empty
-  [element addStringValue:keywordsStr];
-
+  if (keywordsStr) {
+    [element addStringValue:keywordsStr];
+  }
+  
   return element;
 }
 
