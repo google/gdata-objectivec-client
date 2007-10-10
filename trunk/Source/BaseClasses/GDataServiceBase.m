@@ -22,6 +22,7 @@
 #import "GDataFeedCalendar.h"
 #import "GDataFeedCalendarEvent.h"
 #import "GDataProgressMonitorInputStream.h"
+#import "GDataFramework.h"
 
 static NSString* const kCallbackDelegateKey = @"delegate";
 static NSString* const kCallbackObjectClassKey = @"objectClass";
@@ -90,6 +91,28 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     userAgent = [self defaultApplicationIdentifier];
   }
   
+  // if the user agent doesn't specify the client library, append that
+  // information
+  NSString *libraryString = @"GData-ObjectiveC";
+  NSRange libRange = [userAgent rangeOfString:libraryString
+                                      options:NSCaseInsensitiveSearch];
+  if (libRange.location == NSNotFound) {
+    
+    long major, minor, release;
+    NSString *versionString;
+    GDataFrameworkVersion(&major, &minor, &release);
+
+    // most library releases will have a release value of zero
+    if (release != 0) {
+      versionString = [NSString stringWithFormat:@"%d.%d.%d", 
+        major, minor, release];
+    } else {
+      versionString = [NSString stringWithFormat:@"%d.%d", major, minor];
+    }
+    userAgent = [userAgent stringByAppendingFormat:@" %@/%@", 
+      libraryString, versionString];
+  }
+
   [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
   [request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
   [request setValue:@"application/atom+xml;charset=utf-8" forHTTPHeaderField:@"content-type"]; // header is authoritative for character set issues.
@@ -225,7 +248,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   // when the server gives us a "Not Modified" error, have the fetcher
   // just pass us the cached data from the previous call, if any
-  [fetcher setShouldCacheDatedData:shouldCacheDatedData_];
+  [fetcher setShouldCacheDatedData:[self shouldCacheDatedData]];
   
   // copy the service's retry settings into the ticket
   [fetcher setIsRetryEnabled:[ticket isRetryEnabled]];
@@ -505,9 +528,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher {
-  if ([username_ length] && [[self password] length]) {
-    [fetcher setCredential:[NSURLCredential credentialWithUser:username_
-                                                      password:[self password]
+  NSString *username = [self username];
+  NSString *password = [self password];
+  
+  if ([username length] && [password length]) {
+    [fetcher setCredential:[NSURLCredential credentialWithUser:username
+                                                      password:password
                                                    persistence:NSURLCredentialPersistenceForSession]];
   }
 }
@@ -865,7 +891,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (!version || [version isEqual:@"CFBundleShortVersionString"]) {
     version = @"version_unknown";    
   }
-  NSString *result = [NSString stringWithFormat:@"%@/%@", procName, version];
+  NSString *result = [NSString stringWithFormat:@"%@-%@", procName, version];
   return result;
 }
 @end

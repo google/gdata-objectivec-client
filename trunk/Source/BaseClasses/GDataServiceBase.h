@@ -138,6 +138,9 @@ enum {
   BOOL shouldCacheDatedData_;
 }
 
+// Applications should call setUserAgent: with a string of the form
+// CompanyName-AppName-AppVersion (without whitespace or punctuation
+// other than dashes and periods)
 - (NSString *)userAgent;
 - (void)setUserAgent:(NSString *)userAgent;
 

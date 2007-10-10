@@ -205,7 +205,7 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogle alloc] init];
     
-    [service setUserAgent:@"SampleBloggerApp"];
+    [service setUserAgent:@"Google-SampleBloggerApp-1.0"];
     
     [service setShouldCacheDatedData:YES];
     [service setServiceID:@"blogger"];

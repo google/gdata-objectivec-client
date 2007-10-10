@@ -13,16 +13,36 @@ Additions
 - Calendar events now have separate methods for recurrence and non-recurrence
   reminders, and calling setRecurrence will move the reminders appropriately
   
-- Added spreadsheet worksheet methods for setting row and column limits,
-  and default values for those in new spreadsheets
+- Added batch support for Calendar and Spreadsheet. Calendar sample app now
+  does batch delete of events when more than one event is selected.
+  
+- Added syncEvent, sequenceNumber, and iCalUID to Calendar event entries.
 
+- Added spreadsheet worksheet methods for setting row and column limits,
+  and default values for those in new spreadsheets.
+  
+- GDataHTTPFetcher and services now optionally automatically retry fetches of
+  some errors.
+  
 Bugs Fixed
 
 - Framework is now built with install location of @loader_path/../Frameworks...
   instead of @executable_path/../Frameworks/... so it can be loaded by other
   bundles such as plug-ins.
   
+- A specific format is now specified in the header for calling setUserAgent: 
+  (like [service setUserAgent:@"CompanyName-AppName-1.0"])
+  The library now will append the client library version to the user agent
+  string.
+  
 - Fixed PicasaWeb feed URL parameter escaping.
+
+- Now removes null characters from strings added to XML elements to avoid
+  XML that makes servers unhappy.
+  
+- Feed, entry, and service classes now call their own methods more reliably
+  to aid subclassing.
+
 
 Release 1.2.0
 15-August-2007

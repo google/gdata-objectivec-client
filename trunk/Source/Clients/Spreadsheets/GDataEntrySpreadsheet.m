@@ -36,6 +36,9 @@
   
   [namespaces setObject:kGDataNamespaceGSpreadCustom 
                  forKey:kGDataNamespaceGSpreadCustomPrefix]; // "gsx"
+  
+  [namespaces addEntriesFromDictionary:[GDataEntryBase batchNamespaces]];
+
   return namespaces;
 }
 

@@ -429,7 +429,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   if (!service) {
     service = [[GDataServiceGoogleBase alloc] init];
     
-    [service setUserAgent:@"SampleGoogleBaseApp"];
+    [service setUserAgent:@"Google-SampleGoogleBaseApp-1.0"];
     
     [service setShouldCacheDatedData:YES];
   }
