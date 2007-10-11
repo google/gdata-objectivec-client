@@ -77,6 +77,8 @@
 		4F539F7F0BAA0F24009A3C4E /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FA3BDF10B978D5F001C1943 /* BloggerSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BloggerSample_Prefix.pch; sourceTree = "<group>"; };
 		4FA3BDF70B978DC1001C1943 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/BloggerSampleWindow.nib; sourceTree = "<group>"; };
+		4FD0EFD10CBC5A2400059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
+		4FD0EFD20CBC5A2400059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* BloggerSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BloggerSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -139,6 +141,7 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				4FD0EFCE0CBC5A0E00059DC1 /* Build Scripts */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CalendarSample;
@@ -183,6 +186,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4FD0EFCE0CBC5A0E00059DC1 /* Build Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4FD0EFD10CBC5A2400059DC1 /* buildCopyScript */,
+				4FD0EFD20CBC5A2400059DC1 /* buildStripHeaders */,
+			);
+			name = "Build Scripts";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -190,11 +202,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "BloggerSample" */;
 			buildPhases = (
-				4FAB41610BAA1C9500FBBDC9 /* ShellScript */,
+				4FAB41610BAA1C9500FBBDC9 /* Copy GData Framework to BUILT_PRODUCTS_DIR */,
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				4FAB41570BAA193100FBBDC9 /* CopyFiles */,
+				4FD0EFDD0CBC5A9B00059DC1 /* Strip Headers */,
 			);
 			buildRules = (
 			);
@@ -266,18 +279,33 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4FAB41610BAA1C9500FBBDC9 /* ShellScript */ = {
+		4FAB41610BAA1C9500FBBDC9 /* Copy GData Framework to BUILT_PRODUCTS_DIR */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Copy GData Framework to BUILT_PRODUCTS_DIR";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = ./buildCopyScript;
+		};
+		4FD0EFDD0CBC5A9B00059DC1 /* Strip Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildStripHeaders;
 		};
 /* End PBXShellScriptBuildPhase section */
 
