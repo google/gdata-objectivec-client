@@ -81,6 +81,8 @@
 		4FBA21540C5A87210050D502 /* DocsSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DocsSampleAppController.m; sourceTree = "<group>"; };
 		4FBA21550C5A87210050D502 /* DocsSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DocsSampleAppController.h; sourceTree = "<group>"; };
 		4FBA215C0C5A87980050D502 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/DocsSampleWindow.nib; sourceTree = "<group>"; };
+		4FD0F0B30CBC5F7A00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
+		4FD0F0B40CBC5F7A00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,7 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				4FD0F0AE0CBC5F4F00059DC1 /* Build Scripts */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			name = CalendarSample;
@@ -185,6 +188,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		4FD0F0AE0CBC5F4F00059DC1 /* Build Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4FD0F0B30CBC5F7A00059DC1 /* buildCopyScript */,
+				4FD0F0B40CBC5F7A00059DC1 /* buildStripHeaders */,
+			);
+			name = "Build Scripts";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -197,6 +209,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				4F38F8970B66FAB700B24B81 /* CopyFiles */,
+				4FD0F0B50CBC5F8800059DC1 /* Strip Headers */,
 			);
 			buildRules = (
 			);
@@ -281,6 +294,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = ./buildCopyScript;
+		};
+		4FD0F0B50CBC5F8800059DC1 /* Strip Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildStripHeaders;
 		};
 /* End PBXShellScriptBuildPhase section */
 

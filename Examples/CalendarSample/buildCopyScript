@@ -9,5 +9,6 @@
 # copy it to this project's build directory
 
 if [ -d "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" ] ; then
-  cp -rf "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" "$BUILT_PRODUCTS_DIR"
+  rm -rf "$BUILT_PRODUCTS_DIR/GData.framework"
+  cp -Rf "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" "$BUILT_PRODUCTS_DIR"
 fi
