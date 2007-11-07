@@ -1,0 +1,116 @@
+Objective-C GData Framework Release Notes
+
+Project site:     http://code.google.com/p/gdata-objectivec-client/
+DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
+
+
+Changes since 1.1.0
+
+Additions
+
+- Added support for Google Code Search
+
+- Added support for Google Docs document list
+
+- Added http logging (see GDataHTTPFetcherLogging.h)
+
+- Added ability to provide a connection class for GDataHTTPFetcher
+
+- Added routines to let library users override standard classes
+  with their own surrogate subclasses (see GDataServiceBase.h)
+  
+- Added setProperty:forKey: and propertyForKey: to GDataObject so users can
+  easily attach any data without subclassing
+  
+- The ticket now retains the posted object for the convenience of the callbacks
+  
+- Added convenience setters for methods that take GDataTextContruct.
+  For example, framework now supports setTitleWithString:.
+  
+- Added new PicasaWeb query parameters and all-photos feed URL string.
+
+- Added support for Calendar web content gadget preferences
+
+- Added support for add/update/remove calendars and calendar subscriptions
+
+- Added ascending order parameter to Query base class
+
+- Added more Calendar query parameters
+
+- Authentication errors are now also returned in the userInfo with the "error"
+  key (thanks ghulands)
+  
+- Add rel constants for GDataWhere (thanks riggle)
+
+- Added a call to clear the last-modified dates tracked by the service object
+
+- Added HTMLLink convenience accessor
+
+Bugs Fixed
+
+- Fixed escaping algorithm for query parameter generation.
+
+- Calendar sample app no longer attempts to set the author value for an event,
+  as the author is always the authenticated user
+  
+- Removed method for retrieving a calendar event feed for a username
+
+- Changed addReminders: to addReminder: (thanks riggle)
+
+- Return proper numeric types in GDataValueConstruct methods (thanks riggle)
+
+- Fixed bugs in finding the proper class to instantiate from a category in XML
+
+- Store cookies on redirects (thanks riggle)
+
+- Fixed some addExtension methods
+
+- Fixed extra retain on arguments during pre-authenticated fetches
+
+- Allow subclasses of GDataEntryPhoto to override photoData method
+
+- Ensure default application identifier is valid for an http useragent
+
+- Fixed convenience method for GDataTextConstruct to return subclass type
+  (thanks ghulands)
+
+
+Release 1.1.0
+4-June-2007
+Changes since 1.0.0
+
+- Added photos, media, and geo data classes, and Picasa Web Albums service
+  classes
+
+- Interfaces now use proper subclasses of GDataValueConstruct to ensure
+  that XML element names are generated from objects created from scratch.  
+  
+- The XMLElement extension methods may now pass nil as default name to
+  their superclass to use the extension's defined default name.
+  
+- Added ACL feed support, and ACL display and editing in Calendar sample
+  
+- GDataAtomPubControl convenience creator adds the "app" namespace for the
+  element
+  
+- Fixed some incorrect selector signatures in the Blogger sample
+
+- Changed GDataHTTPFetcher to allow redirects from http to https
+
+- Upload of http data may now be monitored with progress callbacks
+
+- GData fetcher now can respond to proxy credential challenges
+
+- Entry content is now a GDataEntryContent object rather than a text construct
+  
+- Add accidentally omitted extendedProperty interfaces to 
+  GDataEntryCalendarEvent and fix extendedProperty default element
+  name (thanks iwankerl)
+   
+   
+Release 1.0.0
+16-April-2007
+
+Initial public release.  Includes standard base elements, entry, feed,
+service, and query classes, and unit tests.  Includes classes for
+Calendar, Google Base, Spreadsheets.
