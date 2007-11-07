@@ -22,7 +22,6 @@
 #import "GDataFeedCalendar.h"
 #import "GDataFeedCalendarEvent.h"
 #import "GDataProgressMonitorInputStream.h"
-#import "GDataFramework.h"
 
 static NSString* const kCallbackDelegateKey = @"delegate";
 static NSString* const kCallbackObjectClassKey = @"objectClass";
@@ -91,28 +90,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     userAgent = [self defaultApplicationIdentifier];
   }
   
-  // if the user agent doesn't specify the client library, append that
-  // information
-  NSString *libraryString = @"GData-ObjectiveC";
-  NSRange libRange = [userAgent rangeOfString:libraryString
-                                      options:NSCaseInsensitiveSearch];
-  if (libRange.location == NSNotFound) {
-    
-    long major, minor, release;
-    NSString *versionString;
-    GDataFrameworkVersion(&major, &minor, &release);
-
-    // most library releases will have a release value of zero
-    if (release != 0) {
-      versionString = [NSString stringWithFormat:@"%d.%d.%d", 
-        major, minor, release];
-    } else {
-      versionString = [NSString stringWithFormat:@"%d.%d", major, minor];
-    }
-    userAgent = [userAgent stringByAppendingFormat:@" %@/%@", 
-      libraryString, versionString];
-  }
-
   [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
   [request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
   [request setValue:@"application/atom+xml;charset=utf-8" forHTTPHeaderField:@"content-type"]; // header is authoritative for character set issues.
@@ -146,14 +123,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   // authentication)
   if (!ticket) {
     ticket = [GDataServiceTicketBase ticketForService:self];
+    [ticket setUserData:serviceUserData_];
+    [ticket setSurrogates:serviceSurrogates_];
+    [ticket setUploadProgressSelector:serviceUploadProgressSelector_];
   }
   
   AssertSelectorNilOrImplementedWithArguments(delegate, [ticket uploadProgressSelector],
-      @encode(GDataProgressMonitorInputStream *), @encode(unsigned long long), 
-      @encode(unsigned long long), 0);
-  AssertSelectorNilOrImplementedWithArguments(delegate, [ticket retrySelector],
-      @encode(GDataServiceTicketBase *),@encode(BOOL), @encode(NSError *), 0);
-  
+                                              @encode(GDataProgressMonitorInputStream *), @encode(unsigned long long), 
+                                              @encode(unsigned long long), 0);
+    
   NSInputStream *uploadStream = nil;
   NSData *uploadData = nil;
   NSData *dataToRetain = nil;
@@ -248,19 +226,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   // when the server gives us a "Not Modified" error, have the fetcher
   // just pass us the cached data from the previous call, if any
-  [fetcher setShouldCacheDatedData:[self shouldCacheDatedData]];
-  
-  // copy the service's retry settings into the ticket
-  [fetcher setIsRetryEnabled:[ticket isRetryEnabled]];
-  [fetcher setMaxRetryInterval:[ticket maxRetryInterval]];
-  
-  if ([ticket retrySelector]) {
-    [fetcher setRetrySelector:@selector(objectFetcher:willRetry:forError:)];
-  }
+  [fetcher setShouldCacheDatedData:shouldCacheDatedData_];
   
   // remember the object fetcher in the ticket
   [ticket setObjectFetcher:fetcher];
-  [ticket setCurrentFetcher:fetcher];
     
   // add parameters used by the callbacks
   NSMutableDictionary *callbackDict = [self callbackDictionaryForObjectClass:objectClass
@@ -373,7 +342,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }  
 
   [ticket setHasCalledCallback:YES];
-  [ticket setCurrentFetcher:nil];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
@@ -423,7 +391,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
-  [ticket setCurrentFetcher:nil];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithNetworkError:(NSError *)error {
@@ -446,52 +413,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }  
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
-  [ticket setCurrentFetcher:nil];
-}
-
-// The object fetcher may call into this retry method; this one invokes the
-// selector provided by the user.
-- (BOOL)objectFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
-  
-  NSDictionary *callbackDict = [fetcher userData];
-  
-  id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
-  GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
-  
-  SEL retrySelector = [ticket retrySelector];
-  if (retrySelector) {
-    
-    willRetry = [self invokeRetrySelector:retrySelector
-                                 delegate:delegate
-                                   ticket:ticket
-                                willRetry:willRetry
-                                    error:error];
-  }  
-  return willRetry;
-}
-
-- (BOOL)invokeRetrySelector:(SEL)retrySelector
-                   delegate:(id)delegate
-                     ticket:(GDataServiceTicketBase *)ticket
-                  willRetry:(BOOL)willRetry
-                      error:(NSError *)error {
-  
-  if ([delegate respondsToSelector:retrySelector]) {
-  
-    // Unlike the retry selector invocation in GDataHTTPFetcher, this invocation
-    // passes the ticket rather than the fetcher as argument 2
-    NSMethodSignature *signature = [delegate methodSignatureForSelector:retrySelector];
-    NSInvocation *retryInvocation = [NSInvocation invocationWithMethodSignature:signature];
-    [retryInvocation setSelector:retrySelector];
-    [retryInvocation setTarget:delegate];
-    [retryInvocation setArgument:&ticket atIndex:2]; // ticket passed
-    [retryInvocation setArgument:&willRetry atIndex:3];
-    [retryInvocation setArgument:&error atIndex:4];
-    [retryInvocation invoke];
-    
-    [retryInvocation getReturnValue:&willRetry];
-  }
-  return willRetry;  
 }
 
 - (NSMutableDictionary *)callbackDictionaryForObjectClass:(Class)objectClass
@@ -528,12 +449,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher {
-  NSString *username = [self username];
-  NSString *password = [self password];
-  
-  if ([username length] && [password length]) {
-    [fetcher setCredential:[NSURLCredential credentialWithUser:username
-                                                      password:password
+  if ([username_ length] && [[self password] length]) {
+    [fetcher setCredential:[NSURLCredential credentialWithUser:username_
+                                                      password:[self password]
                                                    persistence:NSURLCredentialPersistenceForSession]];
   }
 }
@@ -790,32 +708,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return serviceUploadProgressSelector_;
 }
 
-
-// retrying; see comments on retry support at the top of GDataHTTPFetcher
-- (BOOL)isServiceRetryEnabled {
-  return isServiceRetryEnabled_;
-}
-
-- (void)setIsServiceRetryEnabled:(BOOL)flag {
-  isServiceRetryEnabled_ = flag; 
-}
-
-- (SEL)serviceRetrySelector {
-  return serviceRetrySEL_; 
-}
-
-- (void)setServiceRetrySelector:(SEL)theSel {
-  serviceRetrySEL_ = theSel;
-}
-
-- (NSTimeInterval)serviceMaxRetryInterval {
-  return serviceMaxRetryInterval_;  
-}
-
-- (void)setServiceMaxRetryInterval:(NSTimeInterval)secs {
-  serviceMaxRetryInterval_ = secs; 
-}
-
 #pragma mark -
 
 // we want to percent-escape some of the characters that are otherwise
@@ -891,14 +783,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (!version || [version isEqual:@"CFBundleShortVersionString"]) {
     version = @"version_unknown";    
   }
-  NSString *result = [NSString stringWithFormat:@"%@-%@", procName, version];
+  NSString *result = [NSString stringWithFormat:@"%@/%@", procName, version];
   return result;
 }
 @end
 
 @implementation GDataServiceTicketBase
 
-+ (id)ticketForService:(GDataServiceBase *)service {
++ (GDataServiceTicketBase *)ticketForService:(GDataServiceBase *)service {
   return [[[self alloc] initWithService:service] autorelease];  
 }
 
@@ -906,14 +798,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   self = [super init];
   if (self) {
     service_ = [service retain];
-    
-    // copy settings from the service into this ticket
-    [self setUserData:[service serviceUserData]];
-    [self setSurrogates:[service serviceSurrogates]];
-    [self setUploadProgressSelector:[service serviceUploadProgressSelector]];  
-    [self setIsRetryEnabled:[service isServiceRetryEnabled]];
-    [self setRetrySelector:[service serviceRetrySelector]];
-    [self setMaxRetryInterval:[service serviceMaxRetryInterval]];    
   }
   return self;
 }
@@ -922,26 +806,24 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [service_ release];
   [userData_ release];
   [surrogates_ release];
-  [currentFetcher_ release];
   [objectFetcher_ release];
   [postedObject_ release];
   [fetchedObject_ release];
-  [fetchError_ release];  
+  [fetchError_ release];
   
   [super dealloc];
 }
 
 - (NSString *)description {
-  NSString *template = @"%@ 0x%lX: {service:%@ currentFetcher:%@ userData:%@}";
+  NSString *template = @"%@ 0x%lX: {service:%@ objectFetcher:%@ userData:%@}";
   return [NSString stringWithFormat:template,
-    [self class], self, service_, currentFetcher_, userData_];
+    [self class], self, service_, objectFetcher_, userData_];
 }
 
 - (void)cancelTicket {
   [objectFetcher_ stopFetching];
   
   [self setObjectFetcher:nil];
-  [self setCurrentFetcher:nil];
   [self setUserData:nil];
   
   [service_ autorelease];
@@ -976,39 +858,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (SEL)uploadProgressSelector {
   return uploadProgressSelector_;
-}
-
-- (BOOL)isRetryEnabled {
-  return isRetryEnabled_;  
-}
-
-- (void)setIsRetryEnabled:(BOOL)flag {
-  isRetryEnabled_ = flag; 
-}; 
-
-- (SEL)retrySelector {
-  return retrySEL_; 
-}
-
-- (void)setRetrySelector:(SEL)theSelector {
-  retrySEL_ = theSelector;  
-}
-
-- (NSTimeInterval)maxRetryInterval {
-  return maxRetryInterval_;  
-}
-
-- (void)setMaxRetryInterval:(NSTimeInterval)secs {
-  maxRetryInterval_ = secs; 
-}
-
-- (GDataHTTPFetcher *)currentFetcher {
-  return [[currentFetcher_ retain] autorelease]; 
-}
-
-- (void)setCurrentFetcher:(GDataHTTPFetcher *)fetcher {
-  [currentFetcher_ autorelease];
-  currentFetcher_ = [fetcher retain];
 }
 
 - (GDataHTTPFetcher *)objectFetcher {

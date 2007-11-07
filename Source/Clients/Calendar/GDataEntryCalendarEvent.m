@@ -46,24 +46,6 @@
 + (NSString *)extensionElementLocalName { return @"resource"; }
 @end
 
-@implementation GDataSyncEventProperty 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
-+ (NSString *)extensionElementLocalName { return @"syncEvent"; }
-@end
-
-@implementation GDataSequenceProperty 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
-+ (NSString *)extensionElementLocalName { return @"sequence"; }
-@end
-
-@implementation GDataICalUIDProperty 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
-+ (NSString *)extensionElementLocalName { return @"uid"; }
-@end
-
 // CalendarEventEntry categories for extensions
 @implementation GDataWho (GDataCalendarEntryEventExtensions)
 - (NSArray *)resourceProperties {
@@ -132,12 +114,6 @@
                                    childClass:[GDataQuickAddProperty class]];  
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataExtendedProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSyncEventProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSequenceProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataICalUIDProperty class]];  
   
   [self addExtensionDeclarationForParentClass:[GDataWho class]
                                    childClass:[GDataResourceProperty class]];  
@@ -204,51 +180,6 @@
   [self setObject:obj forExtensionClass:[GDataQuickAddProperty class]];
 }
 
-- (BOOL)isSyncEvent {
-  GDataBoolValueConstruct *obj = [self objectForExtensionClass:[GDataSyncEventProperty class]];
-  return [obj boolValue];
-}
-
-- (void)setIsSyncEvent:(BOOL)flag {
-  GDataBoolValueConstruct *obj;
-  if (flag) {
-    obj = [GDataSyncEventProperty boolValueWithBool:YES];
-  } else {
-    obj = nil; // removes the extension
-  }
-  [self setObject:obj forExtensionClass:[GDataSyncEventProperty class]];
-}
-
-- (NSString *)iCalUID {
-  GDataICalUIDProperty *obj = [self objectForExtensionClass:[GDataICalUIDProperty class]];
-  return [obj stringValue];
-}
-
-- (void)setICalUID:(NSString *)str {
-  GDataICalUIDProperty *obj;
-  if ([str length] > 0) {
-    obj = [GDataICalUIDProperty valueWithString:str];
-  } else {
-    obj = nil; 
-  }
-  [self setObject:obj forExtensionClass:[GDataICalUIDProperty class]];
-}
-
-- (NSNumber *)sequenceNumber {
-  GDataSequenceProperty *obj = [self objectForExtensionClass:[GDataSequenceProperty class]];
-  return [obj intNumberValue];
-}
-
-- (void)setSequenceNumber:(NSNumber *)num {
-  GDataSequenceProperty *obj;
-  if (num != nil) {
-    obj = [GDataSequenceProperty valueWithNumber:num];
-  } else {
-    obj = nil; 
-  }
-  [self setObject:obj forExtensionClass:[GDataSequenceProperty class]];
-}
-
 - (NSArray *)extendedProperties {
   return [self objectsForExtensionClass:[GDataExtendedProperty class]];
 }
@@ -262,11 +193,9 @@
 }
 
 - (GDataLink *)webContentLink {
+  NSString *schema = @"http://schemas.google.com/gCal/2005/webContent";
   NSArray *links = [self links];
-
-  GDataLink *webContentLink;
-  webContentLink = [links linkWithRelAttributeValue:kGDataLinkRelWebContent];
-
+  GDataLink *webContentLink = [links linkWithRelAttributeValue:schema];
   return webContentLink;
 }
 

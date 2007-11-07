@@ -164,7 +164,7 @@
   Class entryClass = [self classForEntries];
   
 #if DEBUG
-  NSAssert1([[root localName] isEqual:@"feed"], 
+  NSAssert1([[root name] isEqual:@"feed"], 
             @"initing a feed from a non-feed element (%@)", [root name]);
 #endif
   
@@ -297,29 +297,28 @@
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"feed"];
   
-  [self addToElement:element childWithStringValueIfNonEmpty:[self identifier] withName:@"id"];
+  [self addToElement:element childWithStringValueIfNonEmpty:idString_ withName:@"id"];
   
-  if ([self generator]) {
-    [element addChild:[[self generator] XMLElement]]; 
-  } 
-  
-  if ([self title]) {
-    [element addChild:[[self title] XMLElement]];
+  if (generator_) {
+    [element addChild:[generator_ XMLElement]]; 
+  }  
+  if (title_) {
+    [element addChild:[title_ XMLElement]];
   }
-  if ([self subtitle]) {
-    [element addChild:[[self subtitle] XMLElement]];
+  if (subtitle_) {
+    [element addChild:[subtitle_ XMLElement]];
   }
-  if ([self rights]) {
-    [element addChild:[[self rights] XMLElement]];
+  if (rights_) {
+    [element addChild:[rights_ XMLElement]];
   }
   
-  [self addToElement:element childWithStringValueIfNonEmpty:[self icon] withName:@"icon"];
-  [self addToElement:element childWithStringValueIfNonEmpty:[self logo] withName:@"logo"];
+  [self addToElement:element childWithStringValueIfNonEmpty:icon_ withName:@"icon"];
+  [self addToElement:element childWithStringValueIfNonEmpty:logo_ withName:@"logo"];
   
-  [self addToElement:element XMLElementsForArray:[self links]];
-  [self addToElement:element XMLElementsForArray:[self authors]];
-  [self addToElement:element XMLElementsForArray:[self contributors]];
-  [self addToElement:element XMLElementsForArray:[self categories]];
+  [self addToElement:element XMLElementsForArray:links_];
+  [self addToElement:element XMLElementsForArray:authors_];
+  [self addToElement:element XMLElementsForArray:contributors_];
+  [self addToElement:element XMLElementsForArray:categories_];
   
   if ([self updatedDate]) {
     NSString *updatedDateStr = [[self updatedDate] RFC3339String];
@@ -335,7 +334,7 @@
   [self addToElement:element childWithStringValueIfNonEmpty:startIndex withName:@"openSearch:startIndex"];
   [self addToElement:element childWithStringValueIfNonEmpty:itemsPerPage withName:@"openSearch:itemsPerPage"];
   
-  [self addToElement:element XMLElementsForArray:[self entries]];
+  [self addToElement:element XMLElementsForArray:entries_];
 
   return element;
 }

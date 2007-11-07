@@ -50,17 +50,9 @@
 + (void)setLoggingDirectory:(NSString *)path;
 + (NSString *)loggingDirectory;
 
-// client apps can turn logging on and off
+// clent apps can turn logging on and off
 + (void)setIsLoggingEnabled:(BOOL)flag;
 + (BOOL)isLoggingEnabled;
-
-// client apps can optionally specify process name and date string used in
-// log file names
-+ (void)setLoggingProcessName:(NSString *)str;
-+ (NSString *)loggingProcessName;
-
-+ (void)setLoggingDateStamp:(NSString *)str;
-+ (NSString *)loggingDateStamp;
 
 // internal; called by fetcher
 - (void)logFetchWithError:(NSError *)error;

@@ -18,6 +18,7 @@
 
 #import "GDataProgressMonitorInputStream.h"
 
+
 @interface GDataInputStreamLogger : GDataProgressMonitorInputStream
 // GDataInputStreamLogger is wraps any NSInputStream used for
 // uploading so we can capture a copy of the data for the log
@@ -37,12 +38,6 @@
 + (void)setIsLoggingEnabled:(BOOL)flag {}
 + (BOOL)isLoggingEnabled {return NO;}
 
-+ (void)setLoggingProcessName:(NSString *)str {}
-+ (NSString *)loggingProcessName {return nil;}
-
-+ (void)setLoggingDateStamp:(NSString *)str {}
-+ (NSString *)loggingDateStamp {return nil;}
-
 - (void)appendLoggedStreamData:(NSData *)newData {}
 - (void)logCapturePostStream {}
 #else
@@ -50,8 +45,6 @@
 // fetchers come and fetchers go, but statics are forever
 static BOOL gIsLoggingEnabled = NO;
 static NSString *gLoggingDirectoryPath = nil;
-static NSString *gLoggingDateStamp = nil;
-static NSMutableString* gLoggingProcessName = nil; 
 
 + (void)setLoggingDirectory:(NSString *)path {
   [gLoggingDirectoryPath autorelease];
@@ -100,48 +93,37 @@ static NSMutableString* gLoggingProcessName = nil;
   return gIsLoggingEnabled;
 }
 
-+ (void)setLoggingProcessName:(NSString *)str {
-  [gLoggingProcessName release];
-  gLoggingProcessName = [str copy];
-}
-
-+ (NSString *)loggingProcessName {
++ (NSString *)processName {
   
   // get the process name (once per run) replacing spaces with underscores
-  if (!gLoggingProcessName) {
+  static NSMutableString* gProcessName = NULL; 
+  if (!gProcessName) {
     
     CFStringRef procName;
     ProcessSerialNumber currentPSN = { 0, kCurrentProcess };
     if (CopyProcessName(&currentPSN, &procName) == noErr) {
-      gLoggingProcessName = [[NSMutableString alloc] initWithString:(NSString *)procName];
-      [gLoggingProcessName replaceOccurrencesOfString:@" " 
+      gProcessName = [[NSMutableString alloc] initWithString:(NSString *)procName];
+      [gProcessName replaceOccurrencesOfString:@" " 
                                     withString:@"_" 
                                        options:0 
-                                         range:NSMakeRange(0, [gLoggingProcessName length])];
+                                         range:NSMakeRange(0, [gProcessName length])];
       CFRelease(procName);
     } else {
-      gLoggingProcessName = [[NSString alloc] initWithString:@"proc"]; 
+      gProcessName = [[NSString alloc] initWithString:@"proc"]; 
     }
   }
-  return gLoggingProcessName;
+  return gProcessName;
 }
 
-+ (void)setLoggingDateStamp:(NSString *)str {
-  [gLoggingDateStamp release];
-  gLoggingDateStamp = [str copy];
-}
-
-+ (NSString *)loggingDateStamp {
++ (NSString *)dateStamp {
   // we'll pick one date stamp per run, so a run that starts at a later second
-  // will get a unique results html file
-  if (!gLoggingDateStamp) {
-    // TODO(grobbins) remove use of NSCalendarDate since Apple will eventually
-    // deprecate it in favor of formatters
-    
-    // produce a string like 08-21_01-41-23PM
-    gLoggingDateStamp = [[[NSCalendarDate calendarDate] descriptionWithCalendarFormat:@"%m-%d_%I-%M-%S%p"] retain];
+  // will get unique results html file
+  static NSString *gDateStamp = nil;
+  if (!gDateStamp) {
+    // TODO(grobbins) remove use of NSCalendarDate
+    gDateStamp = [[[NSCalendarDate calendarDate] descriptionWithCalendarFormat:@"%m-%d_%I-%M-%S%p"] retain];
   }
-  return gLoggingDateStamp;
+  return gDateStamp;
 }
 
 - (NSString *)cleanParameterFollowing:(NSString *)paramName
@@ -285,8 +267,8 @@ static NSMutableString* gLoggingProcessName = nil;
   // TODO(grobbins)  add Javascript to display response data formatted in hex
   
   NSString *logDirectory = [[self class] loggingDirectory];
-  NSString *processName = [[self class] loggingProcessName];
-  NSString *dateStamp = [[self class] loggingDateStamp];
+  NSString *processName = [[self class] processName];
+  NSString *dateStamp = [[self class] dateStamp];
   
   // each response's NSData goes into its own xml or txt file, though all
   // responses for this run of the app share a main html file.  This 

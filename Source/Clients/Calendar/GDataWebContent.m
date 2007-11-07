@@ -17,7 +17,6 @@
 //  GDataWebContent.m
 //
 
-#define GDATAWEBCONTENT_DEFINE_GLOBALS 1
 #import "GDataWebContent.h"
 #import "GDataEntryCalendarEvent.h"
 

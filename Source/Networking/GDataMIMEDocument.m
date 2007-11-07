@@ -57,12 +57,7 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
     // lines of "key: value\r\m"
     NSMutableString* headerString = [NSMutableString string];
     
-    // sort the header keys so we have a deterministic order for 
-    // unit testing
-    SEL sortSel = @selector(caseInsensitiveCompare:);
-    NSArray *sortedKeys = [[headers allKeys] sortedArrayUsingSelector:sortSel];
-    
-    NSEnumerator* keyEnum = [sortedKeys objectEnumerator];
+    NSEnumerator* keyEnum = [headers keyEnumerator];
     NSString* key;
     while ((key = [keyEnum nextObject]) != nil) {
       NSString* value = [headers objectForKey:key];

@@ -41,12 +41,9 @@ _EXTERN NSString* kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.google
 
 + (GDataEntryWorksheet *)worksheetEntry;
 
-// Hard upper bound of rows and columns, perhaps including
+// Get hard upper bound of rows and columns, perhaps including
 // empty rows and columns.
 - (int)rowCount;
-- (void)setRowCount:(int)val;
-
 - (int)columnCount;
-- (void)setColumnCount:(int)val;  
 @end
 

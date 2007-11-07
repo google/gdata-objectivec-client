@@ -29,7 +29,6 @@
   GDataServiceTicket *ticket_;
   GDataObject *fetchedObject_;
   NSError *fetcherError_;
-  int retryCounter_;
 }
 
 @end

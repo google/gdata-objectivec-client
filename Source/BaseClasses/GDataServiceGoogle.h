@@ -52,6 +52,8 @@ enum {
   GDataHTTPFetcher *authFetcher_; 
 }
 
++ (GDataServiceTicket *)authTicketForService:(GDataServiceGoogle *)service;
+
 - (void)cancelTicket; // stops fetches in progress
 
 - (GDataHTTPFetcher *)authFetcher;
@@ -66,8 +68,6 @@ enum {
   NSString *captchaAnswer_;
   
   NSString *authToken_;
-  
-  NSString *accountType_; // hosted or google
   
   NSString *signInDomain_;
   
@@ -119,10 +119,6 @@ enum {
 
 - (void)setCaptchaToken:(NSString *)captchaToken
           captchaAnswer:(NSString *)captchaAnswer;
-
-// default account type is HOSTED_OR_GOOGLE
-- (NSString *)accountType;
-- (void)setAccountType:(NSString *)str;
 
 // default sign-in domain is www.google.com
 - (NSString *)signInDomain;
