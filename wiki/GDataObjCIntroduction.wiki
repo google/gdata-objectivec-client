@@ -85,7 +85,7 @@ Service objects include a variety of methods for interacting with the service. T
   * performing queries to obtain a subset of the feed's entries
   * performing a [http://code.google.com/apis/gdata/batch.html batch operation] of inserting, updating, and deleting entries
 
-Feeds and entries typically contain *links* to themselves or to other objects. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
+Feeds and entries typically contain *links* to themselves or to other objects. The library provides convenience categories on NSArray for retrieving individual links. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
 
 {{{
     NSArray *entryLinks = [firstCalendar links];
@@ -100,7 +100,7 @@ Feeds and entries typically contain *links* to themselves or to other objects. F
     }
 }}}
 
-GData provides convenience categories on NSArray for retrieving individual links, as the example above shows in retrieving the "alt" link from the entry's array of links.  
+Typically, the alternate link points to an html or user-friendly representation of the data, though Google Calendar uses it as a link to the event feed for a calendar.
 
 A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
 
@@ -169,7 +169,11 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 }
 }}}
 
+GData services always return the newest version of an object that has been inserted or updated, so the methods are called "fetch" even for inserts and updates.
+
 == Adding custom data to GDataObject instances ==
+
+Often it is useful to add data locally to a GDataObject. For example, an entry used to represent a photo being uploaded would be more convenient if it also carried a path to the photo's file.
 
 Your application can add data to any instance of a GDataObject (such as entry and feed objects, as well as individual elements) in three ways.
 
@@ -189,7 +193,9 @@ service = [[GDataServiceGooglePicasaWeb alloc] init];
 [service setServiceSurrogates:surrogates];
 }}}
 
-These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can will retain arbitrary data for users.
+These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can retain arbitrary data for users.
+
+To retain data from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` method.
 
 == Uploading files ==
 
