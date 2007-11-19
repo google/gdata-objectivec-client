@@ -105,17 +105,19 @@
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataObject class]]) return NO;
 
-  NSString *localName = [NSXMLNode localNameForName:[self elementName]];
-  NSString *otherLocalName = [NSXMLNode localNameForName:[other elementName]];
+  // We used to compare the local names of the objects with
+  // NSXMLNode's localNameForName: on each object's elementName, but that
+  // prevents us from comparing the contents of a manually-constructed object
+  // (which lacks a specific local name) with one found in an actual XML feed.
   
-  return AreEqualOrBothNil(localName, otherLocalName) 
-    && AreEqualOrBothNil([self extensions], [other extensions])
+  return AreEqualOrBothNil([self extensions], [other extensions])
     && AreEqualOrBothNil([self namespaces], [other namespaces]);
   
   // What we're not comparing here:
   //   parent object pointers
   //   extension declarations
   //   unknown attributes & children
+  //   local element names
   //   userData
 }
 

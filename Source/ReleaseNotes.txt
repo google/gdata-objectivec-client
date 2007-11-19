@@ -24,6 +24,18 @@ Additions
 - GDataHTTPFetcher and services now optionally automatically retry fetches of
   some errors.
   
+- Feeds and entries now have methods for adding categories.
+
+- GDataCategory includes label convenience method categoryWithLabel: and
+  utility categories on arrays, containsCategoryWithLabel: and categoryLabels.
+  GDataCategory's isEqual: now compares label data as well.
+  
+- Docs sample app can now delete a document.
+
+- Added MacOSX version to service request user agent, along with a gzip string
+  expected in the user agent by Google servers.
+
+  
 Bugs Fixed
 
 - Framework is now built with install location of @loader_path/../Frameworks...
@@ -35,13 +47,24 @@ Bugs Fixed
   The library now will append the client library version to the user agent
   string.
   
+- GDataObject's isEqual: no longer compares local element names
+  
 - Fixed PicasaWeb feed URL parameter escaping.
+
+- Fixed GDataCategory's categoriesWithScheme: category on NSArray.
 
 - Now removes null characters from strings added to XML elements to avoid
   XML that makes servers unhappy.
   
 - Feed, entry, and service classes now call their own methods more reliably
   to aid subclassing.
+  
+- Text constructs no longer specify "type=text" since that is implied according
+  to the Atom standard.
+  
+- Service unit tests now cover http cookies and caching.
+
+- HTTP cookies now work with server at localhost.
 
 
 Release 1.2.0

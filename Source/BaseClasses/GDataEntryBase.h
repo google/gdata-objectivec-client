@@ -56,6 +56,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
   NSString *versionIDString_;
   GDataDateTime *publishedDate_;
   GDataDateTime *updatedDate_;
+  GDataDateTime *editedDate_;
   GDataTextConstruct *title_;
   GDataTextConstruct *summary_;
   GDataEntryContent *content_;
@@ -94,6 +95,9 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (GDataDateTime *)updatedDate;
 - (void)setUpdatedDate:(GDataDateTime *)theUpdatedDate;
 
+- (GDataDateTime *)editedDate;
+- (void)setEditedDate:(GDataDateTime *)theEditedDate;
+
 - (GDataTextConstruct *)title;
 - (void)setTitle:(GDataTextConstruct *)theTitle;
 - (void)setTitleWithString:(NSString *)str;
@@ -121,6 +125,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (NSArray *)categories;
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
+- (void)removeCategory:(GDataCategory *)category;
 
 // Multipart MIME Upload
 - (NSData *)uploadData;

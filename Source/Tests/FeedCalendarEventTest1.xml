@@ -38,6 +38,8 @@
 			<gd:feedLink href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908/comments"/>
 		</gd:comments>
 		<gCal:sendEventNotifications value="false"/>
+		<gCal:sequence value="2"></gCal:sequence>
+		<gCal:uid value="4A24A0FF-EA3A-4839-AA09-F4283CB6D345"></gCal:uid>
 		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
 		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
 		<gd:who email="FredFlintstone@gmail.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">

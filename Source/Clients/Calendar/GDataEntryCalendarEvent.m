@@ -166,7 +166,14 @@
   if ([self isQuickAdd]) {
     [items addObject:@"quickAdd"];
   }
-
+  
+  if ([self isSyncEvent]) {
+    [items addObject:@"isSyncEvent"];
+  }
+  
+  [self addToArray:items objectDescriptionIfNonNil:[self iCalUID] withName:@"iCalUID"];
+  [self addToArray:items objectDescriptionIfNonNil:[self sequenceNumber] withName:@"sequenceNumber"];
+  
   if ([self webContent]) {
     [self addToArray:items objectDescriptionIfNonNil:[[self webContent] URLString] withName:@"webContent"];
   }

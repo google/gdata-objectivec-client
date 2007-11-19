@@ -98,6 +98,18 @@
     }
   }
 }
+
+- (void)testTimeZonePreservation {
+  NSTimeZone *denverTZ = [NSTimeZone timeZoneWithName:@"America/Denver"];
+  NSCalendarDate *date = [NSCalendarDate dateWithYear:2007 month:01 day:01 
+                                                 hour:01 minute:01 second:01 
+                                             timeZone:denverTZ];
+  
+  GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:date 
+                                                   timeZone:denverTZ];
+  NSTimeZone *testTZ = [dateTime timeZone];
+  STAssertEqualObjects(testTZ, denverTZ, @"Time zone changed");
+}
 @end
 
 //2006-11-20 17:53:23.880 otest[5401] timezone=GMT-0100 (GMT-0100) offset -3600

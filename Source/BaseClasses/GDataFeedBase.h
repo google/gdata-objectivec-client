@@ -110,6 +110,7 @@
 - (NSArray *)categories;
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
+- (void)removeCategory:(GDataCategory *)category;
 
 - (GDataDateTime *)updatedDate;
 - (void)setUpdatedDate:(GDataDateTime *)theDate;
@@ -141,6 +142,11 @@
 // Batch support
 - (GDataBatchOperation *)batchOperation;
 - (void)setBatchOperation:(GDataBatchOperation *)obj;
+
+// convenience routines
+
+// find the entry with the given identifier, or nil if none found
+- (id)entryForIdentifier:(NSString *)str;
 
 @end
 

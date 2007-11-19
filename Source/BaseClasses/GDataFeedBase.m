@@ -509,6 +509,10 @@
   }
 }
 
+- (void)removeCategory:(GDataCategory *)category {
+  [categories_ removeObject:category];
+}
+
 - (GDataDateTime *)updatedDate {
   return updatedDate_; 
 }
@@ -629,6 +633,22 @@
   [self setObject:obj forExtensionClass:[GDataBatchOperation class]];
 }
 
+// convenience routines
+- (id)entryForIdentifier:(NSString *)str {
+  
+  NSArray *entries = [self entries];
+  NSEnumerator *enumerator = [entries objectEnumerator];
+  
+  GDataEntryBase *entry;
+  
+  while ((entry = [enumerator nextObject]) != nil) {
+    NSString *entryID = [entry identifier];
+    if ([entryID isEqual:str]) {
+      return entry; 
+    }
+  }
+  return nil;
+}
 @end
 
 

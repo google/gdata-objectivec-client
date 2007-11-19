@@ -51,6 +51,7 @@
 
 - (void)dealloc {
   [dateComponents_ release];
+  [timeZone_ release];
   [super dealloc];
 }
 
@@ -60,6 +61,7 @@
   
   [newObj setOffsetSeconds:[self offsetSeconds]];
   [newObj setIsUniversalTime:[self isUniversalTime]];
+  [newObj setTimeZone:[self timeZone]];
   
   NSDateComponents *newDateComponents;
   NSDateComponents *oldDateComponents = [self dateComponents];
@@ -103,6 +105,7 @@
 
   return [self offsetSeconds] == [other offsetSeconds]
     && [self isUniversalTime] == [other isUniversalTime]
+    && [self timeZone] == [other timeZone]
     && [self doesDateComponents:[self dateComponents] 
             equalDateComponents:[other dateComponents]];
 }
@@ -113,6 +116,10 @@
 }
 
 - (NSTimeZone *)timeZone {
+  if (timeZone_) {
+    return timeZone_;
+  }
+  
   if ([self isUniversalTime]) {
     NSTimeZone *ztz = [NSTimeZone timeZoneWithName:@"Universal"];
     return ztz;
@@ -125,6 +132,18 @@
     return tz;
   }
   return nil;
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone {
+  [timeZone_ release];
+  timeZone_ = [timeZone retain];
+  
+  if (timeZone) {
+    int offsetSeconds = [timeZone secondsFromGMTForDate:[self date]];
+    [self setOffsetSeconds:offsetSeconds];
+  } else {
+    [self setOffsetSeconds:NSUndefinedDateComponent];
+  }
 }
 
 - (NSCalendar *)calendar {
@@ -210,6 +229,10 @@
     }
   }
   [self setOffsetSeconds:offset];
+
+  // though offset seconds are authoritative, we'll retain the time zone
+  // since we can't regenerate it reliably from just the offset
+  timeZone_ = [tz retain];
 }
 
 - (void)setFromRFC3339String:(NSString *)str {
@@ -268,6 +291,8 @@
   
   // determine the offset, like from Z, or -08:00:00.0
   
+  [self setTimeZone:nil];
+  
   int totalOffset = NSUndefinedDateComponent;
   [self setIsUniversalTime:NO];
 
@@ -321,6 +346,7 @@
     [dateComponents_ setSecond:NSUndefinedDateComponent];
     offsetSeconds_ = NSUndefinedDateComponent;
     isUniversalTime_ = NO;
+    [self setTimeZone:nil];
   }
 }
 

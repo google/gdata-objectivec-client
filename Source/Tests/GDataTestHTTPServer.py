@@ -1,6 +1,25 @@
-#!/usr/bin/python2.3
+#!/usr/bin/python
 #
-#  A simple server for testing the Objective-C GData Framework
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""A simple server for testing the Objective-C GData Framework
+
+This http server is for use by GDataServiceTest.m in testing
+both authentication and object retrieval.
+
+Requests to the path /accounts/ClientLogin are assumed to be
+for login; other requests are for object retrieval
+"""
 
 import string
 import cgi
@@ -8,16 +27,39 @@ import time
 import os
 import sys
 import re
+import mimetypes
 from BaseHTTPServer import BaseHTTPRequestHandler
 from BaseHTTPServer import HTTPServer
 from optparse import OptionParser
 
 class SimpleServer(BaseHTTPRequestHandler):
-  # This http server is for use by GDataServiceTest.m in testing
-  # both authentication and object retrieval.
-  #
-  # Requests to the path /accounts/ClientLogin are assumed to be
-  # for login; other requests are for object retrieval
+
+  """HTTP request handler for testing GData network requests.
+  
+  This is an implementation of a request handler for BaseHTTPServer,
+  specifically designed for GData service code usage.
+  
+  Normal requests for GET/POST/PUT simply retrieve the file from the
+  supplied path, starting in the current directory.  A cookie called
+  TestCookie is set by the response header, with the value of the filename
+  requested.
+  
+  DELETE requests always succeed.
+  
+  Appending ?status=n results in a failure with status value n.
+  
+  Paths ending in .auth have the .auth extension stripped, and must have
+  an authorization header of "GoogleLogin auth=GoodAuthToken" to succeed.
+  
+  Successful results have a Last-Modified header set; if that header's value
+  ("thursday") is supplied in a request's "If-Modified-Since" header, the 
+  result is 304 (Not Modified).
+  
+  Requests to /accounts/ClientLogin will fail if supplied with a body
+  containing Passwd=bad. If they contain logintoken and logincaptcha values,
+  those must be logintoken=CapToken&logincaptch=good to succeed.
+  """
+
   def do_GET(self):
     self.doAllRequests()
 
@@ -52,12 +94,15 @@ class SimpleServer(BaseHTTPRequestHandler):
     resultStatus = 0
     headerType = "text/plain"
     postString = ""
+    modifiedDate = "thursday" # clients should treat dates as opaque, generally
     
     # auth queries and some GData queries include post data
     postLength = int(self.headers.getheader("Content-Length", "0"));
     if postLength > 0:
       postString = self.rfile.read(postLength)
       
+    ifModifiedSince = self.headers.getheader("If-Modified-Since", "");
+
     # retrieve the auth header; require it if the file path ends 
     # with the string ".auth"
     authorization = self.headers.getheader("Authorization", "")
@@ -109,7 +154,8 @@ class SimpleServer(BaseHTTPRequestHandler):
             resultStatus = 200
           else:
             # incorrect captcha token or answer provided
-            resultString = "Error=CaptchaRequired\nCaptchaToken=CapToken\nCaptchaUrl=CapUrl\n"
+            resultString = ("Error=CaptchaRequired\nCaptchaToken=CapToken\n"
+              "CaptchaUrl=CapUrl\n")
             resultStatus = 403
 
         else:
@@ -134,7 +180,13 @@ class SimpleServer(BaseHTTPRequestHandler):
           self.send_error(int(status),
             "Test HTTP server status parameter: %s" % self.path)
           return
-
+          
+        # if the client gave us back our modified date, then say there's no
+        # change in the response
+        if ifModifiedSince == modifiedDate:
+          self.send_response(304) # Not Modified
+          return
+          
         else:
           #
           # it's an object fetch; read and return the XML file
@@ -143,15 +195,23 @@ class SimpleServer(BaseHTTPRequestHandler):
           resultString = f.read()
           f.close()
           resultStatus = 200
-          headerType = "application/atom+xml"
+          fileTypeInfo = mimetypes.guess_type("." + self.path)
+          headerType = fileTypeInfo[0] # first part of the tuple is mime type
         
       self.send_response(resultStatus)
       self.send_header("Content-type", headerType)
+      self.send_header("Last-Modified", modifiedDate)
+      
+      # set TestCookie to equal the file name requested
+      cookieValue = os.path.basename("." + self.path)
+      self.send_header('Set-Cookie', 'TestCookie=%s' % cookieValue)
+      
       self.end_headers()
       self.wfile.write(resultString)
 
     except IOError:
       self.send_error(404,"File Not Found: %s" % self.path)
+      
       
 def main():
   try:
@@ -169,6 +229,7 @@ def main():
   except KeyboardInterrupt:
     print "^C received, shutting down server"
     server.socket.close()
+
 
 if __name__ == "__main__":
   main()

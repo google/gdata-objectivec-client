@@ -22,6 +22,10 @@
 #import "GDataObject.h"
 
 
+_EXTERN NSString* kGDataCategoryLabelScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005/labels");
+
+_EXTERN NSString* kGDataCategoryLabelStarred _INITIALIZE_AS(@"starred");
+
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"
 //        term="http://schemas.google.com/g/2005#event"/>
@@ -34,6 +38,8 @@
 
 + (GDataCategory *)categoryWithScheme:(NSString *)scheme
                                  term:(NSString *)term;
+
++ (GDataCategory *)categoryWithLabel:(NSString *)label;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
@@ -55,4 +61,7 @@
 // utilities for extracting a subset of categories
 - (NSArray *)categoriesWithScheme:(NSString *)scheme;
 - (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix;
+
+- (NSArray *)categoryLabels;
+- (BOOL)containsCategoryWithLabel:(NSString *)label;
 @end
