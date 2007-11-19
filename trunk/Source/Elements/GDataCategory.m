@@ -36,6 +36,17 @@
   return obj;
 }
 
++ (GDataCategory *)categoryWithLabel:(NSString *)label {
+  
+  NSString *term = [NSString stringWithFormat:@"%@#%@",
+    kGDataCategoryLabelScheme, label];
+  
+  GDataCategory *obj = [self categoryWithScheme:kGDataCategoryLabelScheme
+                                           term:term];
+  [obj setLabel:label];
+  return obj;
+}
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
   self = [super initWithXMLElement:element
@@ -69,11 +80,16 @@
 - (BOOL)isEqual:(GDataCategory *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataCategory class]]) return NO;
-
+  
+  // per Category.java: this should exclude label and labelLang,
+  // but the GMail provider is generating categories which
+  // have identical terms but unique labels, so we need to compare
+  // label values as well
+  
   return [super isEqual:other]
     && AreEqualOrBothNil([self scheme], [other scheme])
-    && AreEqualOrBothNil([self term], [other term]);
-  // excluding label and labelLang
+    && AreEqualOrBothNil([self term], [other term])
+    && AreEqualOrBothNil([self label], [other label]);
 }
 
 - (NSString *)description {
@@ -149,8 +165,9 @@
   GDataCategory *category;
   
   while ((category = [enumerator nextObject]) != nil) {
-    NSString *scheme = [category scheme];
-    if (scheme != nil && [scheme isEqual:scheme]) {
+    NSString *currScheme = [category scheme];
+    if (currScheme != nil && [currScheme isEqual:scheme]) {
+      
       [matches addObject:category];
     }
   }
@@ -172,4 +189,25 @@
   return matches;
 }
 
+- (NSArray *)categoryLabels {
+  
+  NSMutableArray *labels = [NSMutableArray array];
+  NSEnumerator *enumerator = [self objectEnumerator];
+  GDataCategory *category;
+  
+  while ((category = [enumerator nextObject]) != nil) {
+    NSString *label = [category label];
+    if (label != nil && ![labels containsObject:label]) {
+      [labels addObject:label];
+    }
+  }
+  return labels;
+}
+
+- (BOOL)containsCategoryWithLabel:(NSString *)label {
+  GDataCategory *category = [GDataCategory categoryWithLabel:label];
+  
+  BOOL hasLabel = [self containsObject:category];
+  return hasLabel;
+}
 @end

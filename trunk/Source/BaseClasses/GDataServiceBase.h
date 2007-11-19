@@ -144,6 +144,10 @@ enum {
 - (NSString *)userAgent;
 - (void)setUserAgent:(NSString *)userAgent;
 
+// The request user agent includes the library and OS version appended to the
+// base userAgent
+- (NSString *)requestUserAgent;
+
 // in request, pass nil (for default GET method), POST, PUT, DELETE (though
 // PUT and DELETE may be blocked by firewalls.)
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod;

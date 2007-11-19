@@ -120,7 +120,7 @@ static NSMutableString* gLoggingProcessName = nil;
                                          range:NSMakeRange(0, [gLoggingProcessName length])];
       CFRelease(procName);
     } else {
-      gLoggingProcessName = [[NSString alloc] initWithString:@"proc"]; 
+      gLoggingProcessName = @"proc";
     }
   }
   return gLoggingProcessName;
@@ -489,12 +489,15 @@ static NSMutableString* gLoggingProcessName = nil;
   
   // write the response status, MIME type, URL
   if (response) {
-    int status = [(NSHTTPURLResponse *)response statusCode];
-    NSString *statusString = @"200";
-    if (status != 200) {
-      // purple for errors
-      statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%d"
-        "</FONT>", status];
+    NSString *statusString = @"";
+    if ([response respondsToSelector:@selector(statusCode)]) {
+      int status = [(NSHTTPURLResponse *)response statusCode];
+      statusString = @"200";
+      if (status != 200) {
+        // purple for errors
+        statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%d</FONT>",
+          status];
+      }
     }
     
     // show the response URL only if it's different from the request URL

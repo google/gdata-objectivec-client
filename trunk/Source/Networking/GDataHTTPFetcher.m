@@ -1007,9 +1007,19 @@ CannotBeginFetch:
   // we'll prepend "." to the desired domain, since we want the
   // actual domain "nytimes.com" to still match the cookie domain ".nytimes.com"
   // when we check it below with hasSuffix
-  NSString *domain = [@"." stringByAppendingString:[theURL host]];
+  NSString *host = [theURL host];
   NSString *path = [theURL path];
   NSString *scheme = [theURL scheme];
+  
+  NSString *domain = nil;
+  if ([host isEqual:@"localhost"]) {
+    // the domain stored into NSHTTPCookies for localhost is "localhost.local"
+    domain = @"localhost.local"; 
+  } else {
+    if (host) {
+      domain = [@"." stringByAppendingString:host]; 
+    }
+  }
   
   int numberOfCookies = [cookieStorageArray count];
   for (int idx = 0; idx < numberOfCookies; idx++) {

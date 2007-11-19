@@ -2,6 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" 
     xmlns:gCal="http://schemas.google.com/gCal/2005"
     xmlns:gd="http://schemas.google.com/g/2005" 
+    xmlns:app="http://purl.org/atom/app#"
     xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     
 	<id>http://www.google.com/calendar/feeds/test%40coldnose.net</id>
@@ -21,6 +22,7 @@
 		<id>http://www.google.com/calendar/feeds/test%40coldnose.net/test%40coldnose.net</id>
 		<published>2006-11-14T00:03:38Z</published>
 		<updated>2006-11-09T00:16:10.000Z</updated>
+		<app:edited>2006-11-09T00:16:15.000Z</app:edited>
 		<title type="text">Fred Flintstone</title>
 		<link href="http://www.google.com/calendar/feeds/test%40coldnose.net/private/full" rel="alternate" type="application/atom+xml"/>
 		<link href="http://www.google.com/calendar/feeds/test%40coldnose.net/test%40coldnose.net" rel="self" type="application/atom+xml"/>

@@ -24,7 +24,11 @@
   NSDateComponents *dateComponents_;
   int offsetSeconds_; // may be NSUndefinedDateComponent
   BOOL isUniversalTime_; // preserves "Z"
+  NSTimeZone *timeZone_; // specific time zone by name, if known
 }
+
+// Note: Nil can be passed for time zone arguments when the time zone is not
+//       known. 
 
 + (GDataDateTime *)dateTimeWithRFC3339String:(NSString *)str;
 + (GDataDateTime *)dateTimeWithDate:(NSDate *)date timeZone:(NSTimeZone *)tz;
@@ -37,7 +41,9 @@
 
 - (NSDate *)date;
 - (NSCalendar *)calendar;
+
 - (NSTimeZone *)timeZone;
+- (void)setTimeZone:(NSTimeZone *)timeZone;
 
 - (NSString *)RFC3339String;
 - (NSString *)stringValue; // same as RFC3339String

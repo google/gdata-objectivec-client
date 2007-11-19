@@ -966,7 +966,7 @@
   NSXMLElement *elem = [tc XMLElement];
   NSString *elemStr = [elem XMLString];
   
-  STAssertEqualObjects(elemStr, @"<GDataTextConstruct type=\"text\">bunnyrabbit"
+  STAssertEqualObjects(elemStr, @"<GDataTextConstruct>bunnyrabbit"
                        "</GDataTextConstruct>", @"failed to remove null");
 }
 

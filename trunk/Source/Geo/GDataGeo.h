@@ -83,7 +83,9 @@ _EXTERN NSString* kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
                              forParentClass:(Class)parentClass;
 
 // call these from setters/getters
-
+//
+// setGeoLocation requires a subclass of GDataGeo, not an instance
+// of GDataGeo itself
 + (GDataGeo *)geoLocationForObject:(GDataObject *)object;
 + (void)setGeoLocation:(GDataGeo *)obj forObject:(GDataObject *)object;
 @end

@@ -174,8 +174,10 @@ static int gFetchCounter = 0;
   NSURL *authFeedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.auth"];
   
   //
-  // test:  download feed only, no auth
+  // test:  download feed only, no auth, caching on
   //
+  [service_ setShouldCacheDatedData:YES];
+  
   ticket_ = (GDataServiceTicket *)
     [service_ fetchFeedWithURL:feedURL
                      feedClass:kGDataUseRegisteredClass
@@ -190,13 +192,95 @@ static int gFetchCounter = 0;
   NSString *sheetID = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full";
   
   STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
-                       sheetID, @"fetching %@", feedURL);
+                     sheetID, @"fetching %@ error %@", feedURL, fetcherError_);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+
+  // no cookies should be sent with our first request
+  NSURLRequest *request = [[ticket_ objectFetcher] request];
+  
+  NSString *cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
+  STAssertNil(cookiesSent, @"Cookies sent unexpectedly: %@", cookiesSent);
+  
+  // cookies should have been set with the response; specifically, TestCookie
+  // should be set to the name of the file requested
+  NSURLResponse *response = [[ticket_ objectFetcher] response];
+
+  NSDictionary *responseHeaderFields = [(NSHTTPURLResponse *)response allHeaderFields];
+  NSString *cookiesSetString = [responseHeaderFields objectForKey:@"Set-Cookie"];
+  NSString *cookieExpected = [NSString stringWithFormat:@"TestCookie=%@",
+    [[feedURL path] lastPathComponent]];
+  
+  STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
+  
+  // save a copy of the retrieved object to compare with our cache responses
+  // later
+  GDataObject *objectCopy = [[fetchedObject_ copy] autorelease];
   
   
   //
-  // test:  download feed only, no auth, surrogate feed class
+  // test: download feed only, unmodified so fetching a cached copy
+  //
+  
+  [self resetFetchResponse];
+  
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:feedURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  // the TestCookie set previously should be sent with this request
+  request = [[ticket_ objectFetcher] request];
+  cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
+  STAssertEqualObjects(cookiesSent, cookieExpected,
+                       @"Cookie not sent");
+  
+  // verify the object is unchanged from the uncached fetch
+  STAssertEqualObjects(fetchedObject_, objectCopy,
+                       @"fetching from cache for %@", feedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  
+  // verify the underlying fetcher got a 304 (not modified) status
+  STAssertEquals([[ticket_ objectFetcher] statusCode],
+                 kGDataHTTPFetcherStatusNotModified,
+                 @"fetching cached copy of %@", feedURL);
+
+  
+  //
+  // test: download feed only, caching turned off so we get an
+  //       actual response again
+  //
+  
+  [self resetFetchResponse];
+  
+  [service_ setShouldCacheDatedData:NO];
+  
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:feedURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  // verify the object is unchanged from the original fetch
+  STAssertEqualObjects(fetchedObject_, objectCopy,
+                       @"fetching from cache for %@", feedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  
+  // verify the underlying fetcher got a 200 (good) status
+  STAssertEquals([[ticket_ objectFetcher] statusCode], 200,
+                 @"fetching uncached copy of %@", feedURL);
+  
+  //
+  // test: download feed only, no auth, allocating a surrogate feed class
   //
   [self resetFetchResponse];
 

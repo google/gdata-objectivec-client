@@ -80,40 +80,62 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [super dealloc];
 }
 
+- (NSString *)requestUserAgent {
+  
+  NSString *userAgent = [self userAgent];
+  if ([userAgent length] == 0) {
+    userAgent = [self defaultApplicationIdentifier];
+  }
+  
+  NSString *requestUserAgent = userAgent;
+
+  // if the user agent already specifies the library version, we'll
+  // use it verbatim in the request
+  NSString *libraryString = @"GData-ObjectiveC";
+  NSRange libRange = [userAgent rangeOfString:libraryString
+                                      options:NSCaseInsensitiveSearch];
+  if (libRange.location == NSNotFound) {
+    // the user agent doesn't specify the client library, so append that
+    // information, and the system version
+    long major, minor, release;
+    NSString *libVersionString;
+    GDataFrameworkVersion(&major, &minor, &release);
+    
+    // most library releases will have a release value of zero
+    if (release != 0) {
+      libVersionString = [NSString stringWithFormat:@"%d.%d.%d", 
+        major, minor, release];
+    } else {
+      libVersionString = [NSString stringWithFormat:@"%d.%d", major, minor];
+    }
+    
+    long systemMajor = 0, systemMinor = 0, systemRelease = 0;
+    
+    (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
+    (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
+    (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
+    
+    NSString *systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
+      systemMajor, systemMinor, systemRelease];
+    
+    // Google servers look for gzip in the user agent before sending gzip-
+    // encoded responses.  See Service.java
+    requestUserAgent = [NSString stringWithFormat:@"%@ %@/%@ %@ (gzip)", 
+      userAgent, libraryString, libVersionString, systemString];
+  }
+  return requestUserAgent;
+}
+
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
   
   // subclasses may add headers to this
   NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url
                                                                cachePolicy:NSURLRequestReloadIgnoringCacheData 
                                                            timeoutInterval:60] autorelease];
-  NSString *userAgent = [self userAgent];
-  if ([userAgent length] == 0) {
-    userAgent = [self defaultApplicationIdentifier];
-  }
   
-  // if the user agent doesn't specify the client library, append that
-  // information
-  NSString *libraryString = @"GData-ObjectiveC";
-  NSRange libRange = [userAgent rangeOfString:libraryString
-                                      options:NSCaseInsensitiveSearch];
-  if (libRange.location == NSNotFound) {
-    
-    long major, minor, release;
-    NSString *versionString;
-    GDataFrameworkVersion(&major, &minor, &release);
-
-    // most library releases will have a release value of zero
-    if (release != 0) {
-      versionString = [NSString stringWithFormat:@"%d.%d.%d", 
-        major, minor, release];
-    } else {
-      versionString = [NSString stringWithFormat:@"%d.%d", major, minor];
-    }
-    userAgent = [userAgent stringByAppendingFormat:@" %@/%@", 
-      libraryString, versionString];
-  }
-
-  [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+  NSString *requestUserAgent = [self requestUserAgent];
+  
+  [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
   [request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
   [request setValue:@"application/atom+xml;charset=utf-8" forHTTPHeaderField:@"content-type"]; // header is authoritative for character set issues.
   [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
@@ -532,9 +554,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *password = [self password];
   
   if ([username length] && [password length]) {
-    [fetcher setCredential:[NSURLCredential credentialWithUser:username
-                                                      password:password
-                                                   persistence:NSURLCredentialPersistenceForSession]];
+    // We're avoiding +[NSURCredential credentialWithUser:password:persistence:]
+    // because it fails to autorelease itself on OS X 10.4 .. 10.5
+    // rdar://5596278 
+    [fetcher setCredential:
+      [[[NSURLCredential alloc] initWithUser:username
+                                    password:password
+                                 persistence:NSURLCredentialPersistenceForSession] autorelease]];
   }
 }
 

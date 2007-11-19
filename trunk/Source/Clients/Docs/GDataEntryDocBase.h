@@ -37,4 +37,8 @@ _EXTERN NSString* kGDataNamespaceDocuments       _INITIALIZE_AS(@"http://schemas
 + (NSDictionary *)baseDocumentNamespaces;
 
 + (id)documentEntry;
+
+- (BOOL)isStarred;
+- (void)setIsStarred:(BOOL)isStarred;
+  
 @end

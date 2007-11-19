@@ -381,7 +381,7 @@
 }
 
 // utility for the setter for GDataGeo
-+ (void)setGeoLocation:(GDataGeo *)obj forObject:(GDataObject *)object {
++ (void)setGeoLocation:(GDataGeo *)geo forObject:(GDataObject *)object {
   
   // remove the previous geo, whatever class it was
   GDataGeo *oldGeo = [GDataGeo geoLocationForObject:object];
@@ -389,7 +389,12 @@
     [object removeObject:oldGeo forExtensionClass:[oldGeo class]];
   }
   
-  [object setObject:obj forExtensionClass:[obj class]];
+  // GDataGeo itself lacks support for the GDataExtension protocol;
+  // only instances of its subclasses can be used as extensions
+  NSAssert(![geo isMemberOfClass:[GDataGeo class]], 
+             @"setGeoLocation requires an instance of a subclass of GDataGeo");
+  
+  [object setObject:geo forExtensionClass:[geo class]];
 }
 
 @end

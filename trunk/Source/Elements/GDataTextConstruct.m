@@ -31,7 +31,9 @@
 - (id)init {
   self = [super init];
   if (self) {
-    [self setType:@"text"];
+    // RFC4287 Sec 3.1 says that omitted type attributes are assumed to be
+    // "text", so we don't need to explicitly set it
+    // [self setType:@"text"];
   }
   return self;
 }
@@ -73,7 +75,11 @@
   return [super isEqual:other]
     && AreEqualOrBothNil([self stringValue], [other stringValue])
     && AreEqualOrBothNil([self lang], [other lang])
-    && AreEqualOrBothNil([self type], [other type]);
+    
+    // missing type attribute is equal to "text" per RFC 4287 3.1.1
+    && (AreEqualOrBothNil([self type], [other type])
+        || ([self type] == nil && [[other type] isEqual:@"text"])
+        || ([other type] == nil && [[self type] isEqual:@"text"]));
 }
 
 - (NSString *)description {

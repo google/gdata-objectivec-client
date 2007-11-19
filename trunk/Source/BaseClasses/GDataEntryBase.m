@@ -27,7 +27,9 @@
 + (NSDictionary *)baseGDataNamespaces {
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
-    kGDataNamespaceGData, kGDataNamespaceGDataPrefix, nil];
+    kGDataNamespaceAtomPub, kGDataNamespaceAtomPubPrefix,
+    kGDataNamespaceGData, kGDataNamespaceGDataPrefix, 
+    nil];
   return namespaces;
 }
 
@@ -87,6 +89,12 @@
     dateTime = [self dateTimeFromElement:updElement];
     [self setUpdatedDate:dateTime];
     
+    NSXMLElement *editedElement = [self childWithQualifiedName:@"app:edited"
+                                                  namespaceURI:kGDataNamespaceAtomPub
+                                                   fromElement:element];
+    dateTime = [self dateTimeFromElement:editedElement];
+    [self setEditedDate:dateTime];
+    
     [self setTitle:[self objectForChildOfElement:element
                                    qualifiedName:@"title"
                                     namespaceURI:kGDataNamespaceAtom
@@ -130,6 +138,7 @@
   [versionIDString_ release];
   [publishedDate_ release];
   [updatedDate_ release];
+  [editedDate_ release];
   [title_ release];
   [summary_ release];
   [content_ release];
@@ -152,6 +161,7 @@
     && AreEqualOrBothNil([self versionIDString], [other versionIDString])
     && AreEqualOrBothNil([self publishedDate], [other publishedDate])
     && AreEqualOrBothNil([self updatedDate], [other updatedDate])
+    && AreEqualOrBothNil([self editedDate], [other editedDate])
     && AreEqualOrBothNil([self title], [other title])
     && AreEqualOrBothNil([self summary], [other summary])
     && AreEqualOrBothNil([self content], [other content])
@@ -171,6 +181,7 @@
   [newEntry setVersionIDString:[self versionIDString]];
   [newEntry setPublishedDate:[self publishedDate]];
   [newEntry setUpdatedDate:[self updatedDate]];
+  [newEntry setEditedDate:[self editedDate]];
   [newEntry setTitle:[self title]];
   [newEntry setSummary:[self summary]];
   [newEntry setContent:[self content]];
@@ -202,8 +213,10 @@
     [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
   }
 
+  [self addToArray:items objectDescriptionIfNonNil:[editedDate_ RFC3339String] withName:@"edited"];
+
   [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:uploadMIMEType_ withName:@"MIMEType"];
   [self addToArray:items objectDescriptionIfNonNil:uploadSlug_ withName:@"slug"];
   if (uploadData_) {
@@ -252,6 +265,13 @@
   if ([self updatedDate]) {
     [element addChild:[NSXMLNode elementWithName:@"updated"
                                      stringValue:[[self updatedDate] RFC3339String]]];
+  }
+  if ([self editedDate]) {
+    NSXMLElement *editedElement = [NSXMLNode elementWithName:@"edited" 
+                                                         URI:kGDataNamespaceAtomPub];
+    [editedElement addStringValue:[[self editedDate] RFC3339String]];
+
+    [element addChild:editedElement];
   }
   [self addToElement:element XMLElementsForArray:[self links]];
   [self addToElement:element XMLElementsForArray:[self authors]];
@@ -354,9 +374,19 @@
 - (GDataDateTime *)updatedDate {
   return updatedDate_; 
 }
+
 - (void)setUpdatedDate:(GDataDateTime *)theUpdatedDate {
   [updatedDate_ autorelease];
   updatedDate_ = [theUpdatedDate copy];
+}
+
+- (GDataDateTime *)editedDate {
+  return editedDate_; 
+}
+
+- (void)setEditedDate:(GDataDateTime *)theEditedDate {
+  [editedDate_ autorelease];
+  editedDate_ = [theEditedDate copy];
 }
 
 - (GDataTextConstruct *)title {
@@ -472,6 +502,10 @@
   if (![categories_ containsObject:obj]) {
     [categories_ addObject:obj];
   }
+}
+
+- (void)removeCategory:(GDataCategory *)category {
+  [categories_ removeObject:category];
 }
 
 // Multipart MIME Uploading

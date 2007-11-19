@@ -41,4 +41,15 @@
   return entry;
 }
 
+#pragma mark -
+
+- (BOOL)isStarred {
+  BOOL isStarred = [[self categories] containsCategoryWithLabel:kGDataCategoryLabelStarred];
+  return isStarred;
+}
+
+- (void)setIsStarred:(BOOL)isStarred {
+  [self addCategory:[GDataCategory categoryWithLabel:kGDataCategoryLabelStarred]];  
+}
+
 @end
