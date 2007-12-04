@@ -314,10 +314,39 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     NSString *title = [[albumEntry title] stringValue];
     NSMenuItem *item = [menu addItemWithTitle:title
-                                       action:nil
+                                       action:@selector(changeAlbumSelected:)
                                 keyEquivalent:@""];
+    [item setTarget:self];
     [item setRepresentedObject:albumEntry];
   }
+}
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem {
+  // this enables menu items in the "change the selected photo's album" menu
+  //
+  // if the selected photo is editable and not in the album represented by
+  // this menu item, then enable the menu item
+  GDataEntryPhotoAlbum *menuItemAlbum = [menuItem representedObject];
+
+  if ([menuItemAlbum isKindOfClass:[GDataEntryPhotoAlbum class]]) {
+    
+    GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
+    
+    BOOL isSelectedPhotoEntryEditable = 
+      ([[selectedPhoto links] editLink] != nil);
+    
+    if (isSelectedPhotoEntryEditable) {
+          
+      if (menuItemAlbum != nil
+          && ![[selectedPhoto albumID] isEqual:[menuItemAlbum GPhotoID]]) {
+        return YES;
+      }
+    }
+    return NO;
+  }
+  
+  // unknown item being validated
+  return YES;
 }
 
 #pragma mark IBActions
@@ -357,13 +386,6 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
 - (IBAction)deleteClicked:(id)sender {
   [self deleteSelectedPhoto];
-}
-
-- (IBAction)changeAlbumClicked:(id)sender {
-  GDataEntryPhotoAlbum *albumEntry = [[sender selectedItem] representedObject];
-  if (albumEntry) {
-    [self moveSelectedPhotoToAlbum:albumEntry];
-  }
 }
 
 - (IBAction)addCommentClicked:(id)sender {
@@ -733,37 +755,34 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
 static NSString* const kDestAlbumKey = @"DestAlbum";
 
+- (void)changeAlbumSelected:(id)sender {
+  // move the selected photo to the album represented by the sender menu item
+  NSMenuItem *menuItem = sender;
+  GDataEntryPhotoAlbum *albumEntry = [menuItem representedObject];
+  if (albumEntry) {
+    [self moveSelectedPhotoToAlbum:albumEntry];
+  }
+}
+
 - (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry {
   
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
     
-    NSString *sourceAlbumID = [[self selectedAlbum] GPhotoID];
     NSString *destAlbumID = [albumEntry GPhotoID];
-    if ([sourceAlbumID isEqual:destAlbumID]) {
-      
-      // photo is already in that album 
-      NSBeginAlertSheet(@"Cannot Move Photo", nil, nil, nil,
-                        [self window], nil, nil,
-                        nil, nil,
-                        @"Photo \"%@\" is already in the album \"%@\".",
-                        [[photo title] stringValue],
-                        [[albumEntry title] stringValue]);
-      
-    } else {
-      // let the photo entry retain its target album ID as a property
-      // (since the contextInfo isn't retained)
-      [photo setProperty:destAlbumID forKey:kDestAlbumKey];
-      
-      // make the user confirm that the selected photo should be moved
-      NSBeginAlertSheet(@"Move Photo", @"Move", @"Cancel", nil,
-                        [self window], self, 
-                        @selector(moveSheetDidEnd:returnCode:contextInfo:),
-                        nil, nil,
-                        @"Move the photo \"%@\" to the album \"%@\"?",
-                        [[photo title] stringValue],
-                        [[albumEntry title] stringValue]);      
-    }
+    
+    // let the photo entry retain its target album ID as a property
+    // (since the contextInfo isn't retained)
+    [photo setProperty:destAlbumID forKey:kDestAlbumKey];
+    
+    // make the user confirm that the selected photo should be moved
+    NSBeginAlertSheet(@"Move Photo", @"Move", @"Cancel", nil,
+                      [self window], self, 
+                      @selector(moveSheetDidEnd:returnCode:contextInfo:),
+                      nil, nil,
+                      @"Move the photo \"%@\" to the album \"%@\"?",
+                      [[photo title] stringValue],
+                      [[albumEntry title] stringValue]);      
   }
 }
 
