@@ -21,6 +21,9 @@ Additions
 - Added spreadsheet worksheet methods for setting row and column limits,
   and default values for those in new spreadsheets.
   
+- GDataService classes can now optionally follow "next" links when retrieving
+  feeds.
+  
 - GDataHTTPFetcher and services now optionally automatically retry fetches of
   some errors.
   
@@ -31,6 +34,8 @@ Additions
   GDataCategory's isEqual: now compares label data as well.
   
 - Docs sample app can now delete a document.
+
+- Picasa Web sample app now shows how to move a photo to another album.
 
 - Added MacOSX version to service request user agent, along with a gzip string
   expected in the user agent by Google servers.
@@ -65,6 +70,8 @@ Bugs Fixed
 - Service unit tests now cover http cookies and caching.
 
 - HTTP cookies now work with server at localhost.
+
+- Now defining -hash on GDataObject for better Leopard compatibility.
 
 
 Release 1.2.0

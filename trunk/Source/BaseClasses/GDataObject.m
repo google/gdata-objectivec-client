@@ -121,6 +121,15 @@
   //   userData
 }
 
+// By definition, for two objects to potentially be considered equal, 
+// they must have the same hash value.  The hash is mostly ignored, 
+// but removeObjectsInArray: in Leopard does seem to check the hash, 
+// and NSObject's default hash method just returns the instance pointer.  
+// We'll define hash here for all of our GDataObjects.
+- (unsigned)hash {
+  return (unsigned) [GDataObject class];
+}
+
 - (id)copyWithZone:(NSZone *)zone {
   GDataObject* newObject = [[[self class] allocWithZone:zone] init];
   [newObject setElementName:elementName_];

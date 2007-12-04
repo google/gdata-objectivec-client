@@ -54,12 +54,14 @@ enum {
   GDataHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
+  BOOL shouldFollowNextLinks_;
   BOOL isRetryEnabled_;
   SEL retrySEL_;
   NSTimeInterval maxRetryInterval_;
   
   GDataObject *postedObject_;
   GDataObject *fetchedObject_;
+  GDataFeedBase *accumulatedFeed_;
   NSError *fetchError_;
   BOOL hasCalledCallback_;
 }
@@ -90,6 +92,9 @@ enum {
 - (void)setUploadProgressSelector:(SEL)progressSelector;
 - (SEL)uploadProgressSelector;
 
+- (BOOL)shouldFollowNextLinks;
+- (void)setShouldFollowNextLinks:(BOOL)flag;
+
 - (BOOL)isRetryEnabled;
 - (void)setIsRetryEnabled:(BOOL)flag;
 
@@ -110,6 +115,13 @@ enum {
 
 - (void)setFetchError:(NSError *)error;
 - (NSError *)fetchError;
+
+- (void)setAccumulatedFeed:(GDataFeedBase *)feed;
+- (GDataFeedBase *)accumulatedFeed;
+
+// accumulateFeed is used by the service to append an incomplete feed
+// to the ticket when shouldFollowNextLinks is enabled
+- (void)accumulateFeed:(GDataFeedBase *)newFeed;
 
 - (int)statusCode;  // server status from object fetch
 @end
@@ -136,6 +148,7 @@ enum {
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
 
   BOOL shouldCacheDatedData_;
+  BOOL serviceShouldFollowNextLinks_;
 }
 
 // Applications should call setUserAgent: with a string of the form
@@ -206,6 +219,20 @@ enum {
 // Otherwise, fetches may return status 304 (No Change) rather than actual data
 - (void)setShouldCacheDatedData:(BOOL)flag;
 - (BOOL)shouldCacheDatedData;  
+
+// For feed requests, where the feed requires following "next" links to retrieve
+// all entries, the service can optionally do the additional fetches using the
+// original ticket, calling the client's finish selector only when a complete 
+// feed has been obtained.  During the fetch, the feed accumulated so far is
+// available from the ticket.  
+//
+// Note that the final feed may be a combination of multiple partial feeds, 
+// so is not exactly a genuine feed. In particular, it will not have a valid
+// "self" link, as it does not represent an object with a distinct URL.
+//
+// Default value is NO.
+- (BOOL)serviceShouldFollowNextLinks;
+- (void)setServiceShouldFollowNextLinks:(BOOL)flag;
 
 // The service userData becomes the initial value for each future ticket's
 // userData.

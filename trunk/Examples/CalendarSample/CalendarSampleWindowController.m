@@ -17,11 +17,6 @@
 //  CalendarSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "CalendarSampleWindowController.h"
 
 #import "EditEventWindowController.h"
@@ -123,6 +118,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mCalendarResultTextField setFont:resultTextFont];
   [mEventResultTextField setFont:resultTextFont];
+  
+  [mCalendarTable setDoubleAction:@selector(logEntryXML:)];
+  [mEventTable setDoubleAction:@selector(logEntryXML:)];
 
   [self updateUI];
 }
@@ -398,6 +396,34 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
 }
 
+// logEntryXML is called when the user double-clicks on a calendar,
+// event entry, or ACL entry
+- (IBAction)logEntryXML:(id)sender {
+  
+  int row = [sender selectedRow];
+  
+  if (sender == mCalendarTable) {
+    // get the calendar entry's title
+    GDataEntryCalendar *calendar = [[mCalendarFeed entries] objectAtIndex:row];
+    NSLog(@"%@", [calendar XMLElement]);
+    
+  } else if (sender == mEventTable) {
+    
+    if ([self isEventsSegmentSelected]) {
+      // get the event entry's title
+      GDataEntryCalendarEvent *eventEntry = [[mEventFeed entries] objectAtIndex:row];
+      NSLog(@"%@", [eventEntry XMLElement]);
+      
+    } else {
+      // get the ACL entry 
+      if (mACLFeed) {
+        GDataEntryACL *aclEntry = [[mACLFeed entries] objectAtIndex:row];
+        NSLog(@"%@", [aclEntry XMLElement]);
+      } 
+    }
+  }
+}
+
 #pragma mark -
 
 // get a calendar service object with the current username/password
@@ -416,6 +442,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     
     [service setUserAgent:@"Google-SampleCalendarApp-1.0"];
     [service setShouldCacheDatedData:YES];
+    [service setServiceShouldFollowNextLinks:YES];
   }
 
   // update the username/password each time the service is requested

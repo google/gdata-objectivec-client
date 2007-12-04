@@ -20,7 +20,7 @@
 #import "GData.h"
 #import "GDataQueryTest.h"
 
-#define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid_issue_with_ocunit.html
+#define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
 @implementation GDataQueryTest
 

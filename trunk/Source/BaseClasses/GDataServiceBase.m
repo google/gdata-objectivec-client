@@ -58,6 +58,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                                    ticket:(GDataServiceTicketBase *)ticket
                                                streamData:(NSData *)data;
 
+- (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
+                    delegate:(id)delegate
+         didFinishedSelector:(SEL)finishedSelector
+             didFailSelector:(SEL)failedSelector
+                      ticket:(GDataServiceTicketBase *)ticket;
 @end
 
 @implementation GDataServiceBase
@@ -370,13 +375,59 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
   
   // if we created the object (or we got empty data back, as from a GData
-  // delete resource request) then we succeeded
+  // delete resource request) then we succeeded  
   if (object != nil || dataLength == 0) {
+    
+    // if the user is fetching a feed and the ticket specifies that "next" links
+    // should be followed, then do that now
+    if ([ticket shouldFollowNextLinks] 
+        && [object isKindOfClass:[GDataFeedBase class]]) {
+      
+      GDataFeedBase *latestFeed = (GDataFeedBase *)object;
+      
+      // append the latest feed
+      [ticket accumulateFeed:latestFeed];
+      
+      NSURL *nextURL = [[[latestFeed links] nextLink] URL];
+      if (nextURL) {
+        
+        BOOL isFetchingNextFeed = [self fetchNextFeedWithURL:nextURL
+                                                    delegate:delegate
+                                         didFinishedSelector:finishedSelector 
+                                             didFailSelector:failedSelector
+                                                      ticket:ticket];
+        
+        // skip calling the callbacks since the ticket is still in progress
+        if (isFetchingNextFeed) {
+          
+          return;
+          
+        } else {
+          // the fetch didn't start; fall through to the callback for the
+          // feed accumulated so far
+        }
+      } 
+      
+      // no more "next" links are present, so we don't need to accumulate more
+      // entries
+      GDataFeedBase *accumulatedFeed = [ticket accumulatedFeed];
+      if (accumulatedFeed) {
+        
+        // remove the misleading "next" link from the accumulated feed
+        GDataLink *accumulatedFeedNextLink = [[accumulatedFeed links] nextLink];
+        if (accumulatedFeedNextLink) {
+          [accumulatedFeed removeLink:accumulatedFeedNextLink];
+        }
+        
+        // return the completed feed as the object that was fetched
+        object = accumulatedFeed;
+      }
+    }
+    
     if (finishedSelector) {
       [delegate performSelector:finishedSelector
                      withObject:ticket
                      withObject:object];
-
     }
     [ticket setFetchedObject:object];
     
@@ -393,7 +444,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
     [ticket setFetchError:error];
   }  
-
+  
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
 }
@@ -555,14 +606,44 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   if ([username length] && [password length]) {
     // We're avoiding +[NSURCredential credentialWithUser:password:persistence:]
-    // because it fails to autorelease itself on OS X 10.4 .. 10.5
+    // because it fails to autorelease itself on OS X 10.4 .. 10.5.x
     // rdar://5596278 
-    [fetcher setCredential:
-      [[[NSURLCredential alloc] initWithUser:username
-                                    password:password
-                                 persistence:NSURLCredentialPersistenceForSession] autorelease]];
+    
+    NSURLCredential *cred;
+    cred = [[[NSURLCredential alloc] initWithUser:username
+                                         password:password
+                                      persistence:NSURLCredentialPersistenceForSession] autorelease];
+    [fetcher setCredential:cred];
   }
 }
+
+// when a ticket is set to follow "next" links for feeds, this routine
+// initiates the fetch for each additional feed
+- (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL 
+                    delegate:(id)delegate
+         didFinishedSelector:(SEL)finishedSelector
+             didFailSelector:(SEL)failedSelector
+                      ticket:(GDataServiceTicketBase *)ticket {
+  
+  // by definition, feed requests are GETs, so objectToPost: and httpMethod:
+  // should be nil
+  GDataServiceTicketBase *startedTicket;
+  startedTicket = [self fetchObjectWithURL:nextFeedURL
+                               objectClass:[[ticket accumulatedFeed] class]
+                              objectToPost:nil
+                                httpMethod:nil
+                                  delegate:delegate
+                         didFinishSelector:finishedSelector
+                           didFailSelector:failedSelector
+                           retryInvocation:nil
+                                    ticket:ticket];
+  
+  // in the bizarre case that the fetch didn't begin, startedTicket will be
+  // nil.  So long as the started ticket is the same as the ticket we're
+  // continuing, then we're happy.
+  return (ticket == startedTicket);
+}
+  
 
 - (BOOL)waitForTicket:(GDataServiceTicketBase *)ticket
               timeout:(NSTimeInterval)timeoutInSeconds
@@ -782,6 +863,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey]; 
 }
 
+- (BOOL)serviceShouldFollowNextLinks {
+  return serviceShouldFollowNextLinks_;
+}
+
+- (void)setServiceShouldFollowNextLinks:(BOOL)flag {
+  serviceShouldFollowNextLinks_ = flag; 
+}
+
+
 // The service userData becomes the initial value for each future ticket's
 // userData.
 //
@@ -939,7 +1029,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [self setUploadProgressSelector:[service serviceUploadProgressSelector]];  
     [self setIsRetryEnabled:[service isServiceRetryEnabled]];
     [self setRetrySelector:[service serviceRetrySelector]];
-    [self setMaxRetryInterval:[service serviceMaxRetryInterval]];    
+    [self setMaxRetryInterval:[service serviceMaxRetryInterval]];   
+    [self setShouldFollowNextLinks:[service serviceShouldFollowNextLinks]];
   }
   return self;
 }
@@ -952,6 +1043,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [objectFetcher_ release];
   [postedObject_ release];
   [fetchedObject_ release];
+  [accumulatedFeed_ release];
   [fetchError_ release];  
   
   [super dealloc];
@@ -996,12 +1088,20 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   surrogates_ = [dict retain];
 }
 
+- (SEL)uploadProgressSelector {
+  return uploadProgressSelector_;
+}
+
 - (void)setUploadProgressSelector:(SEL)progressSelector {
   uploadProgressSelector_ = progressSelector; 
 }
 
-- (SEL)uploadProgressSelector {
-  return uploadProgressSelector_;
+- (BOOL)shouldFollowNextLinks {
+  return shouldFollowNextLinks_;  
+}
+
+- (void)setShouldFollowNextLinks:(BOOL)flag {
+  shouldFollowNextLinks_ = flag;
 }
 
 - (BOOL)isRetryEnabled {
@@ -1085,5 +1185,42 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return fetchError_; 
 }
 
+- (void)setAccumulatedFeed:(GDataFeedBase *)feed {
+  [accumulatedFeed_ autorelease];
+  accumulatedFeed_ = [feed retain];
+}
+
+// accumulateFeed is used by the service to append an incomplete feed
+// to the ticket when shouldFollowNextLinks is enabled
+- (GDataFeedBase *)accumulatedFeed {
+  return accumulatedFeed_;
+}
+
+- (void)accumulateFeed:(GDataFeedBase *)newFeed {
+  
+  GDataFeedBase *accumulatedFeed = [self accumulatedFeed];
+  if (accumulatedFeed == nil) {
+    
+    // the new feed becomes the accumulated feed
+    [self setAccumulatedFeed:newFeed];
+    
+  } else {
+    
+    // A feed's addEntry: routine requires that a new entry's parent
+    // not be set to some other feed.  Calling addEntryWithEntry: would make
+    // a new, parentless copy of the entry for us, but that would be a needless
+    // copy. Instead, we'll explicitly clear the entry's parent and call
+    // addEntry:.
+    
+    NSArray *newEntries = [newFeed entries];
+    NSEnumerator *entryEnum = [newEntries objectEnumerator];
+    GDataEntryBase *entry;
+    
+    while ((entry = [entryEnum nextObject]) != nil) {
+      [entry setParent:nil];
+      [accumulatedFeed addEntry:entry];
+    }
+  }
+}
 @end
 

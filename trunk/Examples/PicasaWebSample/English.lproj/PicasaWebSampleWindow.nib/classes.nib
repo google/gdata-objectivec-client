@@ -9,6 +9,7 @@
                 addTagClicked = id; 
                 cancelAlbumFetchClicked = id; 
                 cancelPhotoFetchClicked = id; 
+                changeAlbumClicked = id; 
                 deleteClicked = id; 
                 getAlbumClicked = id; 
                 loggingCheckboxClicked = id; 
@@ -24,6 +25,7 @@
                 mAlbumProgressIndicator = NSProgressIndicator; 
                 mAlbumResultTextField = NSTextView; 
                 mAlbumTable = NSTableView; 
+                mChangeAlbumPopupButton = NSButton; 
                 mCommentField = NSTextField; 
                 mDeletePhotoButton = NSButton; 
                 mPasswordField = NSSecureTextField; 

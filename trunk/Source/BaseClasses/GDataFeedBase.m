@@ -456,6 +456,10 @@
   [links_ addObject:obj];
 }
 
+- (void)removeLink:(GDataLink *)obj {
+  [links_ removeObject:obj];
+}
+
 - (NSArray *)authors {
   return authors_;
 }

@@ -46,14 +46,15 @@
   
   IBOutlet NSButton *mAddPhotoButton;
   IBOutlet NSButton *mDeletePhotoButton;
+  IBOutlet NSPopUpButton *mChangeAlbumPopupButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
   
-  GDataFeedPhotoAlbum *mAlbumFeed;
+  GDataFeedPhotoUser *mUserAlbumFeed; // user feed of album entries
   GDataServiceTicket *mAlbumFetchTicket;
   NSError *mAlbumFetchError;
   NSString *mAlbumImageURLString;
     
-  GDataFeedPhoto *mPhotosFeed;
+  GDataFeedPhotoAlbum *mAlbumPhotosFeed; // album feed of photo entries
   GDataServiceTicket *mPhotosFetchTicket;
   NSError *mPhotosFetchError;
   NSString *mPhotoImageURLString;
@@ -68,6 +69,7 @@
 
 - (IBAction)addClicked:(id)sender;
 - (IBAction)deleteClicked:(id)sender;
+- (IBAction)changeAlbumClicked:(id)sender;
 
 - (IBAction)addTagClicked:(id)sender;
 - (IBAction)addCommentClicked:(id)sender;

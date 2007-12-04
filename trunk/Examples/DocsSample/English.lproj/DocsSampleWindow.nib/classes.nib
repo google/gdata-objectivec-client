@@ -3,6 +3,7 @@
         {
             ACTIONS = {
                 cancelDocListFetchClicked = id; 
+                deleteSelectedDocClicked = id; 
                 downloadSelectedDocClicked = id; 
                 getDocListClicked = id; 
                 loggingCheckboxClicked = id; 
@@ -13,6 +14,7 @@
             CLASS = DocsSampleWindowController; 
             LANGUAGE = ObjC; 
             OUTLETS = {
+                mDeleteSelectedDocButton = NSButton; 
                 mDocListCancelButton = NSButton; 
                 mDocListProgressIndicator = NSProgressIndicator; 
                 mDocListResultTextField = NSTextView; 
