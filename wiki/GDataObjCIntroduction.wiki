@@ -347,6 +347,12 @@ _Tip_: to force a captcha request from the server for testing, provide an invali
 
 Documentation on authentication for Google data APIs is available [http://code.google.com/apis/gdata/auth.html here].
 
+== Automatic retry of failed fetches ==
+
+GData service classes and the GDataHTTPFetcher class provide a mechanism for automatic retry of a few common network and server errors, with appropriate increasing delays between each attempt.  You can turn on the automatic retry support for a GData service by calling `[service setIsServiceRetryEnabled:YES]`.  
+
+The default errors retried are http status 408 (request timeout), 503 (service unavailable), and 504 (gateway timeout), and NSURLErrorTimedOut and NSURLErrorNetworkConnectionLost.  You may specify a maximum retry interval other than the default of 10 minutes, and can provide an optional retry selector to customize the criteria for each retry attempt.
+
 == Proxy Authentication ==
 
 In corporate or institutional settings where a password-protected proxy is in use, a proxy error may show up in the failure callback.  It would have constant error domain and code values, as shown here:
