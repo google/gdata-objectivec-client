@@ -100,9 +100,15 @@ Feeds and entries typically contain *links* to themselves or to other objects. T
     }
 }}}
 
-Typically, the alternate link points to an html or user-friendly representation of the data, though Google Calendar uses it as a link to the event feed for a calendar.
+Typically, the alternate link points to an html or user-friendly representation of the data, though Google Calendar uses it as a link to the event feed for a calendar.  
 
-A particularly important link is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.
+Modifiable feeds may have a *post link*, which contains the URL for inserting new entries into the feed.  Modifiable entries have an *edit link*, which is used to update or delete the entry. Entries that refer to non-XML data, such as photographs, may include an *edit media link* for modifying or deleting the media data.  Both entries and feeds have *self links*, which self-referentially contain the URL of the XML for the entry or feed.
+
+A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.  
+
+To make the library's service object follow "next" links automatically, call `[service setServiceShouldFollowNextLinks:YES]`. The returned ticket then applies to the sequence of http requests needed to obtain the feed entries.  
+
+Note, however, that large feeds may take a long time to be retrieved, as each "next" link will lead to a new http request.  Assigning a large value to the URL's maxResults argument will give results faster than will following "next" links. Additionally, accumulating entries into a feed by following "next" links means that the feed's elements reflect only one of the fetches, even though the entries array contains the entries returned by multiple requests.
 
 Service-specific *query* objects can generate URLs with parameters appropriate for restricting a feed's entries. For example, a query could request a feed of Calendar events between specific dates, or of database items of a specified category.  Here is an example of a query to retrieve the first 5 events from a user's calendar:
 {{{
