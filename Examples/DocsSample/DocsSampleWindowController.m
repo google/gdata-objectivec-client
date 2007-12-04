@@ -17,11 +17,6 @@
 //  DocsSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "DocsSampleWindowController.h"
 #import "GData/GDataServiceGoogleDocs.h"
 #import "GData/GDataQueryDocs.h"
@@ -128,6 +123,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   
   BOOL doesDocHaveHTMLContent = ([[[selectedDoc content] type] isEqual:@"text/html"]);
   [mDownloadSelectedDocButton setEnabled:doesDocHaveHTMLContent];
+  
+  BOOL doesDocHaveEditLink = ([[selectedDoc links] editLink] != nil);
+  [mDeleteSelectedDocButton setEnabled:doesDocHaveEditLink];
   
   // enable uploading buttons 
   BOOL isUploading = (mUploadTicket != nil);
@@ -290,6 +288,64 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
 }
 
+- (IBAction)deleteSelectedDocClicked:(id)sender {
+  
+  GDataEntryDocBase *doc = [self selectedDoc];
+  if (doc) {
+    // make the user confirm that the selected doc should be deleted
+    NSBeginAlertSheet(@"Delete Document", @"Delete", @"Cancel", nil,
+                      [self window], self, 
+                      @selector(deleteDocSheetDidEnd:returnCode:contextInfo:),
+                      nil, nil, @"Delete the document \"%@\"?",
+                      [[doc title] stringValue]);
+  }
+}
+
+// delete dialog callback
+- (void)deleteDocSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSAlertDefaultReturn) {
+    
+    // delete the document entry
+    GDataEntryDocBase *entry = [self selectedDoc];
+    GDataLink *link = [[entry links] editLink];
+    
+    if (link) {
+      GDataServiceGoogleDocs *service = [self docsService];
+      [service deleteAuthenticatedResourceURL:[link URL]
+                                     delegate:self 
+                            didFinishSelector:@selector(deleteDocEntryTicket:deletedEntry:)
+                              didFailSelector:@selector(deleteDocEntryTicket:failedWithError:)];
+    }
+  }
+}
+
+// Doc entry deleted successfully
+- (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
+                deletedEntry:(GDataEntryDocBase *)object {
+  
+  // note: object is nil in the delete callback
+  
+  NSBeginAlertSheet(@"Deleted Doc", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Document deleted");
+  
+  // re-fetch the document list
+  [self fetchDocList];
+  [self updateUI];
+} 
+
+// failure to delete document
+- (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
+             failedWithError:(NSError *)error {
+  
+  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Document delete failed: %@", error);
+}
+
+
+
 #pragma mark -
 
 // get an docList service object with the current username/password
@@ -306,8 +362,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleDocs alloc] init];
     
-    [service setUserAgent:@"SampleDocsApp"];
+    [service setUserAgent:@"Google-SampleDocsApp-1.0"];
     [service setShouldCacheDatedData:YES];
+    [service setServiceShouldFollowNextLinks:YES];
   }
 
   // update the username/password each time the service is requested
@@ -584,6 +641,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     categories = [[doc categories] categoriesWithScheme:kGDataCategoryScheme];
     if ([categories count] >= 1) {
       docKind = [[categories objectAtIndex:0] label];
+    }
+   
+    // mark if the document is starred
+    if ([doc isStarred]) {
+      const UniChar kStarChar = 0x2605;
+      docKind = [NSString stringWithFormat:@"%C, %@", kStarChar, docKind];
     }
     
     NSString *displayStr = [NSString stringWithFormat:@"%@ (%@)",

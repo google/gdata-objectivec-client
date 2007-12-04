@@ -37,6 +37,9 @@
 
 // getters and setters
 
+// to move a photo to another album, set the photo entry's albumID
+// to the album's GPhotoID and update the photo entry (with
+// fetchPicasaWebEntryByUpdatingEntry:) 
 - (NSString *)albumID;
 - (void)setAlbumID:(NSString *)str;
 

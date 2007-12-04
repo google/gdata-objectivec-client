@@ -98,6 +98,7 @@
 - (NSArray *)links;
 - (void)setLinks:(NSArray *)links;
 - (void)addLink:(GDataLink *)obj;
+- (void)removeLink:(GDataLink *)obj;
 
 - (NSArray *)authors;
 - (void)setAuthors:(NSArray *)authors;

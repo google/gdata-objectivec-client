@@ -17,11 +17,6 @@
 //  GoogleBaseSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "GoogleBaseSampleWindowController.h"
 
 @interface GoogleBaseSampleWindowController (PrivateMethods)
@@ -432,6 +427,12 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     [service setUserAgent:@"Google-SampleGoogleBaseApp-1.0"];
     
     [service setShouldCacheDatedData:YES];
+    
+    // Note: Though this sample doesn't demonstrate it, GData responses are
+    //       typically chunked, so check all returned feeds for "next" links
+    //       (use -nextLink method from the GDataLinkArray category on the
+    //       links array of GData objects) or call the service's
+    //       setShouldFollowNextLinks: method.     
   }
   return service;
 }

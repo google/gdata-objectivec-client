@@ -17,11 +17,6 @@
 //  BloggerSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "BloggerSampleWindowController.h"
 
 @interface BloggerSampleWindowController (PrivateMethods)
@@ -208,6 +203,7 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
     [service setUserAgent:@"Google-SampleBloggerApp-1.0"];
     
     [service setShouldCacheDatedData:YES];
+    [service setServiceShouldFollowNextLinks:YES];
     [service setServiceID:@"blogger"];
   }
 

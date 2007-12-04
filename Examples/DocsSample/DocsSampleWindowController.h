@@ -31,6 +31,7 @@
   IBOutlet NSTextView *mDocListResultTextField;
   IBOutlet NSButton *mDocListCancelButton;
   IBOutlet NSButton *mViewSelectedDocButton;
+  IBOutlet NSButton *mDeleteSelectedDocButton;
   IBOutlet NSButton *mDownloadSelectedDocButton;
 
   IBOutlet NSButton *mUploadFileButton;
@@ -53,6 +54,8 @@
 
 - (IBAction)viewSelectedDocClicked:(id)sender;
 - (IBAction)downloadSelectedDocClicked:(id)sender;
+
+- (IBAction)deleteSelectedDocClicked:(id)sender;
 
 - (IBAction)uploadFileClicked:(id)sender;
 - (IBAction)stopUploadClicked:(id)sender;

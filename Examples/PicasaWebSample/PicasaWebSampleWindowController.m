@@ -17,11 +17,6 @@
 //  PicasaWebSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "PicasaWebSampleWindowController.h"
 #import "GData/GDataServiceGooglePicasaWeb.h"
 #import "GData/GDataEntryPhotoAlbum.h"
@@ -38,6 +33,7 @@
 
 - (void)addAPhoto;
 - (void)deleteSelectedPhoto;
+- (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry;
 
 - (void)addTagToSelectedPhoto;
 - (void)addCommentToSelectedPhoto;
@@ -47,8 +43,8 @@
 - (GDataEntryPhotoAlbum *)selectedAlbum;
 - (GDataEntryPhoto *)selectedPhoto;
 
-- (GDataFeedPhotoAlbum *)albumFeed;
-- (void)setAlbumFeed:(GDataFeedPhotoAlbum *)feed;
+- (GDataFeedPhotoUser *)albumFeed;
+- (void)setAlbumFeed:(GDataFeedPhotoUser *)feed;
 - (NSError *)albumFetchError;
 - (void)setAlbumFetchError:(NSError *)error;  
 - (GDataServiceTicket *)albumFetchTicket;
@@ -56,8 +52,8 @@
 - (NSString *)albumImageURLString;
 - (void)setAlbumImageURLString:(NSString *)str;
 
-- (GDataFeedPhoto *)photoFeed;
-- (void)setPhotoFeed:(GDataFeedPhoto *)feed;
+- (GDataFeedPhotoAlbum *)photoFeed;
+- (void)setPhotoFeed:(GDataFeedPhotoAlbum *)feed;
 - (NSError *)photoFetchError;
 - (void)setPhotoFetchError:(NSError *)error;
 - (GDataServiceTicket *)photoFetchTicket;
@@ -99,17 +95,17 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mAlbumResultTextField setFont:resultTextFont];
   [mPhotoResultTextField setFont:resultTextFont];
-
+  
   [self updateUI];
 }
 
 - (void)dealloc {
-  [mAlbumFeed release];
+  [mUserAlbumFeed release];
   [mAlbumFetchError release];
   [mAlbumFetchTicket release];
   [mAlbumImageURLString release];
   
-  [mPhotosFeed release];
+  [mAlbumPhotosFeed release];
   [mPhotosFetchError release];
   [mPhotosFetchTicket release];
   [mPhotoImageURLString release];
@@ -286,6 +282,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     ([[[self selectedPhoto] links] editLink] != nil);
   
   [mDeletePhotoButton setEnabled:isSelectedEntryEditable];
+  [mChangeAlbumPopupButton setEnabled:isSelectedEntryEditable];
   
   BOOL hasPhotoFeed = 
     ([[[self selectedPhoto] links] feedLink] != nil);
@@ -295,6 +292,32 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   
   [mAddTagButton setEnabled:(hasPhotoFeed && isTagProvided)];
   [mAddCommentButton setEnabled:(hasPhotoFeed && isCommentProvided)];  
+}
+
+- (void)updateChangeAlbumList {
+  
+  // replace all menu items in the button with the titles and pointers
+  // of the feed's entries, but preserve the title
+  
+  NSString *title = [mChangeAlbumPopupButton title];
+  
+  NSMenu *menu = [[[NSMenu alloc] initWithTitle:title] autorelease];
+  [menu addItemWithTitle:title action:nil keyEquivalent:@""];
+  
+  [mChangeAlbumPopupButton setMenu:menu];
+ 
+  GDataFeedPhotoUser *feed = [self albumFeed];
+  NSArray *entries = [feed entries];
+  
+  for (int idx = 0; idx < [entries count]; idx++) {
+    GDataEntryPhotoAlbum *albumEntry = [entries objectAtIndex:idx];
+    
+    NSString *title = [[albumEntry title] stringValue];
+    NSMenuItem *item = [menu addItemWithTitle:title
+                                       action:nil
+                                keyEquivalent:@""];
+    [item setRepresentedObject:albumEntry];
+  }
 }
 
 #pragma mark IBActions
@@ -336,6 +359,13 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   [self deleteSelectedPhoto];
 }
 
+- (IBAction)changeAlbumClicked:(id)sender {
+  GDataEntryPhotoAlbum *albumEntry = [[sender selectedItem] representedObject];
+  if (albumEntry) {
+    [self moveSelectedPhotoToAlbum:albumEntry];
+  }
+}
+
 - (IBAction)addCommentClicked:(id)sender {
   [self addCommentToSelectedPhoto]; 
 }
@@ -365,6 +395,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     [service setUserAgent:@"Google-SamplePicasaWebApp-1.0"];
     [service setShouldCacheDatedData:YES];
+    [service setServiceShouldFollowNextLinks:YES];
   }
 
   // update the username/password each time the service is requested
@@ -384,7 +415,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 // get the album selected in the top list, or nil if none
 - (GDataEntryPhotoAlbum *)selectedAlbum {
   
-  NSArray *albums = [mAlbumFeed entries];
+  NSArray *albums = [mUserAlbumFeed entries];
   int rowIndex = [mAlbumTable selectedRow];
   if ([albums count] > 0 && rowIndex > -1) {
     
@@ -397,7 +428,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 // get the photo selected in the bottom list, or nil if none
 - (GDataEntryPhoto *)selectedPhoto {
   
-  NSArray *photos = [mPhotosFeed entries];
+  NSArray *photos = [mAlbumPhotosFeed entries];
   int rowIndex = [mPhotoTable selectedRow];
   if ([photos count] > 0 && rowIndex > -1) {
     
@@ -446,11 +477,15 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
 // finished album list successfully
 - (void)albumListFetchTicket:(GDataServiceTicket *)ticket
-               finishedWithFeed:(GDataFeedPhotoAlbum *)object {
+            finishedWithFeed:(GDataFeedPhotoUser *)object {
   
   [self setAlbumFeed:object];
   [self setAlbumFetchError:nil];    
   [self setAlbumFetchTicket:nil];
+  
+  // load the Change Album pop-up button with the
+  // album entries
+  [self updateChangeAlbumList];
 
   [self updateUI];
 } 
@@ -502,7 +537,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
 // fetched photo list successfully
 - (void)photosTicket:(GDataServiceTicket *)ticket
-         finishedWithEntries:(GDataFeedPhoto *)object {
+ finishedWithEntries:(GDataFeedPhotoAlbum *)object {
   
   [self setPhotoFeed:object];
   [self setPhotoFetchError:nil];
@@ -694,6 +729,91 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   
 }
 
+#pragma mark Move a photo to another album
+
+static NSString* const kDestAlbumKey = @"DestAlbum";
+
+- (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry {
+  
+  GDataEntryPhoto *photo = [self selectedPhoto];
+  if (photo) {
+    
+    NSString *sourceAlbumID = [[self selectedAlbum] GPhotoID];
+    NSString *destAlbumID = [albumEntry GPhotoID];
+    if ([sourceAlbumID isEqual:destAlbumID]) {
+      
+      // photo is already in that album 
+      NSBeginAlertSheet(@"Cannot Move Photo", nil, nil, nil,
+                        [self window], nil, nil,
+                        nil, nil,
+                        @"Photo \"%@\" is already in the album \"%@\".",
+                        [[photo title] stringValue],
+                        [[albumEntry title] stringValue]);
+      
+    } else {
+      // let the photo entry retain its target album ID as a property
+      // (since the contextInfo isn't retained)
+      [photo setProperty:destAlbumID forKey:kDestAlbumKey];
+      
+      // make the user confirm that the selected photo should be moved
+      NSBeginAlertSheet(@"Move Photo", @"Move", @"Cancel", nil,
+                        [self window], self, 
+                        @selector(moveSheetDidEnd:returnCode:contextInfo:),
+                        nil, nil,
+                        @"Move the photo \"%@\" to the album \"%@\"?",
+                        [[photo title] stringValue],
+                        [[albumEntry title] stringValue]);      
+    }
+  }
+}
+
+// move dialog callback
+- (void)moveSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSAlertDefaultReturn) {
+    
+    // move the photo
+    GDataEntryPhoto *photo = [self selectedPhoto];
+    GDataLink *link = [[photo links] editLink];
+    
+    if (link) {
+      // set the album to move to as the photo's new album ID
+      NSString *albumID = [photo propertyForKey:kDestAlbumKey];
+      [photo setAlbumID:albumID];
+      
+      GDataServiceGooglePicasaWeb *service = [self picasaWebService];
+      [service fetchPicasaWebEntryByUpdatingEntry:photo
+                                      forEntryURL:[link URL]
+                                         delegate:self
+                                didFinishSelector:@selector(moveTicket:finishedWithEntry:)
+                                  didFailSelector:@selector(moveTicket:failedWithError:)];
+    }
+  }
+}
+
+// photo moved successfully
+- (void)moveTicket:(GDataServiceTicket *)ticket
+ finishedWithEntry:(GDataFeedPhoto *)object {
+  
+  NSBeginAlertSheet(@"Moved Photo", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo moved");
+  
+  // re-fetch the selected album's photos
+  [self fetchSelectedAlbum];
+  [self updateUI];
+} 
+
+
+// failure to move photo
+- (void)moveTicket:(GDataServiceTicket *)ticket
+   failedWithError:(NSError *)error {
+  
+  NSBeginAlertSheet(@"Move failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo move failed: %@", error);
+  
+}
 
 #pragma mark Add a tag or comment to a photo
 
@@ -763,7 +883,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 } 
 
 
-// failure to delete photo
+// failure to post to photo
 - (void)postToPhotoTicket:(GDataServiceTicket *)ticket
           failedWithError:(NSError *)error {
   
@@ -804,21 +924,21 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 // table view data source methods
 - (int)numberOfRowsInTableView:(NSTableView *)tableView {
   if (tableView == mAlbumTable) {
-    return [[mAlbumFeed entries] count];
+    return [[mUserAlbumFeed entries] count];
   } else {
     // entry table
-    return [[mPhotosFeed entries] count];
+    return [[mAlbumPhotosFeed entries] count];
   }
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
   if (tableView == mAlbumTable) {
     // get the album entry's title
-    GDataEntryPhotoAlbum *album = [[mAlbumFeed entries] objectAtIndex:row];
+    GDataEntryPhotoAlbum *album = [[mUserAlbumFeed entries] objectAtIndex:row];
     return [[album title] stringValue];
   } else {
     // get the photo entry's title
-    GDataEntryPhoto *photoEntry = [[mPhotosFeed entries] objectAtIndex:row];
+    GDataEntryPhoto *photoEntry = [[mAlbumPhotosFeed entries] objectAtIndex:row];
     return [[photoEntry title] stringValue];
   }
   return nil;
@@ -826,13 +946,13 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
 #pragma mark Setters and Getters
 
-- (GDataFeedPhotoAlbum *)albumFeed {
-  return mAlbumFeed; 
+- (GDataFeedPhotoUser *)albumFeed {
+  return mUserAlbumFeed; 
 }
 
-- (void)setAlbumFeed:(GDataFeedPhotoAlbum *)feed {
-  [mAlbumFeed autorelease];
-  mAlbumFeed = [feed retain];
+- (void)setAlbumFeed:(GDataFeedPhotoUser *)feed {
+  [mUserAlbumFeed autorelease];
+  mUserAlbumFeed = [feed retain];
 }
 
 - (NSError *)albumFetchError {
@@ -862,13 +982,13 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   mAlbumImageURLString = [str copy];
 }
 
-- (GDataFeedPhoto *)photoFeed {
-  return mPhotosFeed; 
+- (GDataFeedPhotoAlbum *)photoFeed {
+  return mAlbumPhotosFeed; 
 }
 
-- (void)setPhotoFeed:(GDataFeedPhoto *)feed {
-  [mPhotosFeed autorelease];
-  mPhotosFeed = [feed retain];
+- (void)setPhotoFeed:(GDataFeedPhotoAlbum *)feed {
+  [mAlbumPhotosFeed autorelease];
+  mAlbumPhotosFeed = [feed retain];
 }
 
 - (NSError *)photoFetchError {
