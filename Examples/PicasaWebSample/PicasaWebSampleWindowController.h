@@ -69,7 +69,6 @@
 
 - (IBAction)addClicked:(id)sender;
 - (IBAction)deleteClicked:(id)sender;
-- (IBAction)changeAlbumClicked:(id)sender;
 
 - (IBAction)addTagClicked:(id)sender;
 - (IBAction)addCommentClicked:(id)sender;

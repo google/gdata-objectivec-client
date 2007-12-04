@@ -17,11 +17,6 @@
 //  SpreadsheetSampleWindowController.m
 //
 
-// Note: Though this sample doesn't demonstrate it, GData responses are
-//       typically chunked, so check all returned feeds for "next" links
-//       (use -nextLink method from the GDataLinkArray category on the
-//       links array of GData objects.)
-
 #import "SpreadsheetSampleWindowController.h"
 
 @interface SpreadsheetSampleWindowController (PrivateMethods)
@@ -216,6 +211,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     service = [[GDataServiceGoogleSpreadsheet alloc] init];
     
     [service setShouldCacheDatedData:YES];
+    [service setServiceShouldFollowNextLinks:YES];
   }
 
   // username/password may change

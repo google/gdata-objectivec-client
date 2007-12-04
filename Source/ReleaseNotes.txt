@@ -4,6 +4,7 @@ Project site:     http://code.google.com/p/gdata-objectivec-client/
 DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 
+Release 1.3.0
 Changes since 1.2.0
 
 Additions
@@ -22,10 +23,12 @@ Additions
   and default values for those in new spreadsheets.
   
 - GDataService classes can now optionally follow "next" links when retrieving
-  feeds.
+  feeds.  This must be enabled by calling setServiceShouldFollowNextLinks:
+  on the service object.
   
 - GDataHTTPFetcher and services now optionally automatically retry fetches of
-  some errors.
+  some errors.  Calling setIsServiceRetryEnabled: enables the retry behavior
+  for services.
   
 - Feeds and entries now have methods for adding categories.
 
