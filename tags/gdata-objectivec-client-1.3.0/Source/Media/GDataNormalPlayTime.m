@@ -1,0 +1,150 @@
+/* Copyright (c) 2007 Google Inc.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS,
+* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+* See the License for the specific language governing permissions and
+* limitations under the License.
+*/
+
+
+#import "GDataNormalPlayTime.h"
+
+NSString* const kNowString = @"now";
+
+@implementation GDataNormalPlayTime
+
++ (GDataNormalPlayTime *)normalPlayTimeWithString:(NSString *)str {
+  
+  GDataNormalPlayTime *npt = [[[GDataNormalPlayTime alloc] init] autorelease];
+  
+  [npt setFromString:str];
+  return npt;
+}
+
+- (long long)timeOffsetInMilliseconds { // -1 if "now"
+  if (isNow_) return -1;
+  return ms_;
+}
+
+- (void)setTimeOffsetInMilliseconds:(long long)ms {
+  ms_ = ms;
+  isNow_ = (ms == -1);
+}
+
+- (BOOL)isNow {
+  return isNow_; 
+}
+
+- (void)setIsNow:(BOOL)isNow {
+  isNow_ = isNow; 
+}
+
+- (NSString *)HHMMSSString { // hh:mm:ss.fraction or "now"
+  if (isNow_) {
+    return kNowString;
+  }
+  
+  long fraction = ms_ % 1000LL;
+  long totalSeconds = ms_ / 1000LL;
+  long seconds = totalSeconds % 60LL;
+  long totalMinutes = totalSeconds / 60LL;
+  long minutes = totalMinutes % 60LL;
+  long hours = totalMinutes / 60LL;
+  
+  if (fraction > 0) {
+    return [NSString stringWithFormat:@"%d:%02d:%02d.%03d",
+      hours, minutes, seconds, fraction];
+  } 
+  return [NSString stringWithFormat:@"%d:%02d:%02d",
+    hours, minutes, seconds];
+}
+
+- (NSString *)secondsString { // seconds.fraction or "now"
+  if (isNow_) {
+    return kNowString;
+  }
+  long seconds = ms_ / 1000LL;
+  long fraction = ms_ % 1000LL;
+  
+  if (fraction == 0) {
+    return [NSString stringWithFormat:@"%d", seconds];
+  }
+  return [NSString stringWithFormat:@"%d.%03d", seconds, fraction];
+}
+
+- (void)setFromString:(NSString *)str {
+  NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSString *trimmedStr = [str stringByTrimmingCharactersInSet:whitespace];
+  
+  // handle "now"
+  if ([trimmedStr caseInsensitiveCompare:@"now"] == NSOrderedSame) {
+    isNow_ = YES;
+    ms_ = -1;
+    return;
+  }
+  
+  // parse hh:mm:ss.fff or ss.fff into milliseconds
+  long seconds = 0;
+  long thousandths = 0;
+  
+  NSScanner *scanner = [NSScanner scannerWithString:str];
+  NSCharacterSet *period = [NSCharacterSet characterSetWithCharactersInString:@"."];
+  NSCharacterSet *colon = [NSCharacterSet characterSetWithCharactersInString:@":"];
+  
+  int scannedInt;
+  if ([scanner scanInt:&scannedInt]) {
+    seconds = scannedInt;
+    
+    if ([scanner scanCharactersFromSet:colon intoString:nil]
+        && [scanner scanInt:&scannedInt]) {
+      // push seconds to minutes
+      seconds = seconds * 60 + scannedInt;
+    }
+  
+    if ([scanner scanCharactersFromSet:colon intoString:nil]
+        && [scanner scanInt:&scannedInt]) {
+      // push minutes to hours, seconds to minutes
+      seconds = seconds * 60 + scannedInt;
+    }
+    
+    if ([scanner scanCharactersFromSet:period intoString:nil]
+        && [scanner scanInt:&scannedInt]) {
+      
+      // append 000 and take the first 3 digits to create thousands
+      NSString *paddedFraction = [NSString stringWithFormat:@"%d000", scannedInt];
+      NSString *thousandthsStr = [paddedFraction substringToIndex:3];
+      thousandths = [thousandthsStr intValue];
+    }
+  }    
+  ms_ = seconds * 1000 + thousandths;
+  isNow_ = NO;
+}
+
+- (BOOL)isEqual:(GDataNormalPlayTime *)other {
+  if ([self isNow]) {
+    return ([self isNow] == [other isNow]);
+  }
+  return ([self timeOffsetInMilliseconds] == [other timeOffsetInMilliseconds]);
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+  GDataNormalPlayTime* newObj = [[[self class] allocWithZone:zone] init];
+  [newObj setTimeOffsetInMilliseconds:ms_];
+  [newObj setIsNow:isNow_];
+  return newObj;
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+    [self class], self, [self HHMMSSString]];
+
+}
+
+@end
