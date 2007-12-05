@@ -43,8 +43,12 @@ Additions
 - Added MacOSX version to service request user agent, along with a gzip string
   expected in the user agent by Google servers.
 
+- Added a very simple Calendar "Hello World" example tool by David Oster.
+
   
 Bugs Fixed
+
+- Project settings have been adjusted to build on Leopard.
 
 - Framework is now built with install location of @loader_path/../Frameworks...
   instead of @executable_path/../Frameworks/... so it can be loaded by other
@@ -75,6 +79,8 @@ Bugs Fixed
 - HTTP cookies now work with server at localhost.
 
 - Now defining -hash on GDataObject for better Leopard compatibility.
+
+- Fixed setting the ticket error on authentication errors.
 
 
 Release 1.2.0
