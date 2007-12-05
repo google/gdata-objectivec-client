@@ -523,8 +523,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 - (void)addACalendar {
   
   NSString *newCalendarName = [mCalendarNameField stringValue];
-  NSURL *postURL = [[[mCalendarFeed links] postLink] URL];
   
+  NSURL *postURL = [[[mCalendarFeed links] postLink] URL];
+
   if ([newCalendarName length] > 0 && postURL != nil) {
     
     GDataServiceGoogleCalendar *service = [self calendarService];
@@ -533,6 +534,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [newEntry setTitleWithString:newCalendarName];
     [newEntry setIsSelected:YES]; // check the calendar in the web display
     
+    // as of Dec. '07 the server requires a color, 
+    // or returns a 404 (Not Found) error
+    [newEntry setColor:[GDataColorProperty valueWithString:@"#2952A3"]];
+
     [service fetchCalendarEntryByInsertingEntry:newEntry
                                      forFeedURL:postURL 
                                        delegate:self

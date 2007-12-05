@@ -255,7 +255,8 @@ enum {
   [delegate performSelector:failedSelector
                  withObject:ticket
                  withObject:error];  
-
+  
+  [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
 }
