@@ -48,7 +48,7 @@
                                    fromElement:element]];
     [self setType:[self stringForAttributeName:@"type"
                                    fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]]; // TODO handle according to the type
+    [self setStringValue:[self stringValueFromElement:element]]; // TODO: handle according to the type
   }
   return self;
 }

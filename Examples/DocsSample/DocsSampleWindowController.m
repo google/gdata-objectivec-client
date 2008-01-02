@@ -217,13 +217,24 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       
       // read the document's contents synchronously from the network
       //
-      // note that if the document isn't published with public access, 
-      // then this will require that we be signed into the account in Safari; 
-      // otherwise, it will receive an error html page
+      // since the user has already signed in, the service object
+      // has the proper authentication token.  We'll use the service object
+      // to generate an NSURLRequest with the auth token in the header, and
+      // then fetch that synchronously.  Without the auth token, the sourceURI
+      // would only give us the document if we were already signed into the 
+      // user's account with Safari, or if the document was published with
+      // public access.
+
+      GDataServiceGoogleDocs *service = [self docsService];
+      NSURLRequest *request = [service requestForURL:url
+                                          httpMethod:nil];
+
+      NSURLResponse *response = nil;
       NSError *error = nil;
-      NSData *data = [NSData dataWithContentsOfURL:url
-                                           options:NSUncachedRead
-                                             error:&error];
+      NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                           returningResponse:&response 
+                                                       error:&error];
+
       if (error != nil) {
         NSLog(@"Error retrieving file: %@", error);
         NSBeep();
