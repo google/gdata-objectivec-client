@@ -141,7 +141,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *requestUserAgent = [self requestUserAgent];
   
   [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
-  [request setValue:@"text/xml" forHTTPHeaderField:@"Accept"];
+  [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
   [request setValue:@"application/atom+xml;charset=utf-8" forHTTPHeaderField:@"content-type"]; // header is authoritative for character set issues.
   [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
   
