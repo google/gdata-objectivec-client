@@ -29,7 +29,6 @@
 
 _EXTERN int kGDataPicasaWebImageSizeDownloadable _INITIALIZE_AS(-1);
 
-#import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
 @interface GDataQueryPicasaWeb : GDataQuery 

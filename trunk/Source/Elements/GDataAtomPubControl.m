@@ -29,15 +29,20 @@
 + (NSString *)extensionElementLocalName { return @"control"; }
 
 
-+ (GDataAtomPubControl *)atomPubControlWithIsDraft:(BOOL)isDraft {
++ (GDataAtomPubControl *)atomPubControl {
   GDataAtomPubControl *obj = [[[GDataAtomPubControl alloc] init] autorelease];
-  [obj setIsDraft:isDraft];
   
   // add the "app" namespace
   NSDictionary *namespace = [NSDictionary dictionaryWithObject:kGDataNamespaceAtomPub 
                                                         forKey:kGDataNamespaceAtomPubPrefix];
   [obj setNamespaces:namespace];
 
+  return obj;
+}
+
++ (GDataAtomPubControl *)atomPubControlWithIsDraft:(BOOL)isDraft {
+  GDataAtomPubControl *obj = [self atomPubControl];
+  [obj setIsDraft:isDraft];
   return obj;
 }
 
@@ -80,25 +85,28 @@
     && ([self isDraft] == [other isDraft]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   NSString *str = ([self isDraft] ? @"yes" : @"no");
   [self addToArray:items objectDescriptionIfNonNil:str 
           withName:@"isDraft"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
   
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"app:control"];
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
 
   if ([self isDraft]) {
+    
+    NSString *name = [NSString stringWithFormat:@"%@:draft", 
+      kGDataNamespaceAtomPubPrefix];
+      
     [self addToElement:element
  childWithStringValueIfNonEmpty:@"yes"
-              withName:@"app:draft"];
+              withName:name];
   }
   
   return element;

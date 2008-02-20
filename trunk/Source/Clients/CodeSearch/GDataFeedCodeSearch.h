@@ -35,8 +35,6 @@
 //               didFailSelector:@selector(ticket:failedWithError:)];
 
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 #import "GDataEntryCodeSearch.h"
 

@@ -38,9 +38,9 @@
                              term:kGDataCategoryPhotosPhoto];
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class feedClass = [self class];
   

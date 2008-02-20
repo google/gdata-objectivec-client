@@ -17,8 +17,6 @@
 //  GDataFeedGoogleBase.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 #import "GDataEntryGoogleBase.h"
 

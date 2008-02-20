@@ -98,7 +98,7 @@
     && AreEqualOrBothNil([self resourceLength], [other resourceLength]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:rel_       withName:@"rel"];
@@ -109,8 +109,7 @@
   [self addToArray:items objectDescriptionIfNonNil:titleLang_ withName:@"xml:lang"];
   [self addToArray:items objectDescriptionIfNonNil:resourceLength_ withName:@"resourceLength"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -286,6 +285,10 @@
 
 - (GDataLink *)alternateLink {
   return [self linkWithRelAttributeValue:@"alternate"]; 
+}
+
+- (GDataLink *)relatedLink {
+  return [self linkWithRelAttributeValue:@"related"]; 
 }
 
 - (GDataLink *)selfLink {

@@ -50,7 +50,7 @@
 - (void)setExtensionDeclarations:(NSArray *)decls;
 - (NSArray *)extensionDeclarations;
 
-- (void)initUnknownChildNodesForElement:(NSXMLElement *)element;
+- (void)addUnknownChildNodesForElement:(NSXMLElement *)element;
 
 - (void)parseExtensionsForElement:(NSXMLElement *)element;
 
@@ -68,7 +68,7 @@
 - (id)init {
   self = [super init];
   if (self) {
-    [self initExtensionDeclarations];
+    [self addExtensionDeclarations];
   }
   return self;
 }
@@ -93,8 +93,8 @@
   if (self) {
     [self setParent:parent];
     [self setNamespaces:[self dictionaryForElementNamespaces:element]];
-    [self initUnknownChildNodesForElement:element];
-    [self initExtensionDeclarations];
+    [self addUnknownChildNodesForElement:element];
+    [self addExtensionDeclarations];
     [self parseExtensionsForElement:element];
     [self setElementName:[element name]];
   }
@@ -381,6 +381,10 @@
 //
 // this is called by the XMLElement method of subclasses; they will add their
 // own attributes and children to the element returned by this method
+//
+// extensions may pass nil for defaultName to use the name specified in their
+// extensionElementLocalName and extensionElementPrefix
+
 - (NSXMLElement *)XMLElementWithExtensionsAndDefaultName:(NSString *)defaultName {
   
 #if 0
@@ -429,7 +433,9 @@
      attributeValueIfNonNil:(NSString *)val
                    withName:(NSString *)name {
   if (val) {
-    NSXMLNode* attr = [NSXMLNode attributeWithName:name stringValue:val];
+    NSString *filtered = [[self class] stringWithControlsFilteredForString:val];
+
+    NSXMLNode* attr = [NSXMLNode attributeWithName:name stringValue:filtered];
     [element addAttribute:attr];
     return attr;
   }
@@ -486,6 +492,59 @@ childWithStringValueIfNonEmpty:(NSString *)str
   }
 }
 
++ (NSString *)stringWithControlsFilteredForString:(NSString *)str {
+  // Ensure that control characters are not present in the string, since they 
+  // would lead to XML that likely will make servers unhappy.  (Are control
+  // characters ever legal in XML?)
+  //
+  // Why not assert on debug builds for the caller when the string has a control
+  // character?  The characters may never be present in the data until the
+  // program is deployed to users.  This filtering will make it less likely 
+  // that bad XML might be generated for users and sent to servers.
+  //
+  // Since we generate our XML directly from the elements with
+  // XMLData, we won't later have a good chance to look for and clean out
+  // the control characters.
+  
+  static NSCharacterSet *filterChars = nil;
+  if (filterChars == nil) {
+    // make a character set of control characters (but not whitespace/newline
+    // characters), and keep a static immutable copy to use for filtering
+    // strings
+    NSCharacterSet *ctrlChars = [NSCharacterSet controlCharacterSet];
+    NSCharacterSet *newlineWsChars = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    NSCharacterSet *nonNewlineWsChars = [newlineWsChars invertedSet];
+    
+    NSMutableCharacterSet *mutableChars = [[ctrlChars mutableCopy] autorelease];
+    [mutableChars formIntersectionWithCharacterSet:nonNewlineWsChars];
+    
+    filterChars = [mutableChars copy];
+  }
+  
+  // look for any invalid characters
+  NSRange range = [str rangeOfCharacterFromSet:filterChars]; 
+  if (range.location != NSNotFound) {
+    
+    // copy the string to a mutable, and remove null and non-whitespace 
+    // control characters
+    NSMutableString *mutableStr = [NSMutableString stringWithString:str];  
+    while (range.location != NSNotFound) {
+      
+#if DEBUG
+      NSLog(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"", 
+            [mutableStr characterAtIndex:range.location], str);
+#endif
+      [mutableStr deleteCharactersInRange:range];
+      
+      range = [mutableStr rangeOfCharacterFromSet:filterChars]; 
+    }
+    
+    return mutableStr;
+  }
+  
+  return str;
+}
+
 #pragma mark description method helpers
 
 - (void)addToArray:(NSMutableArray *)stringItems
@@ -509,6 +568,33 @@ objectDescriptionIfNonNil:(id)obj
   if ([array count]) {
     [self addToArray:stringItems integerValue:[array count] withName:name];
   }
+}
+
+- (NSMutableArray *)itemsForDescription {
+  
+  NSMutableArray *items = [NSMutableArray array];
+  return items;
+}
+
+- (NSString *)descriptionWithItems:(NSArray *)items {
+  
+  NSString *str;
+  
+  if ([items count] > 0) {
+    str = [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+      [self class], self, [items componentsJoinedByString:@" "]];
+    
+  } else {
+    str = [NSString stringWithFormat:@"%@ 0x%lX", [self class], self];
+  }
+  return str;
+}
+
+- (NSString *)description {
+  
+  NSArray *items = [self itemsForDescription];
+  NSString *str = [self descriptionWithItems:items];
+  return str;
 }
 
 
@@ -858,8 +944,12 @@ objectDescriptionIfNonNil:(id)obj
   NSString* str = [attribute stringValue];
   if (str) {
     // require periods as the separator
+    
+    // Leopard deprecated the constant NSDecimalSeparator but it's still
+    // needed by NSDecimalNumber (radar 5674482)
+    NSString *const kNSDecimalSeparator = @"NSDecimalSeparator";
     NSDictionary *locale = [NSDictionary dictionaryWithObject:@"."
-                                                       forKey:NSDecimalSeparator];
+                                                       forKey:kNSDecimalSeparator];
     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:str
                                                                 locale:locale];
     return number;
@@ -900,7 +990,7 @@ objectDescriptionIfNonNil:(id)obj
 
 #pragma mark Extensions
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   // overridden by subclasses which have extensions to add, like:
   // 
   //  [self addExtensionDeclarationForParentClass:[GDataLink class]
@@ -924,6 +1014,15 @@ objectDescriptionIfNonNil:(id)obj
                                                  childClass:childClass] autorelease];
   
   [extensionDeclarations_ addObject:decl];
+}
+
+- (void)removeExtensionDeclarationForParentClass:(Class)parentClass
+                                      childClass:(Class)childClass {
+  GDataExtensionDeclaration *decl = 
+    [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
+                                                 childClass:childClass] autorelease];
+  
+  [extensionDeclarations_ removeObject:decl];
 }
 
 // utility routine for getting declared extensions to the specified class
@@ -1025,10 +1124,10 @@ objectDescriptionIfNonNil:(id)obj
   } 
 }
 
-// initUnknownChildNodesForElement: is called by initWithXMLElement.  It builds
+// addUnknownChildNodesForElement: is called by initWithXMLElement.  It builds
 // the initial list of unknown child elements; this list is whittled down by
 // parseExtensionsForElement and objectForChildOfElement.
-- (void)initUnknownChildNodesForElement:(NSXMLElement *)element {
+- (void)addUnknownChildNodesForElement:(NSXMLElement *)element {
   
   [unknownChildren_ release];
   unknownChildren_ = [[NSMutableArray alloc] init];
@@ -1307,45 +1406,18 @@ forCategoryWithScheme:scheme
   // NSXMLNode's setStringValue: wipes out other children, so we'll use this
   // instead
   
-  // Ensure that null characters are not present in the string, since they would
-  // lead to XML that likely will make servers unhappy.  (Are null characters
-  // ever legal in XML?)
-  //
-  // Why not assert on debug builds for the caller when the string has a null?
-  // The nulls may never be present in the data until the program is deployed
-  // to users.  This will make it less likely that null-laden XML might be
-  // generated for users and sent to servers.
-  //
-  // Since we generate our XML directly from the elements with
-  // XMLData, we won't later have a good chance to look for and clean out
-  // the nulls.
-  
-  static NSString *nullStr = nil;
-  if (!nullStr) {
-    nullStr = [[NSString alloc] initWithFormat:@"%C", 0];
-  }
-  
-  NSRange range = [str rangeOfString:nullStr];
-  if (range.location != NSNotFound) {
+  // filter out non-whitespace control characters
+  NSString *filtered = [GDataObject stringWithControlsFilteredForString:str];
     
-#if DEBUG
-    NSLog(@"GDataObject: Removing NULL from XML element string \"%@\"", str);
-#endif
-    
-    NSMutableString *mutable = [NSMutableString stringWithString:str];
-    [mutable replaceOccurrencesOfString:nullStr
-                             withString:@""
-                                options:0
-                                  range:NSMakeRange(0, [mutable length])];
-    str = mutable;
-  }
-  
-  NSXMLNode *strNode = [NSXMLNode textWithStringValue:str];
+  NSXMLNode *strNode = [NSXMLNode textWithStringValue:filtered];
   [self addChild:strNode];
 }
 
 + (id)elementWithName:(NSString *)name attributeName:(NSString *)attrName attributeValue:(NSString *)attrValue {
-  NSXMLNode *attr = [NSXMLNode attributeWithName:attrName stringValue:attrValue];
+  
+  NSString *filtered = [GDataObject stringWithControlsFilteredForString:attrValue];
+  
+  NSXMLNode *attr = [NSXMLNode attributeWithName:attrName stringValue:filtered];
   NSXMLElement *element = [NSXMLNode elementWithName:name];
   [element addAttribute:attr];
   return element;  
@@ -1401,6 +1473,18 @@ forCategoryWithScheme:scheme
   return childClass_; 
 }
 
+- (BOOL)isEqual:(GDataExtensionDeclaration *)other {
+  if (self == other) return YES;
+  if (![other isKindOfClass:[GDataExtensionDeclaration class]]) return NO;
+  
+  return AreEqualOrBothNil([self parentClass], [other parentClass])
+    && AreEqualOrBothNil([self childClass], [other childClass]);
+}  
+
+- (unsigned)hash {
+  return (unsigned) [GDataExtensionDeclaration class];
+}
+
 @end
 
 // isEqual: has the fatal flaw that it doesn't deal well with the received
@@ -1420,3 +1504,8 @@ BOOL AreEqualOrBothNil(id obj1, id obj2) {
   return NO;
 }
 
+BOOL AreBoolsEqual(BOOL b1, BOOL b2) {
+  // avoid comparison problems with boolean types by negating
+  // both booleans
+  return (!b1 == !b2);
+}

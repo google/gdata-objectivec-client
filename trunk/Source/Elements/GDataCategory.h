@@ -17,10 +17,17 @@
 //  GDataCategory.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATACATEGORY_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
 
 _EXTERN NSString* kGDataCategoryLabelScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005/labels");
 

@@ -222,7 +222,7 @@
 
 + (id)geoWithLatitude:(double)latitude
             longitude:(double)longitude {
-  GDataGeo* obj = [[[[self class] alloc] init] autorelease];
+  GDataGeo* obj = [[[self alloc] init] autorelease];
   
   NSNumber *latNum = [NSNumber numberWithDouble:latitude];
   NSNumber *longNum = [NSNumber numberWithDouble:longitude];
@@ -283,13 +283,12 @@
     && AreEqualOrBothNil([self values], [other values]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:values_ withName:@"values"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 //
@@ -351,7 +350,7 @@
 
 #pragma mark Helpers for other objects using GDataGeo
 
-// call this in initExtensionDeclarations
+// call this in addExtensionDeclarations
 + (void)addGeoExtensionDeclarationsToObject:(GDataObject *)object
                              forParentClass:(Class)parentClass {
   

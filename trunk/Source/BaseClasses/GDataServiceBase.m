@@ -17,10 +17,10 @@
 //  GDataServiceBase.m
 //
 
+#include <sys/utsname.h>
+
 #define GDATASERVICEBASE_DEFINE_GLOBALS 1
 #import "GDataServiceBase.h"
-#import "GDataFeedCalendar.h"
-#import "GDataFeedCalendarEvent.h"
 #import "GDataProgressMonitorInputStream.h"
 #import "GDataFramework.h"
 
@@ -78,6 +78,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)dealloc {
   [userAgent_ release];
   [fetchHistory_ release];
+  [runLoopModes_ release];
   
   [username_ release];
   [password_ release];
@@ -114,6 +115,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       libVersionString = [NSString stringWithFormat:@"%d.%d", major, minor];
     }
     
+#ifndef GDATA_FOUNDATION_ONLY
     long systemMajor = 0, systemMinor = 0, systemRelease = 0;
     
     (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
@@ -122,6 +124,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     
     NSString *systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
       systemMajor, systemMinor, systemRelease];
+#else
+    struct utsname unameRecord;
+    uname(&unameRecord);
+    
+    NSString *systemString = [NSString stringWithFormat:@"%s/%s",
+      unameRecord.sysname, unameRecord.release]; // "Darwin/8.11.1"
+#endif
     
     // Google servers look for gzip in the user agent before sending gzip-
     // encoded responses.  See Service.java
@@ -263,6 +272,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
   
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+	
+  [fetcher setRunLoopModes:[self runLoopModes]];
   
   if (uploadStream) {
     [fetcher setPostStream:uploadStream]; 
@@ -800,6 +811,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)setUserAgent:(NSString *)userAgent {
   [userAgent_ release];
   userAgent_ = [userAgent copy];
+}
+
+- (NSArray *)runLoopModes {
+  return runLoopModes_;
+}
+
+- (void)setRunLoopModes:(NSArray *)modes {
+  [runLoopModes_ autorelease]; 
+  runLoopModes_ = [modes retain];
 }
 
 // save the username and password, converting the password to non-plaintext

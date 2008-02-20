@@ -96,14 +96,13 @@
     && ([self count] == [other count]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   NSString *str = [NSString stringWithFormat:@"%d", [self count]];
   [self addToArray:items objectDescriptionIfNonNil:str withName:@"count"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -113,15 +113,14 @@
     && AreEqualOrBothNil([self resultString], [other resultString]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:inputString_ withName:@"inputString"];
   [self addToArray:items objectDescriptionIfNonNil:numericValue_ withName:@"numericValue"];
   [self addToArray:items objectDescriptionIfNonNil:resultString_ withName:@"resultString"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

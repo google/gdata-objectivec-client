@@ -17,8 +17,6 @@
 //  GDataEntryPhotoTag.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryPhotoBase.h"
 
 @interface GDataEntryPhotoTag : GDataEntryPhotoBase {

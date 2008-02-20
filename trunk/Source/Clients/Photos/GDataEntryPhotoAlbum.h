@@ -17,8 +17,6 @@
 //  GDataEntryPhotoAlbum.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryPhotoBase.h"
 #import "GDataGeo.h"
 #import "GDataMediaGroup.h"

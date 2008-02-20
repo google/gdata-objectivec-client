@@ -88,7 +88,7 @@
     && AreEqualOrBothNil([self entryLink], [other entryLink]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
@@ -96,8 +96,7 @@
   [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:entryLink_ withName:@"entryLink"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -17,8 +17,6 @@
 //  GDataFeedSpreadsheetCell.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 
 @interface GDataFeedSpreadsheetCell : GDataFeedBase {

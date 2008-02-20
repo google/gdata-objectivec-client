@@ -23,7 +23,7 @@
 
 // Subclasses will typically implement:
 //
-// - (void)initExtensionDeclarations;  -- declaring extensions
+// - (void)addExtensionDeclarations;  -- declaring extensions
 // - (id)initWithXMLElement:(NSXMLElement *)element
 //                   parent:(GDataObject *)parent;  -- parsing
 // - (NSXMLElement *)XMLElement;  -- XML generation
@@ -97,7 +97,7 @@
 //
 
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 
 #undef _EXTERN
@@ -130,6 +130,7 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 // helper function for subclasses implementing isEqual:
 BOOL AreEqualOrBothNil(id obj1, id obj2);
+BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 
 @class GDataDateTime;
 @class GDataCategory;
@@ -192,7 +193,7 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
                             length:(unsigned long long *)outLength
                            headers:(NSDictionary **)outHeaders;
 
-- (void)initExtensionDeclarations; // subclasses may override this to declare extensions
+- (void)addExtensionDeclarations; // subclasses may override this to declare extensions
 
 // setters/getters
 
@@ -243,6 +244,8 @@ BOOL AreEqualOrBothNil(id obj1, id obj2);
 // declaring a potential extension; applies to this object and its children
 - (void)addExtensionDeclarationForParentClass:(Class)parentClass
                                    childClass:(Class)childClass;
+- (void)removeExtensionDeclarationForParentClass:(Class)parentClass
+                                      childClass:(Class)childClass;
 
 // accessing actual extensions in this object
 - (NSArray *)objectsForExtensionClass:(Class)class;
@@ -388,6 +391,9 @@ childWithStringValueIfNonEmpty:(NSString *)str
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects;
 
+// utility for removing non-white control characters
++ (NSString *)stringWithControlsFilteredForString:(NSString *)str;
+
 //
 // decription method helpers
 //
@@ -403,6 +409,14 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addToArray:(NSMutableArray *)stringItems
 arrayCountIfNonEmpty:(NSArray *)array
           withName:(NSString *)name;  
+
+// optional methods for overriding
+//
+// subclasses may implement -itemsForDescription and add to or
+// replace the superclass's array of items
+- (NSMutableArray *)itemsForDescription;
+- (NSString *)descriptionWithItems:(NSArray *)items;
+- (NSString *)description;
 @end
 
 @interface NSXMLElement (GDataObjectExtensions)

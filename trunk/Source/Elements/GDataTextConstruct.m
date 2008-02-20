@@ -23,7 +23,7 @@
 // For typed text, like: <title type="text">Event title</title>
 
 + (id)textConstructWithString:(NSString *)str {
-  GDataTextConstruct *obj = [[[[self class] alloc] init] autorelease];
+  GDataTextConstruct *obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
@@ -82,15 +82,14 @@
         || ([other type] == nil && [[self type] isEqual:@"text"]));
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:content_ withName:@""];
+  [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"text"];
   [self addToArray:items objectDescriptionIfNonNil:lang_    withName:@"lang"];
   [self addToArray:items objectDescriptionIfNonNil:type_    withName:@"type"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

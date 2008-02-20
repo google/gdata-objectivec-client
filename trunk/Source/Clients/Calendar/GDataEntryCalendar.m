@@ -83,9 +83,9 @@
   return entry;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   
@@ -139,7 +139,7 @@
 #pragma mark Actual iVars
 
 - (GDataColorProperty *)color {
-  return (GDataColorProperty *) [self objectForExtensionClass:[GDataColorProperty class]];
+  return [self objectForExtensionClass:[GDataColorProperty class]];
 }
 
 - (void)setColor:(GDataColorProperty *)val {
@@ -147,8 +147,7 @@
 }
 
 - (BOOL)isHidden {
-  GDataBoolValueConstruct *obj = (GDataBoolValueConstruct *)
-    [self objectForExtensionClass:[GDataHiddenProperty class]];
+  GDataBoolValueConstruct *obj = [self objectForExtensionClass:[GDataHiddenProperty class]];
   return [obj boolValue];
 }
 
@@ -163,8 +162,7 @@
 }
 
 - (BOOL)isSelected {
-  GDataBoolValueConstruct *obj = (GDataBoolValueConstruct *)
-    [self objectForExtensionClass:[GDataSelectedProperty class]];
+  GDataBoolValueConstruct *obj = [self objectForExtensionClass:[GDataSelectedProperty class]];
   return [obj boolValue];
 }
 
@@ -176,11 +174,10 @@
     obj = nil; // removes the extension
   }
   [self setObject:obj forExtensionClass:[GDataSelectedProperty class]];
-  
 }
 
 - (GDataAccessLevelProperty *)accessLevel {
-  return (GDataAccessLevelProperty *) [self objectForExtensionClass:[GDataAccessLevelProperty class]];
+  return [self objectForExtensionClass:[GDataAccessLevelProperty class]];
 }
 
 - (void)setAccessLevel:(GDataAccessLevelProperty *)val {
@@ -188,7 +185,7 @@
 }
 
 - (GDataTimeZoneProperty *)timeZoneName {
-  return (GDataTimeZoneProperty *) [self objectForExtensionClass:[GDataTimeZoneProperty class]];
+  return [self objectForExtensionClass:[GDataTimeZoneProperty class]];
 }
 
 - (void)setTimeZoneName:(GDataTimeZoneProperty *)val {
@@ -196,7 +193,7 @@
 }
 
 - (GDataOverrideNameProperty *)overrideName {
-  return (GDataOverrideNameProperty *) [self objectForExtensionClass:[GDataOverrideNameProperty class]];
+  return [self objectForExtensionClass:[GDataOverrideNameProperty class]];
 }
 
 - (void)setOverrideName:(GDataOverrideNameProperty *)val {

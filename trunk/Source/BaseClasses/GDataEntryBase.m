@@ -40,9 +40,9 @@
   return entry;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   
@@ -136,19 +136,24 @@
 - (void)dealloc {
   [idString_ release];
   [versionIDString_ release];
+  
   [publishedDate_ release];
   [updatedDate_ release];
   [editedDate_ release];
+  
   [title_ release];
   [summary_ release];
   [content_ release];
   [rightsString_ release];
+  
   [links_ release];
   [authors_ release];
   [categories_ release];
+  
   [uploadData_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
+  
   [super dealloc];
 }
 
@@ -216,6 +221,8 @@
   [self addToArray:items objectDescriptionIfNonNil:[editedDate_ RFC3339String] withName:@"edited"];
 
   [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
+  
+  [self addToArray:items objectDescriptionIfNonNil:[self atomPubControl] withName:@"app:control"];
 
   [self addToArray:items objectDescriptionIfNonNil:uploadMIMEType_ withName:@"MIMEType"];
   [self addToArray:items objectDescriptionIfNonNil:uploadSlug_ withName:@"slug"];
@@ -229,14 +236,6 @@
   }
 
   return items;
-}
-
-- (NSString *)description {
-  
-  NSArray *items = [self itemsForDescription];
-  
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
 }
 
 - (NSXMLElement *)XMLElement {
@@ -299,14 +298,15 @@
   }
   
   // make a MIME document with an XML part and a binary part
-  NSDictionary* xmlHeader;
-  xmlHeader = [NSDictionary dictionaryWithObject:@"application/atom+xml"
-                                          forKey:@"Content-Type"];
+  NSDictionary* xmlHeader = [NSDictionary dictionaryWithObjectsAndKeys:
+    @"application/atom+xml; charset=UTF-8", @"Content-Type", nil];
+  
   NSString *xmlString = [[self XMLElement] XMLString];
   NSData *xmlBody = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
   
-  NSDictionary *binHeader = [NSDictionary dictionaryWithObject:uploadMIMEType
-                                                        forKey:@"Content-Type"];
+  NSDictionary *binHeader = [NSDictionary dictionaryWithObjectsAndKeys:
+    uploadMIMEType, @"Content-Type",
+    @"binary", @"Content-Transfer-Encoding", nil];
   
   GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
   
@@ -541,6 +541,8 @@
 // Mac OS X's UTI database
 + (NSString *)MIMETypeForFileAtPath:(NSString *)path
                     defaultMIMEType:(NSString *)defaultType {
+
+#ifndef GDATA_FOUNDATION_ONLY
   
   NSString *result = defaultType;
   
@@ -571,6 +573,12 @@
     }
   }
   return result;
+  
+#else // !GDATA_FOUNDATION_ONLY
+  
+  return defaultType;
+  
+#endif
 }
 
 // extension for deletion marking

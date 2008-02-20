@@ -82,7 +82,7 @@
     && AreEqualOrBothNil([self stringValue], [other stringValue]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:reason_ withName:@"reason"];
@@ -92,8 +92,7 @@
   [self addToArray:items objectDescriptionIfNonNil:contentType_ withName:@"contentType"];
   [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

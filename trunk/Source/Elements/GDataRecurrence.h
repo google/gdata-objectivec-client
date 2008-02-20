@@ -17,8 +17,6 @@
 //  GDataRecurrence.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // a gd:recurrence, as in

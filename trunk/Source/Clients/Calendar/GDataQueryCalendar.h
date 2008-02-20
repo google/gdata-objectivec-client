@@ -20,7 +20,6 @@
 // Calendar-specific query params, per 
 //   http://code.google.com/apis/calendar/reference.html#Parameters
 
-#import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
 @interface GDataQueryCalendar : GDataQuery 

@@ -17,8 +17,6 @@
 //  GDataFeedACL.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 #import "GDataEntryACL.h"
 

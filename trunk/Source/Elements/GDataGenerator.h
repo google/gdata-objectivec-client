@@ -17,12 +17,7 @@
 //  GDataGenerator.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
-
-
-
 
 // Feed generator element, as in
 //   <generator version='1.0' uri='http://www.google.com/calendar/'>CL2</generator>

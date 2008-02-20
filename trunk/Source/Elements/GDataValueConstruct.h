@@ -17,10 +17,7 @@
 //  GDataStuff.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
-
 
 // an element with a value="" attribute, as in
 // <gCal:timezone value="America/Los_Angeles"/>
@@ -71,6 +68,13 @@
 // in the child text nodes
 @interface GDataValueElementConstruct : GDataValueConstruct
 - (NSString *)attributeName; // returns nil
+@end
+
+// GDataImplicitValueConstruct is for subclasses that want a fixed value
+// because the element is merely present or absent, like <foo:bar/>
+@interface GDataImplicitValueConstruct : GDataValueElementConstruct
++ (id)implicitValue;
+- (NSString *)stringValue; // returns nil
 @end
 
 // an element with a value=true or false attribute, as in

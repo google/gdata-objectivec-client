@@ -20,7 +20,6 @@
 // Document-specific query params, per 
 //   http://code.google.com/apis/document/reference.html#Parameters
 
-#import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
 @interface GDataQueryDocs : GDataQuery 

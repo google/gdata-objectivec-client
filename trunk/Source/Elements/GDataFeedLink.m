@@ -32,7 +32,7 @@
 + (NSString *)extensionElementLocalName { return @"feedLink"; }
 
 + (GDataFeedLink *)feedLinkWithHref:(NSString *)href
-                           isReadOnly:(BOOL)isReadOnly {
+                         isReadOnly:(BOOL)isReadOnly {
   GDataFeedLink* feedLink = [[[GDataFeedLink alloc] init] autorelease];
   [feedLink setHref:href];
   [feedLink setIsReadOnly:isReadOnly];
@@ -46,6 +46,8 @@
   if (self) {
     [self setHref:[self stringForAttributeName:@"href"
                                    fromElement:element]];
+    [self setRel:[self stringForAttributeName:@"rel"
+                                  fromElement:element]];
     [self setIsReadOnly:(nil != [self stringForAttributeName:@"readOnly"
                                                  fromElement:element])]; 
     
@@ -62,6 +64,8 @@
 
 - (void)dealloc {
   [href_ release];
+  [countHint_ release];
+  [rel_ release];
   [feed_ release];
   [super dealloc];
 }
@@ -71,6 +75,7 @@
   [newLink setHref:href_];
   [newLink setIsReadOnly:isReadOnly_];
   [newLink setCountHint:countHint_];
+  [newLink setRel:rel_];
   [newLink setFeed:feed_];
   return newLink;
 }
@@ -81,12 +86,13 @@
   
   return [super isEqual:other]
     && AreEqualOrBothNil([self href], [other href])
-    && (![self isReadOnly] == ![other isReadOnly]) // !'s to avoid bool compare errors
+    && AreBoolsEqual([self isReadOnly], [other isReadOnly])
     && AreEqualOrBothNil([self countHint], [other countHint])
+    && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self feed], [other feed]);
 }
 
-- (NSString *)description {
+- (NSArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:href_ withName:@"href"];
@@ -96,9 +102,9 @@
 
   [self addToArray:items objectDescriptionIfNonNil:[countHint_ stringValue] withName:@"countHint"];
   [self addToArray:items objectDescriptionIfNonNil:feed_ withName:@"feed"];
+  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -106,7 +112,9 @@
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:feedLink"];
   
   [self addToElement:element attributeValueIfNonNil:[self href] withName:@"href"];
-  
+
+  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
+
   NSString *roString = (isReadOnly_ ? @"true" : nil);
   [self addToElement:element attributeValueIfNonNil:roString  withName:@"readOnly"];
 
@@ -146,6 +154,15 @@
   countHint_ = [val retain]; 
 }
 
+- (NSString *)rel {
+  return rel_; 
+}
+
+- (void)setRel:(NSString *)str {
+  [rel_ autorelease];
+  rel_ = [str copy];
+}
+
 - (GDataFeedBase *)feed {
   return feed_; 
 }
@@ -154,6 +171,33 @@
   [feed_ autorelease];
   feed_ = [feed retain];
 }
+
+// convenience method
+
+- (NSURL *)URL {
+  if ([href_ length] > 0) {
+    return [NSURL URLWithString:href_]; 
+  }
+  return nil;
+}
+
 @end
 
+@implementation NSArray (GDataFeedLinkArray)
+- (GDataFeedLink *)feedLinkWithRel:(NSString *)rel {
+  
+  NSEnumerator *enumerator = [self objectEnumerator]; 
+  GDataFeedLink *feedLink;
+  
+  while ((feedLink = [enumerator nextObject]) != nil) {
+    
+    NSString *thisRel = [feedLink rel];
+    
+    if (AreEqualOrBothNil(rel, thisRel)) {
+      return feedLink;
+    }
+  }
+  return nil;  
+}
+@end
 

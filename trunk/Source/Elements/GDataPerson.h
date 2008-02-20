@@ -17,13 +17,11 @@
 //  GDataPerson.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 // a person, as in
 // <author>
-//   <name>Greg Robbins</name>
-//   <email>test@coldnose.net</email>
+//   <name>Fred Flintstone</name>
+//   <email>test@domain.net</email>
 // </author>
 @interface GDataPerson : GDataObject <NSCopying> {
   NSString *name_;

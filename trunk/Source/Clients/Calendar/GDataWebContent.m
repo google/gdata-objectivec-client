@@ -52,9 +52,9 @@
   return obj;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // gadget preference support
   [self addExtensionDeclarationForParentClass:[self class]
@@ -101,7 +101,7 @@
     && AreEqualOrBothNil([self URLString], [other URLString]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:height_ withName:@"height"];
@@ -126,8 +126,7 @@
     [self addToArray:items objectDescriptionIfNonNil:allPrefs withName:@"gadgetPrefs"];
   }
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -19,8 +19,17 @@
 // This is the base class for all standard GData feed entries.
 //
 
-#import <Cocoa/Cocoa.h>
-
+#import "GDataDateTime.h"
+#import "GDataTextConstruct.h"
+#import "GDataEntryContent.h"
+#import "GDataPerson.h"
+#import "GDataCategory.h"
+#import "GDataDeleted.h"
+#import "GDataBatchOperation.h"
+#import "GDataBatchID.h"
+#import "GDataBatchStatus.h"
+#import "GDataBatchInterrupted.h"
+#import "GDataAtomPubControl.h"
 #import "GDataDateTime.h"
 #import "GDataLink.h"
 
@@ -36,31 +45,21 @@
 
 _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005#kind");
 
-#import "GDataDateTime.h"
-#import "GDataTextConstruct.h"
-#import "GDataEntryContent.h"
-#import "GDataPerson.h"
-#import "GDataCategory.h"
-#import "GDataDeleted.h"
-#import "GDataBatchOperation.h"
-#import "GDataBatchID.h"
-#import "GDataBatchStatus.h"
-#import "GDataBatchInterrupted.h"
-#import "GDataAtomPubControl.h"
-
-
 @interface GDataEntryBase : GDataObject <NSCopying> {
 
   BOOL canEdit_;
   NSString *idString_;
   NSString *versionIDString_;
+  
   GDataDateTime *publishedDate_;
   GDataDateTime *updatedDate_;
   GDataDateTime *editedDate_;
+  
   GDataTextConstruct *title_;
   GDataTextConstruct *summary_;
   GDataEntryContent *content_;
   GDataTextConstruct *rightsString_;
+  
   NSMutableArray *links_; // GDataLink objects
   NSMutableArray *authors_; // GDataPerson objects
   NSMutableArray *categories_; // GDataCategory objects

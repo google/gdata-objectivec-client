@@ -28,38 +28,7 @@
 + (NSString *)extensionElementLocalName { return @"deleted"; }
 
 + (GDataDeleted *)deleted {
-  GDataDeleted *obj = [[[self alloc] init] autorelease];
-  return obj;
-}
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-  }
-  return self;
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataDeleted* newDeleted = [super copyWithZone:zone];
-  return newDeleted;
-}
-
-- (BOOL)isEqual:(GDataDeleted *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataDeleted class]]) return NO;
-  
-  return [super isEqual:other];
-}
-
-- (NSString *)description {
-  return [NSString stringWithFormat:@"%@ 0x%lX", [self class], self];
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:deleted"];
-  return element;
+  return [self implicitValue];
 }
 
 @end

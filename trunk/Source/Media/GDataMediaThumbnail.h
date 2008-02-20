@@ -17,8 +17,6 @@
 //  GDataMediaThumbnail.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 #import "GDataNormalPlayTime.h"
 

@@ -17,8 +17,6 @@
 //  GDataMediaKeywords.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // like <media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>
@@ -29,6 +27,10 @@
 }
 
 + (GDataMediaKeywords *)keywordsWithStrings:(NSArray *)array;
+
+// convenience function taking keywords as a comma-separated list in a
+// single string
++ (GDataMediaKeywords *)keywordsWithString:(NSString *)str;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;

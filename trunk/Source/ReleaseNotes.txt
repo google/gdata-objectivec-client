@@ -1,10 +1,57 @@
 Objective-C GData Framework Release Notes
 
 Project site:     http://code.google.com/p/gdata-objectivec-client/
-DIscussion group: http://groups.google.com/group/gdata-objectivec-client-framework
+Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+
+Changes since 1.3.0
+
+Additions
+
+- Added YouTube support and sample application
+
+- Each client service now has a unique header which can be included by client
+  applications instead of the full header, such as 
+  #import "GData/GDataCalendar.h" rather than #import "GData/GData.h".
+
+- Run loop modes can be specified for services and http fetchers, allowing
+  networking during modal dialogs.
+  
+- Added GDataImplicitValueConstruct as base class for elements with no
+  children or attribtues
+  
+- Added GDATA_FOUNDATION_ONLY conditional compilatoin tests for compiling
+  without Cocoa dependence
+  
+- Added kUseRegisteredEntryClass constant instead of nil for specifying 
+  dynamic lookup of entry objects by "kind" category in classForEntries method
+  
+- Added rel attribute and URL accessor to GDataFeedLink, and relatedLink 
+  category on NSArray in GDataLink
+
+- Added AreBoolsEqual() utility function
+
+Bugs fixed
+
+- Google Docs sample now does authenticated document downloads.
+
+- Fixed leak of category list in feed base class (thanks riggle)
+
+- Non-whitespace control characters are now removed from all attribute values
+  and element text (thanks riggle)
+
+- Renamed "initExtensionDeclarations" as "addExtensionDeclarations" and similar
+
+- Unified itemsForDescription mechanism into the GDataObject base class
+
+- Unit tests now invoke stringValue whenever needed so they can be omitted
+  from key-value test paths
+
+- Added "charset=UTF-8" to the XML header and "Content-Transfer-Encoding=binary"
+  to binary header inside input stream MIME documents 
 
 Release 1.3.0
+5-December-2007
 Changes since 1.2.0
 
 Additions

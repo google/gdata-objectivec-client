@@ -22,7 +22,7 @@
 @implementation GDataCategoryFilter
 
 + (GDataCategoryFilter *)categoryFilter {
-  return [[[[self class] alloc] init] autorelease];  
+  return [[[self alloc] init] autorelease];  
 }
 
 - (void)dealloc {
@@ -124,7 +124,7 @@
 @implementation GDataQuery
 
 + (GDataQuery *)queryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];  
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];  
 }
 
 - (id)initWithFeedURL:(NSURL *)feedURL {
@@ -309,15 +309,21 @@
 
 - (void)addCustomParameterWithName:(NSString *)name
                              value:(NSString *)value {
+  
+  if (value == nil) {
+    [self removeCustomParameterWithName:name];
+    return;
+  }
+  
   if (!customParameters_) {
     customParameters_ = [[NSMutableDictionary alloc] init]; 
   }
   
-  if (value) {
-    [customParameters_ setValue:value forKey:name];
-  } else {
-    [customParameters_ removeObjectForKey:name];
-  }
+  [customParameters_ setValue:value forKey:name];
+}
+
+- (void)removeCustomParameterWithName:(NSString *)name {
+  [customParameters_ removeObjectForKey:name];
 }
 
 - (NSString *)pathQueryURI {

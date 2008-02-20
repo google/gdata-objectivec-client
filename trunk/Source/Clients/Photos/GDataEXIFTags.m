@@ -66,9 +66,9 @@
   return obj;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // media:group may contain media:content
   [self addExtensionDeclarationForParentClass:[self class]
@@ -89,7 +89,7 @@
 }
 
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   // make an array of "name:value" items for each tag
@@ -106,8 +106,7 @@
  objectDescriptionIfNonNil:[tagsArray componentsJoinedByString:@" "]
           withName:@"tags"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

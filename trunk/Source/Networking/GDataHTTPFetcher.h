@@ -195,7 +195,7 @@
 
 #pragma once
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -250,6 +250,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   SEL networkFailedSEL_;            // should be implemented by delegate
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
   id userData_;                     // retained, if set by caller
+  NSArray *runLoopModes_;           // optional, for 10.5 and later
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
   int cookieStorageMethod_;         // constant from above
@@ -409,6 +410,18 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (id)userData;
 - (void)setUserData:(id)theObj;
 
+// using the fetcher while a modal dialog is displayed requires setting the
+// run-loop modes to include NSModalPanelRunLoopMode
+// 
+// setting run loop modes does nothing if they are not supported, 
+// such as on 10.4
+- (NSArray *)runLoopModes;
+- (void)setRunLoopModes:(NSArray *)modes;
+
++ (BOOL)doesSupportRunLoopModes;
++ (NSArray *)defaultRunLoopModes;
++ (void)setDefaultRunLoopModes:(NSArray *)modes;
+  
 // users who wish to replace GDataHTTPFetcher's use of NSURLConnection 
 // can do so globally here.  The replacement should be a subclass of
 // NSURLConnection.

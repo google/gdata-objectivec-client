@@ -17,8 +17,6 @@
 //  GDataAtomPubControl.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // For app:control, like:
@@ -28,6 +26,7 @@
   BOOL isDraft_;
 }
 
++ (GDataAtomPubControl *)atomPubControl;
 + (GDataAtomPubControl *)atomPubControlWithIsDraft:(BOOL)isDraft;
 
 - (id)initWithXMLElement:(NSXMLElement *)element

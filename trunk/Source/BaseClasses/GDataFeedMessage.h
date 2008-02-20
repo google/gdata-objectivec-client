@@ -17,8 +17,6 @@
 //  GDataFeedMessage.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 
 @interface GDataFeedMessage : GDataFeedBase {

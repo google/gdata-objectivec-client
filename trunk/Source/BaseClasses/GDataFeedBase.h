@@ -17,9 +17,6 @@
 //  GDataFeedBase.h
 //
 
-// "entr
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 #import "GDataGenerator.h"
@@ -30,6 +27,22 @@
 #import "GDataPerson.h"
 #import "GDataBatchOperation.h"
 #import "GDataAtomPubControl.h"
+
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAFEEDBASE_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// this constant, returned by a subclass implementation of -classForEntries,
+// specifies that a feed's entry class should be determined by inspecting
+// the XML for a "kind" category and looking at the registered entry classes
+// for an appropriate match 
+_EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 @interface GDataFeedBase : GDataObject {
 
@@ -65,7 +78,8 @@
 // subclasses may implement this
 - (NSMutableArray *)itemsForDescription; 
 
-  // subclass should override this
+// subclass may override this to specify an entry class or
+// to return kUseRegisteredEntryClass
 - (Class)classForEntries;
 
 - (BOOL)canPost;

@@ -83,12 +83,12 @@
   if (![other isKindOfClass:[GDataRecurrenceException class]]) return NO;
   
   return [super isEqual:other]
-    && (![self isSpecialized] == ![other isSpecialized]) // !'s to avoid bool compare problems
+    && AreBoolsEqual([self isSpecialized], [other isSpecialized])
     && AreEqualOrBothNil([self entryLink], [other entryLink])
     && AreEqualOrBothNil([self originalEvent], [other originalEvent]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   if ([self isSpecialized]) {
@@ -97,8 +97,7 @@
   [self addToArray:items objectDescriptionIfNonNil:entryLink_ withName:@"entryLink"];
   [self addToArray:items objectDescriptionIfNonNil:originalEvent_ withName:@"originalEvent"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

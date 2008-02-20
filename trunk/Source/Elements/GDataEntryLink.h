@@ -17,8 +17,6 @@
 //  GDataEntryLink.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 @class GDataEntryBase;

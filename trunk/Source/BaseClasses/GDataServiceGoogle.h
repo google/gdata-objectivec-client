@@ -17,8 +17,6 @@
 //  GDataServiceGoogle.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataServiceBase.h"
 
 #undef _EXTERN
@@ -127,6 +125,9 @@ enum {
 // default sign-in domain is www.google.com
 - (NSString *)signInDomain;
 - (void)setSignInDomain:(NSString *)domain;
+
+// subclasses may add headers to the authentication request
+- (NSMutableURLRequest *)authenticationRequestForURL:(NSURL *)url;
 
 // when it's not possible to do http methods other than GET and POST,
 // the X-HTTP-Method-Override header can be used in conjunction with POST

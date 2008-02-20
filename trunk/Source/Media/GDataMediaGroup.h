@@ -17,8 +17,6 @@
 //  GDataMediaGroup.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 #import "GDataTextConstruct.h"
 
@@ -40,6 +38,10 @@ _EXTERN NSString* kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 @class GDataMediaThumbnail;
 @class GDataMediaCredit;
 @class GDataMediaKeywords;
+@class GDataMediaRating;
+@class GDataMediaRestriction;
+@class GDataMediaCategory;
+@class GDataMediaPlayer;
 
 // GDataMediaGroup extension
 @interface GDataMediaDescription : GDataTextConstruct <GDataExtension>
@@ -61,26 +63,28 @@ _EXTERN NSString* kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 
 // TODO:  Currently, just the set needed for Google Photos is implemented
 // Still needed:
-//   MediaCategory
 //   MediaCopyright
 //   MediaHash
-//   MediaPlayer
-//   MediaRating
 //   MediaText
-//   MediaRestriction
 //   
 
 @interface GDataMediaGroup : GDataObject <NSCopying, GDataExtension> {
 }
 
-+ (GDataMediaGroup *)mediaGroup;
++ (id)mediaGroup;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
 
+- (NSMutableArray *)itemsForDescription; // subclasses may implement this;
+
 - (NSXMLElement *)XMLElement;
 
 // extension setters/getters
+
+- (NSArray *)mediaCategories;
+- (void)setMediaCategories:(NSArray *)array;
+- (void)addMediaCategory:(GDataMediaCategory *)attribute;  
 
 - (NSArray *)mediaContents;
 - (void)setMediaContents:(NSArray *)array;
@@ -89,6 +93,18 @@ _EXTERN NSString* kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 - (NSArray *)mediaCredits;
 - (void)setMediaCredits:(NSArray *)array;
 - (void)addMediaCredit:(GDataMediaCredit *)attribute;
+
+- (NSArray *)mediaPlayers;
+- (void)setMediaPlayers:(NSArray *)array;
+- (void)addMediaPlayer:(GDataMediaPlayer *)attribute;
+
+- (NSArray *)mediaRatings;
+- (void)setMediaRatings:(NSArray *)array;
+- (void)addMediaRating:(GDataMediaRating *)attribute;
+
+- (NSArray *)mediaRestrictions;
+- (void)setMediaRestrictions:(NSArray *)array;
+- (void)addMediaRestriction:(GDataMediaRestriction *)attribute;
 
 - (NSArray *)mediaThumbnails;
 - (void)setMediaThumbnails:(NSArray *)array;

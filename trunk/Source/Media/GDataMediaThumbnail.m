@@ -91,7 +91,7 @@
     && AreEqualOrBothNil([self time], [other time]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:urlString_ withName:@"URL"];
@@ -99,8 +99,7 @@
   [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
   [self addToArray:items objectDescriptionIfNonNil:time_ withName:@"time"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

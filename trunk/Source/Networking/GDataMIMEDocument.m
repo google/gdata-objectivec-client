@@ -126,7 +126,7 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
 @implementation GDataMIMEDocument
 
 + (GDataMIMEDocument *)MIMEDocument {
-  return [[[[self class] alloc] init] autorelease];
+  return [[[self alloc] init] autorelease];
 }
 
 - (id)init {

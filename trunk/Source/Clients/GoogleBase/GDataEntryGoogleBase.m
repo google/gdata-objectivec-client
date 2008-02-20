@@ -56,9 +56,9 @@
   return entry;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   
@@ -76,7 +76,7 @@
 }
 
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   if ([self title]) {
@@ -103,8 +103,7 @@
     [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributeList] withName:@"metadataAttributeList"]; 
   }
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (void)dealloc {

@@ -25,7 +25,7 @@ NSString *const kExactTitleParamName  = @"title-exact";
 @implementation GDataQueryDocs
 
 + (GDataQueryDocs *)documentQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 - (NSString *)titleQuery {

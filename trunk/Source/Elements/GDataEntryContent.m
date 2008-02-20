@@ -75,7 +75,7 @@
     && AreEqualOrBothNil([self sourceURI], [other sourceURI]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:content_ withName:@""];
@@ -83,8 +83,7 @@
   [self addToArray:items objectDescriptionIfNonNil:type_    withName:@"type"];
   [self addToArray:items objectDescriptionIfNonNil:src_     withName:@"src"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -17,21 +17,43 @@
 //  GDataIM.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAIM_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN NSString* kGDataIMProtocolAIM        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#AIM");
+_EXTERN NSString* kGDataIMProtocolGoogleTalk _INITIALIZE_AS(@"http://schemas.google.com/g/2005#GOOGLE_TALK");
+_EXTERN NSString* kGDataIMProtocolICQ        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#ICQ");
+_EXTERN NSString* kGDataIMProtocolJabber     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#JABBER");
+_EXTERN NSString* kGDataIMProtocolMSN        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#MSN");
+_EXTERN NSString* kGDataIMProtocolQQ         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#QQ");
+_EXTERN NSString* kGDataIMProtocolSkype      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#SKYPE");
+_EXTERN NSString* kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#YAHOO");
+
 // IM element, as in
-//   <gd:im protocol="sip" address="foo@bar.example.com"/ label="Fred">
+//   <gd:im protocol="http://schemas.google.com/g/2005#MSN" 
+//      address="foo@bar.example.com" label="Alternate"
+//      rel="http://schemas.google.com/g/2005#other" >
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdIm
 
 @interface GDataIM : GDataObject <NSCopying, GDataExtension> {
   NSString *label_;
+  NSString *rel_;
   NSString *address_;
   NSString *protocol_;
+  BOOL isPrimary_;
 }
 + (GDataIM *)IMWithProtocol:(NSString *)protocol
+                        rel:(NSString *)rel
                       label:(NSString *)label
                     address:(NSString *)address;
 
@@ -41,9 +63,16 @@
 
 - (NSString *)address;
 - (void)setAddress:(NSString *)str;
+
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
+
+- (NSString *)rel;
+- (void)setRel:(NSString *)str;
+
 - (NSString *)protocol;
 - (void)setProtocol:(NSString *)str;
 
+- (BOOL)isPrimary;
+- (void)setIsPrimary:(BOOL)flag;
 @end

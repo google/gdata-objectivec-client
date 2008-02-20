@@ -42,9 +42,9 @@
   return namespaces;  
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // common photo extensions
   [self addExtensionDeclarationForParentClass:[self class]

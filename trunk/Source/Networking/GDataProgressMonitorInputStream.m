@@ -24,7 +24,7 @@
 // handled by our superclass; that includes various private run
 // loop calls.
 + (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
-	return [NSInputStream methodSignatureForSelector:selector];
+  return [NSInputStream methodSignatureForSelector:selector];
 }
 
 + (void)forwardInvocation:(NSInvocation*)invocation {  
@@ -32,7 +32,7 @@
 }
 
 - (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
-	return [inputStream_ methodSignatureForSelector:selector];
+  return [inputStream_ methodSignatureForSelector:selector];
 }
 
 - (void)forwardInvocation:(NSInvocation*)invocation {    
@@ -44,7 +44,7 @@
 + (id)inputStreamWithStream:(NSInputStream *)input 
                      length:(unsigned long long)length {
   
-  return [[[[self class] alloc] initWithStream:input 
+  return [[[self alloc] initWithStream:input 
                                         length:length] autorelease];
 }
 

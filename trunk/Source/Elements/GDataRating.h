@@ -17,8 +17,6 @@
 //  GDataRating.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -44,6 +42,8 @@ _EXTERN NSString* kGDataRatingQuality  _INITIALIZE_AS(@"http://schemas.google.co
   NSNumber *value_;
   NSNumber *max_;
   NSNumber *min_;
+  NSNumber *average_;
+  NSNumber *numberOfRaters_;
 }
 
 + (GDataRating *)ratingWithValue:(int)value
@@ -57,10 +57,19 @@ _EXTERN NSString* kGDataRatingQuality  _INITIALIZE_AS(@"http://schemas.google.co
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
-- (NSNumber *)value;
+
+- (NSNumber *)value; // int
 - (void)setValue:(NSNumber *)num;
-- (NSNumber *)max;
+
+- (NSNumber *)max; // int
 - (void)setMax:(NSNumber *)num;
-- (NSNumber *)min;
+
+- (NSNumber *)min; // int
 - (void)setMin:(NSNumber *)num;
+
+- (NSNumber *)average; // double
+- (void)setAverage:(NSNumber *)num;
+
+- (NSNumber *)numberOfRaters; // int
+- (void)setNumberOfRaters:(NSNumber *)num;
 @end

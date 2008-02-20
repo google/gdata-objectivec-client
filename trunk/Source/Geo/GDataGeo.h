@@ -26,8 +26,6 @@
 // GDataGeo is needed.  For a concise example of how to use GDataGeo, see
 // the unit test class GDataGeoTestClass.
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 #undef _EXTERN

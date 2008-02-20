@@ -17,8 +17,6 @@
 //  GDataEntryPhotoComment.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryPhotoBase.h"
 
 @interface GDataEntryPhotoComment : GDataEntryPhotoBase {

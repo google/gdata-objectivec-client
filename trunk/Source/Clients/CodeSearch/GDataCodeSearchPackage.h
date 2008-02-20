@@ -17,7 +17,6 @@
 //  GDataCodeSearchPackage.h
 //
 
-#import <Cocoa/Cocoa.h>
 #import "GDataObject.h"
 
 // For code search packages, like

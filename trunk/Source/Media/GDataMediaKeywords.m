@@ -39,6 +39,15 @@
   return obj;
 }
 
++ (GDataMediaKeywords *)keywordsWithString:(NSString *)str {
+  // takes a string with a comma-separated list of keywords
+  GDataMediaKeywords* obj = [[[GDataMediaKeywords alloc] init] autorelease];
+  
+  NSArray *array = [GDataMediaKeywords keywordsFromString:str];
+  [obj setKeywords:array];
+  return obj;
+}
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
   self = [super initWithXMLElement:element
@@ -72,7 +81,7 @@
     && AreEqualOrBothNil([self keywords], [other keywords]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   NSString *keywordsStr = [GDataMediaKeywords stringFromKeywords:keywords_];
@@ -80,8 +89,7 @@
 
   [self addToArray:items objectDescriptionIfNonNil:keywordsStr withName:@"keywords"];
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

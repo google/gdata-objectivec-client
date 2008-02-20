@@ -76,15 +76,14 @@
     && AreEqualOrBothNil([self lineNumberString], [other lineNumberString]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
   [self addToArray:items objectDescriptionIfNonNil:type_    withName:@"type"];
   [self addToArray:items objectDescriptionIfNonNil:lineNumberString_ withName:@"lineNumber"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -26,11 +26,11 @@
 @implementation GDataFeedSpreadsheetCell
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeed {
-  GDataFeedSpreadsheetCell *feed = [[[[self class] alloc] init] autorelease];
+  GDataFeedSpreadsheetCell *feed = [[[self alloc] init] autorelease];
   [feed setNamespaces:[GDataEntrySpreadsheet spreadsheetNamespaces]];
   return feed;
 }
@@ -43,9 +43,9 @@
                             term:kGDataCategorySpreadsheetCell];
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   

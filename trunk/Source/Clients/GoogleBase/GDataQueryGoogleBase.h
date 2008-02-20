@@ -17,7 +17,6 @@
 //  GDataQueryGoogleBase.h
 //
 
-#import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
 @interface GDataQueryGoogleBase : GDataQuery 

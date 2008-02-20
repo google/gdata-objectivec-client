@@ -17,8 +17,6 @@
 //  GDataColumnCount.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // For rowCount and colCount, like:

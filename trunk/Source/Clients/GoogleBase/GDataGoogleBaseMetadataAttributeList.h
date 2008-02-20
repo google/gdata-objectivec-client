@@ -17,8 +17,6 @@
 //  GDataGoogleBaseMetadataAttributeList.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 #import "GDataGoogleBaseMetadataAttribute.h"
 

@@ -33,37 +33,37 @@
 // and coerce the return type appropriately
 
 + (id)valueWithString:(NSString *)str {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
 
 + (id)valueWithNumber:(NSNumber *)num {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:[num stringValue]];
   return obj;
 }
 
 + (id)valueWithInt:(int)val {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setIntValue:val];
   return obj;
 }
 
 + (id)valueWithLongLong:(long long)val {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setLongLongValue:val];
   return obj;
 }
 
 + (id)valueWithDouble:(double)val {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setDoubleValue:val];
   return obj;
 }
 
 + (id)valueWithBool:(BOOL)flag {
-  GDataValueConstruct* obj = [[[[self class] alloc] init] autorelease];
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setBoolValue:flag];
   return obj;
 }
@@ -107,13 +107,12 @@
     && AreEqualOrBothNil([self stringValue], [other stringValue]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -241,11 +240,27 @@
 }
 @end
 
+// GDataImplicitValueConstruct is for subclasses that want a fixed value
+// because the element is merely present or absent, like <foo:bar/>
+//
+// This derives from GDataValueElementConstruct
+@implementation GDataImplicitValueConstruct
++ (id)implicitValue {
+  GDataImplicitValueConstruct* obj = [[[self alloc] init] autorelease];
+  return obj;
+}
+
+- (NSString *)stringValue {
+  return nil;  // no body
+}
+
+@end
+
 @implementation GDataBoolValueConstruct // derives from GDataValueConstruct
 
 + (id)boolValueWithBool:(BOOL)flag {
   return [super valueWithBool:flag];
 }
 
-
 @end
+

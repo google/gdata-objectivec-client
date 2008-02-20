@@ -17,8 +17,6 @@
 //  GDataQuery.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataCategory.h"
 #import "GDataDateTime.h"
 
@@ -112,7 +110,7 @@
 - (void)setCustomParameters:(NSDictionary *)dict;
 - (void)addCustomParameterWithName:(NSString *)name
                              value:(NSString *)value;
-
+- (void)removeCustomParameterWithName:(NSString *)name;
 
 // result format: Objective-C GData supports only Atom currently
 

@@ -17,8 +17,6 @@
 //  GDataMediaContent.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 
@@ -64,6 +62,7 @@
                   parent:(GDataObject *)parent;
 - (NSXMLElement *)XMLElement;
 
+- (NSMutableArray *)itemsForDescription;
 
 - (NSString *)URLString;
 - (void)setURLString:(NSString *)str;

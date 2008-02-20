@@ -17,8 +17,6 @@
 //  GDataFeedWorksheet.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 
 @interface GDataFeedWorksheet : GDataFeedBase {

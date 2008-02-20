@@ -17,8 +17,6 @@
 //  GDataPhoneNumber.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -58,6 +56,7 @@ _EXTERN NSString* kGDataPhoneNumberOther  _INITIALIZE_AS(@"http://schemas.google
   NSString *label_;
   NSString *uri_;
   NSString *phoneNumber_;
+  BOOL isPrimary_;
 }
 
 + (GDataPhoneNumber *)phoneNumberWithString:(NSString *)str;
@@ -75,4 +74,6 @@ _EXTERN NSString* kGDataPhoneNumberOther  _INITIALIZE_AS(@"http://schemas.google
 - (void)setURI:(NSString *)str;
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
+- (BOOL)isPrimary;
+- (void)setIsPrimary:(BOOL)flag;
 @end

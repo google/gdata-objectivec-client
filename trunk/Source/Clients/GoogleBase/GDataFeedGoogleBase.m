@@ -31,7 +31,7 @@
 }
 
 + (GDataFeedGoogleBase *)googleBaseFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 - (Class)classForEntries {

@@ -27,7 +27,7 @@ NSString *const kBQParamName = @"bq";
 
 
 + (GDataQueryGoogleBase *)googleBaseQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 - (NSString *)googleBaseQuery {
