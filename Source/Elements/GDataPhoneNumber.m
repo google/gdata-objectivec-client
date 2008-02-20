@@ -49,6 +49,8 @@
                                     fromElement:element]];
     [self setURI:[self stringForAttributeName:@"uri"
                                   fromElement:element]];
+    [self setIsPrimary:[self boolForAttributeName:@"primary"
+                                      fromElement:element]];
     
     [self setStringValue:[self stringValueFromElement:element]];
   }
@@ -69,6 +71,7 @@
   [newObj setURI:uri_];
   [newObj setRel:rel_];
   [newObj setStringValue:phoneNumber_];
+  [newObj setIsPrimary:isPrimary_];
   return newObj;
 }
 
@@ -80,10 +83,11 @@
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self URI], [other URI])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
+    && AreEqualOrBothNil([self stringValue], [other stringValue])
+    && AreBoolsEqual([self isPrimary], [other isPrimary]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
@@ -91,8 +95,9 @@
   [self addToArray:items objectDescriptionIfNonNil:uri_ withName:@"uri"];
   [self addToArray:items objectDescriptionIfNonNil:phoneNumber_ withName:@"phoneNumber"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  if (isPrimary_) [items addObject:@"primary"];
+  
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -102,6 +107,10 @@
   [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
   [self addToElement:element attributeValueIfNonNil:[self URI] withName:@"uri"];
+  
+  if ([self isPrimary]) {
+    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
+  }
 
   if ([self stringValue]) {
     [element addStringValue:[self stringValue]];
@@ -146,4 +155,11 @@
   phoneNumber_ = [str copy];
 }
 
+- (BOOL)isPrimary {
+  return isPrimary_; 
+}
+
+- (void)setIsPrimary:(BOOL)flag {
+  isPrimary_ = flag;
+}
 @end

@@ -22,8 +22,12 @@
 
 #import "GDataMediaContent.h"
 #import "GDataMediaCredit.h"
+#import "GDataMediaPlayer.h"
 #import "GDataMediaThumbnail.h"
 #import "GDataMediaKeywords.h"
+#import "GDataMediaCategory.h"
+#import "GDataMediaRating.h"
+#import "GDataMediaRestriction.h"
 
 // we'll define MediaDescription and MediaTitle here, since they're
 // just derived classes of GDataTextConstruct
@@ -51,23 +55,30 @@
 
 #pragma mark -
 
-+ (GDataMediaGroup *)mediaGroup {
++ (id)mediaGroup {
                       
-  GDataMediaGroup *obj = [[[GDataMediaGroup alloc] init] autorelease];
+  GDataMediaGroup *obj = [[[self alloc] init] autorelease];
   return obj;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
-  // media:group may contain media:content
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataMediaContent class]];  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataMediaCategory class]];  
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataMediaCredit class]];  
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataMediaDescription class]];  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataMediaPlayer class]];  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataMediaRating class]];  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataMediaRestriction class]];  
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataMediaThumbnail class]];  
   [self addExtensionDeclarationForParentClass:[self class]
@@ -76,8 +87,7 @@
                                    childClass:[GDataMediaTitle class]];  
   
   // still unsupported:
-  // MediaCategory, MediaCopyright, MediaHash, MediaPlayer, MediaRating,
-  // MediaText, MediaRestriction
+  // MediaCopyright, MediaHash, MediaText
 }
 
 - (id)initWithXMLElement:(NSXMLElement *)element
@@ -105,18 +115,21 @@
   return [super isEqual:other];
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
+  
   NSMutableArray *items = [NSMutableArray array];
   
+  [self addToArray:items objectDescriptionIfNonNil:[self mediaCategories] withName:@"categories"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaContents] withName:@"contents"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaCredits] withName:@"credits"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaThumbnails] withName:@"thumbnails"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaKeywords] withName:@"keywords"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaDescription] withName:@"description"];
+  [self addToArray:items objectDescriptionIfNonNil:[self mediaPlayers] withName:@"players"];
+  [self addToArray:items objectDescriptionIfNonNil:[self mediaRatings] withName:@"ratings"];
   [self addToArray:items objectDescriptionIfNonNil:[self mediaTitle] withName:@"title"];
-  
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -130,6 +143,21 @@
 // there are many more possible extensions; see MediaGroup.java
 //
 // Initially, we're just supporting the ones needed for Google Photos
+
+// MediaCategories
+
+- (NSArray *)mediaCategories {
+  NSArray *array = [self objectsForExtensionClass:[GDataMediaCategory class]];
+  return array;
+}
+
+- (void)setMediaCategories:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataMediaCategory class]]; 
+}
+
+- (void)addMediaCategory:(GDataMediaCategory *)attribute {
+  [self addObject:attribute forExtensionClass:[GDataMediaCategory class]]; 
+}
 
 // MediaContents
 
@@ -159,6 +187,51 @@
 
 - (void)addMediaCredit:(GDataMediaCredit *)attribute {
   [self addObject:attribute forExtensionClass:[GDataMediaCredit class]]; 
+}
+
+// MediaPlayers
+
+- (NSArray *)mediaPlayers {
+  NSArray *array = [self objectsForExtensionClass:[GDataMediaPlayer class]];
+  return array;
+}
+
+- (void)setMediaPlayers:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataMediaPlayer class]]; 
+}
+
+- (void)addMediaPlayer:(GDataMediaPlayer *)attribute {
+  [self addObject:attribute forExtensionClass:[GDataMediaPlayer class]]; 
+}
+
+// MediaRatings
+
+- (NSArray *)mediaRatings {
+  NSArray *array = [self objectsForExtensionClass:[GDataMediaRating class]];
+  return array;
+}
+
+- (void)setMediaRatings:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataMediaRating class]]; 
+}
+
+- (void)addMediaRating:(GDataMediaRating *)attribute {
+  [self addObject:attribute forExtensionClass:[GDataMediaRating class]]; 
+}
+
+// MediaRatings
+
+- (NSArray *)mediaRestrictions {
+  NSArray *array = [self objectsForExtensionClass:[GDataMediaRestriction class]];
+  return array;
+}
+
+- (void)setMediaRestrictions:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataMediaRestriction class]]; 
+}
+
+- (void)addMediaRestriction:(GDataMediaRestriction *)attribute {
+  [self addObject:attribute forExtensionClass:[GDataMediaRestriction class]]; 
 }
 
 // MediaThumbnails

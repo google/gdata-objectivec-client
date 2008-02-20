@@ -17,8 +17,6 @@
 //  GDataMediaCredit.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // like <media:credit role="producer" scheme="urn:ebu">entity name</media:credit>

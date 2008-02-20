@@ -53,6 +53,10 @@
                                      fromElement:element]];
     [self setMin:[self intNumberForAttributeName:@"min"
                                      fromElement:element]];
+    [self setAverage:[self doubleNumberForAttributeName:@"average"
+                                         fromElement:element]];
+    [self setNumberOfRaters:[self intNumberForAttributeName:@"numRaters"
+                                                fromElement:element]];
   }
   return self;
 }
@@ -62,6 +66,8 @@
   [value_ release];
   [max_ release];
   [min_ release];
+  [average_ release];
+  [numberOfRaters_ release];
   [super dealloc];
 }
 
@@ -71,6 +77,8 @@
   [newObj setValue:value_];
   [newObj setMax:max_];
   [newObj setMin:min_];
+  [newObj setAverage:average_];
+  [newObj setNumberOfRaters:numberOfRaters_];
   return newObj;
 }
 
@@ -82,19 +90,22 @@
     && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self value], [other value])
     && AreEqualOrBothNil([self max], [other max])
-    && AreEqualOrBothNil([self min], [other min]);
+    && AreEqualOrBothNil([self min], [other min])
+    && AreEqualOrBothNil([self average], [other average])
+    && AreEqualOrBothNil([self numberOfRaters], [other numberOfRaters]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
   [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
   [self addToArray:items objectDescriptionIfNonNil:max_ withName:@"max"];
   [self addToArray:items objectDescriptionIfNonNil:min_ withName:@"min"];
+  [self addToArray:items objectDescriptionIfNonNil:average_ withName:@"average"];
+  [self addToArray:items objectDescriptionIfNonNil:numberOfRaters_ withName:@"numberOfRaters"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -105,6 +116,8 @@
   [self addToElement:element attributeValueIfNonNil:[[self value] stringValue] withName:@"value"];
   [self addToElement:element attributeValueIfNonNil:[[self max] stringValue] withName:@"max"];
   [self addToElement:element attributeValueIfNonNil:[[self min] stringValue] withName:@"min"];
+  [self addToElement:element attributeValueIfNonNil:[[self average] stringValue] withName:@"average"];
+  [self addToElement:element attributeValueIfNonNil:[[self numberOfRaters] stringValue] withName:@"numRaters"];
   
   return element;
 }
@@ -143,6 +156,24 @@
 - (void)setMin:(NSNumber *)num {
   [min_ autorelease];
   min_ = [num copy];
+}
+
+- (NSNumber *)average {
+  return average_; 
+}
+
+- (void)setAverage:(NSNumber *)num {
+  [average_ autorelease];
+  average_ = [num copy];
+}
+
+- (NSNumber *)numberOfRaters {
+  return numberOfRaters_; 
+}
+
+- (void)setNumberOfRaters:(NSNumber *)num {
+  [numberOfRaters_ autorelease];
+  numberOfRaters_ = [num copy];
 }
 
 @end

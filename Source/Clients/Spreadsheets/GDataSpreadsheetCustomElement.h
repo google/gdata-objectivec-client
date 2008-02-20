@@ -14,7 +14,6 @@
 */
 
 
-#import <Cocoa/Cocoa.h>
 #import "GDataObject.h"
 
 // arbitrary spreadsheet custom tag, like

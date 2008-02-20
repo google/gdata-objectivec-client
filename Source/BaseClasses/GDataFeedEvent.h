@@ -17,8 +17,6 @@
 //  GDataFeedEvent.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedBase.h"
 
 @interface GDataFeedEvent : GDataFeedBase {

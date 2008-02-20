@@ -207,6 +207,15 @@
       
       NSString *result = [GDataElementsTest valueInObject:obj2 forKeyPathIncludingArrays:keyPath];
       
+      // if the result wasn't a string but responds to stringValue, then
+      // invoke that to get a string
+      if ([expectedValue isKindOfClass:[NSString class]]
+          && ![result isKindOfClass:[NSString class]]
+          && [result respondsToSelector:@selector(stringValue)]) {
+        
+        result = [(id)result stringValue];     
+      }      
+      
       STAssertTrue(AreEqualOrBothNil(result, expectedValue), 
                    @"failed %@ testing key path %@:\n %@ \n!= \n %@", 
                    obj2, keyPath, result, expectedValue);
@@ -280,7 +289,7 @@
     { @"labelLang", @"myLanguage" },
     { @"unknownAttributes.0.XMLString", @"unkAttr=\"ABCDE\"" },
     { @"unknownAttributes.1.XMLString", @"unkAttr2=\"EFGHI\"" },
-    { @"unknownAttributes.@count.stringValue", @"2" },
+    { @"unknownAttributes.@count", @"2" },
     { @"", @"" },
       
     { @"GDataComment", @"<gd:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
@@ -290,12 +299,12 @@
     { @"feedLink.href", @"http://example.com/restaurants/SanFrancisco/432432/reviews" },
     { @"unknownChildren.0.XMLString", @"<unkElement foo=\"bar\"></unkElement>" },
     { @"unknownChildren.1.XMLString", @"<unkElement2></unkElement2>" },
-    { @"unknownChildren.@count.stringValue", @"2" },
+    { @"unknownChildren.@count", @"2" },
     { @"", @"" },
     
     { @"GDataDeleted", @"<gd:deleted/>" },
-    { @"unknownAttributes.@count.stringValue", @"0" },
-    { @"unknownChildren.@count.stringValue", @"0" },
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
     { @"", @"" },
     
     { @"GDataContactSection", @"<gd:contactSection label=\"Work\"> "
@@ -307,18 +316,19 @@
       "<gd:im protocol=\"sip\" address=\"foo@bar.example.com\"/>"
       "<gd:im protocol=\"aim\" address=\"fred the monster\"/> </gd:contactSection>" },
     { @"emails.0.address", @"jo@example.com" },
-    { @"phoneNumbers.0.stringValue", @"(650) 555-1212" },
-    { @"phoneNumbers.1.stringValue", @"(650) 555-1214" },
+    { @"phoneNumbers.0", @"(650) 555-1212" },
+    { @"phoneNumbers.1", @"(650) 555-1214" },
     { @"geoPts.0.label", @"fuzz" },
-    { @"geoPts.0.lat.stringValue", @"37.42" },
+    { @"geoPts.0.lat", @"37.42" },
     { @"geoPts.0.time.RFC3339String", @"2006-11-28T08:00:00-08:00" },
     { @"IMs.0.address", @"foo@bar.example.com" },
     { @"IMs.1.protocol", @"aim" },
     { @"", @"" },
         
-    { @"GDataEmail", @"<gd:email label=\"Personal\" address=\"fubar@gmail.com\" />" },
+    { @"GDataEmail", @"<gd:email label=\"Personal\" address=\"fubar@gmail.com\" primary='true' />" },
     { @"label", @"Personal" },
     { @"address", @"fubar@gmail.com" },
+    { @"primary", @"1" },
     { @"", @"" },
     
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>" },
@@ -329,17 +339,17 @@
     { @"GDataFeedLink", @"<gd:feedLink href='http://example.com/Jo/posts/MyFirstPost/comments' "
       "countHint=\"10\" readOnly=\"true\" />" },
     { @"href", @"http://example.com/Jo/posts/MyFirstPost/comments" },
-    { @"countHint.stringValue", @"10" },
-    { @"isReadOnly.stringValue", @"1" },
+    { @"countHint", @"10" },
+    { @"isReadOnly", @"1" },
     { @"", @"" },
       
     // testing an inline feedLink
     { @"GDataFeedLink", inlinedFeedLinkStr },
     { @"href", nil },
-    { @"isReadOnly.stringValue", @"0" },
+    { @"isReadOnly", @"0" },
     { @"feed.categories.0.term", kGDataCategorySpreadsheetCell },
-    { @"feed.columnCount.stringValue", @"20" },
-    { @"feed.entries.0.cell.column.stringValue", @"1" },
+    { @"feed.columnCount", @"20" },
+    { @"feed.entries.0.cell.column", @"1" },
     { @"", @"" },
     
     
@@ -351,16 +361,19 @@
     
     { @"GDataGeoPt", @"<gd:geoPt lat=\"27.98778\" lon=\"86.94444\" elev=\"8850.0\" label=\"My GeoPt\" time=\"1996-12-19T16:39:57-08:00\"/>" },
     { @"label", @"My GeoPt" },
-    { @"lat.stringValue", @"27.98778" },
-    { @"lon.stringValue", @"86.94444" },
-    { @"elev.stringValue", @"8850" },
+    { @"lat", @"27.98778" },
+    { @"lon", @"86.94444" },
+    { @"elev", @"8850" },
     { @"time.RFC3339String", @"1996-12-19T16:39:57-08:00" },
     { @"", @"" },
       
-    { @"GDataIM", @"<gd:im protocol='sip' address='foo@bar.example.com' label='fred' />" },
-    { @"protocol", @"sip" },
+    { @"GDataIM", @"<gd:im protocol='http://schemas.google.com/g/2005#MSN' "
+       "address='foo@bar.example.com' label='Alternate' primary='true' rel='http://schemas.google.com/g/2005#other' />" },
+    { @"protocol", kGDataIMProtocolMSN },
     { @"address", @"foo@bar.example.com" },
-    { @"label", @"fred" },
+    { @"label", @"Alternate" },
+    { @"primary", @"1" },
+    { @"rel", @"http://schemas.google.com/g/2005#other" },
     { @"", @"" },
     
     { @"GDataLink", @"<link rel='alternate' type='text/html' "
@@ -390,23 +403,27 @@
     { @"", @"" },
     
     { @"GDataPhoneNumber", @"<gd:phoneNumber rel='http://schemas.google.com/g/2005#work' "
-      "label='work' uri='tel:+1-425-555-8080;ext=52585'>(425) 555-8080 ext. 52585</gd:phoneNumber>" },
+      "label='work' uri='tel:+1-425-555-8080;ext=52585' primary='true'>(425) 555-8080 ext. 52585</gd:phoneNumber>" },
     { @"rel", kGDataPhoneNumberWork },
     { @"URI", @"tel:+1-425-555-8080;ext=52585" },
     { @"label", @"work" },
+    { @"primary", @"1" },
     { @"stringValue", @"(425) 555-8080 ext. 52585" },
     { @"", @"" },
     
-    { @"GDataPostalAddress", @"<gd:postalAddress label='work'>500 West 45th Street\nNew York, NY 10036</gd:postalAddress>" },
+    { @"GDataPostalAddress", @"<gd:postalAddress label='work' primary='true'>500 West 45th Street\nNew York, NY 10036</gd:postalAddress>" },
     { @"label", @"work" },
+    { @"primary", @"1" },
     { @"stringValue", @"500 West 45th Street\nNew York, NY 10036" },
     { @"", @"" },
     
-    { @"GDataRating", @"<gd:rating rel='http://schemas.google.com/g/2005#price' value='5' min='1' max='5' />" },
+    { @"GDataRating", @"<gd:rating rel='http://schemas.google.com/g/2005#price' value='5' min='1' max='5' average='2.3' numRaters='132' />" },
     { @"rel", kGDataRatingPrice },
-    { @"value.stringValue", @"5" },
-    { @"min.stringValue", @"1" }, 
-    { @"max.stringValue", @"5" },
+    { @"value", @"5" },
+    { @"min", @"1" }, 
+    { @"max", @"5" },
+    { @"average", @"2.3" },
+    { @"numberOfRaters", @"132" },
     { @"", @"" },
 
     { @"GDataRecurrence", @"<gd:recurrence>DTSTART;TZID=America/Los_Angeles:200"
@@ -418,9 +435,9 @@
       "href='http://gmail.com/jo/contacts/Jo' readOnly='true' /> "
       "<gd:originalEvent id='i8fl1nrv2bl57c1qgr3f0onmgg' href='http://www.google.com/href' >"
       "<gd:when startTime=\"2007-05-01T00:00:00.000Z\"/>  </gd:originalEvent></gd:recurrenceException>" },
-    { @"isSpecialized.stringValue", @"1" },
+    { @"isSpecialized", @"1" },
     { @"entryLink.href", @"http://gmail.com/jo/contacts/Jo" },
-    { @"entryLink.isReadOnly.stringValue", @"1" },
+    { @"entryLink.isReadOnly", @"1" },
     { @"originalEvent.originalID", @"i8fl1nrv2bl57c1qgr3f0onmgg" },
     { @"originalEvent.originalStartTime.startTime.RFC3339String", @"2007-05-01T00:00:00Z" },
     { @"", @"" },
@@ -445,11 +462,11 @@
     { @"", @"" },
 
     { @"GDataValueConstruct", @"<myValue value='1.51'/>" },
-    { @"doubleValue.stringValue", @"1.51" },
+    { @"doubleValue", @"1.51" },
     { @"", @"" },
       
     { @"GDataValueConstruct", @"<myValue value='987654321987'/>" },
-    { @"longLongValue.stringValue", @"987654321987" },
+    { @"longLongValue", @"987654321987" },
     { @"", @"" },
     
     { @"GDataValueElementConstruct", @"<gCal:timezone>America/Los_Angeles</gCal:timezone>" },
@@ -457,7 +474,7 @@
     { @"", @"" },
           
     { @"GDataBoolValueConstruct", @"<construct value='true'/>" },
-    { @"boolValue.stringValue", @"1" },
+    { @"boolValue", @"1" },
     { @"", @"" },
     
     { @"GDataEntryContent", @"<content src='http://lh.google.com/image/Car.jpg' type='image/jpeg'/>" },
@@ -476,8 +493,8 @@
       "<gCal:webContentGadgetPref name='color' value='green' />"
       "<gCal:webContentGadgetPref name='sin' value='greed' /></gCal:webContent>" },
       
-    { @"height.stringValue", @"136" },
-    { @"width.stringValue", @"300" },
+    { @"height", @"136" },
+    { @"width", @"300" },
     { @"URLString", @"http://google.com/ig/modules/datetime.xml" },
 
     { @"gadgetPreferences.0.name", @"color" },
@@ -512,15 +529,15 @@
     { @"rel", kGDataWhoEventAttendee },
     { @"stringValue", @"Jo" },
     { @"email", @"jo@gmail.com" },
-    { @"attendeeType.stringValue", kGDataWhoAttendeeTypeRequired },
-    { @"attendeeStatus.stringValue", kGDataEventStatusTentative },
+    { @"attendeeType", kGDataWhoAttendeeTypeRequired },
+    { @"attendeeStatus", kGDataEventStatusTentative },
     { @"entryLink.href", @"http://gmail.com/jo/contacts/Jo" },
-    { @"entryLink.isReadOnly.stringValue", @"1" },
+    { @"entryLink.isReadOnly", @"1" },
     { @"", @"" },
     
     // Atom publishing control
     { @"GDataAtomPubControl", @"<app:control><app:draft>Yes</app:draft></app:control>" },
-    { @"isDraft.stringValue", @"1" },
+    { @"isDraft", @"1" },
     { @"", @"" },
     
     // Batch elements
@@ -534,14 +551,14 @@
     
     { @"GDataBatchStatus", @"<batch:status  code='404' reason='Bad request' "
                           "content-type='application-text'>error</batch:status>" },
-    { @"code.stringValue", @"404" },
+    { @"code", @"404" },
     { @"reason", @"Bad request" },
     { @"contentType", @"application-text" },
     { @"stringValue", @"error" },
     { @"", @"" },
     
     { @"GDataBatchStatus", @"<batch:status  code='200' />" },
-    { @"code.stringValue", @"200" },
+    { @"code", @"200" },
     { @"reason", nil },
     { @"contentType", nil },
     { @"stringValue", @"" },
@@ -549,9 +566,9 @@
 
     { @"GDataBatchInterrupted", @"<batch:interrupted reason='no good reason' success='3' failures='4' parsed='7' />" },
     { @"reason", @"no good reason" },
-    { @"successCount.stringValue", @"3" },
-    { @"errorCount.stringValue", @"4" },
-    { @"totalCount.stringValue", @"7" },
+    { @"successCount", @"3" },
+    { @"errorCount", @"4" },
+    { @"totalCount", @"7" },
     { @"contentType", nil },
     { @"stringValue", @"" },
     { @"", @"" },
@@ -567,7 +584,7 @@
   ElementTestKeyPathValues tests[] =
   {     
     { @"GDataGoogleBaseMetadataValue", @"<gm:value count='87269'>product fluggy</gm:value>>" },
-    { @"count.stringValue", @"87269" },
+    { @"count", @"87269" },
     { @"contents", @"product fluggy" },
     { @"", @"" },
       
@@ -576,9 +593,9 @@
       " </gm:attribute>" },
     { @"type", @"text" },
     { @"name", @"item type" },
-    { @"count.stringValue", @"116353" },
-    { @"values.@count.stringValue", @"2" },
-    { @"values.1.count.stringValue", @"2401" },
+    { @"count", @"116353" },
+    { @"values.@count", @"2" },
+    { @"values.1.count", @"2401" },
     { @"values.1.contents", @"produkte" },
     { @"", @"" },
       
@@ -586,7 +603,7 @@
       "<gm:attribute name='location' type='location' />"
       "<gm:attribute name='delivery radius' type='floatUnit' />"
       "<gm:attribute name='payment' type='text' />       </gm:attributes>" },
-    { @"attributes.@count.stringValue", @"3" },
+    { @"attributes.@count", @"3" },
     { @"attributes.0.name", @"location" },
     { @"attributes.2.type", @"text" },
     { @"", @"" },
@@ -616,19 +633,19 @@
     { @"GDataSpreadsheetCell", @"<gs:cell row='2' col='4' "
       " inputValue='=FLOOR(R[0]C[-1]/(R[0]C[-2]*60),.0001)'"
       " numericValue='0.0066'>0.0033</gs:cell>" },
-    { @"row.stringValue", @"2" },
-    { @"column.stringValue", @"4" },
+    { @"row", @"2" },
+    { @"column", @"4" },
     { @"inputString", @"=FLOOR(R[0]C[-1]/(R[0]C[-2]*60),.0001)" },
-    { @"numericValue.stringValue", @"0.0066" },
+    { @"numericValue", @"0.0066" },
     { @"resultString", @"0.0033" },
     { @"", @"" },
       
     { @"GDataRowCount", @"<gs:rowCount>100</gs:rowCount>" },
-    { @"count.stringValue", @"100" },
+    { @"count", @"100" },
     { @"", @"" },
       
     { @"GDataColumnCount", @"<gs:colCount>99</gs:colCount>" },
-    { @"count.stringValue", @"99" },
+    { @"count", @"99" },
     { @"", @"" },
       
     { @"GDataSpreadsheetCustomElement", @"<gsx:e-mail>fitzy@gmail.com</gsx:e-mail>" }, 
@@ -685,33 +702,33 @@
         " channels='2' duration='185' height='200' width='300' "
         " lang='en' />" },
     { @"URLString", @"http://www.foo.com/movie.mov" },
-    { @"fileSize.stringValue", @"12216320" },
+    { @"fileSize", @"12216320" },
     { @"type", @"video/quicktime" },
     { @"medium", @"video" },
-    { @"isDefault.stringValue", @"1" },
+    { @"isDefault", @"1" },
     { @"expression", @"full" },
-    { @"bitrate.stringValue", @"128" },
-    { @"framerate.stringValue", @"25.1" },
-    { @"samplingrate.stringValue", @"44.1" },
-    { @"channels.stringValue", @"2" },
-    { @"duration.stringValue", @"185" },
-    { @"height.stringValue", @"200" },
-    { @"width.stringValue", @"300" },
+    { @"bitrate", @"128" },
+    { @"framerate", @"25.1" },
+    { @"samplingrate", @"44.1" },
+    { @"channels", @"2" },
+    { @"duration", @"185" },
+    { @"height", @"200" },
+    { @"width", @"300" },
     { @"lang", @"en" },
     { @"", @"" },
     
     { @"GDataMediaThumbnail", @"<media:thumbnail url='http://www.foo.com/keyframe.jpg' "
           " width='75' height='50' time='12:05:01.123' />" },
     { @"URLString", @"http://www.foo.com/keyframe.jpg" },
-    { @"width.stringValue", @"75" },
-    { @"height.stringValue", @"50" },
-    { @"time.timeOffsetInMilliseconds.stringValue", @"43501123" },
+    { @"width", @"75" },
+    { @"height", @"50" },
+    { @"time.timeOffsetInMilliseconds", @"43501123" },
     { @"", @"" },
     
     { @"GDataMediaKeywords", @"<media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>" },
     { @"keywords.0", @"kitty" },
     { @"keywords.2", @"big dog" },
-    { @"keywords.@count.stringValue", @"5" },
+    { @"keywords.@count", @"5" },
     { @"", @"" },
     
     { @"GDataMediaCredit", @"<media:credit role='producer' scheme='urn:ebu'>entity name</media:credit>" },
@@ -719,7 +736,30 @@
     { @"scheme", @"urn:ebu" },
     { @"stringValue", @"entity name" },
     { @"", @"" },
-    
+      
+    { @"GDataMediaCategory", @"<media:category label='fred' scheme='urn:ebu'>entity name</media:category>" },
+    { @"label", @"fred" },
+    { @"scheme", @"urn:ebu" },
+    { @"stringValue", @"entity name" },
+    { @"", @"" },
+      
+    { @"GDataMediaRating", @"<media:rating scheme='simple'>adult</media:rating>" },
+    { @"scheme", @"simple" },
+    { @"stringValue", @"adult" },
+    { @"", @"" },
+      
+    { @"GDataMediaPlayer", @"<media:player url='http://www.foo.com/player?id=1111' height='200' width='400' />" },
+    { @"height", @"200" },
+    { @"width", @"400" },
+    { @"URLString", @"http://www.foo.com/player?id=1111" },
+    { @"", @"" },
+      
+    { @"GDataMediaRestriction", @"<media:restriction relationship='allow' type='country'>au us</media:restriction>" },
+    { @"relationship", @"allow" },
+    { @"type", @"country" },
+    { @"stringValue", @"au us" },
+    { @"", @"" },
+      
     { nil, nil }
   };
   
@@ -736,12 +776,12 @@
     { @"", @"" },
       
     { @"GDataPhotoCommentCount", @"<gphoto:commentCount>11</gphoto:commentCount>" },
-    { @"intValue.stringValue", @"11" }, // test the int accessor
+    { @"intValue", @"11" }, // test the int accessor
     { @"", @"" },
       
     { @"GDataPhotoCommentingEnabled", @"<gphoto:commentingEnabled>true</gphoto:commentingEnabled>" },
     { @"stringValue", @"true" },
-    { @"boolValue.stringValue", @"1" }, // test the bool accessor, too
+    { @"boolValue", @"1" }, // test the bool accessor, too
     { @"", @"" },
       
     { @"GDataPhotoGPhotoID", @"<gphoto:id>512131187</gphoto:id>" },
@@ -749,7 +789,7 @@
     { @"", @"" },
       
     { @"GDataPhotoMaxPhotosPerAlbum", @"<gphoto:maxPhotosPerAlbum>1000</gphoto:maxPhotosPerAlbum>" },
-    { @"intValue.stringValue", @"1000" },
+    { @"intValue", @"1000" },
     { @"", @"" },
       
     { @"GDataPhotoNickname", @"<gphoto:nickname>Jane Smith</gphoto:nickname>" },
@@ -757,11 +797,11 @@
     { @"", @"" },
       
     { @"GDataPhotoQuotaUsed", @"<gphoto:quotacurrent>312459331</gphoto:quotacurrent>" },
-    { @"longLongValue.stringValue", @"312459331" },
+    { @"longLongValue", @"312459331" },
     { @"", @"" },
       
     { @"GDataPhotoQuotaLimit", @"<gphoto:quotalimit>1385222385</gphoto:quotalimit>" },
-    { @"longLongValue.stringValue", @"1385222385" },
+    { @"longLongValue", @"1385222385" },
     { @"", @"" },
       
     { @"GDataPhotoThumbnail", @"<gphoto:thumbnail>http://picasaweb.google.com/image/.../Hello.jpg</gphoto:thumbnail>" },
@@ -777,7 +817,7 @@
     { @"", @"" },
 
     { @"GDataPhotoBytesUsed", @"<gphoto:bytesUsed>11876307</gphoto:bytesUsed>" },
-    { @"longLongValue.stringValue", @"11876307" },
+    { @"longLongValue", @"11876307" },
     { @"", @"" },
       
     { @"GDataPhotoLocation", @"<gphoto:location>Tokyo, Japan</gphoto:location>" },
@@ -789,11 +829,11 @@
     { @"", @"" },
       
     { @"GDataPhotoNumberUsed", @"<gphoto:numphotos>237</gphoto:numphotos>" },
-    { @"intValue.stringValue", @"237" },
+    { @"intValue", @"237" },
     { @"", @"" },
       
     { @"GDataPhotoNumberLeft", @"<gphoto:numphotosremaining>763</gphoto:numphotosremaining>" },
-    { @"intValue.stringValue", @"763" },
+    { @"intValue", @"763" },
     { @"", @"" },
       
     { @"GDataPhotoChecksum", @"<gphoto:checksum>987123</gphoto:checksum>" },
@@ -805,23 +845,23 @@
     { @"", @"" },
       
     { @"GDataPhotoHeight", @"<gphoto:height>1200</gphoto:height>" },
-    { @"longLongValue.stringValue", @"1200" },
+    { @"longLongValue", @"1200" },
     { @"", @"" },
       
     { @"GDataPhotoPosition", @"<gphoto:position>10</gphoto:position>" },
-    { @"intValue.stringValue", @"10" },
+    { @"intValue", @"10" },
     { @"", @"" },
       
     { @"GDataPhotoRotation", @"<gphoto:rotation>90</gphoto:rotation>" },
-    { @"intValue.stringValue", @"90" },
+    { @"intValue", @"90" },
     { @"", @"" },
       
     { @"GDataPhotoSize", @"<gphoto:size>149351</gphoto:size>" },
-    { @"longLongValue.stringValue", @"149351" },
+    { @"longLongValue", @"149351" },
     { @"", @"" },
       
     { @"GDataPhotoTimestamp", @"<gphoto:timestamp>1168640584000</gphoto:timestamp>" },
-    { @"longLongValue.stringValue", @"1168640584000" },
+    { @"longLongValue", @"1168640584000" },
     { @"", @"" },
       
     { @"GDataPhotoVersion", @"<gphoto:version>v22838</gphoto:version>" },
@@ -829,7 +869,7 @@
     { @"", @"" },
       
     { @"GDataPhotoWidth", @"<gphoto:width>1600</gphoto:width>" },
-    { @"longLongValue.stringValue", @"1600" },
+    { @"longLongValue", @"1600" },
     { @"", @"" },
       
     { @"GDataPhotoPhotoID", @"<gphoto:photoid>301521187</gphoto:photoid>" },
@@ -837,7 +877,7 @@
     { @"", @"" },
       
     { @"GDataPhotoWeight", @"<gphoto:weight>3</gphoto:weight>" },
-    { @"intValue.stringValue", @"3" },
+    { @"intValue", @"3" },
     { @"", @"" },
     
     { @"GDataEXIFTags", @"<exif:tags><exif:fstop>0.0</exif:fstop>"
@@ -845,7 +885,7 @@
       "<exif:distance>0.0</exif:distance><exif:exposure>0.0</exif:exposure>"
       "<exif:model>Second Model</exif:model><exif:flash>true</exif:flash>"
       "</exif:tags>" }, // intentional second copy of "model" tag
-    { @"tags.@count.stringValue", @"7" },
+    { @"tags.@count", @"7" },
     { @"tagDictionary.make", @"Nokia" },
     { @"tagDictionary.model", @"6133" }, // first instance of "model" tag
     { @"", @"" },
@@ -864,20 +904,20 @@
     // to instantiate
     { @"GDataGeoW3CPoint", @"<geo:Point><geo:lat>55.701</geo:lat>"
         "<geo:long>12.552</geo:long></geo:Point>" },
-    { @"latitude.stringValue", @"55.701" },
-    { @"longitude.stringValue", @"12.552" },
-    { @"isPoint.stringValue", @"1" },
+    { @"latitude", @"55.701" },
+    { @"longitude", @"12.552" },
+    { @"isPoint", @"1" },
     { @"", @"" },
       
     { @"GDataGeoRSSPoint", @"<georss:point>45.256 -71.92</georss:point>" },
-    { @"latitude.stringValue", @"45.256" },
-    { @"longitude.stringValue", @"-71.92" },
+    { @"latitude", @"45.256" },
+    { @"longitude", @"-71.92" },
     { @"", @"" },
       
     { @"GDataGeoRSSWhere", @"<georss:where><gml:Point><gml:pos>45.256 -71.92"
         "</gml:pos></gml:Point></georss:where>" },
-    { @"latitude.stringValue", @"45.256" },
-    { @"longitude.stringValue", @"-71.92" },
+    { @"latitude", @"45.256" },
+    { @"longitude", @"-71.92" },
     { @"", @"" },
     
     // test GDataGeo for implicit types - here we use
@@ -887,20 +927,20 @@
     // GDataGeoTestClass is defined below in this file
     { @"GDataGeoTestClass", @"<GDataGeoTestClass><geo:Point><geo:lat>55.701</geo:lat>" // W3CPoint
         "<geo:long>12.552</geo:long></geo:Point></GDataGeoTestClass>" },
-    { @"geoLocation.latitude.stringValue", @"55.701" },
-    { @"geoLocation.longitude.stringValue", @"12.552" },
+    { @"geoLocation.latitude", @"55.701" },
+    { @"geoLocation.longitude", @"12.552" },
     { @"", @"" },
       
     { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:point>0.256 -71.92"
         "</georss:point></GDataGeoTestClass>" }, // RSSPoint
-    { @"geoLocation.latitude.stringValue", @"0.256" },
-    { @"geoLocation.longitude.stringValue", @"-71.92" },
+    { @"geoLocation.latitude", @"0.256" },
+    { @"geoLocation.longitude", @"-71.92" },
     { @"", @"" },
       
     { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:where><gml:Point><gml:pos>-1.256 -71.92" // RSSWhere
       "</gml:pos></gml:Point></georss:where></GDataGeoTestClass>" },
-    { @"geoLocation.latitude.stringValue", @"-1.256" },
-    { @"geoLocation.longitude.stringValue", @"-71.92" },
+    { @"geoLocation.latitude", @"-1.256" },
+    { @"geoLocation.longitude", @"-71.92" },
     { @"", @"" },
     
     { nil, nil }
@@ -959,15 +999,15 @@
                        [obj1 XMLElement], [obj2 XMLElement]);
 }
 
-- (void)testNullCharacterRemoval {
-  NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C", 0];
+- (void)testControlCharacterRemoval {
+  NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C%C%C", 0, 1, 2];
   
   GDataTextConstruct *tc = [GDataTextConstruct textConstructWithString:str];
   NSXMLElement *elem = [tc XMLElement];
   NSString *elemStr = [elem XMLString];
   
   STAssertEqualObjects(elemStr, @"<GDataTextConstruct>bunnyrabbit"
-                       "</GDataTextConstruct>", @"failed to remove null");
+                       "</GDataTextConstruct>", @"failed to remove control chars");
 }
 
 - (void)testProperties {
@@ -1009,8 +1049,8 @@
 
 @implementation GDataGeoTestClass
 
-- (void)initExtensionDeclarations {
-  [super initExtensionDeclarations];
+- (void)addExtensionDeclarations {
+  [super addExtensionDeclarations];
   
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:[self class]];

@@ -17,8 +17,6 @@
 //  GDataEntryPhotoBase.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryBase.h"
 
 #import "GDataPhotoElements.h"

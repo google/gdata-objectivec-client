@@ -26,12 +26,12 @@
 @implementation GDataFeedEvent
 
 + (GDataFeedEvent *)eventFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class feedClass = [self class];
   [self addExtensionDeclarationForParentClass:feedClass

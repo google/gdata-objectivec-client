@@ -17,8 +17,6 @@
 //  GDataFeedLink.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 @class GDataFeedBase;
@@ -30,6 +28,7 @@
   NSString *href_;
   BOOL isReadOnly_; // boolean NSNumber
   NSNumber *countHint_;
+  NSString *rel_;
   GDataFeedBase *feed_;
 }
 
@@ -43,10 +42,23 @@
 
 - (NSString *)href;
 - (void)setHref:(NSString *)str;
+
 - (BOOL)isReadOnly;
 - (void)setIsReadOnly:(BOOL)isReadOnly;
+
 - (NSNumber *)countHint;
 - (void)setCountHint:(NSNumber *)val;
+
+- (NSString *)rel;
+- (void)setRel:(NSString *)str;
+
 - (GDataFeedBase *)feed;
 - (void)setFeed:(GDataFeedBase *)feed;
+
+// convert the href string into an URL
+- (NSURL *)URL;
+@end
+
+@interface NSArray (GDataFeedLinkArray)
+- (GDataFeedLink *)feedLinkWithRel:(NSString *)rel;
 @end

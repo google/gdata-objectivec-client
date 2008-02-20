@@ -17,8 +17,6 @@
 //  GDataEntryContent.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 #import "GDataTextConstruct.h"
 

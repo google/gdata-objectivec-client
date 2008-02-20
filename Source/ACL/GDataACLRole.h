@@ -17,8 +17,6 @@
 //  GDataRole.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 #undef _EXTERN

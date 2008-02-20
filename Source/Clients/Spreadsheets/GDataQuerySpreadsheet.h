@@ -17,7 +17,6 @@
 //  GDataQuerySpreadsheet.h
 //
 
-#import <Cocoa/Cocoa.h>
 #import "GDataQuery.h"
 
 @interface GDataQuerySpreadsheet : GDataQuery 

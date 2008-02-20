@@ -17,8 +17,6 @@
 //  GDataBatchInterrupted.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 

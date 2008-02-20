@@ -76,14 +76,13 @@
     && AreEqualOrBothNil([self feedLink], [other feedLink]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
   [self addToArray:items objectDescriptionIfNonNil:feedLink_ withName:@"feedLink"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -17,8 +17,6 @@
 //  GDataSpreadsheetCell.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // For spreadsheet cells like:

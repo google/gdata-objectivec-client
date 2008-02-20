@@ -225,6 +225,28 @@
                  @"image size error (2)");
 }
 
+- (void)testYouTubeQuery {
+  
+  NSURL *feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:@"fred"
+                                                       userFeedID:kGDataYouTubeUserFeedIDFavorites];
+  
+  GDataQueryYouTube *ytQuery1;  
+  ytQuery1 = [GDataQueryYouTube youTubeQueryWithFeedURL:feedURL];
+  
+  [ytQuery1 setVideoQuery:@"\"Fred Flintstone\""];
+  [ytQuery1 setFormat:@"0,5,6"];
+  [ytQuery1 setTimePeriod:kGDataYouTubePeriodThisWeek];
+  [ytQuery1 setOrderBy:kGDataYouTubeOrderByRelevance];
+  [ytQuery1 setAllowRacy:YES];
+  
+  NSURL* resultURL1 = [ytQuery1 URL];
+  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
+    "favorites?orderby=relevance&format=0%2C5%2C6&racy=include&time=this_week"
+    "&vq=%22Fred+Flintstone%22";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+                       @"YouTube query 1 generation error");
+}
+
 - (void)testURLParameterEncoding {
   
   // test all characters between 0x20 and 0x7f

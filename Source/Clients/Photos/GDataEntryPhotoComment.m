@@ -45,9 +45,9 @@
                              term:kGDataCategoryPhotosComment];
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // common photo extensions
   Class entryClass = [self class];

@@ -17,8 +17,6 @@
 //  GDataFeedCalendarEvent.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedEvent.h"
 
 @class GDataTimeZoneProperty;

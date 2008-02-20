@@ -25,11 +25,11 @@
 @implementation GDataFeedCalendar
 
 + (GDataFeedCalendar *)calendarFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 + (GDataFeedCalendar *)calendarFeed {
-  GDataFeedCalendar *feed = [[[[self class] alloc] init] autorelease];
+  GDataFeedCalendar *feed = [[[self alloc] init] autorelease];
   [feed setNamespaces:[GDataEntryCalendar calendarNamespaces]];
   return feed;
 }

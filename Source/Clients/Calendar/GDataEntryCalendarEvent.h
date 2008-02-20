@@ -17,8 +17,6 @@
 //  GDataEntryCalendarEvent.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryEvent.h"
 #import "GDataWho.h"
 #import "GDataLink.h"

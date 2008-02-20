@@ -44,9 +44,9 @@
   return obj;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // gm:attribute may contain gm:value
   [self addExtensionDeclarationForParentClass:[self class]
@@ -95,7 +95,7 @@
     && AreEqualOrBothNil([self count], [other count]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:name_   withName:@"name"];
@@ -106,8 +106,7 @@
     [self addToArray:items objectDescriptionIfNonNil:[self values]  withName:@"metadataValues"];
   }
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

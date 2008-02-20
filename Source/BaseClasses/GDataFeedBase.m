@@ -17,6 +17,7 @@
 //  GDataFeedBase.m
 //
 
+#define GDATAFEEDBASE_DEFINE_GLOBALS 1
 #import "GDataFeedBase.h"
 
 @interface GDataFeedBase (PrivateMethods)
@@ -25,9 +26,9 @@
 
 @implementation GDataFeedBase
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class feedClass = [self class];
   
@@ -41,7 +42,7 @@
 }
 
 + (id)feedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 - (id)initWithXMLElement:(NSXMLElement *)element
@@ -191,6 +192,7 @@
   [links_ release];
   [authors_ release];
   [contributors_ release];
+  [categories_ release];
   
   [updatedDate_ release];
   
@@ -286,13 +288,6 @@
   return items;
 }
 
-- (NSString *)description {
-  NSArray *items = [self itemsForDescription];
-  
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
-}
-
 - (NSXMLElement *)XMLElement {
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"feed"];
@@ -347,7 +342,7 @@
  // subclasses override this to set up their feed ivars from the XML 
 }
 
-// subclass should override this
+// subclass should override this, and may return kUseRegisteredEntryClass
 - (Class)classForEntries {
   
   return [GDataEntryBase class]; 

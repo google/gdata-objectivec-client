@@ -17,8 +17,6 @@
 //  GDataEntryCodeSearch.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryBase.h"
 
 #undef _EXTERN

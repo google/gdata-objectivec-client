@@ -17,8 +17,6 @@
 //  GDataFeedPhotoBase.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataFeedPhotoBase.h"
 #import "GDataEntryPhotoBase.h"
 #import "GDataGeo.h"

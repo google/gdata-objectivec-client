@@ -17,15 +17,13 @@
 //  GDataDeleted.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
+#import "GDataValueConstruct.h"
 
 // marker for a deleted entry, as in
 // <gd:deleted/>
 
-@interface GDataDeleted : GDataObject <NSCopying, GDataExtension> {
-}
+@interface GDataDeleted : GDataImplicitValueConstruct <GDataExtension>
 
 + (GDataDeleted *)deleted;
   

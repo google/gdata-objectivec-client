@@ -17,8 +17,6 @@
 //  GDataEmail.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 
@@ -31,6 +29,7 @@
   NSString* label_; 
   NSString* address_;
   NSString *rel_;
+  BOOL isPrimary_;
 }
 + (GDataEmail *)emailWithLabel:(NSString *)label
                        address:(NSString *)address;
@@ -40,8 +39,13 @@
 
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
+
 - (NSString *)address;
 - (void)setAddress:(NSString *)str;
+
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
+- (BOOL)isPrimary;
+- (void)setIsPrimary:(BOOL)flag;
 @end

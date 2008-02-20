@@ -23,11 +23,11 @@
 @implementation GDataFeedMessage
 
 + (GDataFeedMessage *)messageFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 + (GDataFeedMessage *)messageFeed {
-  GDataFeedMessage *feed = [[[[self class] alloc] init] autorelease];
+  GDataFeedMessage *feed = [[[self alloc] init] autorelease];
   [feed setNamespaces:[GDataEntryBase baseGDataNamespaces]];
   return feed;
 }

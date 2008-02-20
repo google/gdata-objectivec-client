@@ -62,6 +62,18 @@ enum {
   [super dealloc]; 
 }
 
+#pragma mark -
+
+- (NSMutableURLRequest *)authenticationRequestForURL:(NSURL *)url {
+  
+  // subclasses may add headers to this
+  NSMutableURLRequest *request;
+  request = [[[NSMutableURLRequest alloc] initWithURL:url
+                                          cachePolicy:NSURLRequestReloadIgnoringCacheData 
+                                      timeoutInterval:60] autorelease];
+  return request;
+}
+
 // This routine signs into the service defined by the subclass's serviceID
 // method, and if successful calls the invocation's finishedSelector.
 
@@ -85,7 +97,9 @@ enum {
     NSString *urlTemplate = @"%@://%@/accounts/ClientLogin";
     NSString *authURLString = [NSString stringWithFormat:urlTemplate, 
                                                          scheme, domain];
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:authURLString]];
+    
+    NSURL *authURL = [NSURL URLWithString:authURLString];
+    NSMutableURLRequest *request = [self authenticationRequestForURL:authURL];
     
     NSString *password = [self password];
 
@@ -110,6 +124,8 @@ enum {
     }
     
     GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+		
+    [fetcher setRunLoopModes:[self runLoopModes]];
     
     [fetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
     

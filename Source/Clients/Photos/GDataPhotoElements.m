@@ -187,7 +187,7 @@
 + (NSString *)extensionElementLocalName { return @"timestamp"; }
 
 + (GDataPhotoTimestamp *)timestampWithDate:(NSDate *)date {
-  GDataPhotoTimestamp *obj = [[[[self class] alloc] init] autorelease];
+  GDataPhotoTimestamp *obj = [[[self alloc] init] autorelease];
   [obj setDateValue:date];
   return obj;
 }

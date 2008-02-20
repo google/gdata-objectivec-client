@@ -17,8 +17,6 @@
 //  GDataPostalAddress.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // postal address, as in
@@ -33,6 +31,7 @@
   NSString *label_;
   NSString *value_;
   NSString *rel_;
+  BOOL isPrimary_;
 }
 
 + (GDataPostalAddress *)postalAddressWithString:(NSString *)str;
@@ -48,4 +47,6 @@
 - (void)setStringValue:(NSString *)str;
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+- (BOOL)isPrimary;
+- (void)setIsPrimary:(BOOL)flag;
 @end

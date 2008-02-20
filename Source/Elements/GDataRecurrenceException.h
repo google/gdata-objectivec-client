@@ -17,8 +17,6 @@
 //  GDataRecurrenceException.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // a gd:recurrenceException link, possibly containing an entryLink or 

@@ -17,8 +17,6 @@
 //  GDataContactSection.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 @class GDataIM;

@@ -22,9 +22,7 @@
 @implementation GDataFeedDocList
 
 - (Class)classForEntries {
-  // class will be determined dynamically from the kind Category
-  // of the entry's XML
-  return nil;
+  return kUseRegisteredEntryClass;
 }
 
 @end

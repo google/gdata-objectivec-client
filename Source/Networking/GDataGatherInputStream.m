@@ -159,7 +159,7 @@
 // We'll forward all unexpected messages to our dummy stream
 
 + (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {  
-	return [NSInputStream methodSignatureForSelector:selector];
+  return [NSInputStream methodSignatureForSelector:selector];
 }
 
 + (void)forwardInvocation:(NSInvocation*)invocation {

@@ -46,9 +46,9 @@
   return obj;
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   // GDataGoogleBaseAttributes may contain other attributes
   [self addExtensionDeclarationForParentClass:[GDataGoogleBaseAttribute class]
@@ -171,7 +171,7 @@
     && ([self isPrivate] == [other isPrivate]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:attributeName_ withName:@"name"];
@@ -186,8 +186,7 @@
     [self addToArray:items objectDescriptionIfNonNil:[self subAttributes] withName:@"subAttributes"]; 
   }
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

@@ -48,6 +48,8 @@
                                       fromElement:element]];    
     [self setRel:[self stringForAttributeName:@"rel"
                                   fromElement:element]];
+    [self setIsPrimary:[self boolForAttributeName:@"primary"
+                                      fromElement:element]];
   }
   return self;
 }
@@ -64,6 +66,7 @@
   [newObj setLabel:label_];
   [newObj setAddress:address_];
   [newObj setRel:rel_];
+  [newObj setIsPrimary:isPrimary_];
   return newObj; 
 }
 
@@ -74,18 +77,20 @@
   return [super isEqual:other]
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self address], [other address])
-    && AreEqualOrBothNil([self rel], [other rel]);
+    && AreEqualOrBothNil([self rel], [other rel])
+    && AreBoolsEqual([self isPrimary], [other isPrimary]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
   [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  if (isPrimary_) [items addObject:@"primary"];
+
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
@@ -95,7 +100,11 @@
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
   [self addToElement:element attributeValueIfNonNil:[self address] withName:@"address"];
   [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-    
+  
+  if ([self isPrimary]) {
+    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
+  }
+  
   return element;
 }
 
@@ -126,6 +135,13 @@
   rel_ = [str copy];
 }
 
+- (BOOL)isPrimary {
+  return isPrimary_; 
+}
+
+- (void)setIsPrimary:(BOOL)flag {
+  isPrimary_ = flag;
+}
 @end
 
 

@@ -52,9 +52,9 @@
                              term:kGDataCategoryACL];
 }
 
-- (void)initExtensionDeclarations {
+- (void)addExtensionDeclarations {
   
-  [super initExtensionDeclarations];
+  [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   

@@ -22,12 +22,21 @@
 #import "GDataHTTPFetcher.h"
 #import "GDataHTTPFetcherLogging.h"
 
+#ifdef MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+@interface NSURLConnection (LeopardMethodsOnTigerBuilds)
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate startImmediately:(BOOL)startImmediately;
+- (void)start;
+- (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSString *)mode;
+@end
+#endif
+
 NSString* const kGDataLastModifiedHeader = @"Last-Modified";
 NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
 
 NSMutableArray* gGDataFetcherStaticCookies = nil;
 Class gGDataFetcherConnectionClass = nil;
+NSArray *gGDataFetcherDefaultRunLoopModes = nil;
 
 const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
                    
@@ -81,6 +90,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   [loggedStreamData_ release];
   [response_ release];
   [userData_ release];
+  [runLoopModes_ release];
   [fetchHistory_ release];
   [self destroyRetryTimer];
   
@@ -187,9 +197,42 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   }
   
   // finally, start the connection
+	
   Class connectionClass = [[self class] connectionClass];
-  connection_ = [[connectionClass connectionWithRequest:request_
-                                               delegate:self] retain];
+	
+  NSArray *runLoopModes = nil;
+  
+  if ([[self class] doesSupportRunLoopModes]) {
+    
+    // use the connection-specific run loop modes, if they were provided,
+    // or else use the GDataHTTPFetcher default run loop modes, if any
+    if (runLoopModes_) {
+      runLoopModes = runLoopModes_;
+    } else  {
+      runLoopModes = gGDataFetcherDefaultRunLoopModes;
+    }
+  }
+  
+  if ([runLoopModes count] == 0) {
+    
+    // if no run loop modes were specified, then we'll start the connection 
+    // on the current run loop in the current mode
+   connection_ = [[connectionClass connectionWithRequest:request_
+                                                 delegate:self] retain];
+  } else {
+    
+    // schedule on current run loop in the specified modes
+    connection_ = [[connectionClass alloc] initWithRequest:request_
+                                                  delegate:self 
+                                          startImmediately:NO];
+    
+    for (int idx = 0; idx < [runLoopModes count]; idx++) {
+      NSString *mode = [runLoopModes objectAtIndex:idx];
+      [connection_ scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
+    }
+    [connection_ start];
+  }
+  
   if (!connection_) {
     NSAssert(connection_ != nil, @"beginFetchWithDelegate could not create a connection");
     goto CannotBeginFetch;
@@ -935,6 +978,29 @@ CannotBeginFetch:
   userData_ = [theObj retain];
 }
 
+- (NSArray *)runLoopModes {
+  return runLoopModes_;
+}
+
+- (void)setRunLoopModes:(NSArray *)modes {
+  [runLoopModes_ autorelease]; 
+  runLoopModes_ = [modes retain];
+}
+
++ (BOOL)doesSupportRunLoopModes {
+  SEL sel = @selector(initWithRequest:delegate:startImmediately:);
+  return [NSURLConnection instancesRespondToSelector:sel];
+}
+
++ (NSArray *)defaultRunLoopModes {
+  return gGDataFetcherDefaultRunLoopModes; 
+}
+
++ (void)setDefaultRunLoopModes:(NSArray *)modes {
+  [gGDataFetcherDefaultRunLoopModes autorelease];
+  gGDataFetcherDefaultRunLoopModes = [modes retain];
+}
+
 + (Class)connectionClass {
   if (gGDataFetcherConnectionClass == nil) {
     gGDataFetcherConnectionClass = [NSURLConnection class]; 
@@ -1106,6 +1172,10 @@ CannotBeginFetch:
   }
 }
 @end
+
+#ifdef GDATA_FOUNDATION_ONLY
+#define Debugger()
+#endif
 
 void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...) {
   

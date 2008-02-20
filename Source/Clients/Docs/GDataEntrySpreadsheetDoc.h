@@ -17,8 +17,6 @@
 //  GDataEntrySpreadsheetDoc.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryDocBase.h"
 
 #undef _EXTERN

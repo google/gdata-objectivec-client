@@ -148,7 +148,7 @@
     && AreEqualOrBothNil([self lang], [other lang]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:urlString_ withName:@"URL"];
@@ -166,17 +166,21 @@
   [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
   [self addToArray:items objectDescriptionIfNonNil:lang_ withName:@"lang"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
+
 
 - (NSXMLElement *)XMLElement {
   
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:content"];
   
   // decimal numbers should have period separators
+
+  // Leopard deprecated the constant NSDecimalSeparator but it's still
+  // needed by NSDecimalNumber (radar 5674482)
+  NSString *const kNSDecimalSeparator = @"NSDecimalSeparator";
   NSDictionary *locale = [NSDictionary dictionaryWithObject:@"."
-                                                     forKey:NSDecimalSeparator];
+                                                     forKey:kNSDecimalSeparator];
 
   [self addToElement:element attributeValueIfNonNil:[self URLString] withName:@"url"];
   [self addToElement:element attributeValueIfNonNil:[[self fileSize] stringValue] withName:@"fileSize"];

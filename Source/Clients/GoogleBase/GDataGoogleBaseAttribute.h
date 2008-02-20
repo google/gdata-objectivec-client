@@ -17,14 +17,13 @@
 //  GDataWebContent.h
 //
 
-#import <Cocoa/Cocoa.h>
 #import "GDataObject.h"
 
 // arbitrary Google Base attribute, like
 //  <g:condition type='text'> new <g:my_subattribute>89</g:my_subattribute> </g:condition>
 
 // sub-attributes are implemented by declaring an extension allowing this class
-// to be a child of itself (see -initExtensionDeclarations)
+// to be a child of itself (see -addExtensionDeclarations)
 
 @interface GDataGoogleBaseAttribute : GDataObject <NSCopying, GDataExtension> {
   NSString *attributeName_;

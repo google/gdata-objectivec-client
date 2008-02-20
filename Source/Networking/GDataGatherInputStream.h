@@ -23,7 +23,7 @@
 // underlying set of NSData objects until all read operations on this input
 // stream have completed.
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 @interface GDataGatherInputStream : NSInputStream {
   

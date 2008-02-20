@@ -17,8 +17,6 @@
 //  GDataServiceBase.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataHTTPFetcher.h"
 #import "GDataEntryBase.h"
 #import "GDataFeedBase.h"
@@ -134,6 +132,7 @@ enum {
 @interface GDataServiceBase : NSObject {
   NSString *userAgent_;
   NSMutableDictionary *fetchHistory_;
+  NSArray *runLoopModes_;
   
   NSString *username_;
   NSMutableData *password_;
@@ -157,6 +156,14 @@ enum {
 - (NSString *)userAgent;
 - (void)setUserAgent:(NSString *)userAgent;
 
+// Run loop modes are used for scheduling NSURLConnections on 10.5 and later.
+//
+// The default value, nil, schedules connections using the current run
+// loop mode.  To use the service during a modal dialog, be sure to specify
+// NSModalPanelRunLoopMode as one of the modes.
+- (NSArray *)runLoopModes;
+- (void)setRunLoopModes:(NSArray *)modes;
+	
 // The request user agent includes the library and OS version appended to the
 // base userAgent
 - (NSString *)requestUserAgent;

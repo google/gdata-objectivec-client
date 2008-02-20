@@ -17,8 +17,6 @@
 //  GDataTextConstruct.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // For typed text, like: <title type="text">Event title</title>

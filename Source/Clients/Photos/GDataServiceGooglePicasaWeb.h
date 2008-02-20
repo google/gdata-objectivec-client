@@ -17,8 +17,6 @@
 //  GDataServiceGooglePicasaWeb.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN

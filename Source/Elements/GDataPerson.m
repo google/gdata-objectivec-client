@@ -22,8 +22,8 @@
 @implementation GDataPerson
 // a person, as in
 // <author>
-//   <name>Greg Robbins</name>
-//   <email>test@coldnose.net</email>
+//   <name>Fred Flintstone</name>
+//   <email>test@domain.net</email>
 // </author>
 
 + (GDataPerson *)personWithName:(NSString *)name email:(NSString *)email {
@@ -87,7 +87,7 @@
     && AreEqualOrBothNil([self email], [other email]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:name_ withName:@"name"];
@@ -95,8 +95,7 @@
   [self addToArray:items objectDescriptionIfNonNil:uri_ withName:@"URI"];
   [self addToArray:items objectDescriptionIfNonNil:email_ withName:@"email"];
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

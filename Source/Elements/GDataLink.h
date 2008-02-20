@@ -17,8 +17,6 @@
 //  GDataLink.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 
@@ -97,6 +95,7 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 - (GDataLink *)editLink;
 - (GDataLink *)editMediaLink;
 - (GDataLink *)alternateLink;
+- (GDataLink *)relatedLink;
 - (GDataLink *)selfLink;
 - (GDataLink *)nextLink;
 - (GDataLink *)previousLink;

@@ -72,14 +72,13 @@
     && AreEqualOrBothNil([self type], [other type]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:type_ withName:@"type"];
   [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

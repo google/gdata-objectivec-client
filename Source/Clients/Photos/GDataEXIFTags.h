@@ -17,7 +17,6 @@
 //  GDataWebContent.h
 //
 
-#import <Cocoa/Cocoa.h>
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 

@@ -17,6 +17,7 @@
 //  GDataCategory.m
 //
 
+#define GDATACATEGORY_DEFINE_GLOBALS 1
 #import "GDataCategory.h"
 
 @implementation GDataCategory
@@ -92,7 +93,7 @@
     && AreEqualOrBothNil([self label], [other label]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items objectDescriptionIfNonNil:scheme_    withName:@"scheme"];
@@ -100,8 +101,7 @@
   [self addToArray:items objectDescriptionIfNonNil:label_     withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:labelLang_ withName:@"labelLang"];
   
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

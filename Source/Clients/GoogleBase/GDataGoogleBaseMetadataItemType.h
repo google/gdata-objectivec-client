@@ -17,8 +17,6 @@
 //  GDataGoogleBaseMetadataItemType.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataObject.h"
 
 // for values, like <gm:item_type>fred's thing</gm:item_type>

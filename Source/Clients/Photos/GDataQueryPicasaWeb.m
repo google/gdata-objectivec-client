@@ -33,7 +33,7 @@ NSString *const kImageSizeOriginalPhoto = @"d";
 @implementation GDataQueryPicasaWeb
 
 + (GDataQueryPicasaWeb *)picasaWebQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 + (GDataQueryPicasaWeb *)picasaWebQueryForUserID:(NSString *)userID

@@ -86,7 +86,7 @@
     && AreEqualOrBothNil([self absoluteTime], [other absoluteTime]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   if (days_)         [self addToArray:items objectDescriptionIfNonNil:days_    withName:@"days"];
@@ -96,8 +96,7 @@
   
   [self addToArray:items objectDescriptionIfNonNil:method_ withName:@"method"];
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {

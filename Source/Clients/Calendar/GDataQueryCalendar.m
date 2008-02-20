@@ -33,7 +33,7 @@ NSString *const kCurrentTimeZoneParamName = @"ctz";
 @implementation GDataQueryCalendar
 
 + (GDataQueryCalendar *)calendarQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 - (GDataDateTime *)minimumStartTime {

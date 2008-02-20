@@ -34,7 +34,7 @@
 
 + (id)documentEntry {
   
-  GDataEntryDocBase *entry = [[[[self class] alloc] init] autorelease];
+  GDataEntryDocBase *entry = [[[self alloc] init] autorelease];
   
   [entry setNamespaces:[self baseDocumentNamespaces]];
   

@@ -21,7 +21,7 @@
 //
 // A good reference for MIME is http://en.wikipedia.org/wiki/MIME
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 @interface GDataMIMEDocument : NSObject {
   NSMutableArray* parts_;         // Contains an ordered set of MimeParts

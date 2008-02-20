@@ -17,11 +17,14 @@
 //  GDataIM.m
 //
 
+#define GDATAIM_DEFINE_GLOBALS 1
 #import "GDataIM.h"
 
 @implementation GDataIM
 // IM element, as in
-//   <gd:im protocol="sip" address="foo@bar.example.com"/ label="Fred">
+//   <gd:im protocol="http://schemas.google.com/g/2005#MSN" 
+//      address="foo@bar.example.com" label="Alternate"
+//      rel="http://schemas.google.com/g/2005#other" >
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdIm
 
@@ -30,10 +33,13 @@
 + (NSString *)extensionElementLocalName { return @"im"; }
 
 + (GDataIM *)IMWithProtocol:(NSString *)protocol
+                        rel:(NSString *)rel
                       label:(NSString *)label
                     address:(NSString *)address {
+  
   GDataIM *obj = [[[GDataIM alloc] init] autorelease];
   [obj setProtocol:protocol];
+  [obj setRel:rel];
   [obj setLabel:label];
   [obj setAddress:address];
   return obj;
@@ -46,16 +52,21 @@
   if (self) {
     [self setLabel:[self stringForAttributeName:@"label"
                                     fromElement:element]];
+    [self setRel:[self stringForAttributeName:@"rel"
+                                  fromElement:element]];
     [self setAddress:[self stringForAttributeName:@"address"
                                       fromElement:element]];
     [self setProtocol:[self stringForAttributeName:@"protocol"
                                        fromElement:element]];
+    [self setIsPrimary:[self boolForAttributeName:@"primary"
+                                      fromElement:element]];
   }
   return self;
 }
 
 - (void)dealloc {
   [label_ release];
+  [rel_ release];
   [address_ release];
   [protocol_ release];
   [super dealloc];
@@ -64,8 +75,10 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataIM* newObj = [super copyWithZone:zone];
   [newObj setLabel:label_];
+  [newObj setRel:rel_];
   [newObj setAddress:address_];
   [newObj setProtocol:protocol_];
+  [newObj setIsPrimary:isPrimary_];
   return newObj;
 }
 
@@ -75,28 +88,37 @@
   
   return [super isEqual:other]
     && AreEqualOrBothNil([self label], [other label])
+    && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self address], [other address])
-    && AreEqualOrBothNil([self protocol], [other protocol]);
+    && AreEqualOrBothNil([self protocol], [other protocol])
+    && AreBoolsEqual([self isPrimary], [other isPrimary]);
 }
 
-- (NSString *)description {
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
   [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
   [self addToArray:items objectDescriptionIfNonNil:protocol_ withName:@"protocol"];
-  
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
-    [self class], self, [items componentsJoinedByString:@" "]];
+  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
+  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
+ 
+  if (isPrimary_) [items addObject:@"primary"];
+
+  return items;
 }
 
 - (NSXMLElement *)XMLElement {
   
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:im"];
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
   
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
+  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
   [self addToElement:element attributeValueIfNonNil:[self address] withName:@"address"];
   [self addToElement:element attributeValueIfNonNil:[self protocol] withName:@"protocol"];
+  
+  if ([self isPrimary]) {
+    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
+  }  
   
   return element;
 }
@@ -108,6 +130,15 @@
 - (void)setLabel:(NSString *)str {
   [label_ autorelease];
   label_ = [str copy];
+}
+
+- (NSString *)rel {
+  return rel_; 
+}
+
+- (void)setRel:(NSString *)str {
+  [rel_ autorelease];
+  rel_ = [str copy];
 }
 
 - (NSString *)address {
@@ -128,6 +159,13 @@
   protocol_ = [str copy];
 }
 
+- (BOOL)isPrimary {
+  return isPrimary_; 
+}
+
+- (void)setIsPrimary:(BOOL)flag {
+  isPrimary_ = flag;
+}
 @end
 
 

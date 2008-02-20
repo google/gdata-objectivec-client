@@ -25,11 +25,11 @@
 @implementation GDataFeedSpreadsheetList
 
 + (GDataFeedSpreadsheetList *)spreadsheetListFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
+  return [[[self alloc] initWithData:data] autorelease];
 }
 
 + (GDataFeedSpreadsheetList *)spreadsheetListFeed {
-  GDataFeedSpreadsheetList *feed = [[[[self class] alloc] init] autorelease];
+  GDataFeedSpreadsheetList *feed = [[[self alloc] init] autorelease];
   [feed setNamespaces:[GDataEntrySpreadsheet spreadsheetNamespaces]];
   return feed;
 }

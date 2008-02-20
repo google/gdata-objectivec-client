@@ -17,8 +17,6 @@
 //  GDataEntryMessage.h
 //
 
-#import <Cocoa/Cocoa.h>
-
 #import "GDataEntryBase.h"
 
 #import "GDataRating.h"
