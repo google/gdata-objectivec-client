@@ -62,7 +62,6 @@
 		4F14AFEC0B139BF80072EBB8 /* GDataPhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AFEB0B139BF80072EBB8 /* GDataPhoneNumber.m */; };
 		4F14B0000B139C720072EBB8 /* GDataPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AFFF0B139C720072EBB8 /* GDataPostalAddress.m */; };
 		4F14B0190B139CD60072EBB8 /* GDataRating.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B0180B139CD60072EBB8 /* GDataRating.m */; };
-		4F14B0320B139DE10072EBB8 /* GDataContactSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B0310B139DE10072EBB8 /* GDataContactSection.m */; };
 		4F14B10B0B13A4340072EBB8 /* GDataWebContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B10A0B13A4340072EBB8 /* GDataWebContent.m */; };
 		4F14B1230B13A5540072EBB8 /* GDataDateTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B1220B13A5540072EBB8 /* GDataDateTimeTest.m */; };
 		4F14B12F0B13A5B40072EBB8 /* GDataEntryBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B1260B13A5B40072EBB8 /* GDataEntryBase.m */; };
@@ -87,7 +86,6 @@
 		4F1AD9880B7165A700DC0485 /* GDataFeedGoogleBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F1AD9870B7165A700DC0485 /* GDataFeedGoogleBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F1ADA670B7168B200DC0485 /* GDataCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ADB90B12A5C20072EBB8 /* GDataCategory.m */; };
 		4F1ADA680B7168B200DC0485 /* GDataComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AE4F0B12A7CA0072EBB8 /* GDataComment.m */; };
-		4F1ADA690B7168B200DC0485 /* GDataContactSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B0310B139DE10072EBB8 /* GDataContactSection.m */; };
 		4F1ADA6A0B7168B200DC0485 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
 		4F1ADA6B0B7168B200DC0485 /* GDataEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AFAF0B13999D0072EBB8 /* GDataEmail.m */; };
 		4F1ADA6C0B7168B200DC0485 /* GDataEntryBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B1260B13A5B40072EBB8 /* GDataEntryBase.m */; };
@@ -242,7 +240,6 @@
 		4F37E9F90B7972920019C173 /* GDataQueryGoogleBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F37E9F40B7972920019C173 /* GDataQueryGoogleBase.m */; };
 		4F38F6AC0B66ED4500B24B81 /* GDataCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ADB90B12A5C20072EBB8 /* GDataCategory.m */; };
 		4F38F6AD0B66ED4500B24B81 /* GDataComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AE4F0B12A7CA0072EBB8 /* GDataComment.m */; };
-		4F38F6AE0B66ED4500B24B81 /* GDataContactSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B0310B139DE10072EBB8 /* GDataContactSection.m */; };
 		4F38F6AF0B66ED4500B24B81 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
 		4F38F6B20B66ED4500B24B81 /* GDataEmail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14AFAF0B13999D0072EBB8 /* GDataEmail.m */; };
 		4F38F6B30B66ED4500B24B81 /* GDataEntryBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14B1260B13A5B40072EBB8 /* GDataEntryBase.m */; };
@@ -284,7 +281,6 @@
 		4F38F6E40B66ED8700B24B81 /* GData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FDEA5920B39DE77007ACFE3 /* GData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F6E50B66ED8700B24B81 /* GDataCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14ADBA0B12A5C20072EBB8 /* GDataCategory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F6E60B66ED8700B24B81 /* GDataComment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14AE4E0B12A7CA0072EBB8 /* GDataComment.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F38F6E70B66ED8700B24B81 /* GDataContactSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14B0300B139DE10072EBB8 /* GDataContactSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F6E80B66ED8700B24B81 /* GDataDateTime.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F6E90B66ED8700B24B81 /* GDataEmail.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14AFAE0B13999D0072EBB8 /* GDataEmail.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F38F6EA0B66ED8700B24B81 /* GDataEntryBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F14B1250B13A5B40072EBB8 /* GDataEntryBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -718,8 +714,6 @@
 		4F14AFFF0B139C720072EBB8 /* GDataPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataPostalAddress.m; path = Elements/GDataPostalAddress.m; sourceTree = "<group>"; };
 		4F14B0170B139CD60072EBB8 /* GDataRating.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataRating.h; path = Elements/GDataRating.h; sourceTree = "<group>"; };
 		4F14B0180B139CD60072EBB8 /* GDataRating.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataRating.m; path = Elements/GDataRating.m; sourceTree = "<group>"; };
-		4F14B0300B139DE10072EBB8 /* GDataContactSection.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataContactSection.h; path = Elements/GDataContactSection.h; sourceTree = "<group>"; };
-		4F14B0310B139DE10072EBB8 /* GDataContactSection.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataContactSection.m; path = Elements/GDataContactSection.m; sourceTree = "<group>"; };
 		4F14B1090B13A4340072EBB8 /* GDataWebContent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataWebContent.h; path = Clients/Calendar/GDataWebContent.h; sourceTree = "<group>"; };
 		4F14B10A0B13A4340072EBB8 /* GDataWebContent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataWebContent.m; path = Clients/Calendar/GDataWebContent.m; sourceTree = "<group>"; };
 		4F14B1210B13A5540072EBB8 /* GDataDateTimeTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDateTimeTest.h; path = Tests/GDataDateTimeTest.h; sourceTree = "<group>"; };
@@ -1218,8 +1212,6 @@
 				4F14AFFF0B139C720072EBB8 /* GDataPostalAddress.m */,
 				4F14B0170B139CD60072EBB8 /* GDataRating.h */,
 				4F14B0180B139CD60072EBB8 /* GDataRating.m */,
-				4F14B0300B139DE10072EBB8 /* GDataContactSection.h */,
-				4F14B0310B139DE10072EBB8 /* GDataContactSection.m */,
 				4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */,
 				4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */,
 				4FDD49EE0B8D339100A5104E /* GDataBatchOperation.h */,
@@ -1580,7 +1572,6 @@
 				4F38F6E40B66ED8700B24B81 /* GData.h in Headers */,
 				4F38F6E50B66ED8700B24B81 /* GDataCategory.h in Headers */,
 				4F38F6E60B66ED8700B24B81 /* GDataComment.h in Headers */,
-				4F38F6E70B66ED8700B24B81 /* GDataContactSection.h in Headers */,
 				4F38F6E80B66ED8700B24B81 /* GDataDateTime.h in Headers */,
 				4F38F6E90B66ED8700B24B81 /* GDataEmail.h in Headers */,
 				4F38F6EA0B66ED8700B24B81 /* GDataEntryBase.h in Headers */,
@@ -1888,7 +1879,6 @@
 				4F14AFEC0B139BF80072EBB8 /* GDataPhoneNumber.m in Sources */,
 				4F14B0000B139C720072EBB8 /* GDataPostalAddress.m in Sources */,
 				4F14B0190B139CD60072EBB8 /* GDataRating.m in Sources */,
-				4F14B0320B139DE10072EBB8 /* GDataContactSection.m in Sources */,
 				4F14B10B0B13A4340072EBB8 /* GDataWebContent.m in Sources */,
 				4F14B1230B13A5540072EBB8 /* GDataDateTimeTest.m in Sources */,
 				4F14B12F0B13A5B40072EBB8 /* GDataEntryBase.m in Sources */,
@@ -2025,7 +2015,6 @@
 			files = (
 				4F1ADA670B7168B200DC0485 /* GDataCategory.m in Sources */,
 				4F1ADA680B7168B200DC0485 /* GDataComment.m in Sources */,
-				4F1ADA690B7168B200DC0485 /* GDataContactSection.m in Sources */,
 				4F1ADA6A0B7168B200DC0485 /* GDataDateTime.m in Sources */,
 				4F1ADA6B0B7168B200DC0485 /* GDataEmail.m in Sources */,
 				4F1ADA6C0B7168B200DC0485 /* GDataEntryBase.m in Sources */,
@@ -2179,7 +2168,6 @@
 			files = (
 				4F38F6AC0B66ED4500B24B81 /* GDataCategory.m in Sources */,
 				4F38F6AD0B66ED4500B24B81 /* GDataComment.m in Sources */,
-				4F38F6AE0B66ED4500B24B81 /* GDataContactSection.m in Sources */,
 				4F38F6AF0B66ED4500B24B81 /* GDataDateTime.m in Sources */,
 				4F38F6B20B66ED4500B24B81 /* GDataEmail.m in Sources */,
 				4F38F6B30B66ED4500B24B81 /* GDataEntryBase.m in Sources */,

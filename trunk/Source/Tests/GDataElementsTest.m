@@ -306,24 +306,6 @@
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
     { @"", @"" },
-    
-    { @"GDataContactSection", @"<gd:contactSection label=\"Work\"> "
-      "<gd:email address=\"jo@example.com\" />"
-      "<gd:phoneNumber rel=\"http://schemas.google.com/g/2005#work\">(650) 555-1212</gd:phoneNumber> "
-      "<gd:phoneNumber rel=\"http://schemas.google.com/g/2005#pager\">(650) 555-1214</gd:phoneNumber> "
-      "<gd:postalAddress>1600 Amphitheatre Pkwy\nMountain View, CA 94043</gd:postalAddress>"
-      "<gd:geoPt label=\"fuzz\" time=\"2006-11-28T8:00:00-08:00\" lat=\"37.42\" lon=\"-122.08\"/> "
-      "<gd:im protocol=\"sip\" address=\"foo@bar.example.com\"/>"
-      "<gd:im protocol=\"aim\" address=\"fred the monster\"/> </gd:contactSection>" },
-    { @"emails.0.address", @"jo@example.com" },
-    { @"phoneNumbers.0", @"(650) 555-1212" },
-    { @"phoneNumbers.1", @"(650) 555-1214" },
-    { @"geoPts.0.label", @"fuzz" },
-    { @"geoPts.0.lat", @"37.42" },
-    { @"geoPts.0.time.RFC3339String", @"2006-11-28T08:00:00-08:00" },
-    { @"IMs.0.address", @"foo@bar.example.com" },
-    { @"IMs.1.protocol", @"aim" },
-    { @"", @"" },
         
     { @"GDataEmail", @"<gd:email label=\"Personal\" address=\"fubar@gmail.com\" primary='true' />" },
     { @"label", @"Personal" },

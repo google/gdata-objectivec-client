@@ -42,7 +42,6 @@
 // standard elements
 #import "GDataCategory.h"
 #import "GDataComment.h"
-#import "GDataContactSection.h"
 #import "GDataEmail.h"
 #import "GDataEntryLink.h"
 #import "GDataExtendedProperty.h"
