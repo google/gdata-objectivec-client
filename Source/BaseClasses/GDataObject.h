@@ -248,14 +248,14 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
                                       childClass:(Class)childClass;
 
 // accessing actual extensions in this object
-- (NSArray *)objectsForExtensionClass:(Class)class;
-- (id)objectForExtensionClass:(Class)class;
+- (NSArray *)objectsForExtensionClass:(Class)theClass;
+- (id)objectForExtensionClass:(Class)theClass;
 
 // replacing or adding actual extensions in this object
-- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class;
-- (void)setObject:(GDataObject *)object forExtensionClass:(Class)class; // removes all previous objects for this class
-- (void)addObject:(GDataObject *)object forExtensionClass:(Class)class;
-- (void)removeObject:(GDataObject *)object forExtensionClass:(Class)class;
+- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)theClass;
+- (void)setObject:(GDataObject *)object forExtensionClass:(Class)theClass; // removes all previous objects for this class
+- (void)addObject:(GDataObject *)object forExtensionClass:(Class)theClass;
+- (void)removeObject:(GDataObject *)object forExtensionClass:(Class)theClass;
 
 //
 // Dynamic GDataObject generation
