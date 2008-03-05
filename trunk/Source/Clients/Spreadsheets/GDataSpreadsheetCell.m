@@ -93,11 +93,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataSpreadsheetCell* newObj = [super copyWithZone:zone];
-  [newObj setRow:row_];
-  [newObj setColumn:column_];
-  [newObj setInputString:inputString_];
-  [newObj setNumericValue:numericValue_];
-  [newObj setResultString:resultString_];
+  [newObj setRow:[self row]];
+  [newObj setColumn:[self column]];
+  [newObj setInputString:[self inputString]];
+  [newObj setNumericValue:[self numericValue]];
+  [newObj setResultString:[self resultString]];
   return newObj;
 }
 
@@ -174,7 +174,7 @@
 }
 - (void)setNumericValue:(NSNumber *)num {
   [numericValue_ autorelease];
-  numericValue_ = [num retain]; 
+  numericValue_ = [num copy]; 
 }
 
 - (NSString *)resultString {

@@ -58,8 +58,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataACLScope* newValue = [super copyWithZone:zone];
-  [newValue setValue:value_];
-  [newValue setType:type_];
+  [newValue setValue:[self value]];
+  [newValue setType:[self type]];
   return newValue;
 }
 

@@ -66,11 +66,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataReminder* newReminder = [super copyWithZone:zone];
-  [newReminder setDays:days_];
-  [newReminder setHours:hours_];
-  [newReminder setMinutes:minutes_];
-  [newReminder setMethod:method_];
-  [newReminder setAbsoluteTime:absoluteTime_];
+  [newReminder setDays:[self days]];
+  [newReminder setHours:[self hours]];
+  [newReminder setMinutes:[self minutes]];
+  [newReminder setMethod:[self method]];
+  [newReminder setAbsoluteTime:[[[self absoluteTime] copyWithZone:zone] autorelease]];
   return newReminder;
 }
 

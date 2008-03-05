@@ -60,12 +60,12 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataBatchInterrupted* newObj = [super copyWithZone:zone];
-  [newObj setReason:reason_];
-  [newObj setSuccessCount:successCount_];
-  [newObj setErrorCount:errorCount_];
-  [newObj setTotalCount:totalCount_];
-  [newObj setContentType:contentType_];
-  [newObj setStringValue:content_];
+  [newObj setReason:[self reason]];
+  [newObj setSuccessCount:[self successCount]];
+  [newObj setErrorCount:[self errorCount]];
+  [newObj setTotalCount:[self totalCount]];
+  [newObj setContentType:[self contentType]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 
@@ -126,7 +126,7 @@
 
 - (void)setSuccessCount:(NSNumber *)val {
   [successCount_ autorelease];
-  successCount_ = [val retain];
+  successCount_ = [val copy];
 }
 
 - (NSNumber *)errorCount {
@@ -135,7 +135,7 @@
 
 - (void)setErrorCount:(NSNumber *)val {
   [errorCount_ autorelease];
-  errorCount_ = [val retain];
+  errorCount_ = [val copy];
 }
 
 - (NSNumber *)totalCount {
@@ -144,7 +144,7 @@
 
 - (void)setTotalCount:(NSNumber *)val {
   [totalCount_ autorelease];
-  totalCount_ = [val retain];
+  totalCount_ = [val copy];
 }
 
 - (NSString *)contentType {

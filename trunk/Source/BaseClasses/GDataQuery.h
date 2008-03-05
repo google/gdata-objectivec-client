@@ -112,11 +112,4 @@
                              value:(NSString *)value;
 - (void)removeCustomParameterWithName:(NSString *)name;
 
-// result format: Objective-C GData supports only Atom currently
-
-// utilities
-
-+ (NSString *)stringByURLEncodingString:(NSString *)str;
-+ (NSString *)stringByURLEncodingStringParameter:(NSString *)str;
-
 @end

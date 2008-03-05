@@ -84,7 +84,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataRowColumnCount* newObj = [super copyWithZone:zone];
-  [newObj setCount:count_];
+  [newObj setCount:[self count]];
   return newObj;
 }
 

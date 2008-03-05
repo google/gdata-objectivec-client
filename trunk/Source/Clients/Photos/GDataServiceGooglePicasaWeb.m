@@ -36,13 +36,13 @@
   NSString *albumID = @"";
   if (albumIDorNil) {
     albumID = [NSString stringWithFormat:@"/albumid/%@", 
-      [GDataQuery stringByURLEncodingString:albumIDorNil]]; 
+      [GDataUtilities stringByURLEncodingString:albumIDorNil]]; 
   }
   
   NSString *albumName = @"";
   if (albumNameOrNil && !albumIDorNil) {
     albumName = [NSString stringWithFormat:@"/album/%@", 
-      [GDataQuery stringByURLEncodingString:albumNameOrNil]];
+      [GDataUtilities stringByURLEncodingString:albumNameOrNil]];
   }
   
   NSString *photo = @"";
@@ -55,14 +55,14 @@
   NSString *query = @"";
   NSMutableArray *queryItems = [NSMutableArray array];
   if (feedKindOrNil) {
-    feedKindOrNil = [GDataQuery stringByURLEncodingStringParameter:feedKindOrNil];
+    feedKindOrNil = [GDataUtilities stringByURLEncodingStringParameter:feedKindOrNil];
     
     NSString *kindStr = [NSString stringWithFormat:@"kind=%@", feedKindOrNil];
     [queryItems addObject:kindStr];
   }
   
   if (accessOrNil) {
-    accessOrNil = [GDataQuery stringByURLEncodingStringParameter:accessOrNil];
+    accessOrNil = [GDataUtilities stringByURLEncodingStringParameter:accessOrNil];
     
     NSString *accessStr = [NSString stringWithFormat:@"access=%@", accessOrNil];
     [queryItems addObject:accessStr];
@@ -78,8 +78,20 @@
   
   NSString *template = @"%@feed/api/user/%@%@%@%@%@";
   NSString *urlString = [NSString stringWithFormat:template,
-    root, [GDataQuery stringByURLEncodingString:userID], 
+    root, [GDataUtilities stringByURLEncodingString:userID], 
     albumID, albumName, photo, query];
+  
+  return [NSURL URLWithString:urlString];
+}
+
++ (NSURL *)picasaWebContactsFeedURLForUserID:(NSString *)userID {
+    
+  NSString *root = [self serviceRootURLString];
+  
+  NSString *template = @"%@feed/api/user/%@/contacts?kind=user";
+  
+  NSString *urlString = [NSString stringWithFormat:template,
+    root, [GDataUtilities stringByURLEncodingString:userID]];
   
   return [NSURL URLWithString:urlString];
 }

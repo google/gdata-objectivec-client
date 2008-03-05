@@ -136,8 +136,8 @@ NSString* const kNowString = @"now";
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataNormalPlayTime* newObj = [[[self class] allocWithZone:zone] init];
-  [newObj setTimeOffsetInMilliseconds:ms_];
-  [newObj setIsNow:isNow_];
+  [newObj setTimeOffsetInMilliseconds:[self timeOffsetInMilliseconds]];
+  [newObj setIsNow:[self isNow]];
   return newObj;
 }
 

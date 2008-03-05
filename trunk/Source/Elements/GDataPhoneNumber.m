@@ -67,11 +67,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataPhoneNumber* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setURI:uri_];
-  [newObj setRel:rel_];
-  [newObj setStringValue:phoneNumber_];
-  [newObj setIsPrimary:isPrimary_];
+  [newObj setLabel:[self label]];
+  [newObj setURI:[self URI]];
+  [newObj setRel:[self rel]];
+  [newObj setStringValue:[self stringValue]];
+  [newObj setIsPrimary:[self isPrimary]];
   return newObj;
 }
 

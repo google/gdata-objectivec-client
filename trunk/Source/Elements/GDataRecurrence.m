@@ -60,7 +60,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataRecurrence* newRecurrence = [super copyWithZone:zone];
-  [newRecurrence setStringValue:value_];
+  [newRecurrence setStringValue:[self stringValue]];
   return newRecurrence;
 }
 

@@ -217,10 +217,10 @@
   [newFeed setIcon:[self icon]];
   [newFeed setLogo:[self logo]];
   
-  [newFeed setLinks:[self links]];
-  [newFeed setAuthors:[self authors]];
-  [newFeed setContributors:[self contributors]];
-  [newFeed setCategories:[self categories]];
+  [newFeed setLinks:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self links]]];
+  [newFeed setAuthors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self authors]]];
+  [newFeed setContributors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self contributors]]];
+  [newFeed setCategories:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self categories]]];
   [newFeed setUpdatedDate:[self updatedDate]];
   
   [newFeed setTotalResults:[self totalResults]];
@@ -234,6 +234,7 @@
 
 
 - (BOOL)isEqual:(GDataFeedBase *)other {
+  
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataFeedBase class]]) return NO;
 
@@ -342,10 +343,11 @@
  // subclasses override this to set up their feed ivars from the XML 
 }
 
-// subclass should override this, and may return kUseRegisteredEntryClass
+// subclasses may override this, and may return a specific entry class or
+// kUseRegisteredEntryClass
 - (Class)classForEntries {
   
-  return [GDataEntryBase class]; 
+  return kUseRegisteredEntryClass; 
 }
 
 - (BOOL)canPost {
@@ -360,7 +362,7 @@
 
 - (void)setIdentifier:(NSString *)theString {
   [idString_ autorelease];
-  idString_ = [theString retain];
+  idString_ = [theString copy];
 }
 
 - (GDataGenerator *)generator {
@@ -423,7 +425,7 @@
 
 - (void)setIcon:(NSString *)theString {
   [icon_ autorelease];
-  icon_ = [theString retain];
+  icon_ = [theString copy];
 }
 
 - (NSString *)logo {
@@ -432,7 +434,7 @@
 
 - (void)setLogo:(NSString *)theString {
   [logo_ autorelease];
-  logo_ = [theString retain];
+  logo_ = [theString copy];
 }
 
 - (NSArray *)links {
@@ -518,7 +520,7 @@
 
 - (void)setUpdatedDate:(GDataDateTime *)theDate {
   [updatedDate_ autorelease];
-  updatedDate_ = [theDate retain];
+  updatedDate_ = [theDate copy];
 }
 
 - (NSNumber *)totalResults {
@@ -527,7 +529,7 @@
 
 - (void)setTotalResults:(NSNumber *)num {
   [totalResults_ autorelease]; 
-  totalResults_ = [num retain];
+  totalResults_ = [num copy];
 }
 
 - (NSNumber *)startIndex {
@@ -536,7 +538,7 @@
 
 - (void)setStartIndex:(NSNumber *)num {
   [startIndex_ autorelease]; 
-  startIndex_ = [num retain];
+  startIndex_ = [num copy];
 }
 
 - (NSNumber *)itemsPerPage {
@@ -545,7 +547,7 @@
 
 - (void)setItemsPerPage:(NSNumber *)num {
   [itemsPerPage_ autorelease]; 
-  itemsPerPage_ = [num retain];
+  itemsPerPage_ = [num copy];
 }
 
 - (NSArray *)entries {

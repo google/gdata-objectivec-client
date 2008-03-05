@@ -65,7 +65,7 @@
   // Make a URL like
   //   http://gdata.youtube.com/feeds/api/users/username/favorites
   
-  NSString *encodedUserID = [GDataQuery stringByURLEncodingString:userID];
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
   NSString *endPart;
   
   if (feedID == nil) {
@@ -90,8 +90,8 @@
   //   http://uploads.gdata.youtube.com/feeds/users/username/uploads?
   //       client=clientID
   
-  NSString *encodedUserID = [GDataQuery stringByURLEncodingString:userID];
-  NSString *encodedClientID = [GDataQuery stringByURLEncodingString:clientID];
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
+  NSString *encodedClientID = [GDataUtilities stringByURLEncodingString:clientID];
   
   NSString *root = [self serviceUploadRootURLString];
   

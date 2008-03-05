@@ -73,7 +73,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataAtomPubControl* newObj = [super copyWithZone:zone];
-  [newObj setIsDraft:isDraft_];
+  [newObj setIsDraft:[self isDraft]];
   return newObj;
 }
 

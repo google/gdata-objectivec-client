@@ -95,7 +95,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataValueConstruct* newValue = [super copyWithZone:zone];
-  [newValue setStringValue:value_];
+  [newValue setStringValue:[self stringValue]];
   return newValue;
 }
 

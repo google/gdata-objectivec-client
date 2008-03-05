@@ -110,20 +110,20 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaContent* newObj = [super copyWithZone:zone];
-  [newObj setURLString:urlString_];
-  [newObj setFileSize:fileSize_];
-  [newObj setType:type_];
-  [newObj setMedium:medium_];
-  [newObj setIsDefault:isDefault_];
-  [newObj setExpression:expression_];
-  [newObj setBitrate:bitrate_];
-  [newObj setFramerate:framerate_];
-  [newObj setSamplingrate:samplingrate_];
-  [newObj setChannels:channels_];
-  [newObj setDuration:duration_];
-  [newObj setHeight:height_];
-  [newObj setWidth:width_];
-  [newObj setLang:lang_];
+  [newObj setURLString:[self URLString]];
+  [newObj setFileSize:[self fileSize]];
+  [newObj setType:[self type]];
+  [newObj setMedium:[self medium]];
+  [newObj setIsDefault:[self isDefault]];
+  [newObj setExpression:[self expression]];
+  [newObj setBitrate:[self bitrate]];
+  [newObj setFramerate:[self framerate]];
+  [newObj setSamplingrate:[self samplingrate]];
+  [newObj setChannels:[self channels]];
+  [newObj setDuration:[self duration]];
+  [newObj setHeight:[self height]];
+  [newObj setWidth:[self width]];
+  [newObj setLang:[self lang]];
   return newObj; 
 }
 
@@ -217,7 +217,7 @@
 }
 - (void)setFileSize:(NSNumber *)num {
   [fileSize_ autorelease];
-  fileSize_ = [num retain];
+  fileSize_ = [num copy];
 }
 
 - (NSString *)type {
@@ -241,7 +241,7 @@
 }
 - (void)setIsDefault:(NSNumber *)num {
   [isDefault_ autorelease];
-  isDefault_ = [num retain];
+  isDefault_ = [num copy];
 }
 
 - (NSString *)expression {
@@ -257,7 +257,7 @@
 }
 - (void)setBitrate:(NSDecimalNumber *)num {
   [bitrate_ autorelease];
-  bitrate_ = [num retain];
+  bitrate_ = [num copy];
 }
 
 - (NSDecimalNumber *)framerate {
@@ -265,7 +265,7 @@
 }
 - (void)setFramerate:(NSDecimalNumber *)num {
   [framerate_ autorelease];
-  framerate_ = [num retain];
+  framerate_ = [num copy];
 }
 
 - (NSDecimalNumber *)samplingrate {
@@ -273,7 +273,7 @@
 }
 - (void)setSamplingrate:(NSDecimalNumber *)num {
   [samplingrate_ autorelease];
-  samplingrate_ = [num retain];
+  samplingrate_ = [num copy];
 }
 
 - (NSNumber *)channels {
@@ -281,7 +281,7 @@
 }
 - (void)setChannels:(NSNumber *)num {
   [channels_ autorelease];
-  channels_ = [num retain];
+  channels_ = [num copy];
 }
 
 - (NSNumber *)duration {
@@ -289,7 +289,7 @@
 }
 - (void)setDuration:(NSNumber *)num {
   [duration_ autorelease];
-  duration_ = [num retain];
+  duration_ = [num copy];
 }
 
 - (NSNumber *)height {
@@ -297,7 +297,7 @@
 }
 - (void)setHeight:(NSNumber *)num {
   [height_ autorelease];
-  height_ = [num retain];
+  height_ = [num copy];
 }
 
 - (NSNumber *)width {
@@ -305,7 +305,7 @@
 }
 - (void)setWidth:(NSNumber *)num {
   [width_ autorelease];
-  width_ = [num retain];
+  width_ = [num copy];
 }
 
 - (NSString *)lang {

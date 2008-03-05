@@ -58,8 +58,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataGoogleBaseMetadataValue* newObj = [super copyWithZone:zone];
-  [newObj setContents:contents_];
-  [newObj setCount:count_];
+  [newObj setContents:[self contents]];
+  [newObj setCount:[self count]];
   return newObj;
 }
 
@@ -109,7 +109,7 @@
 
 - (void)setCount:(NSNumber *)num {
   [count_ autorelease];
-  count_ = [num retain];
+  count_ = [num copy];
 }
 
 

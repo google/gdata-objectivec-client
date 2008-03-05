@@ -27,17 +27,17 @@
     <entry>
         <yt:username>fredflintstone</yt:username>
         <yt:status>accepted</yt:status>
-        <id>http://gdata.youtube.com/feeds/api/users/testaccount/contacts/gregrobbins</id>
-        <title type="text">gregrobbins</title>
+        <id>http://gdata.youtube.com/feeds/api/users/testaccount/contacts/fredflintstone</id>
+        <title type="text">fredflintstone</title>
         <published>2008-01-29T17:11:08-08:00</published>
         <updated>2008-02-06T00:25:21Z</updated>
         <link
-            href="http://gdata.youtube.com/feeds/api/users/gregrobbins"
+            href="http://gdata.youtube.com/feeds/api/users/fredflintstone"
             rel="related" type="application/atom+xml"/>
-        <link href="http://www.youtube.com/profile?user=gregrobbins"
+        <link href="http://www.youtube.com/profile?user=fredflintstone"
             rel="alternate" type="text/html"/>
         <link
-            href="http://gdata.youtube.com/feeds/api/users/testaccount/contacts/gregrobbins"
+            href="http://gdata.youtube.com/feeds/api/users/testaccount/contacts/fredflintstone"
             rel="self" type="application/atom+xml"/>
         <author>
             <name>testaccount</name>

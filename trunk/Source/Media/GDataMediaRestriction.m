@@ -63,9 +63,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaRestriction* newObj = [super copyWithZone:zone];
-  [newObj setRelationship:relationship_];
-  [newObj setType:type_];
-  [newObj setStringValue:content_];
+  [newObj setRelationship:[self relationship]];
+  [newObj setType:[self type]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 

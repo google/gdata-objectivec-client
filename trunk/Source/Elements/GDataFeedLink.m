@@ -72,11 +72,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataFeedLink* newLink = [super copyWithZone:zone];
-  [newLink setHref:href_];
-  [newLink setIsReadOnly:isReadOnly_];
-  [newLink setCountHint:countHint_];
-  [newLink setRel:rel_];
-  [newLink setFeed:feed_];
+  [newLink setHref:[self href]];
+  [newLink setIsReadOnly:[self isReadOnly]];
+  [newLink setCountHint:[self countHint]];
+  [newLink setRel:[self rel]];
+  [newLink setFeed:[[[self feed] copyWithZone:zone] autorelease]];
   return newLink;
 }
 
@@ -151,7 +151,7 @@
 
 -(void)setCountHint:(NSNumber *)val {
   [countHint_ autorelease];
-  countHint_ = [val retain]; 
+  countHint_ = [val copy]; 
 }
 
 - (NSString *)rel {

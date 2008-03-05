@@ -191,9 +191,9 @@
   [newEntry setSummary:[self summary]];
   [newEntry setContent:[self content]];
   [newEntry setRightsString:[self rightsString]];
-  [newEntry setLinks:[self links]];
-  [newEntry setAuthors:[self authors]];
-  [newEntry setCategories:[self categories]];
+  [newEntry setLinks:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self links]]];
+  [newEntry setAuthors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self authors]]];
+  [newEntry setCategories:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self categories]]];
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];

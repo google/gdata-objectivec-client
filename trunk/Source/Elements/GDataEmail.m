@@ -63,10 +63,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataEmail* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setAddress:address_];
-  [newObj setRel:rel_];
-  [newObj setIsPrimary:isPrimary_];
+  [newObj setLabel:[self label]];
+  [newObj setAddress:[self address]];
+  [newObj setRel:[self rel]];
+  [newObj setIsPrimary:[self isPrimary]];
   return newObj; 
 }
 

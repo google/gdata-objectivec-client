@@ -69,10 +69,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataPerson* newPerson = [super copyWithZone:zone];
-  [newPerson setName:name_];
-  [newPerson setNameLang:nameLang_];
-  [newPerson setURI:uri_];
-  [newPerson setEmail:email_];
+  [newPerson setName:[self name]];
+  [newPerson setNameLang:[self nameLang]];
+  [newPerson setURI:[self URI]];
+  [newPerson setEmail:[self email]];
   return newPerson;
 }
 

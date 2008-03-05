@@ -62,8 +62,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataComment* newComment = [super copyWithZone:zone];
-  [newComment setFeedLink:feedLink_];
-  [newComment setRel:rel_];
+  [newComment setFeedLink:[[[self feedLink] copyWithZone:zone] autorelease]];
+  [newComment setRel:[self rel]];
   return newComment;
 }
 

@@ -65,10 +65,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataPostalAddress* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setStringValue:value_];
-  [newObj setRel:rel_];
-  [newObj setIsPrimary:isPrimary_];
+  [newObj setLabel:[self label]];
+  [newObj setStringValue:[self stringValue]];
+  [newObj setRel:[self rel]];
+  [newObj setIsPrimary:[self isPrimary]];
   return newObj;
 }
 

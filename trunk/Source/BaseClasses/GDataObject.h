@@ -99,6 +99,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataUtilities.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -391,9 +392,6 @@ childWithStringValueIfNonEmpty:(NSString *)str
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects;
 
-// utility for removing non-white control characters
-+ (NSString *)stringWithControlsFilteredForString:(NSString *)str;
-
 //
 // decription method helpers
 //
@@ -409,6 +407,7 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addToArray:(NSMutableArray *)stringItems
 arrayCountIfNonEmpty:(NSArray *)array
           withName:(NSString *)name;  
+
 
 // optional methods for overriding
 //

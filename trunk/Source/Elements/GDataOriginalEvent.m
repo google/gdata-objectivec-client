@@ -71,9 +71,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataOriginalEvent* newEvent = [super copyWithZone:zone];
-  [newEvent setHref:href_];
-  [newEvent setOriginalID:originalID_];
-  [newEvent setOriginalStartTime:originalStartTime_];
+  [newEvent setHref:[self href]];
+  [newEvent setOriginalID:[self originalID]];
+  [newEvent setOriginalStartTime:[[[self originalStartTime] copyWithZone:zone] autorelease]];
   return newEvent;
 }
 

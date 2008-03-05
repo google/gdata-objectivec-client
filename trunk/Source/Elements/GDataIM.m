@@ -74,11 +74,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataIM* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setRel:rel_];
-  [newObj setAddress:address_];
-  [newObj setProtocol:protocol_];
-  [newObj setIsPrimary:isPrimary_];
+  [newObj setLabel:[self label]];
+  [newObj setRel:[self rel]];
+  [newObj setAddress:[self address]];
+  [newObj setProtocol:[self protocol]];
+  [newObj setIsPrimary:[self isPrimary]];
   return newObj;
 }
 

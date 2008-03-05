@@ -32,6 +32,7 @@
 _EXTERN NSString* kGDataBatchOperationInsert _INITIALIZE_AS(@"insert");
 _EXTERN NSString* kGDataBatchOperationUpdate _INITIALIZE_AS(@"update");
 _EXTERN NSString* kGDataBatchOperationDelete _INITIALIZE_AS(@"delete");
+_EXTERN NSString* kGDataBatchOperationQuery  _INITIALIZE_AS(@"query");
 
 
 // for batch operations, like

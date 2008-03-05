@@ -132,19 +132,35 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataObject* newObject = [[[self class] allocWithZone:zone] init];
-  [newObject setElementName:elementName_];
+  [newObject setElementName:[self elementName]];
   [newObject setParent:nil];
-  [newObject setNamespaces:namespaces_];
+  
+  NSDictionary *namespaces = 
+    [GDataUtilities dictionaryWithCopiesOfObjectsInDictionary:[self namespaces]];
+  [newObject setNamespaces:namespaces];
 
-  [newObject setExtensions:extensions_];
-  [newObject setExtensionDeclarations:extensionDeclarations_];
-  [newObject setUnknownChildren:unknownChildren_];
-  [newObject setUnknownAttributes:unknownAttributes_];
+  NSDictionary *extensions = 
+    [GDataUtilities dictionaryWithCopiesOfArraysInDictionary:[self extensions]];
+  [newObject setExtensions:extensions];
+  
+  // extension declarations are immutable
+  [newObject setExtensionDeclarations:[self extensionDeclarations]];
+  
+  NSArray *unknownChildren = 
+    [GDataUtilities arrayWithCopiesOfObjectsInArray:[self unknownChildren]];
+  [newObject setUnknownChildren:unknownChildren];
+  
+  NSArray *unknownAttributes =
+    [GDataUtilities arrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
+  [newObject setUnknownAttributes:unknownAttributes];
+  
   return newObject;
   
   // What we're not copying:
+  //   parent object pointer
+  //   surrogates
   //   userData
-  //   parent object pointers
+  //   userProperties
 }
 
 - (void)dealloc {
@@ -433,7 +449,7 @@
      attributeValueIfNonNil:(NSString *)val
                    withName:(NSString *)name {
   if (val) {
-    NSString *filtered = [[self class] stringWithControlsFilteredForString:val];
+    NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:val];
 
     NSXMLNode* attr = [NSXMLNode attributeWithName:name stringValue:filtered];
     [element addAttribute:attr];
@@ -490,59 +506,6 @@ childWithStringValueIfNonEmpty:(NSString *)str
       [element addChild:child];
     }
   }
-}
-
-+ (NSString *)stringWithControlsFilteredForString:(NSString *)str {
-  // Ensure that control characters are not present in the string, since they 
-  // would lead to XML that likely will make servers unhappy.  (Are control
-  // characters ever legal in XML?)
-  //
-  // Why not assert on debug builds for the caller when the string has a control
-  // character?  The characters may never be present in the data until the
-  // program is deployed to users.  This filtering will make it less likely 
-  // that bad XML might be generated for users and sent to servers.
-  //
-  // Since we generate our XML directly from the elements with
-  // XMLData, we won't later have a good chance to look for and clean out
-  // the control characters.
-  
-  static NSCharacterSet *filterChars = nil;
-  if (filterChars == nil) {
-    // make a character set of control characters (but not whitespace/newline
-    // characters), and keep a static immutable copy to use for filtering
-    // strings
-    NSCharacterSet *ctrlChars = [NSCharacterSet controlCharacterSet];
-    NSCharacterSet *newlineWsChars = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    NSCharacterSet *nonNewlineWsChars = [newlineWsChars invertedSet];
-    
-    NSMutableCharacterSet *mutableChars = [[ctrlChars mutableCopy] autorelease];
-    [mutableChars formIntersectionWithCharacterSet:nonNewlineWsChars];
-    
-    filterChars = [mutableChars copy];
-  }
-  
-  // look for any invalid characters
-  NSRange range = [str rangeOfCharacterFromSet:filterChars]; 
-  if (range.location != NSNotFound) {
-    
-    // copy the string to a mutable, and remove null and non-whitespace 
-    // control characters
-    NSMutableString *mutableStr = [NSMutableString stringWithString:str];  
-    while (range.location != NSNotFound) {
-      
-#if DEBUG
-      NSLog(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"", 
-            [mutableStr characterAtIndex:range.location], str);
-#endif
-      [mutableStr deleteCharactersInRange:range];
-      
-      range = [mutableStr rangeOfCharacterFromSet:filterChars]; 
-    }
-    
-    return mutableStr;
-  }
-  
-  return str;
 }
 
 #pragma mark description method helpers
@@ -1407,7 +1370,7 @@ forCategoryWithScheme:scheme
   // instead
   
   // filter out non-whitespace control characters
-  NSString *filtered = [GDataObject stringWithControlsFilteredForString:str];
+  NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:str];
     
   NSXMLNode *strNode = [NSXMLNode textWithStringValue:filtered];
   [self addChild:strNode];
@@ -1415,7 +1378,7 @@ forCategoryWithScheme:scheme
 
 + (id)elementWithName:(NSString *)name attributeName:(NSString *)attrName attributeValue:(NSString *)attrValue {
   
-  NSString *filtered = [GDataObject stringWithControlsFilteredForString:attrValue];
+  NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:attrValue];
   
   NSXMLNode *attr = [NSXMLNode attributeWithName:attrName stringValue:filtered];
   NSXMLElement *element = [NSXMLNode elementWithName:name];
@@ -1496,10 +1459,14 @@ BOOL AreEqualOrBothNil(id obj1, id obj2) {
   if (obj1 && obj2) {
     BOOL areEqual = [obj1 isEqual:obj2];
     
-    // the next line is useful when XML regeneration fails in unit tests
+    // the following commented-out lines are useful for finding out what
+    // comparisons are failing when XML regeneration fails in unit tests
+    
     //if (!areEqual) NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
       
     return areEqual; 
+  } else {
+     //NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
   }
   return NO;
 }

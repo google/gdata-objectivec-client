@@ -57,7 +57,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataCodeSearchFile* newObj = [super copyWithZone:zone];
-  [newObj setName:name_];
+  [newObj setName:[self name]];
   return newObj;
 }
 

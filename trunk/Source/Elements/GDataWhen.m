@@ -63,9 +63,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataWhen* when = [super copyWithZone:zone];
-  [when setStartTime:startTime_];
-  [when setEndTime:endTime_];
-  [when setValue:value_];
+  [when setStartTime:[[[self startTime] copyWithZone:zone] autorelease]];
+  [when setEndTime:[[[self endTime] copyWithZone:zone] autorelease]];
+  [when setValue:[self value]];
   return when;
 }
 

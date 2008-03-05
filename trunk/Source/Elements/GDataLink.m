@@ -74,13 +74,13 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataLink* newLink = [super copyWithZone:zone];
-  [newLink setRel:rel_];
-  [newLink setType:type_];
-  [newLink setHref:href_];
-  [newLink setHrefLang:hrefLang_];
-  [newLink setTitle:title_];
-  [newLink setTitleLang:titleLang_];
-  [newLink setResourceLength:resourceLength_];
+  [newLink setRel:[self rel]];
+  [newLink setType:[self type]];
+  [newLink setHref:[self href]];
+  [newLink setHrefLang:[self hrefLang]];
+  [newLink setTitle:[self title]];
+  [newLink setTitleLang:[self titleLang]];
+  [newLink setResourceLength:[self resourceLength]];
   return newLink;
 }
 
@@ -188,7 +188,7 @@
 
 - (void)setResourceLength:(NSNumber *)length {
   [resourceLength_ release];
-  resourceLength_ = [length retain];
+  resourceLength_ = [length copy];
 }
 
 // convenience method

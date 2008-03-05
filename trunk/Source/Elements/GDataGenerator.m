@@ -60,9 +60,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataGenerator* newGenerator = [super copyWithZone:zone];
-  [newGenerator setName:name_];
-  [newGenerator setVersion:version_];
-  [newGenerator setURI:uri_];
+  [newGenerator setName:[self name]];
+  [newGenerator setVersion:[self version]];
+  [newGenerator setURI:[self URI]];
   return newGenerator;
 }
 

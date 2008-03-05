@@ -60,9 +60,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaPlayer* newObj = [super copyWithZone:zone];
-  [newObj setURLString:urlString_];
-  [newObj setHeight:height_];
-  [newObj setWidth:width_];
+  [newObj setURLString:[self URLString]];
+  [newObj setHeight:[self height]];
+  [newObj setWidth:[self width]];
   return newObj;
 }
 
@@ -114,7 +114,7 @@
 
 - (void)setHeight:(NSNumber *)num {
   [height_ autorelease];
-  height_ = [num retain];
+  height_ = [num copy];
 }
 
 - (NSNumber *)width {
@@ -123,7 +123,7 @@
 
 - (void)setWidth:(NSNumber *)num {
   [width_ autorelease];
-  width_ = [num retain];
+  width_ = [num copy];
 }
 
 

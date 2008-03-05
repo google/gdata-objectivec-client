@@ -58,9 +58,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryLink* newLink = [super copyWithZone:zone];
-  [newLink setHref:href_];
-  [newLink setIsReadOnly:isReadOnly_];
-  [newLink setEntry:entry_];
+  [newLink setHref:[self href]];
+  [newLink setIsReadOnly:[self isReadOnly]];
+  [newLink setEntry:[[[self entry] copyWithZone:zone] autorelease]];
   return newLink;
 }
 

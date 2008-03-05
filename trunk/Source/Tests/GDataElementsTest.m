@@ -376,9 +376,19 @@
     { @"originalStartTime.value", nil },
     { @"", @"" },
     
-    { @"GDataPerson", @"<GDataPerson xml:lang='en'> <name>Greg Robbins</name> <email>test@froo.net</email> "
+    { @"GDataOrganization", @"<gd:organization rel='http://schemas.google.com/g/2005#work' "
+      "label='greensleeves' primary='true' ><gd:orgName>Acme Corp</gd:orgName>"
+      "<gd:orgTitle>Prezident</gd:orgTitle></gd:organization>" },
+    { @"rel", @"http://schemas.google.com/g/2005#work" },
+    { @"label", @"greensleeves" },
+    { @"isPrimary", @"1" },
+    { @"orgName", @"Acme Corp", },
+    { @"orgTitle", @"Prezident" },
+    { @"", @"" },
+
+    { @"GDataPerson", @"<GDataPerson xml:lang='en'> <name>Fred Flintstone</name> <email>test@froo.net</email> "
       "<uri>http://foo.com/</uri></GDataPerson>" },
-    { @"name", @"Greg Robbins" },
+    { @"name", @"Fred Flintstone" },
     { @"nameLang", @"en" },
     { @"URI", @"http://foo.com/" },
     { @"email", @"test@froo.net" },

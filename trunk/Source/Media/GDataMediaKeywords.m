@@ -69,7 +69,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaKeywords* newObj = [super copyWithZone:zone];
-  [newObj setKeywords:keywords_];
+  [newObj setKeywords:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self keywords]]];
   return newObj;
 }
 

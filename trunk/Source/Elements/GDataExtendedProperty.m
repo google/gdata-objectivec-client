@@ -57,8 +57,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataExtendedProperty* newValue = [super copyWithZone:zone];
-  [newValue setValue:value_];
-  [newValue setName:name_];
+  [newValue setValue:[self value]];
+  [newValue setName:[self name]];
   return newValue;
 }
 

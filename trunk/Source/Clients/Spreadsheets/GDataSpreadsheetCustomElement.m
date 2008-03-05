@@ -36,7 +36,7 @@
   
   GDataSpreadsheetCustomElement *obj = [[[GDataSpreadsheetCustomElement alloc] init] autorelease];
   [obj setName:name];
-  [obj setstringValue:stringValue];
+  [obj setStringValue:stringValue];
   
   // we don't want the element to have the default name gsx:*
   [obj setElementName:[NSString stringWithFormat:@"%@:%@", 
@@ -69,8 +69,8 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataSpreadsheetCustomElement* newObj = [super copyWithZone:zone];
   
-  [newObj setName:name_];
-  [newObj setstringValue:stringValue_];
+  [newObj setName:[self name]];
+  [newObj setStringValue:[self stringValue]];
   
   return newObj;
 }
@@ -120,7 +120,7 @@
   return stringValue_;
 }
 
-- (void)setstringValue:(NSString *)str {
+- (void)setStringValue:(NSString *)str {
   [stringValue_ autorelease];
   stringValue_ = [str copy];
 }
