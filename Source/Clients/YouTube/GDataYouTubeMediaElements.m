@@ -61,7 +61,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataYouTubeMediaContent* newObj = [super copyWithZone:zone];
-  [newObj setYouTubeFormatNumber:youTubeFormatNumber_];
+  [newObj setYouTubeFormatNumber:[self youTubeFormatNumber]];
   return newObj; 
 }
 
@@ -102,7 +102,7 @@
 
 - (void)setYouTubeFormatNumber:(NSNumber *)num {
   [youTubeFormatNumber_ autorelease];
-  youTubeFormatNumber_ = [num retain];
+  youTubeFormatNumber_ = [num copy];
 }
 
 @end

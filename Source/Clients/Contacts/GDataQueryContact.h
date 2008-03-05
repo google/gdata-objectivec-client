@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2008 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -13,10 +13,17 @@
 * limitations under the License.
 */
 
-#include "GDataFramework.h"
+//
+//  GDataQueryContact.h
+//
 
-void GDataFrameworkVersion(long* major, long* minor, long* release) {
-  if (major)   *major = 1; 
-  if (minor)   *minor = 3; 
-  if (release) *release = 0; 
-}
+#import "GDataQuery.h"
+
+@interface GDataQueryContact : GDataQuery 
+
++ (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL;
+
++ (GDataQueryContact *)contactQueryForUserID:(NSString *)userID;
+
+@end
+

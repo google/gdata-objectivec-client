@@ -59,9 +59,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaCategory* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setScheme:scheme_];
-  [newObj setStringValue:content_];
+  [newObj setLabel:[self label]];
+  [newObj setScheme:[self scheme]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 

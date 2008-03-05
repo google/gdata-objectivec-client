@@ -61,7 +61,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryContent* newObj = [super copyWithZone:zone];
-  [newObj setSourceURI:src_];
+  [newObj setSourceURI:[self sourceURI]];
   return newObj;
 }
 

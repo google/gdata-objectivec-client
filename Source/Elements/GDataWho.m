@@ -96,12 +96,12 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataWho* newWho = [super copyWithZone:zone];
-  [newWho setRel:rel_];
-  [newWho setEmail:email_];
-  [newWho setStringValue:valueString_];
-  [newWho setAttendeeType:attendeeType_];
-  [newWho setAttendeeStatus:attendeeStatus_];
-  [newWho setEntryLink:entryLink_];
+  [newWho setRel:[self rel]];
+  [newWho setEmail:[self email]];
+  [newWho setStringValue:[self stringValue]];
+  [newWho setAttendeeType:[self attendeeType]];
+  [newWho setAttendeeStatus:[self attendeeStatus]];
+  [newWho setEntryLink:[[[self entryLink] copyWithZone:zone] autorelease]];
   return newWho;
 }
 

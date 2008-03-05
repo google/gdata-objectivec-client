@@ -51,7 +51,7 @@
 static BOOL gIsLoggingEnabled = NO;
 static NSString *gLoggingDirectoryPath = nil;
 static NSString *gLoggingDateStamp = nil;
-static NSMutableString* gLoggingProcessName = nil; 
+static NSString* gLoggingProcessName = nil; 
 
 + (void)setLoggingDirectory:(NSString *)path {
   [gLoggingDirectoryPath autorelease];
@@ -111,12 +111,14 @@ static NSMutableString* gLoggingProcessName = nil;
   if (!gLoggingProcessName) {
     
     NSString *procName = [[NSProcessInfo processInfo] processName];
-    gLoggingProcessName = [[NSMutableString alloc] initWithString:procName];
+    NSMutableString *loggingProcessName;
+    loggingProcessName = [[NSMutableString alloc] initWithString:procName];
     
-    [gLoggingProcessName replaceOccurrencesOfString:@" " 
+    [loggingProcessName replaceOccurrencesOfString:@" " 
                                          withString:@"_" 
                                             options:0 
                                               range:NSMakeRange(0, [gLoggingProcessName length])];
+    gLoggingProcessName = loggingProcessName;
   } 
   return gLoggingProcessName;
 }

@@ -223,6 +223,13 @@
   // -1
   STAssertEquals([pwaQuery2 imageSize], kGDataPicasaWebImageSizeDownloadable,
                  @"image size error (2)");
+  
+  // test the generator for photo contact feed URLs
+  NSURL *contactsURL = [GDataServiceGooglePicasaWeb picasaWebContactsFeedURLForUserID:@"fred@gmail.com"];
+  NSString *contactsURLString = [contactsURL absoluteString];
+  NSString *expectedContactsURLString = @"http://picasaweb.google.com/data/feed/api/user/fred@gmail.com/contacts?kind=user";
+  STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
+                       @"contacts URL error");
 }
 
 - (void)testYouTubeQuery {
@@ -237,12 +244,13 @@
   [ytQuery1 setFormat:@"0,5,6"];
   [ytQuery1 setTimePeriod:kGDataYouTubePeriodThisWeek];
   [ytQuery1 setOrderBy:kGDataYouTubeOrderByRelevance];
+  [ytQuery1 setRestriction:@"127.0.0.1"];
   [ytQuery1 setAllowRacy:YES];
   
   NSURL* resultURL1 = [ytQuery1 URL];
   NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
-    "favorites?orderby=relevance&format=0%2C5%2C6&racy=include&time=this_week"
-    "&vq=%22Fred+Flintstone%22";
+    "favorites?orderby=relevance&format=0%2C5%2C6&racy=include"
+    "&restriction=127.0.0.1&time=this_week&vq=%22Fred+Flintstone%22";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"YouTube query 1 generation error");
 }
@@ -270,10 +278,10 @@
 
   NSString *resultFull, *resultParam;
   
-  resultFull = [GDataQuery stringByURLEncodingString:fullAsciiParam];
+  resultFull = [GDataUtilities stringByURLEncodingString:fullAsciiParam];
   STAssertEqualObjects(resultFull, fullEncoded, @"URL full encoding error");
   
-  resultParam = [GDataQuery stringByURLEncodingStringParameter:fullAsciiParam];
+  resultParam = [GDataUtilities stringByURLEncodingStringParameter:fullAsciiParam];
   STAssertEqualObjects(resultParam, paramEncoded, @"URL param encoding error");
 }
 

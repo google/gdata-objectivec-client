@@ -64,7 +64,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataCodeSearchMatch* newObj = [super copyWithZone:zone];
-  [newObj setLineNumberString:lineNumberString_];
+  [newObj setLineNumberString:[self lineNumberString]];
   return newObj;
 }
 

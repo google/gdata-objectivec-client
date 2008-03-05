@@ -51,7 +51,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataBatchOperation* newObj = [super copyWithZone:zone];
-  [newObj setType:type_];
+  [newObj setType:[self type]];
   return newObj;
 }
 

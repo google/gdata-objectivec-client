@@ -71,10 +71,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataCategory* newCategory = [super copyWithZone:zone];
-  [newCategory setScheme:scheme_];
-  [newCategory setTerm:term_];
-  [newCategory setLabel:label_];
-  [newCategory setLabelLang:labelLang_];
+  [newCategory setScheme:[self scheme]];
+  [newCategory setTerm:[self term]];
+  [newCategory setLabel:[self label]];
+  [newCategory setLabelLang:[self labelLang]];
   return newCategory;
 }
 

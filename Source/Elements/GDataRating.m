@@ -73,12 +73,12 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataRating* newObj = [super copyWithZone:zone];
-  [newObj setRel:rel_];
-  [newObj setValue:value_];
-  [newObj setMax:max_];
-  [newObj setMin:min_];
-  [newObj setAverage:average_];
-  [newObj setNumberOfRaters:numberOfRaters_];
+  [newObj setRel:[self rel]];
+  [newObj setValue:[self value]];
+  [newObj setMax:[self max]];
+  [newObj setMin:[self min]];
+  [newObj setAverage:[self average]];
+  [newObj setNumberOfRaters:[self numberOfRaters]];
   return newObj;
 }
 

@@ -63,8 +63,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataCodeSearchPackage* newObj = [super copyWithZone:zone];
-  [newObj setName:name_];
-  [newObj setURI:uri_];
+  [newObj setName:[self name]];
+  [newObj setURI:[self URI]];
   return newObj;
 }
 

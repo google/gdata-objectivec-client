@@ -237,6 +237,116 @@
   [self runTests:tests];
 }
 
+- (void)testContactsFeed {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Contact Feed
+    //
+    { @"GDataFeedContact", @"Tests/FeedContactTest1.xml" },
+      
+    // GDataFeedContact paths 
+    { @"title", @"Contacts" },
+    { @"categories.0.term", kGDataCategoryContact },
+    { @"links.1.rel", kGDataLinkRelPost },
+      
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+      
+    // GDataEntryContact paths
+    // First entry is real; second entry is deleted
+    { @"entries.0.identifier", @"contains:9cfaae9" },
+    { @"entries.0.categories.0.term", kGDataCategoryContact },
+    { @"entries.0.isDeleted", @"0" },
+      
+    { @"entries.0.primaryOrganization.orgName", @"Le Company" },
+      
+    { @"entries.0.organizations.0.orgName", @"Le Company" },
+    { @"entries.0.organizations.0.orgTitle", @"Titularstuff" },
+    { @"entries.0.organizations.0.label", nil },
+    { @"entries.0.organizations.0.rel", kGDataContactOther },
+    { @"entries.0.organizations.0.isPrimary", @"1" },
+      
+    { @"entries.0.organizations.1.orgName", @"Deadhead Associates" },
+    { @"entries.0.organizations.1.orgTitle", @"Groupie" },
+    { @"entries.0.organizations.1.label", @"DAz" },
+    { @"entries.0.organizations.1.rel", nil },
+    { @"entries.0.organizations.1.isPrimary", @"0" },
+      
+    { @"entries.0.primaryIMAddress.address", @"fooaimz" },
+      
+    { @"entries.0.IMAddresses.0.protocol", kGDataIMProtocolAIM },
+    { @"entries.0.IMAddresses.0.address", @"fooaimz" },
+    { @"entries.0.IMAddresses.0.label", @"werkz" },
+    { @"entries.0.IMAddresses.0.isPrimary", @"1" },
+      
+    { @"entries.0.IMAddresses.1.protocol", kGDataIMProtocolMSN },
+    { @"entries.0.IMAddresses.1.address", @"foomsn" },
+    { @"entries.0.IMAddresses.1.label", nil },
+    { @"entries.0.IMAddresses.1.rel", kGDataContactHome },
+    { @"entries.0.IMAddresses.1.isPrimary", @"0" },
+      
+    { @"entries.0.IMAddresses.2.protocol", kGDataIMProtocolGoogleTalk },
+    { @"entries.0.IMAddresses.2.address", @"foo@gmail.com" },
+    { @"entries.0.IMAddresses.2.label", nil },
+    { @"entries.0.IMAddresses.2.rel", kGDataContactOther },
+    { @"entries.0.IMAddresses.2.isPrimary", @"0" },
+      
+    { @"entries.0.IMAddresses.3.protocol", kGDataIMProtocolJabber },
+    { @"entries.0.IMAddresses.3.address", @"foo@jabber.org" },
+    { @"entries.0.IMAddresses.3.label", @"jabz" },
+    { @"entries.0.IMAddresses.3.rel", nil },
+    { @"entries.0.IMAddresses.3.isPrimary", @"0" },
+      
+    { @"entries.0.primaryPhoneNumber.stringValue", @"123-4567" },
+      
+    { @"entries.0.phoneNumbers.0.stringValue", @"123-4567" },
+    { @"entries.0.phoneNumbers.0.label", nil },
+    { @"entries.0.phoneNumbers.0.rel", kGDataPhoneNumberMobile },
+    { @"entries.0.phoneNumbers.0.isPrimary", @"1" },
+      
+    { @"entries.0.phoneNumbers.1.stringValue", @"333-1414" },
+    { @"entries.0.phoneNumbers.1.label", @"shoefone" },
+    { @"entries.0.phoneNumbers.1.rel", nil },
+    { @"entries.0.phoneNumbers.1.isPrimary", @"0" },
+      
+    { @"entries.0.primaryPostalAddress.stringValue", @"123 Lane St" },
+      
+    { @"entries.0.postalAddresses.0.stringValue", @"123 Lane St" },
+    { @"entries.0.postalAddresses.0.label", nil },
+    { @"entries.0.postalAddresses.0.rel", kGDataContactHome },
+    { @"entries.0.postalAddresses.0.isPrimary", @"1" },
+      
+    { @"entries.0.primaryEmailAddress.address", @"foo@bar.com" },
+      
+    { @"entries.0.emailAddresses.0.address", @"foo@bar.com" },
+    { @"entries.0.emailAddresses.0.label", nil },
+    { @"entries.0.emailAddresses.0.rel", kGDataContactHome },
+    { @"entries.0.emailAddresses.0.isPrimary", @"1" },
+      
+    { @"entries.0.emailAddresses.1.address", @"2@bar.com" },
+    { @"entries.0.emailAddresses.1.label", @"norzglie" },
+    { @"entries.0.emailAddresses.1.rel", nil },
+    { @"entries.0.emailAddresses.1.isPrimary", @"0" },
+      
+    { @"entries.1.identifier", @"contains:b001135" },
+    { @"entries.1.categories.0.term", kGDataCategoryContact },
+    { @"entries.1.isDeleted", @"1" },
+      
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+      
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
+  };
+  
+  [self runTests:tests];
+}
+
+
+
 - (void)testGoogleBaseFeed {
   
   TestKeyPathValues tests[] =

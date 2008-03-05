@@ -62,9 +62,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataTextConstruct* newText = [super copyWithZone:zone];
-  [newText setStringValue:content_];
-  [newText setLang:lang_];
-  [newText setType:type_];
+  [newText setStringValue:[self stringValue]];
+  [newText setLang:[self lang]];
+  [newText setType:[self type]];
   return newText;
 }
 

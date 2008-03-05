@@ -85,9 +85,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataWebContent* newObj = [super copyWithZone:zone];
-  [newObj setHeight:height_];
-  [newObj setWidth:width_];
-  [newObj setURLString:url_];
+  [newObj setHeight:[self height]];
+  [newObj setWidth:[self width]];
+  [newObj setURLString:[self URLString]];
   return newObj;
 }
 

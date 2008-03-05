@@ -26,6 +26,7 @@ NSString *const kVideoQueryParamName = @"vq";
 NSString *const kTimeParamName = @"time";
 NSString *const kFormatParamName = @"format";
 NSString *const kRacyParamName = @"racy";
+NSString *const kRestrictionParamName = @"restriction";
 
 @implementation GDataQueryYouTube
 
@@ -59,6 +60,15 @@ NSString *const kRacyParamName = @"racy";
 
 - (NSString *)timePeriod {
   return [[self customParameters] objectForKey:kTimeParamName];
+}
+
+- (void)setRestriction:(NSString *)str {
+  [self addCustomParameterWithName:kRestrictionParamName
+                             value:str];
+}
+
+- (NSString *)restriction {
+  return [[self customParameters] objectForKey:kRestrictionParamName];
 }
 
 - (void)setAllowRacy:(BOOL)flag {

@@ -58,9 +58,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaCredit* newObj = [super copyWithZone:zone];
-  [newObj setRole:role_];
-  [newObj setScheme:scheme_];
-  [newObj setStringValue:content_];
+  [newObj setRole:[self role]];
+  [newObj setScheme:[self scheme]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 

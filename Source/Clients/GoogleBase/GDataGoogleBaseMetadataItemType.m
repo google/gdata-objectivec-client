@@ -54,7 +54,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataGoogleBaseMetadataItemType* newObj = [super copyWithZone:zone];
-  [newObj setValue:value_];
+  [newObj setValue:[self value]];
   return newObj;
 }
 

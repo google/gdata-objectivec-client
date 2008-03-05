@@ -55,8 +55,8 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataMediaRating* newObj = [super copyWithZone:zone];
-  [newObj setScheme:scheme_];
-  [newObj setStringValue:content_];
+  [newObj setScheme:[self scheme]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 

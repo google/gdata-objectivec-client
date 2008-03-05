@@ -65,10 +65,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataYouTubeStatistics* newObj = [super copyWithZone:zone];
-  [newObj setViewCount:viewCount_];
-  [newObj setVideoWatchCount:videoWatchCount_];
-  [newObj setSubscriberCount:subscriberCount_];
-  [newObj setLastWebAccess:lastWebAccess_];
+  [newObj setViewCount:[self viewCount]];
+  [newObj setVideoWatchCount:[self videoWatchCount]];
+  [newObj setSubscriberCount:[self subscriberCount]];
+  [newObj setLastWebAccess:[[[self lastWebAccess] copyWithZone:zone] autorelease]];
   return newObj;
 }
 

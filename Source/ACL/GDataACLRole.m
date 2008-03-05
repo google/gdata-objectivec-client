@@ -54,7 +54,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataACLRole* newValue = [super copyWithZone:zone];
-  [newValue setValue:value_];
+  [newValue setValue:[self value]];
   return newValue;
 }
 

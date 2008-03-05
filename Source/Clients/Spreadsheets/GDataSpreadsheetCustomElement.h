@@ -38,6 +38,6 @@
 - (void)setName:(NSString *)str;
 
 - (NSString *)stringValue;
-- (void)setstringValue:(NSString *)str;
+- (void)setStringValue:(NSString *)str;
 
 @end

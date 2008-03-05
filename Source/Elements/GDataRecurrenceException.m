@@ -72,9 +72,9 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataRecurrenceException* newRecurrence = [super copyWithZone:zone];
-  [newRecurrence setIsSpecialized:isSpecialized_];
-  [newRecurrence setEntryLink:entryLink_];
-  [newRecurrence setOriginalEvent:originalEvent_];
+  [newRecurrence setIsSpecialized:[self isSpecialized]];
+  [newRecurrence setEntryLink:[[[self entryLink] copyWithZone:zone] autorelease]];
+  [newRecurrence setOriginalEvent:[[[self originalEvent] copyWithZone:zone] autorelease]];
   return newRecurrence;
 }
 

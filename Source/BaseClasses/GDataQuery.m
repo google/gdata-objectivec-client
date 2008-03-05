@@ -338,7 +338,7 @@
     id filter;
     while ((filter = [filterEnum nextObject]) != nil) {
       NSString *filterValue = [filter stringValue];
-      NSString *filterStr = [GDataQuery stringByURLEncodingString:filterValue];
+      NSString *filterStr = [GDataUtilities stringByURLEncodingString:filterValue];
       if ([filterStr length] > 0) {
         [pathStr appendFormat:@"/%@", filterStr];
       }
@@ -353,21 +353,21 @@
   NSString *ftQueryStr = [self fullTextQueryString];
   if ([ftQueryStr length] > 0) {
     
-    NSString *param = [GDataQuery stringByURLEncodingStringParameter:ftQueryStr];
+    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:ftQueryStr];
     NSString *ftQueryItem = [NSString stringWithFormat:@"q=%@", param];
     [queryItems addObject:ftQueryItem];
   }
  
   NSString *author = [self author];
   if ([author length] > 0) {
-    NSString *param = [GDataQuery stringByURLEncodingStringParameter:author];
+    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:author];
     NSString *authorItem = [NSString stringWithFormat:@"author=%@", param];
     [queryItems addObject:authorItem];
   }
 
   NSString *orderBy = [self orderBy];
   if ([orderBy length] > 0) {
-    NSString *param = [GDataQuery stringByURLEncodingStringParameter:orderBy];
+    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:orderBy];
     NSString *orderByItem = [NSString stringWithFormat:@"orderby=%@", param];
     [queryItems addObject:orderByItem];
   }
@@ -385,28 +385,28 @@
   GDataDateTime *minUpdatedDate = [self updatedMinDateTime];
   if (minUpdatedDate) {
     NSString *minUpdateDateItem = [NSString stringWithFormat:@"updated-min=%@",
-      [GDataQuery stringByURLEncodingStringParameter:[minUpdatedDate RFC3339String]]];
+      [GDataUtilities stringByURLEncodingStringParameter:[minUpdatedDate RFC3339String]]];
     [queryItems addObject:minUpdateDateItem];
   }
   
   GDataDateTime *maxUpdatedDate = [self updatedMaxDateTime];
   if (maxUpdatedDate) {
     NSString *maxUpdateDateItem = [NSString stringWithFormat:@"updated-max=%@",
-      [GDataQuery stringByURLEncodingStringParameter:[maxUpdatedDate RFC3339String]]];
+      [GDataUtilities stringByURLEncodingStringParameter:[maxUpdatedDate RFC3339String]]];
     [queryItems addObject:maxUpdateDateItem];
   }
   
   GDataDateTime *minPublishedDate = [self publishedMinDateTime];
   if (minPublishedDate) {
     NSString *minPublishedDateItem = [NSString stringWithFormat:@"published-min=%@",
-      [GDataQuery stringByURLEncodingStringParameter:[minPublishedDate RFC3339String]]];
+      [GDataUtilities stringByURLEncodingStringParameter:[minPublishedDate RFC3339String]]];
     [queryItems addObject:minPublishedDateItem];
   }
   
   GDataDateTime *maxPublishedDate = [self publishedMaxDateTime];
   if (maxPublishedDate) {
     NSString *maxPublishedDateItem = [NSString stringWithFormat:@"published-max=%@",
-      [GDataQuery stringByURLEncodingStringParameter:[maxPublishedDate RFC3339String]]];
+      [GDataUtilities stringByURLEncodingStringParameter:[maxPublishedDate RFC3339String]]];
     [queryItems addObject:maxPublishedDateItem];
   }
   
@@ -434,8 +434,8 @@
     NSString *paramValue = [customParameters valueForKey:paramKey];
     
     NSString *paramItem = [NSString stringWithFormat:@"%@=%@",
-      [GDataQuery stringByURLEncodingStringParameter:paramKey],
-      [GDataQuery stringByURLEncodingStringParameter:paramValue]];
+      [GDataUtilities stringByURLEncodingStringParameter:paramKey],
+      [GDataUtilities stringByURLEncodingStringParameter:paramValue]];
 
     [queryItems addObject:paramItem];
   }
@@ -479,48 +479,6 @@
   
   NSURL *fullURL = [NSURL URLWithString:combinedURLString];
   return fullURL;
-}
-
-+ (NSString *)stringByURLEncodingString:(NSString *)str {
-  NSString *result = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-  return result;
-}
-
-+ (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
-  
-  // NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
-  // some characters that should be escaped in URL parameters, like / and ?; 
-  // we'll use CFURL to force the encoding of those
-  //
-  // We'll explictly leave spaces unescaped now, and replace them with +'s
-  //
-  // Reference: http://www.ietf.org/rfc/rfc3986.txt
-
-  NSString *resultStr = str;
-
-  CFStringRef originalString = (CFStringRef) str;
-  CFStringRef leaveUnescaped = CFSTR(" ");
-  CFStringRef forceEscaped = CFSTR("!*'();:@&=+$,/?%#[]");
-  
-  CFStringRef escapedStr;
-  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                       originalString,
-                                                       leaveUnescaped, 
-                                                       forceEscaped,
-                                                       kCFStringEncodingUTF8);
-  
-  if (escapedStr) {
-    NSMutableString *mutableStr = [NSMutableString stringWithString:(NSString *)escapedStr];
-    CFRelease(escapedStr);
-
-    // replace spaces with plusses
-    [mutableStr replaceOccurrencesOfString:@" "
-                                withString:@"+"
-                                   options:0
-                                     range:NSMakeRange(0, [mutableStr length])];
-    resultStr = mutableStr;
-  }
-  return resultStr;
 }
 
 @end

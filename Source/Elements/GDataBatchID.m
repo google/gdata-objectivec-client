@@ -60,7 +60,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataBatchID* newObj = [super copyWithZone:zone];
-  [newObj setStringValue:idString_];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 

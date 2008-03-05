@@ -68,10 +68,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataBatchStatus* newObj = [super copyWithZone:zone];
-  [newObj setCode:code_];
-  [newObj setReason:reason_];
-  [newObj setContentType:contentType_];
-  [newObj setStringValue:content_];
+  [newObj setCode:[self code]];
+  [newObj setReason:[self reason]];
+  [newObj setContentType:[self contentType]];
+  [newObj setStringValue:[self stringValue]];
   return newObj;
 }
 
@@ -129,7 +129,7 @@
 
 - (void)setCode:(NSNumber *)num {
   [code_ autorelease];
-  code_ = [num retain];
+  code_ = [num copy];
 }
 
 - (NSString *)contentType {

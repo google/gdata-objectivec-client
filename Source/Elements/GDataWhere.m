@@ -70,10 +70,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataWhere* newWhere = [super copyWithZone:zone];
-  [newWhere setRel:rel_];
-  [newWhere setLabel:label_];
-  [newWhere setStringValue:valueString_];
-  [newWhere setEntryLink:entryLink_];
+  [newWhere setRel:[self rel]];
+  [newWhere setLabel:[self label]];
+  [newWhere setStringValue:[self stringValue]];
+  [newWhere setEntryLink:[[[self entryLink] copyWithZone:zone] autorelease]];
   return newWhere;
 }
 

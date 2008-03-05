@@ -40,6 +40,9 @@ _EXTERN NSString* kGDataYouTubePeriodThisWeek  _INITIALIZE_AS(@"this_week");
 _EXTERN NSString* kGDataYouTubePeriodThisMonth _INITIALIZE_AS(@"this_month");
 _EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 
+
+// http://code.google.com/apis/youtube/reference.html#Parameters
+
 @interface GDataQueryYouTube : GDataQuery 
   
 + (GDataQueryYouTube *)youTubeQueryWithFeedURL:(NSURL *)feedURL;
@@ -52,6 +55,10 @@ _EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 
 - (void)setTimePeriod:(NSString *)str;
 - (NSString *)timePeriod;
+
+// restriction is a country code or IP address
+- (void)setRestriction:(NSString *)str;
+- (NSString *)restriction;
 
 - (void)setAllowRacy:(BOOL)flag;
 - (BOOL)allowRacy;

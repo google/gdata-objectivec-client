@@ -36,10 +36,11 @@ _EXTERN NSString* kGDataPicasaWebAccessAll _INITIALIZE_AS(@"all");
 _EXTERN NSString* kGDataPicasaWebAccessPublic _INITIALIZE_AS(@"public");
 _EXTERN NSString* kGDataPicasaWebAccessPrivate _INITIALIZE_AS(@"private");
 
-_EXTERN NSString* kGDataPicasaWebKindAlbum _INITIALIZE_AS(@"album");
-_EXTERN NSString* kGDataPicasaWebKindPhoto _INITIALIZE_AS(@"photo");
+_EXTERN NSString* kGDataPicasaWebKindAlbum   _INITIALIZE_AS(@"album");
+_EXTERN NSString* kGDataPicasaWebKindPhoto   _INITIALIZE_AS(@"photo");
 _EXTERN NSString* kGDataPicasaWebKindComment _INITIALIZE_AS(@"comment");
-_EXTERN NSString* kGDataPicasaWebKindTag _INITIALIZE_AS(@"tag");
+_EXTERN NSString* kGDataPicasaWebKindTag     _INITIALIZE_AS(@"tag");
+_EXTERN NSString* kGDataPicasaWebKindUser    _INITIALIZE_AS(@"user");
 
 @class GDataQueryPicasaWeb;
 @class GDataEntryPhotoBase;
@@ -64,6 +65,9 @@ _EXTERN NSString* kGDataPicasaWebKindTag _INITIALIZE_AS(@"tag");
                              photoID:(NSString *)photoIDorNil
                                 kind:(NSString *)feedKindOrNil
                               access:(NSString *)accessOrNil;
+
+// utility for making a feed URL for a user's contacts feed
++ (NSURL *)picasaWebContactsFeedURLForUserID:(NSString *)userID;
 
 // finished callback (see above) is passed an appropriate PicasaWeb feed
 - (GDataServiceTicket *)fetchPicasaWebFeedWithURL:(NSURL *)feedURL

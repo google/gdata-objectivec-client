@@ -151,10 +151,10 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataGoogleBaseAttribute* newObj = [super copyWithZone:zone];
   
-  [newObj setName:attributeName_];
-  [newObj setType:type_];
-  [newObj setTextValue:textValue_];
-  [newObj setIsPrivate:isPrivate_];
+  [newObj setName:[self name]];
+  [newObj setType:[self type]];
+  [newObj setTextValue:[self textValue]];
+  [newObj setIsPrivate:[self isPrivate]];
   
   return newObj;
 }

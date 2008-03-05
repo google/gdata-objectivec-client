@@ -76,11 +76,11 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataGeoPt* newObj = [super copyWithZone:zone];
-  [newObj setLabel:label_];
-  [newObj setLat:lat_];
-  [newObj setLon:lon_];
-  [newObj setElev:elev_];
-  [newObj setTime:time_];
+  [newObj setLabel:[self label]];
+  [newObj setLat:[self lat]];
+  [newObj setLon:[self lon]];
+  [newObj setElev:[self elev]];
+  [newObj setTime:[[[self time] copyWithZone:zone] autorelease]];
   return newObj;
 }
 

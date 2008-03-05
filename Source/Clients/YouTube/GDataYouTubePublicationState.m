@@ -68,10 +68,10 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataYouTubePublicationState* newObj = [super copyWithZone:zone];
-  [newObj setState:state_];
-  [newObj setReasonCode:reasonCode_];
-  [newObj setHelpURLString:helpURLString_];
-  [newObj setErrorDescription:errorDescription_];
+  [newObj setState:[self state]];
+  [newObj setReasonCode:[self reasonCode]];
+  [newObj setHelpURLString:[self helpURLString]];
+  [newObj setErrorDescription:[self errorDescription]];
     
   return newObj;
 }
