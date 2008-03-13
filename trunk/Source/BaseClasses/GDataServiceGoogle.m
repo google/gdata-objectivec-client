@@ -33,7 +33,7 @@ enum {
   kInvocationDelegateIndex,
   kInvocationFinishedSelectorIndex,
   kInvocationFailedSelectorIndex,
-  kInvocationRetryInvocationIndex,
+  kInvocationRetryInvocationValueIndex,
   kInvocationTicketIndex
 };
 
@@ -124,7 +124,7 @@ enum {
     }
     
     GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-		
+
     [fetcher setRunLoopModes:[self runLoopModes]];
     
     [fetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
@@ -181,8 +181,7 @@ enum {
   NSDictionary *responseDict = [GDataServiceGoogle dictionaryWithResponseString:responseString];
   NSString *authToken = [responseDict objectForKey:@"Auth"];
   
-  [authToken_ release];
-  authToken_ = [authToken retain];
+  [self setAuthToken:authToken];
   
   NSInvocation *invocation = [fetcher userData];
 
@@ -192,7 +191,7 @@ enum {
   [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
   [ticket setCurrentFetcher:nil];  
   
-  if ([authToken_ length] > 0) {
+  if ([authToken length] > 0) {
     // now invoke the actual fetch
     [invocation invoke];
   } else {
@@ -315,7 +314,7 @@ enum {
   // make an invocation for this call
   GDataServiceTicket *result = nil;
   
-  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocation:ticket:);
+  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocationValue:ticket:);
   
   GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
   
@@ -333,7 +332,7 @@ enum {
   [invocation setArgument:&ticket           atIndex:kInvocationTicketIndex];
   
   NSValue *noRetryInvocation = nil;
-  [invocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationIndex];
+  [invocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationValueIndex];
   
   [invocation retainArguments];
   
@@ -349,10 +348,12 @@ enum {
     // If the auth token has expired, we'll be retrying this same invocation
     // after getting a fresh token
     
+    // Having the invocation retain itself as a parameter would cause a
+    // retain loop, so we'll have it retain an NSValue of itself
     NSValue *invocationValue = [NSValue valueWithNonretainedObject:invocation];
     
     [invocation setArgument:&invocationValue 
-                    atIndex:kInvocationRetryInvocationIndex]; 
+                    atIndex:kInvocationRetryInvocationValueIndex]; 
     [invocation invoke];
     [invocation getReturnValue:&result];
 
@@ -374,13 +375,13 @@ enum {
     
     NSDictionary *callbackDict = [fetcher userData];
     
-    NSValue *retryInvocationValue = [callbackDict objectForKey:kCallbackRetryInvocationKey];
-    NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
+    NSInvocation *retryInvocation = [callbackDict objectForKey:kCallbackRetryInvocationKey];
     if (retryInvocation) {
       
       // avoid an infinite loop: remove the retry invocation before re-invoking
       NSValue *noRetryInvocation = nil;
-      [retryInvocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationIndex];
+      [retryInvocation setArgument:&noRetryInvocation 
+                           atIndex:kInvocationRetryInvocationValueIndex];
       
       [self authenticateThenInvoke:retryInvocation];
       return;
@@ -504,8 +505,7 @@ enum {
   if (!AreEqualOrBothNil([self username], username)
       || !AreEqualOrBothNil([self password], password)) {
     
-    [authToken_ release];
-    authToken_ = nil;
+    [self setAuthToken:nil];
   }
 
   [super setUserCredentialsWithUsername:username password:password];
@@ -519,6 +519,15 @@ enum {
   
   [captchaAnswer_ release];
   captchaAnswer_ = [captchaAnswer copy];
+}
+
+- (NSString *)authToken {
+  return authToken_; 
+}
+
+- (void)setAuthToken:(NSString *)str {
+  [authToken_ autorelease];
+  authToken_ = [str copy];
 }
 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
@@ -536,7 +545,7 @@ enum {
   }
     
   // add the auth token to the header
-  if (authToken_) {
+  if ([authToken_ length] > 0) {
     NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@", 
       authToken_];
     [request setValue:value forHTTPHeaderField: @"Authorization"];

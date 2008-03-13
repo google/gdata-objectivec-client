@@ -402,9 +402,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [self setContactFeed:nil];
   [self setContactFetchError:nil];
   [self setContactFetchTicket:nil];
-  
-  NSString *username = [mUsernameField stringValue];
-  
+    
   GDataServiceGoogleContact *service = [self contactService];
   GDataServiceTicket *ticket;
   

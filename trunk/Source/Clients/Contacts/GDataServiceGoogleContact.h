@@ -20,11 +20,29 @@
 #import "GDataServiceGoogle.h"
 #import "GDataEntryContact.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATASERVICEGOOGLECONTACT_DEFINE_GLOBALS
+#define _EXTERN 
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// default feed of contacts for the authenticated user
+_EXTERN NSString* kGDataGoogleContactDefaultBaseFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/base");
+_EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/full");
+
 @class GDataQueryContact;
 
 // These routines are all simple wrappers around GDataServiceGoogle methods.
 
 @interface GDataServiceGoogleContact : GDataServiceGoogle 
+
+// Note: rather than call -contactFeedURLForUserID you can get the
+// contact feed for the authenticated user by using one of the feed
+// constants above and calling -fetchContactFeedWithURL
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID;
 

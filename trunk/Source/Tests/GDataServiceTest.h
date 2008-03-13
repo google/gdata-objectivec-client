@@ -23,6 +23,7 @@
 
 @interface GDataServiceTest : SenTestCase {
   NSTask *server_;
+  BOOL isServerRunning_;
   
   GDataServiceGoogle *service_;
   

@@ -198,7 +198,7 @@
   }
   
   // full dateString like "2006-11-17T15:10:46-08:00"
-  NSString *dateString = [NSString stringWithFormat:@"%d-%02d-%02d%@",
+  NSString *dateString = [NSString stringWithFormat:@"%04d-%02d-%02d%@",
     [dateComponents year], [dateComponents month], [dateComponents day],
     timeString];
   

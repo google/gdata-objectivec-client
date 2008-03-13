@@ -762,7 +762,7 @@
 		4F1AD6540B7025B000DC0485 /* GDataGoogleBaseAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseAttribute.m; path = Clients/GoogleBase/GDataGoogleBaseAttribute.m; sourceTree = "<group>"; };
 		4F1AD7200B71484F00DC0485 /* GDataEntryGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryGoogleBase.h; path = Clients/GoogleBase/GDataEntryGoogleBase.h; sourceTree = "<group>"; };
 		4F1AD7220B71485800DC0485 /* GDataEntryGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryGoogleBase.m; path = Clients/GoogleBase/GDataEntryGoogleBase.m; sourceTree = "<group>"; };
-		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1AD90C0B71607400DC0485 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Tests/main.m; sourceTree = "<group>"; };
 		4F1AD9830B71659E00DC0485 /* GDataFeedGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedGoogleBase.m; path = Clients/GoogleBase/GDataFeedGoogleBase.m; sourceTree = "<group>"; };
 		4F1AD9870B7165A700DC0485 /* GDataFeedGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedGoogleBase.h; path = Clients/GoogleBase/GDataFeedGoogleBase.h; sourceTree = "<group>"; };
@@ -1864,6 +1864,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
+			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 089C166AFE841209C02AAC07 /* GoogleBundle */;
 			projectDirPath = "";
@@ -2444,6 +2445,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2481,6 +2483,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_ENABLE_OBJC_GC = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2556,6 +2559,7 @@
 		4F1AD9090B71606100DC0485 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = NO;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				PRODUCT_NAME = DevelopmentTestTool;
 			};
@@ -2564,6 +2568,7 @@
 		4F1AD90A0B71606100DC0485 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_ENABLE_OBJC_GC = NO;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				PRODUCT_NAME = DevelopmentTestTool;
 			};

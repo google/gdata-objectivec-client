@@ -86,6 +86,24 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [super dealloc];
 }
 
+- (NSString *)systemVersionString {
+  
+  NSString *systemString = @"";
+  
+#ifndef GDATA_FOUNDATION_ONLY
+  long systemMajor = 0, systemMinor = 0, systemRelease = 0;
+  
+  (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
+  (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
+  (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
+  
+  systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
+    systemMajor, systemMinor, systemRelease];
+#endif
+
+  return systemString;
+}
+
 - (NSString *)requestUserAgent {
   
   NSString *userAgent = [self userAgent];
@@ -115,23 +133,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       libVersionString = [NSString stringWithFormat:@"%d.%d", major, minor];
     }
     
-#ifndef GDATA_FOUNDATION_ONLY
-    long systemMajor = 0, systemMinor = 0, systemRelease = 0;
-    
-    (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
-    (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
-    (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
-    
-    NSString *systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
-      systemMajor, systemMinor, systemRelease];
-#else
-    struct utsname unameRecord;
-    uname(&unameRecord);
-    
-    NSString *systemString = [NSString stringWithFormat:@"%s/%s",
-      unameRecord.sysname, unameRecord.release]; // "Darwin/8.11.1"
-#endif
-    
+    NSString *systemString = [self systemVersionString];
+        
     // Google servers look for gzip in the user agent before sending gzip-
     // encoded responses.  See Service.java
     requestUserAgent = [NSString stringWithFormat:@"%@ %@/%@ %@ (gzip)", 
@@ -170,7 +173,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
                                didFailSelector:(SEL)failedSelector
-                               retryInvocation:(NSInvocation *)retryInvocation
+                          retryInvocationValue:(NSValue *)retryInvocationValue
                                         ticket:(GDataServiceTicketBase *)ticket {
   
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), 0);
@@ -272,7 +275,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
   
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-	
+
   [fetcher setRunLoopModes:[self runLoopModes]];
   
   if (uploadStream) {
@@ -301,6 +304,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [ticket setCurrentFetcher:fetcher];
     
   // add parameters used by the callbacks
+  //
+  // we want to add the invocation itself, not the value wrapper of it,
+  // to ensure the invocation is retained until the callback completes
+  
+  NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
+  
   NSMutableDictionary *callbackDict = [self callbackDictionaryForObjectClass:objectClass
                                                                     delegate:delegate
                                                             finishedSelector:finishedSelector
@@ -646,7 +655,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                   delegate:delegate
                          didFinishSelector:finishedSelector
                            didFailSelector:failedSelector
-                           retryInvocation:nil
+                      retryInvocationValue:nil
                                     ticket:ticket];
   
   // in the bizarre case that the fetch didn't begin, startedTicket will be
@@ -699,7 +708,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }  
 
@@ -716,7 +725,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }  
 
@@ -733,7 +742,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }
 
@@ -751,7 +760,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }
 
@@ -768,7 +777,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }
 
@@ -798,7 +807,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector
-                  retryInvocation:nil
+             retryInvocationValue:nil
                            ticket:nil];
 }
 

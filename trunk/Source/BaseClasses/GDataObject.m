@@ -1177,7 +1177,12 @@ forCategoryWithScheme:(NSString *)scheme
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   
   if (!*map) {
-    *map = [[NSMutableDictionary alloc] init]; 
+    // Creating a CFDictionary rather than an NSMutableDictionary here avoids
+    // problems with the underlying map global variable becoming invalid across
+    // unit tests when garbage collection is enabled
+    *map = (NSMutableDictionary *)
+      CFDictionaryCreateMutable(kCFAllocatorDefault,  
+          0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
   
   // ensure this is a unique registration
