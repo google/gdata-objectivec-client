@@ -412,7 +412,9 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   // follow next links as well in case there are more than 2000
   const int kBuncha = 2000;
   
-  GDataQueryContact *query = [GDataQueryContact contactQueryForUserID:username];
+  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultFullFeed];
+  
+  GDataQueryContact *query = [GDataQueryContact contactQueryWithFeedURL:feedURL];
   [query setShouldShowDeleted:showDeleted];
   [query setMaxResults:kBuncha];
   
