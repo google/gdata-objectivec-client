@@ -34,10 +34,6 @@
   return obj;
 }
 
-+ (GDataFeedContact *)contactFeedWithXMLData:(NSData *)data {
-  return [[[[self class] alloc] initWithData:data] autorelease];
-}
-
 - (void)addExtensionDeclarations {
   
   [super addExtensionDeclarations];

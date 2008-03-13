@@ -22,6 +22,12 @@
 @implementation GDataExtendedProperty
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
+//
+// or an arbitrary XML blob, as in 
+//  <gd:extendedProperty name='com.myCompany.myProperties'> <myXMLBlob /> </gd:extendedProperty>
+//
+// Servers may impose additional restrictions on names or on the size
+// or composition of the values.
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
@@ -105,6 +111,34 @@
 - (void)setName:(NSString *)str {
   [name_ autorelease];
   name_ = [str copy];
+}
+
+- (NSArray *)XMLValues {
+  NSArray *unknownChildren = [self unknownChildren];
+  
+  if ([unknownChildren count] == 0) {
+    return nil;
+  }
+  return unknownChildren; 
+}
+
+- (void)setXMLValues:(NSArray *)arr {
+  [self setUnknownChildren:arr]; 
+}
+
+- (void)addXMLValue:(NSXMLElement *)element {
+  
+  NSArray *oldUnknownChildren = [self unknownChildren];
+  NSMutableArray *newUnknownChildren;
+
+  if (oldUnknownChildren == nil) {
+    newUnknownChildren = [NSMutableArray array]; 
+  } else {
+    newUnknownChildren = [NSMutableArray arrayWithArray:oldUnknownChildren];
+  }
+  [newUnknownChildren addObject:element];
+                          
+  [self setUnknownChildren:newUnknownChildren];
 }
 
 @end

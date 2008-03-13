@@ -318,6 +318,14 @@
     { @"value", @"2006-10-03T19:01:14Z" },
     { @"", @"" },
 
+    { @"GDataExtendedProperty", @"<gd:extendedProperty name='fred'><mozq>"
+            "<lepper x='1'/></mozq><frizq/></gd:extendedProperty>" },
+    { @"name", @"fred" },
+    { @"XMLValues.0.XMLString", @"<mozq><lepper x=\"1\"></lepper></mozq>" },
+    { @"XMLValues.1.XMLString", @"<frizq></frizq>" },
+    { @"unknownChildren.@count.stringValue", @"2" },
+    { @"", @"" },
+        
     { @"GDataFeedLink", @"<gd:feedLink href='http://example.com/Jo/posts/MyFirstPost/comments' "
       "countHint=\"10\" readOnly=\"true\" />" },
     { @"href", @"http://example.com/Jo/posts/MyFirstPost/comments" },

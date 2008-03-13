@@ -62,10 +62,10 @@
     NSData* data = [dataArray_ objectAtIndex:arrayIndex_];
     
     int dataLen = [data length];
-    int dataBytesLeft = dataLen - dataOffset_;
+    int dataBytesLeft = dataLen - (unsigned int)dataOffset_;
     
     unsigned int bytesToCopy = MIN(bytesRemaining, dataBytesLeft);
-    NSRange range = NSMakeRange(dataOffset_, bytesToCopy);
+    NSRange range = NSMakeRange((unsigned int) dataOffset_, bytesToCopy);
 
     [data getBytes:(buffer + bytesRead) range:range];
 

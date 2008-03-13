@@ -336,7 +336,6 @@ enum {
 - (NSString *)systemVersionString;
 
 - (BOOL)invokeRetrySelector:(SEL)retrySelector delegate:(id)delegate ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)willRetry error:(NSError *)error;
-  
 
 @end
 

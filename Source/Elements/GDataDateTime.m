@@ -243,7 +243,7 @@
   int hour = NSUndefinedDateComponent;
   int minute = NSUndefinedDateComponent;
   int sec = NSUndefinedDateComponent;
-  float secFloat = -1.0;
+  float secFloat = -1.0f;
   NSString* sign = nil;
   int offsetHour = 0;
   int offsetMinute = 0;

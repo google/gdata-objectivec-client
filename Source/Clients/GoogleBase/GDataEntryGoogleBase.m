@@ -505,7 +505,7 @@
   NSString *str = [[self attributeWithName:@"tax percent" 
                                       type:kGDataGoogleBaseAttributeTypeFloat] textValue];
   if (str) {
-    float value = 0.0;
+    float value = 0.0f;
     NSScanner *scanner = [NSScanner scannerWithString:str];
     if ([scanner scanFloat:&value]) {
       return [NSNumber numberWithFloat:value]; 
