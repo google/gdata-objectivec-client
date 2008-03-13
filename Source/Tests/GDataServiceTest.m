@@ -57,20 +57,28 @@ static int kServerPortNumber = 54579;
   [server_ setStandardError:pipe];
   [server_ launch];
   
-  // our server sends out a string to confirm that it launched
   NSData *launchMessageData = [[pipe fileHandleForReading] availableData];
   NSString *launchStr = [[[NSString alloc] initWithData:launchMessageData
                                                encoding:NSUTF8StringEncoding] autorelease];
   
+  // our server sends out a string to confirm that it launched;
+  // launchStr either has the confirmation, or the error message.
+  
+  // TODO(grobbins):
+  // Expected failure note:  During the GC OFF phase of unit tests,
+  // the server fails to launch here, with the error message
+  // "forcing GC OFF because OBJC_DISABLE_GC is set".
+  // The warrants further investigation.
   NSString *expectedLaunchStr = @"started GDataTestServer.py...";
   STAssertEqualObjects(launchStr, expectedLaunchStr,
-                     @"Python http test server not launched\nServer path:%@\n", 
-                     serverPath);
+       @">>> Python http test server failed to launch; skipping fetch tests\n"
+        "Server path:%@\n", serverPath);
+  isServerRunning_ = [launchStr isEqual:expectedLaunchStr];
   
   // create the GData service object, and set it to authenticate
   // from our own python http server
   service_ = [[GDataServiceGoogleSpreadsheet alloc] init];
-   
+  
   NSString *authDomain = [NSString stringWithFormat:@"localhost:%d", kServerPortNumber];  
   [service_ setSignInDomain:authDomain];
 }
@@ -94,6 +102,8 @@ static int kServerPortNumber = 54579;
   [server_ waitUntilExit];
   [server_ release];
   server_ = nil;
+  
+  isServerRunning_ = NO;
   
   [service_ release];
   service_ = nil;
@@ -162,6 +172,8 @@ static int gFetchCounter = 0;
 }
 
 - (void)testFetch {
+  
+  if (!isServerRunning_) return;
   
   NSDate *defaultUserData = [NSDate date]; 
   NSString *customUserData = @"my special ticket user data";
@@ -349,7 +361,48 @@ static int gFetchCounter = 0;
                        sheetID, @"fetching %@", authFeedURL);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], customUserData, @"userdata error");
-
+  
+  //
+  // test: repeat last authenticated download so we're reusing the auth token
+  //
+  
+  [self resetFetchResponse];
+    
+  ticket_ = [service_ fetchAuthenticatedFeedWithURL:authFeedURL
+                                          feedClass:kGDataUseRegisteredClass
+                                           delegate:self
+                                  didFinishSelector:@selector(ticket:finishedWithObject:)
+                                    didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+                       sheetID, @"fetching %@", authFeedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  
+  //
+  // test: repeat last authenticated download so we're reusing the auth token,
+  // but make the auth token invalid to force a re-auth
+  //
+  
+  [self resetFetchResponse];
+  
+  [service_ setAuthToken:@"bogus"];
+  
+  ticket_ = [service_ fetchAuthenticatedFeedWithURL:authFeedURL
+                                          feedClass:kGDataUseRegisteredClass
+                                           delegate:self
+                                  didFinishSelector:@selector(ticket:finishedWithObject:)
+                                    didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+                       sheetID, @"fetching %@", authFeedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  
   //
   // test:  download feed only, unsuccessful auth
   //
@@ -564,6 +617,8 @@ static int gFetchCounter = 0;
 
 - (void)testRetryFetches {
   
+  if (!isServerRunning_) return;
+
   // an ".auth" extension tells the server to require the success auth token,
   // but the server will ignore the .auth extension when looking for the file
   NSURL *authFeedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml?status=503"];

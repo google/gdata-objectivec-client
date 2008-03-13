@@ -607,7 +607,7 @@ static NSString* gLoggingProcessName = nil;
   NSOutputStream *stream = [NSOutputStream outputStreamToFileAtPath:htmlPath 
                                                              append:YES];
   [stream open];
-  [stream write:(const u_int8_t *) htmlBytes maxLength:strlen(htmlBytes)];
+  [stream write:(const uint8_t *) htmlBytes maxLength:strlen(htmlBytes)];
   [stream close];
   
   // make a symlink to the latest html

@@ -17,6 +17,6 @@
 
 void GDataFrameworkVersion(long* major, long* minor, long* release) {
   if (major)   *major = 1; 
-  if (minor)   *minor = 3; 
+  if (minor)   *minor = 4; 
   if (release) *release = 0; 
 }

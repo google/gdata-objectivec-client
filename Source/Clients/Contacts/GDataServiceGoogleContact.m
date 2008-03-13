@@ -17,6 +17,8 @@
 //  GDataServiceGoogleCalendar.m
 //
 
+#define GDATASERVICEGOOGLECONTACT_DEFINE_GLOBALS 1
+
 #import "GDataServiceGoogleContact.h"
 #import "GDataQueryContact.h"
 #import "GDataFeedContact.h"
