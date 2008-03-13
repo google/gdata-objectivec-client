@@ -51,12 +51,12 @@ NSString* const kNowString = @"now";
     return kNowString;
   }
   
-  long fraction = ms_ % 1000LL;
-  long totalSeconds = ms_ / 1000LL;
-  long seconds = totalSeconds % 60LL;
-  long totalMinutes = totalSeconds / 60LL;
-  long minutes = totalMinutes % 60LL;
-  long hours = totalMinutes / 60LL;
+  long fraction = (long) (ms_ % 1000LL);
+  long totalSeconds = (long) (ms_ / 1000LL);
+  long seconds = totalSeconds % 60L;
+  long totalMinutes = totalSeconds / 60L;
+  long minutes = totalMinutes % 60L;
+  long hours = totalMinutes / 60L;
   
   if (fraction > 0) {
     return [NSString stringWithFormat:@"%d:%02d:%02d.%03d",
@@ -70,8 +70,8 @@ NSString* const kNowString = @"now";
   if (isNow_) {
     return kNowString;
   }
-  long seconds = ms_ / 1000LL;
-  long fraction = ms_ % 1000LL;
+  long seconds = (long) (ms_ / 1000LL);
+  long fraction = (long) (ms_ % 1000LL);
   
   if (fraction == 0) {
     return [NSString stringWithFormat:@"%d", seconds];

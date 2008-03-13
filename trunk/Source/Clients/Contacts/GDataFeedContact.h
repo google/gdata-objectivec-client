@@ -24,8 +24,6 @@
 
 + (GDataFeedContact *)contactFeed;
 
-+ (GDataFeedContact *)contactFeedWithXMLData:(NSData *)data;
-
 - (Class)classForEntries;
 
 @end

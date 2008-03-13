@@ -22,6 +22,13 @@
 
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
+//
+// or an arbitrary XML blob, as in 
+//  <gd:extendedProperty name='com.myCompany.myProperties'> <myXMLBlob /> </gd:extendedProperty>
+//
+// Servers may impose additional restrictions on names or on the size
+// or composition of the values.
+
 @interface GDataExtendedProperty : GDataObject <NSCopying, GDataExtension> {
   NSString *value_;
   NSString *name_;
@@ -37,7 +44,12 @@
 
 - (NSString *)value;
 - (void)setValue:(NSString *)str;
+
 - (NSString *)name;
 - (void)setName:(NSString *)str;
+
+- (NSArray *)XMLValues;
+- (void)setXMLValues:(NSArray *)arr;
+- (void)addXMLValue:(NSXMLElement *)element;
 @end
 
