@@ -46,7 +46,7 @@ For example, here is how to use the Google Calendar service to retrieve a feed o
 {{{
   service = [[GDataServiceGoogleCalendar alloc] init];
     
-  [service setUserAgent:@"MyCalendarApp-1.0"];
+  [service setUserAgent:@"MyCompanyName-MyCalendarAppName-1.0"];
   [service setUserCredentialsWithUsername:username
                                  password:password];
 
