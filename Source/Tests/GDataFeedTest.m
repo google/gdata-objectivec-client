@@ -324,7 +324,7 @@
     { @"entries.0.emailAddresses.0.label", nil },
     { @"entries.0.emailAddresses.0.rel", kGDataContactHome },
     { @"entries.0.emailAddresses.0.isPrimary", @"1" },
-      
+    
     { @"entries.0.emailAddresses.1.address", @"2@bar.com" },
     { @"entries.0.emailAddresses.1.label", @"norzglie" },
     { @"entries.0.emailAddresses.1.rel", nil },

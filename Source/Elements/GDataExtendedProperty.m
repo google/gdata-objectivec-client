@@ -126,7 +126,7 @@
   [self setUnknownChildren:arr]; 
 }
 
-- (void)addXMLValue:(NSXMLElement *)element {
+- (void)addXMLValue:(NSXMLNode *)node {
   
   NSArray *oldUnknownChildren = [self unknownChildren];
   NSMutableArray *newUnknownChildren;
@@ -136,7 +136,7 @@
   } else {
     newUnknownChildren = [NSMutableArray arrayWithArray:oldUnknownChildren];
   }
-  [newUnknownChildren addObject:element];
+  [newUnknownChildren addObject:node];
                           
   [self setUnknownChildren:newUnknownChildren];
 }

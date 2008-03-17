@@ -99,6 +99,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
 #import "GDataUtilities.h"
 
 #undef _EXTERN

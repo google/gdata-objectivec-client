@@ -43,6 +43,14 @@ static int kServerPortNumber = 54579;
   NSString *currentDir = [[NSFileManager defaultManager] currentDirectoryPath];
   NSString *serverPath = [currentDir stringByAppendingPathComponent:@"Tests/GDataTestHTTPServer.py"];
   
+  // The framework builds as garbage collection-compatible, so unit tests run
+  // with GC both enabled and disabled.  But launching the python http server
+  // with GC disabled causes it to return an error.  To avoid that, we'll
+  // change its launch environment to allow the python server run with GC.
+  NSDictionary *env = [[NSProcessInfo processInfo] environment];
+  NSMutableDictionary *mutableEnv = [NSMutableDictionary dictionaryWithDictionary:env];
+  [mutableEnv removeObjectForKey:@"OBJC_DISABLE_GC"];
+  
   NSArray *argArray = [NSArray arrayWithObjects:serverPath, 
     @"-p", [NSString stringWithFormat:@"%d", kServerPortNumber], 
     @"-r", [serverPath stringByDeletingLastPathComponent], nil];
@@ -50,6 +58,7 @@ static int kServerPortNumber = 54579;
   server_ = [[NSTask alloc] init];
   [server_ setArguments:argArray];
   [server_ setLaunchPath:@"/usr/bin/python"];
+  [server_ setEnvironment:mutableEnv];
   
   // pipe will be cleaned up when server_ is torn down.
   NSPipe *pipe = [NSPipe pipe];
@@ -64,11 +73,6 @@ static int kServerPortNumber = 54579;
   // our server sends out a string to confirm that it launched;
   // launchStr either has the confirmation, or the error message.
   
-  // TODO(grobbins):
-  // Expected failure note:  During the GC OFF phase of unit tests,
-  // the server fails to launch here, with the error message
-  // "forcing GC OFF because OBJC_DISABLE_GC is set".
-  // The warrants further investigation.
   NSString *expectedLaunchStr = @"started GDataTestServer.py...";
   STAssertEqualObjects(launchStr, expectedLaunchStr,
        @">>> Python http test server failed to launch; skipping fetch tests\n"
