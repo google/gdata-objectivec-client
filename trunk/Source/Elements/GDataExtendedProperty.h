@@ -50,6 +50,6 @@
 
 - (NSArray *)XMLValues;
 - (void)setXMLValues:(NSArray *)arr;
-- (void)addXMLValue:(NSXMLElement *)element;
+- (void)addXMLValue:(NSXMLNode *)node;
 @end
 

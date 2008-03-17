@@ -92,15 +92,25 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
 #ifndef GDATA_FOUNDATION_ONLY
   long systemMajor = 0, systemMinor = 0, systemRelease = 0;
-  
   (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
   (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
   (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
   
   systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
     systemMajor, systemMinor, systemRelease];
+#elif defined(_SYS_UTSNAME_H)
+  struct utsname unameRecord;
+  uname(&unameRecord);
+  
+#if GDATA_IPHONE
+  systemString = [NSString stringWithFormat:@"iPhone %s/%s",
+                  unameRecord.sysname, unameRecord.release]; // "iPhone Darwin/9.2.0"
+#else
+  systemString = [NSString stringWithFormat:@"%s/%s",
+                  unameRecord.sysname, unameRecord.release]; // "Darwin/8.11.1"
 #endif
-
+#endif
+    
   return systemString;
 }
 

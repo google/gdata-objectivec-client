@@ -197,6 +197,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAHTTPFETCHER_DEFINE_GLOBALS

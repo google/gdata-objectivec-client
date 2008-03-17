@@ -62,9 +62,16 @@ static NSString* gLoggingProcessName = nil;
   
   if (!gLoggingDirectoryPath) {
     
+#if GDATA_IPHONE
+    // default to a directory called GDataHTTPDebugLogs into a sandbox-safe
+    // directory that a devloper can find easily, the application home
+    NSArray *arr = [NSArray arrayWithObject:NSHomeDirectory()];
+#else
     // default to a directory called GDataHTTPDebugLogs in the desktop folder
-    NSArray *arr = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, 
+    NSArray *arr = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory,
                                                        NSUserDomainMask, YES);
+#endif
+    
     if ([arr count] > 0) {
       NSString *const kGDataLogFolderName = @"GDataHTTPDebugLogs";
       

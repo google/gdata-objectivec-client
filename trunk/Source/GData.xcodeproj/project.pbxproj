@@ -513,6 +513,7 @@
 		4F7098BA0D790F71003CEFDF /* GDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7098B70D790F71003CEFDF /* GDataUtilities.m */; };
 		4F7098BB0D790F71003CEFDF /* GDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7098B70D790F71003CEFDF /* GDataUtilities.m */; };
 		4F777E070C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */; };
+		4F848C6E0D887A2A007ECFCD /* GDataDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F848C6D0D887A2A007ECFCD /* GDataDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */; };
 		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA1C5C20C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
@@ -930,6 +931,7 @@
 		4F7098B70D790F71003CEFDF /* GDataUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataUtilities.m; sourceTree = "<group>"; };
 		4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTimeTest.m; path = Tests/GDataNormalPlayTimeTest.m; sourceTree = "<group>"; };
 		4F777E060C03DA4E00058FA1 /* GDataNormalPlayTimeTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataNormalPlayTimeTest.h; path = Tests/GDataNormalPlayTimeTest.h; sourceTree = "<group>"; };
+		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
 		4F9708750BC5C35100C5B1C0 /* GDataServiceTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceTest.h; path = Tests/GDataServiceTest.h; sourceTree = "<group>"; };
 		4FA1C5BF0C037446006D556A /* GDataEntryContent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryContent.h; path = Elements/GDataEntryContent.h; sourceTree = "<group>"; };
@@ -1332,6 +1334,7 @@
 			isa = PBXGroup;
 			children = (
 				4FDEA5920B39DE77007ACFE3 /* GData.h */,
+				4F848C6D0D887A2A007ECFCD /* GDataDefines.h */,
 				4F0AAADC0BCAF3D700504521 /* GDataFramework.h */,
 				4F0AAADD0BCAF3D700504521 /* GDataFramework.m */,
 				4F7098B60D790F71003CEFDF /* GDataUtilities.h */,
@@ -1799,6 +1802,7 @@
 				4F346E290D7502B0006033E0 /* GDataServiceGoogleContact.h in Headers */,
 				4F346E320D750365006033E0 /* GDataContacts.h in Headers */,
 				4F7098B90D790F71003CEFDF /* GDataUtilities.h in Headers */,
+				4F848C6E0D887A2A007ECFCD /* GDataDefines.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2509,7 +2513,6 @@
 		4F14A9E00B1276B70072EBB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
@@ -2534,7 +2537,6 @@
 		4F14A9E10B1276B70072EBB8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH)";
 				DEPLOYMENT_POSTPROCESSING = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
