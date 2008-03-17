@@ -5,6 +5,7 @@ Discussion group: http://groups.google.com/group/gdata-objectivec-client-framewo
 
 
 Release 1.4.0
+19-March-2008
 Changes since 1.3.0
 
 Additions
@@ -47,7 +48,7 @@ Bugs fixed
 
 - Framework now built as garbage collection-compatible
 
-- Unit test failures during garbage collection addressed, mostly
+- Unit test failures during garbage collection fixed
 
 - Copy methods on GDataObjects now do deep copies
 
