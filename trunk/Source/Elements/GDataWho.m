@@ -37,7 +37,7 @@
 
 @implementation GDataWho
 // a who entry, as in
-// <gd:who rel="http://schemas.google.com/g/2005#event.organizer" valueString="Greg Robbins" email="test@coldnose.net">
+// <gd:who rel="http://schemas.google.com/g/2005#event.organizer" valueString="Fred Flintstone" email="fred@domain.com">
 //   <gd:attendeeStatus value="http://schemas.google.com/g/2005#event.accepted"/>
 // </gd:who>
 //
