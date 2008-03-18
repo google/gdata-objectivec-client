@@ -142,13 +142,13 @@
     { @"unknownChildren.@count", @"0" },
       
     // GDataEntryCalendar paths
-    { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40coldnose.net/test%40coldnose.net" },
+    { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40domain.net/test%40domain.net" },
     { @"entries.0.publishedDate.RFC3339String", @"2006-11-14T00:03:38Z" },
     { @"entries.0.updatedDate.RFC3339String", @"2006-11-09T00:16:10Z" },
     { @"entries.0.editedDate.RFC3339String", @"2006-11-09T00:16:15Z" },
     { @"entries.0.title", @"Fred Flintstone" },
     { @"entries.0.links.0.rel", @"alternate" },
-    { @"entries.0.links.1.href", @"http://www.google.com/calendar/feeds/test%40coldnose.net/test%40coldnose.net" },
+    { @"entries.0.links.1.href", @"http://www.google.com/calendar/feeds/test%40domain.net/test%40domain.net" },
     { @"entries.0.authors.0.name", @"Fred Flintstone" },
     { @"entries.0.authors.0.email", @"fred@gmail.com" },
     { @"entries.0.isHidden", @"0" },
