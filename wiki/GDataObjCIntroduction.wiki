@@ -25,11 +25,15 @@ The Examples directory contains example applications showing typical interaction
 
 The Google Data APIs Objective-C Client Library is provided as a built framework, suitable for inclusion in a Cocoa application bundle's Frameworks folder.  To add the framework to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
 
-Source files referring to GData objects should include the GData headers as 
+Source files referring to GData objects should include either the full GData headers as 
 
 `#import "GData/GData.h"`
 
-The GData source code and the project for building the framework is also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
+or the header for a specific service, such as
+
+`#import "GData/GDataCalendar.h"`
+
+The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
 
 == Google Data APIs Basics ==
@@ -108,7 +112,7 @@ A particularly important link in feeds is the *next link*; it is present when th
 
 To make the library's service object follow "next" links automatically, call `[service setServiceShouldFollowNextLinks:YES]`. The returned ticket then applies to the sequence of http requests needed to obtain the feed entries.  
 
-Note, however, that large feeds may take a long time to be retrieved, as each "next" link will lead to a new http request.  Assigning a large value to the URL's maxResults argument will give results faster than will following "next" links. Additionally, accumulating entries into a feed by following "next" links means that the feed's elements reflect only one of the fetches, even though the entries array contains the entries returned by multiple requests.
+Note, however, that large feeds may take a long time to be retrieved, as each "next" link will lead to a new http request.  Assigning a large value to a feed query's maxResults argument will give results faster than will following "next" links. Additionally, accumulating entries into a feed by following "next" links means that the feed's elements reflect only one of the fetches, even though the entries array contains the entries returned by multiple requests.
 
 Service-specific *query* objects can generate URLs with parameters appropriate for restricting a feed's entries. For example, a query could request a feed of Calendar events between specific dates, or of database items of a specified category.  Here is an example of a query to retrieve the first 5 events from a user's calendar:
 {{{
@@ -284,6 +288,18 @@ The service can optionally remember the dated responses in a cache and provide t
 }}}
 
 The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
+
+== Fetching during modal dialogs ==
+
+The networking code in GDataService classes is based on NSURLConnection, and as in NSURLConnection, callbacks are deferred while a modal dialog is displayed.  Under Mac OS X 10.5 or later, you can specify run loop modes to allow networking callbacks during modal dialogs:
+
+{{{
+NSArray *modes = [NSArray arrayWithObjects:
+  NSDefaultRunLoopMode, NSModalPanelRunLoopMode, nil];
+[service setRunLoopModes:modes];
+}}}
+
+Setting the run loop modes will have no effect for service objects on Mac OS X 10.4.
 
 == Authentication errors and captchas ==
 
