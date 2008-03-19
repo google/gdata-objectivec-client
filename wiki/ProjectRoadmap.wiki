@@ -1,22 +1,22 @@
 #summary Project Roadmap
 #labels Featured
 
-= Supported in 1.2 =
+= Supported in 1.4 =
 
 Base classes (feed, entry, elements, service, query, batch)
 
-Domain classes (ACL, partial Media, partial Geo)
+Domain classes (ACL, Media, partial Geo)
 
-Client-specific classes for Calendar, Spreadsheets, !GoogleBase, !PicasaWeb, Docs, Code Search
+Client-specific classes for Calendar, Spreadsheets, !GoogleBase, !PicasaWeb, Contacts, !YouTube, Docs, Code Search
 
 Blogger support via base classes (see !BloggerSample application in the Examples directory)
 
 
 = Future Development =
 
-Implement remainder of Media element classes
-
 Add Blogger feed, entry, and service classes rather than rely on generic base classes
+
+Use xcodeconfig files in projects
 
 Provide standard sign-in sheet nibs and controller
 
