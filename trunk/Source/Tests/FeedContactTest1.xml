@@ -50,9 +50,6 @@
         <gd:phoneNumber primary="true" rel="http://schemas.google.com/g/2005#mobile">123-4567</gd:phoneNumber>
         <gd:phoneNumber label="shoefone">333-1414</gd:phoneNumber>
         <gd:postalAddress primary="true" rel="http://schemas.google.com/g/2005#home">123 Lane St</gd:postalAddress>
-        <gd:extendedProperty name="com.mycompany.myprop" value="zoop" />
-        <gd:extendedProperty name="com.mycompany.myprop2"><myXML><myChild attr="nerf"/></myXML></gd:extendedProperty>
-        <gContact:groupMembershipInfo href="http://www.google.com/m8/feeds/contactGroups/user@gmail.com/full/2" deleted="true" />
     </entry>
     <entry>
         <id>http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/b001135</id>
