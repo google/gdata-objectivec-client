@@ -1,0 +1,54 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                addContactClicked = id; 
+                addEntryClicked = id; 
+                cancelContactFetchClicked = id; 
+                deleteContactClicked = id; 
+                deleteEntryClicked = id; 
+                editEntryClicked = id; 
+                entrySegmentClicked = id; 
+                getContactClicked = id; 
+                loggingCheckboxClicked = id; 
+                makeEntryPrimaryClicked = id; 
+                sortContactsClicked = id; 
+            }; 
+            CLASS = ContactsSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAddContactButton = NSButton; 
+                mAddEmailField = NSTextField; 
+                mAddEntryButton = NSButton; 
+                mAddTitleField = NSTextField; 
+                mContactCancelButton = NSButton; 
+                mContactProgressIndicator = NSProgressIndicator; 
+                mContactResultTextField = NSTextView; 
+                mContactTable = NSTableView; 
+                mDeleteContactButton = NSButton; 
+                mDeleteEntryButton = NSButton; 
+                mEditEntryButton = NSButton; 
+                mEntryResultTextField = NSTextView; 
+                mEntrySegmentedControl = NSSegmentedControl; 
+                mEntryTable = NSTableView; 
+                mGetContactsButton = NSButton; 
+                mMakePrimaryEntryButton = NSButton; 
+                mPasswordField = NSSecureTextField; 
+                mServiceURLField = NSTextField; 
+                mShowDeletedCheckbox = NSButton; 
+                mSortContactsCheckbox = NSButton; 
+                mUsernameField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {
+            CLASS = ContactsSampleWindowControllerInternal; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {mServiceURLField = NSTextField; }; 
+            SUPERCLASS = ContactsSampleWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}

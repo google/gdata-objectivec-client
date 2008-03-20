@@ -1,0 +1,23 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {cancelButtonClicked = id; saveButtonClicked = id; }; 
+            CLASS = EditEntryWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mClassNameField = NSTextField; 
+                mLabelField = NSTextField; 
+                mOrgTitleField = NSTextField; 
+                mPrimaryCheckbox = NSButton; 
+                mProtocolField = NSComboBox; 
+                mRelField = NSComboBox; 
+                mTarget = id; 
+                mValueField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSDatePicker; LANGUAGE = ObjC; SUPERCLASS = NSControl; }
+    ); 
+    IBVersion = 1; 
+}

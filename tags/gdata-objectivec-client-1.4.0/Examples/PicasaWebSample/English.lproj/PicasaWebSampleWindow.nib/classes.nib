@@ -1,0 +1,45 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {
+            ACTIONS = {
+                addClicked = id; 
+                addCommentClicked = id; 
+                addTagClicked = id; 
+                cancelAlbumFetchClicked = id; 
+                cancelPhotoFetchClicked = id; 
+                changeAlbumClicked = id; 
+                deleteClicked = id; 
+                getAlbumClicked = id; 
+                loggingCheckboxClicked = id; 
+            }; 
+            CLASS = PicasaWebSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mAddCommentButton = NSButton; 
+                mAddPhotoButton = NSButton; 
+                mAddTagButton = NSButton; 
+                mAlbumCancelButton = NSButton; 
+                mAlbumImageView = NSImageView; 
+                mAlbumProgressIndicator = NSProgressIndicator; 
+                mAlbumResultTextField = NSTextView; 
+                mAlbumTable = NSTableView; 
+                mChangeAlbumPopupButton = NSButton; 
+                mCommentField = NSTextField; 
+                mDeletePhotoButton = NSButton; 
+                mPasswordField = NSSecureTextField; 
+                mPhotoCancelButton = NSButton; 
+                mPhotoImageView = NSImageView; 
+                mPhotoProgressIndicator = NSProgressIndicator; 
+                mPhotoResultTextField = NSTextView; 
+                mPhotoTable = NSTableView; 
+                mTagField = NSTextField; 
+                mUploadProgressIndicator = NSProgressIndicator; 
+                mUsernameField = NSTextField; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
