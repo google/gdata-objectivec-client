@@ -240,7 +240,7 @@ if (data) {
 
 == Upload progress monitoring ==
 
-When uploading large blocks of data, such as photos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
+When uploading large blocks of data, such as photos or videos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
 
 {{{
 SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
@@ -287,7 +287,7 @@ The service can optionally remember the dated responses in a cache and provide t
 [service setShouldCacheDatedData:YES];
 }}}
 
-The service will thereafter call the delegate's service:fetcher:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
+The service will thereafter call the delegate's ticket:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
 
 == Fetching during modal dialogs ==
 
