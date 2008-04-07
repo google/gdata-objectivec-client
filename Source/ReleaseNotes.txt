@@ -3,6 +3,14 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changed since 1.4.0
+
+Additions
+
+Bugs fixed
+
+- Set project deployment target to 10.4
+
 
 Release 1.4.0
 19-March-2008
