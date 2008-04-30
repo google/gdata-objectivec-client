@@ -399,10 +399,10 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [service setYouTubeDeveloperKey:devKey];
   
   NSString *username = [mUsernameField stringValue];
-  NSString *password = [mPasswordField stringValue];
+  NSString *clientID = [mClientIDField stringValue];
   
   NSURL *url = [GDataServiceGoogleYouTube youTubeUploadURLForUserID:username
-                                                           clientID:password];
+                                                           clientID:clientID];
   
   // load the file data
   NSString *path = [mFilePathField stringValue];
