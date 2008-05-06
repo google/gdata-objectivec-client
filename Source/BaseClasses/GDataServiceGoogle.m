@@ -56,6 +56,7 @@ enum {
   [captchaToken_ release];
   [captchaAnswer_ release];
   [authToken_ release];  
+  [authSubToken_ release];  
   [accountType_ release];
   [signInDomain_ release];
   [serviceID_ release];
@@ -342,7 +343,7 @@ enum {
     [invocation invoke];
     [invocation getReturnValue:&result];
     
-  } else if ([authToken_ length] > 0) {
+  } else if ([authToken_ length] > 0 || [authSubToken_ length] > 0) {
     // There is already an auth token.
     //
     // If the auth token has expired, we'll be retrying this same invocation
@@ -506,6 +507,7 @@ enum {
       || !AreEqualOrBothNil([self password], password)) {
     
     [self setAuthToken:nil];
+    [self setAuthSubToken:nil];
   }
 
   [super setUserCredentialsWithUsername:username password:password];
@@ -530,6 +532,15 @@ enum {
   authToken_ = [str copy];
 }
 
+- (NSString *)authSubToken {
+  return authSubToken_; 
+}
+
+- (void)setAuthSubToken:(NSString *)str {
+  [authSubToken_ autorelease];
+  authSubToken_ = [str copy];
+}
+
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
   
   NSMutableURLRequest *request = [super requestForURL:url httpMethod:httpMethod];
@@ -548,6 +559,10 @@ enum {
   if ([authToken_ length] > 0) {
     NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@", 
       authToken_];
+    [request setValue:value forHTTPHeaderField: @"Authorization"];
+  } else if ([authSubToken_ length] > 0) {
+    NSString *value = [NSString stringWithFormat:@"AuthSub token=%@", 
+      authSubToken_];
     [request setValue:value forHTTPHeaderField: @"Authorization"];
   }
   return request;

@@ -71,6 +71,11 @@
                               parent:nil];
     if (self) {
       [self setupFromXMLElement:root];
+
+#if GDATA_USES_LIBXML
+      // retain the document so that pointers to internal nodes remain valid
+      [self setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
+#endif
     } 
     return self;
     
@@ -255,7 +260,7 @@
     && AreEqualOrBothNil([self startIndex], [other startIndex])
     && AreEqualOrBothNil([self itemsPerPage], [other itemsPerPage])
     && AreEqualOrBothNil([self entries], [other entries]);
-  // excluding generator
+    // excluding generator 
 }
 
 - (NSMutableArray *)itemsForDescription { // subclasses may implement this

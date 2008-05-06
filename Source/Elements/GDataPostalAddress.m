@@ -79,8 +79,7 @@
   return [super isEqual:other]
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self stringValue], [other stringValue])
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreBoolsEqual([self isPrimary], [other isPrimary]);
+    && AreEqualOrBothNil([self rel], [other rel]);
 }
 
 - (NSMutableArray *)itemsForDescription {

@@ -64,6 +64,7 @@ enum {
   NSString *captchaAnswer_;
   
   NSString *authToken_;
+  NSString *authSubToken_;
   
   NSString *accountType_; // hosted or google
   
@@ -120,6 +121,12 @@ enum {
 
 - (NSString *)authToken;
 - (void)setAuthToken:(NSString *)str;
+
+- (NSString *)authSubToken;
+- (void)setAuthSubToken:(NSString *)str;
+
+- (NSString *)authSubToken;
+- (void)setAuthSubToken:(NSString *)str;
 
 // default account type is HOSTED_OR_GOOGLE
 - (NSString *)accountType;

@@ -34,22 +34,10 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    NSString *const kFormatAttr = @"format";
-    
-    NSString *ytFormatAttrName = kFormatAttr;
-    NSString *ytPrefix;
-    
-    // prepend "yt:" or the appropriate prefix
-    ytPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceYouTube];
-    
-    if ([ytPrefix length] > 0) {
-      
-      ytFormatAttrName = [NSString stringWithFormat:@"%@:%@", 
-        ytPrefix, kFormatAttr];
-    }
-    
-    [self setYouTubeFormatNumber:[self intNumberForAttributeName:ytFormatAttrName
-                                                     fromElement:element]];
+    NSNumber *num = [self intNumberForAttributeLocalName:@"format"
+                                                     URI:kGDataNamespaceYouTube
+                                             fromElement:element];
+    [self setYouTubeFormatNumber:num];
   }
   return self;
 }

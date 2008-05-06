@@ -47,8 +47,11 @@ enum {
 //
 @interface GDataServiceTicketBase : NSObject {
   GDataServiceBase *service_;
+  
   id userData_;
+  NSMutableDictionary *ticketProperties_;
   NSDictionary *surrogates_;
+  
   GDataHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
@@ -77,6 +80,15 @@ enum {
 
 - (id)userData;
 - (void)setUserData:(id)obj;
+
+// Properties are supported for client convenience.
+//
+// Property keys beginning with _ are reserved by the library.
+- (void)setProperties:(NSDictionary *)dict;
+- (NSDictionary *)properties;
+
+- (void)setProperty:(id)obj forKey:(NSString *)key; // pass nil obj to remove property
+- (id)propertyForKey:(NSString *)key;
 
 - (NSDictionary *)surrogates;
 - (void)setSurrogates:(NSDictionary *)dict;
@@ -138,6 +150,8 @@ enum {
   NSMutableData *password_;
   
   NSString *serviceUserData_; // initial value for userData in future tickets
+  NSMutableDictionary *serviceProperties_; // initial values for properties in future tickets
+  
   NSDictionary *serviceSurrogates_; // initial value for surrogates in future tickets
   
   SEL serviceUploadProgressSelector_; // optional
@@ -168,9 +182,20 @@ enum {
 // base userAgent
 - (NSString *)requestUserAgent;
 
-// in request, pass nil (for default GET method), POST, PUT, DELETE (though
-// PUT and DELETE may be blocked by firewalls.)
+// Users may call requestForURL:httpMethod to get a request with the proper
+// user-agent and authentication token
+//
+// For http method, pass nil (for default GET method), POST, PUT, or DELETE 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod;
+
+// objectRequestForURL returns an NSMutableURLRequest for an XML GData object
+//
+//
+// the object is the object being sent to the server, or nil;
+// the http method may be nil for get, or POST, PUT, DELETE
+- (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url 
+                                      object:(GDataObject *)object
+                                  httpMethod:(NSString *)httpMethod;
 
 // finishedSelector has signature like:
 //   serviceTicket:(GDataServiceTicketBase *)ticket finishedWithObject:(GDataObject *)object;
@@ -251,6 +276,19 @@ enum {
 // method will return the value.
 - (void)setServiceUserData:(id)userData;
 - (id)serviceUserData;
+
+// Properties are supported for client convenience.
+//
+// Property keys beginning with _ are reserved by the library.
+//
+// The service properties dictionary is copied to become the initial property
+// dictionary for each ticket.
+- (void)setServiceProperties:(NSDictionary *)dict;
+- (NSDictionary *)serviceProperties;
+
+- (void)setServiceProperty:(id)obj forKey:(NSString *)key; // pass nil obj to remove property
+- (id)servicePropertyForKey:(NSString *)key;
+
 
 // Set the surrogates to be used for future tickets.  Surrogates are subclasses
 // to be used instead of standard classes when creating objects from the XML.

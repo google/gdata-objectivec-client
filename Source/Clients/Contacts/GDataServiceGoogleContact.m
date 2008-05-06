@@ -68,14 +68,14 @@
                              didFailSelector:failedSelector];
 }
 
-- (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(GDataEntryContact *)entryToInsert
+- (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert
                                                forFeedURL:(NSURL *)contactFeedURL
                                                  delegate:(id)delegate
                                         didFinishSelector:(SEL)finishedSelector
                                           didFailSelector:(SEL)failedSelector {
   
   if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataEntryContact contactNamespaces]]; 
+    [(GDataObject *) entryToInsert setNamespaces:[GDataEntryContact contactNamespaces]]; 
   }
   
   return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
@@ -86,14 +86,14 @@
   
 }
 
-- (GDataServiceTicket *)fetchContactEntryByUpdatingEntry:(GDataEntryContact *)entryToUpdate
+- (GDataServiceTicket *)fetchContactEntryByUpdatingEntry:(id)entryToUpdate
                                              forEntryURL:(NSURL *)contactEntryEditURL
                                                 delegate:(id)delegate
                                        didFinishSelector:(SEL)finishedSelector
                                          didFailSelector:(SEL)failedSelector {
   
   if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataEntryContact contactNamespaces]]; 
+    [(GDataObject *) entryToUpdate setNamespaces:[GDataEntryContact contactNamespaces]]; 
   }
   
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate

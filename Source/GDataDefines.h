@@ -33,4 +33,29 @@
 
   #define GDATA_FOUNDATION_ONLY 1
 
+  #define GDATA_USES_LIBXML 1
+
+  #import "GDataXMLNode.h"
+
+  #define NSXMLDocument                  GDataXMLDocument
+  #define NSXMLElement                   GDataXMLElement
+  #define NSXMLNode                      GDataXMLNode
+  #define NSXMLNodeKind                  GDataXMLNodeKind
+  #define NSXMLInvalidKind               GDataXMLInvalidKind
+  #define NSXMLDocumentKind              GDataXMLDocumentKind
+  #define NSXMLElementKind               GDataXMLElementKind
+  #define NSXMLAttributeKind             GDataXMLAttributeKind
+  #define NSXMLNamespaceKind             GDataXMLNamespaceKind
+  #define NSXMLProcessingInstructionKind GDataXMLDocumentKind
+  #define NSXMLCommentKind               GDataXMLCommentKind
+  #define NSXMLTextKind                  GDataXMLTextKind
+  #define NSXMLDTDKind                   GDataXMLDTDKind
+  #define NSXMLEntityDeclarationKind     GDataXMLEntityDeclarationKind
+  #define NSXMLAttributeDeclarationKind  GDataXMLAttributeDeclarationKind
+  #define NSXMLElementDeclarationKind    GDataXMLElementDeclarationKind
+  #define NSXMLNotationDeclarationKind   GDataXMLNotationDeclarationKind
+
+  // properties used for retaining the XML tree in the classes that use them
+  #define kGDataXMLDocumentPropertyKey @"_XMLDocument"
+  #define kGDataXMLElementPropertyKey  @"_XMLElement"
 #endif

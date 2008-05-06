@@ -3,13 +3,38 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
-Changed since 1.4.0
+Changes since 1.4.0
 
 Additions
 
+- Services and tickets now support properties to make it easier to pass
+  parameters to service callback methods.  Tickets inherit a copy of the
+  properties set in the service instance.
+
+- Shim XML layer used for GDATA_IPHONE builds
+
+- Added service support for Google AuthSub tokens
+
 Bugs fixed
 
-- Set project deployment target to 10.4
+- Improved namespaced attribute support in GDataObject
+
+- Fixed two ivar leaks in GDataServiceBase
+
+- GDataObject request generation refactored into its own routine in GDataServiceBase.
+
+- No longer testing isPrimary in isEqual method in email, postal address, 
+  organization, IM, and phone elements.
+
+- Fixed typo in YouTube sample which passed password as client ID 
+  (thanks wshao99)
+
+- Contact feed class now registered so it can be looked up for XML feeds
+  with the proper category
+
+- HTTP logging now uses NSDateFormatter rather than NSCalendarDate
+
+- Escaping of links fixed in http logging
 
 
 Release 1.4.0

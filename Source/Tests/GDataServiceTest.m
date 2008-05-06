@@ -17,6 +17,10 @@
 //  GDataServiceTest.m
 //
 
+// service tests are slow, so we might skip them when developing other 
+// unit tests
+#if !GDATA_SKIPSERVICETEST
+
 #import "GDataServiceTest.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
@@ -47,10 +51,15 @@ static int kServerPortNumber = 54579;
   // with GC both enabled and disabled.  But launching the python http server
   // with GC disabled causes it to return an error.  To avoid that, we'll
   // change its launch environment to allow the python server run with GC.
+  // We also remove the Malloc debugging variables, since they interfere with
+  // the program output.
   NSDictionary *env = [[NSProcessInfo processInfo] environment];
   NSMutableDictionary *mutableEnv = [NSMutableDictionary dictionaryWithDictionary:env];
   [mutableEnv removeObjectForKey:@"OBJC_DISABLE_GC"];
-  
+  [mutableEnv removeObjectForKey:@"MallocGuardEdges"];
+  [mutableEnv removeObjectForKey:@"MallocPreScribble"];
+  [mutableEnv removeObjectForKey:@"MallocScribble"];
+
   NSArray *argArray = [NSArray arrayWithObjects:serverPath, 
     @"-p", [NSString stringWithFormat:@"%d", kServerPortNumber], 
     @"-r", [serverPath stringByDeletingLastPathComponent], nil];
@@ -138,9 +147,10 @@ static int kServerPortNumber = 54579;
     filePath = [filePath substringToIndex:range.location]; 
   }
 
-  // we exclude the ".auth" extension that would indicate that the URL
-  // should be tested with authentication
-  if ([[filePath pathExtension] isEqual:@"auth"]) {
+  // we exclude the ".auth" and ".authsub" extensions that would indicate 
+  // that the URL should be tested with authentication
+  if ([[filePath pathExtension] isEqual:@"auth"] || 
+      [[filePath pathExtension] isEqual:@"authsub"]) {
     filePath = [filePath stringByDeletingPathExtension]; 
   }
   
@@ -179,15 +189,23 @@ static int gFetchCounter = 0;
   
   if (!isServerRunning_) return;
   
+  // values & keys for testing that userdata is passed from
+  // service to ticket
   NSDate *defaultUserData = [NSDate date]; 
   NSString *customUserData = @"my special ticket user data";
+
+  NSString *testPropertyKey = @"testPropertyKey";
+  NSDate *defaultPropertyValue = [NSDate dateWithTimeIntervalSinceNow:999];
+  NSString *customPropertyValue = @"ticket properties override service props";
   
   [service_ setServiceUserData:defaultUserData];
+  [service_ setServiceProperty:defaultPropertyValue forKey:testPropertyKey];
   
   // an ".auth" extension tells the server to require the success auth token,
   // but the server will ignore the .auth extension when looking for the file
   NSURL *feedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml"];
   NSURL *authFeedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.auth"];
+  NSURL *authSubFeedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.authsub"];
   
   //
   // test:  download feed only, no auth, caching on
@@ -211,6 +229,8 @@ static int gFetchCounter = 0;
                      sheetID, @"fetching %@ error %@", feedURL, fetcherError_);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
+                       defaultPropertyValue, @"default property missing");
 
   // no cookies should be sent with our first request
   NSURLRequest *request = [[ticket_ objectFetcher] request];
@@ -358,6 +378,7 @@ static int gFetchCounter = 0;
   [ticket_ retain];
   
   [ticket_ setUserData:customUserData];
+  [ticket_ setProperty:customPropertyValue forKey:testPropertyKey];
   
   [self waitForFetch];
 
@@ -365,6 +386,8 @@ static int gFetchCounter = 0;
                        sheetID, @"fetching %@", authFeedURL);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], customUserData, @"userdata error");
+  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
+                       customPropertyValue, @"custom property error");
   
   //
   // test: repeat last authenticated download so we're reusing the auth token
@@ -427,6 +450,8 @@ static int gFetchCounter = 0;
   STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
   STAssertEquals([fetcherError_ code], 403, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
+                       defaultPropertyValue, @"default property error");
   
   
   //
@@ -597,6 +622,53 @@ static int gFetchCounter = 0;
   STAssertNil(fetchedObject_, @"deleting %@ returned \n%@", authEntryURL, fetchedObject_);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+
+  //
+  // test: fetch feed with authsub, successful
+  //
+  
+  [self resetFetchResponse];
+    
+  [service_ setUserCredentialsWithUsername:nil
+                                  password:nil];
+  [service_ setAuthSubToken:@"GoodAuthSubToken"];
+
+  ticket_ = [service_ fetchAuthenticatedFeedWithURL:authSubFeedURL
+                                          feedClass:kGDataUseRegisteredClass
+                                           delegate:self
+                                  didFinishSelector:@selector(ticket:finishedWithObject:)
+                                    didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+                       sheetID, @"fetching %@", authSubFeedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  
+  //
+  // test: fetch feed with authsub, bad token
+  //
+  
+  [self resetFetchResponse];
+  
+  [service_ setAuthSubToken:@"bogus"];
+  
+  ticket_ = [service_ fetchAuthenticatedFeedWithURL:authSubFeedURL
+                                          feedClass:kGDataUseRegisteredClass
+                                           delegate:self
+                                  didFinishSelector:@selector(ticket:finishedWithObject:)
+                                    didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+  
+  [self waitForFetch];
+  
+  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  STAssertEquals([fetcherError_ code], 401, @"fetcherError_=%@", fetcherError_);
+  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
+                       defaultPropertyValue, @"default property error");
+  
 }
 
 // fetch callbacks
@@ -769,3 +841,4 @@ static int gFetchCounter = 0;
 }
 @end
 
+#endif // !GDATA_SKIPSERVICETEST

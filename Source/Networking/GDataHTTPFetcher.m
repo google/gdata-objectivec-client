@@ -22,7 +22,7 @@
 #import "GDataHTTPFetcher.h"
 #import "GDataHTTPFetcherLogging.h"
 
-#ifdef MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 @interface NSURLConnection (LeopardMethodsOnTigerBuilds)
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate startImmediately:(BOOL)startImmediately;
 - (void)start;
@@ -630,7 +630,7 @@ CannotBeginFetch:
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 
-  [self logFetchWithError:nil];
+  [self logFetchWithError:error];
   
   if ([self shouldRetryNowForStatus:0 error:error]) {
     

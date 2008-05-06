@@ -26,6 +26,12 @@
 
 @implementation GDataFeedContact
 
++ (void)load {
+  [GDataObject registerFeedClass:[self class]
+           forCategoryWithScheme:kGDataCategoryScheme
+                            term:kGDataCategoryContact];
+}
+
 + (GDataFeedContact *)contactFeed {
   GDataFeedContact *obj = [[[[self class] alloc] init] autorelease];
 

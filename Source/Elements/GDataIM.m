@@ -90,8 +90,7 @@
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self address], [other address])
-    && AreEqualOrBothNil([self protocol], [other protocol])
-    && AreBoolsEqual([self isPrimary], [other isPrimary]);
+    && AreEqualOrBothNil([self protocol], [other protocol]);
 }
 
 - (NSMutableArray *)itemsForDescription {
