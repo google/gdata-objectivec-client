@@ -83,6 +83,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [username_ release];
   [password_ release];
   
+  [serviceUserData_ release];
+  [serviceProperties_ release];
+  [serviceSurrogates_ release];
+  
   [super dealloc];
 }
 
@@ -110,7 +114,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                   unameRecord.sysname, unameRecord.release]; // "Darwin/8.11.1"
 #endif
 #endif
-    
+      
   return systemString;
 }
 
@@ -161,15 +165,32 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                                            timeoutInterval:60] autorelease];
   
   NSString *requestUserAgent = [self requestUserAgent];
-  
   [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
-  [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
-  [request setValue:@"application/atom+xml;charset=utf-8" forHTTPHeaderField:@"content-type"]; // header is authoritative for character set issues.
-  [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
-  
   if ([httpMethod length] > 0) {
     [request setHTTPMethod:httpMethod];
   }
+  
+  return request;
+}
+
+
+// objectRequestForURL returns an NSMutableURLRequest for a GData object as XML
+//
+// the object is the object being sent to the server, or nil;
+// the http method may be nil for get, or POST, PUT, DELETE
+
+- (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url 
+                                      object:(GDataObject *)object
+                                  httpMethod:(NSString *)httpMethod {
+  
+  NSMutableURLRequest *request = [self requestForURL:url
+                                          httpMethod:httpMethod];
+  
+  [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
+  
+  [request setValue:@"application/atom+xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"]; // header is authoritative for character set issues.
+  
+  [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
   
   return request;
 }
@@ -189,7 +210,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, failedSelector, @encode(GDataServiceTicketBase *), @encode(NSError *), 0);
 
-  NSMutableURLRequest *request = [self requestForURL:feedURL httpMethod:httpMethod];
+  NSMutableURLRequest *request = [self objectRequestForURL:feedURL
+                                                    object:objectToPost
+                                                httpMethod:httpMethod];
   
   // we need to create a ticket unless one was created earlier (like during
   // authentication)
@@ -395,6 +418,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       object = [[[objectClass alloc] initWithXMLElement:root
                                                  parent:nil
                                              surrogates:surrogates] autorelease];
+#if GDATA_USES_LIBXML
+      // retain the document so that pointers to internal nodes remain valid
+      [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
+#endif
+       
     } else {
 #if DEBUG
       NSString *invalidXML = [[[NSString alloc] initWithData:data
@@ -928,6 +956,42 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return serviceUserData_;
 }
 
+// The service properties dictionary becomes the dictionary for each future
+// ticket.
+
+- (void)setServiceProperties:(NSDictionary *)dict {
+  [serviceProperties_ autorelease];
+  serviceProperties_ = [dict mutableCopy];
+}
+
+- (NSDictionary *)serviceProperties {
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[serviceProperties_ retain] autorelease];
+}
+
+- (void)setServiceProperty:(id)obj forKey:(NSString *)key {
+  
+  if (obj == nil) {
+    // user passed in nil, so delete the property
+    [serviceProperties_ removeObjectForKey:key];
+  } else {
+    // be sure the property dictionary exists
+    if (serviceProperties_ == nil) {
+      serviceProperties_ = [[NSMutableDictionary alloc] init];
+    }
+    [serviceProperties_ setObject:obj forKey:key];
+  }
+}
+
+- (id)servicePropertyForKey:(NSString *)key {
+  id obj = [serviceProperties_ objectForKey:key];
+  
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[obj retain] autorelease];
+}
+
 - (NSDictionary *)serviceSurrogates {
   return serviceSurrogates_;
 }
@@ -1062,8 +1126,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (self) {
     service_ = [service retain];
     
-    // copy settings from the service into this ticket
     [self setUserData:[service serviceUserData]];
+    [self setProperties:[service serviceProperties]];
     [self setSurrogates:[service serviceSurrogates]];
     [self setUploadProgressSelector:[service serviceUploadProgressSelector]];  
     [self setIsRetryEnabled:[service isServiceRetryEnabled]];
@@ -1076,10 +1140,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)dealloc {
   [service_ release];
+  
   [userData_ release];
+  [ticketProperties_ release];
   [surrogates_ release];
+  
   [currentFetcher_ release];
   [objectFetcher_ release];
+  
   [postedObject_ release];
   [fetchedObject_ release];
   [accumulatedFeed_ release];
@@ -1100,6 +1168,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [self setObjectFetcher:nil];
   [self setCurrentFetcher:nil];
   [self setUserData:nil];
+  [self setProperties:nil];
   
   [service_ autorelease];
   service_ = nil;
@@ -1116,6 +1185,39 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (void)setUserData:(id)obj {
   [userData_ autorelease];
   userData_ = [obj retain];
+}
+
+- (void)setProperties:(NSDictionary *)dict {
+  [ticketProperties_ autorelease];
+  ticketProperties_ = [dict mutableCopy];
+}
+
+- (NSDictionary *)properties {
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[ticketProperties_ retain] autorelease];
+}
+
+- (void)setProperty:(id)obj forKey:(NSString *)key {
+  
+  if (obj == nil) {
+    // user passed in nil, so delete the property
+    [ticketProperties_ removeObjectForKey:key];
+  } else {
+    // be sure the property dictionary exists
+    if (ticketProperties_ == nil) {
+      ticketProperties_ = [[NSMutableDictionary alloc] init];
+    }
+    [ticketProperties_ setObject:obj forKey:key];
+  }
+}
+
+- (id)propertyForKey:(NSString *)key {
+  id obj = [ticketProperties_ objectForKey:key];
+  
+  // be sure the returned pointer has the life of the autorelease pool,
+  // in case self is released immediately
+  return [[obj retain] autorelease];
 }
 
 - (NSDictionary *)surrogates {

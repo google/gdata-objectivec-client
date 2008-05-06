@@ -103,7 +103,7 @@
 // To rely instead on WebKit's global NSHTTPCookieStorage, call 
 // setCookieStorageMethod: with kGDataHTTPFetcherCookieStorageMethodSystemDefault.
 //
-// If you use provide a fetch history (such as for periodic checks, described
+// If you provide a fetch history (such as for periodic checks, described
 // below) then the cookie storage mechanism is set to use the fetch
 // history rather than the static storage.
 //

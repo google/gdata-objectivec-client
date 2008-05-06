@@ -56,13 +56,13 @@ _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www
                               didFinishSelector:(SEL)finishedSelector
                                 didFailSelector:(SEL)failedSelector;
 
-- (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(GDataEntryContact *)entryToInsert
+- (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert
                                                forFeedURL:(NSURL *)contactFeedURL
                                                  delegate:(id)delegate
                                         didFinishSelector:(SEL)finishedSelector
                                           didFailSelector:(SEL)failedSelector;
 
-- (GDataServiceTicket *)fetchContactEntryByUpdatingEntry:(GDataEntryContact *)entryToUpdate
+- (GDataServiceTicket *)fetchContactEntryByUpdatingEntry:(id)entryToUpdate
                                              forEntryURL:(NSURL *)contactEntryEditURL
                                                 delegate:(id)delegate
                                        didFinishSelector:(SEL)finishedSelector

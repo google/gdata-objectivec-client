@@ -23,6 +23,25 @@
 // uploading so we can capture a copy of the data for the log
 @end
 
+// We don't invoke Leopard methods on 10.4, because we check if the methods are
+// implemented before invoking it, but we need to be able to compile without
+// warnings.
+// This declaration means if you target <=10.4, this method will compile
+// without complaint in this source, so you must test with
+// -respondsToSelector:, too.
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+@interface NSFileManager (LeopardMethodsOnTigerBuilds)
+- (BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error;
+@end
+#endif
+// The iPhone Foundation removes the deprecated removeFileAtPath:handler:
+#if GDATA_IPHONE
+@interface NSFileManager (TigerMethodsOniPhoneBuilds)
+- (BOOL)removeFileAtPath:(NSString *)path handler:(id)handler;
+@end
+#endif
+
+
 @implementation GDataHTTPFetcher (GDataHTTPFetcherLogging)
 
 // if STRIP_GDATA_FETCH_LOGGING is defined by the user's project then 
@@ -122,9 +141,9 @@ static NSString* gLoggingProcessName = nil;
     loggingProcessName = [[NSMutableString alloc] initWithString:procName];
     
     [loggingProcessName replaceOccurrencesOfString:@" " 
-                                         withString:@"_" 
-                                            options:0 
-                                              range:NSMakeRange(0, [gLoggingProcessName length])];
+                                        withString:@"_" 
+                                           options:0 
+                                             range:NSMakeRange(0, [gLoggingProcessName length])];
     gLoggingProcessName = loggingProcessName;
   } 
   return gLoggingProcessName;
@@ -138,12 +157,14 @@ static NSString* gLoggingProcessName = nil;
 + (NSString *)loggingDateStamp {
   // we'll pick one date stamp per run, so a run that starts at a later second
   // will get a unique results html file
-  if (!gLoggingDateStamp) {
-    // TODO: (grobbins) remove use of NSCalendarDate since Apple will eventually
-    // deprecate it in favor of formatters
-    
+  if (!gLoggingDateStamp) {    
     // produce a string like 08-21_01-41-23PM
-    gLoggingDateStamp = [[[NSCalendarDate calendarDate] descriptionWithCalendarFormat:@"%m-%d_%I-%M-%S%p"] retain];
+    
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [formatter setDateFormat:@"M-dd_hh-mm-ssa"];
+    
+    gLoggingDateStamp = [[formatter stringFromDate:[NSDate date]] retain] ;    
   }
   return gLoggingDateStamp;
 }
@@ -400,7 +421,7 @@ static NSString* gLoggingProcessName = nil;
   // we need a header to say we'll have UTF-8 text
   if (!didFileExist) {
     [outputHTML appendFormat:@"<html><head><meta http-equiv=\"content-type\" "
-      "content=\"text/html; charset=UTF-8\"><title>%@ HTTP fetch log %@</title></head>",
+      "content=\"text/html; charset=UTF-8\"><title>%@ HTTP fetch log %@</title>",
       processName, dateStamp];
   }
   
@@ -433,7 +454,7 @@ static NSString* gLoggingProcessName = nil;
       "{ \n var iFrameElem=document.getElementById(iFrameID); "
       "if (iFrameElem.src.indexOf(newsrc) != -1) { toggleLayer(whichLayer); } "
       "else { document.getElementById(whichLayer).style.display=\"block\"; } "
-      "iFrameElem.src=newsrc; }</script>\n";
+      "iFrameElem.src=newsrc; }</script>\n</head>\n<body>\n";
     [outputHTML appendFormat:toggleIFScriptFormat];
   }
   
@@ -571,8 +592,9 @@ static NSString* gLoggingProcessName = nil;
         responseDataFormattedFileName]; // src to reload 
 
       // plain link (so the user can command-click it into another tab)
-      [outputHTML appendFormat:@"&nbsp;&nbsp;<a href=%@>stand-alone</a><br>\n",
-        responseDataFormattedFileName];
+      [outputHTML appendFormat:@"&nbsp;&nbsp;<a href=\"%@\">stand-alone</a><br>\n",
+        [responseDataFormattedFileName
+          stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     if (responseDataUnformattedFileName) {
       [outputHTML appendFormat:@"response data (%d bytes) plain text ",
@@ -587,18 +609,20 @@ static NSString* gLoggingProcessName = nil;
         responseDataUnformattedFileName]; // src to reload 
 
       // plain link (so the user can command-click it into another tab)
-      [outputHTML appendFormat:@"&nbsp;&nbsp;<a href=%@>stand-alone</a><br>\n",
-        responseDataUnformattedFileName];
+      [outputHTML appendFormat:@"&nbsp;&nbsp;<a href=\"%@\">stand-alone</a><br>\n",
+        [responseDataUnformattedFileName
+          stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     }
     
     // make the iframe
     NSString *divHTMLFormat = @"<div id=\"%@\">%@</div><br>\n";
     NSString *src = responseDataFormattedFileName ?  
       responseDataFormattedFileName : responseDataUnformattedFileName;
+    NSString *escapedSrc = [src stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *iframeFmt = @" <iframe src=\"%@\" id=\"%@\" width=800 height=400>"
       "\n<a href=\"%@\">%@</a>\n </iframe>\n";
     NSString *dataIFrameHTML = [NSString stringWithFormat:iframeFmt,
-      src, dataIFrameID, src, src];
+      escapedSrc, dataIFrameID, escapedSrc, src];
     [outputHTML appendFormat:divHTMLFormat, 
       responseDataDivName, dataIFrameHTML];
   } else {
@@ -621,7 +645,17 @@ static NSString* gLoggingProcessName = nil;
   NSString *symlinkName = [NSString stringWithFormat:@"%@_http_log_newest.html", 
     processName];
   NSString *symlinkPath = [logDirectory stringByAppendingPathComponent:symlinkName];
-  [fileManager removeFileAtPath:symlinkPath handler:nil];
+  
+  // removeFileAtPath might be going away, but removeItemAtPath does not exist
+  // in 10.4
+  if ([fileManager respondsToSelector:@selector(removeFileAtPath:handler:)]) {
+    [fileManager removeFileAtPath:symlinkPath handler:nil];
+  } else if ([fileManager respondsToSelector:@selector(removeItemAtPath:error:)]) {
+    // To make the next line compile when targeting 10.4, we declare
+    // removeItemAtPath:error: in an @interface above
+    [fileManager removeItemAtPath:symlinkPath error:NULL];
+  }
+
   [fileManager createSymbolicLinkAtPath:symlinkPath pathContent:htmlPath];
 }
 

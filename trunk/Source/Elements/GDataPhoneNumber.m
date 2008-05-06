@@ -83,8 +83,7 @@
     && AreEqualOrBothNil([self label], [other label])
     && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self URI], [other URI])
-    && AreEqualOrBothNil([self stringValue], [other stringValue])
-    && AreBoolsEqual([self isPrimary], [other isPrimary]);
+    && AreEqualOrBothNil([self stringValue], [other stringValue]);
 }
 
 - (NSMutableArray *)itemsForDescription {

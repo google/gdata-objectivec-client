@@ -15,6 +15,9 @@
 		4F0238720D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F02386F0D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m */; };
 		4F0238730D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F02386F0D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m */; };
 		4F0238740D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F0238700D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F08542D0DCFB6C800DEAB3F /* GDataXMLSupportTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F08542B0DCFB6C800DEAB3F /* GDataXMLSupportTest.m */; };
+		4F0854300DCFB74800DEAB3F /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F08542E0DCFB74800DEAB3F /* GDataXMLNode.m */; };
+		4F0854330DCFB74800DEAB3F /* GDataXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F08542E0DCFB74800DEAB3F /* GDataXMLNode.m */; };
 		4F089FCE0BC31A2F00B17DC7 /* GDataEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F089FCD0BC31A2F00B17DC7 /* GDataEntryMessage.m */; };
 		4F089FCF0BC31A2F00B17DC7 /* GDataEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F089FCD0BC31A2F00B17DC7 /* GDataEntryMessage.m */; };
 		4F089FD00BC31A2F00B17DC7 /* GDataEntryMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F089FCD0BC31A2F00B17DC7 /* GDataEntryMessage.m */; };
@@ -670,6 +673,10 @@
 		4F0236270D5A7F8A00EE6862 /* GDataYouTubePublicationState.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataYouTubePublicationState.h; path = Clients/YouTube/GDataYouTubePublicationState.h; sourceTree = "<group>"; };
 		4F02386F0D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeFeedLinkBase.m; path = Clients/YouTube/GDataEntryYouTubeFeedLinkBase.m; sourceTree = "<group>"; };
 		4F0238700D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeFeedLinkBase.h; path = Clients/YouTube/GDataEntryYouTubeFeedLinkBase.h; sourceTree = "<group>"; };
+		4F08542B0DCFB6C800DEAB3F /* GDataXMLSupportTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataXMLSupportTest.m; path = Tests/GDataXMLSupportTest.m; sourceTree = "<group>"; };
+		4F08542C0DCFB6C800DEAB3F /* GDataXMLSupportTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataXMLSupportTest.h; path = Tests/GDataXMLSupportTest.h; sourceTree = "<group>"; };
+		4F08542E0DCFB74800DEAB3F /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataXMLNode.m; path = XMLSupport/GDataXMLNode.m; sourceTree = "<group>"; };
+		4F08542F0DCFB74800DEAB3F /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataXMLNode.h; path = XMLSupport/GDataXMLNode.h; sourceTree = "<group>"; };
 		4F089FCD0BC31A2F00B17DC7 /* GDataEntryMessage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryMessage.m; path = BaseClasses/GDataEntryMessage.m; sourceTree = "<group>"; };
 		4F089FD10BC31A3500B17DC7 /* GDataEntryMessage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryMessage.h; path = BaseClasses/GDataEntryMessage.h; sourceTree = "<group>"; };
 		4F08A0160BC323E900B17DC7 /* GDataFeedMessage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedMessage.h; path = BaseClasses/GDataFeedMessage.h; sourceTree = "<group>"; };
@@ -1162,6 +1169,8 @@
 				4F16E5AB0BF4F1B200FB548C /* GDataMIMEDocumentTest.m */,
 				4F2B94D70BFA61C000A70CB3 /* GDataGatherInputStreamTest.h */,
 				4F2B94D80BFA61C000A70CB3 /* GDataGatherInputStreamTest.m */,
+				4F08542B0DCFB6C800DEAB3F /* GDataXMLSupportTest.m */,
+				4F08542C0DCFB6C800DEAB3F /* GDataXMLSupportTest.h */,
 				4FD23A390B8FDB17007C0AD4 /* XML Files */,
 			);
 			name = "Unit Tests";
@@ -1339,6 +1348,8 @@
 				4F0AAADD0BCAF3D700504521 /* GDataFramework.m */,
 				4F7098B60D790F71003CEFDF /* GDataUtilities.h */,
 				4F7098B70D790F71003CEFDF /* GDataUtilities.m */,
+				4F08542E0DCFB74800DEAB3F /* GDataXMLNode.m */,
+				4F08542F0DCFB74800DEAB3F /* GDataXMLNode.h */,
 				4F14B1240B13A59E0072EBB8 /* BaseClasses */,
 				4F14AA7E0B1283660072EBB8 /* Elements */,
 				4FB730D70BE27A92000C493E /* Networking */,
@@ -2093,6 +2104,8 @@
 				4F346E1C0D7502B0006033E0 /* GDataServiceGoogleContact.m in Sources */,
 				4F346E1D0D7502B0006033E0 /* GDataFeedContact.m in Sources */,
 				4F7098B80D790F71003CEFDF /* GDataUtilities.m in Sources */,
+				4F08542D0DCFB6C800DEAB3F /* GDataXMLSupportTest.m in Sources */,
+				4F0854300DCFB74800DEAB3F /* GDataXMLNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2252,6 +2265,7 @@
 				4F346E200D7502B0006033E0 /* GDataServiceGoogleContact.m in Sources */,
 				4F346E210D7502B0006033E0 /* GDataFeedContact.m in Sources */,
 				4F7098BB0D790F71003CEFDF /* GDataUtilities.m in Sources */,
+				4F0854330DCFB74800DEAB3F /* GDataXMLNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2523,8 +2537,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Resources/GDataUnitTests-Info.plist";
 				OTHER_LDFLAGS = (
+					"-lxml2",
 					"-framework",
 					Cocoa,
 					"-framework",
@@ -2547,8 +2563,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREFIX_HEADER = "$(SYSTEM_LIBRARY_DIR)/Frameworks/Cocoa.framework/Headers/Cocoa.h";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Resources/GDataUnitTests-Info.plist";
 				OTHER_LDFLAGS = (
+					"-lxml2",
 					"-framework",
 					Cocoa,
 					"-framework",
@@ -2564,7 +2582,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = NO;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = DevelopmentTestTool;
 			};
 			name = Debug;
@@ -2573,7 +2593,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_ENABLE_OBJC_GC = NO;
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = DevelopmentTestTool;
 			};
 			name = Release;

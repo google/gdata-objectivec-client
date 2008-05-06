@@ -341,6 +341,10 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (NSString *)stringForAttributeName:(NSString *)attributeName
                          fromElement:(NSXMLElement *)element;
 
+- (NSString *)stringForAttributeLocalName:(NSString *)localName
+                                      URI:(NSString *)attributeURI
+                              fromElement:(NSXMLElement *)element;  
+
 - (GDataDateTime *)dateTimeForAttributeName:(NSString *)attributeName 
                                 fromElement:(NSXMLElement *)element;
 
@@ -355,6 +359,10 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 
 - (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
                             fromElement:(NSXMLElement *)element;
+
+- (NSNumber *)intNumberForAttributeLocalName:(NSString *)localName
+                                         URI:(NSString *)attributeURI
+                                 fromElement:(NSXMLElement *)element;
 
 - (NSDecimalNumber *)decimalNumberForAttributeName:(NSString *)attributeName 
                                        fromElement:(NSXMLElement *)element;
@@ -376,6 +384,11 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
      attributeValueIfNonNil:(NSString *)val
                    withName:(NSString *)name;
+
+- (NSXMLNode *)addToElement:(NSXMLElement *)element
+     attributeValueIfNonNil:(NSString *)val
+              withLocalName:(NSString *)localName
+                        URI:(NSString *)attributeURI;
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
   attributeValueWithInteger:(int)val

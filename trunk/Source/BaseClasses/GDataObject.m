@@ -97,6 +97,11 @@
     [self addExtensionDeclarations];
     [self parseExtensionsForElement:element];
     [self setElementName:[element name]];
+    
+#if GDATA_USES_LIBXML
+    // retain the element so that pointers to internal nodes remain valid
+    [self setProperty:element forKey:kGDataXMLElementPropertyKey];
+#endif    
   }
   return self;
 }
@@ -110,8 +115,14 @@
   // prevents us from comparing the contents of a manually-constructed object
   // (which lacks a specific local name) with one found in an actual XML feed.
   
+#if GDATA_USES_LIBXML
+  // libxml adds namespaces when copying elements, so we can't rely
+  // on those when comparing nodes
+  return AreEqualOrBothNil([self extensions], [other extensions]);
+#else
   return AreEqualOrBothNil([self extensions], [other extensions])
     && AreEqualOrBothNil([self namespaces], [other namespaces]);
+#endif
   
   // What we're not comparing here:
   //   parent object pointers
@@ -186,7 +197,7 @@
 
 - (NSXMLDocument *)XMLDocument {
   NSXMLElement *element = [self XMLElement];
-  NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithRootElement:element] autorelease];
+  NSXMLDocument *doc = [[[NSXMLDocument alloc] initWithRootElement:(id)element] autorelease];
   [doc setVersion:@"1.0"];
   [doc setCharacterEncoding:@"UTF-8"];
   return doc;
@@ -459,6 +470,24 @@
 }
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
+     attributeValueIfNonNil:(NSString *)val
+              withLocalName:(NSString *)localName 
+                        URI:(NSString *)attributeURI {
+  if (val) {
+    NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:val];
+    
+    NSXMLNode *attr = [NSXMLNode attributeWithName:localName 
+                                               URI:attributeURI
+                                       stringValue:filtered];
+    if (attr != nil) {
+      [element addAttribute:attr];
+      return attr;
+    }
+  }
+  return nil;
+}
+
+- (NSXMLNode *)addToElement:(NSXMLElement *)element
   attributeValueWithInteger:(int)val
                    withName:(NSString *)name {
   NSString* str = [NSString stringWithFormat:@"%d", val];
@@ -573,6 +602,7 @@ objectDescriptionIfNonNil:(id)obj
   // note: the prefix may be an empty string
   
   NSArray *namespaceNodes = [element namespaces];
+
   unsigned int numberOfNamespaces = [namespaceNodes count];
   
   if (numberOfNamespaces > 0) {
@@ -657,12 +687,14 @@ objectDescriptionIfNonNil:(id)obj
                                                   URI:namespaceURI];
   }
 
+  // if we couldn't find the elements by name, fall back on the fully-qualified
+  // name
   if ([objElements count] == 0) {
     
     objElements = [parentElement elementsForName:qualifiedName];
   }
   return objElements;
-
+  
 }
 
 // return all child elements of an element which have the given namespace 
@@ -773,9 +805,11 @@ objectDescriptionIfNonNil:(id)obj
   }
   
   // We might want to get rid of this assert if there turns out to be
-  // leg reasons to call this where there are >1 elements available
-  NSAssert1(numberOfElements == 0, @"childWithName: could not handle multiple '%@'"
-            " elements in list, use elementsForName:", qualifiedName);
+  // legitimate reasons to call this where there are >1 elements available
+  NSAssert3(numberOfElements == 0, @"childWithQualifiedName: could not handle "
+            "multiple '%@' elements in list, use elementsForName:\n"
+            "Found elements: %@\nURI: %@", qualifiedName, elementArray, 
+            namespaceURI);
   return nil;
 }
 
@@ -847,6 +881,30 @@ objectDescriptionIfNonNil:(id)obj
   return attribute;
 }
 
+- (NSXMLNode *)attributeForLocalName:(NSString *)localName
+                                 URI:(NSString *)attributeURI
+                         fromElement:(NSXMLElement *)element {
+  
+  NSXMLNode* attribute = [element attributeForLocalName:localName
+                                                    URI:attributeURI];
+  
+  if (attribute) {
+    [unknownAttributes_ removeObject:attribute];
+  }
+  return attribute;
+}
+
+- (NSString *)stringForAttributeLocalName:(NSString *)localName
+                                      URI:(NSString *)attributeURI
+                              fromElement:(NSXMLElement *)element {
+  
+  NSXMLNode* attribute = [self attributeForLocalName:localName
+                                                 URI:attributeURI
+                                         fromElement:element];
+  return [attribute stringValue];
+}
+
+
 - (NSString *)stringForAttributeName:(NSString *)attributeName
                          fromElement:(NSXMLElement *)element {
   NSXMLNode* attribute = [self attributeForName:attributeName
@@ -892,6 +950,21 @@ objectDescriptionIfNonNil:(id)obj
                             fromElement:(NSXMLElement *)element {
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
+  NSString* str = [attribute stringValue];
+  if (str) {
+    NSNumber *number = [NSNumber numberWithInt:[str intValue]]; 
+    return number;
+  }
+  return nil;
+}
+
+- (NSNumber *)intNumberForAttributeLocalName:(NSString *)localName
+                                         URI:(NSString *)attributeURI
+                                 fromElement:(NSXMLElement *)element {
+  
+  NSXMLNode* attribute = [self attributeForLocalName:localName
+                                                 URI:attributeURI
+                                         fromElement:element];
   NSString* str = [attribute stringValue];
   if (str) {
     NSNumber *number = [NSNumber numberWithInt:[str intValue]]; 
@@ -1297,16 +1370,22 @@ forCategoryWithScheme:scheme
   
   // use an XPath query to find the category elements  
   //
-  // the category element may need the proper atom namespace prefix
-  // (is there a way to avoid having to know the prefix with
-  // NSXMLNode's nodesForXPath:?)
-  //
   // category elements look like <category scheme="blah" term="blahblah"/>
   // and there may be more than one
   //
   // ? For feed elements, if there's no category, should we look into
   // the entry elements for a category?  Some calendar feeds have
   // lacked feed-level categories.
+  
+#if GDATA_USES_LIBXML
+  // find category elements with the AtomPub URI or with no namespace
+  NSString *categoryPath = 
+    @"*[local-name()='category']"
+     "[namespace-uri()='http://www.w3.org/2005/Atom' or namespace-uri()='']";
+#else
+  // the category element may need the proper atom namespace prefix
+  // (is there a way to avoid having to know the prefix with
+  // NSXMLNode's nodesForXPath:?)
   
   NSString *categoryTermPathTemplate = @"./%@category";
   
@@ -1316,6 +1395,7 @@ forCategoryWithScheme:scheme
   }
   NSString *categoryPath = [NSString stringWithFormat:categoryTermPathTemplate, 
     atomPrefix];
+#endif
   
   // nodesForXPath: throws exceptions for parsing errors
   @try {

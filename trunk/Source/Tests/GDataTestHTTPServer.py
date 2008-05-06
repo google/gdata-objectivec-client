@@ -51,6 +51,9 @@ class SimpleServer(BaseHTTPRequestHandler):
   Paths ending in .auth have the .auth extension stripped, and must have
   an authorization header of "GoogleLogin auth=GoodAuthToken" to succeed.
   
+  Paths ending in .authsub have the .authsub extension stripped, and must have
+  an authorization header of "AuthSub token=GoodAuthSubToken" to succeed.
+  
   Successful results have a Last-Modified header set; if that header's value
   ("thursday") is supplied in a request's "If-Modified-Since" header, the 
   result is 304 (Not Modified).
@@ -104,13 +107,18 @@ class SimpleServer(BaseHTTPRequestHandler):
     ifModifiedSince = self.headers.getheader("If-Modified-Since", "");
 
     # retrieve the auth header; require it if the file path ends 
-    # with the string ".auth"
+    # with the string ".auth" or ".authsub"
     authorization = self.headers.getheader("Authorization", "")
     if self.path.endswith(".auth"):
       if authorization != "GoogleLogin auth=GoodAuthToken":
         self.send_error(401,"Unauthorized: %s" % self.path)
         return
       self.path = self.path[:-5] # remove the .auth at the end
+    if self.path.endswith(".authsub"):
+      if authorization != "AuthSub token=GoodAuthSubToken":
+        self.send_error(401,"Unauthorized: %s" % self.path)
+        return
+      self.path = self.path[:-8] # remove the .authsub at the end
     
     overrideHeader = self.headers.getheader("X-HTTP-Method-Override", "")
     httpCommand = self.command
