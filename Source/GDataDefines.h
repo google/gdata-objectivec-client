@@ -23,7 +23,7 @@
 //   #define STRIP_GDATA_FETCH_LOGGING 1 // omit http logging code
 //
 
-#if TARGET_OS_ASPEN // iPhone SDK
+#if TARGET_OS_IPHONE // iPhone SDK
 
   #define GDATA_IPHONE 1
 
