@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,17 +23,10 @@
 //
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaRating : GDataObject <NSCopying, GDataExtension> {
-  NSString *scheme_;
-  NSString *content_;
+@interface GDataMediaRating : GDataObject <GDataExtension> {
 }
 
 + (GDataMediaRating *)mediaRatingWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)scheme;
 - (void)setScheme:(NSString *)str;

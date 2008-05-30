@@ -50,6 +50,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
   BOOL canEdit_;
   NSString *idString_;
   NSString *versionIDString_;
+  NSString *etag_;
   
   GDataDateTime *publishedDate_;
   GDataDateTime *updatedDate_;
@@ -96,6 +97,9 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 - (GDataDateTime *)editedDate;
 - (void)setEditedDate:(GDataDateTime *)theEditedDate;
+
+- (NSString *)ETag;
+- (void)setETag:(NSString *)str;
 
 - (GDataTextConstruct *)title;
 - (void)setTitle:(GDataTextConstruct *)theTitle;

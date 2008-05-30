@@ -24,20 +24,8 @@
 //                videoWatchCount="77" 
 //                lastWebAccess="2008-01-26T10:32:41.000-08:00"/>
 
-@interface GDataYouTubeStatistics : GDataObject <NSCopying, GDataExtension> {
-  
-  NSNumber *viewCount_;
-  NSNumber *videoWatchCount_;
-  NSNumber *subscriberCount_;
-  GDataDateTime *lastWebAccess_;
-}
-
+@interface GDataYouTubeStatistics : GDataObject <GDataExtension> 
 + (GDataYouTubeStatistics *)youTubeStatistics;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 // long long value
 - (NSNumber *)viewCount;
@@ -50,6 +38,10 @@
 // long long value
 - (NSNumber *)subscriberCount;
 - (void)setSubscriberCount:(NSNumber *)num;
+
+// long long value
+- (NSNumber *)favoriteCount;
+- (void)setFavoriteCount:(NSNumber *)num;
 
 - (GDataDateTime *)lastWebAccess;
 - (void)setLastWebAccess:(GDataDateTime *)dateTime;

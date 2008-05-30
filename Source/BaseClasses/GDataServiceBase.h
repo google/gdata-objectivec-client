@@ -133,7 +133,7 @@ enum {
 // to the ticket when shouldFollowNextLinks is enabled
 - (void)accumulateFeed:(GDataFeedBase *)newFeed;
 
-- (int)statusCode;  // server status from object fetch
+- (NSInteger)statusCode;  // server status from object fetch
 @end
 
 
@@ -142,6 +142,7 @@ enum {
 //
 
 @interface GDataServiceBase : NSObject {
+  NSString *serviceVersion_;
   NSString *userAgent_;
   NSMutableDictionary *fetchHistory_;
   NSArray *runLoopModes_;
@@ -186,7 +187,9 @@ enum {
 // user-agent and authentication token
 //
 // For http method, pass nil (for default GET method), POST, PUT, or DELETE 
-- (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod;
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod;
 
 // objectRequestForURL returns an NSMutableURLRequest for an XML GData object
 //
@@ -195,6 +198,7 @@ enum {
 // the http method may be nil for get, or POST, PUT, DELETE
 - (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url 
                                       object:(GDataObject *)object
+                                        ETag:(NSString *)etag
                                   httpMethod:(NSString *)httpMethod;
 
 // finishedSelector has signature like:
@@ -230,6 +234,12 @@ enum {
                                      delegate:(id)delegate
                             didFinishSelector:(SEL)finishedSelector // object parameter will be nil
                               didFailSelector:(SEL)failedSelector;
+
+- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
+                                         ETag:(NSString *)etag
+                                     delegate:(id)delegate
+                            didFinishSelector:(SEL)finishedSelector
+                              didFailSelector:(SEL)failedSelector;  
 
 - (GDataServiceTicketBase *)fetchQuery:(GDataQuery *)query
                              feedClass:(Class)feedClass
@@ -343,6 +353,12 @@ enum {
                               password:(NSString *)password;
 - (NSString *)username;
 - (NSString *)password;
+
+// Subclasses typically override serviceVersion to specify the expected
+// version of the feed, but clients may also explicitly set the version
+// if they are using an instance of the base class directly.
+- (NSString *)serviceVersion;
+- (void)setServiceVersion:(NSString *)str;
 
 // Wait synchronously for fetch to complete (strongly discouraged)
 // 

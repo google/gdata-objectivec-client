@@ -78,7 +78,7 @@
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:[self attributes]   
+  [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributes]   
                                         withName:@"attributes"];
   
   return items;
@@ -92,16 +92,16 @@
 
 #pragma mark -
 
-- (NSArray *)attributes {
+- (NSArray *)metadataAttributes {
   NSArray *attrs = [self objectsForExtensionClass:[GDataGoogleBaseMetadataAttribute class]];
   return attrs;
 }
 
-- (void)setAttributes:(NSArray *)attributes {
+- (void)setMetadataAttributes:(NSArray *)attributes {
   [self setObjects:attributes forExtensionClass:[GDataGoogleBaseMetadataAttribute class]]; 
 }
 
-- (void)addAttribute:(GDataGoogleBaseMetadataAttribute *)attribute {
+- (void)addMetadataAttribute:(GDataGoogleBaseMetadataAttribute *)attribute {
   [self addObject:attribute forExtensionClass:[GDataGoogleBaseMetadataAttribute class]]; 
 }
 

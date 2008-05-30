@@ -27,18 +27,8 @@
 //          incorrect format</yt:state>
 //  </app:control>
 
-@interface GDataYouTubePublicationState : GDataObject <NSCopying, GDataExtension> {
-  
-  NSString *state_;
-  NSString *reasonCode_;
-  NSString *helpURLString_;
-  NSString *errorDescription_;
+@interface GDataYouTubePublicationState : GDataObject <GDataExtension> {
 }
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)state;
 - (void)setState:(NSString *)str;

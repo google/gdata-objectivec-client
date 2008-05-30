@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,18 +22,10 @@
 // like <media:credit role="producer" scheme="urn:ebu">entity name</media:credit>
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaCredit : GDataObject <NSCopying, GDataExtension> {
-  NSString *role_;
-  NSString *scheme_;
-  NSString *content_;
+@interface GDataMediaCredit : GDataObject <GDataExtension> {
 }
 
 + (GDataMediaCredit *)mediaCreditWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)role;
 - (void)setRole:(NSString *)str;

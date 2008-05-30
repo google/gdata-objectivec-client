@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,13 +18,18 @@
 //
 
 #define GDATAACLROLE_DEFINE_GLOBALS 1
+
 #import "GDataACLRole.h"
 
-#import "GDataEntryACL.h"
+#import "GDataEntryACL.h" // for namespace
+
+static NSString* const kValueAttr = @"value";
 
 @implementation GDataACLRole
-// an element with type and value attributes, as in
-//  <gAcl:role type='user' value='user@gmail.com'></gAcl:role>
+// an element with a value attribute, as in
+//  <gAcl:role value='owner'></gAcl:role>
+//
+//  http://code.google.com/apis/calendar/reference.html#gacl_reference
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceACL; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceACLPrefix; }
@@ -36,59 +41,18 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setValue:[self stringForAttributeName:@"value"
-                                    fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [value_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataACLRole* newValue = [super copyWithZone:zone];
-  [newValue setValue:[self value]];
-  return newValue;
-}
-
-- (BOOL)isEqual:(GDataACLRole *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataACLRole class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self value], [other value]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gAcl:role"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self value] withName:@"value"];
-  
-  return element;
+  NSArray *attrs = [NSArray arrayWithObject:kValueAttr];
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSString *)value {
-  return value_; 
+  return [self stringValueForAttribute:kValueAttr];
 }
 
 - (void)setValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setStringValue:str forAttribute:kValueAttr];
 }
 
 @end

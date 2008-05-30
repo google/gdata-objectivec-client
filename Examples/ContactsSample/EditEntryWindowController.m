@@ -19,6 +19,7 @@
 
 #import "EditEntryWindowController.h"
 #import "GData/GDataEntryContact.h"
+#import "GData/GDataEntryContactGroup.h"
 
 
 // map from class of item to display name for item and the item's object
@@ -44,6 +45,8 @@ static ItemSelectors sAllItemSelectors[] = {
   { @"GDataIM", @"Instant Messaging", @"address", @"label", @"rel", nil, @"protocol" }, 
   { @"GDataPhoneNumber", @"Phone", @"stringValue", @"label", @"rel", nil, nil },
   { @"GDataPostalAddress", @"Postal", @"stringValue", @"label", @"rel", nil, nil },
+  { @"GDataGroupMembershipInfo", @"Group", nil, nil, nil, nil, nil },
+  { @"GDataExtendedProperty", @"Extended Property", @"unifiedStringValue", @"name", nil, nil, nil },
   { 0, 0, 0, 0, 0, 0 }
 };
 
@@ -98,18 +101,23 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
     kGDataPhoneNumberMobile, kGDataPhoneNumberPager, kGDataPhoneNumberWork,
     kGDataPhoneNumberHomeFax, kGDataPhoneNumberWorkFax, kGDataPhoneNumberOther,
     nil];
+
+  NSArray *noRels = [NSArray array];
   
   relsDict_ = [[NSDictionary alloc] initWithObjectsAndKeys:
     orgRels, @"GDataOrganization",
     standardRels, @"GDataEmail",
     standardRels, @"GDataIM",
     phoneRels, @"GDataPhoneNumber",
-    standardRels, @"GDataPostalAddress", nil];
+    standardRels, @"GDataPostalAddress", 
+    noRels, @"GDataGroupMembershipInfo", 
+    noRels, @"GDataExtendedProperty", nil];
 }
 
 - (void)dealloc {
   [relsDict_ release];
   [mObject release];
+  [mGroupFeed release];
   [super dealloc]; 
 }
 
@@ -152,8 +160,39 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   [mOrgTitleField setEnabled:(sels->titleKey != nil)];
   [mProtocolField setEnabled:(sels->protocolKey != nil)];
   
-  BOOL isPrimary = [(id)obj isPrimary];
-  [mPrimaryCheckbox setState:(isPrimary ? NSOnState : NSOffState)];
+  // group combo box
+  if ([obj isKindOfClass:[GDataGroupMembershipInfo class]]) {
+    [mGroupField setEnabled:YES];
+    
+    // set the field text to the group namefor this object's href
+    NSString *objectID = [(GDataGroupMembershipInfo *)obj href];
+    if (objectID) {
+      GDataEntryContactGroup *groupEntry = [mGroupFeed entryForIdentifier:objectID];
+      NSString *name = [[groupEntry title] stringValue];
+      [mGroupField setStringValue:name];
+    }
+  } else {
+    [mGroupField setEnabled:NO];
+  }
+  
+  // "primary" checkbox
+  if ([obj respondsToSelector:@selector(isPrimary)]) {
+    BOOL isPrimary = [(id)obj isPrimary];
+    [mPrimaryCheckbox setState:(isPrimary ? NSOnState : NSOffState)];
+    [mPrimaryCheckbox setEnabled:YES];
+  } else {
+    [mPrimaryCheckbox setEnabled:NO];
+  }
+
+  // "deleted" checkbox
+  if ([obj respondsToSelector:@selector(isDeleted)]) {
+    BOOL isDeleted = [(id)obj isDeleted];
+    [mDeletedCheckbox setState:(isDeleted ? NSOnState : NSOffState)];
+    [mDeletedCheckbox setEnabled:YES];
+  } else {
+    [mDeletedCheckbox setEnabled:NO];
+  }
+  
 }
 
 - (NSString *)stringValueOrNilForField:(NSTextField *)field {
@@ -179,8 +218,33 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   if (sels->titleKey)    [newObj setValue:title forKey:sels->titleKey];
   if (sels->protocolKey) [newObj setValue:protocol forKey:sels->protocolKey];
   
-  BOOL isPrimary = ([mPrimaryCheckbox state] == NSOnState);
-  [(id)newObj setIsPrimary:isPrimary];
+  if ([mPrimaryCheckbox isEnabled]) {
+    BOOL isPrimary = ([mPrimaryCheckbox state] == NSOnState);
+    [(id)newObj setIsPrimary:isPrimary];
+  }
+
+  if ([mDeletedCheckbox isEnabled]) {
+    BOOL isDeleted = ([mDeletedCheckbox state] == NSOnState);
+    [(id)newObj setIsDeleted:isDeleted];
+  }
+  
+  if ([mGroupField isEnabled]) {
+    // find the index of the group entry that has the title in the combo box
+    NSString *str = [mGroupField stringValue];
+    NSArray *titles = [mGroupFeed valueForKeyPath:@"entries.title.stringValue"];
+    int index = [titles indexOfObject:str];
+
+    NSString *href;
+    if (index != NSNotFound) {
+      // we found the title; get the corresponding entry's ID
+      href = [[[mGroupFeed entries] objectAtIndex:index] identifier];
+    } else {
+      // it wasn't a title, so assume the user entered a group's ID
+      href = str; 
+    }
+    [(id)newObj setHref:href];
+  }
+  
   return newObj;
 }
 
@@ -190,12 +254,14 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 
 - (void)runModalForTarget:(id)target
                  selector:(SEL)doneSelector
+                groupFeed:(GDataFeedContactGroup *)groupFeed
                    object:(GDataObject *)object
 {
   
   mTarget = target;
   mDoneSEL = doneSelector;
   mObject = [object retain];
+  mGroupFeed = [groupFeed retain];
   
   [NSApp beginSheet:[self window]
      modalForWindow:[mTarget window]
@@ -256,6 +322,8 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 - (int)numberOfItemsInComboBox:(NSComboBox *)aComboBox {
   if (aComboBox == mRelField) {
     return [[self relsForCurrentObject] count];
+  } else if (aComboBox == mGroupField) {
+    return [[mGroupFeed entries] count];
   } else {
     return [[self protocolsForCurrentObject] count];
   }
@@ -264,9 +332,55 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 - (id)comboBox:(NSComboBox *)aComboBox objectValueForItemAtIndex:(int)index {
   if (aComboBox == mRelField) {
     return [[self relsForCurrentObject] objectAtIndex:index];
+  } else if (aComboBox == mGroupField) {
+    NSArray *titles = [mGroupFeed valueForKeyPath:@"entries.title.stringValue"];
+    return [titles objectAtIndex:index];
   } else {
     return [[self protocolsForCurrentObject] objectAtIndex:index];
   }
 }
 
+@end
+
+
+@implementation GDataExtendedProperty (ContactsSampleAdditions)
+// getter that looks for a plain value or for an XML array;
+// setter that looks for a leading "<" to decide if it's an XML element
+
+- (NSString *)unifiedStringValue {
+  
+  NSString *result = [self value];
+  if (result == nil) {
+    NSArray *xmlStrings  = [[self XMLValues] valueForKey:@"XMLString"];
+    result = [xmlStrings componentsJoinedByString:@""];
+  }
+  return result; 
+}
+
+- (void)setUnifiedStringValue:(NSString *)str {
+  NSCharacterSet *wsSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSString *trimmed = [str stringByTrimmingCharactersInSet:wsSet];
+  
+  if ([trimmed hasPrefix:@"<"]) {
+    
+    // set as an XML element
+    NSError *error = nil;
+    NSXMLElement *element;
+    element = [[[NSXMLElement alloc] initWithXMLString:str
+                                                 error:&error] autorelease];
+    if (element) {
+      [self setXMLValues:[NSArray arrayWithObject:element]];
+    } else {
+      NSLog(@"XML parse error: %@", error);
+      [self setXMLValues:nil];
+    }
+    [self setValue:nil];
+
+  } else {
+    
+    // set as an attribute string
+    [self setValue:str];
+    [self setXMLValues:nil];
+  }
+}
 @end

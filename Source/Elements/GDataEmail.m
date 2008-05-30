@@ -19,6 +19,11 @@
 
 #import "GDataEmail.h"
 
+static NSString* const kLabelAttr = @"label";
+static NSString* const kAddressAttr = @"address";
+static NSString* const kRelAttr = @"rel";
+static NSString* const kPrimaryAttr = @"primary";
+
 @implementation GDataEmail
 // email element
 // <gd:email label="Personal" address="fubar@gmail.com"/>
@@ -37,109 +42,47 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    [self setAddress:[self stringForAttributeName:@"address"
-                                      fromElement:element]];    
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setIsPrimary:[self boolForAttributeName:@"primary"
-                                      fromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kLabelAttr, kAddressAttr, kRelAttr, kPrimaryAttr, nil];
+  [self addLocalAttributeDeclarations:attrs];
 }
 
-- (void)dealloc {
-  [label_ release];
-  [address_ release];
-  [rel_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataEmail* newObj = [super copyWithZone:zone];
-  [newObj setLabel:[self label]];
-  [newObj setAddress:[self address]];
-  [newObj setRel:[self rel]];
-  [newObj setIsPrimary:[self isPrimary]];
-  return newObj; 
-}
-
-- (BOOL)isEqual:(GDataEmail *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataEmail class]]) return NO;
+- (NSArray *)attributesIgnoredForEquality {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self address], [other address])
-    && AreEqualOrBothNil([self rel], [other rel]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  
-  if (isPrimary_) [items addObject:@"primary"];
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:email"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
-  [self addToElement:element attributeValueIfNonNil:[self address] withName:@"address"];
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  
-  if ([self isPrimary]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
-  }
-  
-  return element;
+  return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr]; 
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)address {
-  return address_; 
+  return [self stringValueForAttribute:kAddressAttr]; 
 }
 
 - (void)setAddress:(NSString *)str {
-  [address_ autorelease];
-  address_ = [str copy];
+  [self setStringValue:str forAttribute:kAddressAttr];
 }
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (BOOL)isPrimary {
-  return isPrimary_; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO];
 }
 
 - (void)setIsPrimary:(BOOL)flag {
-  isPrimary_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 @end
 

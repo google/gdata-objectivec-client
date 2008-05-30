@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  ContactsSampleWindowController.m
@@ -23,33 +23,47 @@
 
 #import "GData/GDataContacts.h"
 
+static const int kBallotX = 0x2717; // fancy X mark to indicate deleted items
+
 // use a category on the Contact entry so we can refer to the display
 // name string in a sort descriptor
 @interface GDataEntryContact (ContactsSampleAdditions)
 - (NSString *)entryDisplayName;
 @end
 
+@interface GDataEntryContactGroup (ContactsSampleAdditions)
+- (NSString *)entryDisplayName;
+@end
+
 @interface ContactsSampleWindowController (PrivateMethods)
 - (void)updateUI;
+- (void)updateImageForContact:(GDataEntryContact *)contact;
 
 - (void)fetchAllContacts;
+- (void)fetchAllGroups;
 
-- (void)fetchSelectedContactEntrys;
 - (void)addAnItem;
 - (void)editSelectedItem;
 - (void)deleteSelectedItem;
 - (void)makeSelectedItemPrimary;
 
+- (void)setContactImage;
+- (void)deleteContactImage;
+- (void)setSelectedContactPhotoAtPath:(NSString *)photoPath;
+
 - (void)addAContact;
-- (void)deleteSelectedContact;
+- (void)addAGroup;
+- (void)deleteSelectedContactOrGroup;
+- (void)deleteAllContactsOrGroups;
 
 - (GDataServiceGoogleContact *)contactService;
 - (GDataEntryContact *)selectedContact;
+- (GDataEntryContactGroup *)selectedGroup;
 - (GDataObject *)selectedItem;
 
 - (int)selectedSegment;
 - (NSArray *)itemsForSelectedSegment;
-  
+
 - (NSString *)displayNameForItem:(id)item;
 
 - (GDataFeedContact *)contactFeed;
@@ -58,15 +72,30 @@
 - (void)setContactFetchError:(NSError *)error;  
 - (GDataServiceTicket *)contactFetchTicket;
 - (void)setContactFetchTicket:(GDataServiceTicket *)ticket;
+- (NSURL *)contactImageURL;
+- (void)setContactImageURL:(NSURL *)url;
 
+- (GDataFeedContactGroup *)groupFeed;
+- (void)setGroupFeed:(GDataFeedContactGroup *)feed;
+- (NSError *)groupFetchError;
+- (void)setGroupFetchError:(NSError *)error;  
+- (GDataServiceTicket *)groupFetchTicket;
+- (void)setGroupFetchTicket:(GDataServiceTicket *)ticket;
 @end
+
+enum {
+  kContactsSegment = 0,
+  kGroupsSegment = 1
+};
 
 enum {
   kOrganizationSegment = 0,
   kEmailSegment = 1,
   kPhoneSegment = 2,
   kPostalSegment = 3,
-  kIMSegment = 4
+  kIMSegment = 4,
+  kGroupSegment = 5,
+  kExtendedPropsSegment = 6
 };
 
 @implementation ContactsSampleWindowController
@@ -93,13 +122,13 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 - (void)awakeFromNib {
   // Set the result text fields to have a distinctive color and mono-spaced font
   // to aid in understanding of each contact query operation.
-  [mContactResultTextField setTextColor:[NSColor darkGrayColor]];
+  [mFeedResultTextField setTextColor:[NSColor darkGrayColor]];
   [mEntryResultTextField setTextColor:[NSColor darkGrayColor]];
-
+  
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
-  [mContactResultTextField setFont:resultTextFont];
+  [mFeedResultTextField setFont:resultTextFont];
   [mEntryResultTextField setFont:resultTextFont];
-
+  
   [self updateUI];
 }
 
@@ -107,63 +136,130 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [mContactFeed release];
   [mContactFetchError release];
   [mContactFetchTicket release];
+  [mContactImageURL release];
+  
+  [mGroupFeed release];
+  [mGroupFetchError release];
+  [mGroupFetchTicket release];
   
   [super dealloc];
 }
 
 #pragma mark -
 
+- (BOOL)isDisplayingContacts {
+  BOOL flag = ([mFeedSegmentedControl selectedSegment] == kContactsSegment); 
+  return flag;
+}
+
 - (void)updateSegmentedControlLabels {
-  // put the number of each type of item in the label for the item
+  BOOL isDisplayingContacts = [self isDisplayingContacts];
+  
+  // put the number of each type of segment in the label for the item
+  
+  // feed segments
+  
+  int numContacts = [[mContactFeed entries] count];
+  NSString *contactsLabel = [NSString stringWithFormat:@"Contacts - %d", numContacts];
+  [mFeedSegmentedControl setLabel:contactsLabel forSegment:kContactsSegment];
+  
+  int numGroups = [[mGroupFeed entries] count];
+  NSString *groupsLabel = [NSString stringWithFormat:@"Groups - %d", numGroups];
+  [mFeedSegmentedControl setLabel:groupsLabel forSegment:kGroupsSegment];
+  
+  // entry segments
+  //
+  // when contacts are displayed, all segments are enabled; when groups
+  // are displayed, only extended properties is enabled
+  
   int numOrg = [[[self selectedContact] organizations] count];
   NSString *orgLabel = [NSString stringWithFormat:@"Org - %d", numOrg];
   [mEntrySegmentedControl setLabel:orgLabel forSegment:kOrganizationSegment];
-
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kOrganizationSegment];
+  
   int numEmail = [[[self selectedContact] emailAddresses] count];
   NSString *mailLabel = [NSString stringWithFormat:@"E-mail - %d", numEmail];
   [mEntrySegmentedControl setLabel:mailLabel forSegment:kEmailSegment];
-   
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kEmailSegment];
+  
   int numIM = [[[self selectedContact] IMAddresses] count];
   NSString *IMlabel = [NSString stringWithFormat:@"IM - %d", numIM];
   [mEntrySegmentedControl setLabel:IMlabel forSegment:kIMSegment];
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kIMSegment];
   
   int numPhone = [[[self selectedContact] phoneNumbers] count];
   NSString *phoneLabel = [NSString stringWithFormat:@"Phone - %d", numPhone];
   [mEntrySegmentedControl setLabel:phoneLabel forSegment:kPhoneSegment];
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kPhoneSegment];
   
   int numPostal = [[[self selectedContact] postalAddresses] count];
   NSString *postalLabel = [NSString stringWithFormat:@"Postal - %d", numPostal];
   [mEntrySegmentedControl setLabel:postalLabel forSegment:kPostalSegment];
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kPostalSegment];
+  
+  int numGroupInfos = [[[self selectedContact] groupMembershipInfos] count];
+  NSString *groupLabel = [NSString stringWithFormat:@"Group - %d", numGroupInfos];
+  [mEntrySegmentedControl setLabel:groupLabel forSegment:kGroupSegment];
+  [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kGroupSegment];
+  
+  int numExtProps;
+  if ([self isDisplayingContacts]) {
+    numExtProps = [[[self selectedContact] extendedProperties] count];
+  } else {
+    numExtProps = [[[self selectedGroup] extendedProperties] count];
+  }
+  NSString *extPropsLabel = [NSString stringWithFormat:@"ExtProp - %d", numExtProps];
+  [mEntrySegmentedControl setLabel:extPropsLabel forSegment:kExtendedPropsSegment];
 }
 
 - (void)updateUI {
+  BOOL isDisplayingContacts = [self isDisplayingContacts];
   
   // contact list display
-  [mContactTable reloadData]; 
+  [mFeedTable reloadData]; 
   
-  if (mContactFetchTicket != nil) {
-    [mContactProgressIndicator startAnimation:self];  
+  if ((isDisplayingContacts && mContactFetchTicket != nil)
+      || (!isDisplayingContacts && mGroupFetchTicket != nil)) {
+    [mFeedProgressIndicator startAnimation:self];  
   } else {
-    [mContactProgressIndicator stopAnimation:self];  
+    [mFeedProgressIndicator stopAnimation:self];  
   }
   
   GDataEntryContact *selectedContact = [self selectedContact];
-
-  // show contact fetch result error or the selected contact 
-  NSString *contactResultStr = @"";
-  if (mContactFetchError) {
-    contactResultStr = [mContactFetchError description];
-  } else {
-    if (selectedContact) {
-      contactResultStr = [selectedContact description];
-    }
-  }
-  [mContactResultTextField setString:contactResultStr];
+  GDataEntryContactGroup *selectedGroup = [self selectedGroup];
   
-
+  if (isDisplayingContacts) {
+    
+    // show contact fetch result error or the selected contact 
+    NSString *resultStr = @"";
+    if (mContactFetchError) {
+      resultStr = [mContactFetchError description];
+    } else {
+      if (selectedContact) {
+        resultStr = [selectedContact description];
+      }
+    }
+    [mFeedResultTextField setString:resultStr];
+    
+  } else {
+    
+    // show group fetch result error or the selected group 
+    NSString *resultStr = @"";
+    if (mGroupFetchError) {
+      resultStr = [mGroupFetchError description];
+    } else {
+      if (selectedGroup) {
+        resultStr = [selectedGroup description];
+      }
+    }
+    [mFeedResultTextField setString:resultStr];
+  }
+  
+  [self updateImageForContact:selectedContact];
+  
   // the bottom table displays items (orgs, e-mail, postal, IM, or phone
-  // numbers) for the selected contact, according to the selected segment 
-  // for the type of the item
+  // numbers, groups, extended props) for the selected contact, according to the 
+  // selected segment for the type of the item
   
   [mEntryTable reloadData]; 
   
@@ -179,59 +275,178 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [self updateSegmentedControlLabels];
   
   // enable/disable cancel button depending on if a ticket is outstanding
-  [mContactCancelButton setEnabled:(mContactFetchTicket != nil)];
+  BOOL isTicketPending = (mContactFetchTicket != nil || mGroupFetchTicket != nil);
+  [mFeedCancelButton setEnabled:isTicketPending];
   
   // enable/disable other buttons
-  BOOL isContactSelected = (selectedContact != nil);
-  
+  BOOL isContactOrGroupSelected = (selectedContact != nil || selectedGroup != nil);
   BOOL isItemSelected = ([self selectedItem] != nil);
+  BOOL canItemBePrimary = [[self selectedItem] respondsToSelector:@selector(isPrimary)];
+  BOOL isEntrySegmentEnabled = [mEntrySegmentedControl isEnabledForSegment:
+                                      [mEntrySegmentedControl selectedSegment]];
   
-  [mAddEntryButton setEnabled:isContactSelected];
+  [mAddEntryButton setEnabled:(isEntrySegmentEnabled && isContactOrGroupSelected)];
   [mDeleteEntryButton setEnabled:isItemSelected];
   [mEditEntryButton setEnabled:isItemSelected];
-  [mMakePrimaryEntryButton setEnabled:isItemSelected];
   
-  [mEntrySegmentedControl setEnabled:isContactSelected];
-  [mDeleteContactButton setEnabled:isContactSelected];
+  [mMakePrimaryEntryButton setEnabled:(isItemSelected && canItemBePrimary)];
   
-  BOOL isFeedAvailable = (mContactFeed != nil);
+  [mEntrySegmentedControl setEnabled:isContactOrGroupSelected];
+  [mDeleteContactButton setEnabled:isContactOrGroupSelected];
+  
+  BOOL isFeedAvailable = (mContactFeed != nil || mGroupFeed != nil);
   BOOL isAddInfoEntered = ([[mAddTitleField stringValue] length] > 0);
   
   [mAddContactButton setEnabled:(isAddInfoEntered && isFeedAvailable)];
+  
+  BOOL canEditSelectedContactImage = ([[selectedContact links] editPhotoLink] != nil);
+  [mSetContactImageButton setEnabled:canEditSelectedContactImage];
+  
+  BOOL doesContactHaveImage = ([[selectedContact links] photoLink] != nil);
+  [mDeleteContactImageButton setEnabled:(doesContactHaveImage && 
+                                         canEditSelectedContactImage)];
+  
+  [mAddTitleField setEnabled:isFeedAvailable];
+  [mAddEmailField setEnabled:(isFeedAvailable && isDisplayingContacts)];
+  [mAddContactButton setEnabled:isFeedAvailable];
+  
+  BOOL canDeleteAllEntries = 
+    (isDisplayingContacts 
+      && [[mContactFeed entries] count] > 0 
+      && [[mContactFeed links] batchLink] != nil)
+    || (!isDisplayingContacts 
+      && [[mGroupFeed entries] count] > 0
+      && [[mGroupFeed links] batchLink] != nil);
+  
+  [mDeleteAllButton setEnabled:canDeleteAllEntries];
+  
+  if (isDisplayingContacts) {
+    [[mAddTitleField cell] setPlaceholderString:@"Add Name"]; 
+    [[mAddEmailField cell] setPlaceholderString:@"Add E-mail"]; 
+  } else {
+    [[mAddTitleField cell] setPlaceholderString:@"Add Group"]; 
+    [[mAddEmailField cell] setPlaceholderString:@""]; 
+  }
 }
+
+// get or clear the image for this specified contact
+- (void)updateImageForContact:(GDataEntryContact *)contact {
+  
+  if (!contact) {
+    // clear the image
+    [mContactImageView setImage:nil];
+    [self setContactImageURL:nil];
+    
+  } else {    
+    // if the new photo URL is different from the previous one,
+    // save the new one, clear the image and fetch the new image
+    
+    NSURL *imageURL = [[[contact links] photoLink] URL];
+    if (!imageURL || ![mContactImageURL isEqual:imageURL]) {
+      
+      [self setContactImageURL:imageURL];
+      [mContactImageView setImage:nil];
+      
+      if (imageURL) {
+        
+        // get an NSURLRequest object with an auth token
+        GDataServiceGoogleContact *service = [self contactService];
+        NSMutableURLRequest *request = [service requestForURL:imageURL
+                                                         ETag:nil
+                                                   httpMethod:nil];
+        
+        [request setValue:@"image/*" forHTTPHeaderField:@"Accept"];
+        
+        GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+        
+        [fetcher beginFetchWithDelegate:self
+                      didFinishSelector:@selector(imageFetcher:finishedWithData:)
+              didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
+               didFailWithErrorSelector:@selector(imageFetcher:failedWithError:)];
+      }
+    }
+  }
+}
+
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+  // got the data; display it in the image view.  Because this is sample
+  // code, we won't be rigorous about verifying that the selected contact hasn't
+  // changed between when the fetch began and now.
+  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+  
+  [mContactImageView setImage:image];
+}
+
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
+  // failed with server status
+  NSString *dataStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+  NSLog(@"imageFetcher:%@ failedWithStatus:%d data:%@",
+        fetcher, status, dataStr);       
+}
+
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+  // failed with network error
+  NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
+}
+
 
 #pragma mark IBActions
 
-- (IBAction)getContactClicked:(id)sender {
+- (IBAction)getFeedClicked:(id)sender {
   
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
+  
   NSString *username = [mUsernameField stringValue];
   username = [username stringByTrimmingCharactersInSet:whitespace];
-
+  
   if ([username rangeOfString:@"@"].location == NSNotFound) {
     // if no domain was supplied, add @gmail.com
     username = [username stringByAppendingString:@"@gmail.com"];
   }
   
   [mUsernameField setStringValue:username];
-
+  
   [self fetchAllContacts];
 }
 
-- (IBAction)cancelContactFetchClicked:(id)sender {
+- (IBAction)feedSegmentClicked:(id)sender {
+  [self updateUI];  
+}
+
+- (IBAction)cancelFeedFetchClicked:(id)sender {
   [mContactFetchTicket cancelTicket];
   [self setContactFetchTicket:nil];
+  
+  [mGroupFetchTicket cancelTicket];
+  [self setGroupFetchTicket:nil];
+  
   [self updateUI];
 }
 
+- (IBAction)setContactImageClicked:(id)sender {
+  [self setContactImage]; 
+}
+
+- (IBAction)deleteContactImageClicked:(id)sender {
+  [self deleteContactImage]; 
+}
+
 - (IBAction)addContactClicked:(id)sender {
-  [self addAContact];
+  if ([self isDisplayingContacts]) {
+    [self addAContact];
+  } else {
+    [self addAGroup]; 
+  }
 }
 
 - (IBAction)deleteContactClicked:(id)sender {
-  [self deleteSelectedContact];
+  [self deleteSelectedContactOrGroup];
 }
+
+- (IBAction)deleteAllClicked:(id)sender {
+  [self deleteAllContactsOrGroups];
+}
+
 
 - (IBAction)addEntryClicked:(id)sender {
   [self addAnItem];
@@ -281,7 +496,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     [service setShouldCacheDatedData:YES]; 
     [service setServiceShouldFollowNextLinks:YES];
   }
-
+  
   // update the username/password each time the service is requested
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
@@ -292,11 +507,9 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   return service;
 }
 
-// returns all contacts from the feed, sorted if the checkbox is checked
-- (NSArray *)sortedContactEntries {
-  NSArray *entries = [mContactFeed entries];
+- (NSArray *)sortedEntries:(NSArray *)entries {
   
-  if ([mSortContactsCheckbox state] == NSOnState) {
+  if ([mSortFeedCheckbox state] == NSOnState) {
     
     NSSortDescriptor *sortDesc;
     SEL sel = @selector(caseInsensitiveCompare:);
@@ -311,28 +524,69 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   return entries;
 }
 
-// get the contact selected in the top list, or nil if none
+// returns all contacts from the feed, sorted if the checkbox is checked
+- (NSArray *)sortedContactEntries {
+  NSArray *entries = [mContactFeed entries];
+  return [self sortedEntries:entries];
+}
+
+// returns all groups from the feed, sorted if the checkbox is checked
+- (NSArray *)sortedGroupEntries {
+  NSArray *entries = [mGroupFeed entries];
+  return [self sortedEntries:entries];
+}
+
+
+// get the contact selected in the top list, or nil if none or if groups
+// are being viewed
 - (GDataEntryContact *)selectedContact {
   
-  NSArray *contacts = [self sortedContactEntries];
-  int rowIndex = [mContactTable selectedRow];
-  if ([contacts count] > 0 && rowIndex > -1) {
+  if ([self isDisplayingContacts]) {
     
-    GDataEntryContact *contact = [contacts objectAtIndex:rowIndex];
-    return contact;
+    NSArray *contacts = [self sortedContactEntries];
+    int rowIndex = [mFeedTable selectedRow];
+    if ([contacts count] > rowIndex) {
+      
+      GDataEntryContact *contact = [contacts objectAtIndex:rowIndex];
+      return contact;
+    }
   }
   return nil;
 }
 
+// get the contact or group selected in the top list, or nil if none 
+- (GDataEntryContactGroup *)selectedGroup {
+  
+  if (![self isDisplayingContacts]) {
+    
+    NSArray *groups = [self sortedGroupEntries];
+    int rowIndex = [mFeedTable selectedRow];
+    if ([groups count] > rowIndex) {
+      
+      GDataEntryContactGroup *group = [groups objectAtIndex:rowIndex];
+      return group;
+    }
+  }
+  return nil;
+}
+
+- (id)selectedContactOrGroup {
+  GDataEntryContact *selectedContact = [self selectedContact];
+  if (selectedContact) return selectedContact;
+  
+  GDataEntryContactGroup *selectedGroup = [self selectedGroup];
+  return selectedGroup;
+}
+
 // get the item selected in the bottom list, or nil if none
 //
-// the item could be org, phone, e-mail, IM, or postal
+// the item could be org, phone, e-mail, IM, postal, group, or extended props
 - (GDataObject *)selectedItem {
   
   NSArray *entries = [self itemsForSelectedSegment];
   
   int rowIndex = [mEntryTable selectedRow];
-  if ([entries count] > 0 && rowIndex > -1) {
+  if ([entries count] > rowIndex) {
     
     GDataObject *entry = [entries objectAtIndex:rowIndex];
     return entry;
@@ -340,19 +594,17 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   return nil;  
 }
 
-- (int)selectedSegment {
-  return [mEntrySegmentedControl selectedSegment];
-}
-
 // get the key needed to retrieve the list of items from a contact
 - (NSString *)keyForSelectedSegment {
   
   switch ([mEntrySegmentedControl selectedSegment]) {
     case kOrganizationSegment:  return @"organizations";
-    case kEmailSegment:  return @"emailAddresses";
-    case kPhoneSegment:  return @"phoneNumbers";
-    case kPostalSegment: return @"postalAddresses";
-    case kIMSegment:     return @"IMAddresses";
+    case kEmailSegment:         return @"emailAddresses";
+    case kPhoneSegment:         return @"phoneNumbers";
+    case kPostalSegment:        return @"postalAddresses";
+    case kIMSegment:            return @"IMAddresses";
+    case kGroupSegment:         return @"groupMembershipInfos";
+    case kExtendedPropsSegment: return @"extendedProperties";
   }  
   return nil;
 }
@@ -377,8 +629,15 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   NSString *path = [self keyForSelectedSegment];
   SEL sel = NSSelectorFromString(path);
   
-  GDataEntryContact *selectedContact = [self selectedContact];
-  NSArray *array = [selectedContact performSelector:sel];
+  id selectedEntry = [self selectedContactOrGroup];
+  
+  // some segment selectors don't apply to group entries
+  NSArray *array = nil;
+  
+  if ([selectedEntry respondsToSelector:sel]) {
+    array = [selectedEntry performSelector:sel];
+  }
+  
   return array;
 }
 
@@ -390,11 +649,36 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     case kPhoneSegment:         return [GDataPhoneNumber class];
     case kPostalSegment:        return [GDataPostalAddress class];
     case kIMSegment:            return [GDataIM class];
+    case kGroupSegment:         return [GDataGroupMembershipInfo class];
+    case kExtendedPropsSegment: return [GDataExtendedProperty class];
   }
   return nil;
 }
 
 #pragma mark Fetch all contacts
+
+- (NSURL *)contactFeedURL {
+  
+  NSString *propName = [mPropertyNameField stringValue];
+  
+  NSURL *feedURL;
+  if ([propName caseInsensitiveCompare:@"full"] == NSOrderedSame
+      || [propName length] == 0) {
+    
+    // full feed includes all clients' extended properties
+    feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultFullFeed];
+    
+  } else if ([propName caseInsensitiveCompare:@"thin"] == NSOrderedSame) {
+    
+    // thin feed excludes all extended properties
+    feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultThinFeed];
+    
+  } else {
+    
+    feedURL = [GDataServiceGoogleContact contactFeedURLForPropertyName:propName];
+  }
+  return feedURL;
+}
 
 // begin retrieving the list of the user's contacts
 - (void)fetchAllContacts {
@@ -402,17 +686,20 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [self setContactFeed:nil];
   [self setContactFetchError:nil];
   [self setContactFetchTicket:nil];
-    
+  
+  // reset the group feed too
+  [self setGroupFeed:nil];
+  
   GDataServiceGoogleContact *service = [self contactService];
   GDataServiceTicket *ticket;
   
   BOOL showDeleted = ([mShowDeletedCheckbox state] == NSOnState);
-
+  
   // request a whole buncha contacts; our service object is set to
   // follow next links as well in case there are more than 2000
   const int kBuncha = 2000;
   
-  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultFullFeed];
+  NSURL *feedURL = [self contactFeedURL];
   
   GDataQueryContact *query = [GDataQueryContact contactQueryWithFeedURL:feedURL];
   [query setShouldShowDeleted:showDeleted];
@@ -422,7 +709,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
                              delegate:self
                     didFinishSelector:@selector(contactsFetchTicket:finishedWithFeed:)
                       didFailSelector:@selector(contactsFetchTicket:failedWithError:)];
-
+  
   [self setContactFetchTicket:ticket];
   
   [self updateUI];
@@ -440,18 +727,284 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [self setContactFetchError:nil];    
   [self setContactFetchTicket:nil];
   
-  [self updateUI];
+  // we have the contacts; now get the groups
+  [self fetchAllGroups];
 } 
 
 // failed
 - (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-                failedWithError:(NSError *)error {
-
+            failedWithError:(NSError *)error {
+  
   [self setContactFeed:nil];
   [self setContactFetchError:error];    
   [self setContactFetchTicket:nil];
-
+  
   [self updateUI];
+}
+
+#pragma mark Fetch all groups
+
+- (NSURL *)groupFeedURL {
+  
+  NSString *propName = [mPropertyNameField stringValue];
+  
+  NSURL *feedURL;
+  if ([propName caseInsensitiveCompare:@"full"] == NSOrderedSame
+      || [propName length] == 0) {
+    
+    // full feed includes all clients' extended properties
+    feedURL = [NSURL URLWithString:kGDataGoogleContactGroupDefaultFullFeed];
+    
+  } else if ([propName caseInsensitiveCompare:@"thin"] == NSOrderedSame) {
+    
+    // thin feed includes all clients' extended properties
+    feedURL = [NSURL URLWithString:kGDataGoogleContactGroupDefaultThinFeed];
+    
+  } else {
+    
+    feedURL = [GDataServiceGoogleContact contactGroupFeedURLForPropertyName:propName];
+  }
+  return feedURL;
+}
+
+// begin retrieving the list of the user's contacts
+- (void)fetchAllGroups {
+  
+  [self setGroupFeed:nil];
+  [self setGroupFetchError:nil];
+  [self setGroupFetchTicket:nil];
+  
+  GDataServiceGoogleContact *service = [self contactService];
+  GDataServiceTicket *ticket;
+  
+  BOOL showDeleted = ([mShowDeletedCheckbox state] == NSOnState);
+  
+  // request a whole buncha groups; our service object is set to
+  // follow next links as well in case there are more than 2000
+  const int kBuncha = 2000;
+  
+  NSURL *feedURL = [self groupFeedURL];
+  
+  GDataQueryContact *query = [GDataQueryContact contactQueryWithFeedURL:feedURL];
+  [query setShouldShowDeleted:showDeleted];
+  [query setMaxResults:kBuncha];
+  
+  ticket = [service fetchContactQuery:query
+                             delegate:self
+                    didFinishSelector:@selector(groupsFetchTicket:finishedWithFeed:)
+                      didFailSelector:@selector(groupsFetchTicket:failedWithError:)];
+  
+  [self setGroupFetchTicket:ticket];
+  
+  [self updateUI];
+}
+
+//
+// group list fetch callbacks
+//
+
+// finished group list successfully
+- (void)groupsFetchTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(GDataFeedContactGroup *)object {
+  
+  [self setGroupFeed:object];
+  [self setGroupFetchError:nil];    
+  [self setGroupFetchTicket:nil];
+  
+  [self updateUI];
+} 
+
+// failed
+- (void)groupsFetchTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+  
+  [self setGroupFeed:nil];
+  [self setGroupFetchError:error];    
+  [self setGroupFetchTicket:nil];
+  
+  [self updateUI];
+}
+
+#pragma mark Set contact image
+
+- (void)setContactImage {
+  
+  // ask the user to choose an image file
+  NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+  [openPanel setPrompt:@"Set"];
+  [openPanel beginSheetForDirectory:nil
+                               file:nil
+                              types:[NSImage imageFileTypes]
+                     modalForWindow:[self window]
+                      modalDelegate:self
+                     didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
+                        contextInfo:nil];
+}
+
+- (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSOKButton) {
+    // user chose a photo and clicked OK
+    //
+    // start uploading (deferred to the main thread since we currently have
+    // a sheet displayed)
+    [self performSelectorOnMainThread:@selector(setSelectedContactPhotoAtPath:)
+                           withObject:[panel filename]
+                        waitUntilDone:NO];
+  }
+}
+
+- (void)setSelectedContactPhotoAtPath:(NSString *)path {
+  
+  NSString *errorMsg = nil;
+  
+  // make a new entry for the file
+  NSString *mimeType = [GDataEntryBase MIMETypeForFileAtPath:path
+                                             defaultMIMEType:@"image/jpeg"];
+  if (!mimeType) {
+    errorMsg = [NSString stringWithFormat:@"need MIME type for file %@", path];
+  } else {
+    
+    
+    NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
+    
+    GDataEntryContact *newEntry = [GDataEntryContact contactEntryWithTitle:title];
+    
+    NSData *uploadData = [NSData dataWithContentsOfFile:path];
+    if (!uploadData) {
+      errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
+    } else {
+      [newEntry setUploadData:uploadData];
+      [newEntry setUploadMIMEType:mimeType];
+      [newEntry setUploadSlug:[path lastPathComponent]];
+      
+      NSURL *putURL = [[[[self selectedContact] links] editPhotoLink] URL];
+      
+      // make service tickets call back into our upload progress selector
+      GDataServiceGoogleContact *service = [self contactService];
+      
+      SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+      [service setServiceUploadProgressSelector:progressSel];
+      
+      // insert the entry into the contacts feed
+      GDataServiceTicket *ticket;
+      ticket = [service fetchContactEntryByUpdatingEntry:newEntry
+                                             forEntryURL:putURL
+                                                delegate:self
+                                       didFinishSelector:@selector(uploadPhotoTicket:finishedWithEntry:)
+                                         didFailSelector:@selector(uploadPhotoTicket:failedWithError:)];
+      
+      // we don't want future tickets to always use the upload progress selector
+      [service setServiceUploadProgressSelector:nil];
+    }
+  }
+  
+  if (errorMsg) {
+    NSBeginAlertSheet(@"Upload Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", errorMsg);
+  }
+  
+  [self updateUI];
+}
+
+// progress callback
+- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+   ofTotalByteCount:(unsigned long long)dataLength {
+  
+  [mSetContactImageProgressIndicator setMinValue:0.0];
+  [mSetContactImageProgressIndicator setMaxValue:(double)dataLength];
+  [mSetContactImageProgressIndicator setDoubleValue:(double)numberOfBytesRead];
+}
+
+// upload finished successfully
+- (void)uploadPhotoTicket:(GDataServiceTicket *)ticket
+        finishedWithEntry:(GDataEntryDocBase *)entry {
+  
+  [mSetContactImageProgressIndicator setDoubleValue:0.0];
+  
+  // refetch the current contact list
+  [self fetchAllContacts];
+  [self updateUI];
+  
+  // tell the user that the add worked
+  NSBeginAlertSheet(@"Uploaded photo", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo uploaded");
+} 
+
+// upload failed
+- (void)uploadPhotoTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+  
+  [mSetContactImageProgressIndicator setDoubleValue:0.0];
+  [self updateUI];
+  
+  NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo upload failed: %@\nUser info:%@", 
+                    error, [error userInfo]);
+  
+}
+
+#pragma mark Delete contact image
+
+- (void)deleteContactImage {
+  
+  // display the confirmation dialog
+  GDataEntryContact *contact = [self selectedContact];
+  if (contact) {
+    
+    // make the user confirm that the selected contact should be deleted
+    NSBeginAlertSheet(@"Delete Image", @"Delete", @"Cancel", nil,
+                      [self window], self, 
+                      @selector(contactPhotoDeleteSheetDidEnd:returnCode:contextInfo:),
+                      nil, nil, @"Delete photo for contact \"%@\"?",
+                      [contact entryDisplayName]);
+  }
+}
+
+
+- (void)contactPhotoDeleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSAlertDefaultReturn) {
+    
+    // delete the contact's photo
+    
+    GDataServiceGoogleContact *service = [self contactService];
+    
+    NSURL *editURL = [[[[self selectedContact] links] editPhotoLink] URL];
+    
+    [service deleteContactResourceURL:editURL
+                                 ETag:nil
+                             delegate:self
+                    didFinishSelector:@selector(deletePhotoTicket:finishedWithNil:)
+                      didFailSelector:@selector(deletePhotoTicket:failedWithError:)];
+  }
+}
+
+// upload finished successfully
+- (void)deletePhotoTicket:(GDataServiceTicket *)ticket
+          finishedWithNil:(GDataObject *)obj {
+  
+  NSBeginAlertSheet(@"Deleted photo", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo deleted");
+  
+  // refetch the current contact list
+  [self fetchAllContacts];
+  [self updateUI];  
+} 
+
+// upload failed
+- (void)deletePhotoTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+  
+  NSBeginAlertSheet(@"Delete photo failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Photo delete failed: %@\nUser info:%@", 
+                    error, [error userInfo]);
 }
 
 #pragma mark Add a Contact
@@ -460,12 +1013,12 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSString *title = [mAddTitleField stringValue];
   NSString *email = [mAddEmailField stringValue];
-
+  
   if ([title length] > 0) {
     
     GDataEntryContact *newContact;
     newContact = [GDataEntryContact contactEntryWithTitle:title];
-        
+    
     if ([email length] > 0) {
       // all items must have a rel or a label, but not both
       GDataEmail *emailObj = [GDataEmail emailWithLabel:nil
@@ -512,69 +1065,304 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSBeginAlertSheet(@"Add failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Item add failed: %@", error);
-  
+                    nil, nil, @"Contact add failed: %@\nUser info:%@", 
+                    error, [error userInfo]);  
 }
 
-#pragma mark Delete a Contact
+#pragma mark Add a Group
 
-- (void)deleteSelectedContact {
+- (void)addAGroup {
+  
+  NSString *title = [mAddTitleField stringValue];
+  
+  if ([title length] > 0) {
+    
+    GDataEntryContactGroup *newGroup;
+    newGroup = [GDataEntryContactGroup contactGroupEntryWithTitle:title];
+    
+    GDataServiceGoogleContact *service = [self contactService];
+    
+    NSURL *postURL = [[[mGroupFeed links] postLink] URL];
+    
+    [service fetchContactEntryByInsertingEntry:newGroup
+                                    forFeedURL:postURL
+                                      delegate:self
+                             didFinishSelector:@selector(addGroupTicket:addedEntry:)
+                               didFailSelector:@selector(addGroupTicket:failedWithError:)];
+  }
+}
+
+
+// group added successfully
+- (void)addGroupTicket:(GDataServiceTicket *)ticket
+            addedEntry:(GDataEntryContactGroup *)object {
+  
+  // tell the user that the add worked
+  NSBeginAlertSheet(@"Added group", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Group added");
+  
+  [mAddTitleField setStringValue:@""];
+  [mAddEmailField setStringValue:@""];
+  
+  // refetch the current groups
+  [self fetchAllGroups];
+  [self updateUI];
+} 
+
+// failure to add group
+- (void)addGroupTicket:(GDataServiceTicket *)ticket
+       failedWithError:(NSError *)error {
+  
+  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Group add failed: %@\nUser info:%@", 
+                    error, [error userInfo]);  
+}
+
+#pragma mark Delete a Contact or Group
+
+- (void)deleteSelectedContactOrGroup {
   
   // display the confirmation dialog
-  GDataEntryContact *contact = [self selectedContact];
-  if (contact) {
+  id entry = [self selectedContactOrGroup];
+  if (entry) {
     
-    // make the user confirm that the selected contact should be deleted
-    NSBeginAlertSheet(@"Delete Contact", @"Delete", @"Cancel", nil,
+    // make the user confirm that the selected entry should be deleted
+    NSBeginAlertSheet(@"Delete", @"Delete", @"Cancel", nil,
                       [self window], self, 
-                      @selector(contactDeleteSheetDidEnd:returnCode:contextInfo:),
-                      nil, nil, @"Delete the contact \"%@\"?",
-                      [contact entryDisplayName]);
+                      @selector(entryDeleteSheetDidEnd:returnCode:contextInfo:),
+                      nil, nil, @"Delete \"%@\"?",
+                      [entry entryDisplayName]);
   }
 }
 
 // delete dialog callback
-- (void)contactDeleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+- (void)entryDeleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
   
   if (returnCode == NSAlertDefaultReturn) {
     
-    // delete the contact
+    // delete the entry
     
-    // now update the contact on the server
     GDataServiceGoogleContact *service = [self contactService];
     
-    GDataEntryContact *contact = [self selectedContact];
+    id entry = [self selectedContactOrGroup];
     
-    NSURL *entryURL = [[[contact links] editLink] URL];
+    NSURL *entryURL = [[[entry links] editLink] URL];
+    NSString *etag = [entry ETag];
     
     [service deleteContactResourceURL:entryURL
+                                 ETag:etag
                              delegate:self
-                    didFinishSelector:@selector(deleteContactTicket:finishedWithObject:)
-                      didFailSelector:@selector(deleteContactTicket:failedWithError:)];
+                    didFinishSelector:@selector(deleteEntryTicket:finishedWithObject:)
+                      didFailSelector:@selector(deleteEntryTicket:failedWithError:)];
   }
 }
 
-// contact deleted successfully
-- (void)deleteContactTicket:(GDataServiceTicket *)ticket
-         finishedWithObject:(GDataEntryContact *)object {
+// entry deleted successfully
+- (void)deleteEntryTicket:(GDataServiceTicket *)ticket
+       finishedWithObject:(id)object {
   
-  NSBeginAlertSheet(@"Deleted contact", nil, nil, nil,
+  NSBeginAlertSheet(@"Deleted", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Contact deleted");
+                    nil, nil, @"Entry deleted");
   
-  // re-fetch all contacts
   [self fetchAllContacts];
   [self updateUI];
 } 
 
-// failure to delete contact
-- (void)deleteContactTicket:(GDataServiceTicket *)ticket
-            failedWithError:(NSError *)error {
+// failure to delete entry
+- (void)deleteEntryTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
   
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Contact delete failed: %@", error);
+                    nil, nil, @"Entry delete failed: %@\nUser info:%@", 
+                    error, [error userInfo]); 
+}
+
+
+#pragma mark Batch Delete All Contacts or Groups
+
+- (void)deleteAllContactsOrGroups {
   
+  // make the user confirm that all entries should be deleted
+  GDataFeedBase *feed;
+  
+  if ([self isDisplayingContacts]) {
+    feed = mContactFeed;
+  } else {
+    feed = mGroupFeed;
+  }
+  
+  NSBeginAlertSheet(@"Delete All", @"Delete", @"Cancel", nil,
+                    [self window], self, 
+                    @selector(deleteAllSheetDidEnd:returnCode:contextInfo:),
+                    nil, nil, @"Delete %u %@?",
+                    [[feed entries] count],
+                    [self isDisplayingContacts] ? @"contacts" : @"groups");
+}
+
+NSString* const kBatchTicketsProperty = @"BatchTickets";
+NSString* const kBatchResultsProperty = @"BatchResults";
+
+// delete dialog callback
+- (void)deleteAllSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+  
+  if (returnCode == NSAlertDefaultReturn) {
+    
+    // delete the feed entries
+    GDataFeedBase *feed;
+    if ([self isDisplayingContacts]) {
+      feed = mContactFeed;
+    } else {
+      feed = mGroupFeed;
+    }
+    
+    NSArray *entries = [feed entries];
+    
+    NSURL *batchURL = [[[feed links] batchLink] URL];
+    if (batchURL == nil) {
+      // the button shouldn't be enabled when we can't batch delete, so we
+      // shouldn't get here
+      NSBeep();
+      
+    } else {
+      
+      // the contacts feed supports batch size up to 100 entries
+      const int kMaxBatchSize = 100;
+      
+      // allocate arrays that will be used by the callback when each
+      // ticket finishes
+      NSMutableArray *batchTickets = [NSMutableArray array];
+      NSMutableArray *batchResults = [NSMutableArray array];
+      
+      unsigned int totalEntries = [entries count];
+      
+      for (unsigned int idx = 0; idx < totalEntries; idx++) {
+        
+        GDataEntryBase *entry = [entries objectAtIndex:idx];
+        
+        // add a batch ID to this entry
+        static int staticID = 0;
+        NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
+        [entry setBatchID:[GDataBatchID batchIDWithString:batchID]];
+        
+        // we don't need to add the batch operation to the entries since
+        // we're putting it in the feed to apply to all entries
+        
+        // we could force an error on an item by nuking the entry's identifier, 
+        // like
+        //   if (idx == 1) { [entry setIdentifier:nil]; }
+        
+        // send a batch when we've seen every entry, or when the batch size
+        // has reached 100
+        if (((idx + 1) % kMaxBatchSize) == 0
+            || (idx + 1) == totalEntries) {
+          
+          // make a batch feed object: add entries to the feed, and since
+          // we are doing the same operation for all entries in the feed, 
+          // add the operation to the feed
+          
+          GDataFeedContact *batchFeed = [GDataFeedContact contactFeed];
+          
+          unsigned int rangeStart = idx - (idx % kMaxBatchSize);
+          NSRange batchEntryRange = NSMakeRange(rangeStart, 
+                                                idx - rangeStart + 1);
+          NSArray *entrySubset = [entries subarrayWithRange:batchEntryRange];
+          [batchFeed setEntriesWithEntries:entrySubset];
+          
+          GDataBatchOperation *op;
+          op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationDelete];
+          [batchFeed setBatchOperation:op];    
+          
+          // now do the usual steps for authenticating for this service, and issue
+          // the fetch
+          
+          GDataServiceGoogleContact *service = [self contactService];
+          GDataServiceTicket *ticket;
+          
+          ticket = [service fetchContactBatchFeedWithBatchFeed:batchFeed
+                                               forBatchFeedURL:batchURL
+                                                      delegate:self
+                                             didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:)
+                                               didFailSelector:@selector(batchDeleteTicket:failedWithError:)];
+          
+          [batchTickets addObject:ticket];
+          
+          // set the arrays used by the callback into the ticket properties
+          [ticket setProperty:batchTickets forKey:kBatchTicketsProperty];
+          [ticket setProperty:batchResults forKey:kBatchResultsProperty];
+        }
+      }
+    }
+  }
+}
+
+// batch delete completed
+- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(id)feed {
+  
+  NSMutableArray *batchTickets = [ticket propertyForKey:kBatchTicketsProperty];
+  NSMutableArray *batchResults = [ticket propertyForKey:kBatchResultsProperty];
+  
+  [batchResults addObjectsFromArray:[feed entries]];
+  [batchTickets removeObject:ticket];
+  
+  if ([batchTickets count] > 0) {
+    // more tickets are outstanding; let them complete
+    return;
+  }
+  
+  // step through all the entries in the response feed, 
+  // and build a string reporting each result
+  
+  // show the http status to start (should be 200)
+  NSString *template = @"http status:%d\n\n";
+  NSMutableString *reportStr = [NSMutableString stringWithFormat:template,
+                                [ticket statusCode]];
+  
+  for (int idx = 0; idx < [batchResults count]; idx++) {
+    
+    GDataEntryGoogleBase *entry = [batchResults objectAtIndex:idx];
+    GDataBatchID *batchID = [entry batchID];
+    
+    // report the batch ID and status for each item
+    [reportStr appendFormat:@"%@\n", [batchID stringValue]];
+    
+    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+    if (interrupted) {
+      [reportStr appendFormat:@"%@\n", [interrupted description]];
+    }
+    
+    GDataBatchStatus *status = [entry batchStatus];
+    if (status) {
+      [reportStr appendFormat:@"%d %@\n", 
+                              [[status code] intValue], [status reason]];
+    }
+    [reportStr appendString:@"\n"];
+  }
+  
+  NSBeginAlertSheet(@"Delete completed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Delete All completed.\n%@", reportStr);
+  
+  [self fetchAllContacts];
+  [self updateUI];
+} 
+
+// failure to delete batch
+- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+  
+  NSMutableArray *batchTickets = [ticket propertyForKey:kBatchTicketsProperty];
+  
+  [batchTickets removeObject:ticket];
+  
+  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Batch delete failed: %@\nUser info:%@", 
+                    error, [error userInfo]); 
 }
 
 
@@ -583,17 +1371,20 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 - (void)addAnItem {
   
   // make a new object for the selected segment type
-  // (org, phone, postal, IM, e-mail)
+  // (org, phone, postal, IM, group, e-mail, extended props)
   Class objClass = [self itemClassForSelectedSegment];
   id obj = [[[objClass alloc] init] autorelease];
   
-  // each item needs a rel or a label; we'll use other as a default rel
-  [obj setRel:kGDataContactOther];
+  if ([obj respondsToSelector:@selector(setRel:)]) {
+    // each item needs a rel or a label; we'll use other as a default rel
+    [obj setRel:kGDataContactOther];
+  }
   
   // display the item edit dialog
   EditEntryWindowController *controller = [[EditEntryWindowController alloc] init];
   [controller runModalForTarget:self
                        selector:@selector(addEditControllerFinished:)
+                      groupFeed:mGroupFeed
                          object:obj];
 }
 
@@ -602,7 +1393,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   if ([addEntryController wasSaveClicked]) {
     
-    // add the object into a copy of the selected contact, 
+    // add the object into a copy of the selected entry, 
     // and update the contact
     GDataObject *obj = [addEntryController object];
     if (obj) {
@@ -612,18 +1403,18 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       NSMutableArray *newItems = [NSMutableArray arrayWithArray:oldItems];
       [newItems addObject:obj];
       
-      // replace the contact's item array with our new one
+      // replace the entry's item array with our new one
       NSString *keyForSelectedSegment = [self keyForSelectedSegment];
       
-      GDataEntryContact *selectedContactCopy = [[[self selectedContact] copy] autorelease];
-      [selectedContactCopy setValue:newItems forKey:keyForSelectedSegment];
+      id selectedEntryCopy = [[[self selectedContactOrGroup] copy] autorelease];
+      [selectedEntryCopy setValue:newItems forKey:keyForSelectedSegment];
       
-      // now update the contact on the server
+      // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[[selectedContactCopy links] editLink] URL];
+      NSURL *entryURL = [[[selectedEntryCopy links] editLink] URL];
       
-      [service fetchContactEntryByUpdatingEntry:selectedContactCopy
+      [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
                                     forEntryURL:entryURL
                                        delegate:self
                               didFinishSelector:@selector(addItemTicket:addedEntry:)
@@ -653,7 +1444,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSBeginAlertSheet(@"Add failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Item add failed: %@", error);
+                    nil, nil, @"Item add failed: %@\nUser info: %@", 
+                    error, [error userInfo]);
 }
 
 
@@ -667,6 +1459,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     EditEntryWindowController *controller = [[EditEntryWindowController alloc] init];
     [controller runModalForTarget:self
                          selector:@selector(editControllerFinished:)
+                        groupFeed:mGroupFeed
                            object:item];
   }
 }
@@ -684,20 +1477,20 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       NSArray *oldItems = [self itemsForSelectedSegment];
       NSMutableArray *newItems = [NSMutableArray arrayWithArray:oldItems];
       [newItems replaceObjectAtIndex:[newItems indexOfObject:[self selectedItem]]
-                                                  withObject:obj];
+                          withObject:obj];
       
-      // replace the contact's item array with our new one
+      // replace the entry's item array with our new one
       NSString *keyForSelectedSegment = [self keyForSelectedSegment];
       
-      GDataEntryContact *selectedContactCopy = [[[self selectedContact] copy] autorelease];
-      [selectedContactCopy setValue:newItems forKey:keyForSelectedSegment];
+      id selectedEntryCopy = [[[self selectedContactOrGroup] copy] autorelease];
+      [selectedEntryCopy setValue:newItems forKey:keyForSelectedSegment];
       
-      // now update the contact on the server
+      // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[[selectedContactCopy links] editLink] URL];
+      NSURL *entryURL = [[[selectedEntryCopy links] editLink] URL];
       
-      [service fetchContactEntryByUpdatingEntry:selectedContactCopy
+      [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
                                     forEntryURL:entryURL
                                        delegate:self
                               didFinishSelector:@selector(editItemTicket:editedEntry:)
@@ -727,7 +1520,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSBeginAlertSheet(@"Update failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Entry update failed: %@", error);
+                    nil, nil, @"Entry update failed: %@\nUser info:%@", 
+                    error, [error userInfo]);
   
 }
 
@@ -744,7 +1538,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
                       [self window], self, 
                       @selector(itemDeleteSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the item \"%@\"?",
-                      [item description]);
+                      [self displayNameForItem:item]);
   }
 }
 
@@ -757,12 +1551,15 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     
     NSArray *oldItems = [self itemsForSelectedSegment];
     NSMutableArray *newItems = [NSMutableArray arrayWithArray:oldItems];
-    [newItems removeObject:[self selectedItem]];
+    
+    // using removeObject would remove all matching items; we just want to
+    // remove the selected one
+    [newItems removeObjectAtIndex:[mEntryTable selectedRow]];
     
     // replace the contact's item array with our new one
     NSString *keyForSelectedSegment = [self keyForSelectedSegment];
     
-    GDataEntryContact *selectedContact = [self selectedContact];
+    GDataEntryContact *selectedContact = [self selectedContactOrGroup];
     [selectedContact setValue:newItems forKey:keyForSelectedSegment];
     
     // now update the contact on the server
@@ -797,7 +1594,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Item delete failed: %@", error);
+                    nil, nil, @"Item delete failed: %@\nUser info:%@", 
+                    error, [error userInfo]);
 }
 
 #pragma mark Make selected item primary
@@ -844,7 +1642,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   NSBeginAlertSheet(@"Make primary failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Could not make item primary: %@", error);
+                    nil, nil, @"Could not make item primary: %@\nUser info:%@", 
+                    error, [error userInfo]);
 } 
 
 
@@ -861,22 +1660,38 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 
 // table view data source methods
 - (int)numberOfRowsInTableView:(NSTableView *)tableView {
-  if (tableView == mContactTable) {
-    return [[mContactFeed entries] count];
+  if (tableView == mFeedTable) {
+    
+    // contact and group table
+    if ([self isDisplayingContacts]) {
+      return [[mContactFeed entries] count];
+    } else {
+      return [[mGroupFeed entries] count];
+    }
+    
   } else {
     // entry table
-    return [[self itemsForSelectedSegment] count];
+    unsigned int count = [[self itemsForSelectedSegment] count];
+    return count;
   }
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
-  if (tableView == mContactTable) {
+  if (tableView == mFeedTable) {
     
-    // get the contact's title
-    GDataEntryContact *contact = [[self sortedContactEntries] objectAtIndex:row];
-    if (contact) {
-      return [contact entryDisplayName];
+    // contact and group table
+    if ([self isDisplayingContacts]) {
+      GDataEntryContact *contact = [[self sortedContactEntries] objectAtIndex:row];
+      if (contact) {
+        return [contact entryDisplayName];
+      }
+    } else {
+      GDataEntryContactGroup *group = [[self sortedGroupEntries] objectAtIndex:row];
+      if (group) {
+        return [group entryDisplayName];
+      }
     }
+    
   } else {
     // item table, displaying according to the segment selected
     
@@ -888,7 +1703,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       
       output = [self displayNameForItem:obj];
       
-      if (output != nil && [obj isPrimary]) {
+      if (output != nil
+          && [obj respondsToSelector:@selector(isPrimary)] && [obj isPrimary]) {
         output = [output stringByAppendingString:@" (primary)"];
       }
     }
@@ -918,6 +1734,29 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       result = title;
     } else {
       result = name;
+    }
+  }
+  
+  // extended property has value or XMLValue, which we unified via a category
+  else if ([item respondsToSelector:@selector(unifiedStringValue)]) {    
+    result = [item unifiedStringValue];
+  }
+  
+  // groupMembershipInfo responds to href
+  else if ([item respondsToSelector:@selector(href)]) {
+    NSString *groupID = [item href];
+    GDataEntryContactGroup *groupEntry = [mGroupFeed entryForIdentifier:groupID];
+    if (groupEntry) {
+      result = [groupEntry entryDisplayName];
+    } else {
+      // the group listed isn't in the group feed, so we can't display its
+      // name
+      if ([groupEntry isDeleted]) {
+        // show an X by the group ID when it's deleted
+        result = [NSString stringWithFormat:@"%C %@", kBallotX, groupID];
+      } else {
+        result = groupID;
+      }
     }
   }
   
@@ -975,6 +1814,44 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   mContactFetchTicket = [ticket retain];
 }
 
+- (NSURL *)contactImageURL {
+  return mContactImageURL;
+}
+
+- (void)setContactImageURL:(NSURL *)url {
+  [mContactImageURL autorelease];
+  mContactImageURL = [url copy];
+}
+
+
+- (GDataFeedContactGroup *)groupFeed {
+  return mGroupFeed; 
+}
+
+- (void)setGroupFeed:(GDataFeedContactGroup *)feed {
+  [mGroupFeed autorelease];
+  mGroupFeed = [feed retain];
+}
+
+- (NSError *)groupFetchError {
+  return mGroupFetchError; 
+}
+
+- (void)setGroupFetchError:(NSError *)error {
+  [mGroupFetchError release];
+  mGroupFetchError = [error retain];
+}
+
+- (GDataServiceTicket *)groupFetchTicket {
+  return mGroupFetchTicket; 
+}
+
+- (void)setGroupFetchTicket:(GDataServiceTicket *)ticket {
+  [mGroupFetchTicket release];
+  mGroupFetchTicket = [ticket retain];
+}
+
+
 @end
 
 // get a string to use to represent a contact. This may be the contact's
@@ -991,10 +1868,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   NSString *title;
   
   if ([self isDeleted]) {
-    // show deleted contacts by ID, preceded by a fancy X mark
-    const int kBallotX = 0x2717;
-    title = [NSString stringWithFormat:@"%C %@", 
-      kBallotX, [self identifier]];
+    title = [NSString stringWithFormat:@"%C %@", kBallotX, [self identifier]];
   } else {  
     
     title = [[self title] stringValue];
@@ -1013,6 +1887,24 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       // fallback case
       title = [self description]; 
     }
+  }
+  
+  return title;
+}
+
+@end
+
+@implementation GDataEntryContactGroup (ContactsSampleAdditions)
+
+- (NSString *)entryDisplayName {
+  
+  NSString *title;
+  
+  if ([self isDeleted]) {
+    title = [NSString stringWithFormat:@"%C %@", kBallotX, [self identifier]];
+  } else {  
+    
+    title = [[self title] stringValue];
   }
   
   return title;

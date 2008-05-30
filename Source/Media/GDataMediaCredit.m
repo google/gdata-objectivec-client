@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,6 +21,9 @@
 #import "GDataMediaCredit.h"
 #import "GDataMediaGroup.h"
 
+static NSString* const kSchemeAttr = @"scheme";
+static NSString* const kRoleAttr = @"role";
+
 @implementation GDataMediaCredit
 // like <media:credit role="producer" scheme="urn:ebu">entity name</media:credit>
 // http://search.yahoo.com/mrss
@@ -35,96 +38,38 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRole:[self stringForAttributeName:@"role"
-                                     fromElement:element]];
-    [self setScheme:[self stringForAttributeName:@"scheme"
-                                          fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [role_ release];
-  [scheme_ release];
-  [content_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaCredit* newObj = [super copyWithZone:zone];
-  [newObj setRole:[self role]];
-  [newObj setScheme:[self scheme]];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaCredit *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaCredit class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self role], [other role])
-    && AreEqualOrBothNil([self scheme], [other scheme])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kRoleAttr, kSchemeAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:role_ withName:@"role"];
-  [self addToArray:items objectDescriptionIfNonNil:scheme_ withName:@"scheme"];
+  [self addLocalAttributeDeclarations:attrs];
   
-  if ([content_ length]) {
-    [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
-  }
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:credit"];
-  
-  [self addToElement:element attributeValueIfNonNil:role_ withName:@"role"];
-  [self addToElement:element attributeValueIfNonNil:scheme_ withName:@"scheme"];
-  if ([content_ length]) {
-    [element addStringValue:content_]; 
-  }
-
-  return element;
+  [self addContentValueDeclaration];
 }
 
 - (NSString *)role {
-  return role_; 
+  return [self stringValueForAttribute:kRoleAttr];
 }
 
 - (void)setRole:(NSString *)str {
-  [role_ autorelease];
-  role_ = [str copy];
+  [self setStringValue:str forAttribute:kRoleAttr];
 }
 
 - (NSString *)scheme {
-  return scheme_; 
+  return [self stringValueForAttribute:kSchemeAttr];
 }
 
 - (void)setScheme:(NSString *)str {
-  [scheme_ autorelease];
-  scheme_ = [str copy];
+  [self setStringValue:str forAttribute:kSchemeAttr];
 }
 
 - (NSString *)stringValue {
-  return content_;
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {
-  [content_ autorelease];
-  content_ = [str copy]; 
+  [self setContentStringValue:str];
 }
 
 @end

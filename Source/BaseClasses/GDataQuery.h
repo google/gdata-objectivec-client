@@ -50,6 +50,7 @@
   NSString *orderBy_;
   int sortOrder_; // +1, -1, or 0 for unspecified
   BOOL shouldShowDeleted_;
+  BOOL isStrict_;
   GDataDateTime *publishedMinDateTime_;
   GDataDateTime *publishedMaxDateTime_;
   GDataDateTime *updatedMinDateTime_;
@@ -89,6 +90,9 @@
 
 - (BOOL)shouldShowDeleted;
 - (void)setShouldShowDeleted:(BOOL)flag;
+
+- (BOOL)isStrict;
+- (void)setIsStrict:(BOOL)flag;
 
 - (GDataDateTime *)publishedMinDateTime;
 - (void)setPublishedMinDateTime:(GDataDateTime *)dateTime;

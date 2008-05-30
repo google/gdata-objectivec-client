@@ -283,7 +283,7 @@ static int gFetchCounter = 0;
   
   // verify the underlying fetcher got a 304 (not modified) status
   STAssertEquals([[ticket_ objectFetcher] statusCode],
-                 kGDataHTTPFetcherStatusNotModified,
+                 (NSInteger)kGDataHTTPFetcherStatusNotModified,
                  @"fetching cached copy of %@", feedURL);
 
   
@@ -312,7 +312,7 @@ static int gFetchCounter = 0;
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   
   // verify the underlying fetcher got a 200 (good) status
-  STAssertEquals([[ticket_ objectFetcher] statusCode], 200,
+  STAssertEquals([[ticket_ objectFetcher] statusCode], (NSInteger)200,
                  @"fetching uncached copy of %@", feedURL);
   
   //
@@ -448,7 +448,8 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], 403, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([fetcherError_ code], (NSInteger)403,
+                 @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
                        defaultPropertyValue, @"default property error");
@@ -472,7 +473,8 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], 403, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([fetcherError_ code], (NSInteger)403,
+                 @"fetcherError_=%@", fetcherError_);
   
   // get back the captcha token and partial and full URLs from the error
   NSDictionary *userInfo = [fetcherError_ userInfo];
@@ -528,7 +530,8 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], 403, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([fetcherError_ code], (NSInteger)403,
+                 @"fetcherError_=%@", fetcherError_);
   
   // get back the captcha token and partial and full URLs from the error
   userInfo = [fetcherError_ userInfo];
@@ -664,7 +667,8 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], 401, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([fetcherError_ code], (NSInteger)401,
+                 @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey], 
                        defaultPropertyValue, @"default property error");
@@ -721,7 +725,7 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"obtained object unexpectedly");
-  STAssertEquals([fetcherError_ code], 503, 
+  STAssertEquals([fetcherError_ code], (NSInteger)503, 
                  @"fetcherError_ should be 503, was %@", fetcherError_);
   STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 3, 
                @"retry count should be 3, was %d", 
@@ -749,7 +753,7 @@ static int gFetchCounter = 0;
   [self waitForFetch];
   
   STAssertNil(fetchedObject_, @"obtained object unexpectedly");
-  STAssertEquals([fetcherError_ code], 503, 
+  STAssertEquals([fetcherError_ code], (NSInteger)503, 
                  @"fetcherError_ should be 503, was %@", fetcherError_);
   STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 2, 
                  @"retry count should be 2, was %d", 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -36,17 +36,12 @@ _EXTERN NSString* kGDataScopeTypeDefault _INITIALIZE_AS(@"default");
 
 // an element with type and value attributes, as in
 //  <gAcl:scope type='user' value='user@gmail.com'></gAcl:scope>
-@interface GDataACLScope : GDataObject <NSCopying, GDataExtension> {
-  NSString *value_;
-  NSString *type_;
-}
+//
+//  http://code.google.com/apis/calendar/reference.html#gacl_reference
+
+@interface GDataACLScope : GDataObject <GDataExtension> 
 
 + (GDataACLScope *)scopeWithType:(NSString *)type value:(NSString *)value;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)value;
 - (void)setValue:(NSString *)str;

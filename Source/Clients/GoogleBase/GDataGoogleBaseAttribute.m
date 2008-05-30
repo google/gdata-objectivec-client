@@ -14,7 +14,7 @@
 */
 
 //
-//  GDataWebContent.m
+//  GDataGoogleBaseAttribute.m
 //
 
 #import "GDataGoogleBaseAttribute.h"

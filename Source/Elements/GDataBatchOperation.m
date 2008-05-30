@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@
 #define GDATABATCH_DEFINE_GLOBALS 1
 #import "GDataBatchOperation.h"
 
+static NSString* const kTypeAttr = @"type";
+
 @implementation GDataBatchOperation
 // for batch operations, like
 //  <batch:operation type="insert"/>
@@ -34,59 +36,19 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setType:[self stringForAttributeName:@"type" fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [type_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataBatchOperation* newObj = [super copyWithZone:zone];
-  [newObj setType:[self type]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataBatchOperation *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataBatchOperation class]]) return NO;
-
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self type], [other type]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+- (void)addParseDeclarations {
   
-  [self addToArray:items objectDescriptionIfNonNil:type_ withName:@"type"];
-  
-  return items;
-}
+  NSArray *attrs = [NSArray arrayWithObject:kTypeAttr];
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"batch:operation"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self type] withName:@"type"];
-  
-  return element;
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSString *)type {
-  return type_; 
+  return [self stringValueForAttribute:kTypeAttr];
 }
 
 - (void)setType:(NSString *)str {
-  [type_ autorelease];
-  type_ = [str copy];
+  [self setStringValue:str forAttribute:kTypeAttr];
 }
 
 @end

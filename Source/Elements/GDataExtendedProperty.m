@@ -19,6 +19,10 @@
 
 #import "GDataExtendedProperty.h"
 
+static NSString* const kNameAttr = @"name";
+static NSString* const kValueAttr = @"value";
+
+
 @implementation GDataExtendedProperty
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
@@ -42,30 +46,15 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setValue:[self stringForAttributeName:@"value"
-                                    fromElement:element]];
-    [self setName:[self stringForAttributeName:@"name"
-                                   fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [value_ release];
-  [name_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataExtendedProperty* newValue = [super copyWithZone:zone];
-  [newValue setValue:[self value]];
-  [newValue setName:[self name]];
-  return newValue;
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kNameAttr, kValueAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];  
+  
+  // we don't add a content value declaration since we want the
+  // XML blob to remain as unparsed children
 }
 
 - (BOOL)isEqual:(GDataExtendedProperty *)other {
@@ -73,44 +62,45 @@
   if (![other isKindOfClass:[GDataExtendedProperty class]]) return NO;
   
   return [super isEqual:other]
-    && AreEqualOrBothNil([self value], [other value])
-    && AreEqualOrBothNil([self name], [other name]);
+  
+    // unknown children are normally not compared by GDataObject,
+    // so we'll compare them here
+    && AreEqualOrBothNil([self XMLValues], [other XMLValues]);
 }
 
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  [self addToArray:items objectDescriptionIfNonNil:name_ withName:@"name"];
+  [self addAttributeDescriptionsToArray:items];
+  
+  if ([[self XMLValues] count] > 0) {
+    NSArray *xmlStrings  = [[self XMLValues] valueForKey:@"XMLString"];
+    NSString *combinedStr = [xmlStrings componentsJoinedByString:@""];
+    
+    [self addToArray:items objectDescriptionIfNonNil:combinedStr withName:@"XML"];
+  }
   
   return items;
 }
 
 - (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  [self addToElement:element attributeValueIfNonNil:[self value] withName:@"value"];
-  [self addToElement:element attributeValueIfNonNil:[self name] withName:@"name"];
-  
-  return element;
+  return [self XMLElementWithExtensionsAndDefaultName:nil];
 }
 
 - (NSString *)value {
-  return value_; 
+  return [self stringValueForAttribute:kValueAttr];
 }
 
 - (void)setValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setStringValue:str forAttribute:kValueAttr];
 }
 
 - (NSString *)name {
-  return name_; 
+  return [self stringValueForAttribute:kNameAttr];
 }
 
 - (void)setName:(NSString *)str {
-  [name_ autorelease];
-  name_ = [str copy];
+  [self setStringValue:str forAttribute:kNameAttr];
 }
 
 - (NSArray *)XMLValues {
@@ -139,6 +129,71 @@
   [newUnknownChildren addObject:node];
                           
   [self setUnknownChildren:newUnknownChildren];
+}
+
+#pragma mark -
+
+- (void)setXMLValue:(NSString *)value forKey:(NSString *)key {
+  
+  // change or remove an entry in the values dictionary
+  //
+  // dict may be nil
+  NSMutableDictionary *dict = [[[self XMLValuesDictionary] mutableCopy] autorelease];
+  
+  if (dict == nil && value != nil) {
+    dict = [NSMutableDictionary dictionary]; 
+  }
+  [dict setValue:value forKey:key];
+  
+  [self setXMLValuesDictionary:dict];
+}
+
+- (NSString *)XMLValueForKey:(NSString *)key {
+  
+  NSDictionary *dict = [self XMLValuesDictionary];
+  NSString *value = [dict valueForKey:key];
+  return value;
+}
+
+- (NSDictionary *)XMLValuesDictionary {
+  
+  NSArray *xmlNodes = [self XMLValues];
+  if (xmlNodes == nil) return nil;
+  
+  // step through all elements in the unknown XML children and make a dictionary
+  // entry for each
+  NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+  NSEnumerator *enumerator = [xmlNodes objectEnumerator];
+  id xmlNode;
+  while ((xmlNode = [enumerator nextObject]) != nil) {
+    
+    NSString *qualifiedName = [xmlNode name];
+    NSString *value = [xmlNode stringValue];
+    
+    [dict setValue:value forKey:qualifiedName];
+  }
+  return dict;
+}
+
+- (void)setXMLValuesDictionary:(NSDictionary *)dict {
+  
+  NSEnumerator *enumerator = [dict keyEnumerator];
+  NSString *key;
+  NSMutableArray *nodes = [NSMutableArray array];
+  
+  // replace the XML child elements with elements from the dictionary 
+  while ((key = [enumerator nextObject]) != nil) {
+    NSString *value = [dict objectForKey:key];
+    NSXMLNode *node = [NSXMLNode elementWithName:key
+                                     stringValue:value];
+    [nodes addObject:node];
+  }
+  
+  if ([nodes count] > 0) {
+    [self setXMLValues:nodes]; 
+  } else { 
+    [self setXMLValues:nil];
+  }
 }
 
 @end

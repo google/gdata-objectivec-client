@@ -29,6 +29,7 @@ enum {
   kInvocationObjectURLIndex = 2,
   kInvocationObjectClassIndex,
   kInvocationObjectToPostIndex,
+  kInvocationObjectETagIndex,
   kInvocationHTTPMethodIndex,
   kInvocationDelegateIndex,
   kInvocationFinishedSelectorIndex,
@@ -307,6 +308,7 @@ enum {
 - (GDataServiceTicket *)fetchAuthenticatedObjectWithURL:(NSURL *)objectURL
                                             objectClass:(Class)objectClass
                                            objectToPost:(GDataObject *)objectToPost
+                                                   ETag:(NSString *)etag
                                              httpMethod:(NSString *)httpMethod
                                                delegate:(id)delegate
                                       didFinishSelector:(SEL)finishedSelector
@@ -315,7 +317,7 @@ enum {
   // make an invocation for this call
   GDataServiceTicket *result = nil;
   
-  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocationValue:ticket:);
+  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocationValue:ticket:);
   
   GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
   
@@ -326,6 +328,7 @@ enum {
   [invocation setArgument:&objectURL        atIndex:kInvocationObjectURLIndex];
   [invocation setArgument:&objectClass      atIndex:kInvocationObjectClassIndex];
   [invocation setArgument:&objectToPost     atIndex:kInvocationObjectToPostIndex];
+  [invocation setArgument:&etag             atIndex:kInvocationObjectETagIndex];
   [invocation setArgument:&httpMethod       atIndex:kInvocationHTTPMethodIndex];
   [invocation setArgument:&delegate         atIndex:kInvocationDelegateIndex];
   [invocation setArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
@@ -403,6 +406,7 @@ enum {
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:feedClass
                                   objectToPost:nil
+                                          ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -419,6 +423,7 @@ enum {
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:entryClass
                                   objectToPost:nil
+                                          ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -434,6 +439,7 @@ enum {
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:[entryToInsert class]
                                   objectToPost:entryToInsert
+                                          ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -449,6 +455,7 @@ enum {
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
+                                          ETag:nil
                                     httpMethod:@"PUT"
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -459,15 +466,33 @@ enum {
                                               delegate:(id)delegate
                                      didFinishSelector:(SEL)finishedSelector
                                        didFailSelector:(SEL)failedSelector {
+  // pass through with a nil ETag
+  //
+  // This is provided for compatibility with interfaces to v1 services (which
+  // lack etag support.)  Interfaces for newer services should only call into
+  // deleteAuthenticatedResourceURL:ETag: 
+
+  return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:nil
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
+                                                  ETag:(NSString *)etag
+                                              delegate:(id)delegate
+                                     didFinishSelector:(SEL)finishedSelector
+                                       didFailSelector:(SEL)failedSelector {
   
   return [self fetchAuthenticatedObjectWithURL:resourceEditURL
                                    objectClass:nil
                                   objectToPost:nil
+                                          ETag:etag
                                     httpMethod:@"DELETE"
                                       delegate:delegate
                              didFinishSelector:finishedSelector
                                didFailSelector:failedSelector];
-  
 }
 
 - (GDataServiceTicket *)fetchAuthenticatedFeedWithQuery:(GDataQuery *)query
@@ -488,10 +513,16 @@ enum {
                                                    delegate:(id)delegate
                                           didFinishSelector:(SEL)finishedSelector
                                             didFailSelector:(SEL)failedSelector {
+  // add batch namespace, if needed
+  if ([[batchFeed namespaces] objectForKey:kGDataNamespaceBatchPrefix] == nil) {
+    
+    [batchFeed addNamespaces:[GDataEntryBase batchNamespaces]];
+  }
   
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:[batchFeed class]
                                   objectToPost:batchFeed
+                                          ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -541,9 +572,13 @@ enum {
   authSubToken_ = [str copy];
 }
 
-- (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url 
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod {
   
-  NSMutableURLRequest *request = [super requestForURL:url httpMethod:httpMethod];
+  NSMutableURLRequest *request = [super requestForURL:url 
+                                                 ETag:etag
+                                           httpMethod:httpMethod];
 
   // if appropriate set the method override header
   if ([httpMethod length] > 0) {
@@ -567,7 +602,6 @@ enum {
   }
   return request;
 }
-
 
 - (NSString *)serviceID {
   // subclasses should return the service ID, like @"cl" for calendar

@@ -29,10 +29,13 @@
   IBOutlet NSTextField *mOrgTitleField;
   IBOutlet NSComboBox *mProtocolField;
   IBOutlet NSButton *mPrimaryCheckbox;
+  IBOutlet NSButton *mDeletedCheckbox;
+  IBOutlet NSComboBox *mGroupField; // group title, though user may enter group ID
 
   id mTarget; // WEAK 
   SEL mDoneSEL;
   GDataObject *mObject;
+  GDataFeedContactGroup *mGroupFeed;
   BOOL mWasSaveClicked;
   
   NSDictionary *relsDict_;
@@ -41,9 +44,10 @@
 // target must be a NSWindowController or at least respond to -window
 //
 // object should be of the class for the kind of data we're editing
-// (phone, email, postal, IM)
+// (phone, email, postal, IM, group, extProp)
 - (void)runModalForTarget:(id)target
                  selector:(SEL)doneSelector
+                groupFeed:(GDataFeedContactGroup *)groupFeed
                    object:(GDataObject *)object;
 
 - (IBAction)saveButtonClicked:(id)sender;
@@ -53,4 +57,11 @@
 
 // this getter constructs an object based on the data in the edit dialog
 - (GDataObject *)object;
+@end
+
+@interface GDataExtendedProperty (ContactsSampleAdditions)
+// getter that returns the plain value or an XML string for the XML values;
+// setter that looks for a leading "<" to decide if the value to set is XML
+- (NSString *)unifiedStringValue;
+- (void)setUnifiedStringValue:(NSString *)str;
 @end

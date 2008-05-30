@@ -104,6 +104,12 @@ enum {
                                      didFinishSelector:(SEL)finishedSelector
                                        didFailSelector:(SEL)failedSelector;
 
+- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
+                                                  ETag:(NSString *)etag
+                                              delegate:(id)delegate
+                                     didFinishSelector:(SEL)finishedSelector
+                                       didFailSelector:(SEL)failedSelector;
+
 - (GDataServiceTicket *)fetchAuthenticatedFeedWithQuery:(GDataQuery *)query
                                               feedClass:(Class)feedClass
                                                delegate:(id)delegate
@@ -121,9 +127,6 @@ enum {
 
 - (NSString *)authToken;
 - (void)setAuthToken:(NSString *)str;
-
-- (NSString *)authSubToken;
-- (void)setAuthSubToken:(NSString *)str;
 
 - (NSString *)authSubToken;
 - (void)setAuthSubToken:(NSString *)str;

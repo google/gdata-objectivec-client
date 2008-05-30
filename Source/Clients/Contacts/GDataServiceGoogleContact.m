@@ -29,17 +29,49 @@
 
 @implementation GDataServiceGoogleContact
 
-+ (NSURL *)contactFeedURLForUserID:(NSString *)userID {
-
+// feed is contacts or groups; projection is thin, default, or property-<key>
++ (NSURL *)feedURLForFeed:(NSString *)feed
+                   userID:(NSString *)userID 
+               projection:(NSString *)projection {
+  
   NSString *baseURLString = [self serviceRootURLString];
   
-  NSString *template = @"%@contacts/%@/full";
-
+  NSString *template = @"%@%@/%@/%@";
+  
   NSString *feedURLString = [NSString stringWithFormat:template, 
-    baseURLString, userID];
+                             baseURLString, 
+                             [GDataUtilities stringByURLEncodingString:feed], 
+                             [GDataUtilities stringByURLEncodingString:userID], 
+                             [GDataUtilities stringByURLEncodingString:projection]];
   
   NSURL *url = [NSURL URLWithString:feedURLString];
   
+  return url;
+}
+
++ (NSURL *)contactFeedURLForPropertyName:(NSString *)property {
+  
+  NSString *projection = [NSString stringWithFormat:@"property-%@", property];
+  NSURL *url = [self feedURLForFeed:@"contacts"
+                             userID:@"default"
+                         projection:projection];
+  return url;
+}
+
++ (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property {
+  
+  NSString *projection = [NSString stringWithFormat:@"property-%@", property];
+  NSURL *url = [self feedURLForFeed:@"groups" 
+                             userID:@"default" 
+                         projection:projection];
+  return url;
+}
+
++ (NSURL *)contactFeedURLForUserID:(NSString *)userID {
+  
+  NSURL *url = [self feedURLForFeed:@"contacts" 
+                             userID:userID
+                         projection:@"full"];
   return url;
 }
 
@@ -62,7 +94,7 @@
                                 didFailSelector:(SEL)failedSelector {
   
   return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:[GDataFeedContact class]
+                                   feedClass:kGDataUseRegisteredClass
                                     delegate:delegate
                            didFinishSelector:finishedSelector
                              didFailSelector:failedSelector];
@@ -117,14 +149,29 @@
 }
 
 - (GDataServiceTicket *)deleteContactResourceURL:(NSURL *)resourceEditURL
+                                            ETag:(NSString *)etag
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:(NSString *)etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)fetchContactBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                           forBatchFeedURL:(NSURL *)feedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
+                                   forBatchFeedURL:feedURL
+                                          delegate:delegate
+                                 didFinishSelector:finishedSelector
+                                   didFailSelector:failedSelector];
 }
 
 - (NSString *)serviceID {

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -71,31 +71,28 @@ _EXTERN NSString* kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.google
 // </gd:who>
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdWho
-@interface GDataWho : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSString *email_;
-  NSString *valueString_; // name.  Note: accessors for this are stringValue/setStringValue
-  GDataAttendeeType *attendeeType_;
-  GDataAttendeeStatus *attendeeStatus_;
-  GDataEntryLink *entryLink_;
+@interface GDataWho : GDataObject <GDataExtension> {
 }
 
 + (GDataWho *)whoWithRel:(NSString *)rel
                     name:(NSString *)valueString
                    email:(NSString *)email; // name and email may be nil  
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
 - (NSString *)email;
 - (void)setEmail:(NSString *)str;
+
 - (NSString *)stringValue; // gets the "valueString" XML attribute
 - (void)setStringValue:(NSString *)str; // sets the "valueString" XML attribute
+
 - (GDataAttendeeType *)attendeeType;
 - (void)setAttendeeType:(GDataAttendeeType *)val;
+
 - (GDataAttendeeStatus *)attendeeStatus;
 - (void)setAttendeeStatus:(GDataAttendeeStatus *)val;
+
 - (GDataEntryLink *)entryLink;
 - (void)setEntryLink:(GDataEntryLink *)entryLink;
 @end

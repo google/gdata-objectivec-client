@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,16 +14,21 @@
 */
 
 //
-//  GDataStuff.h
+//  GDataValueConstruct.h
 //
+
+// GDataValueConstruct is meant to be subclassed for elements that
+// store just a single string either as an attribute or as the
+// element child text.
+//
+// See the examples with each subclass below.
 
 #import "GDataObject.h"
 
 // an element with a value="" attribute, as in
 // <gCal:timezone value="America/Los_Angeles"/>
 // (subclasses may override the attribute name)
-@interface GDataValueConstruct : GDataObject <NSCopying> {
-  NSString *value_;
+@interface GDataValueConstruct : GDataObject {
 }
 
 // convenience functions: subclasses may call into these and
@@ -34,11 +39,6 @@
 + (id)valueWithLongLong:(long long)val;
 + (id)valueWithDouble:(double)val;
 + (id)valueWithBool:(BOOL)flag;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
@@ -65,13 +65,13 @@
 @end
 
 // GDataValueElementConstruct is for subclasses that keep the value
-// in the child text nodes
+// in the child text nodes, like <yt:books>Pride and Prejudice</yt:books>
 @interface GDataValueElementConstruct : GDataValueConstruct
 - (NSString *)attributeName; // returns nil
 @end
 
 // GDataImplicitValueConstruct is for subclasses that want a fixed value
-// because the element is merely present or absent, like <foo:bar/>
+// because the element is merely present or absent, like <gd:deleted/>
 @interface GDataImplicitValueConstruct : GDataValueElementConstruct
 + (id)implicitValue;
 - (NSString *)stringValue; // returns nil

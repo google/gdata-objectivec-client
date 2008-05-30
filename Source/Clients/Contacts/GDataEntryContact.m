@@ -69,6 +69,10 @@
                                    childClass:[GDataPhoneNumber class]];  
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataPostalAddress class]];  
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataGroupMembershipInfo class]];  
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataExtendedProperty class]];  
 }
 
 - (id)init {
@@ -100,6 +104,13 @@
   if ([[self postalAddresses] count] > 0) {
     [self addToArray:items objectDescriptionIfNonNil:[self postalAddresses] withName:@"postal"];
   }  
+  if ([[self groupMembershipInfos] count] > 0) {
+    [self addToArray:items objectDescriptionIfNonNil:[self groupMembershipInfos] withName:@"group"];
+  }  
+  if ([[self extendedProperties] count] > 0) {
+    [self addToArray:items objectDescriptionIfNonNil:[self extendedProperties] withName:@"extProps"];
+  }  
+  
   return items;
 }
 
@@ -274,4 +285,39 @@
   [self setPrimaryObject:obj forExtensionClass:[GDataPostalAddress class]];
 }
 
+- (NSArray *)groupMembershipInfos {
+  return [self objectsForExtensionClass:[GDataGroupMembershipInfo class]];
+}
+
+- (void)setGroupMembershipInfos:(NSArray *)arr {
+  [self setObjects:arr forExtensionClass:[GDataGroupMembershipInfo class]];
+}
+
+- (void)addGroupMembershipInfo:(GDataGroupMembershipInfo *)obj {
+  [self addObject:obj forExtensionClass:[GDataGroupMembershipInfo class]];
+}
+
+- (NSArray *)extendedProperties {
+  return [self objectsForExtensionClass:[GDataExtendedProperty class]];
+}
+
+- (void)setExtendedProperties:(NSArray *)arr {
+  [self setObjects:arr forExtensionClass:[GDataExtendedProperty class]];
+}
+
+- (void)addExtendedProperty:(GDataExtendedProperty *)obj {
+  [self addObject:obj forExtensionClass:[GDataExtendedProperty class]];
+}
+
 @end
+
+@implementation NSArray(GDataEntryContactLinks)
+- (GDataLink *)photoLink {
+  return [self linkWithRelAttributeValue:kGDataContactPhotoRel]; 
+}
+
+- (GDataLink *)editPhotoLink {
+  return [self linkWithRelAttributeValue:kGDataContactEditPhotoRel]; 
+}
+@end
+

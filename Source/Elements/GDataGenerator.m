@@ -19,6 +19,9 @@
 
 #import "GDataGenerator.h"
 
+static NSString* const kVersionAttr = @"version";
+static NSString* const kURIAttr = @"uri";
+
 @implementation GDataGenerator
 // Feed generator element, as in
 //   <generator version='1.0' uri='http://www.google.com/calendar/'>CL2</generator>
@@ -37,93 +40,38 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setName:[self stringValueFromElement:element]];
-    [self setVersion:[self stringForAttributeName:@"version"
-                                      fromElement:element]];
-    [self setURI:[self stringForAttributeName:@"uri"
-                                  fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [name_ release];
-  [version_ release];
-  [uri_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataGenerator* newGenerator = [super copyWithZone:zone];
-  [newGenerator setName:[self name]];
-  [newGenerator setVersion:[self version]];
-  [newGenerator setURI:[self URI]];
-  return newGenerator;
-}
-
-- (BOOL)isEqual:(GDataGenerator *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataGenerator class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self name], [other name])
-    && AreEqualOrBothNil([self version], [other version])
-    && AreEqualOrBothNil([self URI], [other URI]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kVersionAttr, kURIAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:name_     withName:@"name"];
-  [self addToArray:items objectDescriptionIfNonNil:version_  withName:@"version"];
-  [self addToArray:items objectDescriptionIfNonNil:uri_      withName:@"URI"];
+  [self addLocalAttributeDeclarations:attrs];  
   
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"generator"];
-  
-  if ([[self name] length]) {
-    [element addStringValue:[self name]];
-  }
-  [self addToElement:element attributeValueIfNonNil:[self version]      withName:@"version"];
-  [self addToElement:element attributeValueIfNonNil:[self URI]          withName:@"uri"];
-  
-  return element;
+  [self addContentValueDeclaration];
 }
 
 - (NSString *)name {
-  return name_; 
+  return [self contentStringValue];
 }
 
 - (void)setName:(NSString *)str {
-  [name_ autorelease];
-  name_ = [str copy];
+  [self setContentStringValue:str];
 }
 
 - (NSString *)version {
-  return version_; 
+  return [self stringValueForAttribute:kVersionAttr];
 }
 
 - (void)setVersion:(NSString *)str {
-  [version_ autorelease];
-  version_ = [str copy];
+  [self setStringValue:str forAttribute:kVersionAttr]; 
 }
 
 - (NSString *)URI {
-  return uri_; 
+  return [self stringValueForAttribute:kURIAttr];
 }
 
 - (void)setURI:(NSString *)str {
-  [uri_ autorelease];
-  uri_ = [str copy];
+  [self setStringValue:str forAttribute:kURIAttr]; 
 }
 
 @end

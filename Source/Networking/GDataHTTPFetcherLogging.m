@@ -180,7 +180,7 @@ static NSString* gLoggingProcessName = nil;
   if (passwdRange.location != NSNotFound) {
     
     // we found Passwd=; find the & that follows the parameter
-    unsigned int origLength = [originalStr length];
+    NSUInteger origLength = [originalStr length];
     NSRange restOfString = NSMakeRange(passwdRange.location+1, 
                                        origLength - passwdRange.location - 1);
     NSRange rangeOfFollowingAmp = [originalStr rangeOfString:@"&"
@@ -254,11 +254,11 @@ static NSString* gLoggingProcessName = nil;
       // look at each of the munged parts in the original string, and try to 
       // convert those into UTF-8
       NSMutableArray *origParts = [NSMutableArray array];
-      int offset = 0;
+      NSUInteger offset = 0;
       for (int partIdx = 0; partIdx < [mungedParts count]; partIdx++) {
         
         NSString *mungedPart = [mungedParts objectAtIndex:partIdx];
-        int partSize = [mungedPart length];
+        NSUInteger partSize = [mungedPart length];
         
         NSRange range = NSMakeRange(offset, partSize);
         NSData *origPartData = [data subdataWithRange:range];
@@ -278,8 +278,8 @@ static NSString* gLoggingProcessName = nil;
           }
           
           // make a part string with the header and <<n bytes>>
-          NSString *binStr = [NSString stringWithFormat:@"\r%@\r<<%u bytes>>\r",
-            header, partSize - [header length]];
+          NSString *binStr = [NSString stringWithFormat:@"\r%@\r<<%lu bytes>>\r",
+            header, (long)(partSize - [header length])];
           [origParts addObject:binStr];
         }
         offset += partSize + [boundary length];
@@ -324,7 +324,7 @@ static NSString* gLoggingProcessName = nil;
 
   // file name for the "formatted" (raw) data file
   NSString *responseDataFormattedFileName = nil; 
-  unsigned int responseDataLength = [downloadedData_ length];
+  NSUInteger responseDataLength = [downloadedData_ length];
   
   NSURLResponse *response = [self response];
   NSString *responseBaseName = nil;
@@ -516,12 +516,12 @@ static NSString* gLoggingProcessName = nil;
   if (response) {
     NSString *statusString = @"";
     if ([response respondsToSelector:@selector(statusCode)]) {
-      int status = [(NSHTTPURLResponse *)response statusCode];
+      NSInteger status = [(NSHTTPURLResponse *)response statusCode];
       statusString = @"200";
       if (status != 200) {
         // purple for errors
-        statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%d</FONT>",
-          status];
+        statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%ld</FONT>",
+          (long)status];
       }
     }
     
@@ -691,10 +691,10 @@ static NSString* gLoggingProcessName = nil;
 @end
 
 @implementation GDataInputStreamLogger
-- (int)read:(uint8_t *)buffer maxLength:(unsigned int)len {
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
   
   // capture the read stream data, and pass it to the delegate to append to
-  int result = [super read:buffer maxLength:len];
+  NSInteger result = [super read:buffer maxLength:len];
   if (result >= 0) {
     NSData *data = [NSData dataWithBytes:buffer length:result];
     [monitorDelegate_ appendLoggedStreamData:data];

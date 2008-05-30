@@ -19,7 +19,6 @@
 
 #import "GDataObject.h"
 
-
 // media:content element
 //
 //  <media:content 
@@ -40,34 +39,15 @@
 //
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaContent : GDataObject <NSCopying, GDataExtension> {
-  NSString* urlString_; 
-  NSNumber* fileSize_;
-  NSString* type_;
-  NSString* medium_;
-  NSNumber* isDefault_;
-  NSString* expression_;
-  NSDecimalNumber* bitrate_;
-  NSDecimalNumber* framerate_;
-  NSDecimalNumber* samplingrate_;
-  NSNumber* channels_;
-  NSNumber* duration_;
-  NSNumber* height_;
-  NSNumber* width_;
-  NSString* lang_;
-}
+@interface GDataMediaContent : GDataObject <GDataExtension>
+
 + (GDataMediaContent *)mediaContentWithURLString:(NSString *)urlString;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-- (NSXMLElement *)XMLElement;
-
-- (NSMutableArray *)itemsForDescription;
 
 - (NSString *)URLString;
 - (void)setURLString:(NSString *)str;
 
-- (NSNumber *)fileSize;
+- (NSNumber *)fileSize; // long long
 - (void)setFileSize:(NSNumber *)num;
 
 - (NSString *)type;
@@ -76,7 +56,7 @@
 - (NSString *)medium;
 - (void)setMedium:(NSString *)str;
 
-- (NSNumber *)isDefault;
+- (NSNumber *)isDefault; // bool
 - (void)setIsDefault:(NSNumber *)num;
 
 - (NSString *)expression;
@@ -91,18 +71,18 @@
 - (NSDecimalNumber *)samplingrate;
 - (void)setSamplingrate:(NSDecimalNumber *)num;
 
-- (NSNumber *)channels;
+- (NSNumber *)channels; // int
 - (void)setChannels:(NSNumber *)num;
 
-- (NSNumber *)duration;
+- (NSNumber *)duration; // int
 - (void)setDuration:(NSNumber *)num;
 
-- (NSNumber *)height;
+- (NSNumber *)height; // int
 - (void)setHeight:(NSNumber *)num;
 
-- (NSNumber *)width;
+- (NSNumber *)width; // int
 - (void)setWidth:(NSNumber *)num;
 
-- (NSString *)lang;
+- (NSString *)lang; // int
 - (void)setLang:(NSString *)str;
 @end

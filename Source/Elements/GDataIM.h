@@ -45,21 +45,13 @@ _EXTERN NSString* kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.goo
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdIm
 
-@interface GDataIM : GDataObject <NSCopying, GDataExtension> {
-  NSString *label_;
-  NSString *rel_;
-  NSString *address_;
-  NSString *protocol_;
-  BOOL isPrimary_;
+@interface GDataIM : GDataObject <GDataExtension> {
 }
+
 + (GDataIM *)IMWithProtocol:(NSString *)protocol
                         rel:(NSString *)rel
                       label:(NSString *)label
                     address:(NSString *)address;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)address;
 - (void)setAddress:(NSString *)str;

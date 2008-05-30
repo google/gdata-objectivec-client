@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -43,23 +43,20 @@ _EXTERN NSString *kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.google
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdWhere
 
-@interface GDataWhere : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSString *label_;
-  NSString *valueString_; // name.  Note: accessors for this are stringValue/setStringValue
-  GDataEntryLink *entryLink_;
+@interface GDataWhere : GDataObject <GDataExtension> {
 }
 
 + (GDataWhere *)whereWithString:(NSString *)str;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
+
 - (NSString *)stringValue; // gets the "valueString" XML attribute
 - (void)setStringValue:(NSString *)str; // sets the "valueString" XML attribute
+
 - (GDataEntryLink *)entryLink;
 - (void)setEntryLink:(GDataEntryLink *)entryLink;
 @end

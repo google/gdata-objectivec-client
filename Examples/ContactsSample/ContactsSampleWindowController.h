@@ -28,18 +28,26 @@
   IBOutlet NSSecureTextField *mPasswordField;
   
   IBOutlet NSButton *mShowDeletedCheckbox;
+  IBOutlet NSComboBox *mPropertyNameField;
   IBOutlet NSButton *mGetContactsButton;
   
-  IBOutlet NSTableView *mContactTable;
-  IBOutlet NSProgressIndicator *mContactProgressIndicator;
-  IBOutlet NSTextView *mContactResultTextField;
-  IBOutlet NSButton *mContactCancelButton;
-  IBOutlet NSButton *mSortContactsCheckbox;
+  IBOutlet NSSegmentedControl *mFeedSegmentedControl;
+  IBOutlet NSTableView *mFeedTable;
+  IBOutlet NSProgressIndicator *mFeedProgressIndicator;
+  IBOutlet NSTextView *mFeedResultTextField;
+  IBOutlet NSButton *mFeedCancelButton;
+  IBOutlet NSButton *mSortFeedCheckbox;
+  
+  IBOutlet NSImageView *mContactImageView;
+  IBOutlet NSButton *mSetContactImageButton;
+  IBOutlet NSButton *mDeleteContactImageButton;
+  IBOutlet NSProgressIndicator *mSetContactImageProgressIndicator;
   
   IBOutlet NSButton *mAddContactButton;
   IBOutlet NSTextField *mAddTitleField;
   IBOutlet NSTextField *mAddEmailField;
   IBOutlet NSButton *mDeleteContactButton;
+  IBOutlet NSButton *mDeleteAllButton;
   
   IBOutlet NSSegmentedControl *mEntrySegmentedControl;
 
@@ -56,22 +64,33 @@
   GDataFeedContact *mContactFeed;
   GDataServiceTicket *mContactFetchTicket;
   NSError *mContactFetchError;
+
+  NSURL *mContactImageURL;
+
+  GDataFeedContactGroup *mGroupFeed;
+  GDataServiceTicket *mGroupFetchTicket;
+  NSError *mGroupFetchError;
 }
 
 + (ContactsSampleWindowController *)sharedContactsSampleWindowController;
 
-- (IBAction)getContactClicked:(id)sender;
+- (IBAction)getFeedClicked:(id)sender;
 
-- (IBAction)cancelContactFetchClicked:(id)sender;
+- (IBAction)cancelFeedFetchClicked:(id)sender;
+
+- (IBAction)setContactImageClicked:(id)sender;
+- (IBAction)deleteContactImageClicked:(id)sender;
 
 - (IBAction)addContactClicked:(id)sender;
 - (IBAction)deleteContactClicked:(id)sender;
+- (IBAction)deleteAllClicked:(id)sender;
 
 - (IBAction)addEntryClicked:(id)sender;
 - (IBAction)editEntryClicked:(id)sender;
 - (IBAction)deleteEntryClicked:(id)sender;
 - (IBAction)makeEntryPrimaryClicked:(id)sender;
 
+- (IBAction)feedSegmentClicked:(id)sender;
 - (IBAction)entrySegmentClicked:(id)sender;
 - (IBAction)sortContactsClicked:(id)sender;
 

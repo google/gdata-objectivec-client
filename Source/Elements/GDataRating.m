@@ -20,6 +20,13 @@
 #define GDATARATING_DEFINE_GLOBALS 1
 #import "GDataRating.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kValueAttr = @"value";
+static NSString* const kMaxAttr = @"max";
+static NSString* const kMinAttr = @"min";
+static NSString* const kAverageAttr = @"average";
+static NSString* const kNumRatersAttr = @"numRaters";
+
 @implementation GDataRating
 // rating, as in
 //  <gd:rating rel="http://schemas.google.com/g/2005#price" value="5" min="1" max="5"/>
@@ -40,140 +47,62 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setValue:[self intNumberForAttributeName:@"value"
-                                       fromElement:element]];
-    [self setMax:[self intNumberForAttributeName:@"max"
-                                     fromElement:element]];
-    [self setMin:[self intNumberForAttributeName:@"min"
-                                     fromElement:element]];
-    [self setAverage:[self doubleNumberForAttributeName:@"average"
-                                         fromElement:element]];
-    [self setNumberOfRaters:[self intNumberForAttributeName:@"numRaters"
-                                                fromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kRelAttr, kValueAttr, kMaxAttr, kMinAttr,
+                    kAverageAttr, kNumRatersAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
-- (void)dealloc {
-  [rel_ release];
-  [value_ release];
-  [max_ release];
-  [min_ release];
-  [average_ release];
-  [numberOfRaters_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataRating* newObj = [super copyWithZone:zone];
-  [newObj setRel:[self rel]];
-  [newObj setValue:[self value]];
-  [newObj setMax:[self max]];
-  [newObj setMin:[self min]];
-  [newObj setAverage:[self average]];
-  [newObj setNumberOfRaters:[self numberOfRaters]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataRating *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataRating class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self value], [other value])
-    && AreEqualOrBothNil([self max], [other max])
-    && AreEqualOrBothNil([self min], [other min])
-    && AreEqualOrBothNil([self average], [other average])
-    && AreEqualOrBothNil([self numberOfRaters], [other numberOfRaters]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  [self addToArray:items objectDescriptionIfNonNil:max_ withName:@"max"];
-  [self addToArray:items objectDescriptionIfNonNil:min_ withName:@"min"];
-  [self addToArray:items objectDescriptionIfNonNil:average_ withName:@"average"];
-  [self addToArray:items objectDescriptionIfNonNil:numberOfRaters_ withName:@"numberOfRaters"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:rating"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[[self value] stringValue] withName:@"value"];
-  [self addToElement:element attributeValueIfNonNil:[[self max] stringValue] withName:@"max"];
-  [self addToElement:element attributeValueIfNonNil:[[self min] stringValue] withName:@"min"];
-  [self addToElement:element attributeValueIfNonNil:[[self average] stringValue] withName:@"average"];
-  [self addToElement:element attributeValueIfNonNil:[[self numberOfRaters] stringValue] withName:@"numRaters"];
-  
-  return element;
-}
+#pragma mark -
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSNumber *)value {
-  return value_; 
+  return [self intNumberForAttribute:kValueAttr]; 
 }
 
 - (void)setValue:(NSNumber *)num {
-  [value_ autorelease];
-  value_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kValueAttr];
 }
 
 - (NSNumber *)max {
-  return max_; 
+  return [self intNumberForAttribute:kMaxAttr]; 
 }
 
 - (void)setMax:(NSNumber *)num {
-  [max_ autorelease];
-  max_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kMaxAttr];
 }
 
 - (NSNumber *)min {
-  return min_; 
+  return [self intNumberForAttribute:kMinAttr]; 
 }
 
 - (void)setMin:(NSNumber *)num {
-  [min_ autorelease];
-  min_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kMinAttr];
 }
 
 - (NSNumber *)average {
-  return average_; 
+  return [self doubleNumberForAttribute:kAverageAttr]; 
 }
 
 - (void)setAverage:(NSNumber *)num {
-  [average_ autorelease];
-  average_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kAverageAttr];
 }
 
 - (NSNumber *)numberOfRaters {
-  return numberOfRaters_; 
+  return [self intNumberForAttribute:kNumRatersAttr]; 
 }
 
 - (void)setNumberOfRaters:(NSNumber *)num {
-  [numberOfRaters_ autorelease];
-  numberOfRaters_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kNumRatersAttr];
 }
 
 @end

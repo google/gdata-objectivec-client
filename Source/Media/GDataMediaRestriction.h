@@ -22,20 +22,12 @@
 //
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaRestriction : GDataObject <NSCopying, GDataExtension> {
-  NSString *relationship_;
-  NSString *type_;
-  NSString *content_;
+@interface GDataMediaRestriction : GDataObject <GDataExtension> {
 }
 
 + (GDataMediaRestriction *)mediaRestrictionWithString:(NSString *)str
                                          relationship:(NSString *)rel
                                                  type:(NSString *)type;
-  
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)relationship;
 - (void)setRelationship:(NSString *)str;

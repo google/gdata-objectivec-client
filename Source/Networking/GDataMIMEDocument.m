@@ -22,8 +22,8 @@
 // Helper routine to search for the existence of a set of bytes (needle) within 
 // a presumed larger set of bytes (haystack).
 //
-static BOOL memsrch(const unsigned char* needle, int needle_len,
-                    const unsigned char* haystack, int haystack_len);
+static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
+                    const unsigned char* haystack, NSUInteger haystack_len);
 
 @interface GDataMIMEPart : NSObject {
   NSData* headerData_;  // Header content including the ending "\r\n".
@@ -32,10 +32,10 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
 
 + (GDataMIMEPart *)partWithHeaders:(NSDictionary *)headers body:(NSData *)body;
 - (id)initWithHeaders:(NSDictionary *)headers body:(NSData *)body;
-- (BOOL)containsBytes:(const unsigned char *)bytes length:(int)length;
+- (BOOL)containsBytes:(const unsigned char *)bytes length:(NSUInteger)length;
 - (NSData *)header;
 - (NSData *)body;
-- (int)length;
+- (NSUInteger)length;
 @end
 
 @implementation GDataMIMEPart
@@ -102,7 +102,7 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
 //
 // NOTE: We assume that the 'bytes' we are checking for do not contain "\r\n",
 // so we don't need to check the concatenation of the header and body bytes.
-- (BOOL)containsBytes:(const unsigned char*)bytes length:(int)length {
+- (BOOL)containsBytes:(const unsigned char*)bytes length:(NSUInteger)length {
   
   // This uses custom memsrch() rather than strcpy because the encoded data may
   // contain null values.
@@ -118,7 +118,7 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
   return bodyData_; 
 }
 
-- (int)length {
+- (NSUInteger)length {
   return [headerData_ length] + [bodyData_ length];
 }
 @end
@@ -155,7 +155,7 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
 
 // For unit testing only, seeds the random number generator so that we will
 // have reproducible boundary strings.
-- (void)seedRandomWith:(unsigned long)seed {
+- (void)seedRandomWith:(unsigned int)seed {
   
   srandom(seed);
 }
@@ -253,8 +253,8 @@ static BOOL memsrch(const unsigned char* needle, int needle_len,
 
 
 // memsrch - Return TRUE if needle is found in haystack, else FALSE.
-static BOOL memsrch(const unsigned char* needle, int needleLen,
-                    const unsigned char* haystack, int haystackLen) {
+static BOOL memsrch(const unsigned char* needle, NSUInteger needleLen,
+                    const unsigned char* haystack, NSUInteger haystackLen) {
 
   // This is a simple approach.  We start off by assuming that both memchr() and
   // memcmp are implemented efficiently on the given platform.  We search for an
@@ -263,7 +263,7 @@ static BOOL memsrch(const unsigned char* needle, int needleLen,
   // in the haystack.  If not, we move on to search for the first char again, 
   // starting from the next character in the haystack.
   const unsigned char* ptr = haystack;
-  int remain = haystackLen;
+  NSUInteger remain = haystackLen;
   while ((ptr = memchr(ptr, needle[0], remain)) != 0) {
     remain = haystackLen - (ptr - haystack);
     if (remain < needleLen) {

@@ -383,7 +383,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (void)stopFetching;
 
 /// return the status code from the server response
-- (int)statusCode;
+- (NSInteger)statusCode;
 
 /// the response, once it's been received
 - (NSURLResponse *)response;

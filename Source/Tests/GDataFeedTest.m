@@ -143,6 +143,7 @@
     { @"generator.version", @"1.0" },
     { @"startIndex", @"1" },
     { @"itemsPerPage", @"3" },
+    { @"ETag", @"Nofzeigeritznum" },
       
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
@@ -162,6 +163,7 @@
     { @"entries.0.color", @"#B1365F" },
     { @"entries.0.accessLevel", kGDataCalendarAccessOwner},
     { @"entries.0.overrideName", @"over-ride-name" },
+    { @"entries.0.ETag", @"W/C04EQXc6fCp7ImA9WxZbGUU." },
     { @"entries.1.locations.0", @"Joes Pub" },
     { @"entries.2.isSelected", @"0" },
     { @"entries.2.isHidden", @"1" },
@@ -335,7 +337,18 @@
     { @"entries.0.emailAddresses.1.label", @"norzglie" },
     { @"entries.0.emailAddresses.1.rel", nil },
     { @"entries.0.emailAddresses.1.isPrimary", @"0" },
+    
+    { @"entries.0.groupMembershipInfos.0.href", @"http://www.google.com/m8/feeds/contactGroups/user@gmail.com/full/2" },
+    { @"entries.0.groupMembershipInfos.0.isDeleted", @"1" },
       
+    { @"entries.0.extendedProperties.0.name", @"com.mycompany.myprop" },
+    { @"entries.0.extendedProperties.0.value", @"zoop" },
+    { @"entries.0.extendedProperties.0.XMLValues", nil },
+    
+    { @"entries.0.extendedProperties.1.name", @"com.mycompany.myprop2" },
+    { @"entries.0.extendedProperties.1.value", nil },
+    { @"entries.0.extendedProperties.1.XMLValues.0.XMLString", @"<myXML><myChild attr=\"nerf\"></myChild></myXML>" },
+    
     { @"entries.1.identifier", @"contains:b001135" },
     { @"entries.1.categories.0.term", kGDataCategoryContact },
     { @"entries.1.isDeleted", @"1" },
@@ -445,9 +458,9 @@
     { @"entries.0.content", @"products" },
       
     { @"entries.0.metadataItemType", @"products" },
-    { @"entries.0.metadataAttributeList.attributes.@count", @"67" },
-    { @"entries.0.metadataAttributeList.attributes.1.name", @"condition" },
-    { @"entries.0.metadataAttributeList.attributes.1.type", @"text" },
+    { @"entries.0.metadataAttributeList.metadataAttributes.@count", @"67" },
+    { @"entries.0.metadataAttributeList.metadataAttributes.1.name", @"condition" },
+    { @"entries.0.metadataAttributeList.metadataAttributes.1.type", @"text" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
@@ -714,7 +727,7 @@
     { @"entries.0.photosLeft", @"498" },
     { @"entries.0.commentsEnabled", @"1" },
     { @"entries.0.location", @"Album Site" },
-    { @"entries.0.timestamp.dateValue.description", @"2007-05-21 00:00:00 -0700" },
+    { @"entries.0.timestamp.dateValue.timeIntervalSince1970", @"1179730800" },
     { @"entries.0.username", @"TestdomainTestAccount" },
     { @"entries.0.identifier", @"http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993" },
     { @"entries.0.title.type", @"text" },
@@ -769,7 +782,7 @@
     { @"entries.0.commentsEnabled", @"1" },
     { @"entries.0.size", @"87225" },
     { @"entries.0.commentCount", @"1" },
-    { @"entries.0.timestamp.dateValue.description", @"2007-05-21 15:25:01 -0700" },
+    { @"entries.0.timestamp.dateValue.timeIntervalSince1970", @"1179786301" },
     { @"entries.0.title", @"Car.jpg" },
     { @"entries.0.photoDescription", photoDescriptionText },
     { @"entries.0.content.sourceURI", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg" },
@@ -817,7 +830,7 @@
     { @"commentsEnabled", @"1" },
     { @"size", @"87225" },
     { @"commentCount", @"1" },
-    { @"timestamp.dateValue.description", @"2007-05-21 15:25:01 -0700" },
+    { @"timestamp.dateValue.timeIntervalSince1970", @"1179786301" },
     { @"title", @"Car.jpg" },
     { @"photoDescription", photoDescriptionText },
     { @"icon", @"http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=288" },
@@ -994,6 +1007,7 @@
     { @"statistics.lastWebAccess.RFC3339String", @"2008-01-30T11:38:20-08:00" },
     { @"statistics.videoWatchCount", @"1" },
     { @"statistics.viewCount", @"2" },
+    { @"statistics.favoriteCount", @"7" },
     
     { @"books", @"Booksz" },
     { @"age", @"49" },

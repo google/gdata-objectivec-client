@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -118,7 +118,11 @@
       [partialKeyPathList removeAllObjects];
 
       if ([thisKey isEqual:@"@count"]) {
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
         targetObj = [NSNumber numberWithInt:[targetArray count]];
+#else
+        targetObj = [NSNumber numberWithUnsignedInteger:[targetArray count]];
+#endif
       } else {
         int arrayIndex = [thisKey intValue];
         targetObj = [targetArray objectAtIndex:arrayIndex];
@@ -328,6 +332,24 @@
     { @"primary", @"1" },
     { @"", @"" },
     
+    // testing an inline contact entry
+    { @"GDataEntryLink", @"<gd:entryLink href='http://gmail.com/jo/contacts/Jo'"
+      " readOnly='true' rel='fizzbo'>"
+      "<entry><category scheme='http://schemas.google.com/g/2005#kind' "
+      " term='http://schemas.google.com/contact/2008#contact'/> "
+      "<id>http://gmail.com/jo/contacts/Jo</id>"
+      "<category term='user-tag' label='Google'/> "
+      "<title>Jo March</title><gd:email address='jo@example.com'/> "
+      "<gd:phoneNumber label='work' primary='true'>(650) 555-1212"
+      "</gd:phoneNumber> </entry></gd:entryLink> " },
+    { @"href", @"http://gmail.com/jo/contacts/Jo" },
+    { @"isReadOnly", @"1" },
+    { @"rel", @"fizzbo" },
+    { @"entry.title.stringValue", @"Jo March" },
+    { @"entry.emailAddresses.0.address", @"jo@example.com" },
+    { @"entry.primaryPhoneNumber", @"(650) 555-1212" },
+    { @"", @"" },
+  
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>" },
     { @"name", @"X-MOZ-ALARM-LAST-ACK" },
     { @"value", @"2006-10-03T19:01:14Z" },
@@ -341,6 +363,16 @@
     { @"unknownChildren.@count.stringValue", @"2" },
     { @"", @"" },
         
+    { @"GDataExtendedProperty", @"<gd:extendedProperty name='fred'><flub>"
+    "cuckoo</flub><nackro>whoodle buzz</nackro></gd:extendedProperty>" },
+    { @"name", @"fred" },
+    { @"XMLValues.0.XMLString", @"<flub>cuckoo</flub>" },
+    { @"XMLValues.1.XMLString", @"<nackro>whoodle buzz</nackro>" },
+    { @"XMLValuesDictionary.flub", @"cuckoo" },
+    { @"XMLValuesDictionary.nackro", @"whoodle buzz" },
+    { @"unknownChildren.@count.stringValue", @"2" },
+    { @"", @"" },
+    
     { @"GDataFeedLink", @"<gd:feedLink href='http://example.com/Jo/posts/MyFirstPost/comments' "
       "countHint=\"10\" readOnly=\"true\" />" },
     { @"href", @"http://example.com/Jo/posts/MyFirstPost/comments" },
@@ -388,7 +420,12 @@
     { @"href", @"http://www.google.com/calendar/event?stff" },
     { @"title", @"alternate" },
     { @"", @"" },
-      
+    
+    { @"GDataMoney", @"<gd:money amount='10.52' currencyCode='USD' />" },
+    { @"amount", @"10.52" },
+    { @"currencyCode", @"USD" },
+    { @"", @"" },
+    
     { @"GDataOriginalEvent", @"<gd:originalEvent id=\"i8fl1nrv2bl57c1qgr3f0onmgg\" "
       "href=\"http://www.google.com/calendar/feeds/userID/private-magicCookie/full/eventID\" >"
       "<gd:when startTime=\"2006-03-17T22:00:00.000Z\"/>  </gd:originalEvent>" },
@@ -418,9 +455,8 @@
     { @"", @"" },
     
     { @"GDataPhoneNumber", @"<gd:phoneNumber rel='http://schemas.google.com/g/2005#work' "
-      "label='work' uri='tel:+1-425-555-8080;ext=52585' primary='true'>(425) 555-8080 ext. 52585</gd:phoneNumber>" },
+      "label='work' primary='true'>(425) 555-8080 ext. 52585</gd:phoneNumber>" },
     { @"rel", kGDataPhoneNumberWork },
-    { @"URI", @"tel:+1-425-555-8080;ext=52585" },
     { @"label", @"work" },
     { @"primary", @"1" },
     { @"stringValue", @"(425) 555-8080 ext. 52585" },
@@ -621,9 +657,9 @@
       "<gm:attribute name='location' type='location' />"
       "<gm:attribute name='delivery radius' type='floatUnit' />"
       "<gm:attribute name='payment' type='text' />       </gm:attributes>" },
-    { @"attributes.@count", @"3" },
-    { @"attributes.0.name", @"location" },
-    { @"attributes.2.type", @"text" },
+    { @"metadataAttributes.@count", @"3" },
+    { @"metadataAttributes.0.name", @"location" },
+    { @"metadataAttributes.2.type", @"text" },
     { @"", @"" },
       
     { @"GDataGoogleBaseMetadataItemType", @"<gm:item_type "
@@ -974,7 +1010,41 @@
   
 }
 
+- (void)testGDataExtendedProperty {
+  
+  // test the XMLValue key/value APIs
+  NSString *key1 = @"noxweed";
+  NSString *value1 = @"horgood\nbatman";
 
+  NSString *key2 = @"frubble map";
+  NSString *template = @"Ellipsis (%C) and other chars \"<&>";
+  NSString *value2 = [NSString stringWithFormat:template, 8230];
+
+  GDataExtendedProperty *extProp;
+  extProp = [GDataExtendedProperty propertyWithName:@"zum" value:nil];
+  
+  [extProp setXMLValue:value1 forKey:key1];
+  [extProp setXMLValue:value2 forKey:key2];
+  
+  NSString *testValue1 = [extProp XMLValueForKey:key1];
+  STAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
+  
+  NSString *testValue2 = [extProp XMLValueForKey:key2];
+  STAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
+
+  // convert to XML, then reinstantiate as a GDataObject, and test 
+  // that everything was preserved
+  NSXMLElement *element = [extProp XMLElement];
+  
+  GDataExtendedProperty *extProp2;
+  extProp2 = [[[GDataExtendedProperty alloc] initWithXMLElement:element
+                                                         parent:nil] autorelease];
+  testValue1 = [extProp2 XMLValueForKey:key1];
+  STAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
+
+  testValue2 = [extProp2 XMLValueForKey:key2];
+  STAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
+}
 
 - (void)testChangedNamespace {
   

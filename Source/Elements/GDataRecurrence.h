@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -33,15 +33,10 @@
 // See RFC 2445: http://www.ietf.org/rfc/rfc2445.txt
 
 
-@interface GDataRecurrence : GDataObject <NSCopying, GDataExtension> {
-  NSString *value_;
+@interface GDataRecurrence : GDataObject <GDataExtension> {
 }
 
 + (GDataRecurrence *)recurrenceWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-- (NSXMLElement *)XMLElement;
 
 - (void)setStringValue:(NSString *)str;
 - (NSString *)stringValue;

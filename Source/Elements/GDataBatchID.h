@@ -22,16 +22,10 @@
 // For batchID, like:
 //   <batch:id>item2</batch:id>
 
-@interface GDataBatchID : GDataObject <NSCopying, GDataExtension> {
-  NSString *idString_;
+@interface GDataBatchID : GDataObject <GDataExtension> {
 }
 
 + (GDataBatchID *)batchIDWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;

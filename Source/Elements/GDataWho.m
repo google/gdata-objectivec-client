@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -34,6 +34,9 @@
 + (NSString *)extensionElementLocalName { return @"attendeeType"; }
 @end
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kValueStringAttr = @"valueString";
+static NSString* const kEmailAttr = @"email";
 
 @implementation GDataWho
 // a who entry, as in
@@ -56,154 +59,88 @@
   [obj setEmail:email];
   return obj;
 }
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setStringValue:[self stringForAttributeName:@"valueString"
-                                          fromElement:element]];
-    [self setEmail:[self stringForAttributeName:@"email"
-                                    fromElement:element]];
-    
-    [self setAttendeeType:[self objectForChildOfElement:element
-                                          qualifiedName:@"gd:attendeeType"
-                                           namespaceURI:kGDataNamespaceGData
-                                            objectClass:[GDataAttendeeType class]]];
-    [self setAttendeeStatus:[self objectForChildOfElement:element
-                                            qualifiedName:@"gd:attendeeStatus"
-                                             namespaceURI:kGDataNamespaceGData
-                                              objectClass:[GDataAttendeeStatus class]]];
-    [self setEntryLink:[self objectForChildOfElement:element
-                                       qualifiedName:@"gd:entryLink"
-                                        namespaceURI:kGDataNamespaceGData
-                                         objectClass:[GDataEntryLink class]]];
-  }
-  return self;
-}
 
-- (void)dealloc {
-  [rel_ release];
-  [email_ release];
-  [valueString_ release];
-  [attendeeType_ release];
-  [attendeeStatus_ release];
-  [entryLink_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataWho* newWho = [super copyWithZone:zone];
-  [newWho setRel:[self rel]];
-  [newWho setEmail:[self email]];
-  [newWho setStringValue:[self stringValue]];
-  [newWho setAttendeeType:[self attendeeType]];
-  [newWho setAttendeeStatus:[self attendeeStatus]];
-  [newWho setEntryLink:[[[self entryLink] copyWithZone:zone] autorelease]];
-  return newWho;
-}
-
-- (BOOL)isEqual:(GDataWho *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataWho class]]) return NO;
+- (void)addExtensionDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self email], [other email])
-    && AreEqualOrBothNil([self stringValue], [other stringValue])
-    && AreEqualOrBothNil([self attendeeType], [other attendeeType])
-    && AreEqualOrBothNil([self attendeeStatus], [other attendeeStatus])
-    && AreEqualOrBothNil([self entryLink], [other entryLink]);
+  [super addExtensionDeclarations];
+  
+  Class elementClass = [self class];
+  
+  [self addExtensionDeclarationForParentClass:elementClass
+                                   childClass:[GDataAttendeeType class]];
+  [self addExtensionDeclarationForParentClass:elementClass
+                                   childClass:[GDataAttendeeStatus class]];
+  [self addExtensionDeclarationForParentClass:elementClass
+                                   childClass:[GDataEntryLink class]];
+}
+
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kRelAttr, kValueStringAttr, kEmailAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSMutableArray *items = [super itemsForDescription];
   
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:valueString_ withName:@"valueString"];
-  [self addToArray:items objectDescriptionIfNonNil:email_ withName:@"email"];
-  [self addToArray:items objectDescriptionIfNonNil:attendeeType_ withName:@"attendeeType"];
-  [self addToArray:items objectDescriptionIfNonNil:attendeeStatus_ withName:@"attendeeStatus"];
-  [self addToArray:items objectDescriptionIfNonNil:entryLink_ withName:@"entryLink"];
+  // add extensions to the description
+  [self addToArray:items objectDescriptionIfNonNil:[self attendeeType] withName:@"attendeeType"];
+  [self addToArray:items objectDescriptionIfNonNil:[self attendeeStatus] withName:@"attendeeStatus"];
+  [self addToArray:items objectDescriptionIfNonNil:[self entryLink] withName:@"entryLink"];
 
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:who"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel]        withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self stringValue] withName:@"valueString"];
-  [self addToElement:element attributeValueIfNonNil:[self email]       withName:@"email"];
-
-  if ([self attendeeStatus]) {
-    [element addChild:[[self attendeeStatus] XMLElement]];
-  }
-  if ([self attendeeType]) {
-    [element addChild:[[self attendeeType] XMLElement]]; 
-  }
-  if ([self entryLink]) {
-    [element addChild:[[self entryLink] XMLElement]]; 
-  }
-  
-  return element;
-}
+#pragma mark -
 
 - (NSString *)rel {
-  return rel_;
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)email {
-  return email_;
+  return [self stringValueForAttribute:kEmailAttr]; 
 }
 
 - (void)setEmail:(NSString *)str {
-  [email_ autorelease];
-  email_ = [str copy];
+  [self setStringValue:str forAttribute:kEmailAttr];
 }
 
 - (NSString *)stringValue {
-  return valueString_;
+  return [self stringValueForAttribute:kValueStringAttr]; 
 }
 
 - (void)setStringValue:(NSString *)str {
-  [valueString_ autorelease];
-  valueString_ = [str copy];
+  [self setStringValue:str forAttribute:kValueStringAttr];
 }
 
 - (GDataAttendeeType *)attendeeType {
-  return attendeeType_;
+  return [self objectForExtensionClass:[GDataAttendeeType class]];
 }
 
 - (void)setAttendeeType:(GDataAttendeeType *)val {
-  [attendeeType_ autorelease];
-  attendeeType_ = [val copy];
+  [self setObject:val forExtensionClass:[GDataAttendeeType class]];
 }
 
 - (GDataAttendeeStatus *)attendeeStatus {
-  return attendeeStatus_;
+  return [self objectForExtensionClass:[GDataAttendeeStatus class]];
 }
 
 - (void)setAttendeeStatus:(GDataAttendeeStatus *)val {
-  [attendeeStatus_ autorelease];
-  attendeeStatus_ = [val copy];
+  [self setObject:val forExtensionClass:[GDataAttendeeStatus class]];
 }
 
 - (GDataEntryLink *)entryLink {
-  return entryLink_;
+  return [self objectForExtensionClass:[GDataEntryLink class]];
 }
 
 - (void)setEntryLink:(GDataEntryLink *)entryLink {
-  [entryLink_ autorelease];
-  entryLink_ = [entryLink retain];
+  [self setObject:entryLink forExtensionClass:[GDataEntryLink class]];
 }
 
 @end

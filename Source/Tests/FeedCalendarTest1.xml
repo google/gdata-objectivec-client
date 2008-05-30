@@ -3,7 +3,8 @@
     xmlns:gCal="http://schemas.google.com/gCal/2005"
     xmlns:gd="http://schemas.google.com/g/2005" 
     xmlns:app="http://purl.org/atom/app#"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
+    gd:etag="Nofzeigeritznum">
     
 	<id>http://www.google.com/calendar/feeds/test%40domain.net</id>
 	<updated>2006-11-14T00:03:38.535Z</updated>
@@ -18,7 +19,7 @@
 	<generator uri="http://www.google.com/calendar" version="1.0">Google Calendar</generator>
 	<openSearch:startIndex>1</openSearch:startIndex>
 	<openSearch:itemsPerPage>3</openSearch:itemsPerPage>
-	<entry>
+	<entry gd:etag="W/C04EQXc6fCp7ImA9WxZbGUU.">
 		<id>http://www.google.com/calendar/feeds/test%40domain.net/test%40domain.net</id>
 		<published>2006-11-14T00:03:38Z</published>
 		<updated>2006-11-09T00:16:10.000Z</updated>

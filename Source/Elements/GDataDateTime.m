@@ -125,7 +125,7 @@
     return ztz;
   }
   
-  int offsetSeconds = [self offsetSeconds];
+  NSInteger offsetSeconds = [self offsetSeconds];
   
   if (offsetSeconds != NSUndefinedDateComponent) {
     NSTimeZone *tz = [NSTimeZone timeZoneForSecondsFromGMT:offsetSeconds];
@@ -139,7 +139,7 @@
   timeZone_ = [timeZone retain];
   
   if (timeZone) {
-    int offsetSeconds = [timeZone secondsFromGMTForDate:[self date]];
+    NSInteger offsetSeconds = [timeZone secondsFromGMTForDate:[self date]];
     [self setOffsetSeconds:offsetSeconds];
   } else {
     [self setOffsetSeconds:NSUndefinedDateComponent];
@@ -169,7 +169,7 @@
 
 - (NSString *)RFC3339String {  
   NSDateComponents *dateComponents = [self dateComponents];
-  int offset = [self offsetSeconds];
+  NSInteger offset = [self offsetSeconds];
 
   NSString *timeString = @""; // timeString like "T15:10:46-08:00"
   
@@ -211,15 +211,16 @@
     [cal setTimeZone:tz]; 
   }
   
-  int const kComponentBits = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
-    | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit);
+  NSUInteger const kComponentBits = (NSYearCalendarUnit | NSMonthCalendarUnit
+    | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit
+    | NSSecondCalendarUnit);
   
   NSDateComponents *components = [cal components:kComponentBits fromDate:date];
   [self setDateComponents:components];
   
   [self setIsUniversalTime:NO]; 
 
-  int offset = NSUndefinedDateComponent;
+  NSInteger offset = NSUndefinedDateComponent;
 
   if (tz) {
     offset = [tz secondsFromGMTForDate:date];
@@ -235,18 +236,26 @@
   timeZone_ = [tz retain];
 }
 
+static inline BOOL ScanInteger(NSScanner *scanner, NSInteger *targetInteger) {
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+  return [scanner scanInt:targetInteger];
+#else
+  return [scanner scanInteger:targetInteger];
+#endif
+}
+                            
 - (void)setFromRFC3339String:(NSString *)str {
   
-  int year = NSUndefinedDateComponent;
-  int month = NSUndefinedDateComponent;
-  int day = NSUndefinedDateComponent;
-  int hour = NSUndefinedDateComponent;
-  int minute = NSUndefinedDateComponent;
-  int sec = NSUndefinedDateComponent;
+  NSInteger year = NSUndefinedDateComponent;
+  NSInteger month = NSUndefinedDateComponent;
+  NSInteger day = NSUndefinedDateComponent;
+  NSInteger hour = NSUndefinedDateComponent;
+  NSInteger minute = NSUndefinedDateComponent;
+  NSInteger sec = NSUndefinedDateComponent;
   float secFloat = -1.0f;
   NSString* sign = nil;
-  int offsetHour = 0;
-  int offsetMinute = 0;
+  NSInteger offsetHour = 0;
+  NSInteger offsetMinute = 0;
   
   NSScanner* scanner = [NSScanner scannerWithString:str];
   
@@ -258,23 +267,23 @@
   // for example, scan 2006-11-17T15:10:46-08:00
   //                or 2006-11-17T15:10:46Z
   if (// yyyy-mm-dd
-      [scanner scanInt:&year] &&
+      ScanInteger(scanner, &year) &&
       [scanner scanCharactersFromSet:dashSet intoString:nil] &&
-      [scanner scanInt:&month] &&
+      ScanInteger(scanner, &month) &&
       [scanner scanCharactersFromSet:dashSet intoString:nil] &&
-      [scanner scanInt:&day] &&
+      ScanInteger(scanner, &day) &&
       // Thh:mm:ss
       [scanner scanCharactersFromSet:tSet intoString:nil] &&
-      [scanner scanInt:&hour] &&
+      ScanInteger(scanner, &hour) &&
       [scanner scanCharactersFromSet:colonSet intoString:nil] &&
-      [scanner scanInt:&minute] &&
+      ScanInteger(scanner, &minute) &&
       [scanner scanCharactersFromSet:colonSet intoString:nil] &&
       [scanner scanFloat:&secFloat] &&
       // Z or +hh:mm
       [scanner scanCharactersFromSet:plusMinusZSet intoString:&sign] && 
-      [scanner scanInt:&offsetHour] &&
+      ScanInteger(scanner, &offsetHour) &&
       [scanner scanCharactersFromSet:colonSet intoString:nil] &&
-      [scanner scanInt:&offsetMinute]) {
+      ScanInteger(scanner, &offsetMinute)) {
   }
   
   NSDateComponents *dateComponents = [[[NSDateComponents alloc] init] autorelease];
@@ -284,8 +293,8 @@
   [dateComponents setHour:hour];
   [dateComponents setMinute:minute];
   
-  if (secFloat != -1.0) sec = (int)secFloat;
-  [dateComponents setSecond:(int)sec];
+  if (secFloat != -1.0f) sec = (NSInteger)secFloat;
+  [dateComponents setSecond:sec];
     
   [self setDateComponents:dateComponents];
   
@@ -293,7 +302,7 @@
   
   [self setTimeZone:nil];
   
-  int totalOffset = NSUndefinedDateComponent;
+  NSInteger totalOffset = NSUndefinedDateComponent;
   [self setIsUniversalTime:NO];
 
   if ([sign caseInsensitiveCompare:@"Z"] == NSOrderedSame) {
@@ -350,11 +359,11 @@
   }
 }
 
-- (int)offsetSeconds {
+- (NSInteger)offsetSeconds {
   return offsetSeconds_;  
 }
 
-- (void)setOffsetSeconds:(int)val {
+- (void)setOffsetSeconds:(NSInteger)val {
   offsetSeconds_ = val; 
 }
 

@@ -13,6 +13,7 @@
 * limitations under the License.
 */
 
+#import "GDataDefines.h"
 #import "GDataProgressMonitorInputStream.h"
 
 
@@ -73,9 +74,9 @@
 #pragma mark -
 
 
-- (int)read:(uint8_t *)buffer maxLength:(unsigned int)len {
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
 
-  int numRead = [inputStream_ read:buffer maxLength:len];
+  NSInteger numRead = [inputStream_ read:buffer maxLength:len];
   
   if (numRead > 0) {
     
@@ -99,7 +100,7 @@
   return numRead;
 }
 
-- (BOOL)getBuffer:(uint8_t **)buffer length:(unsigned int *)len {
+- (BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)len {
   return [inputStream_ getBuffer:buffer length:len];
 }
 

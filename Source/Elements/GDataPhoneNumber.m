@@ -20,6 +20,11 @@
 #define GDATAPHONENUMBER_DEFINE_GLOBALS 1
 #import "GDataPhoneNumber.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kLabelAttr = @"label";
+static NSString* const kURIAttr = @"uri";
+static NSString* const kPrimaryAttr = @"primary";
+
 @implementation GDataPhoneNumber
 // phone number, as in 
 //  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" uri="tel:+1-425-555-8080;ext=52585">
@@ -38,127 +43,58 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    [self setURI:[self stringForAttributeName:@"uri"
-                                  fromElement:element]];
-    [self setIsPrimary:[self boolForAttributeName:@"primary"
-                                      fromElement:element]];
-    
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kLabelAttr, kRelAttr, kURIAttr, kPrimaryAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
+  
+  [self addContentValueDeclaration];
 }
 
-- (void)dealloc {
-  [rel_ release];
-  [label_ release];
-  [uri_ release];
-  [phoneNumber_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataPhoneNumber* newObj = [super copyWithZone:zone];
-  [newObj setLabel:[self label]];
-  [newObj setURI:[self URI]];
-  [newObj setRel:[self rel]];
-  [newObj setStringValue:[self stringValue]];
-  [newObj setIsPrimary:[self isPrimary]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataPhoneNumber *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataPhoneNumber class]]) return NO;
+- (NSArray *)attributesIgnoredForEquality {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self URI], [other URI])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:uri_ withName:@"uri"];
-  [self addToArray:items objectDescriptionIfNonNil:phoneNumber_ withName:@"phoneNumber"];
-  
-  if (isPrimary_) [items addObject:@"primary"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:phoneNumber"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
-  [self addToElement:element attributeValueIfNonNil:[self URI] withName:@"uri"];
-  
-  if ([self isPrimary]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
-  }
-
-  if ([self stringValue]) {
-    [element addStringValue:[self stringValue]];
-  }
-  
-  return element;
+  return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr]; 
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)URI {
-  return uri_; 
+  return [self stringValueForAttribute:kURIAttr]; 
 }
 
 - (void)setURI:(NSString *)str {
-  [uri_ autorelease];
-  uri_ = [str copy];
+  [self setStringValue:str forAttribute:kURIAttr];
 }
 
 - (NSString *)stringValue {
-  return phoneNumber_; 
+  return [self contentStringValue]; 
 }
 
 - (void)setStringValue:(NSString *)str {
-  [phoneNumber_ autorelease];
-  phoneNumber_ = [str copy];
+  [self setContentStringValue:str];
 }
 
 - (BOOL)isPrimary {
-  return isPrimary_; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO];
 }
 
 - (void)setIsPrimary:(BOOL)flag {
-  isPrimary_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
+
 @end

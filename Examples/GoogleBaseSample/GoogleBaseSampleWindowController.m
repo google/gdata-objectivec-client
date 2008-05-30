@@ -261,11 +261,11 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     int tabIndex;
     GDataEntryGoogleBase *entry = [[feed entries] objectAtIndex:0];
     
-    if ([[entry attributes] count]) {
+    if ([[entry entryAttributes] count]) {
       tabIndex = 0;
     } else if ([[entry metadataAttributes] count]) {
       tabIndex = 1;
-    } else if ([[[entry metadataAttributeList] attributes] count]) {
+    } else if ([[[entry metadataAttributeList] metadataAttributes] count]) {
       tabIndex = 2;
     } else {
       tabIndex = 0;
@@ -453,7 +453,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
 // get the attribute selected in the table, if any
 - (GDataGoogleBaseAttribute *)selectedAttribute {
   
-  NSArray *attrs = [[self selectedGoogleBaseEntry] attributes];
+  NSArray *attrs = [[self selectedGoogleBaseEntry] entryAttributes];
   int rowIndex = [mAttributesTable selectedRow];
   if ([attrs count] > 0 && rowIndex > -1) {
     
@@ -479,7 +479,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
 // get the metadata attribute selected in the attribute list table, if any
 - (GDataGoogleBaseMetadataAttribute *)selectedMetadataAttributeListAttribute {
   
-  NSArray *attrs = [[[self selectedGoogleBaseEntry] metadataAttributeList] attributes];
+  NSArray *attrs = [[[self selectedGoogleBaseEntry] metadataAttributeList] metadataAttributes];
   int rowIndex = [mMetadataAttributesListTable selectedRow];
   if ([attrs count] > 0 && rowIndex > -1) {
     
@@ -507,7 +507,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   }
   
   if (tableView == mAttributesTable) {
-      return [[[self selectedGoogleBaseEntry] attributes] count];
+      return [[[self selectedGoogleBaseEntry] entryAttributes] count];
   }
   
   if (tableView == mMetadataAttributesTable) {
@@ -515,7 +515,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   }
   
   if (tableView == mMetadataAttributesListTable) {
-      return [[[[self selectedGoogleBaseEntry] metadataAttributeList] attributes] count];
+      return [[[[self selectedGoogleBaseEntry] metadataAttributeList] metadataAttributes] count];
   }
   return 0;
 }
@@ -530,7 +530,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   
   // GDataGoogleBaseAttributes have fields for name, type, and text value
   if (tableView == mAttributesTable) {
-    GDataGoogleBaseAttribute *attr = [[[self selectedGoogleBaseEntry] attributes] objectAtIndex:row];
+    GDataGoogleBaseAttribute *attr = [[[self selectedGoogleBaseEntry] entryAttributes] objectAtIndex:row];
     NSString *displayStr = [NSString stringWithFormat:@"%@ (%@): %@",
       [attr name], [attr type], [attr textValue]];
     return displayStr;
@@ -545,7 +545,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   }
   
   if (tableView == mMetadataAttributesListTable) {
-    attr2 = [[[[self selectedGoogleBaseEntry] metadataAttributeList] attributes] objectAtIndex:row];
+    attr2 = [[[[self selectedGoogleBaseEntry] metadataAttributeList] metadataAttributes] objectAtIndex:row];
   }
 
   NSString *displayStr = [NSString stringWithFormat:@"%@ (%@)",

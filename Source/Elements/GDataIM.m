@@ -20,6 +20,12 @@
 #define GDATAIM_DEFINE_GLOBALS 1
 #import "GDataIM.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kLabelAttr = @"label";
+static NSString* const kAddressAttr = @"address";
+static NSString* const kProtocolAttr = @"protocol";
+static NSString* const kPrimaryAttr = @"primary";
+
 @implementation GDataIM
 // IM element, as in
 //   <gd:im protocol="http://schemas.google.com/g/2005#MSN" 
@@ -45,125 +51,59 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setAddress:[self stringForAttributeName:@"address"
-                                      fromElement:element]];
-    [self setProtocol:[self stringForAttributeName:@"protocol"
-                                       fromElement:element]];
-    [self setIsPrimary:[self boolForAttributeName:@"primary"
-                                      fromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kAddressAttr, kProtocolAttr, kLabelAttr, kRelAttr, 
+                    kPrimaryAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
-- (void)dealloc {
-  [label_ release];
-  [rel_ release];
-  [address_ release];
-  [protocol_ release];
-  [super dealloc];
+- (NSArray *)attributesIgnoredForEquality {
+  
+  return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-  GDataIM* newObj = [super copyWithZone:zone];
-  [newObj setLabel:[self label]];
-  [newObj setRel:[self rel]];
-  [newObj setAddress:[self address]];
-  [newObj setProtocol:[self protocol]];
-  [newObj setIsPrimary:[self isPrimary]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataIM *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataIM class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self address], [other address])
-    && AreEqualOrBothNil([self protocol], [other protocol]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:address_ withName:@"address"];
-  [self addToArray:items objectDescriptionIfNonNil:protocol_ withName:@"protocol"];
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
- 
-  if (isPrimary_) [items addObject:@"primary"];
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self address] withName:@"address"];
-  [self addToElement:element attributeValueIfNonNil:[self protocol] withName:@"protocol"];
-  
-  if ([self isPrimary]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
-  }  
-  
-  return element;
-}
+#pragma mark -
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr]; 
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)address {
-  return address_; 
+  return [self stringValueForAttribute:kAddressAttr]; 
 }
 
 - (void)setAddress:(NSString *)str {
-  [address_ autorelease];
-  address_ = [str copy];
+  [self setStringValue:str forAttribute:kAddressAttr];
 }
 
 - (NSString *)protocol {
-  return protocol_; 
+  return [self stringValueForAttribute:kProtocolAttr]; 
 }
 
 - (void)setProtocol:(NSString *)str {
-  [protocol_ autorelease];
-  protocol_ = [str copy];
+  [self setStringValue:str forAttribute:kProtocolAttr];
 }
 
 - (BOOL)isPrimary {
-  return isPrimary_; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO]; 
 }
 
 - (void)setIsPrimary:(BOOL)flag {
-  isPrimary_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 @end
 

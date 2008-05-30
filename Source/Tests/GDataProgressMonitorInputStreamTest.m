@@ -17,6 +17,7 @@
 //  GDataProgressMonitorInputStreamTest.m
 //
 
+#import "GDataDefines.h"
 #import "GDataProgressMonitorInputStreamTest.h"
 #import "GDataProgressMonitorInputStream.h"
 
@@ -59,9 +60,9 @@
   while ([progressStream hasBytesAvailable]) {
     
     unsigned char buffer[101];
-    int numBytesToRead = (random() % 100) + 1;
+    NSUInteger numBytesToRead = (random() % 100) + 1;
     
-    int numRead = [progressStream read:buffer maxLength:numBytesToRead];
+    NSInteger numRead = [progressStream read:buffer maxLength:numBytesToRead];
     if (numRead == 0) break;
     
     // append the read chunk to our buffer

@@ -38,24 +38,12 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
 // for links, like <link rel="alternate" type="text/html"
 //     href="http://www.google.com/calendar/event?eid=b..." title="alternate"/>
-@interface GDataLink : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSString *type_;
-  NSString *href_;
-  NSString *hrefLang_;
-  NSString *title_;
-  NSString *titleLang_;
-  NSNumber *resourceLength_;
+@interface GDataLink : GDataObject <GDataExtension> {
 }
 
 + (GDataLink *)linkWithRel:(NSString *)rel
                       type:(NSString *)type
                       href:(NSString *)href;  // parameters may be nil
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,18 +23,10 @@
 //             music/artist/album/song</media:category>
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaCategory : GDataObject <NSCopying, GDataExtension> {
-  NSString *label_;
-  NSString *scheme_;
-  NSString *content_;
+@interface GDataMediaCategory : GDataObject <GDataExtension> {
 }
 
 + (GDataMediaCategory *)mediaCategoryWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;

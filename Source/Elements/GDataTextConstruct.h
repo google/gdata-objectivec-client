@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,18 +20,12 @@
 #import "GDataObject.h"
 
 // For typed text, like: <title type="text">Event title</title>
-@interface GDataTextConstruct : GDataObject <NSCopying> {
-  NSString *content_;
-  NSString *lang_;
-  NSString *type_; // text, text/plain, html, text/html, xhtml, or other things
+//
+// type can be text, text/plain, html, text/html, xhtml, or other things
+@interface GDataTextConstruct : GDataObject {
 }
 
 + (id)textConstructWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;

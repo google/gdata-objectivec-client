@@ -25,17 +25,10 @@
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdEmail
 
-@interface GDataEmail : GDataObject <NSCopying, GDataExtension> {
-  NSString* label_; 
-  NSString* address_;
-  NSString *rel_;
-  BOOL isPrimary_;
+@interface GDataEmail : GDataObject <GDataExtension> {
 }
 + (GDataEmail *)emailWithLabel:(NSString *)label
                        address:(NSString *)address;
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;

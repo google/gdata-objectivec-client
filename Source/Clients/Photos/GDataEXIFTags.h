@@ -14,7 +14,7 @@
 */
 
 //
-//  GDataWebContent.h
+//  GDataExifTags.h
 //
 
 #import "GDataObject.h"

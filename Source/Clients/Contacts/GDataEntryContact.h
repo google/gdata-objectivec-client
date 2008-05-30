@@ -24,6 +24,8 @@
 #import "GDataPhoneNumber.h"
 #import "GDataPostalAddress.h"
 #import "GDataCategory.h"
+#import "GDataExtendedProperty.h"
+#import "GDataGroupMembershipInfo.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -38,12 +40,17 @@
 _EXTERN NSString* kGDataNamespaceContact _INITIALIZE_AS(@"http://schemas.google.com/contact/2008");
 _EXTERN NSString* kGDataNamespaceContactPrefix _INITIALIZE_AS(@"gContact");
 
-_EXTERN NSString* kGDataCategoryContact _INITIALIZE_AS(@"http://schemas.google.com/contact/2008#contact");
+_EXTERN NSString* kGDataCategoryContact      _INITIALIZE_AS(@"http://schemas.google.com/contact/2008#contact");
+_EXTERN NSString* kGDataCategoryContactGroup _INITIALIZE_AS(@"http://schemas.google.com/contact/2008#group");
 
 // rel values
 _EXTERN NSString* kGDataContactHome    _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home");
 _EXTERN NSString* kGDataContactWork    _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");
 _EXTERN NSString* kGDataContactOther   _INITIALIZE_AS(@"http://schemas.google.com/g/2005#other");
+
+// link rel values
+_EXTERN NSString* kGDataContactPhotoRel     _INITIALIZE_AS(@"http://schemas.google.com/contacts/2008/rel#photo");
+_EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.google.com/contacts/2008/rel#edit-photo");
 
 @interface GDataEntryContact : GDataEntryBase {
 }
@@ -89,4 +96,18 @@ _EXTERN NSString* kGDataContactOther   _INITIALIZE_AS(@"http://schemas.google.co
 
 - (GDataPostalAddress *)primaryPostalAddress;
 - (void)setPrimaryPostalAddress:(GDataPostalAddress *)obj;
+
+- (NSArray *)groupMembershipInfos;
+- (void)setGroupMembershipInfos:(NSArray *)arr;
+- (void)addGroupMembershipInfo:(GDataGroupMembershipInfo *)obj;
+
+- (NSArray *)extendedProperties;
+- (void)setExtendedProperties:(NSArray *)arr;
+- (void)addExtendedProperty:(GDataExtendedProperty *)obj;
+
+@end
+
+@interface NSArray (GDataEntryContactLinks)
+- (GDataLink *)photoLink;
+- (GDataLink *)editPhotoLink;
 @end

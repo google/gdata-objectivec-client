@@ -33,9 +33,9 @@
 
   #define GDATA_FOUNDATION_ONLY 1
 
-  #define GDATA_USES_LIBXML 1
-
   #import "GDataXMLNode.h"
+
+  #define GDATA_USES_LIBXML 1
 
   #define NSXMLDocument                  GDataXMLDocument
   #define NSXMLElement                   GDataXMLElement
@@ -59,3 +59,23 @@
   #define kGDataXMLDocumentPropertyKey @"_XMLDocument"
   #define kGDataXMLElementPropertyKey  @"_XMLElement"
 #endif
+
+
+// To simplify support for 64bit (and Leopard in general), we provide the type
+// defines for non Leopard SDKs
+#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+ // NSInteger/NSUInteger and Max/Mins
+ #ifndef NSINTEGER_DEFINED
+  #if __LP64__ || NS_BUILD_32_LIKE_64
+   typedef long NSInteger;
+   typedef unsigned long NSUInteger;
+  #else
+   typedef int NSInteger;
+   typedef unsigned int NSUInteger;
+  #endif
+  #define NSIntegerMax    LONG_MAX
+  #define NSIntegerMin    LONG_MIN
+  #define NSUIntegerMax   ULONG_MAX
+  #define NSINTEGER_DEFINED 1
+ #endif  // NSINTEGER_DEFINED
+#endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4

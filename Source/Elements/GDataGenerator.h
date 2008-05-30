@@ -21,24 +21,18 @@
 
 // Feed generator element, as in
 //   <generator version='1.0' uri='http://www.google.com/calendar/'>CL2</generator>
-@interface GDataGenerator : GDataObject <NSCopying, GDataExtension> {
-  NSString *name_;
-  NSString *version_;
-  NSString *uri_;
+@interface GDataGenerator : GDataObject <GDataExtension> {
 }
 + (GDataGenerator *)generatorWithName:(NSString *)name
                               version:(NSString *)version
                                   URI:(NSString *)uri;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 - (NSString *)name;
 - (void)setName:(NSString *)str;
+
 - (NSString *)version;
 - (void)setVersion:(NSString *)str;
+
 - (NSString *)URI;
 - (void)setURI:(NSString *)str;
 

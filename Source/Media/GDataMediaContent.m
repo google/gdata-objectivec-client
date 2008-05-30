@@ -20,6 +20,21 @@
 #import "GDataMediaContent.h"
 #import "GDataMediaGroup.h"
 
+static NSString* const kURLAttr = @"url";
+static NSString* const kFileSizeAttr = @"fileSize";
+static NSString* const kTypeAttr = @"type";
+static NSString* const kMediumAttr = @"medium";
+static NSString* const kIsDefaultAttr = @"isDefault";
+static NSString* const kExpressionAttr = @"expression";
+static NSString* const kBitrateAttr = @"bitrate";
+static NSString* const kFramerateAttr = @"framerate";
+static NSString* const kSamplingRateAttr = @"samplingrate";
+static NSString* const kChannelsAttr = @"channels";
+static NSString* const kDurationAttr = @"duration";
+static NSString* const kHeightAttr = @"height";
+static NSString* const kWidthAttr = @"width";
+static NSString* const kLangAttr = @"lang";
+
 @implementation GDataMediaContent
 // media:content element
 //
@@ -53,267 +68,118 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setURLString:[self stringForAttributeName:@"url"
-                                        fromElement:element]];
-    [self setFileSize:[self longLongNumberForAttributeName:@"fileSize"
-                                               fromElement:element]];
-    [self setType:[self stringForAttributeName:@"type"
-                                   fromElement:element]];
-    [self setMedium:[self stringForAttributeName:@"medium"
-                                     fromElement:element]];
-    [self setIsDefault:[self boolNumberForAttributeName:@"isDefault"
-                                            fromElement:element]];
-    [self setExpression:[self stringForAttributeName:@"expression"
-                                         fromElement:element]];
-    [self setBitrate:[self decimalNumberForAttributeName:@"bitrate"
-                                             fromElement:element]];
-    [self setFramerate:[self decimalNumberForAttributeName:@"framerate"
-                                               fromElement:element]];
-    [self setSamplingrate:[self decimalNumberForAttributeName:@"samplingrate"
-                                                  fromElement:element]];
-    [self setChannels:[self intNumberForAttributeName:@"channels"
-                                          fromElement:element]];
-    [self setDuration:[self intNumberForAttributeName:@"duration"
-                                          fromElement:element]];
-    [self setHeight:[self intNumberForAttributeName:@"height"
-                                        fromElement:element]];
-    [self setWidth:[self intNumberForAttributeName:@"width"
-                                       fromElement:element]];
-    [self setLang:[self stringForAttributeName:@"lang"
-                                   fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [urlString_ release];
-  [fileSize_ release];
-  [type_ release];
-  [medium_ release];
-  [isDefault_ release];
-  [expression_ release];
-  [bitrate_ release];
-  [framerate_ release];
-  [samplingrate_ release];
-  [channels_ release];
-  [duration_ release];
-  [height_ release];
-  [width_ release];
-  [lang_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaContent* newObj = [super copyWithZone:zone];
-  [newObj setURLString:[self URLString]];
-  [newObj setFileSize:[self fileSize]];
-  [newObj setType:[self type]];
-  [newObj setMedium:[self medium]];
-  [newObj setIsDefault:[self isDefault]];
-  [newObj setExpression:[self expression]];
-  [newObj setBitrate:[self bitrate]];
-  [newObj setFramerate:[self framerate]];
-  [newObj setSamplingrate:[self samplingrate]];
-  [newObj setChannels:[self channels]];
-  [newObj setDuration:[self duration]];
-  [newObj setHeight:[self height]];
-  [newObj setWidth:[self width]];
-  [newObj setLang:[self lang]];
-  return newObj; 
-}
-
-- (BOOL)isEqual:(GDataMediaContent *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaContent class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self URLString], [other URLString])
-    && AreEqualOrBothNil([self fileSize], [other fileSize])
-    && AreEqualOrBothNil([self type], [other type])
-    && AreEqualOrBothNil([self medium], [other medium])
-    && AreEqualOrBothNil([self isDefault], [other isDefault])
-    && AreEqualOrBothNil([self expression], [other expression])
-    && AreEqualOrBothNil([self bitrate], [other bitrate])
-    && AreEqualOrBothNil([self framerate], [other framerate])
-    && AreEqualOrBothNil([self samplingrate], [other samplingrate])
-    && AreEqualOrBothNil([self channels], [other channels])
-    && AreEqualOrBothNil([self duration], [other duration])
-    && AreEqualOrBothNil([self height], [other height])
-    && AreEqualOrBothNil([self width], [other width])
-    && AreEqualOrBothNil([self lang], [other lang]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kURLAttr, kFileSizeAttr, kTypeAttr, 
+                    kMediumAttr, kIsDefaultAttr, kExpressionAttr, 
+                    kBitrateAttr, kFramerateAttr, kSamplingRateAttr,
+                    kChannelsAttr, kDurationAttr, kHeightAttr, kWidthAttr,
+                    kLangAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:urlString_ withName:@"URL"];
-  [self addToArray:items objectDescriptionIfNonNil:fileSize_ withName:@"fileSize"];
-  [self addToArray:items objectDescriptionIfNonNil:type_ withName:@"type"];
-  [self addToArray:items objectDescriptionIfNonNil:medium_ withName:@"medium"];
-  [self addToArray:items objectDescriptionIfNonNil:isDefault_ withName:@"isDefault"];
-  [self addToArray:items objectDescriptionIfNonNil:expression_ withName:@"expression"];
-  [self addToArray:items objectDescriptionIfNonNil:bitrate_ withName:@"bitrate"];
-  [self addToArray:items objectDescriptionIfNonNil:framerate_ withName:@"framerate"];
-  [self addToArray:items objectDescriptionIfNonNil:samplingrate_ withName:@"samplingrate"];
-  [self addToArray:items objectDescriptionIfNonNil:channels_ withName:@"channels"];
-  [self addToArray:items objectDescriptionIfNonNil:duration_ withName:@"duration"];
-  [self addToArray:items objectDescriptionIfNonNil:height_ withName:@"height"];
-  [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
-  [self addToArray:items objectDescriptionIfNonNil:lang_ withName:@"lang"];
-  
-  return items;
-}
-
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:content"];
-  
-  // decimal numbers should have period separators
-
-  // Leopard deprecated the constant NSDecimalSeparator but it's still
-  // needed by NSDecimalNumber (radar 5674482)
-  NSString *const kNSDecimalSeparator = @"NSDecimalSeparator";
-  NSDictionary *locale = [NSDictionary dictionaryWithObject:@"."
-                                                     forKey:kNSDecimalSeparator];
-
-  [self addToElement:element attributeValueIfNonNil:[self URLString] withName:@"url"];
-  [self addToElement:element attributeValueIfNonNil:[[self fileSize] stringValue] withName:@"fileSize"];
-  [self addToElement:element attributeValueIfNonNil:[self type]  withName:@"type"];
-  [self addToElement:element attributeValueIfNonNil:[self medium] withName:@"medium"];
-  if ([self isDefault]) {
-    [self addToElement:element attributeValueIfNonNil:([self isDefault] ? @"true" : @"false") withName:@"isDefault"];
-  }
-  [self addToElement:element attributeValueIfNonNil:[self expression] withName:@"expression"];
-  [self addToElement:element attributeValueIfNonNil:[[self bitrate] descriptionWithLocale:locale] withName:@"bitrate"];
-  [self addToElement:element attributeValueIfNonNil:[[self framerate] descriptionWithLocale:locale] withName:@"framerate"];
-  [self addToElement:element attributeValueIfNonNil:[[self samplingrate] descriptionWithLocale:locale] withName:@"samplingrate"];
-  [self addToElement:element attributeValueIfNonNil:[[self channels] stringValue] withName:@"channels"];
-  [self addToElement:element attributeValueIfNonNil:[[self duration] stringValue] withName:@"duration"];
-  [self addToElement:element attributeValueIfNonNil:[[self height] stringValue] withName:@"height"];
-  [self addToElement:element attributeValueIfNonNil:[[self width] stringValue] withName:@"width"];
-  [self addToElement:element attributeValueIfNonNil:[self lang] withName:@"lang"];
-  
-  return element;
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)URLString {
-  return urlString_; 
+  return [self stringValueForAttribute:kURLAttr];
 }
 - (void)setURLString:(NSString *)str {
-  [urlString_ autorelease];
-  urlString_ = [str copy];
+  [self setStringValue:str forAttribute:kURLAttr];
 }
 
 - (NSNumber *)fileSize {
-  return fileSize_; 
+  return [self longLongNumberForAttribute:kFileSizeAttr];
 }
 - (void)setFileSize:(NSNumber *)num {
-  [fileSize_ autorelease];
-  fileSize_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kFileSizeAttr];
 }
 
 - (NSString *)type {
-  return type_; 
+  return [self stringValueForAttribute:kTypeAttr];
 }
 - (void)setType:(NSString *)str {
-  [type_ autorelease];
-  type_ = [str copy];
+  [self setStringValue:str forAttribute:kTypeAttr];
 }
 
 - (NSString *)medium {
-  return medium_;
+  return [self stringValueForAttribute:kMediumAttr];
 }
 - (void)setMedium:(NSString *)str {
-  [medium_ autorelease];
-  medium_ = [str copy];
+  [self setStringValue:str forAttribute:kMediumAttr];
 }
 
 - (NSNumber *)isDefault {
-  return isDefault_; 
+  BOOL flag = [self boolValueForAttribute:kIsDefaultAttr defaultValue:NO];
+  return flag ? [NSNumber numberWithBool:flag] : nil; 
 }
 - (void)setIsDefault:(NSNumber *)num {
-  [isDefault_ autorelease];
-  isDefault_ = [num copy];
+  BOOL flag = [num boolValue];
+  [self setBoolValue:flag defaultValue:NO forAttribute:kIsDefaultAttr];
 }
 
 - (NSString *)expression {
-  return expression_;
+  return [self stringValueForAttribute:kExpressionAttr];
 }
 - (void)setExpression:(NSString *)str {
-  [expression_ autorelease];
-  expression_ = [str copy]; 
+  [self setStringValue:str forAttribute:kExpressionAttr];
 }
 
 - (NSDecimalNumber *)bitrate {
-  return bitrate_; 
+  return [self decimalNumberForAttribute:kBitrateAttr];
 }
 - (void)setBitrate:(NSDecimalNumber *)num {
-  [bitrate_ autorelease];
-  bitrate_ = [num copy];
+  [self setDecimalNumberValue:num forAttribute:kBitrateAttr];
 }
 
 - (NSDecimalNumber *)framerate {
-  return framerate_; 
+  return [self decimalNumberForAttribute:kFramerateAttr];
 }
 - (void)setFramerate:(NSDecimalNumber *)num {
-  [framerate_ autorelease];
-  framerate_ = [num copy];
+  [self setDecimalNumberValue:num forAttribute:kFramerateAttr];
 }
 
 - (NSDecimalNumber *)samplingrate {
-  return samplingrate_; 
+  return [self decimalNumberForAttribute:kSamplingRateAttr];
 }
 - (void)setSamplingrate:(NSDecimalNumber *)num {
-  [samplingrate_ autorelease];
-  samplingrate_ = [num copy];
+  [self setDecimalNumberValue:num forAttribute:kSamplingRateAttr];
 }
 
 - (NSNumber *)channels {
-  return channels_; 
+  return [self intNumberForAttribute:kChannelsAttr];
 }
 - (void)setChannels:(NSNumber *)num {
-  [channels_ autorelease];
-  channels_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kChannelsAttr];
 }
 
 - (NSNumber *)duration {
-  return duration_; 
+  return [self intNumberForAttribute:kDurationAttr];
 }
 - (void)setDuration:(NSNumber *)num {
-  [duration_ autorelease];
-  duration_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kDurationAttr];
 }
 
 - (NSNumber *)height {
-  return height_; 
+  return [self intNumberForAttribute:kHeightAttr];
 }
 - (void)setHeight:(NSNumber *)num {
-  [height_ autorelease];
-  height_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kHeightAttr];
 }
 
 - (NSNumber *)width {
-  return width_; 
+  return [self intNumberForAttribute:kWidthAttr];
 }
 - (void)setWidth:(NSNumber *)num {
-  [width_ autorelease];
-  width_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kWidthAttr];
 }
 
 - (NSString *)lang {
-  return lang_;
+  return [self stringValueForAttribute:kLangAttr]; 
 }
 - (void)setLang:(NSString *)str {
-  [lang_ autorelease];
-  lang_ = [str copy];
+  [self setStringValue:str forAttribute:kLangAttr];
 }
 
 @end

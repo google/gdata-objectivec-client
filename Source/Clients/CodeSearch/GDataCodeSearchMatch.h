@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -29,17 +29,11 @@
 // See http://code.google.com/apis/codesearch/reference.html
 
 @interface GDataCodeSearchMatch : GDataTextConstruct <NSCopying, GDataExtension> {
-  NSString *lineNumberString_;
 }
 
 + (id)matchWithStringValue:(NSString *)valueStr
                       type:(NSString *)type
           lineNumberString:(NSString *)lineNumberStr;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)lineNumberString;
 - (void)setLineNumberString:(NSString *)str;

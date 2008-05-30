@@ -41,6 +41,8 @@
 #import <libxml/xpath.h>
 #import <libxml/xpathInternals.h>
 
+#import "GDataDefines.h"
+
 // Nomenclature for method names:
 //
 // Node = GData node

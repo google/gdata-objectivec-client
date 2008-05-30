@@ -30,9 +30,24 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-// default feed of contacts for the authenticated user
-_EXTERN NSString* kGDataGoogleContactDefaultBaseFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/base");
+// GDataXML contacts for the authenticated user
+//
+// Full feeds include all extendedProperties, which must be preserved
+// when updating entries; thin feeds include no extendedProperties.
+//
+// For a feed that includes only extendedProperties with a specific
+// property name, use contactFeedURLForPropertyName:
+// or contactGroupFeedURLForPropertyName:
+//
+// Google Contacts limits contacts to one extended property per property
+// name.  Requesting a feed for a specific property name avoids the need
+// to preserve other applications' property names when updating entries.
+
+_EXTERN NSString* kGDataGoogleContactDefaultThinFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/thin");
 _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/full");
+
+_EXTERN NSString* kGDataGoogleContactGroupDefaultThinFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/groups/default/thin");
+_EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/groups/default/full");
 
 @class GDataQueryContact;
 
@@ -41,10 +56,13 @@ _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www
 @interface GDataServiceGoogleContact : GDataServiceGoogle 
 
 // Note: rather than call -contactFeedURLForUserID you can get the
-// contact feed for the authenticated user by using one of the feed
+// feed URL for the authenticated user by using one of the feed
 // constants above and calling -fetchContactFeedWithURL
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID;
+
++ (NSURL *)contactFeedURLForPropertyName:(NSString *)property;
++ (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property;
 
 - (GDataServiceTicket *)fetchContactFeedForUsername:(NSString *)username
                                            delegate:(id)delegate
@@ -56,6 +74,7 @@ _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www
                               didFinishSelector:(SEL)finishedSelector
                                 didFailSelector:(SEL)failedSelector;
 
+// entry may be GDataContactEntry or GDataContactGroupEntry
 - (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert
                                                forFeedURL:(NSURL *)contactFeedURL
                                                  delegate:(id)delegate
@@ -74,10 +93,16 @@ _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www
                           didFailSelector:(SEL)failedSelector;
 
 - (GDataServiceTicket *)deleteContactResourceURL:(NSURL *)resourceEditURL
+                                            ETag:(NSString *)etag
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector;
 
+- (GDataServiceTicket *)fetchContactBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                           forBatchFeedURL:(NSURL *)feedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector;
 + (NSString *)serviceRootURLString;
 
 @end

@@ -36,14 +36,14 @@
   
   [inputStream open];
   
-  int bytesRead = 0;
+  NSInteger bytesRead = 0;
   
   if (!useSmallReads) {
     // big read
     bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];    
   } else {
     // small 1-byte reads
-    int bytesReadNow;
+    NSInteger bytesReadNow;
     do {
       bytesReadNow = [inputStream read:(buffer + bytesRead) maxLength:1];
       bytesRead += bytesReadNow;
@@ -57,7 +57,7 @@
   STAssertEqualObjects(readString, expectedResultString, @"bad read (%@)",
                        testMethod); 
   
-  int expectedLength = [expectedResultString length];
+  NSInteger expectedLength = [expectedResultString length];
   STAssertEquals(bytesRead, expectedLength, @"bad read length (%@)",
                  testMethod);
 }

@@ -27,26 +27,20 @@
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdPostalAddress
 
-@interface GDataPostalAddress : GDataObject <NSCopying, GDataExtension> {
-  NSString *label_;
-  NSString *value_;
-  NSString *rel_;
-  BOOL isPrimary_;
+@interface GDataPostalAddress : GDataObject <GDataExtension> {
 }
 
 + (GDataPostalAddress *)postalAddressWithString:(NSString *)str;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
+
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
+
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
 @end

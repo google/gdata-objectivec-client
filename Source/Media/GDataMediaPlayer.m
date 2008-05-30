@@ -21,6 +21,10 @@
 #import "GDataMediaPlayer.h"
 #import "GDataMediaGroup.h"
 
+static NSString* const kURLAttr = @"url";
+static NSString* const kHeightAttr = @"height";
+static NSString* const kWidthAttr = @"width";
+
 @implementation GDataMediaPlayer
 // like  <media:player url="http://www.foo.com/player?id=1111" height="200" width="400" />
 //
@@ -36,94 +40,38 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setURLString:[self stringForAttributeName:@"url"
-                                        fromElement:element]];
-    [self setHeight:[self intNumberForAttributeName:@"height"
-                                     fromElement:element]];
-    [self setWidth:[self intNumberForAttributeName:@"width"
-                                    fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [urlString_ release];
-  [height_ release];
-  [width_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaPlayer* newObj = [super copyWithZone:zone];
-  [newObj setURLString:[self URLString]];
-  [newObj setHeight:[self height]];
-  [newObj setWidth:[self width]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaPlayer *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaPlayer class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self URLString], [other URLString])
-    && AreEqualOrBothNil([self height], [other height])
-    && AreEqualOrBothNil([self width], [other width]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kURLAttr, kHeightAttr, kWidthAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:urlString_ withName:@"URL"];
-  [self addToArray:items objectDescriptionIfNonNil:height_ withName:@"height"];
-  [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  [self addToElement:element attributeValueIfNonNil:[self URLString] withName:@"url"];
-  [self addToElement:element attributeValueIfNonNil:[[self height] stringValue] withName:@"height"];
-  [self addToElement:element attributeValueIfNonNil:[[self width] stringValue] withName:@"width"];
-  
-  return element;
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)URLString {
-  return urlString_; 
+  return [self stringValueForAttribute:kURLAttr];
 }
 
 - (void)setURLString:(NSString *)str {
-  [urlString_ autorelease];
-  urlString_ = [str copy];
+  [self setStringValue:str forAttribute:kURLAttr];
 }
 
 - (NSNumber *)height {
-  return height_; 
+  return [self intNumberForAttribute:kHeightAttr];
 }
 
 - (void)setHeight:(NSNumber *)num {
-  [height_ autorelease];
-  height_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kHeightAttr];
 }
 
 - (NSNumber *)width {
-  return width_; 
+  return [self intNumberForAttribute:kWidthAttr];
 }
 
 - (void)setWidth:(NSNumber *)num {
-  [width_ autorelease];
-  width_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kWidthAttr];
 }
 
 

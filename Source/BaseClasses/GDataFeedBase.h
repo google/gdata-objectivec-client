@@ -54,6 +54,7 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
   GDataTextConstruct *rights_;
   NSString *icon_;
   NSString *logo_;
+  NSString *etag_;
   
   NSMutableArray *links_;
   NSMutableArray *authors_;
@@ -129,6 +130,9 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 - (GDataDateTime *)updatedDate;
 - (void)setUpdatedDate:(GDataDateTime *)theDate;
+
+- (NSString *)ETag;
+- (void)setETag:(NSString *)str;
 
 - (NSArray *)entries;
 

@@ -26,10 +26,7 @@
 // or media content with a source URI specified,
 //  <content src="http://lh.google.com/image/Car.jpg" type="image/jpeg"/>
 
-@interface GDataEntryContent : GDataTextConstruct <NSCopying> {
-  NSString *src_;
-}
-
+@interface GDataEntryContent : GDataTextConstruct 
 
 // Note: most content elements are plain text constructs, and can be
 //       created with [GDataEntryContent textConstructWithString:str]
@@ -38,11 +35,6 @@
 // src attributes
 
 + (id)contentWithSourceURI:(NSString *)str type:(NSString *)type;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)sourceURI;
 - (void)setSourceURI:(NSString *)str;

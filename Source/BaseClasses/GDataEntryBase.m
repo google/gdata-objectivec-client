@@ -71,6 +71,11 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
+    
+    [self setETag:[self stringForAttributeLocalName:@"etag"
+                                                URI:kGDataNamespaceGData
+                                        fromElement:element]];
+    
     NSXMLElement *idElement = [self childWithQualifiedName:@"id"
                                               namespaceURI:kGDataNamespaceAtom
                                                fromElement:element];
@@ -136,6 +141,7 @@
 - (void)dealloc {
   [idString_ release];
   [versionIDString_ release];
+  [etag_ release];
   
   [publishedDate_ release];
   [updatedDate_ release];
@@ -162,6 +168,7 @@
   if (![other isKindOfClass:[GDataEntryBase class]]) return NO;
   
   return [super isEqual:other]
+    && AreEqualOrBothNil([self ETag], [other ETag])
     && AreEqualOrBothNil([self identifier], [other identifier])
     && AreEqualOrBothNil([self versionIDString], [other versionIDString])
     && AreEqualOrBothNil([self publishedDate], [other publishedDate])
@@ -181,6 +188,7 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryBase* newEntry = [super copyWithZone:zone];
     
+  [newEntry setETag:[self ETag]];
   [newEntry setCanEdit:[self canEdit]];
   [newEntry setIdentifier:[self identifier]];
   [newEntry setVersionIDString:[self versionIDString]];
@@ -208,6 +216,8 @@
   [self addToArray:items objectDescriptionIfNonNil:[title_ stringValue] withName:@"title"];
   [self addToArray:items objectDescriptionIfNonNil:[summary_ stringValue] withName:@"summary"];
   [self addToArray:items objectDescriptionIfNonNil:[content_ stringValue] withName:@"content"];
+
+  [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
 
   [self addToArray:items arrayCountIfNonEmpty:authors_ withName:@"authors"];
   [self addToArray:items arrayCountIfNonEmpty:categories_ withName:@"categories"];
@@ -240,6 +250,9 @@
 
 - (NSXMLElement *)XMLElement {
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"entry"];
+
+  [self addToElement:element attributeValueIfNonNil:[self ETag] 
+        withLocalName:@"etag" URI:kGDataNamespaceGData];
 
   if ([[self identifier] length]) {
     [element addChild:[NSXMLElement elementWithName:@"id"
@@ -378,6 +391,15 @@
 - (void)setUpdatedDate:(GDataDateTime *)theUpdatedDate {
   [updatedDate_ autorelease];
   updatedDate_ = [theUpdatedDate copy];
+}
+
+- (NSString *)ETag {
+  return etag_; 
+}
+
+- (void)setETag:(NSString *)str {
+  [etag_ autorelease];
+  etag_ = [str copy];
 }
 
 - (GDataDateTime *)editedDate {

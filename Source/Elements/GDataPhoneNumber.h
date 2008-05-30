@@ -35,45 +35,36 @@
 _EXTERN NSString* kGDataPhoneNumberMobile  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#mobile");
 _EXTERN NSString* kGDataPhoneNumberHome  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home");
 _EXTERN NSString* kGDataPhoneNumberWork  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");
-_EXTERN NSString* kGDataPhoneNumberInternalExtensions  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#internal-extension");
 _EXTERN NSString* kGDataPhoneNumberFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#fax");
 _EXTERN NSString* kGDataPhoneNumberHomeFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home_fax");
 _EXTERN NSString* kGDataPhoneNumberWorkFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_fax");
 _EXTERN NSString* kGDataPhoneNumberPager  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#pager");
-_EXTERN NSString* kGDataPhoneNumberCar  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#car");
-_EXTERN NSString* kGDataPhoneNumberSatellite  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#satellite");
 _EXTERN NSString* kGDataPhoneNumberOther  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#other");
 
 // phone number, as in 
-//  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" uri="tel:+1-425-555-8080;ext=52585">
+//  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" >
 //    (425) 555-8080 ext. 52585
 //  </gd:phoneNumber>
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdPhoneNumber
 
-@interface GDataPhoneNumber : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSString *label_;
-  NSString *uri_;
-  NSString *phoneNumber_;
-  BOOL isPrimary_;
+@interface GDataPhoneNumber : GDataObject <GDataExtension> {
 }
 
 + (GDataPhoneNumber *)phoneNumberWithString:(NSString *)str;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
+
 - (NSString *)URI;
 - (void)setURI:(NSString *)str;
+
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
+
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
 @end

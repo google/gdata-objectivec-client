@@ -19,6 +19,12 @@
 
 #import "GDataBatchInterrupted.h"
 
+static NSString* const kReasonAttr = @"reason";
+static NSString* const kSuccessAttr = @"success";
+static NSString* const kFailuresAttr = @"failures";
+static NSString* const kParsedAttr = @"parsed";
+static NSString* const kContentTypeAttr = @"content-type";
+
 @implementation GDataBatchInterrupted
 
 // for batch Interrupteds, like
@@ -33,136 +39,74 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setReason:[self stringForAttributeName:@"reason" fromElement:element]];
-    [self setSuccessCount:[self intNumberForAttributeName:@"success" fromElement:element]];
-    [self setErrorCount:[self intNumberForAttributeName:@"failures" fromElement:element]];
-    [self setTotalCount:[self intNumberForAttributeName:@"parsed" fromElement:element]];
-    [self setContentType:[self stringForAttributeName:@"content-type" fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kReasonAttr, kSuccessAttr, kFailuresAttr, kParsedAttr,
+                    kContentTypeAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];  
+  
+  [self addContentValueDeclaration];
 }
 
-- (void)dealloc {
-  [reason_ release];
-  [successCount_ release];
-  [errorCount_ release];
-  [totalCount_ release];
-  [contentType_ release];
-  [content_ release];
-  [super dealloc];
-}
 
-- (id)copyWithZone:(NSZone *)zone {
-  GDataBatchInterrupted* newObj = [super copyWithZone:zone];
-  [newObj setReason:[self reason]];
-  [newObj setSuccessCount:[self successCount]];
-  [newObj setErrorCount:[self errorCount]];
-  [newObj setTotalCount:[self totalCount]];
-  [newObj setContentType:[self contentType]];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataBatchInterrupted *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataBatchInterrupted class]]) return NO;
-
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self reason], [other reason])
-    && AreEqualOrBothNil([self successCount], [other successCount])
-    && AreEqualOrBothNil([self errorCount], [other errorCount])
-    && AreEqualOrBothNil([self totalCount], [other totalCount])
-    && AreEqualOrBothNil([self contentType], [other contentType])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
 
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:reason_ withName:@"reason"];
-  [self addToArray:items objectDescriptionIfNonNil:successCount_ withName:@"successes"];
-  [self addToArray:items objectDescriptionIfNonNil:errorCount_ withName:@"errors"];
-  [self addToArray:items objectDescriptionIfNonNil:totalCount_ withName:@"total"];
-  [self addToArray:items objectDescriptionIfNonNil:contentType_ withName:@"contentType"];
-  [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
+  [self addAttributeDescriptionsToArray:items];
+  [self addContentDescriptionToArray:items withName:@"content"];
   
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"batch:Interrupted"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self reason] withName:@"reason"];
-  [self addToElement:element attributeValueIfNonNil:[[self successCount] stringValue] withName:@"success"];
-  [self addToElement:element attributeValueIfNonNil:[[self errorCount] stringValue] withName:@"failures"];
-  [self addToElement:element attributeValueIfNonNil:[[self totalCount] stringValue] withName:@"parsed"];
-  [self addToElement:element attributeValueIfNonNil:[self contentType] withName:@"content-type"];
-  if ([[self stringValue] length]) {
-    [element addStringValue:[self stringValue]]; 
-  }
-  
-  return element;
-}
-
 - (NSString *)reason {
-  return reason_;
+  return [self stringValueForAttribute:kReasonAttr];
 }
 
 - (void)setReason:(NSString *)str {
-  [reason_ autorelease];
-  reason_ = [str copy]; 
+  [self setStringValue:str forAttribute:kReasonAttr];
 }
 
 - (NSNumber *)successCount {
-  return successCount_; 
+  return [self intNumberForAttribute:kSuccessAttr];
 }
 
 - (void)setSuccessCount:(NSNumber *)val {
-  [successCount_ autorelease];
-  successCount_ = [val copy];
+  [self setStringValue:[val stringValue] forAttribute:kSuccessAttr];
 }
 
 - (NSNumber *)errorCount {
-  return errorCount_; 
+  return [self intNumberForAttribute:kFailuresAttr];
 }
 
 - (void)setErrorCount:(NSNumber *)val {
-  [errorCount_ autorelease];
-  errorCount_ = [val copy];
+  [self setStringValue:[val stringValue] forAttribute:kFailuresAttr];
 }
 
 - (NSNumber *)totalCount {
-  return totalCount_; 
+  return [self intNumberForAttribute:kParsedAttr];
 }
 
 - (void)setTotalCount:(NSNumber *)val {
-  [totalCount_ autorelease];
-  totalCount_ = [val copy];
+  [self setStringValue:[val stringValue] forAttribute:kParsedAttr];
 }
 
 - (NSString *)contentType {
-  return contentType_;
+  return [self stringValueForAttribute:kContentTypeAttr];
 }
 
 - (void)setContentType:(NSString *)str {
-  [contentType_ autorelease];
-  contentType_ = [str copy]; 
+  [self setStringValue:str forAttribute:kContentTypeAttr];
 }
 
 - (NSString *)stringValue {
-  return content_;
+  return [self contentStringValue];;
 }
 
 - (void)setStringValue:(NSString *)str {
-  [content_ autorelease];
-  content_ = [str copy]; 
+  [self setContentStringValue:str];
 }
 
 @end

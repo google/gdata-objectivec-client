@@ -20,6 +20,11 @@
 
 #import "GDataBatchStatus.h"
 
+static NSString *const kCodeAttr = @"code";
+static NSString *const kReasonAttr = @"reason";
+static NSString *const kContentTypeAttr = @"content-type";
+
+
 @implementation GDataBatchStatus
 // a batch response status
 //  <batch:status  code="404"
@@ -34,6 +39,16 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceBatchPrefix; }
 + (NSString *)extensionElementLocalName { return @"status"; }
 
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kCodeAttr, kReasonAttr, kContentTypeAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];  
+  
+  [self addContentValueDeclaration];
+}
+
 + (GDataBatchStatus *)batchStatusWithCode:(int)code
                                    reason:(NSString *)reason {
   GDataBatchStatus* obj = [[[GDataBatchStatus alloc] init] autorelease];
@@ -42,112 +57,36 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setCode:[self intNumberForAttributeName:@"code"
-                                      fromElement:element]];
-    [self setReason:[self stringForAttributeName:@"reason"
-                                     fromElement:element]];
-    [self setContentType:[self stringForAttributeName:@"content-type"
-                                          fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [code_ release];
-  [reason_ release];
-  [contentType_ release];
-  [content_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataBatchStatus* newObj = [super copyWithZone:zone];
-  [newObj setCode:[self code]];
-  [newObj setReason:[self reason]];
-  [newObj setContentType:[self contentType]];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataBatchStatus *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataBatchStatus class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self reason], [other reason])
-    && AreEqualOrBothNil([self code], [other code])
-    && AreEqualOrBothNil([self contentType], [other contentType])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[code_ stringValue] withName:@"code"];
-  [self addToArray:items objectDescriptionIfNonNil:reason_ withName:@"reason"];
-  [self addToArray:items objectDescriptionIfNonNil:contentType_ withName:@"contentType"];
-  
-  if ([content_ length]) {
-    [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
-  }
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"batch:status"];
-  
-  [self addToElement:element attributeValueIfNonNil:[code_ stringValue] withName:@"code"];
-  [self addToElement:element attributeValueIfNonNil:reason_ withName:@"reason"];
-  [self addToElement:element attributeValueIfNonNil:contentType_ withName:@"content-type"];
-  if ([content_ length]) {
-    [element addStringValue:content_]; 
-  }
-
-  return element;
-}
-
 - (NSString *)reason {
-  return reason_; 
+  return [self stringValueForAttribute:kReasonAttr];
 }
 
 - (void)setReason:(NSString *)str {
-  [reason_ autorelease];
-  reason_ = [str copy];
+  [self setStringValue:str forAttribute:kReasonAttr];
 }
 
 - (NSNumber *)code {
-  return code_; 
+  return [self intNumberForAttribute:kCodeAttr];
 }
 
 - (void)setCode:(NSNumber *)num {
-  [code_ autorelease];
-  code_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kCodeAttr];
 }
 
 - (NSString *)contentType {
-  return contentType_; 
+  return [self stringValueForAttribute:kContentTypeAttr];
 }
 
 - (void)setContentType:(NSString *)str {
-  [contentType_ autorelease];
-  contentType_ = [str copy];
+  [self setStringValue:str forAttribute:kContentTypeAttr];
 }
 
 - (NSString *)stringValue {
-  return content_;
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {
-  [content_ autorelease];
-  content_ = [str copy]; 
+  [self setContentStringValue:str];
 }
 
 @end

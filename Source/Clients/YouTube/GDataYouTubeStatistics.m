@@ -20,6 +20,12 @@
 #import "GDataYouTubeStatistics.h"
 #import "GDataEntryYouTubeVideo.h"
 
+static NSString* const kViewCountAttr = @"viewCount";
+static NSString* const kVideoWatchCountAttr = @"videoWatchCount";
+static NSString* const kSubscriberCountAttr = @"subscriberCount";
+static NSString* const kFavoriteCountAttr = @"favoriteCount";
+static NSString* const kLastWebAccessAttr = @"lastWebAccess";
+
 @implementation GDataYouTubeStatistics 
 // <yt:statistics viewCount="2" 
 //                videoWatchCount="77" 
@@ -34,127 +40,77 @@
   return obj;
 }
 
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kViewCountAttr, kVideoWatchCountAttr,
+                    kSubscriberCountAttr, kFavoriteCountAttr,
+                    kLastWebAccessAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
+}
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setViewCount:[self longLongNumberForAttributeName:@"viewCount" 
-                                                fromElement:element]];
-    [self setVideoWatchCount:[self longLongNumberForAttributeName:@"videoWatchCount" 
-                                                      fromElement:element]];
-    [self setSubscriberCount:[self longLongNumberForAttributeName:@"subscriberCount" 
-                                                      fromElement:element]];
+- (void)addAttributesToElement:(NSXMLElement *)element {
+  
+  // this overrides the base class's method
+  //
+  // as in the java, skip adding attributes that are zero
+  
+  NSString *name;
+  NSDictionary *attributes = [self attributes];
+  NSEnumerator *enumerator = [attributes keyEnumerator];
+  while ((name = [enumerator nextObject]) != nil) {
     
-    [self setLastWebAccess:[self dateTimeForAttributeName:@"lastWebAccess"
-                                              fromElement:element]];
+    NSString *value = [attributes valueForKey:name];
+    
+    // add it if it's not "0"
+    if (![value isEqual:@"0"]) {
+      
+      [self addToElement:element attributeValueIfNonNil:value withName:name];
+    }
   }
-  return self;
-}
-
-- (void)dealloc {
-  
-  [viewCount_ release];
-  [videoWatchCount_ release];
-  [subscriberCount_ release];
-  [lastWebAccess_ release];
-  
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataYouTubeStatistics* newObj = [super copyWithZone:zone];
-  [newObj setViewCount:[self viewCount]];
-  [newObj setVideoWatchCount:[self videoWatchCount]];
-  [newObj setSubscriberCount:[self subscriberCount]];
-  [newObj setLastWebAccess:[[[self lastWebAccess] copyWithZone:zone] autorelease]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataYouTubeStatistics *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataYouTubeStatistics class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self viewCount], [other viewCount])
-    && AreEqualOrBothNil([self videoWatchCount], [other videoWatchCount])
-    && AreEqualOrBothNil([self subscriberCount], [other subscriberCount])
-    && AreEqualOrBothNil([self lastWebAccess], [other lastWebAccess]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self viewCount] withName:@"viewCount"];
-  [self addToArray:items objectDescriptionIfNonNil:[self videoWatchCount] withName:@"videoWatchCount"];
-  [self addToArray:items objectDescriptionIfNonNil:[self subscriberCount] withName:@"subscribers"];
-  [self addToArray:items objectDescriptionIfNonNil:[self lastWebAccess] withName:@"lastWebAccess"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  // as in the Java, we add these attributes only if they're non-zero
-  NSNumber *viewCount = [self viewCount];
-  if ([viewCount longLongValue] > 0) {
-    [self addToElement:element attributeValueIfNonNil:[viewCount stringValue] withName:@"viewCount"];
-  }
-  
-  NSNumber *videoWatchCount = [self videoWatchCount];
-  if ([videoWatchCount longLongValue] > 0) {
-    [self addToElement:element attributeValueIfNonNil:[videoWatchCount stringValue] withName:@"videoWatchCount"];
-  }
-  
-  NSNumber *subscriberCount = [self subscriberCount];
-  if ([subscriberCount longLongValue] > 0) {
-    [self addToElement:element attributeValueIfNonNil:[subscriberCount stringValue] withName:@"subscriberCount"];
-  }
-  
-  [self addToElement:element attributeValueIfNonNil:[[self lastWebAccess] RFC3339String] withName:@"lastWebAccess"];
-  
-  return element;
 }
 
 #pragma mark -
 
 - (NSNumber *)viewCount {
-  return viewCount_; 
+  return [self longLongNumberForAttribute:kViewCountAttr];
 }
 
 - (void)setViewCount:(NSNumber *)num {
-  [viewCount_ autorelease];
-  viewCount_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kViewCountAttr];
 }
 
 - (NSNumber *)videoWatchCount {
-  return videoWatchCount_; 
+  return [self longLongNumberForAttribute:kVideoWatchCountAttr];
 }
 
 - (void)setVideoWatchCount:(NSNumber *)num {
-  [videoWatchCount_ autorelease];
-  videoWatchCount_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kVideoWatchCountAttr];
 }
 
 - (NSNumber *)subscriberCount {
-  return subscriberCount_; 
+  return [self longLongNumberForAttribute:kSubscriberCountAttr];
 }
 
 - (void)setSubscriberCount:(NSNumber *)num {
-  [subscriberCount_ autorelease];
-  subscriberCount_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kSubscriberCountAttr];
+}
+
+- (NSNumber *)favoriteCount {
+  return [self longLongNumberForAttribute:kFavoriteCountAttr];
+}
+
+- (void)setFavoriteCount:(NSNumber *)num {
+  [self setStringValue:[num stringValue] forAttribute:kFavoriteCountAttr];
 }
 
 - (GDataDateTime *)lastWebAccess {
-  return lastWebAccess_; 
+  return [self dateTimeForAttribute:kLastWebAccessAttr]; 
 }
 
 - (void)setLastWebAccess:(GDataDateTime *)dateTime {
-  [lastWebAccess_ autorelease];
-  lastWebAccess_ = [dateTime copy];
+  [self setDateTimeValue:dateTime forAttribute:kLastWebAccessAttr];
 }
 
 @end

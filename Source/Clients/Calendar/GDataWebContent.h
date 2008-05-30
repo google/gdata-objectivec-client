@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -49,25 +49,19 @@ _EXTERN NSString* kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.google
 + (NSString *)extensionElementLocalName;
 @end
 
-@interface GDataWebContent : GDataObject <NSCopying, GDataExtension> {
-  NSNumber *height_;
-  NSNumber *width_;
-  NSString *url_;
+@interface GDataWebContent : GDataObject <GDataExtension> {
 }
 
 + (GDataWebContent *)webContentWithURL:(NSString *)urlString
                                  width:(int)width
                                 height:(int)height;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 - (NSNumber *)height;
 - (void)setHeight:(NSNumber *)num;
+
 - (NSNumber *)width;
 - (void)setWidth:(NSNumber *)num;
+
 - (NSString *)URLString;
 - (void)setURLString:(NSString *)str;
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -44,24 +44,21 @@ _EXTERN NSString* kGDataReminderMethodAll _INITIALIZE_AS(@"all");
 // http://code.google.com/apis/gdata/common-elements.html#gdReminder
 
 @interface GDataReminder : GDataObject <NSCopying, GDataExtension> {
-  NSString* days_;
-  NSString* hours_;
-  NSString* minutes_;
-  NSString* method_;
-  GDataDateTime* absoluteTime_;
 }
 + (GDataReminder *)reminder;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (NSString *)days;
 - (void)setDays:(NSString *)str;
+
 - (NSString *)hours;
 - (void)setHours:(NSString *)str;
+
 - (NSString *)minutes;
 - (void)setMinutes:(NSString *)str;
+
 - (NSString *)method;
 - (void)setMethod:(NSString *)str; // use kGDataReminderMethod strings defined above
+
 - (GDataDateTime *)absoluteTime;
 - (void)setAbsoluteTime:(GDataDateTime *)cdate;
 @end
