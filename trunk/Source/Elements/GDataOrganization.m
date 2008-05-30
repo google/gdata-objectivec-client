@@ -19,6 +19,10 @@
 
 #import "GDataOrganization.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kLabelAttr = @"label";
+static NSString* const kPrimaryAttr = @"primary";
+
 @implementation GDataOrgTitle 
 + (NSString *)extensionElementPrefix { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementURI    { return kGDataNamespaceGData; }
@@ -61,95 +65,47 @@
   
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    [self setIsPrimary:[self boolForAttributeName:@"primary"
-                                      fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [rel_ release];
-  [label_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataOrganization* newObj = [super copyWithZone:zone];
-  [newObj setRel:[self rel]];
-  [newObj setLabel:[self label]];
-  [newObj setIsPrimary:[self isPrimary]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataOrganization *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataOrganization class]]) return NO;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kLabelAttr, kRelAttr, kPrimaryAttr, nil];
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self rel], [other rel]);
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSMutableArray *items = [super itemsForDescription];
   
+  // add extensions
   [self addToArray:items objectDescriptionIfNonNil:[self orgTitle] withName:@"title"];
   [self addToArray:items objectDescriptionIfNonNil:[self orgName] withName:@"name"];
-  [self addToArray:items objectDescriptionIfNonNil:[self rel] withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:[self label] withName:@"label"];
-  
-  if ([self isPrimary]) [items addObject:@"primary"];
-  
+    
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
-  
-  if ([self isPrimary]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
-  }
-
-  return element;
-}
+#pragma mark -
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr]; 
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (BOOL)isPrimary {
-  return isPrimary_; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO]; 
 }
 
 - (void)setIsPrimary:(BOOL)flag {
-  isPrimary_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 
 - (NSString *)orgName {

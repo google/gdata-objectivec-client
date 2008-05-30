@@ -21,6 +21,8 @@
 #import "GDataMediaRating.h"
 #import "GDataMediaGroup.h"
 
+static NSString* const kSchemeAttr = @"scheme";
+
 @implementation GDataMediaRating
 // like  <media:rating scheme="urn:simple">adult</media:rating>
 // http://search.yahoo.com/mrss
@@ -35,80 +37,30 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setScheme:[self stringForAttributeName:@"scheme"
-                                     fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [scheme_ release];
-  [content_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaRating* newObj = [super copyWithZone:zone];
-  [newObj setScheme:[self scheme]];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaRating *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaRating class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self scheme], [other scheme])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
+  NSArray *attrs = [NSArray arrayWithObject:kSchemeAttr];
+  
+  [self addLocalAttributeDeclarations:attrs];
+  
+  [self addContentValueDeclaration];
 }
 
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:scheme_ withName:@"scheme"];
-  
-  if ([content_ length]) {
-    [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
-  }
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  [self addToElement:element attributeValueIfNonNil:scheme_ withName:@"scheme"];
-  if ([content_ length]) {
-    [element addStringValue:content_]; 
-  }
-
-  return element;
-}
 
 - (NSString *)scheme {
-  return scheme_; 
+  return [self stringValueForAttribute:kSchemeAttr];
 }
 
 - (void)setScheme:(NSString *)str {
-  [scheme_ autorelease];
-  scheme_ = [str copy];
+  [self setStringValue:str forAttribute:kSchemeAttr];
 }
 
 - (NSString *)stringValue {
-  return content_;
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {
-  [content_ autorelease];
-  content_ = [str copy]; 
+  [self setContentStringValue:str];
 }
 
 @end

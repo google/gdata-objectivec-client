@@ -35,69 +35,16 @@
   return obj;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-  }
-  return self;
-}
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [idString_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataBatchID* newObj = [super copyWithZone:zone];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataBatchID *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataBatchID class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"ID"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"batch:id"];
-
-  if ([[self stringValue] length]) {
-    [element addStringValue:[self stringValue]];
-  }
-  
-  return element;
+- (void)addParseDeclarations {
+  [self addContentValueDeclaration]; 
 }
 
 - (NSString *)stringValue {
-  return idString_; 
+  return [self contentStringValue]; 
 }
 
 - (void)setStringValue:(NSString *)str {
-  [idString_ autorelease];
-  idString_ = [str copy];
+  [self setContentStringValue:str];
 }
 
 @end

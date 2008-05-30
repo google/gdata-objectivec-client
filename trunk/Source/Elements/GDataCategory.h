@@ -36,22 +36,13 @@ _EXTERN NSString* kGDataCategoryLabelStarred _INITIALIZE_AS(@"starred");
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"
 //        term="http://schemas.google.com/g/2005#event"/>
-@interface GDataCategory : GDataObject <NSCopying, GDataExtension> {
-  NSString *scheme_;
-  NSString *term_;
-  NSString *label_;
-  NSString *labelLang_;
+@interface GDataCategory : GDataObject <GDataExtension> {
 }
 
 + (GDataCategory *)categoryWithScheme:(NSString *)scheme
                                  term:(NSString *)term;
 
 + (GDataCategory *)categoryWithLabel:(NSString *)label;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)scheme;
 - (void)setScheme:(NSString *)str;

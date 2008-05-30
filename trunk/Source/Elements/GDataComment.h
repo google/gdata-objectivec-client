@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -28,15 +28,10 @@
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdComments
 
-@interface GDataComment : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  GDataFeedLink *feedLink_;
+@interface GDataComment : GDataObject <GDataExtension> {
 }
 
 + (GDataComment *)commentWithFeedLink:(GDataFeedLink *)feedLink;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
                   
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,6 +20,11 @@
 #import "GDataMediaThumbnail.h"
 #import "GDataMediaGroup.h"
 
+static NSString* const kURLAttr = @"url";
+static NSString* const kHeightAttr = @"height";
+static NSString* const kWidthAttr = @"width";
+static NSString* const kTimeAttr = @"time";
+
 @implementation GDataMediaThumbnail
 // media:thumbnail element
 //
@@ -40,115 +45,57 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setURLString:[self stringForAttributeName:@"url"
-                                        fromElement:element]];
-    [self setHeight:[self intNumberForAttributeName:@"height"
-                                        fromElement:element]];
-    [self setWidth:[self intNumberForAttributeName:@"width"
-                                       fromElement:element]];
-    NSString *timeStr = [self stringForAttributeName:@"time"
-                                         fromElement:element];
-    if ([timeStr length] > 0) {
-      GDataNormalPlayTime *time = [GDataNormalPlayTime normalPlayTimeWithString:timeStr];
-      if (time) {
-        [self setTime:time];
-      }
-    }
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [urlString_ release];
-  [height_ release];
-  [width_ release];
-  [time_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaThumbnail* newObj = [super copyWithZone:zone];
-  [newObj setURLString:[self URLString]];
-  [newObj setHeight:[self height]];
-  [newObj setWidth:[self width]];
-  [newObj setTime:[self time]];
-  return newObj; 
-}
-
-- (BOOL)isEqual:(GDataMediaThumbnail *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaThumbnail class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self URLString], [other URLString])
-    && AreEqualOrBothNil([self height], [other height])
-    && AreEqualOrBothNil([self width], [other width])
-    && AreEqualOrBothNil([self time], [other time]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kURLAttr, kHeightAttr, kWidthAttr, kTimeAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:urlString_ withName:@"URL"];
-  [self addToArray:items objectDescriptionIfNonNil:height_ withName:@"height"];
-  [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
-  [self addToArray:items objectDescriptionIfNonNil:time_ withName:@"time"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:thumbnail"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self URLString] withName:@"url"];
-  [self addToElement:element attributeValueIfNonNil:[[self height] stringValue] withName:@"height"];
-  [self addToElement:element attributeValueIfNonNil:[[self width] stringValue] withName:@"width"];
-  
-  if ([self time]) {
-    NSString *timeStr = [[self time] HHMMSSString];
-    [self addToElement:element attributeValueIfNonNil:timeStr withName:@"time"];
-  }
-  return element;
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)URLString {
-  return urlString_; 
+  return [self stringValueForAttribute:kURLAttr];
 }
+
 - (void)setURLString:(NSString *)str {
-  [urlString_ autorelease];
-  urlString_ = [str copy];
+  [self setStringValue:str forAttribute:kURLAttr];
 }
 
 - (NSNumber *)height {
-  return height_; 
+  return [self intNumberForAttribute:kHeightAttr];
 }
+
 - (void)setHeight:(NSNumber *)num {
-  [height_ autorelease];
-  height_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kHeightAttr];
 }
 
 - (NSNumber *)width {
-  return width_; 
+  return [self intNumberForAttribute:kWidthAttr];
 }
+
 - (void)setWidth:(NSNumber *)num {
-  [width_ autorelease];
-  width_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kWidthAttr];
 }
 
 - (GDataNormalPlayTime *)time {
-  return time_;
+  
+  GDataNormalPlayTime *time = nil;
+  
+  NSString *timeStr = [self stringValueForAttribute:kTimeAttr];
+  if ([timeStr length] > 0) {
+    time = [GDataNormalPlayTime normalPlayTimeWithString:timeStr];
+  }
+  
+  return time;
 }
+
 - (void)setTime:(GDataNormalPlayTime *)time {
-  [time_ autorelease];
-  time_ = [time copy];
+  
+  NSString *timeStr = [[self time] HHMMSSString];
+
+  [self setStringValue:timeStr forAttribute:kTimeAttr];
 }
 
 @end

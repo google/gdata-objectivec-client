@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@
 
 // used inside GDataWhere, a link to an entry, like
 // <gd:entryLink href="http://gmail.com/jo/contacts/Jo">
-@interface GDataEntryLink : GDataObject <NSCopying> {
-  NSString *href_;
-  BOOL isReadOnly_;
+@interface GDataEntryLink : GDataObject <GDataExtension> {
   GDataEntryBase *entry_;
 }
 
@@ -39,8 +37,13 @@
 
 - (NSString *)href;
 - (void)setHref:(NSString *)str;
+
 - (BOOL)isReadOnly;
 - (void)setIsReadOnly:(BOOL)isReadOnly;
+
+- (NSString *)rel;
+- (void)setRel:(NSString *)str;
+
 - (GDataEntryBase *)entry;
 - (void)setEntry:(GDataEntryBase *)entry;
 

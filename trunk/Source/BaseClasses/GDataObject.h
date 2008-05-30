@@ -143,7 +143,27 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 + (NSString *)extensionElementLocalName;
 @end
 
-@interface GDataObject : NSObject {
+// GDataAttribute is the base class for attribute extensions.
+// It is *not* used for local attributes, which are simply stored in
+// GDataObject' attributes_ dictionary.
+//
+// This returns nil for the attribute's URI and prefix qualifier;
+// subclasses must declare at least a local name.
+//
+// Functionally, this just stores a string value for the attribute.
+
+@interface GDataAttribute : NSObject {
+ @private
+    NSString *value_;
+}
++ (GDataAttribute *)attributeWithValue:(NSString *)str;
+- (id)initWithValue:(NSString *)value;
+
+- (void)setStringValue:(NSString *)str;
+- (NSString *)stringValue;
+@end
+
+@interface GDataObject : NSObject <NSCopying> {
   
   @private
   
@@ -158,8 +178,18 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
   // list of potential GDataExtensionDeclarations for this element and its children
   NSMutableArray *extensionDeclarations_; 
   
+  // list of attributes to be parsed for this element
+  NSMutableArray *attributeDeclarations_;
+  
   // arrays of actual extension elements found for this element, keyed by extension class
   NSMutableDictionary *extensions_;  
+  
+  // dictionary of attributes set for this element, keyed by attribute name
+  NSMutableDictionary *attributes_;
+  
+  // string for element body, if declared as parseable
+  BOOL shouldParseContentValue_;
+  NSString *contentValue_;
   
   // arrays of XMLNodes of attributes and child elements not yet parsed
   NSMutableArray *unknownChildren_;    
@@ -196,6 +226,8 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
                            headers:(NSDictionary **)outHeaders;
 
 - (void)addExtensionDeclarations; // subclasses may override this to declare extensions
+
+- (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
 
 // setters/getters
 
@@ -249,16 +281,64 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (void)removeExtensionDeclarationForParentClass:(Class)parentClass
                                       childClass:(Class)childClass;
 
+- (void)addAttributeExtensionDeclarationForParentClass:(Class)parentClass
+                                            childClass:(Class)childClass;
+- (void)removeAttributeExtensionDeclarationForParentClass:(Class)parentClass
+                                               childClass:(Class)childClass;
+
 // accessing actual extensions in this object
 - (NSArray *)objectsForExtensionClass:(Class)theClass;
 - (id)objectForExtensionClass:(Class)theClass;
 
+- (NSString *)attributeValueForExtensionClass:(Class)theClass;
+
 // replacing or adding actual extensions in this object
 - (void)setObjects:(NSArray *)objects forExtensionClass:(Class)theClass;
-- (void)setObject:(GDataObject *)object forExtensionClass:(Class)theClass; // removes all previous objects for this class
-- (void)addObject:(GDataObject *)object forExtensionClass:(Class)theClass;
-- (void)removeObject:(GDataObject *)object forExtensionClass:(Class)theClass;
+- (void)setObject:(id)object forExtensionClass:(Class)theClass; // removes all previous objects for this class
+- (void)addObject:(id)object forExtensionClass:(Class)theClass;
+- (void)removeObject:(id)object forExtensionClass:(Class)theClass;
 
+- (void)setAttributeValue:(NSString *)str forExtensionClass:(Class)theClass;
+
+//
+// Local attributes
+//
+
+// derived classes should call -addLocalAttributeDeclarations in their
+// -addParseDeclarations method if they want element attributes to 
+// automatically be parsed
+- (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames;
+
+- (NSString *)stringValueForAttribute:(NSString *)name;
+- (NSNumber *)intNumberForAttribute:(NSString *)name;
+- (NSNumber *)doubleNumberForAttribute:(NSString *)name;
+- (NSNumber *)longLongNumberForAttribute:(NSString *)name;
+- (NSDecimalNumber *)decimalNumberForAttribute:(NSString *)name;
+- (GDataDateTime *)dateTimeForAttribute:(NSString *)name;
+- (BOOL)boolValueForAttribute:(NSString *)name defaultValue:(BOOL)defaultVal;
+
+// setting nil value for attribute removes it
+- (void)setStringValue:(NSString *)str forAttribute:(NSString *)name;
+- (void)setBoolValue:(BOOL)boolValue defaultValue:(BOOL)defaultVal forAttribute:(NSString *)name;
+- (void)setDecimalNumberValue:(NSDecimalNumber *)num forAttribute:(NSString *)name;
+- (void)setDateTimeValue:(GDataDateTime *)cdate forAttribute:(NSString *)name;
+
+// dictionary of all local attributes actually found in the XML element
+- (void)setAttributes:(NSDictionary *)dict;
+- (NSDictionary *)attributes;
+
+
+//
+// Element Content Value
+//
+
+// derived classes should call -addContentValueDeclaration in their
+// -addParseDeclarations method if they want element context to 
+// automatically be parsed as a string
+- (void)addContentValueDeclaration;
+- (void)setContentStringValue:(NSString *)str;
+- (NSString *)contentStringValue;
+  
 //
 // Dynamic GDataObject generation
 //
@@ -360,19 +440,6 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
                             fromElement:(NSXMLElement *)element;
 
-- (NSNumber *)intNumberForAttributeLocalName:(NSString *)localName
-                                         URI:(NSString *)attributeURI
-                                 fromElement:(NSXMLElement *)element;
-
-- (NSDecimalNumber *)decimalNumberForAttributeName:(NSString *)attributeName 
-                                       fromElement:(NSXMLElement *)element;
-
-- (NSNumber *)longLongNumberForAttributeName:(NSString *)attributeName 
-                                 fromElement:(NSXMLElement *)element;
-
-- (NSNumber *)boolNumberForAttributeName:(NSString *)attributeName 
-                             fromElement:(NSXMLElement *)element;
-
 //
 // XML generation helpers
 //
@@ -415,13 +482,17 @@ objectDescriptionIfNonNil:(id)obj
           withName:(NSString *)name;
 
 - (void)addToArray:(NSMutableArray *)stringItems
-      integerValue:(int)val
+      integerValue:(NSInteger)val
           withName:(NSString *)name;  
 
 - (void)addToArray:(NSMutableArray *)stringItems
 arrayCountIfNonEmpty:(NSArray *)array
           withName:(NSString *)name;  
 
+- (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems;
+
+- (void)addContentDescriptionToArray:(NSMutableArray *)stringItems
+                            withName:(NSString *)name;
 
 // optional methods for overriding
 //

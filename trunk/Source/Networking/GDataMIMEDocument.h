@@ -44,6 +44,6 @@
 // ------ UNIT TESTING ONLY BELOW ------
 
 // For unittesting only, seeds the random number generator
-- (void)seedRandomWith:(unsigned long)seed;
+- (void)seedRandomWith:(unsigned int)seed;
 
 @end

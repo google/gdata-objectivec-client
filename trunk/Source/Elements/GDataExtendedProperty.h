@@ -29,18 +29,11 @@
 // Servers may impose additional restrictions on names or on the size
 // or composition of the values.
 
-@interface GDataExtendedProperty : GDataObject <NSCopying, GDataExtension> {
-  NSString *value_;
-  NSString *name_;
+@interface GDataExtendedProperty : GDataObject <GDataExtension> {
 }
 
 + (id)propertyWithName:(NSString *)name
                  value:(NSString *)value;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)value;
 - (void)setValue:(NSString *)str;
@@ -48,8 +41,25 @@
 - (NSString *)name;
 - (void)setName:(NSString *)str;
 
+// XMLValues are the unparsed child nodes
 - (NSArray *)XMLValues;
 - (void)setXMLValues:(NSArray *)arr;
 - (void)addXMLValue:(NSXMLNode *)node;
+
+// Obj-C style interface to XML values storage
+//
+// keys are XMLValue node names, values are XMLValue node string values,
+// as in
+//   <key1>value1</key1>
+//   <key2>value2</key2>
+//
+// Behavior is undefined if child nodes are in some other format.
+
+- (void)setXMLValue:(NSString *)value forKey:(NSString *)key;
+- (NSString *)XMLValueForKey:(NSString *)key;
+
+- (NSDictionary *)XMLValuesDictionary;
+- (void)setXMLValuesDictionary:(NSDictionary *)dict;
+  
 @end
 

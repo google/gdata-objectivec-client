@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -22,6 +22,10 @@
 
 #import "GDataEntryLink.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kValueStringAttr = @"valueString";
+static NSString* const kLabelAttr = @"label";
+
 @implementation GDataWhere
 // where element, as in
 // <gd:where rel="http://schemas.google.com/g/2005#event" valueString="Joe's Pub">
@@ -40,115 +44,60 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setStringValue:[self stringForAttributeName:@"valueString"
-                                          fromElement:element]];
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    
-    [self setEntryLink:[self objectForChildOfElement:element
-                                       qualifiedName:@"gd:entryLink"
-                                        namespaceURI:kGDataNamespaceGData
-                                         objectClass:[GDataEntryLink class]]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [rel_ release];
-  [label_ release];
-  [valueString_ release];
-  [entryLink_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataWhere* newWhere = [super copyWithZone:zone];
-  [newWhere setRel:[self rel]];
-  [newWhere setLabel:[self label]];
-  [newWhere setStringValue:[self stringValue]];
-  [newWhere setEntryLink:[[[self entryLink] copyWithZone:zone] autorelease]];
-  return newWhere;
-}
-
-- (BOOL)isEqual:(GDataWhere *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataWhere class]]) return NO;
+- (void)addExtensionDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self stringValue], [other stringValue])
-    && AreEqualOrBothNil([self entryLink], [other entryLink]);
+  [super addExtensionDeclarations];
+  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataEntryLink class]];
+}
+
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kRelAttr, kValueStringAttr, kLabelAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSMutableArray *items = [super itemsForDescription];
   
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:valueString_ withName:@"valueString"];
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:entryLink_ withName:@"entryLink"];
+  // add the entryLink extension to the description
+  [self addToArray:items objectDescriptionIfNonNil:[self entryLink] withName:@"entryLink"];
   
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:where"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel]        withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self stringValue] withName:@"valueString"];
-  [self addToElement:element attributeValueIfNonNil:[self label]       withName:@"label"];
-  
-  if (entryLink_) {
-    NSXMLNode *entryLinkElement = [entryLink_ XMLElement];
-    [element addChild:entryLinkElement];
-  }
-  
-  return element;
-}
-
 - (NSString *)rel {
-  return rel_;
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)label {
-  return label_;
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)stringValue {
-  return valueString_;
+  return [self stringValueForAttribute:kValueStringAttr];
 }
 
 - (void)setStringValue:(NSString *)str {
-  [valueString_ autorelease];
-  valueString_ = [str copy];
+  [self setStringValue:str forAttribute:kValueStringAttr];
 }
 
 - (GDataEntryLink *)entryLink {
-  return entryLink_;
+  return [self objectForExtensionClass:[GDataEntryLink class]];
 }
 
 - (void)setEntryLink:(GDataEntryLink *)entryLink {
-  [entryLink_ autorelease];
-  entryLink_ = [entryLink retain];
+  [self setObject:entryLink forExtensionClass:[GDataEntryLink class]];
 }
 
 @end

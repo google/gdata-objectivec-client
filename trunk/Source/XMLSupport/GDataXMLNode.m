@@ -694,8 +694,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
    
 }  
 
-- (unsigned)hash {
-  return (unsigned) [GDataXMLNode class];
+- (NSUInteger)hash {
+  return (NSUInteger) [GDataXMLNode class];
 }
 
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
@@ -741,7 +741,9 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   if (self) {    
     
     const char *utf8Str = [str UTF8String];
-    xmlDocPtr doc = xmlReadMemory(utf8Str, strlen(utf8Str), NULL, // URL
+    // NOTE: We are assuming a string length that fits into an int.
+    // int.
+    xmlDocPtr doc = xmlReadMemory(utf8Str, (int)strlen(utf8Str), NULL, // URL
                                   NULL, // encoding
                                   kGDataXMLParseOptions);
     if (doc == NULL) {
@@ -1309,7 +1311,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
     const char *baseURL = NULL;
     const char *encoding = NULL;
     
-    xmlDoc_ = xmlReadMemory([data bytes], [data length], baseURL, encoding,
+    // NOTE: We are assuming [data length] fits into an int.
+    xmlDoc_ = xmlReadMemory([data bytes], (int)[data length], baseURL, encoding,
                             kGDataXMLParseOptions); // TODO(grobbins) map option values
     if (xmlDoc_ == NULL) {
       if (error) {

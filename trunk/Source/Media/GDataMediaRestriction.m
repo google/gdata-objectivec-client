@@ -17,9 +17,11 @@
 //  GDataMediaRestriction.m
 //
 
-
 #import "GDataMediaRestriction.h"
 #import "GDataMediaGroup.h"
+
+static NSString* const kRelationshipAttr = @"relationship";
+static NSString* const kTypeAttr = @"type";
 
 @implementation GDataMediaRestriction
 // like <media:restriction relationship="allow" type="country">au us</media:restriction>
@@ -40,98 +42,39 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRelationship:[self stringForAttributeName:@"relationship"
-                                           fromElement:element]];
-    [self setType:[self stringForAttributeName:@"type"
-                                   fromElement:element]];
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [relationship_ release];
-  [type_ release];
-  [content_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaRestriction* newObj = [super copyWithZone:zone];
-  [newObj setRelationship:[self relationship]];
-  [newObj setType:[self type]];
-  [newObj setStringValue:[self stringValue]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaRestriction *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaRestriction class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self relationship], [other relationship])
-    && AreEqualOrBothNil([self type], [other type])
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kRelationshipAttr, kTypeAttr, nil];
   
-  [self addToArray:items objectDescriptionIfNonNil:relationship_ withName:@"relationship"];
-  [self addToArray:items objectDescriptionIfNonNil:type_ withName:@"type"];
+  [self addLocalAttributeDeclarations:attrs];
   
-  if ([content_ length]) {
-    [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
-  }
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:restriction"];
-  
-  [self addToElement:element attributeValueIfNonNil:relationship_ withName:@"relationship"];
-  [self addToElement:element attributeValueIfNonNil:type_ withName:@"type"];
-  if ([content_ length]) {
-    [element addStringValue:content_]; 
-  }
-
-  return element;
+  [self addContentValueDeclaration];
 }
 
 - (NSString *)relationship {
-  return relationship_; 
+  return [self stringValueForAttribute:kRelationshipAttr];
 }
 
 - (void)setRelationship:(NSString *)str {
-  [relationship_ autorelease];
-  relationship_ = [str copy];
+  [self setStringValue:str forAttribute:kRelationshipAttr];
 }
 
 - (NSString *)type {
-  return type_; 
+  return [self stringValueForAttribute:kTypeAttr];
 }
 
 - (void)setType:(NSString *)str {
-  [type_ autorelease];
-  type_ = [str copy];
+  [self setStringValue:str forAttribute:kTypeAttr];
 }
 
 - (NSString *)stringValue {
-  return content_;
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {
-  [content_ autorelease];
-  content_ = [str copy]; 
+  [self setContentStringValue:str];
 }
-
 @end
 
 

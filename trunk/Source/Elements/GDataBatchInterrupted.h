@@ -23,21 +23,10 @@
 // for batch Interrupteds, like
 //  <batch:interrupted reason="reason" success="N" failures="N" parsed="N" />
 
-@interface GDataBatchInterrupted : GDataObject <NSCopying, GDataExtension> {
-  NSString *reason_;
-  NSNumber *successCount_;
-  NSNumber *errorCount_;
-  NSNumber *totalCount_;
-  NSString *contentType_;
-  NSString *content_;
+@interface GDataBatchInterrupted : GDataObject <GDataExtension> {
 }
 
 + (GDataBatchInterrupted *)batchInterrupted;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)reason;
 - (void)setReason:(NSString *)str;

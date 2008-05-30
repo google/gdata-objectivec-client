@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 
 #import "GDataOriginalEvent.h"
 #import "GDataWhen.h"
+
+static NSString* const kIDAttr = @"id";
+static NSString* const kHrefAttr = @"href";
 
 @implementation GDataOriginalEvent
 // original event element, as in
@@ -44,98 +47,52 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setHref:[self stringForAttributeName:@"href"
-                                   fromElement:element]];
-    [self setOriginalID:[self stringForAttributeName:@"id"
-                                         fromElement:element]];
-    
-    [self setOriginalStartTime:[self objectForChildOfElement:element
-                                               qualifiedName:@"gd:when"
-                                                namespaceURI:kGDataNamespaceGData
-                                                 objectClass:[GDataWhen class]]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [href_ release];
-  [originalID_ release];
-  [originalStartTime_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataOriginalEvent* newEvent = [super copyWithZone:zone];
-  [newEvent setHref:[self href]];
-  [newEvent setOriginalID:[self originalID]];
-  [newEvent setOriginalStartTime:[[[self originalStartTime] copyWithZone:zone] autorelease]];
-  return newEvent;
-}
-
-- (BOOL)isEqual:(GDataOriginalEvent *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataOriginalEvent class]]) return NO;
+- (void)addExtensionDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self href], [other href])
-    && AreEqualOrBothNil([self originalID], [other originalID])
-    && AreEqualOrBothNil([self originalStartTime], [other originalStartTime]);
+  [super addExtensionDeclarations];
+  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataWhen class]];
+}
+
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kIDAttr, kHrefAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSMutableArray *items = [super itemsForDescription];
   
-  [self addToArray:items objectDescriptionIfNonNil:href_      withName:@"href"];
-  [self addToArray:items objectDescriptionIfNonNil:originalID_  withName:@"id"];
-  [self addToArray:items objectDescriptionIfNonNil:originalStartTime_ withName:@"startTime"];
+  // add extensions  
+  [self addToArray:items objectDescriptionIfNonNil:[self originalStartTime] withName:@"startTime"];
   
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:originalEvent"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self href] withName:@"href"];
-  [self addToElement:element attributeValueIfNonNil:[self originalID] withName:@"id"];
-  
-  if (originalStartTime_) {
-    NSXMLNode *startTimeElement = [originalStartTime_ XMLElement];
-    [element addChild:startTimeElement];
-  }
-    
-  return element;
-}
-
+#pragma mark -
 
 - (NSString *)href {
-  return href_; 
+  return [self stringValueForAttribute:kHrefAttr];
 }
 - (void)setHref:(NSString *)str {
-  [href_ autorelease];
-  href_ = [str copy];
+  [self setStringValue:str forAttribute:kHrefAttr];
 }
 
 - (NSString *)originalID {
-  return originalID_;
+  return [self stringValueForAttribute:kIDAttr];
 }
 
 - (void)setOriginalID:(NSString *)str {
-  [originalID_ autorelease]; 
-  originalID_ = [str copy];
+  [self setStringValue:str forAttribute:kIDAttr];
 }
 
 - (GDataWhen *)originalStartTime {
-  return originalStartTime_; 
+  return [self objectForExtensionClass:[GDataWhen class]];
 }
 
 - (void)setOriginalStartTime:(GDataWhen *)startTime {
-  [originalStartTime_ autorelease];  
-  originalStartTime_ = [startTime retain];
+  [self setObject:startTime forExtensionClass:[GDataWhen class]];
 }
 @end

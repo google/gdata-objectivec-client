@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -32,20 +32,17 @@
 // http://code.google.com/apis/gdata/common-elements.html#gdOriginalEvent
 
 @interface GDataOriginalEvent : GDataObject <NSCopying, GDataExtension> {
-  NSString *href_;
-  NSString *originalID_;
-  GDataWhen *originalStartTime_;
 }
 + (GDataOriginalEvent *)originalEventWithID:(NSString *)originalID
                                        href:(NSString *)feedHref
                           originalStartTime:(GDataWhen *)startTime;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (NSString *)href;
 - (void)setHref:(NSString *)str;
+
 - (NSString *)originalID;
 - (void)setOriginalID:(NSString *)str;
+
 - (GDataWhen *)originalStartTime;
 - (void)setOriginalStartTime:(GDataWhen *)startTime;
 @end

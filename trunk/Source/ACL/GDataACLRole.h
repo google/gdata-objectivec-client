@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,21 +35,19 @@ _EXTERN NSString* const kGDataRoleReader    _INITIALIZE_AS(@"reader");
 _EXTERN NSString* const kGDataRoleWriter    _INITIALIZE_AS(@"writer");
 _EXTERN NSString* const kGDataRoleOwner     _INITIALIZE_AS(@"owner");
 
-// an element with type attribute, as in
+// an element with a value attribute, as in
 //  <gAcl:role value='owner'></gAcl:role>
-@interface GDataACLRole : GDataObject <NSCopying, GDataExtension> {
-  NSString *value_;
+//
+//  http://code.google.com/apis/calendar/reference.html#gacl_reference
+
+
+@interface GDataACLRole : GDataObject <GDataExtension> {
 }
 
 + (GDataACLRole *)roleWithValue:(NSString *)value;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 - (NSString *)value;
-- (void)setValue:(NSString *)str;
+- (void)setValue:(NSString *)str; 
 
 @end
 

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@
 #define GDATAWEBCONTENT_DEFINE_GLOBALS 1
 #import "GDataWebContent.h"
 #import "GDataEntryCalendarEvent.h"
+
+static NSString* const kHeightAttr = @"height";
+static NSString* const kWidthAttr = @"width";
+static NSString* const kURLAttr = @"url";
 
 @implementation GDataWebContentGadgetPref
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
@@ -61,60 +65,23 @@
                                    childClass:[GDataWebContentGadgetPref class]];
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setHeight:[self intNumberForAttributeName:@"height" 
-                                        fromElement:element]];
-    [self setWidth:[self intNumberForAttributeName:@"width" 
-                                       fromElement:element]];
-    [self setURLString:[self stringForAttributeName:@"url" 
-                                        fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [height_ release];
-  [width_ release];
-  [url_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataWebContent* newObj = [super copyWithZone:zone];
-  [newObj setHeight:[self height]];
-  [newObj setWidth:[self width]];
-  [newObj setURLString:[self URLString]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataWebContent *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataWebContent class]]) return NO;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kHeightAttr, kWidthAttr, kURLAttr, nil];
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self height], [other height])
-    && AreEqualOrBothNil([self width], [other width])
-    && AreEqualOrBothNil([self URLString], [other URLString]);
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:height_ withName:@"height"];
-  [self addToArray:items objectDescriptionIfNonNil:width_ withName:@"width"];
-  [self addToArray:items objectDescriptionIfNonNil:url_ withName:@"URL"];
+  NSMutableArray *items = [super itemsForDescription];
   
   // make an array of name=value items for gadget prefs
   NSArray *prefs = [self gadgetPreferences];
   NSMutableArray *prefsItems = [NSMutableArray array];
-  int numPrefs = [prefs count];
+  NSUInteger numPrefs = [prefs count];
   
   if (numPrefs) {
-    for (int idx = 0; idx < numPrefs; idx++) {
+    for (NSUInteger idx = 0; idx < numPrefs; idx++) {
       GDataWebContentGadgetPref *pref = [prefs objectAtIndex:idx];
       
       NSString *str = [NSString stringWithFormat:@"%@=%@", 
@@ -129,42 +96,28 @@
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gCal:webContent"];
-  
-  [self addToElement:element attributeValueIfNonNil:[[self height] stringValue] withName:@"height"];
-  [self addToElement:element attributeValueIfNonNil:[[self width] stringValue] withName:@"width"];
-  [self addToElement:element attributeValueIfNonNil:[self URLString] withName:@"url"];
-  
-  return element;
-}
-
 - (NSNumber *)height {
-  return height_; 
+  return [self intNumberForAttribute:kHeightAttr]; 
 }
 
 - (void)setHeight:(NSNumber *)num {
-  [height_ autorelease];
-  height_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kHeightAttr];
 }
 
 - (NSNumber *)width {
-  return width_; 
+  return [self intNumberForAttribute:kWidthAttr]; 
 }
 
 - (void)setWidth:(NSNumber *)num {
-  [width_ autorelease];
-  width_ = [num copy];
+  [self setStringValue:[num stringValue] forAttribute:kWidthAttr];
 }
 
 - (NSString *)URLString {
-  return url_; 
+  return [self stringValueForAttribute:kURLAttr]; 
 }
 
 - (void)setURLString:(NSString *)str {
-  [url_ autorelease];
-  url_ = [str copy];
+  [self setStringValue:str forAttribute:kURLAttr];
 }
 
 // extensions
@@ -188,16 +141,15 @@
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
   
   NSArray *prefs = [self gadgetPreferences];
-  int numPrefs = [prefs count];
+  NSUInteger numPrefs = [prefs count];
   
-  for (int idx = 0; idx < numPrefs; idx++) {
+  for (NSUInteger idx = 0; idx < numPrefs; idx++) {
     GDataWebContentGadgetPref *pref = [prefs objectAtIndex:idx];
     [dictionary setObject:[pref value] forKey:[pref name]];
   }
 
   return dictionary;
 }
-
 
 @end
 

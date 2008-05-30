@@ -41,9 +41,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   const UInt8 theXORValue = 0x95; // 0x95 = 0xb10010101
   
   UInt8 *dataPtr = [mutable mutableBytes];
-  unsigned int length = [mutable length];
+  NSUInteger length = [mutable length];
   
-  for (unsigned int idx = 0; idx < length; idx++) {
+  for (NSUInteger idx = 0; idx < length; idx++) {
     dataPtr[idx] ^= theXORValue;
   }
 }
@@ -76,6 +76,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 - (void)dealloc {
+  [serviceVersion_ release];
   [userAgent_ release];
   [fetchHistory_ release];
   [runLoopModes_ release];
@@ -95,7 +96,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *systemString = @"";
   
 #ifndef GDATA_FOUNDATION_ONLY
-  long systemMajor = 0, systemMinor = 0, systemRelease = 0;
+  SInt32 systemMajor = 0, systemMinor = 0, systemRelease = 0;
   (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
   (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
   (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
@@ -157,7 +158,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return requestUserAgent;
 }
 
-- (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url 
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod {
   
   // subclasses may add headers to this
   NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url
@@ -166,8 +169,46 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   NSString *requestUserAgent = [self requestUserAgent];
   [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
+  
+  NSString *serviceVersion = [self serviceVersion];
+  if ([serviceVersion length] > 0) {
+    [request setValue:serviceVersion forHTTPHeaderField:@"GData-Version"];
+  }
+  
   if ([httpMethod length] > 0) {
     [request setHTTPMethod:httpMethod];
+  }
+  
+  if ([etag length] > 0) {
+    
+    // it's rather unexpected for an etagged object to be provided for a GET, 
+    // but we'll check for an etag anyway, similar to HttpGDataRequest.java,
+    // and if present use it to request only an unchanged resource
+    
+    BOOL isDoingHTTPGet = (httpMethod == nil 
+               || [httpMethod caseInsensitiveCompare:@"GET"] == NSOrderedSame);
+    
+    if (isDoingHTTPGet) {
+      
+      // set the etag header, even if weak, indicating we don't want 
+      // another copy of the resource if it's the same as the object
+      [request setValue:etag forHTTPHeaderField:@"If-None-Match"]; 
+      
+    } else {
+      
+      // if we're doing PUT or DELETE, set the etag header indicating
+      // we only want to update the resource if our copy matches the current
+      // one (unless the etag is weak and so shouldn't be a constraint at all)
+      BOOL isWeakETag = [etag hasPrefix:@"W/"];
+      
+      BOOL isDoingPutOrDelete = 
+        [httpMethod caseInsensitiveCompare:@"PUT"] == NSOrderedSame
+        || [httpMethod caseInsensitiveCompare:@"DELETE"] == NSOrderedSame;
+      
+      if (isDoingPutOrDelete && !isWeakETag) {
+        [request setValue:etag forHTTPHeaderField:@"If-Match"]; 
+      }
+    }
   }
   
   return request;
@@ -181,9 +222,26 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url 
                                       object:(GDataObject *)object
+                                        ETag:(NSString *)etag
                                   httpMethod:(NSString *)httpMethod {
   
+  // if the object being sent has an etag, add it to the request header to
+  // avoid retrieving a duplicate or to avoid writing over an updated
+  // version of the resource on the server
+  //
+  // Typically, delete requests will provide an explicit ETag parameter, and
+  // other requests will have the ETag carried inside the object being updated
+  
+  if (etag == nil) {
+    SEL selEtag = @selector(ETag);
+    if ([object respondsToSelector:selEtag]) {
+      
+      etag = [object performSelector:selEtag];
+    }
+  }
+
   NSMutableURLRequest *request = [self requestForURL:url
+                                                ETag:etag
                                           httpMethod:httpMethod];
   
   [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
@@ -191,15 +249,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [request setValue:@"application/atom+xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"]; // header is authoritative for character set issues.
   
   [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
-  
+    
   return request;
 }
+
 
 #pragma mark -
 
 - (GDataServiceTicketBase *)fetchObjectWithURL:(NSURL *)feedURL
                                    objectClass:(Class)objectClass
                                   objectToPost:(GDataObject *)objectToPost
+                                          ETag:(NSString *)etag
                                     httpMethod:(NSString *)httpMethod
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
@@ -212,6 +272,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   NSMutableURLRequest *request = [self objectRequestForURL:feedURL
                                                     object:objectToPost
+                                                      ETag:etag
                                                 httpMethod:httpMethod];
   
   // we need to create a ticket unless one was created earlier (like during
@@ -392,7 +453,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSError *error = nil;
   
   GDataObject* object = nil;
-  unsigned int dataLength = [data length];
+  NSUInteger dataLength = [data length];
   
   // create the object returned by the service, if any
   if (dataLength > 0) {
@@ -689,6 +750,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   startedTicket = [self fetchObjectWithURL:nextFeedURL
                                objectClass:[[ticket accumulatedFeed] class]
                               objectToPost:nil
+                                      ETag:nil
                                 httpMethod:nil
                                   delegate:delegate
                          didFinishSelector:finishedSelector
@@ -742,6 +804,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [self fetchObjectWithURL:feedURL
                       objectClass:feedClass
                      objectToPost:nil
+                             ETag:nil
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -759,6 +822,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [self fetchObjectWithURL:entryURL
                       objectClass:entryClass
                      objectToPost:nil
+                             ETag:nil
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -776,6 +840,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [self fetchObjectWithURL:feedURL
                       objectClass:[entryToInsert class]
                      objectToPost:entryToInsert
+                             ETag:nil
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -794,6 +859,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [self fetchObjectWithURL:entryURL
                       objectClass:[entryToUpdate class]
                      objectToPost:entryToUpdate
+                             ETag:nil
                        httpMethod:@"PUT"
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -807,10 +873,27 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                      delegate:(id)delegate
                             didFinishSelector:(SEL)finishedSelector
                               didFailSelector:(SEL)failedSelector {
+  // This routine is deprecated for services that have been updated to support
+  // ETags
+  //
+  // pass through with a nil ETag
+  return [self deleteResourceURL:resourceEditURL
+                            ETag:nil
+                        delegate:self
+               didFinishSelector:finishedSelector
+                 didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
+                                         ETag:(NSString *)etag
+                                     delegate:(id)delegate
+                            didFinishSelector:(SEL)finishedSelector
+                              didFailSelector:(SEL)failedSelector {
   
   return [self fetchObjectWithURL:resourceEditURL
                       objectClass:nil
                      objectToPost:nil
+                             ETag:etag
                        httpMethod:@"DELETE"
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -837,10 +920,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                           delegate:(id)delegate
                                  didFinishSelector:(SEL)finishedSelector
                                    didFailSelector:(SEL)failedSelector {
+
+  // add batch namespace, if needed
+  if ([[batchFeed namespaces] objectForKey:kGDataNamespaceBatchPrefix] == nil) {
+    
+    [batchFeed addNamespaces:[GDataEntryBase batchNamespaces]];
+  }
   
   return [self fetchObjectWithURL:feedURL
                       objectClass:[batchFeed class]
                      objectToPost:batchFeed
+                             ETag:nil
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -850,6 +940,18 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 #pragma mark -
+
+// Subclasses typically override serviceVersion to specify the expected
+// version of the feed, but clients may also explicitly set the version
+// if they are using an instance of the base class directly.
+- (NSString *)serviceVersion {
+  return serviceVersion_;  
+}
+
+- (void)setServiceVersion:(NSString *)str {
+  [serviceVersion_ autorelease];
+  serviceVersion_ = [str copy];
+}
 
 - (NSString *)userAgent {
   return userAgent_; 
@@ -1287,7 +1389,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   objectFetcher_ = [fetcher retain];
 }
 
-- (int)statusCode {
+- (NSInteger)statusCode {
   return [objectFetcher_ statusCode];  
 }
 

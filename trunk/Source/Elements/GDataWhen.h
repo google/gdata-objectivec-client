@@ -26,20 +26,18 @@
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdWhen
 
-@interface GDataWhen : GDataObject <NSCopying, GDataExtension> {
-  GDataDateTime* startTime_;
-  GDataDateTime* endTime_;
-  NSString* value_; 
+@interface GDataWhen : GDataObject <GDataExtension> {
 }
+
 + (GDataWhen *)whenWithStartTime:(GDataDateTime *)startTime
                          endTime:(GDataDateTime *)endTime;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (GDataDateTime *)startTime;
 - (void)setStartTime:(GDataDateTime *)cdate;
+
 - (GDataDateTime *)endTime;
 - (void)setEndTime:(GDataDateTime *)cdate;
+
 - (NSString *)value;
 - (void)setValue:(NSString *)str;
 @end

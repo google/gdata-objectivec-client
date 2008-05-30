@@ -20,6 +20,11 @@
 #define GDATACATEGORY_DEFINE_GLOBALS 1
 #import "GDataCategory.h"
 
+static NSString* const kSchemeAttr = @"scheme";
+static NSString* const kTermAttr = @"term";
+static NSString* const kLabelAttr = @"label";
+static NSString* const kLangAttr = @"xml:lang";
+
 @implementation GDataCategory
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"
@@ -48,111 +53,61 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setScheme:[self stringForAttributeName:@"scheme" fromElement:element]];
-    [self setTerm:[self stringForAttributeName:@"term" fromElement:element]];
-    [self setLabel:[self stringForAttributeName:@"label" fromElement:element]];
-    [self setLabelLang:[self stringForAttributeName:@"xml:lang" fromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kSchemeAttr, kTermAttr, kLabelAttr, kLangAttr, nil];
+  
+  // we don't declare xml:lang since we'll be excluding it from
+  // the isEqual: comparison
+  
+  [self addLocalAttributeDeclarations:attrs];    
 }
 
-- (void)dealloc {
-  [scheme_ release];
-  [term_ release];
-  [label_ release];
-  [labelLang_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataCategory* newCategory = [super copyWithZone:zone];
-  [newCategory setScheme:[self scheme]];
-  [newCategory setTerm:[self term]];
-  [newCategory setLabel:[self label]];
-  [newCategory setLabelLang:[self labelLang]];
-  return newCategory;
-}
-
-- (BOOL)isEqual:(GDataCategory *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataCategory class]]) return NO;
+- (NSArray *)attributesIgnoredForEquality {
   
   // per Category.java: this should exclude label and labelLang,
   // but the GMail provider is generating categories which
   // have identical terms but unique labels, so we need to compare
-  // label values as well
+  // label values as well, though not xml:lang
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self scheme], [other scheme])
-    && AreEqualOrBothNil([self term], [other term])
-    && AreEqualOrBothNil([self label], [other label]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:scheme_    withName:@"scheme"];
-  [self addToArray:items objectDescriptionIfNonNil:term_      withName:@"term"];
-  [self addToArray:items objectDescriptionIfNonNil:label_     withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:labelLang_ withName:@"labelLang"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"category"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self scheme]    withName:@"scheme"];
-  [self addToElement:element attributeValueIfNonNil:[self term]      withName:@"term"];
-  [self addToElement:element attributeValueIfNonNil:[self label]     withName:@"label"];
-  [self addToElement:element attributeValueIfNonNil:[self labelLang] withName:@"xml:lang"];
-  
-  return element;
+  return [NSArray arrayWithObject:kLangAttr];
 }
 
 // should we override hash function like Java does?
 
 - (NSString *)scheme {
-  return scheme_; 
+  return [self stringValueForAttribute:kSchemeAttr];
 }
 
 - (void)setScheme:(NSString *)str {
-  [scheme_ autorelease];
-  scheme_ = [str copy];
+  [self setStringValue:str forAttribute:kSchemeAttr];
 }
 
 - (NSString *)term {
-  return term_; 
+  return [self stringValueForAttribute:kTermAttr];
 }
 
 - (void)setTerm:(NSString *)str {
-  [term_ autorelease];
-  term_ = [str copy];
-}
-
-- (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kTermAttr];
 }
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
-- (void)setLabelLang:(NSString *)str {
-  [labelLang_ autorelease];
-  labelLang_ = [str copy];
+- (void)setLabel:(NSString *)str {
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)labelLang {
-  return labelLang_; 
+  return [self stringValueForAttribute:kLangAttr];
 }
+
+- (void)setLabelLang:(NSString *)str {
+  [self setStringValue:str forAttribute:kLangAttr];
+}
+
 @end
 
 @implementation NSArray(GDataCategoryArray)

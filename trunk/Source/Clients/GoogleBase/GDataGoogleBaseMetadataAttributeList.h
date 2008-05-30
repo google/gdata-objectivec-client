@@ -36,8 +36,8 @@
 - (NSXMLElement *)XMLElement;
 
 
-- (NSArray *)attributes;
-- (void)setAttributes:(NSArray *)attributes;
-- (void)addAttribute:(GDataGoogleBaseMetadataAttribute *)attribute;
+- (NSArray *)metadataAttributes;
+- (void)setMetadataAttributes:(NSArray *)attributes;
+- (void)addMetadataAttribute:(GDataGoogleBaseMetadataAttribute *)attribute;
 
 @end

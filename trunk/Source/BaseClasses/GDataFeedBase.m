@@ -88,6 +88,10 @@
 
 - (void)setupFromXMLElement:(NSXMLElement *)root {
   
+  [self setETag:[self stringForAttributeLocalName:@"etag"
+                                              URI:kGDataNamespaceGData
+                                      fromElement:root]];
+  
   [self setGenerator:[self objectForChildOfElement:root
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
@@ -193,6 +197,7 @@
   [rights_ release];
   [icon_ release];
   [logo_ release];
+  [etag_ release];
   
   [links_ release];
   [authors_ release];
@@ -213,6 +218,8 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataFeedBase* newFeed = [super copyWithZone:zone];
   
+  [newFeed setETag:[self ETag]];
+
   [newFeed setGenerator:[self generator]];
   
   [newFeed setIdentifier:[self identifier]];
@@ -244,6 +251,7 @@
   if (![other isKindOfClass:[GDataFeedBase class]]) return NO;
 
   return [super isEqual:other]
+    && AreEqualOrBothNil([self ETag], [other ETag])
     && AreEqualOrBothNil([self identifier], [other identifier])
     && AreEqualOrBothNil([self title], [other title])
     && AreEqualOrBothNil([self subtitle], [other subtitle])
@@ -268,7 +276,9 @@
   NSMutableArray *items = [NSMutableArray array];
   
   [self addToArray:items integerValue:[entries_ count] withName:@"entries"];
-  
+
+  [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
+
   [self addToArray:items objectDescriptionIfNonNil:[title_ stringValue] withName:@"title"];
   [self addToArray:items objectDescriptionIfNonNil:[subtitle_ stringValue] withName:@"subtitle"];
   [self addToArray:items objectDescriptionIfNonNil:[rights_ stringValue] withName:@"rights"];
@@ -298,8 +308,11 @@
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"feed"];
   
-  [self addToElement:element childWithStringValueIfNonEmpty:[self identifier] withName:@"id"];
+  [self addToElement:element attributeValueIfNonNil:[self ETag] 
+        withLocalName:@"etag" URI:kGDataNamespaceGData];
   
+  [self addToElement:element childWithStringValueIfNonEmpty:[self identifier] withName:@"id"];
+
   if ([self generator]) {
     [element addChild:[[self generator] XMLElement]]; 
   } 
@@ -553,6 +566,15 @@
 - (void)setItemsPerPage:(NSNumber *)num {
   [itemsPerPage_ autorelease]; 
   itemsPerPage_ = [num copy];
+}
+
+- (NSString *)ETag {
+  return etag_; 
+}
+
+- (void)setETag:(NSString *)str {
+  [etag_ autorelease];
+  etag_ = [str copy];
 }
 
 - (NSArray *)entries {

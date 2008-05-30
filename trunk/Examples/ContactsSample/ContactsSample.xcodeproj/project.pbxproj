@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F12A6770D91CF32001E5C30 /* GData.framework in Copy GData framework */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
 		4F3584050C0F54500027B642 /* ContactsSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3584010C0F54500027B642 /* ContactsSampleAppController.m */; };
 		4F3584070C0F54500027B642 /* ContactsSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3584030C0F54500027B642 /* ContactsSampleWindowController.m */; };
 		4F3584250C0F56AD0027B642 /* ContactsSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F35841F0C0F56AD0027B642 /* ContactsSampleWindow.nib */; };
@@ -58,7 +57,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				4F12A6770D91CF32001E5C30 /* GData.framework in Copy GData framework */,
 			);
 			name = "Copy GData framework";
 			runOnlyForDeploymentPostprocessing = 0;

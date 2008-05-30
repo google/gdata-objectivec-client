@@ -21,6 +21,11 @@
 #import "GDataFeedLink.h"
 #import "GDataFeedBase.h"
 
+static NSString *const kHrefAttr = @"href";
+static NSString *const kRelAttr = @"rel";
+static NSString *const KReadOnlyAttr = @"readOnly";
+static NSString *const kCountHintAttr = @"countHint";
+
 @implementation GDataFeedLink
 // a link to a feed, like
 // <gd:feedLink href="http://example.com/Jo/posts/MyFirstPost/comments" countHint="10">
@@ -30,6 +35,14 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"feedLink"; }
+
+- (void)addParseDeclarations {
+  
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kHrefAttr, kRelAttr, KReadOnlyAttr, kCountHintAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];  
+}
 
 + (GDataFeedLink *)feedLinkWithHref:(NSString *)href
                          isReadOnly:(BOOL)isReadOnly {
@@ -44,15 +57,6 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    [self setHref:[self stringForAttributeName:@"href"
-                                   fromElement:element]];
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setIsReadOnly:(nil != [self stringForAttributeName:@"readOnly"
-                                                 fromElement:element])]; 
-    
-    [self setCountHint:[self intNumberForAttributeName:@"countHint"
-                                           fromElement:element]];
     
     [self setFeed:[self objectForChildOfElement:element
                                   qualifiedName:@"feed"
@@ -63,19 +67,12 @@
 }
 
 - (void)dealloc {
-  [href_ release];
-  [countHint_ release];
-  [rel_ release];
   [feed_ release];
   [super dealloc];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataFeedLink* newLink = [super copyWithZone:zone];
-  [newLink setHref:[self href]];
-  [newLink setIsReadOnly:[self isReadOnly]];
-  [newLink setCountHint:[self countHint]];
-  [newLink setRel:[self rel]];
   [newLink setFeed:[[[self feed] copyWithZone:zone] autorelease]];
   return newLink;
 }
@@ -85,42 +82,29 @@
   if (![other isKindOfClass:[GDataFeedLink class]]) return NO;
   
   return [super isEqual:other]
-    && AreEqualOrBothNil([self href], [other href])
-    && AreBoolsEqual([self isReadOnly], [other isReadOnly])
-    && AreEqualOrBothNil([self countHint], [other countHint])
-    && AreEqualOrBothNil([self rel], [other rel])
     && AreEqualOrBothNil([self feed], [other feed]);
 }
 
 - (NSArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:href_ withName:@"href"];
+  // add items in most useful order, with rel last
   
-  NSString *roString = (isReadOnly_ ? @"true" : nil);
+  [self addToArray:items objectDescriptionIfNonNil:[self href] withName:@"href"];
+  
+  NSString *roString = ([self isReadOnly] ? @"true" : nil);
   [self addToArray:items objectDescriptionIfNonNil:roString withName:@"readOnly"];
 
-  [self addToArray:items objectDescriptionIfNonNil:[countHint_ stringValue] withName:@"countHint"];
-  [self addToArray:items objectDescriptionIfNonNil:feed_ withName:@"feed"];
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self countHint] stringValue] withName:@"countHint"];
+  [self addToArray:items objectDescriptionIfNonNil:[self feed] withName:@"feed"];
+  [self addToArray:items objectDescriptionIfNonNil:[self rel] withName:@"rel"];
 
   return items;
 }
 
 - (NSXMLElement *)XMLElement {
   
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:feedLink"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self href] withName:@"href"];
-
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-
-  NSString *roString = (isReadOnly_ ? @"true" : nil);
-  [self addToElement:element attributeValueIfNonNil:roString  withName:@"readOnly"];
-
-  if ([self countHint]) {
-    [self addToElement:element attributeValueIfNonNil:[countHint_ stringValue] withName:@"countHint"];
-  }
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
 
   if ([self feed]) {
     [element addChild:[[self feed] XMLElement]];
@@ -129,38 +113,35 @@
 }
 
 - (NSString *)href {
-  return href_; 
+  return [self stringValueForAttribute:kHrefAttr];
 }
 
 - (void)setHref:(NSString *)str {
-  [href_ autorelease];
-  href_ = [str copy];
+  [self setStringValue:str forAttribute:kHrefAttr];
 }
 
 - (BOOL)isReadOnly {
-  return isReadOnly_; 
+  return [self boolValueForAttribute:KReadOnlyAttr defaultValue:NO];
 }
 
 - (void)setIsReadOnly:(BOOL)isReadOnly {
-  isReadOnly_ = isReadOnly;
+  [self setBoolValue:isReadOnly defaultValue:NO forAttribute:KReadOnlyAttr];
 }
 
 - (NSNumber *)countHint {
-  return countHint_; 
+  return [self intNumberForAttribute:kCountHintAttr];
 }
 
 -(void)setCountHint:(NSNumber *)val {
-  [countHint_ autorelease];
-  countHint_ = [val copy]; 
+  [self setStringValue:[val stringValue] forAttribute:kCountHintAttr];
 }
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (GDataFeedBase *)feed {
@@ -175,8 +156,9 @@
 // convenience method
 
 - (NSURL *)URL {
-  if ([href_ length] > 0) {
-    return [NSURL URLWithString:href_]; 
+  NSString *href = [self href];
+  if ([href length] > 0) {
+    return [NSURL URLWithString:href]; 
   }
   return nil;
 }

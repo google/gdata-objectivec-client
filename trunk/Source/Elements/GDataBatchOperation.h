@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -37,16 +37,9 @@ _EXTERN NSString* kGDataBatchOperationQuery  _INITIALIZE_AS(@"query");
 
 // for batch operations, like
 //  <batch:operation type="insert"/>
-@interface GDataBatchOperation : GDataObject <NSCopying, GDataExtension> {
-  NSString *type_;
-}
+@interface GDataBatchOperation : GDataObject <GDataExtension>
 
 + (GDataBatchOperation *)batchOperationWithType:(NSString *)type;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)type;
 - (void)setType:(NSString *)str;

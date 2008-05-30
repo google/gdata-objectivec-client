@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 
 #import "GDataCodeSearchMatch.h"
 #import "GDataEntryCodeSearch.h"
+
+static NSString* const kLineNumberAttr = @"lineNumber";
 
 @implementation GDataCodeSearchMatch 
 
@@ -45,63 +47,22 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setLineNumberString:[self stringForAttributeName:@"lineNumber" 
-                                               fromElement:element]];
-    // stringValue and type are set by the superclass, GDataTextConstruct
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [lineNumberString_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataCodeSearchMatch* newObj = [super copyWithZone:zone];
-  [newObj setLineNumberString:[self lineNumberString]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataCodeSearchMatch *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataCodeSearchMatch class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self lineNumberString], [other lineNumberString]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  // we're a subclass of GDataTextConstruct, so add its attributes and
+  // content value also
+  [super addParseDeclarations];
   
-  [self addToArray:items objectDescriptionIfNonNil:content_ withName:@"content"];
-  [self addToArray:items objectDescriptionIfNonNil:type_    withName:@"type"];
-  [self addToArray:items objectDescriptionIfNonNil:lineNumberString_ withName:@"lineNumber"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [super XMLElement];
-  
-  [self addToElement:element attributeValueIfNonNil:[self lineNumberString] withName:@"lineNumber"];
-  
-  return element;
+  NSArray *attrs = [NSArray arrayWithObject:kLineNumberAttr];
+  [self addLocalAttributeDeclarations:attrs];  
 }
 
 - (NSString *)lineNumberString {
-  return lineNumberString_; 
+  return [self stringValueForAttribute:kLineNumberAttr];
 }
 
 - (void)setLineNumberString:(NSString *)str {
-  [lineNumberString_ autorelease];
-  lineNumberString_ = [str copy];
+  [self setStringValue:str forAttribute:kLineNumberAttr];
 }
 @end
 

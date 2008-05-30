@@ -39,18 +39,10 @@
 @end
 
 
-@interface GDataOrganization : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSString *label_;
-  BOOL isPrimary_;
+@interface GDataOrganization : GDataObject <GDataExtension> {
 }
 
 + (GDataOrganization *)organizationWithName:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;

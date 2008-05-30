@@ -45,7 +45,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
            inArray:(NSMutableArray *)cookieStorageArray;
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
-- (BOOL)shouldRetryNowForStatus:(int)status error:(NSError *)error;
+- (BOOL)shouldRetryNowForStatus:(NSInteger)status error:(NSError *)error;
 - (void)destroyRetryTimer;
 - (void)beginRetryTimer;
 - (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs;
@@ -273,9 +273,9 @@ CannotBeginFetch:
 }
 
 // Returns the status code set in connection:didReceiveResponse:
-- (int)statusCode {
+- (NSInteger)statusCode {
   
-  int statusCode;
+  NSInteger statusCode;
   
   if (response_ != nil 
     && [response_ respondsToSelector:@selector(statusCode)]) {
@@ -541,7 +541,7 @@ CannotBeginFetch:
         }
       }
       
-      int statusCode = [self statusCode];
+      NSInteger statusCode = [self statusCode];
       if (statusCode != kGDataHTTPFetcherStatusNotModified) {
         
         // save this last modified date string for successful results (<300)
@@ -564,9 +564,9 @@ CannotBeginFetch:
 // 200 ("OK") to the caller (but leave the fetcher status as 304) 
 // and copy the cached data to downloadedData_.  
 // For other errors or if there's no cached data, just return the actual status.
-- (int)statusAfterHandlingNotModifiedError {
+- (NSInteger)statusAfterHandlingNotModifiedError {
   
-  int status = [self statusCode];
+  NSInteger status = [self statusCode];
   if (status == kGDataHTTPFetcherStatusNotModified && shouldCacheDatedData_) {
     
     // get the dictionary of URLs and data
@@ -592,7 +592,7 @@ CannotBeginFetch:
   
   [self logFetchWithError:nil];
   
-  int status = [self statusAfterHandlingNotModifiedError];
+  NSInteger status = [self statusAfterHandlingNotModifiedError];
   
   // if there's an error status and the client gave us a status error
   // selector, then call that selector
@@ -687,7 +687,7 @@ CannotBeginFetch:
 // and the status or error is one that is suitable for retrying.  "Suitable"
 // means either the isRetryError:'s list contains the status or error, or the
 // user's retrySelector: is present and returns YES when called.
-- (BOOL)shouldRetryNowForStatus:(int)status
+- (BOOL)shouldRetryNowForStatus:(NSInteger)status
                           error:(NSError *)error {
   
   if ([self isRetryEnabled]) {
@@ -1022,7 +1022,7 @@ CannotBeginFetch:
 - (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie
                                inArray:(NSArray *)cookieStorageArray {
 
-  int numberOfCookies = [cookieStorageArray count];
+  NSUInteger numberOfCookies = [cookieStorageArray count];
   NSString *name = [cookie name];
   NSString *domain = [cookie domain];
   NSString *path = [cookie path];
@@ -1030,7 +1030,7 @@ CannotBeginFetch:
   NSAssert3(name && domain && path, @"Invalid cookie (name:%@ domain:%@ path:%@)", 
                    name, domain, path);
   
-  for (int idx = 0; idx < numberOfCookies; idx++) {
+  for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
     
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
 
@@ -1049,7 +1049,7 @@ CannotBeginFetch:
 - (void)removeExpiredCookiesInArray:(NSMutableArray *)cookieStorageArray {
   
   // count backwards since we're deleting items from the array
-  for (int idx = [cookieStorageArray count] - 1; idx >= 0; idx--) {
+  for (NSInteger idx = [cookieStorageArray count] - 1; idx >= 0; idx--) {
     
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
     
@@ -1087,8 +1087,8 @@ CannotBeginFetch:
     }
   }
   
-  int numberOfCookies = [cookieStorageArray count];
-  for (int idx = 0; idx < numberOfCookies; idx++) {
+  NSUInteger numberOfCookies = [cookieStorageArray count];
+  for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
     
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
     

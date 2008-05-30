@@ -24,11 +24,12 @@
 // stream have completed.
 
 #import <Foundation/Foundation.h>
+#import "GDataDefines.h"
 
 @interface GDataGatherInputStream : NSInputStream {
   
   NSArray* dataArray_;   // NSDatas that should be "gathered" and streamed.
-  int arrayIndex_;       // Index in the array of the current NSData.
+  NSUInteger arrayIndex_;       // Index in the array of the current NSData.
   long long dataOffset_; // Offset in the current NSData we are processing.
   
   id delegate_;          // WEAK, not retained: stream delegate, defaults to self

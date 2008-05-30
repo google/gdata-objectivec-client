@@ -19,6 +19,9 @@
 
 #import "GDataWhen.h"
 
+static NSString* const kValueAttr = @"valueString";
+static NSString* const kStartTimeAttr = @"startTime";
+static NSString* const kEndTimeAttr = @"endTime";
 
 @implementation GDataWhen
 // when element, as in
@@ -38,95 +41,36 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setValue:[self stringForAttributeName:@"valueString"
-                                    fromElement:element]];    
-    [self setStartTime:[self dateTimeForAttributeName:@"startTime"
-                                          fromElement:element]];
-    [self setEndTime:[self dateTimeForAttributeName:@"endTime"
-                                        fromElement:element]];
-    
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kValueAttr, kStartTimeAttr, kEndTimeAttr, nil];
+  [self addLocalAttributeDeclarations:attrs];
 }
 
-- (void)dealloc {
-  [startTime_ release];
-  [endTime_ release];
-  [value_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataWhen* when = [super copyWithZone:zone];
-  [when setStartTime:[[[self startTime] copyWithZone:zone] autorelease]];
-  [when setEndTime:[[[self endTime] copyWithZone:zone] autorelease]];
-  [when setValue:[self value]];
-  return when;
-}
-
-- (BOOL)isEqual:(GDataWhen *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataWhen class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self startTime], [other startTime])
-    && AreEqualOrBothNil([self endTime], [other endTime])
-    && AreEqualOrBothNil([self value], [other value]); 
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:startTime_ withName:@"start"];
-  [self addToArray:items objectDescriptionIfNonNil:endTime_ withName:@"end"];
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:when"];
-  
-  [self addToElement:element attributeValueIfNonNil:[[self startTime] RFC3339String] withName:@"startTime"];
-  [self addToElement:element attributeValueIfNonNil:[[self endTime] RFC3339String]   withName:@"endTime"];
-
-  [self addToElement:element attributeValueIfNonNil:[self value] withName:@"valueString"];
-    
-  return element;
-}
-
+#pragma mark -
 
 - (GDataDateTime *)startTime {
-  return startTime_;
+  return [self dateTimeForAttribute:kStartTimeAttr]; 
 }
 
 - (void)setStartTime:(GDataDateTime *)cdate {
-  [startTime_ autorelease];
-  startTime_ = [cdate retain];
+  [self setDateTimeValue:cdate forAttribute:kStartTimeAttr];
 }
 
 - (GDataDateTime *)endTime {
-  return endTime_; 
+  return [self dateTimeForAttribute:kEndTimeAttr]; 
 }
 
 - (void)setEndTime:(GDataDateTime *)cdate {
-  [endTime_ autorelease];
-  endTime_ = [cdate retain];
+  [self setDateTimeValue:cdate forAttribute:kEndTimeAttr];
 }
 
 - (NSString *)value {
-  return value_; 
+  return [self stringValueForAttribute:kValueAttr]; 
 }
 
 - (void)setValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setStringValue:str forAttribute:kValueAttr];
 }
 
 @end

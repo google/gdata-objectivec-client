@@ -84,9 +84,9 @@ _EXTERN NSString* kGDataGoogleBaseAttributeTypeLocation _INITIALIZE_AS(@"locatio
 //   <g:image_link type="url">http://catalogs.shoplocal.com/lib/DiscoveryStore/Library/b_730408_xl.jpg</g:image_link>
 //  </entry>
 
-- (NSArray *)attributes;
-- (void)setAttributes:(NSArray *)attrs;
-- (void)addAttribute:(GDataGoogleBaseAttribute *)attr;
+- (NSArray *)entryAttributes;
+- (void)setEntryAttributes:(NSArray *)attrs;
+- (void)addEntryAttribute:(GDataGoogleBaseAttribute *)attr;
 
 // Metadata Attributes are from attribute feeds, and contain values
 // http://code.google.com/apis/base/attributes-feed.html

@@ -38,7 +38,6 @@
     nil];
   
   [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
-  [namespaces addEntriesFromDictionary:[GDataEntryBase batchNamespaces]];
   
   return namespaces;
 }
@@ -87,8 +86,8 @@
     [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"]; 
   }
   
-  if ([[self attributes] count]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self attributes] withName:@"attributes"]; 
+  if ([[self entryAttributes] count]) {
+    [self addToArray:items objectDescriptionIfNonNil:[self entryAttributes] withName:@"attributes"]; 
   }
   
   if ([self metadataItemType]) {
@@ -114,16 +113,16 @@
 
 // attributes
 
-- (NSArray *)attributes {
+- (NSArray *)entryAttributes {
   NSArray *attributes = [self objectsForExtensionClass:[GDataGoogleBaseAttribute class]];
   return attributes;
 }
 
-- (void)setAttributes:(NSArray *)attrs {
+- (void)setEntryAttributes:(NSArray *)attrs {
   [self setObjects:attrs forExtensionClass:[GDataGoogleBaseAttribute class]]; 
 }
 
-- (void)addAttribute:(GDataGoogleBaseAttribute *)attr {
+- (void)addEntryAttribute:(GDataGoogleBaseAttribute *)attr {
   [self addObject:attr forExtensionClass:[GDataGoogleBaseAttribute class]]; 
 }
 
@@ -217,7 +216,7 @@
 // than actual attribute names.
 - (NSDictionary *)attributeDictionary {
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-  NSArray *allAttributes = [self attributes];
+  NSArray *allAttributes = [self entryAttributes];
   
   for (int idx = 0; idx < [allAttributes count]; idx++) {
     
@@ -243,7 +242,7 @@
 - (NSArray *)attributesWithName:(NSString *)name
                            type:(NSString *)type {
   
-  NSArray *allAttributes = [self attributes];
+  NSArray *allAttributes = [self entryAttributes];
   NSMutableArray *matchingAttributes = [NSMutableArray array];
   
   for (int idx = 0; idx < [allAttributes count]; idx++) {
@@ -281,11 +280,11 @@
   NSArray *matchingAttributes = [self attributesWithName:name
                                                     type:type];
   
-  NSMutableArray *allAttributes = [NSMutableArray arrayWithArray:[self attributes]];
+  NSMutableArray *allAttributes = [NSMutableArray arrayWithArray:[self entryAttributes]];
 
   [allAttributes removeObjectsInArray:matchingAttributes];
   
-  [self setAttributes:allAttributes];
+  [self setEntryAttributes:allAttributes];
 }
 
 - (void)setAttributeWithName:(NSString *)name
@@ -295,9 +294,9 @@
   [self removeAttributesWithName:name type:type]; 
   
   if (value) {
-    [self addAttribute:[GDataGoogleBaseAttribute attributeWithName:name
-                                                              type:type
-                                                         textValue:value]];
+    [self addEntryAttribute:[GDataGoogleBaseAttribute attributeWithName:name
+                                                                   type:type
+                                                              textValue:value]];
   }
 }
 
@@ -329,9 +328,9 @@
 }
 
 - (void)addLabel:(NSString *)str {
-  [self addAttribute:[GDataGoogleBaseAttribute attributeWithName:@"label"
-                                                            type:kGDataGoogleBaseAttributeTypeText
-                                                       textValue:str]];  
+  [self addEntryAttribute:[GDataGoogleBaseAttribute attributeWithName:@"label"
+                                                                 type:kGDataGoogleBaseAttributeTypeText
+                                                            textValue:str]];  
 }
 
 // item type
@@ -377,9 +376,9 @@
 }
 
 - (void)addImageLink:(NSString *)str {
-  [self addAttribute:[GDataGoogleBaseAttribute attributeWithName:@"image link"
-                                                            type:kGDataGoogleBaseAttributeTypeURL
-                                                       textValue:str]];    
+  [self addEntryAttribute:[GDataGoogleBaseAttribute attributeWithName:@"image link"
+                                                                 type:kGDataGoogleBaseAttributeTypeURL
+                                                            textValue:str]];    
 }
 
 // payment method
@@ -397,9 +396,9 @@
   NSArray *existingMethods = [self paymentMethods];
 
   if (![existingMethods containsObject:str]) {
-    [self addAttribute:[GDataGoogleBaseAttribute attributeWithName:@"payment accepted"
-                                                              type:kGDataGoogleBaseAttributeTypeText
-                                                         textValue:str]];      
+    [self addEntryAttribute:[GDataGoogleBaseAttribute attributeWithName:@"payment accepted"
+                                                                   type:kGDataGoogleBaseAttributeTypeText
+                                                              textValue:str]];      
   }
 }
 

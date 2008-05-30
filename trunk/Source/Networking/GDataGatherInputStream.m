@@ -51,21 +51,21 @@
   [super dealloc];
 }
 
-- (int)read:(uint8_t *)buffer maxLength:(unsigned int)len {
+- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
   
-  unsigned int bytesRead = 0;
-  unsigned int bytesRemaining = len;
+  NSUInteger bytesRead = 0;
+  NSUInteger bytesRemaining = len;
   
   // read bytes from the currently-indexed array
   while ((bytesRemaining > 0) && (arrayIndex_ < [dataArray_ count])) {
     
     NSData* data = [dataArray_ objectAtIndex:arrayIndex_];
     
-    int dataLen = [data length];
-    int dataBytesLeft = dataLen - (unsigned int)dataOffset_;
+    NSUInteger dataLen = [data length];
+    NSUInteger dataBytesLeft = dataLen - (NSUInteger)dataOffset_;
     
-    unsigned int bytesToCopy = MIN(bytesRemaining, dataBytesLeft);
-    NSRange range = NSMakeRange((unsigned int) dataOffset_, bytesToCopy);
+    NSUInteger bytesToCopy = MIN(bytesRemaining, dataBytesLeft);
+    NSRange range = NSMakeRange((NSUInteger) dataOffset_, bytesToCopy);
 
     [data getBytes:(buffer + bytesRead) range:range];
 

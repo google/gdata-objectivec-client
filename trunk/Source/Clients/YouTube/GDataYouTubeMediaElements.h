@@ -38,9 +38,7 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 
 // media content with YouTube's addition of an integer format attribute, 
 // like yt:format="1"
-@interface GDataYouTubeMediaContent : GDataMediaContent {
-  NSNumber* youTubeFormatNumber_; 
-}
+@interface GDataMediaContent (YouTubeExtensions)
 - (NSNumber *)youTubeFormatNumber;
 - (void)setYouTubeFormatNumber:(NSNumber *)num;
 @end
@@ -53,12 +51,4 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 
 - (BOOL)isPrivate;
 - (void)setIsPrivate:(BOOL)flag;
-
-// override the superclass's mediaContents to store extensions
-// and retrieve GDataYouTubeMediaContent in the extensions list
-- (NSArray *)mediaContents;
-- (void)setMediaContents:(NSArray *)array;
-- (void)addMediaContent:(GDataYouTubeMediaContent *)attribute;
-  
 @end
-

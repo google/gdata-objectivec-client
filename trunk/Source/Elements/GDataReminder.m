@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,6 +21,13 @@
 #import "GDataReminder.h"
 #import "GDataDateTime.h"
 
+static NSString* const kDaysAttr = @"days";
+static NSString* const kHoursAttr = @"hours";
+static NSString* const kMinutesAttr = @"minutes";
+static NSString* const kMethodAttr = @"method";
+static NSString* const kAbsoluteTimeAttr = @"absoluteTime";
+
+
 @implementation GDataReminder
 // reminder, as in 
 //   <gd:reminder absoluteTime="2005-06-06T16:55:00-08:00"/>
@@ -35,119 +42,54 @@
   return [[[GDataReminder alloc] init] autorelease];
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setDays:[self stringForAttributeName:@"days"
-                                   fromElement:element]];
-    [self setHours:[self stringForAttributeName:@"hours"
-                                    fromElement:element]];
-    [self setMinutes:[self stringForAttributeName:@"minutes"
-                                      fromElement:element]];
-    [self setMethod:[self stringForAttributeName:@"method"
-                                      fromElement:element]];
-    
-    NSString *str = [self stringForAttributeName:@"absoluteTime"
-                                     fromElement:element];
-    if (str) {
-      GDataDateTime *ctime = [GDataDateTime dateTimeWithRFC3339String:str];
-      [self setAbsoluteTime:ctime];
-    }
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [absoluteTime_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataReminder* newReminder = [super copyWithZone:zone];
-  [newReminder setDays:[self days]];
-  [newReminder setHours:[self hours]];
-  [newReminder setMinutes:[self minutes]];
-  [newReminder setMethod:[self method]];
-  [newReminder setAbsoluteTime:[[[self absoluteTime] copyWithZone:zone] autorelease]];
-  return newReminder;
-}
-
-- (BOOL)isEqual:(GDataReminder *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataReminder class]]) return NO;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kDaysAttr, kHoursAttr, kMinutesAttr, 
+                    kAbsoluteTimeAttr, kMethodAttr, nil];
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self days], [other days])
-    && AreEqualOrBothNil([self hours], [other hours])
-    && AreEqualOrBothNil([self minutes], [other minutes])
-    && AreEqualOrBothNil([self method], [other method])
-    && AreEqualOrBothNil([self absoluteTime], [other absoluteTime]);
+  [self addLocalAttributeDeclarations:attrs];
 }
 
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  if (days_)         [self addToArray:items objectDescriptionIfNonNil:days_    withName:@"days"];
-  else if (hours_)   [self addToArray:items objectDescriptionIfNonNil:hours_   withName:@"hours"];
-  else if (minutes_) [self addToArray:items objectDescriptionIfNonNil:minutes_ withName:@"minutes"];
-  else [self addToArray:items objectDescriptionIfNonNil:absoluteTime_ withName:@"absolute"];
-  
-  [self addToArray:items objectDescriptionIfNonNil:method_ withName:@"method"];
-
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:reminder"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self days] withName:@"days"];
-  [self addToElement:element attributeValueIfNonNil:[self hours] withName:@"hours"];
-  [self addToElement:element attributeValueIfNonNil:[self minutes] withName:@"minutes"];
-  [self addToElement:element attributeValueIfNonNil:[self method] withName:@"method"];
-
-  [self addToElement:element attributeValueIfNonNil:[[self absoluteTime] RFC3339String] withName:@"absoluteTime"];
-    
-  return element;
-}
-
+#pragma mark -
 
 - (NSString *)days {
-  return days_; 
+  return [self stringValueForAttribute:kDaysAttr];
 }
+
 - (void)setDays:(NSString *)str {
-  [days_ autorelease];
-  days_ = [str copy]; 
+  [self setStringValue:str forAttribute:kDaysAttr];
 }
+
 - (NSString *)hours {
-  return hours_; 
+  return [self stringValueForAttribute:kHoursAttr];
 }
+
 - (void)setHours:(NSString *)str {
-  [hours_ autorelease];
-  hours_ = [str copy];
+  [self setStringValue:str forAttribute:kHoursAttr];
 }
+
 - (NSString *)minutes {
-  return minutes_; 
+  return [self stringValueForAttribute:kMinutesAttr];
 }
+
 - (void)setMinutes:(NSString *)str {
-  [minutes_ autorelease];
-  minutes_ = [str copy]; 
+  [self setStringValue:str forAttribute:kMinutesAttr];
 }
+
 - (NSString *)method {
-  return method_; 
+  return [self stringValueForAttribute:kMethodAttr];
 }
+
 - (void)setMethod:(NSString *)str {
-  [method_ autorelease];
-  method_ = [str copy]; 
+  [self setStringValue:str forAttribute:kMethodAttr];
 }
+
 - (GDataDateTime *)absoluteTime {
-  return absoluteTime_; 
+  return [self dateTimeForAttribute:kAbsoluteTimeAttr];
 }
+
 - (void)setAbsoluteTime:(GDataDateTime *)cdate {
-  [absoluteTime_ autorelease];
-  absoluteTime_ = [cdate retain];
+  [self setDateTimeValue:cdate forAttribute:kAbsoluteTimeAttr];
 }
 @end
 

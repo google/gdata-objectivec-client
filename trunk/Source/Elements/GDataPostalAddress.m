@@ -19,6 +19,10 @@
 
 #import "GDataPostalAddress.h"
 
+static NSString* const kRelAttr = @"rel";
+static NSString* const kLabelAttr = @"label";
+static NSString* const kPrimaryAttr = @"primary";
+
 @implementation GDataPostalAddress
 // postal address, as in
 //  <gd:postalAddress>
@@ -38,113 +42,53 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setLabel:[self stringForAttributeName:@"label"
-                                    fromElement:element]];
-    
-    [self setStringValue:[self stringValueFromElement:element]]; // ? should we strip leading/trailing whitespace? strip per line or just for the whole block?
-    
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setIsPrimary:[self boolForAttributeName:@"primary"
-                                      fromElement:element]];
-  }
-  return self;
+
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects: 
+                    kLabelAttr, kRelAttr, kPrimaryAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];
+  
+  [self addContentValueDeclaration];
 }
 
-- (void)dealloc {
-  [label_ release];
-  [value_ release];
-  [rel_ release];
-  [super dealloc];
+- (NSArray *)attributesIgnoredForEquality {
+  
+  return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
-- (id)copyWithZone:(NSZone *)zone {
-  GDataPostalAddress* newObj = [super copyWithZone:zone];
-  [newObj setLabel:[self label]];
-  [newObj setStringValue:[self stringValue]];
-  [newObj setRel:[self rel]];
-  [newObj setIsPrimary:[self isPrimary]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataPostalAddress *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataPostalAddress class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self label], [other label])
-    && AreEqualOrBothNil([self stringValue], [other stringValue])
-    && AreEqualOrBothNil([self rel], [other rel]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  
-  if (isPrimary_) [items addObject:@"primary"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:postalAddress"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-  
-  if ([self isPrimary]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"primary"]; 
-  }
-  
-  if ([self stringValue]) {
-    [element addStringValue:[self stringValue]];
-  }
-  
-  return element;
-}
+#pragma mark -
 
 - (NSString *)label {
-  return label_; 
+  return [self stringValueForAttribute:kLabelAttr]; 
 }
 
 - (void)setLabel:(NSString *)str {
-  [label_ autorelease];
-  label_ = [str copy];
+  [self setStringValue:str forAttribute:kLabelAttr];
 }
 
 - (NSString *)stringValue {
-  return value_; 
+  return [self contentStringValue]; 
 }
 
 - (void)setStringValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setContentStringValue:str];
 }
 
 - (NSString *)rel {
-  return rel_; 
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (BOOL)isPrimary {
-  return isPrimary_; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO]; 
 }
 
 - (void)setIsPrimary:(BOOL)flag {
-  isPrimary_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 @end
 

@@ -25,10 +25,6 @@
 // <gd:feedLink href="http://example.com/Jo/posts/MyFirstPost/comments" countHint="10">
 
 @interface GDataFeedLink : GDataObject <NSCopying, GDataExtension> {
-  NSString *href_;
-  BOOL isReadOnly_; // boolean NSNumber
-  NSNumber *countHint_;
-  NSString *rel_;
   GDataFeedBase *feed_;
 }
 

@@ -20,6 +20,8 @@
 #import "GDataElements.h"
 
 #import "GDataEntryContact.h"
+#import "GDataEntryContactGroup.h"
 #import "GDataFeedContact.h"
+#import "GDataFeedContactGroup.h"
 #import "GDataServiceGoogleContact.h"
 #import "GDataQueryContact.h"

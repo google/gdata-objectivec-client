@@ -15,6 +15,7 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
+#import "GDataDefines.h"
 #import "GDataMIMEDocument.h"
 #import "GDataMIMEDocumentTest.h"
 
@@ -28,14 +29,14 @@
   // reads the data from the input stream and verifies that it matches
   // the expected string
   
-  int expectedLength = [expectedResultString length];
+  NSInteger expectedLength = [expectedResultString length];
   
   // now read the document from the input stream
   unsigned char buffer[9999];
   memset(buffer, 0, sizeof(buffer));
   
   [inputStream open];
-  int bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];
+  NSInteger bytesRead = [inputStream read:buffer maxLength:sizeof(buffer)];
   [inputStream close];
   
   NSString *readString = [NSString stringWithUTF8String:(const char * )buffer];
@@ -64,9 +65,9 @@
   STAssertEqualObjects(boundary, @"END_OF_PART", @"bad boundary");
   
   NSString *expectedString = @"\r\n--END_OF_PART--\r\n";
-  int expectedLength = [expectedString length];
+  NSUInteger expectedLength = [expectedString length];
   
-  STAssertEquals((int)length, expectedLength,
+  STAssertEquals((NSUInteger)length, expectedLength,
                @"Reported document length should be expected length.");
   
   [self doReadTestForInputStream:stream
@@ -104,9 +105,9 @@
   
   STAssertEqualObjects(boundary, @"END_OF_PART", @"bad boundary");
   
-  int expectedLength = [expectedResultString length];
+  NSUInteger expectedLength = [expectedResultString length];
   
-  STAssertEquals((int)length, expectedLength,
+  STAssertEquals((NSUInteger)length, expectedLength,
                  @"Reported document length should be expected length.");
   
   // now read the document from the input stream

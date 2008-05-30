@@ -36,15 +36,15 @@
   
   struct DateTimeTestRecord {
     NSString *dateTimeStr;
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    int second;
-    int timeZoneOffsetSeconds;
-    int isUniversalTime;
-    int hasTime;
+    NSInteger year;
+    NSInteger month;
+    NSInteger day;
+    NSInteger hour;
+    NSInteger minute;
+    NSInteger second;
+    NSInteger timeZoneOffsetSeconds;
+    BOOL isUniversalTime;
+    BOOL hasTime;
   };
   
   struct DateTimeTestRecord tests[] = {
@@ -68,16 +68,16 @@
     NSCalendar *cal = [dateTime calendar];
     NSDateComponents *outputComponents = [cal components:kComponents 
                                                 fromDate:outputDate];
-    STAssertTrue([outputComponents year] == tests[idx].year, @"bad year (%d, expected %d");
-    STAssertTrue([outputComponents month] == tests[idx].month, @"bad month (%d, expected %d");
-    STAssertTrue([outputComponents day] == tests[idx].day, @"bad day (%d, expected %d");
-    STAssertTrue([outputComponents hour] == tests[idx].hour, @"bad hour (%d, expected %d");
-    STAssertTrue([outputComponents minute] == tests[idx].minute, @"bad minute (%d, expected %d");
-    STAssertTrue([outputComponents second] == tests[idx].second, @"bad second (%d, expected %d");
+    STAssertEquals([outputComponents year], tests[idx].year, @"bad year");
+    STAssertEquals([outputComponents month], tests[idx].month, @"bad month");
+    STAssertEquals([outputComponents day], tests[idx].day, @"bad day");
+    STAssertEquals([outputComponents hour], tests[idx].hour, @"bad hour");
+    STAssertEquals([outputComponents minute], tests[idx].minute, @"bad minute");
+    STAssertEquals([outputComponents second], tests[idx].second, @"bad second");
 
-    STAssertTrue([[dateTime timeZone] secondsFromGMT] == tests[idx].timeZoneOffsetSeconds, @"bad timezone");
-    STAssertTrue([dateTime isUniversalTime] == (tests[idx].isUniversalTime != 0), @"bad Zulu value");
-    STAssertTrue([dateTime hasTime] == (tests[idx].hasTime != 0), @"bad hasTime value");
+    STAssertEquals([[dateTime timeZone] secondsFromGMT], tests[idx].timeZoneOffsetSeconds, @"bad timezone");
+    STAssertEquals([dateTime isUniversalTime], tests[idx].isUniversalTime, @"bad Zulu value");
+    STAssertEquals([dateTime hasTime], tests[idx].hasTime, @"bad hasTime value");
     
     if ([dateTime hasTime]) {
       // remove the time, test the output

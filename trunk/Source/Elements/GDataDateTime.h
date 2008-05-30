@@ -18,11 +18,11 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "GDataDefines.h"
 
 @interface GDataDateTime : NSObject <NSCopying> {
   NSDateComponents *dateComponents_;
-  int offsetSeconds_; // may be NSUndefinedDateComponent
+  NSInteger offsetSeconds_; // may be NSUndefinedDateComponent
   BOOL isUniversalTime_; // preserves "Z"
   NSTimeZone *timeZone_; // specific time zone by name, if known
 }
@@ -51,8 +51,8 @@
 - (BOOL)hasTime;
 - (void)setHasTime:(BOOL)shouldHaveTime;
 
-- (int)offsetSeconds;
-- (void)setOffsetSeconds:(int)val;
+- (NSInteger)offsetSeconds;
+- (void)setOffsetSeconds:(NSInteger)val;
 
 - (BOOL)isUniversalTime;
 - (void)setIsUniversalTime:(BOOL)flag;

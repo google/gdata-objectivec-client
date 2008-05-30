@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@
 
 #import "GDataFeedLink.h"
 
+static NSString* const kRelAttr = @"rel";
+
 @implementation GDataComment
 // a commments entry, as in
 // <gd:comments>
@@ -39,79 +41,44 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel" 
-                                  fromElement:element]];
-    [self setFeedLink:[self objectForChildOfElement:element
-                                      qualifiedName:@"gd:feedLink"
-                                       namespaceURI:kGDataNamespaceGData
-                                        objectClass:[GDataFeedLink class]]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [rel_ release];
-  [feedLink_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataComment* newComment = [super copyWithZone:zone];
-  [newComment setFeedLink:[[[self feedLink] copyWithZone:zone] autorelease]];
-  [newComment setRel:[self rel]];
-  return newComment;
-}
-
-- (BOOL)isEqual:(GDataComment *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataComment class]]) return NO;
+- (void)addExtensionDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self feedLink], [other feedLink]);
+  [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataFeedLink class]];  
+}
+
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObject:kRelAttr]; 
+  
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+  NSMutableArray *items = [super itemsForDescription];
   
-  [self addToArray:items objectDescriptionIfNonNil:rel_ withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:feedLink_ withName:@"feedLink"];
+  [self addToArray:items objectDescriptionIfNonNil:[self feedLink] withName:@"feedLink"];
   
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:comments"];
-
-  [self addToElement:element attributeValueIfNonNil:[self rel] withName:@"rel"];
-
-  if (feedLink_) {
-    [element addChild:[feedLink_ XMLElement]];
-  }
-  return element;
-}
+#pragma mark -
 
 - (NSString *)rel {
-  return rel_;
+  return [self stringValueForAttribute:kRelAttr]; 
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (GDataFeedLink *)feedLink {
-  return feedLink_;
+  return [self objectForExtensionClass:[GDataFeedLink class]]; 
 }
 
-- (void)setFeedLink:(GDataFeedLink *)newLink {
-  [feedLink_ autorelease];
-  feedLink_ = [newLink retain];
+- (void)setFeedLink:(GDataFeedLink *)feedLink {
+  [self setObject:feedLink forExtensionClass:[GDataFeedLink class]];
 }
+
 @end

@@ -30,20 +30,11 @@
 //    </errors>
 //  </batch:status>
 
-@interface GDataBatchStatus : GDataObject <NSCopying, GDataExtension> {
-  NSNumber *code_;
-  NSString *reason_;
-  NSString *contentType_;
-  NSString *content_;
+@interface GDataBatchStatus : GDataObject <GDataExtension> {
 }
 
 + (GDataBatchStatus *)batchStatusWithCode:(int)code
                                    reason:(NSString *)reason;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)reason;
 - (void)setReason:(NSString *)str;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -43,59 +43,16 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setStringValue:[self stringValueFromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [value_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataRecurrence* newRecurrence = [super copyWithZone:zone];
-  [newRecurrence setStringValue:[self stringValue]];
-  return newRecurrence;
-}
-
-- (BOOL)isEqual:(GDataRecurrence *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataRecurrence class]]) return NO;
+- (void)addParseDeclarations {
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:recurrence"];
-
-  if ([[self stringValue] length]) {
-    [element addStringValue:[self stringValue]];
-  }
-  
-  return element;
+  [self addContentValueDeclaration];
 }
 
 - (NSString *)stringValue {
-  return value_; 
+  return [self contentStringValue]; 
 }
 
 - (void)setStringValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setContentStringValue:str];
 }
 @end

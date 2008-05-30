@@ -20,6 +20,13 @@
 #define GDATALINK_DEFINE_GLOBALS 1
 #import "GDataLink.h"
 
+static NSString *const kRelAttr = @"rel";
+static NSString *const kTypeAttr = @"type";
+static NSString *const kHrefAttr = @"href";
+static NSString *const kHrefLangAttr = @"hrefLang";
+static NSString *const kTitleAttr = @"title";
+static NSString *const kLangAttr = @"xml:lang";
+static NSString *const kLengthAttr = @"length";
 
 @implementation GDataLink
 // for links, like <link rel="alternate" type="text/html"
@@ -39,163 +46,79 @@
   return link;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setRel:[self stringForAttributeName:@"rel"
-                                  fromElement:element]];
-    [self setType:[self stringForAttributeName:@"type"
-                                   fromElement:element]];
-    [self setHref:[self stringForAttributeName:@"href"
-                                   fromElement:element]];
-    [self setHrefLang:[self stringForAttributeName:@"hreflang"
-                                       fromElement:element]];
-    [self setTitle:[self stringForAttributeName:@"title"
-                                    fromElement:element]];
-    [self setTitleLang:[self stringForAttributeName:@"xml:lang"
-                                        fromElement:element]];
-    [self setResourceLength:[self intNumberForAttributeName:@"length"
-                                                fromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kRelAttr, kTypeAttr, kHrefAttr, kHrefLangAttr,
+                    kTitleAttr, kLangAttr, kLengthAttr, nil];
+  
+  [self addLocalAttributeDeclarations:attrs];    
 }
 
-- (void)dealloc {
-  [rel_ release];
-  [type_ release];
-  [href_ release];
-  [hrefLang_ release];
-  [title_ release];
-  [titleLang_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataLink* newLink = [super copyWithZone:zone];
-  [newLink setRel:[self rel]];
-  [newLink setType:[self type]];
-  [newLink setHref:[self href]];
-  [newLink setHrefLang:[self hrefLang]];
-  [newLink setTitle:[self title]];
-  [newLink setTitleLang:[self titleLang]];
-  [newLink setResourceLength:[self resourceLength]];
-  return newLink;
-}
-
-- (BOOL)isEqual:(GDataLink *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataLink class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self rel], [other rel])
-    && AreEqualOrBothNil([self type], [other type])
-    && AreEqualOrBothNil([self href], [other href])
-    && AreEqualOrBothNil([self hrefLang], [other hrefLang])
-    && AreEqualOrBothNil([self title], [other title])
-    && AreEqualOrBothNil([self titleLang], [other titleLang])
-    && AreEqualOrBothNil([self resourceLength], [other resourceLength]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:rel_       withName:@"rel"];
-  [self addToArray:items objectDescriptionIfNonNil:type_      withName:@"type"];
-  [self addToArray:items objectDescriptionIfNonNil:href_      withName:@"href"];
-  [self addToArray:items objectDescriptionIfNonNil:hrefLang_  withName:@"hrefLang"];
-  [self addToArray:items objectDescriptionIfNonNil:title_     withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:titleLang_ withName:@"xml:lang"];
-  [self addToArray:items objectDescriptionIfNonNil:resourceLength_ withName:@"resourceLength"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"link"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self rel]       withName:@"rel"];
-  [self addToElement:element attributeValueIfNonNil:[self type]      withName:@"type"];
-  [self addToElement:element attributeValueIfNonNil:[self href]      withName:@"href"];
-  [self addToElement:element attributeValueIfNonNil:[self hrefLang]  withName:@"hrefLang"];
-  [self addToElement:element attributeValueIfNonNil:[self title]     withName:@"title"];
-  [self addToElement:element attributeValueIfNonNil:[self titleLang] withName:@"xml:lang"];
-  
-  [self addToElement:element attributeValueIfNonNil:[[self resourceLength] stringValue] withName:@"length"];
-  
-  return element;
-}
+#pragma mark -
 
 - (NSString *)rel {
-  return [rel_ length] ? rel_ : @"alternate"; // per Link.java
+  NSString *str = [self stringValueForAttribute:kRelAttr];
+  return [str length] > 0 ? str : @"alternate"; // per Link.java
 }
 
 - (void)setRel:(NSString *)str {
-  [rel_ autorelease];
-  rel_ = [str copy];
+  [self setStringValue:str forAttribute:kRelAttr];
 }
 
 - (NSString *)type {
-  return type_; 
+  return [self stringValueForAttribute:kTypeAttr]; 
 }
 
 - (void)setType:(NSString *)str {
-  [type_ autorelease];
-  type_ = [str copy];
+  [self setStringValue:str forAttribute:kTypeAttr];
 }
 
 - (NSString *)href {
-  return href_; 
+  return [self stringValueForAttribute:kHrefAttr]; 
 }
 
 - (void)setHref:(NSString *)str {
-  [href_ autorelease];
-  href_ = [str copy];
+  [self setStringValue:str forAttribute:kHrefAttr];
 }
 
 - (NSString *)hrefLang {
-  return hrefLang_; 
+  return [self stringValueForAttribute:kHrefLangAttr]; 
 }
 
 - (void)setHrefLang:(NSString *)str {
-  [hrefLang_ autorelease];
-  hrefLang_ = [str copy];
+  [self setStringValue:str forAttribute:kHrefLangAttr];
 }
 
 - (NSString *)title {
-  return title_; 
+  return [self stringValueForAttribute:kTitleAttr]; 
 }
 
 - (void)setTitle:(NSString *)str {
-  [title_ autorelease];
-  title_ = [str copy];
+  [self setStringValue:str forAttribute:kTitleAttr];
 }
 
 - (NSString *)titleLang {
-  return titleLang_; 
+  return [self stringValueForAttribute:kLangAttr]; 
 }
 
 - (void)setTitleLang:(NSString *)str {
-  [titleLang_ autorelease];
-  titleLang_ = [str copy];
+  [self setStringValue:str forAttribute:kLangAttr];
 }
 
 - (NSNumber *)resourceLength {
-  return resourceLength_; 
+  return [self intNumberForAttribute:kLengthAttr]; 
 }
 
 - (void)setResourceLength:(NSNumber *)length {
-  [resourceLength_ release];
-  resourceLength_ = [length copy];
+  [self setStringValue:[length stringValue] forAttribute:kLengthAttr];
 }
 
 // convenience method
 
 - (NSURL *)URL {
-  if ([href_ length]) {
-    return [NSURL URLWithString:href_]; 
+  NSString *href = [self href];
+  if ([href length] > 0) {
+    return [NSURL URLWithString:href]; 
   }
   return nil;
 }

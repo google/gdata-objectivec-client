@@ -28,9 +28,35 @@ import os
 import sys
 import re
 import mimetypes
+import socket
 from BaseHTTPServer import BaseHTTPRequestHandler
 from BaseHTTPServer import HTTPServer
 from optparse import OptionParser
+
+class ServerTimeoutException(Exception):
+  pass
+
+
+class HTTPTimeoutServer(HTTPServer):
+  
+  """HTTP server for testing network requests.
+  
+  This server will throw an exception if it receives no connections for
+  several minutes. We use this to ensure that the server will be cleaned
+  up if something goes wrong during the unit testing.
+  """
+
+  def get_request(self):
+    self.socket.settimeout(120.0)
+    result = None
+    while result is None:
+      try:
+        result = self.socket.accept()
+      except socket.timeout:
+        raise ServerTimeoutException
+    result[0].settimeout(None)
+    return result
+
 
 class SimpleServer(BaseHTTPRequestHandler):
 
@@ -230,14 +256,16 @@ def main():
                       default=".")
     (options, args) = parser.parse_args()
     os.chdir(options.root)
-    server = HTTPServer(("127.0.0.1", options.port), SimpleServer)
+    server = HTTPTimeoutServer(("127.0.0.1", options.port), SimpleServer)
     sys.stdout.write("started GDataTestServer.py...");
     sys.stdout.flush();
     server.serve_forever()
   except KeyboardInterrupt:
     print "^C received, shutting down server"
     server.socket.close()
-
+  except ServerTimeoutException:
+    print "Too long since the last request, shutting down server"
+    server.socket.close()
 
 if __name__ == "__main__":
   main()

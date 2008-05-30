@@ -21,100 +21,47 @@
 #import "GDataYouTubeMediaElements.h"
 #import "GDataEntryYouTubeVideo.h"
 
+@interface GDataYouTubeFormatAttribute : GDataAttribute <GDataExtension>
+@end
+
+@implementation GDataYouTubeFormatAttribute
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"format"; }
+@end
+
+@implementation GDataMediaContent (YouTubeExtensions)
+
 // media content with YouTube's addition of an integer format attribute, 
 // like yt:format="1"
-//
-// The library does not currently support attribute extensions, so we'll
-// subclass GDataMediaContent to add our attribute
-
-@implementation GDataYouTubeMediaContent
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    NSNumber *num = [self intNumberForAttributeLocalName:@"format"
-                                                     URI:kGDataNamespaceYouTube
-                                             fromElement:element];
-    [self setYouTubeFormatNumber:num];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [youTubeFormatNumber_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataYouTubeMediaContent* newObj = [super copyWithZone:zone];
-  [newObj setYouTubeFormatNumber:[self youTubeFormatNumber]];
-  return newObj; 
-}
-
-- (BOOL)isEqual:(GDataYouTubeMediaContent *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataYouTubeMediaContent class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self youTubeFormatNumber], [other youTubeFormatNumber]);
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [super XMLElement];
-  
-  NSString *str = [[self youTubeFormatNumber] stringValue];
-  
-  NSString *attributeName = [NSString stringWithFormat:@"%@:%@",
-    kGDataNamespaceYouTubePrefix, @"format"];
-  
-  [self addToElement:element attributeValueIfNonNil:str withName:attributeName];
-  
-  return element;
-}
-
-- (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self youTubeFormatNumber] withName:@"ytFormat"];
-  
-  return items;
-}
-
 - (NSNumber *)youTubeFormatNumber {
-  return youTubeFormatNumber_; 
+  NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeFormatAttribute class]];
+  NSNumber *number = [NSNumber numberWithInt:[str intValue]]; 
+  return number;
 }
 
 - (void)setYouTubeFormatNumber:(NSNumber *)num {
-  [youTubeFormatNumber_ autorelease];
-  youTubeFormatNumber_ = [num copy];
+  [self setAttributeValue:[num stringValue] forExtensionClass:[GDataYouTubeFormatAttribute class]];
 }
 
 @end
 
 @implementation GDataYouTubeMediaGroup
 
-// a media group that uses the YouTube media content elements instead
-// of the generic media content elements
+// a media group with YouTube extensions
 
 - (void)addExtensionDeclarations {
   
   [super addExtensionDeclarations];
   
-  // use our custom version of the MediaContent extension, replacing the
-  // extension used by the superclass GDataMediaGroup
-  [self removeExtensionDeclarationForParentClass:[self class]
-                                      childClass:[GDataMediaContent class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataYouTubeMediaContent class]];
-
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataYouTubeDuration class]];
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataYouTubePrivate class]];
+  
+  // add the yt:format attribute to GDataMediaContent
+  [self addAttributeExtensionDeclarationForParentClass:[GDataMediaContent class]
+                                            childClass:[GDataYouTubeFormatAttribute class]];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -154,23 +101,5 @@
   }
 }
 
-#pragma mark -
-
-// override the superclass's mediaContents to store 
-// and retrieve GDataYouTubeMediaContent in the extensions
-// list
-
-- (NSArray *)mediaContents {
-  NSArray *array = [self objectsForExtensionClass:[GDataYouTubeMediaContent class]];
-  return array;
-}
-
-- (void)setMediaContents:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataYouTubeMediaContent class]]; 
-}
-
-- (void)addMediaContent:(GDataYouTubeMediaContent *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataYouTubeMediaContent class]]; 
-}
 
 @end

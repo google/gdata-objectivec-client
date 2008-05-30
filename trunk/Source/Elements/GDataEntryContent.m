@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -16,8 +16,12 @@
 //
 //  GDataEntryContent.m
 //
+//  This is a subclass of GDataTextConstruct
+//
 
 #import "GDataEntryContent.h"
+
+static NSString* const kSourceAttr = @"src";
 
 @implementation GDataEntryContent
 // For content which may be text, like
@@ -34,74 +38,21 @@
   return obj;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self setType:@"text"];
-  }
-  return self;
-}
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    
-    [self setSourceURI:[self stringForAttributeName:@"src"
-                                        fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [src_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataEntryContent* newObj = [super copyWithZone:zone];
-  [newObj setSourceURI:[self sourceURI]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataEntryContent *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataEntryContent class]]) return NO;
+- (void)addParseDeclarations {
   
-  // note: type and other fields are part of the superclass, GDataTextConstruct
+  // we're a subclass of GDataTextConstruct, so add its attributes also
+  [super addParseDeclarations];
   
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self sourceURI], [other sourceURI]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:content_ withName:@""];
-  [self addToArray:items objectDescriptionIfNonNil:lang_    withName:@"lang"];
-  [self addToArray:items objectDescriptionIfNonNil:type_    withName:@"type"];
-  [self addToArray:items objectDescriptionIfNonNil:src_     withName:@"src"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [super XMLElement];
-
-  [self addToElement:element attributeValueIfNonNil:[self sourceURI] withName:@"src"];
-  
-  return element;
+  NSArray *attrs = [NSArray arrayWithObject:kSourceAttr];
+  [self addLocalAttributeDeclarations:attrs];  
 }
 
 - (NSString *)sourceURI {
-  return src_; 
+  return [self stringValueForAttribute:kSourceAttr];
 }
 
 - (void)setSourceURI:(NSString *)str {
-  [src_ autorelease];
-  src_ = [str copy];
+  [self setStringValue:str forAttribute:kSourceAttr];
 }
 
 @end

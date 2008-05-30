@@ -138,9 +138,13 @@
   return @"gbase";
 }
 
-- (NSMutableURLRequest *)requestForURL:(NSURL *)url httpMethod:(NSString *)httpMethod {
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod {
   
-  NSMutableURLRequest *request = [super requestForURL:url httpMethod:httpMethod];
+  NSMutableURLRequest *request = [super requestForURL:url
+                                                 ETag:etag
+                                           httpMethod:httpMethod];
   
   // add the developer key to the header
   if ([developerKey_ length] > 0) {

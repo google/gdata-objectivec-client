@@ -22,9 +22,14 @@
 
 #import "GDataEntryACL.h"
 
+static NSString* const kTypeAttr = @"type";
+static NSString* const kValueAttr = @"value";
+
 @implementation GDataACLScope
 // an element with type and value attributes, as in
 //  <gAcl:scope type='user' value='user@gmail.com'></gAcl:scope>
+//
+//  http://code.google.com/apis/calendar/reference.html#gacl_reference
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceACL; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceACLPrefix; }
@@ -37,75 +42,27 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setValue:[self stringForAttributeName:@"value"
-                                    fromElement:element]];
-    [self setType:[self stringForAttributeName:@"type"
-                                   fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [value_ release];
-  [type_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataACLScope* newValue = [super copyWithZone:zone];
-  [newValue setValue:[self value]];
-  [newValue setType:[self type]];
-  return newValue;
-}
-
-- (BOOL)isEqual:(GDataACLScope *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataACLScope class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self value], [other value])
-    && AreEqualOrBothNil([self type], [other type]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:type_ withName:@"type"];
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gAcl:scope"];
-  
-  [self addToElement:element attributeValueIfNonNil:[self value] withName:@"value"];
-  [self addToElement:element attributeValueIfNonNil:[self type] withName:@"type"];
-  
-  return element;
+- (void)addParseDeclarations {
+    
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kTypeAttr, kValueAttr, nil];
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSString *)value {
-  return value_; 
+  return [self stringValueForAttribute:kValueAttr];
 }
 
 - (void)setValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  [self setStringValue:str forAttribute:kValueAttr];
 }
 
 - (NSString *)type {
-  return type_; 
+  return [self stringValueForAttribute:kTypeAttr];
 }
 
 - (void)setType:(NSString *)str {
-  [type_ autorelease];
-  type_ = [str copy];
+  [self setStringValue:str forAttribute:kTypeAttr];
 }
 
 @end

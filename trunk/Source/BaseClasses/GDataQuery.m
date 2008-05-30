@@ -162,6 +162,7 @@
   [query setOrderBy:orderBy_];
   if (sortOrder_ != 0) [query setIsAscendingOrder:(sortOrder_ > 0)];
   [query setShouldShowDeleted:shouldShowDeleted_];
+  [query setIsStrict:isStrict_];
   [query setPublishedMinDateTime:publishedMinDateTime_];
   [query setPublishedMaxDateTime:publishedMaxDateTime_];
   [query setUpdatedMinDateTime:updatedMinDateTime_];
@@ -243,6 +244,14 @@
 
 - (void)setShouldShowDeleted:(BOOL)flag {
   shouldShowDeleted_ = flag; 
+}
+
+- (BOOL)isStrict {
+  return isStrict_;
+}
+
+- (void)setIsStrict:(BOOL)flag {
+  isStrict_ = flag; 
 }
 
 - (GDataDateTime *)publishedMinDateTime {
@@ -380,6 +389,10 @@
   
   if (shouldShowDeleted_) {
     [queryItems addObject:@"showdeleted=true"];
+  }
+  
+  if (isStrict_) {
+    [queryItems addObject:@"strict=true"];
   }
   
   GDataDateTime *minUpdatedDate = [self updatedMinDateTime];

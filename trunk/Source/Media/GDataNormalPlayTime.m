@@ -59,10 +59,10 @@ NSString* const kNowString = @"now";
   long hours = totalMinutes / 60L;
   
   if (fraction > 0) {
-    return [NSString stringWithFormat:@"%d:%02d:%02d.%03d",
+    return [NSString stringWithFormat:@"%ld:%02ld:%02ld.%03ld",
       hours, minutes, seconds, fraction];
   } 
-  return [NSString stringWithFormat:@"%d:%02d:%02d",
+  return [NSString stringWithFormat:@"%ld:%02ld:%02ld",
     hours, minutes, seconds];
 }
 

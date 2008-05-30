@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2007-2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -70,77 +70,41 @@
 
 #pragma mark -
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    NSString *attrName = [self attributeName];
-    if (attrName) {
-      // use the named attribute
-      [self setStringValue:[self stringForAttributeName:attrName
-                                            fromElement:element]];
-    } else {
-      // no named attribute; use the child node text
-      [self setStringValue:[self stringValueFromElement:element]];
-    }
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [value_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataValueConstruct* newValue = [super copyWithZone:zone];
-  [newValue setStringValue:[self stringValue]];
-  return newValue;
-}
-
-- (BOOL)isEqual:(GDataValueConstruct *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataValueConstruct class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self stringValue], [other stringValue]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:value_ withName:@"value"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
+- (void)addParseDeclarations {
 
   NSString *attrName = [self attributeName];
   
   if (attrName) {
-    // add as attribute
-    [self addToElement:element attributeValueIfNonNil:[self stringValue] withName:[self attributeName]];
+    
+    // there's a named attribute
+    NSArray *attr = [NSArray arrayWithObject:[self attributeName]];
+    [self addLocalAttributeDeclarations:attr];
+    
   } else {
-    // add as child node text
-    if ([[self stringValue] length] > 0) {
-      [element addStringValue:[self stringValue]];
-    }
+    
+    // no named attribute; use the element's child text as the value
+    [self addContentValueDeclaration];
   }
-  
-  return element;
 }
 
 - (NSString *)stringValue {
-  return value_; 
+  NSString *attrName = [self attributeName];
+  
+  if (attrName != nil) {
+    return [self stringValueForAttribute:attrName]; 
+  } else {
+    return [self contentStringValue]; 
+  }
 }
 
 - (void)setStringValue:(NSString *)str {
-  [value_ autorelease];
-  value_ = [str copy];
+  NSString *attrName = [self attributeName];
+  
+  if (attrName != nil) {
+    return [self setStringValue:str forAttribute:attrName]; 
+  } else {
+    return [self setContentStringValue:str]; 
+  }
 }
 
 - (NSString *)attributeName {

@@ -37,23 +37,12 @@ _EXTERN NSString* kGDataRatingQuality  _INITIALIZE_AS(@"http://schemas.google.co
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdRating
 
-@interface GDataRating : GDataObject <NSCopying, GDataExtension> {
-  NSString *rel_;
-  NSNumber *value_;
-  NSNumber *max_;
-  NSNumber *min_;
-  NSNumber *average_;
-  NSNumber *numberOfRaters_;
+@interface GDataRating : GDataObject <GDataExtension> {
 }
 
 + (GDataRating *)ratingWithValue:(int)value
                              max:(int)max
                              min:(int)min;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
