@@ -879,6 +879,16 @@ objectDescriptionIfNonNil:(id)obj
       // if the object is a feed or an entry, we might be able to determine the
       // type for this element from the XML
       elementClass = [GDataObject objectClassForXMLElement:objElement];
+      
+      // if a base feed class doesn't specify entry class, and the entry object
+      // class can't be determined by examining its XML, fall back on 
+      // instantiating the base entry class
+      if (elementClass == nil 
+          && [qualifiedName isEqual:@"entry"] 
+          && [namespaceURI isEqual:kGDataNamespaceAtom]) {
+        
+        elementClass = [GDataEntryBase class];
+      }      
     }
     
     elementClass = [self classOrSurrogateForClass:elementClass];
