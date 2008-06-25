@@ -1072,7 +1072,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     // add a batch ID to this entry
     static int staticID = 0;
     NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
-    [event setBatchID:[GDataBatchID batchIDWithString:batchID]];
+    [event setBatchIDWithString:batchID];
     
     // we don't need to add the batch operation to the entries since
     // we're putting it in the feed to apply to all entries

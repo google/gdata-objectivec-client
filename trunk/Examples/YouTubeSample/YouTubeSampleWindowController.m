@@ -321,6 +321,9 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
                                    password:nil];
   }
   
+  // Note: full authentication requires also calling setYouTubeDeveloperKey:
+  // as in the method -uploadVideoFile below.  Entries in feeds retrieved 
+  // without a developer key will not contain edit links.
   return service;
 }
 

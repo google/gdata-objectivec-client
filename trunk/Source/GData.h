@@ -25,6 +25,7 @@
 #import "GDataCodeSearch.h"
 #import "GDataDocs.h"
 #import "GDataElements.h"
+#import "GDataFinance.h"
 #import "GDataGoogleBase.h"
 #import "GDataPhotos.h"
 #import "GDataSpreadsheet.h"

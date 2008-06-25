@@ -17,6 +17,10 @@
 //  GDataQueryContact.h
 //
 
+// Contact API query parameters
+//
+// http://code.google.com/apis/contacts/reference.html#Parameters
+
 #import "GDataQuery.h"
 
 @interface GDataQueryContact : GDataQuery 
@@ -24,6 +28,9 @@
 + (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL;
 
 + (GDataQueryContact *)contactQueryForUserID:(NSString *)userID;
+
+- (NSString *)groupIdentifier;
+- (void)setGroupIdentifier:(NSString *)str;
 
 @end
 

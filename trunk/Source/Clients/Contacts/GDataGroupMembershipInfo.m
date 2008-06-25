@@ -20,12 +20,16 @@
 #import "GDataGroupMembershipInfo.h" 
 #import "GDataEntryContact.h"         // for namespace
 
+static NSString* const kHrefAttr = @"href";
+static NSString* const kDeletedAttr = @"deleted";
+
 @implementation GDataGroupMembershipInfo 
 //
 // group membership info 
 //
-// <gContact:groupMembershipInfo href="http://..." deleted="false" />
+// <gContact:groupMembershipInfo href="http://..." />
 //
+// http://code.google.com/apis/contacts/reference.html#groupMembershipInfo
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceContact; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceContactPrefix; }
@@ -38,86 +42,28 @@
   return obj;
 }
 
-- (void)addExtensionDeclarations {
+- (void)addParseDeclarations {
+  NSArray *attrs = [NSArray arrayWithObjects:kHrefAttr, kDeletedAttr, nil];
   
-  [super addExtensionDeclarations];
-  
-}
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setHref:[self stringForAttributeName:@"href"
-                                   fromElement:element]];
-    [self setIsDeleted:[self boolForAttributeName:@"deleted"
-                                      fromElement:element]];
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [href_ release];
-  [super dealloc];
-}
-
-
-- (BOOL)isEqual:(GDataGroupMembershipInfo *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataGroupMembershipInfo class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self href], [other href])
-    && AreBoolsEqual([self isDeleted], [other isDeleted]);
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataGroupMembershipInfo* newObj = [super copyWithZone:zone];
-  [newObj setHref:[self href]];
-  [newObj setIsDeleted:[self isDeleted]];
-  return newObj;
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self href] withName:@"href"];
-  
-  if ([self isDeleted]) [items addObject:@"deleted"];
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-
-  [self addToElement:element attributeValueIfNonNil:[self href] withName:@"href"];
-  if ([self isDeleted]) {
-    [self addToElement:element attributeValueIfNonNil:@"true" withName:@"deleted"];
-  }
-
-  return element;
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)href {
-  return href_; 
+  return [self stringValueForAttribute:kHrefAttr]; 
 }
 
 - (void)setHref:(NSString *)str {
-  [href_ autorelease];
-  href_ = [str copy];
+  [self setStringValue:str forAttribute:kHrefAttr];
 }
 
 - (BOOL)isDeleted {
-  return isDeleted_; 
+  return [self boolValueForAttribute:kDeletedAttr defaultValue:NO]; 
 }
 
 - (void)setIsDeleted:(BOOL)flag {
-  isDeleted_ = flag;
+  [self setBoolValue:flag defaultValue:NO forAttribute:kDeletedAttr];
 }
 
 @end

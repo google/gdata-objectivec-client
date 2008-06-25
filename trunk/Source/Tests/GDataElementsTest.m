@@ -37,6 +37,7 @@
                         " xmlns:batch='http://schemas.google.com/gdata/batch' "
                         " xmlns:app='http://purl.org/atom/app#'"
                         " xmlns:gcs='http://schemas.google.com/codesearch/2006'"
+                        " xmlns:gf='http://schemas.google.com/finance/2007'"
                         " xmlns:media='http://search.yahoo.com/mrss/'" 
                         " xmlns:gphoto='http://schemas.google.com/photos/2007'"
                         " xmlns:exif='http://schemas.google.com/photos/exif/2007'"
@@ -118,7 +119,7 @@
       [partialKeyPathList removeAllObjects];
 
       if ([thisKey isEqual:@"@count"]) {
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
+#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
         targetObj = [NSNumber numberWithInt:[targetArray count]];
 #else
         targetObj = [NSNumber numberWithUnsignedInteger:[targetArray count]];
@@ -744,6 +745,79 @@
     // note: this is properly unescaped for us by the XMLNode
     { @"", @"" },
       
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
+}
+
+- (void)testFinanceElements {
+  
+  ElementTestKeyPathValues tests[] =
+  {     
+    { @"GDataFinanceTransactionData", @" <gf:transactionData date='2007-11-07T00:00:00.000'"
+      " shares='1000.0' type='Buy' notes='Forgle Blipnot'> "
+      " <gf:commission> <gd:money amount='0.0' currencyCode='USD'/>"
+      " </gf:commission><gf:price><gd:money amount='730.0' currencyCode='USD'/>"
+      " </gf:price></gf:transactionData>" },
+    { @"type", @"Buy" },
+    { @"date", @"2007-11-07T00:00:00Z" },
+    { @"shares", @"1000" }, 
+    { @"notes", @"Forgle Blipnot" },
+    { @"commission.moneyWithPrimaryCurrency.amount", @"0" },
+    { @"price.moneyWithPrimaryCurrency.amount", @"730" },
+    { @"", @"" },
+    
+    { @"GDataFinanceSymbol", @"<gf:symbol exchange='NASDAQ' "
+      " fullName='Google Inc.' symbol='GOOG' />" }, 
+    { @"exchange", @"NASDAQ" },
+    { @"fullName", @"Google Inc." },
+    { @"symbol", @"GOOG" },
+    { @"", @"" },
+        
+    { @"GDataPortfolioData", @"<gf:portfolioData currencyCode='USD'"
+      " gainPercentage='1.894857932' return1w='-0.07711772724' return1y='0.3969560994'"
+      " return3m='0.197468495' return3y='1.228892613' return4w='-0.003721445821'"
+      " return5y='1.894857933' returnOverall='1.894857932' returnYTD='0.4172674026'>"
+      " <gf:costBasis><gd:money amount='52158.0' currencyCode='Euro'/></gf:costBasis>"
+      " <gf:daysGain><gd:money amount='7321.0' currencyCode='USD'/></gf:daysGain>"
+      " <gf:gain><gd:money amount='98832.0' currencyCode='USD'/> </gf:gain>"
+      " <gf:marketValue><gd:money amount='150990.0' currencyCode='USD'/>"
+      " <gd:money amount='200100.9' currencyCode='Euro'/> "
+      " </gf:marketValue> </gf:portfolioData>" },
+    { @"currencyCode", @"USD" },
+    { @"gainPercentage", @"1.894857932" },
+    { @"return1w", @"-0.07711772724" },
+    { @"return1y", @"0.3969560994" },
+    { @"return3m", @"0.197468495" },
+    { @"return3y", @"1.228892613" },
+    { @"return4w", @"-0.003721445821" },
+    { @"return5y", @"1.894857933" },
+    { @"returnOverall", @"1.894857932" },
+    { @"returnYTD", @"0.4172674026" },
+    { @"costBasis.moneyWithPrimaryCurrency.amount", @"52158" },
+    { @"costBasis.moneyWithPrimaryCurrency.currencyCode", @"Euro" },
+    { @"gain.moneyWithPrimaryCurrency.amount", @"98832" },
+    { @"gain.moneyWithPrimaryCurrency.currencyCode", @"USD" },
+    { @"daysGain.moneyWithPrimaryCurrency.amount", @"7321" },
+    { @"daysGain.moneyWithPrimaryCurrency.currencyCode", @"USD" },
+    { @"marketValue.moneyWithPrimaryCurrency.amount", @"150990" },
+    { @"marketValue.moneyWithPrimaryCurrency.currencyCode", @"USD" },
+    { @"marketValue.moneyWithSecondaryCurrency.amount", @"200100.9" },
+    { @"marketValue.moneyWithSecondaryCurrency.currencyCode", @"Euro" },
+    { @"", @"" },
+    
+    // position data shares implementation with portfolio data, except
+    // portfolio has "currencyCode" and position has "shares"
+    { @"GDataPositionData", @"<gf:positionData gainPercentage='4.31125' "
+      " shares='1000.2'><gf:costBasis><gd:money amount='32000.0' currencyCode='USD'/>"
+      " </gf:costBasis><gf:marketValue><gd:money amount='169960.0' currencyCode='USD'/>"
+      " </gf:marketValue></gf:positionData>" },
+    { @"shares", @"1000.2" },
+    { @"gainPercentage", @"4.31125" },
+    { @"marketValue.moneyWithPrimaryCurrency.amount", @"169960" },
+    { @"", @"" },
+    
     { nil, nil }
   };
   

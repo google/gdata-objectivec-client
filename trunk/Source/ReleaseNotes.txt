@@ -3,6 +3,7 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+
 Changes since 1.4.0
 
 Additions
@@ -11,6 +12,8 @@ Additions
   parameters to service callback methods.  Tickets inherit a copy of the
   properties set in the service instance.
   
+- Added Google Finance classes.
+
 - Added support for contact groups and extended properties
 
 - Added GDataXMLNode, a shim layer used for GDATA_IPHONE builds

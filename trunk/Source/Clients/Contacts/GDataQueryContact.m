@@ -20,6 +20,8 @@
 #import "GDataQueryContact.h"
 #import "GDataServiceGoogleContact.h"
 
+static NSString *const kGroupParamName = @"group";
+
 @implementation GDataQueryContact
 
 + (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL {
@@ -32,5 +34,16 @@
   return [self contactQueryWithFeedURL:url];
 }
 
+
+- (NSString *)groupIdentifier {
+  NSString *str = [[self customParameters] objectForKey:kGroupParamName];
+  return str;
+}
+
+- (void)setGroupIdentifier:(NSString *)str {
+  
+  [self addCustomParameterWithName:kGroupParamName
+                             value:str];
+}
 
 @end

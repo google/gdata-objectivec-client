@@ -33,6 +33,7 @@
 _EXTERN NSString* kGDataYouTubeFeedIDFull                _INITIALIZE_AS(nil);
 _EXTERN NSString* kGDataYouTubeFeedIDMostDiscussed       _INITIALIZE_AS(@"most_discussed");
 _EXTERN NSString* kGDataYouTubeFeedIDMostLinked          _INITIALIZE_AS(@"most_linked");
+_EXTERN NSString* kGDataYouTubeFeedIDMostPopular         _INITIALIZE_AS(@"most_popular");
 _EXTERN NSString* kGDataYouTubeFeedIDMostResponded       _INITIALIZE_AS(@"most_responded");
 _EXTERN NSString* kGDataYouTubeFeedIDMostViewed          _INITIALIZE_AS(@"most_viewed");
 _EXTERN NSString* kGDataYouTubeFeedIDTopFavorites        _INITIALIZE_AS(@"top_favorites");
@@ -77,7 +78,9 @@ _EXTERN NSString* kGDataYouTubeUserFeedIDUploads         _INITIALIZE_AS(@"upload
 + (NSURL *)youTubeUploadURLForUserID:(NSString *)userID
                             clientID:(NSString *)clientID;
 
-// a developer key is required for uploading
+// a developer key is required for uploading, and for updating or deleting
+// videos.  Entries in feeds retrieved without a developer key will 
+// not have edit links. 
 - (NSString *)youTubeDeveloperKey;
 - (void)setYouTubeDeveloperKey:(NSString *)str;
   

@@ -245,14 +245,60 @@
   [ytQuery1 setTimePeriod:kGDataYouTubePeriodThisWeek];
   [ytQuery1 setOrderBy:kGDataYouTubeOrderByRelevance];
   [ytQuery1 setRestriction:@"127.0.0.1"];
+  [ytQuery1 setLanguageRestriction:@"en"];
+  [ytQuery1 setLocation:@"Canada"];
   [ytQuery1 setAllowRacy:YES];
   
   NSURL* resultURL1 = [ytQuery1 URL];
   NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
-    "favorites?orderby=relevance&format=0%2C5%2C6&racy=include"
-    "&restriction=127.0.0.1&time=this_week&vq=%22Fred+Flintstone%22";
+    "favorites?orderby=relevance&format=0%2C5%2C6&location=Canada&lr=en"
+    "&racy=include&restriction=127.0.0.1&time=this_week"
+    "&vq=%22Fred+Flintstone%22";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"YouTube query 1 generation error");
+}
+
+- (void)testContactQuery {
+  
+  GDataQueryContact *query1;
+  query1 = [GDataQueryContact contactQueryForUserID:@"user@gmail.com"];
+  
+  [query1 setGroupIdentifier:@"http://www.google.com/m8/feeds/groups/user%40gmail.com/base/6"];
+  
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expected1 = @"http://www.google.com/m8/feeds/contacts/user@gmail.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540gmail.com%2Fbase%2F6";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+                       @"Contacts query 1 generation error");
+}
+
+- (void)testFinanceQuery {
+  
+  NSURL *feedURL = [GDataServiceGoogleFinance portfolioFeedURLForUserID:@"user@gmail.com"];
+
+  GDataQueryFinance *query1;
+  query1 = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
+  
+  [query1 setShouldIncludeReturns:NO];
+  [query1 setShouldIncludePositions:NO];
+  [query1 setShouldIncludeTransactions:NO];
+
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expected1 = @"http://finance.google.com/finance/feeds/user@gmail.com/portfolios";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+                       @"Finance query 1 generation error");
+  
+  GDataQueryFinance *query2;
+  query2 = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
+  
+  [query2 setShouldIncludeReturns:YES];
+  [query2 setShouldIncludePositions:YES];
+  [query2 setShouldIncludeTransactions:YES];
+  
+  NSURL *resultURL2 = [query2 URL];
+  NSString *expected2 = @"http://finance.google.com/finance/feeds/user@gmail.com/portfolios?positions=true&returns=true&transactions=true";
+  
+  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+                       @"Finance query 2 generation error");
 }
 
 - (void)testURLParameterEncoding {

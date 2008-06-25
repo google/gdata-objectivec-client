@@ -647,6 +647,11 @@
   [self setObject:obj forExtensionClass:[GDataBatchID class]];
 }
 
+- (void)setBatchIDWithString:(NSString *)str {
+  GDataBatchID *obj = [GDataBatchID batchIDWithString:str];
+  [self setBatchID:obj];
+}
+
 - (GDataBatchStatus *)batchStatus {
   return (GDataBatchStatus *) [self objectForExtensionClass:[GDataBatchStatus class]];
 }

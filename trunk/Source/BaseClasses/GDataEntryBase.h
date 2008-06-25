@@ -157,8 +157,12 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (GDataBatchOperation *)batchOperation;
 - (void)setBatchOperation:(GDataBatchOperation *)obj;
   
+// the batch ID is an arbitrary string defined by clients, and present in the
+// batch response feed to let the client match each entry's response to
+// the entry
 - (GDataBatchID *)batchID;
-- (void)setBatchID:(GDataBatchID *)obj; // defined by clients, and present in the batch response feed
+- (void)setBatchID:(GDataBatchID *)obj; 
+- (void)setBatchIDWithString:(NSString *)str;
 
 - (GDataBatchStatus *)batchStatus;
 - (void)setBatchStatus:(GDataBatchStatus *)obj;

@@ -227,6 +227,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
       GDataServiceGoogleDocs *service = [self docsService];
       NSURLRequest *request = [service requestForURL:url
+                                                ETag:nil
                                           httpMethod:nil];
 
       NSURLResponse *response = nil;

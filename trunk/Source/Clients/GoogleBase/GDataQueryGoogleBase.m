@@ -19,9 +19,9 @@
 
 #import "GDataQueryGoogleBase.h"
 
-NSString *const kMaxValuesParamName = @"max-values";
-NSString *const kSortByParamName = @"sortorder";
-NSString *const kBQParamName = @"bq";
+static NSString *const kMaxValuesParamName = @"max-values";
+static NSString *const kSortByParamName = @"sortorder";
+static NSString *const kBQParamName = @"bq";
 
 @implementation GDataQueryGoogleBase
 

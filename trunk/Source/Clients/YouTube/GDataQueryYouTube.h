@@ -60,6 +60,13 @@ _EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 - (void)setRestriction:(NSString *)str;
 - (NSString *)restriction;
 
+// language restriction is a ISO 639-1 2-letter language code
+- (void)setLanguageRestriction:(NSString *)str;
+- (NSString *)languageRestriction;
+
+- (void)setLocation:(NSString *)str;
+- (NSString *)location;  
+
 - (void)setAllowRacy:(BOOL)flag;
 - (BOOL)allowRacy;
 @end
