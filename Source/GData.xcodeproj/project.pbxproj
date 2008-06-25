@@ -559,6 +559,55 @@
 		4FA9CB320B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB330B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB370B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414370E12F6130037D894 /* GDataEntryFinancePortfolio.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB4141E0E12F6130037D894 /* GDataEntryFinancePortfolio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414380E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4141F0E12F6130037D894 /* GDataEntryFinancePortfolio.m */; };
+		4FB414390E12F6130037D894 /* GDataEntryFinancePosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414200E12F6130037D894 /* GDataEntryFinancePosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4143A0E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414210E12F6130037D894 /* GDataEntryFinancePosition.m */; };
+		4FB4143B0E12F6130037D894 /* GDataEntryFinanceTransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414220E12F6130037D894 /* GDataEntryFinanceTransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4143C0E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414230E12F6130037D894 /* GDataEntryFinanceTransaction.m */; };
+		4FB4143D0E12F6130037D894 /* GDataFeedFinancePortfolio.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414240E12F6130037D894 /* GDataFeedFinancePortfolio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4143E0E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414250E12F6130037D894 /* GDataFeedFinancePortfolio.m */; };
+		4FB4143F0E12F6130037D894 /* GDataFeedFinancePosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414260E12F6130037D894 /* GDataFeedFinancePosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414400E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414270E12F6130037D894 /* GDataFeedFinancePosition.m */; };
+		4FB414410E12F6130037D894 /* GDataFeedFinanceTransaction.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414280E12F6130037D894 /* GDataFeedFinanceTransaction.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414420E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414290E12F6130037D894 /* GDataFeedFinanceTransaction.m */; };
+		4FB414430E12F6130037D894 /* GDataFinance.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB4142A0E12F6130037D894 /* GDataFinance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414440E12F6130037D894 /* GDataFinanceSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB4142B0E12F6130037D894 /* GDataFinanceSymbol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414450E12F6130037D894 /* GDataFinanceSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142C0E12F6130037D894 /* GDataFinanceSymbol.m */; };
+		4FB414460E12F6130037D894 /* GDataFinanceTransactionData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB4142D0E12F6130037D894 /* GDataFinanceTransactionData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414470E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142E0E12F6130037D894 /* GDataFinanceTransactionData.m */; };
+		4FB414480E12F6130037D894 /* GDataMoneyElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB4142F0E12F6130037D894 /* GDataMoneyElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB414490E12F6130037D894 /* GDataMoneyElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414300E12F6130037D894 /* GDataMoneyElements.m */; };
+		4FB4144A0E12F6130037D894 /* GDataPortfolioElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414310E12F6130037D894 /* GDataPortfolioElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4144B0E12F6130037D894 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414320E12F6130037D894 /* GDataPortfolioElements.m */; };
+		4FB4144C0E12F6130037D894 /* GDataQueryFinance.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414330E12F6130037D894 /* GDataQueryFinance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4144D0E12F6130037D894 /* GDataQueryFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414340E12F6130037D894 /* GDataQueryFinance.m */; };
+		4FB4144E0E12F6130037D894 /* GDataServiceGoogleFinance.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB414350E12F6130037D894 /* GDataServiceGoogleFinance.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB4144F0E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */; };
+		4FB414500E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4141F0E12F6130037D894 /* GDataEntryFinancePortfolio.m */; };
+		4FB414510E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414210E12F6130037D894 /* GDataEntryFinancePosition.m */; };
+		4FB414520E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414230E12F6130037D894 /* GDataEntryFinanceTransaction.m */; };
+		4FB414530E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414250E12F6130037D894 /* GDataFeedFinancePortfolio.m */; };
+		4FB414540E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414270E12F6130037D894 /* GDataFeedFinancePosition.m */; };
+		4FB414550E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414290E12F6130037D894 /* GDataFeedFinanceTransaction.m */; };
+		4FB414560E12F6130037D894 /* GDataFinanceSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142C0E12F6130037D894 /* GDataFinanceSymbol.m */; };
+		4FB414570E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142E0E12F6130037D894 /* GDataFinanceTransactionData.m */; };
+		4FB414580E12F6130037D894 /* GDataMoneyElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414300E12F6130037D894 /* GDataMoneyElements.m */; };
+		4FB414590E12F6130037D894 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414320E12F6130037D894 /* GDataPortfolioElements.m */; };
+		4FB4145A0E12F6130037D894 /* GDataQueryFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414340E12F6130037D894 /* GDataQueryFinance.m */; };
+		4FB4145B0E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */; };
+		4FB4145C0E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4141F0E12F6130037D894 /* GDataEntryFinancePortfolio.m */; };
+		4FB4145D0E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414210E12F6130037D894 /* GDataEntryFinancePosition.m */; };
+		4FB4145E0E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414230E12F6130037D894 /* GDataEntryFinanceTransaction.m */; };
+		4FB4145F0E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414250E12F6130037D894 /* GDataFeedFinancePortfolio.m */; };
+		4FB414600E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414270E12F6130037D894 /* GDataFeedFinancePosition.m */; };
+		4FB414610E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414290E12F6130037D894 /* GDataFeedFinanceTransaction.m */; };
+		4FB414620E12F6130037D894 /* GDataFinanceSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142C0E12F6130037D894 /* GDataFinanceSymbol.m */; };
+		4FB414630E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4142E0E12F6130037D894 /* GDataFinanceTransactionData.m */; };
+		4FB414640E12F6130037D894 /* GDataMoneyElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414300E12F6130037D894 /* GDataMoneyElements.m */; };
+		4FB414650E12F6130037D894 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414320E12F6130037D894 /* GDataPortfolioElements.m */; };
+		4FB414660E12F6130037D894 /* GDataQueryFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414340E12F6130037D894 /* GDataQueryFinance.m */; };
+		4FB414670E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */; };
 		4FB730D50BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */; };
 		4FB730DC0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
 		4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -981,6 +1030,34 @@
 		4FA9CA820B74288B00DA5920 /* GDataGoogleBaseMetadataAttributeList.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseMetadataAttributeList.h; path = Clients/GoogleBase/GDataGoogleBaseMetadataAttributeList.h; sourceTree = "<group>"; };
 		4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseMetadataItemType.m; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.m; sourceTree = "<group>"; };
 		4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseMetadataItemType.h; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.h; sourceTree = "<group>"; };
+		4FB4141E0E12F6130037D894 /* GDataEntryFinancePortfolio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryFinancePortfolio.h; sourceTree = "<group>"; };
+		4FB4141F0E12F6130037D894 /* GDataEntryFinancePortfolio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryFinancePortfolio.m; sourceTree = "<group>"; };
+		4FB414200E12F6130037D894 /* GDataEntryFinancePosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryFinancePosition.h; sourceTree = "<group>"; };
+		4FB414210E12F6130037D894 /* GDataEntryFinancePosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryFinancePosition.m; sourceTree = "<group>"; };
+		4FB414220E12F6130037D894 /* GDataEntryFinanceTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryFinanceTransaction.h; sourceTree = "<group>"; };
+		4FB414230E12F6130037D894 /* GDataEntryFinanceTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryFinanceTransaction.m; sourceTree = "<group>"; };
+		4FB414240E12F6130037D894 /* GDataFeedFinancePortfolio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedFinancePortfolio.h; sourceTree = "<group>"; };
+		4FB414250E12F6130037D894 /* GDataFeedFinancePortfolio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedFinancePortfolio.m; sourceTree = "<group>"; };
+		4FB414260E12F6130037D894 /* GDataFeedFinancePosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedFinancePosition.h; sourceTree = "<group>"; };
+		4FB414270E12F6130037D894 /* GDataFeedFinancePosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedFinancePosition.m; sourceTree = "<group>"; };
+		4FB414280E12F6130037D894 /* GDataFeedFinanceTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedFinanceTransaction.h; sourceTree = "<group>"; };
+		4FB414290E12F6130037D894 /* GDataFeedFinanceTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedFinanceTransaction.m; sourceTree = "<group>"; };
+		4FB4142A0E12F6130037D894 /* GDataFinance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFinance.h; sourceTree = "<group>"; };
+		4FB4142B0E12F6130037D894 /* GDataFinanceSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFinanceSymbol.h; sourceTree = "<group>"; };
+		4FB4142C0E12F6130037D894 /* GDataFinanceSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFinanceSymbol.m; sourceTree = "<group>"; };
+		4FB4142D0E12F6130037D894 /* GDataFinanceTransactionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFinanceTransactionData.h; sourceTree = "<group>"; };
+		4FB4142E0E12F6130037D894 /* GDataFinanceTransactionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFinanceTransactionData.m; sourceTree = "<group>"; };
+		4FB4142F0E12F6130037D894 /* GDataMoneyElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataMoneyElements.h; sourceTree = "<group>"; };
+		4FB414300E12F6130037D894 /* GDataMoneyElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataMoneyElements.m; sourceTree = "<group>"; };
+		4FB414310E12F6130037D894 /* GDataPortfolioElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataPortfolioElements.h; sourceTree = "<group>"; };
+		4FB414320E12F6130037D894 /* GDataPortfolioElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataPortfolioElements.m; sourceTree = "<group>"; };
+		4FB414330E12F6130037D894 /* GDataQueryFinance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataQueryFinance.h; sourceTree = "<group>"; };
+		4FB414340E12F6130037D894 /* GDataQueryFinance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataQueryFinance.m; sourceTree = "<group>"; };
+		4FB414350E12F6130037D894 /* GDataServiceGoogleFinance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataServiceGoogleFinance.h; sourceTree = "<group>"; };
+		4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataServiceGoogleFinance.m; sourceTree = "<group>"; };
+		4FB414680E12F6890037D894 /* FeedFinancePositionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePositionTest1.xml; path = Tests/FeedFinancePositionTest1.xml; sourceTree = "<group>"; };
+		4FB414690E12F6890037D894 /* FeedFinancePortfolioTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePortfolioTest1.xml; path = Tests/FeedFinancePortfolioTest1.xml; sourceTree = "<group>"; };
+		4FB4146A0E12F6890037D894 /* FeedFinanceTransactionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinanceTransactionTest1.xml; path = Tests/FeedFinanceTransactionTest1.xml; sourceTree = "<group>"; };
 		4FB730D30BE27A82000C493E /* GDataProgressMonitorInputStreamTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStreamTest.h; path = Tests/GDataProgressMonitorInputStreamTest.h; sourceTree = "<group>"; };
 		4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStreamTest.m; path = Tests/GDataProgressMonitorInputStreamTest.m; sourceTree = "<group>"; };
 		4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStream.h; path = Networking/GDataProgressMonitorInputStream.h; sourceTree = "<group>"; };
@@ -1148,6 +1225,7 @@
 				4F14AA7C0B1282E60072EBB8 /* Calendar */,
 				4F346DE50D75015C006033E0 /* Contacts */,
 				4F5764E10C50289B0093B563 /* Docs */,
+				4FB4141D0E12F6130037D894 /* Finance */,
 				4F1AD6120B70256300DC0485 /* GoogleBase */,
 				4F63FFCB0C1F593400C65F18 /* CodeSearch */,
 				4F35DE750C023B880038AE68 /* Photos */,
@@ -1605,6 +1683,39 @@
 			name = "Test Tool";
 			sourceTree = "<group>";
 		};
+		4FB4141D0E12F6130037D894 /* Finance */ = {
+			isa = PBXGroup;
+			children = (
+				4FB4141E0E12F6130037D894 /* GDataEntryFinancePortfolio.h */,
+				4FB4141F0E12F6130037D894 /* GDataEntryFinancePortfolio.m */,
+				4FB414200E12F6130037D894 /* GDataEntryFinancePosition.h */,
+				4FB414210E12F6130037D894 /* GDataEntryFinancePosition.m */,
+				4FB414220E12F6130037D894 /* GDataEntryFinanceTransaction.h */,
+				4FB414230E12F6130037D894 /* GDataEntryFinanceTransaction.m */,
+				4FB414240E12F6130037D894 /* GDataFeedFinancePortfolio.h */,
+				4FB414250E12F6130037D894 /* GDataFeedFinancePortfolio.m */,
+				4FB414260E12F6130037D894 /* GDataFeedFinancePosition.h */,
+				4FB414270E12F6130037D894 /* GDataFeedFinancePosition.m */,
+				4FB414280E12F6130037D894 /* GDataFeedFinanceTransaction.h */,
+				4FB414290E12F6130037D894 /* GDataFeedFinanceTransaction.m */,
+				4FB4142A0E12F6130037D894 /* GDataFinance.h */,
+				4FB4142B0E12F6130037D894 /* GDataFinanceSymbol.h */,
+				4FB4142C0E12F6130037D894 /* GDataFinanceSymbol.m */,
+				4FB4142D0E12F6130037D894 /* GDataFinanceTransactionData.h */,
+				4FB4142E0E12F6130037D894 /* GDataFinanceTransactionData.m */,
+				4FB4142F0E12F6130037D894 /* GDataMoneyElements.h */,
+				4FB414300E12F6130037D894 /* GDataMoneyElements.m */,
+				4FB414310E12F6130037D894 /* GDataPortfolioElements.h */,
+				4FB414320E12F6130037D894 /* GDataPortfolioElements.m */,
+				4FB414330E12F6130037D894 /* GDataQueryFinance.h */,
+				4FB414340E12F6130037D894 /* GDataQueryFinance.m */,
+				4FB414350E12F6130037D894 /* GDataServiceGoogleFinance.h */,
+				4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */,
+			);
+			name = Finance;
+			path = Clients/Finance;
+			sourceTree = "<group>";
+		};
 		4FB730D70BE27A92000C493E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -1632,6 +1743,9 @@
 				4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */,
 				4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */,
 				4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */,
+				4FB414680E12F6890037D894 /* FeedFinancePositionTest1.xml */,
+				4FB414690E12F6890037D894 /* FeedFinancePortfolioTest1.xml */,
+				4FB4146A0E12F6890037D894 /* FeedFinanceTransactionTest1.xml */,
 				4FEBA6F10BB36350005710DA /* FeedSpreadsheetTest1.xml */,
 				4FEBA6F30BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml */,
 				4FEBA6F00BB36350005710DA /* FeedSpreadsheetCellsTest1.xml */,
@@ -1850,6 +1964,19 @@
 				4F6A83A00DF0B5AC0049BB83 /* GDataEntryContactGroup.h in Headers */,
 				4F6A83A50DF0B5B10049BB83 /* GDataFeedContactGroup.h in Headers */,
 				4F6A83AC0DF0B5BA0049BB83 /* GDataGroupMembershipInfo.h in Headers */,
+				4FB414370E12F6130037D894 /* GDataEntryFinancePortfolio.h in Headers */,
+				4FB414390E12F6130037D894 /* GDataEntryFinancePosition.h in Headers */,
+				4FB4143B0E12F6130037D894 /* GDataEntryFinanceTransaction.h in Headers */,
+				4FB4143D0E12F6130037D894 /* GDataFeedFinancePortfolio.h in Headers */,
+				4FB4143F0E12F6130037D894 /* GDataFeedFinancePosition.h in Headers */,
+				4FB414410E12F6130037D894 /* GDataFeedFinanceTransaction.h in Headers */,
+				4FB414430E12F6130037D894 /* GDataFinance.h in Headers */,
+				4FB414440E12F6130037D894 /* GDataFinanceSymbol.h in Headers */,
+				4FB414460E12F6130037D894 /* GDataFinanceTransactionData.h in Headers */,
+				4FB414480E12F6130037D894 /* GDataMoneyElements.h in Headers */,
+				4FB4144A0E12F6130037D894 /* GDataPortfolioElements.h in Headers */,
+				4FB4144C0E12F6130037D894 /* GDataQueryFinance.h in Headers */,
+				4FB4144E0E12F6130037D894 /* GDataServiceGoogleFinance.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2146,6 +2273,18 @@
 				4F6A83A10DF0B5AC0049BB83 /* GDataEntryContactGroup.m in Sources */,
 				4F6A83A70DF0B5B10049BB83 /* GDataFeedContactGroup.m in Sources */,
 				4F6A83AD0DF0B5BA0049BB83 /* GDataGroupMembershipInfo.m in Sources */,
+				4FB414500E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */,
+				4FB414510E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */,
+				4FB414520E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */,
+				4FB414530E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */,
+				4FB414540E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */,
+				4FB414550E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */,
+				4FB414560E12F6130037D894 /* GDataFinanceSymbol.m in Sources */,
+				4FB414570E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */,
+				4FB414580E12F6130037D894 /* GDataMoneyElements.m in Sources */,
+				4FB414590E12F6130037D894 /* GDataPortfolioElements.m in Sources */,
+				4FB4145A0E12F6130037D894 /* GDataQueryFinance.m in Sources */,
+				4FB4145B0E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2310,6 +2449,18 @@
 				4F6A83A20DF0B5AC0049BB83 /* GDataEntryContactGroup.m in Sources */,
 				4F6A83A80DF0B5B10049BB83 /* GDataFeedContactGroup.m in Sources */,
 				4F6A83AE0DF0B5BA0049BB83 /* GDataGroupMembershipInfo.m in Sources */,
+				4FB4145C0E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */,
+				4FB4145D0E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */,
+				4FB4145E0E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */,
+				4FB4145F0E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */,
+				4FB414600E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */,
+				4FB414610E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */,
+				4FB414620E12F6130037D894 /* GDataFinanceSymbol.m in Sources */,
+				4FB414630E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */,
+				4FB414640E12F6130037D894 /* GDataMoneyElements.m in Sources */,
+				4FB414650E12F6130037D894 /* GDataPortfolioElements.m in Sources */,
+				4FB414660E12F6130037D894 /* GDataQueryFinance.m in Sources */,
+				4FB414670E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2472,6 +2623,18 @@
 				4F6A839F0DF0B5AC0049BB83 /* GDataEntryContactGroup.m in Sources */,
 				4F6A83A60DF0B5B10049BB83 /* GDataFeedContactGroup.m in Sources */,
 				4F6A83AB0DF0B5BA0049BB83 /* GDataGroupMembershipInfo.m in Sources */,
+				4FB414380E12F6130037D894 /* GDataEntryFinancePortfolio.m in Sources */,
+				4FB4143A0E12F6130037D894 /* GDataEntryFinancePosition.m in Sources */,
+				4FB4143C0E12F6130037D894 /* GDataEntryFinanceTransaction.m in Sources */,
+				4FB4143E0E12F6130037D894 /* GDataFeedFinancePortfolio.m in Sources */,
+				4FB414400E12F6130037D894 /* GDataFeedFinancePosition.m in Sources */,
+				4FB414420E12F6130037D894 /* GDataFeedFinanceTransaction.m in Sources */,
+				4FB414450E12F6130037D894 /* GDataFinanceSymbol.m in Sources */,
+				4FB414470E12F6130037D894 /* GDataFinanceTransactionData.m in Sources */,
+				4FB414490E12F6130037D894 /* GDataMoneyElements.m in Sources */,
+				4FB4144B0E12F6130037D894 /* GDataPortfolioElements.m in Sources */,
+				4FB4144D0E12F6130037D894 /* GDataQueryFinance.m in Sources */,
+				4FB4144F0E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
