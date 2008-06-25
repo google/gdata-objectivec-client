@@ -22,12 +22,11 @@
 //
 // group membership info 
 //
-// <gContact:groupMembershipInfo href="http://..." deleted="false" />
+// <gContact:groupMembershipInfo href="http://..." />
 //
+// http://code.google.com/apis/contacts/reference.html#groupMembershipInfo
 
 @interface GDataGroupMembershipInfo : GDataObject <NSCopying, GDataExtension> {
-  NSString *href_;
-  BOOL isDeleted_;
 }
 
 + (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)str;

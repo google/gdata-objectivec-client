@@ -19,14 +19,14 @@
 
 #import "GDataQuerySpreadsheet.h"
 
-NSString *const kSpreadsheetQueryParamName = @"sq";
-NSString *const kReverseParamName = @"reverse";
-NSString *const kMinRowParamName = @"min-row";
-NSString *const kMaxRowParamName = @"max-row";
-NSString *const kMinColParamName = @"min-col";
-NSString *const kMaxColParamName = @"max-col";
-NSString *const kRangeParamName = @"range";
-NSString *const kReturnEmptyParamName = @"return-empty";
+static NSString *const kSpreadsheetQueryParamName = @"sq";
+static NSString *const kReverseParamName = @"reverse";
+static NSString *const kMinRowParamName = @"min-row";
+static NSString *const kMaxRowParamName = @"max-row";
+static NSString *const kMinColParamName = @"min-col";
+static NSString *const kMaxColParamName = @"max-col";
+static NSString *const kRangeParamName = @"range";
+static NSString *const kReturnEmptyParamName = @"return-empty";
 
 @implementation GDataQuerySpreadsheet
 

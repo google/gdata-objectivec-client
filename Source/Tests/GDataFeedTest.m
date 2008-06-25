@@ -756,7 +756,7 @@
     { @"photosLeft", @"498" },
     { @"commentsEnabled", @"1" },
     { @"location", @"Album Site" },
-    { @"timestamp.dateValue.description", @"2007-05-21 00:00:00 -0700" },
+    { @"timestamp.dateValue.timeIntervalSince1970", @"1179730800" },
     { @"username", @"TestdomainTestAccount" },
     { @"identifier", @"http://picasaweb.google.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993" },
     { @"title.type", @"text" },
@@ -990,6 +990,86 @@
   [self runTests:tests];
 };
   
+- (void)testFinanceFeed {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Portfolio feed
+    //
+    { @"GDataFeedFinancePortfolio", @"Tests/FeedFinancePortfolioTest1.xml" },
+    
+    { @"identifier", @"http://finance.google.com/finance/feeds/default/portfolios" },
+    
+    // Portfolio entry  
+    { @"entries.0.className", @"GDataEntryFinancePortfolio" },
+    { @"entries.0.positionURL.absoluteString", @"http://finance.google.com/finance/feeds/default/portfolios/1/positions" },
+    { @"entries.0.portfolioData.currencyCode", @"USD" },
+    { @"entries.0.portfolioData.gainPercentage", @"10.3" },
+    { @"entries.0.portfolioData.return1w", @"12" },
+    { @"entries.0.portfolioData.return1y", @"17" },
+    { @"entries.0.portfolioData.return3m", @"0" },
+    { @"entries.0.portfolioData.return3y", @"23" },
+    { @"entries.0.portfolioData.return4w", @"-41" },
+    { @"entries.0.portfolioData.return5y", @"10" },
+    { @"entries.0.portfolioData.returnOverall", @"12" },
+    { @"entries.0.portfolioData.returnYTD", @"6.7" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Position feed
+    //
+    { @"GDataFeedFinancePosition", @"Tests/FeedFinancePositionTest1.xml" },
+    
+    { @"identifier", @"http://finance.google.com/finance/feeds/default/portfolios/1/positions" },
+    
+    // Position entry  
+    { @"entries.0.className", @"GDataEntryFinancePosition" },
+    { @"entries.0.transactionURL.absoluteString", @"http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ:GOOG/transactions" },
+    { @"entries.0.symbol.exchange", @"NASDAQ" },
+    { @"entries.0.symbol.fullName", @"Google Inc." },
+    { @"entries.0.symbol.symbol", @"GOOG" },
+    
+    { @"entries.0.positionData.shares", @"2" },
+    { @"entries.0.positionData.gainPercentage", @"1.3" },
+    { @"entries.0.positionData.return1w", @"0" },
+    { @"entries.0.positionData.return1y", @"-10" },
+    { @"entries.0.positionData.return3m", @"172.1" },
+    { @"entries.0.positionData.return3y", @"5" },
+    { @"entries.0.positionData.return4w", @"-4" },
+    { @"entries.0.positionData.return5y", @"11" },
+    { @"entries.0.positionData.returnOverall", @"12" },
+    { @"entries.0.positionData.returnYTD", @"13" },
+    { @"", @"" }, // end of feed
+    
+    //
+    // Transaction feed
+    //
+    { @"GDataFeedFinanceTransaction", @"Tests/FeedFinanceTransactionTest1.xml" },
+    
+    { @"identifier", @"http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ%3AAAPL/transactions" },
+    
+    // Transaction entry  
+    { @"entries.0.className", @"GDataEntryFinanceTransaction" },
+
+    { @"entries.0.transactionData.date.date.timeIntervalSince1970", @"1212364800" },
+    { @"entries.0.transactionData.shares", @"100" },
+    { @"entries.0.transactionData.type", @"Buy" },
+    { @"entries.0.transactionData.notes", @"Astrologer&#39;s advice" },
+    { @"entries.0.transactionData.commission.moneyWithPrimaryCurrency.amount", @"13.12" },
+    { @"entries.0.transactionData.commission.moneyWithPrimaryCurrency.currencyCode", @"USD" },
+    { @"entries.0.transactionData.price.moneyWithPrimaryCurrency.amount", @"120" },
+    { @"entries.0.transactionData.price.moneyWithPrimaryCurrency.currencyCode", @"USD" },
+    { @"entries.0.transactionData.price.moneyWithSecondaryCurrency.amount", @"110" },
+    { @"entries.0.transactionData.price.moneyWithSecondaryCurrency.currencyCode", @"CAD" },
+    { @"", @"" }, // end of feed
+    
+    { nil, nil } // end of test array
+  };
+  [self runTests:tests];
+};
+
 - (void)testYouTubeFeeds {
   
   TestKeyPathValues tests[] =

@@ -22,13 +22,13 @@
 // query params per
 //   http://code.google.com/apis/calendar/reference.html#Parameters
 
-NSString *const kMinimumStartTimeParamName  = @"start-min";
-NSString *const kMaximumStartTimeParamName  = @"start-max";
-NSString *const kRecurrenceExpansionStartTimeParamName  = @"recurrence-expansion-start";
-NSString *const kRecurrenceExpansionEndTimeParamName  = @"recurrence-expansion-end";
-NSString *const kFutureEventsParamName  = @"futureevents";
-NSString *const kSingleEventsParamName = @"singleevents";
-NSString *const kCurrentTimeZoneParamName = @"ctz";
+static NSString *const kMinimumStartTimeParamName  = @"start-min";
+static NSString *const kMaximumStartTimeParamName  = @"start-max";
+static NSString *const kRecurrenceExpansionStartTimeParamName  = @"recurrence-expansion-start";
+static NSString *const kRecurrenceExpansionEndTimeParamName  = @"recurrence-expansion-end";
+static NSString *const kFutureEventsParamName  = @"futureevents";
+static NSString *const kSingleEventsParamName = @"singleevents";
+static NSString *const kCurrentTimeZoneParamName = @"ctz";
 
 @implementation GDataQueryCalendar
 

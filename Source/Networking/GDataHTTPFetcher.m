@@ -225,9 +225,9 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     connection_ = [[connectionClass alloc] initWithRequest:request_
                                                   delegate:self 
                                           startImmediately:NO];
-    
-    for (int idx = 0; idx < [runLoopModes count]; idx++) {
-      NSString *mode = [runLoopModes objectAtIndex:idx];
+    NSEnumerator *modeEnumerator = [runLoopModes objectEnumerator];
+    NSString *mode;
+    while ((mode = [modeEnumerator nextObject]) != nil) {
       [connection_ scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:mode];
     }
     [connection_ start];
@@ -1194,7 +1194,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...) {
       Debugger();
     } else {
       const char *expectedArgType;
-      int argCount = 2; // skip self and _cmd
+      unsigned int argCount = 2; // skip self and _cmd
       NSMethodSignature *sig = [obj methodSignatureForSelector:sel];
       
       // check that each expected argument is present and of the correct type

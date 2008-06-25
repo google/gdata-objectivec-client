@@ -19,8 +19,8 @@
 
 #import "GDataQueryDocs.h"
 
-NSString *const kTitleParamName  = @"title";
-NSString *const kExactTitleParamName  = @"title-exact";
+static NSString *const kTitleParamName  = @"title";
+static NSString *const kExactTitleParamName  = @"title-exact";
 
 @implementation GDataQueryDocs
 

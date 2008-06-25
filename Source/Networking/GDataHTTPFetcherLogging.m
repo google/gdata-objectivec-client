@@ -231,7 +231,7 @@ static NSString* gLoggingProcessName = nil;
   NSMutableData *mutableData = [NSMutableData dataWithData:data];
   unsigned char *bytes = [mutableData mutableBytes];
   
-  for (int idx = 0; idx < [mutableData length]; idx++) {
+  for (unsigned int idx = 0; idx < [mutableData length]; idx++) {
     if (bytes[idx] > 0x7F || bytes[idx] == 0) {
       bytes[idx] = '_';
     }
@@ -255,9 +255,9 @@ static NSString* gLoggingProcessName = nil;
       // convert those into UTF-8
       NSMutableArray *origParts = [NSMutableArray array];
       NSUInteger offset = 0;
-      for (int partIdx = 0; partIdx < [mungedParts count]; partIdx++) {
-        
-        NSString *mungedPart = [mungedParts objectAtIndex:partIdx];
+      NSEnumerator *mungedPartsEnum = [mungedParts objectEnumerator];
+      NSString *mungedPart;
+      while ((mungedPart = [mungedPartsEnum nextObject]) != nil) {
         NSUInteger partSize = [mungedPart length];
         
         NSRange range = NSMakeRange(offset, partSize);

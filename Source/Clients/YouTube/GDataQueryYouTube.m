@@ -22,11 +22,13 @@
 
 #import "GDataServiceGoogleYouTube.h"
 
-NSString *const kVideoQueryParamName = @"vq";
-NSString *const kTimeParamName = @"time";
-NSString *const kFormatParamName = @"format";
-NSString *const kRacyParamName = @"racy";
-NSString *const kRestrictionParamName = @"restriction";
+static NSString *const kVideoQueryParamName = @"vq";
+static NSString *const kTimeParamName = @"time";
+static NSString *const kFormatParamName = @"format";
+static NSString *const kRacyParamName = @"racy";
+static NSString *const kRestrictionParamName = @"restriction";
+static NSString *const kLanguageRestrictionParamName = @"lr";
+static NSString *const kLocationParamName = @"location";
 
 @implementation GDataQueryYouTube
 
@@ -69,6 +71,24 @@ NSString *const kRestrictionParamName = @"restriction";
 
 - (NSString *)restriction {
   return [[self customParameters] objectForKey:kRestrictionParamName];
+}
+
+- (void)setLanguageRestriction:(NSString *)str {
+  [self addCustomParameterWithName:kLanguageRestrictionParamName
+                             value:str];
+}
+
+- (NSString *)languageRestriction {
+  return [[self customParameters] objectForKey:kLanguageRestrictionParamName];
+}
+
+- (void)setLocation:(NSString *)str {
+  [self addCustomParameterWithName:kLocationParamName
+                             value:str];
+}
+
+- (NSString *)location {
+  return [[self customParameters] objectForKey:kLocationParamName];
 }
 
 - (void)setAllowRacy:(BOOL)flag {

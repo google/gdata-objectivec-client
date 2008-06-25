@@ -884,11 +884,11 @@ objectDescriptionIfNonNil:(id)obj
       // class can't be determined by examining its XML, fall back on 
       // instantiating the base entry class
       if (elementClass == nil 
-          && [qualifiedName isEqual:@"entry"] 
-          && [namespaceURI isEqual:kGDataNamespaceAtom]) {
+        && [qualifiedName isEqual:@"entry"] 
+        && [namespaceURI isEqual:kGDataNamespaceAtom]) {
         
         elementClass = [GDataEntryBase class];
-      }      
+      }
     }
     
     elementClass = [self classOrSurrogateForClass:elementClass];
