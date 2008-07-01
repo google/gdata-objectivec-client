@@ -39,6 +39,11 @@ If you compile the project's source files directly into your own project file, s
 
  C Language Dialect: `C99 [-std=c99]`
 
+
+With the source files compiled directly in your project, refer directly to the headers by omitting the framework name, like
+
+`#import "GDataCalendar.h"`
+
 If you are building for the iPhone, also add these build settings needed by GDataXMLNode to your project or target:
 
  Header Search Paths: `/usr/include/libxml2`
