@@ -489,13 +489,16 @@ CannotBeginFetch:
   }
   
   // If we don't have credentials, or we've already failed auth 3x...
-  [[challenge sender] cancelAuthenticationChallenge:challenge];
-  
   // report the error, putting the challenge as a value in the userInfo
   // dictionary
+  //
+  // put the challenge in the userInfo dictionary first so that cancelling
+  // doesn't release it yet
+  
   NSDictionary *userInfo = [NSDictionary dictionaryWithObject:challenge
                                                        forKey:kGDataHTTPFetcherErrorChallengeKey];
-  
+  [[challenge sender] cancelAuthenticationChallenge:challenge];
+    
   NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherErrorDomain
                                        code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
                                    userInfo:userInfo];
