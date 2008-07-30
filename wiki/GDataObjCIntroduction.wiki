@@ -35,6 +35,12 @@ or the header for a specific service, such as
 
 The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
+=== Compiling the source files directly into your own project ===
+
+Rather than link to the GData framework, you can compile the GData library sources directly into your own project. To do this, drag the GData Sources source group from the GData Xcode project into your project's window (add by reference, not by copying the files.)  
+
+You can delete the references to the client services (Calendar, Contacts, Spreadsheet, and so on) that are not needed by your application.
+
 If you compile the project's source files directly into your own project file, set this build setting:
 
  C Language Dialect: `C99 [-std=c99]`
@@ -44,11 +50,18 @@ With the source files compiled directly in your project, refer directly to the h
 
 `#import "GDataCalendar.h"`
 
-If you are building for the iPhone, also add these build settings needed by GDataXMLNode to your project or target:
+=== Development with the iPhone SDK ===
+
+If you are building for the iPhone, follow the directions above to compile the source files directly into your own project.
+
+Also add the GDataXMLNode.m and GDataXMLNode.h files to your project.
+
+Finally, add these build settings needed by GDataXMLNode to your project or target:
 
  Header Search Paths: `/usr/include/libxml2`
 
  Other Linker Flags:  `-lxml2`
+
 
 == Google Data APIs Basics ==
 
