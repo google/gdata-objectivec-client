@@ -44,7 +44,8 @@
 #pragma mark -
 
 - (BOOL)isStarred {
-  BOOL isStarred = [[self categories] containsCategoryWithLabel:kGDataCategoryLabelStarred];
+  BOOL isStarred = [GDataCategory categories:[self categories]
+                   containsCategoryWithLabel:kGDataCategoryLabelStarred];
   return isStarred;
 }
 

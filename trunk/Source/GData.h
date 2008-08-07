@@ -18,7 +18,8 @@
 //
 
 // Client services.  Rather than include GData.h, applications
-// can include just the client service header needed.
+// can include just the client service header needed, like
+//   #import "GData/GDataCalendar.h"
 
 #import "GDataCalendar.h"
 #import "GDataContacts.h"
@@ -29,4 +30,5 @@
 #import "GDataGoogleBase.h"
 #import "GDataPhotos.h"
 #import "GDataSpreadsheet.h"
+#import "GDataWebmasterTools.h"
 #import "GDataYouTube.h"

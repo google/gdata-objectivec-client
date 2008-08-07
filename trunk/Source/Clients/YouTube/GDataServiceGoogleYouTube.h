@@ -103,24 +103,38 @@ _EXTERN NSString* kGDataYouTubeUserFeedIDUploads         _INITIALIZE_AS(@"upload
                                         didFinishSelector:(SEL)finishedSelector
                                           didFailSelector:(SEL)failedSelector;
 
-  // finished callback (see above) is passed the updated entry
+// finished callback (see above) is passed the updated entry
 - (GDataServiceTicket *)fetchYouTubeEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                              forEntryURL:(NSURL *)youTubeEntryEditURL
                                                 delegate:(id)delegate
                                        didFinishSelector:(SEL)finishedSelector
                                          didFailSelector:(SEL)failedSelector;
 
-  // finished callback (see above) is passed the appropriate YouTube feed
+// finished callback (see above) is passed the appropriate YouTube feed
 - (GDataServiceTicket *)fetchYouTubeQuery:(GDataQueryYouTube *)query
                                  delegate:(id)delegate
                         didFinishSelector:(SEL)finishedSelector
                           didFailSelector:(SEL)failedSelector;
 
-  // finished callback (see above) is passed a nil object
+// finished callback (see above) is passed a nli object
+- (GDataServiceTicket *)deleteYouTubeEntry:(GDataEntryBase *)entryToDelete
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector
+                           didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteYouTubeResourceURL:(NSURL *)resourceEditURL
+                                            ETag:(NSString *)etag
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a batch feed
+- (GDataServiceTicket *)fetchYouTubeBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                           forBatchFeedURL:(NSURL *)feedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector;
 
 + (NSString *)serviceRootURLString;  
 

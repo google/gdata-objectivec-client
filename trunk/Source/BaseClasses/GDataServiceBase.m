@@ -270,6 +270,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, failedSelector, @encode(GDataServiceTicketBase *), @encode(NSError *), 0);
 
+  // if no URL was supplied, treat this as if the fetch failed (below)
+  // and immediately return a nil ticket, skipping the callbacks
+  //
+  // this might be considered normal (say, updating a read-only entry
+  // that lacks an edit link) though higher-level calls may assert or
+  // returns errors depending on the specific usage
+  if (feedURL == nil) return nil;
+  
   NSMutableURLRequest *request = [self objectRequestForURL:feedURL
                                                     object:objectToPost
                                                       ETag:etag
@@ -457,6 +465,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   // create the object returned by the service, if any
   if (dataLength > 0) {
+    
+#if GDATA_LOG_PERFORMANCE
+    UnsignedWide msecs1, msecs2;
+    Microseconds(&msecs1);
+#endif
+    
     NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithData:data
                                                               options:0
                                                                 error:&error] autorelease];
@@ -483,7 +497,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       // retain the document so that pointers to internal nodes remain valid
       [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
 #endif
-       
+
+#if GDATA_LOG_PERFORMANCE
+      Microseconds(&msecs2);
+      UInt64 msStart = (UInt64)msecs1.lo + (((UInt64)msecs1.hi) << 32);
+      UInt64 msEnd   = (UInt64)msecs2.lo + (((UInt64)msecs2.hi) << 32);
+      NSLog(@"allocation of %@ took %qu microseconds", 
+            objectClass, msEnd - msStart);
+#endif
+      
     } else {
 #if DEBUG
       NSString *invalidXML = [[[NSString alloc] initWithData:data
@@ -507,7 +529,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       // append the latest feed
       [ticket accumulateFeed:latestFeed];
       
-      NSURL *nextURL = [[[latestFeed links] nextLink] URL];
+      NSURL *nextURL = [[latestFeed nextLink] URL];
       if (nextURL) {
         
         BOOL isFetchingNextFeed = [self fetchNextFeedWithURL:nextURL
@@ -533,7 +555,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       if (accumulatedFeed) {
         
         // remove the misleading "next" link from the accumulated feed
-        GDataLink *accumulatedFeedNextLink = [[accumulatedFeed links] nextLink];
+        GDataLink *accumulatedFeedNextLink = [accumulatedFeed nextLink];
         if (accumulatedFeedNextLink) {
           [accumulatedFeed removeLink:accumulatedFeedNextLink];
         }
@@ -859,7 +881,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return [self fetchObjectWithURL:entryURL
                       objectClass:[entryToUpdate class]
                      objectToPost:entryToUpdate
-                             ETag:nil
+                             ETag:[entryToUpdate ETag]
                        httpMethod:@"PUT"
                          delegate:delegate
                 didFinishSelector:finishedSelector
@@ -868,6 +890,22 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                            ticket:nil];
 }
 
+- (GDataServiceTicketBase *)deleteEntry:(GDataEntryBase *)entryToDelete
+                               delegate:(id)delegate
+                      didFinishSelector:(SEL)finishedSelector
+                        didFailSelector:(SEL)failedSelector {
+  
+  NSString *etag = [entryToDelete ETag];
+  NSURL *editURL = [[entryToDelete editLink] URL];
+  
+  NSAssert1(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
+  
+  return [self deleteResourceURL:editURL
+                            ETag:etag
+                        delegate:delegate
+               didFinishSelector:finishedSelector
+                 didFailSelector:failedSelector];
+}
 
 - (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
                                      delegate:(id)delegate
@@ -877,6 +915,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   // ETags
   //
   // pass through with a nil ETag
+
+  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
+
   return [self deleteResourceURL:resourceEditURL
                             ETag:nil
                         delegate:self
@@ -889,6 +930,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                      delegate:(id)delegate
                             didFinishSelector:(SEL)finishedSelector
                               didFailSelector:(SEL)failedSelector {
+  
+  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
   
   return [self fetchObjectWithURL:resourceEditURL
                       objectClass:nil

@@ -230,6 +230,11 @@ enum {
                                     didFinishSelector:(SEL)finishedSelector
                                       didFailSelector:(SEL)failedSelector;
 
+- (GDataServiceTicketBase *)deleteEntry:(GDataEntryBase *)entryToDelete
+                               delegate:(id)delegate
+                      didFinishSelector:(SEL)finishedSelector // object parameter will be nil
+                        didFailSelector:(SEL)failedSelector;
+
 - (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
                                      delegate:(id)delegate
                             didFinishSelector:(SEL)finishedSelector // object parameter will be nil

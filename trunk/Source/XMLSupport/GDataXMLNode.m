@@ -43,7 +43,7 @@ static BOOL AreEqualOrBothNilPrivate(id obj1, id obj2) {
 //
 // the "Get" part implies that ownership remains with str
 
-xmlChar* GDataGetXMLString(NSString *str) {
+static xmlChar* GDataGetXMLString(NSString *str) {
   xmlChar* result = (xmlChar *)[str UTF8String];
   return result;
 }
@@ -52,7 +52,7 @@ xmlChar* GDataGetXMLString(NSString *str) {
 //
 // returns an autoreleased NSString*
 
-NSString* GDataStringFromXMLString(const xmlChar *chars) {
+static NSString* GDataStringFromXMLString(const xmlChar *chars) {
   
 #if DEBUG
   NSCAssert(chars != NULL, @"GDataXMLNode sees an unexpected empty string");
@@ -296,11 +296,25 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   return self;
 }
 
+- (void)releaseCachedValues {
+  
+  [cachedName_ release];
+  cachedName_ = nil;
+
+  [cachedChildren_ release];
+  cachedChildren_ = nil;
+  
+  [cachedAttributes_ release];
+  cachedAttributes_ = nil;
+}
+
 - (void)dealloc {
 
   if (xmlNode_ && shouldFreeXMLNode_) {
     xmlFreeNode(xmlNode_); 
   }
+  
+  [self releaseCachedValues];
   [super dealloc]; 
 }
 
@@ -324,12 +338,12 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
       
       // do we need to call xmlEncodeSpecialChars?
       xmlNodeSetContent(xmlNode_, GDataGetXMLString(str));
-    }
+    }    
   }
 }
 
 - (NSString *)stringValue {
-  
+    
   NSString *str = nil;
   
   if (xmlNode_ != NULL) {
@@ -351,7 +365,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
         
         xmlFree(chars);
       }
-    }
+    }    
   }
   return str;
 }
@@ -387,11 +401,14 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 }
 
 - (NSString *)localName {
-  
   NSString *str = nil;
   
   if (xmlNode_ != NULL) {
-    str = [NSString stringWithUTF8String:(const char *)xmlNode_->name];
+    
+    str = GDataStringFromXMLString(xmlNode_->name);
+
+    // if this is part of a detached subtree, str may have a prefix in it
+    str = [[self class] localNameForName:str];
   }
   return str;
 }
@@ -407,7 +424,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
     str = @""; 
     
     if (xmlNode_->ns != NULL && xmlNode_->ns->prefix != NULL) {
-      str = [NSString stringWithUTF8String:(const char *)xmlNode_->ns->prefix];
+      str = GDataStringFromXMLString(xmlNode_->ns->prefix);
     } 
   }
   return str;
@@ -420,7 +437,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   if (xmlNode_ != NULL) {
     
     if (xmlNode_->ns != NULL && xmlNode_->ns->href != NULL) {
-      str = [NSString stringWithUTF8String:(const char *)xmlNode_->ns->href];
+      str = GDataStringFromXMLString(xmlNode_->ns->href);
     }
   }
   return str;
@@ -457,12 +474,20 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
       str = GDataStringFromXMLString(node->name);
     }
   }
+  
   return str;
 }
 
 - (NSString *)name {
+
+  if (cachedName_ != nil) {
+    return cachedName_; 
+  }
   
   NSString *str = [[self class] qualifiedNameForXMLNode:xmlNode_];
+  
+  cachedName_ = [str retain];
+
   return str;
 }
 
@@ -495,7 +520,12 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   return nil;
 }
 
-- (unsigned int)childCount {
+- (NSUInteger)childCount {
+    
+  if (cachedChildren_ != nil) {
+    return [cachedChildren_ count];
+  }
+  
   if (xmlNode_ != NULL) {
     
     unsigned int count = 0;
@@ -512,6 +542,10 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 }
 
 - (NSArray *)children {
+  
+  if (cachedChildren_ != nil) {
+    return cachedChildren_; 
+  }
 
   if (xmlNode_ != NULL) {
 
@@ -525,6 +559,9 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
       
       currChild = currChild->next;
     }
+    
+    cachedChildren_ = [array retain];
+    
     return array;
   }
   return nil;
@@ -532,20 +569,11 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 
 - (GDataXMLNode *)childAtIndex:(unsigned)index {
   
-  if (xmlNode_ != NULL) {
-        
-    xmlNodePtr currChild = xmlNode_->children;
+  NSArray *children = [self children];
+  
+  if ([children count] > index) {
     
-    while (currChild != NULL && index > 0) {
-      
-      currChild = currChild->next;
-      --index;
-    }
-    
-    if (currChild != NULL) {
-      GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currChild]; 
-      return node;
-    }
+    return [children objectAtIndex:index];
   }
   return nil;
 }
@@ -667,7 +695,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 }
 
 - (NSString *)description {
-  int nodeType = (xmlNode_ ? xmlNode_->type : -1);
+  int nodeType = (xmlNode_ ? (int)xmlNode_->type : -1);
   
   return [NSString stringWithFormat:@"%@ 0x%lX: {type:%d name:%@ xml:\"%@\"}",
           [self class], self, nodeType, [self name], [self XMLString]];
@@ -801,6 +829,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   
   if (xmlNode_ != NULL) {
     
+    [self releaseCachedValues];
+    
     xmlNsPtr ns = (xmlNsPtr) [aNamespace XMLNode];
     if (ns) {
       (void)xmlNewNs(xmlNode_, ns->href, ns->prefix);
@@ -814,13 +844,16 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 }
 
 - (void)addChild:(GDataXMLNode *)child {
-
+  
   if ([child kind] == GDataXMLAttributeKind) {
     [self addAttribute:child];
     return;
   }
   
   if (xmlNode_ != NULL) {
+
+    [self releaseCachedValues];
+    
     xmlNodePtr childNodeCopy = [child XMLNodeCopy];
     if (childNodeCopy) {
       
@@ -845,7 +878,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   NSString *desiredName = name;
   
   if (xmlNode_ != NULL) {
-    
+        
     NSString *prefix = [[self class] prefixForName:desiredName];
     if (prefix) {
       
@@ -932,6 +965,10 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 
 - (NSArray *)attributes {
   
+  if (cachedAttributes_ != nil) {
+    return cachedAttributes_; 
+  }
+    
   if (xmlNode_ != NULL && xmlNode_->properties != NULL) {
     
     NSMutableArray *array = [NSMutableArray array];
@@ -945,6 +982,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
       prop = prop->next;
     }
     
+    cachedAttributes_ = [array retain];
+    
     return array;
   }
   return nil;
@@ -953,6 +992,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
 - (void)addAttribute:(GDataXMLNode *)attribute {
   
   if (xmlNode_ != NULL) {
+    
+    [self releaseCachedValues];
     
     xmlAttrPtr attrPtr = (xmlAttrPtr) [attribute XMLNode];
     if (attrPtr) {

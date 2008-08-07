@@ -65,6 +65,7 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)organizations;
 - (void)setOrganizations:(NSArray *)array;
 - (void)addOrganization:(GDataOrganization *)obj;
+- (void)removeOrganization:(GDataOrganization *)obj;
 
 - (GDataOrganization *)primaryOrganization;
 - (void)setPrimaryOrganization:(GDataOrganization *)obj;
@@ -72,6 +73,7 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)emailAddresses;
 - (void)setEmailAddresses:(NSArray *)array;
 - (void)addEmailAddress:(GDataEmail *)obj;
+- (void)removeEmailAddress:(GDataEmail *)obj;
 
 - (GDataEmail *)primaryEmailAddress;
 - (void)setPrimaryEmailAddress:(GDataEmail *)obj;
@@ -79,6 +81,7 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)IMAddresses;
 - (void)setIMAddresses:(NSArray *)array;
 - (void)addIMAddress:(GDataIM *)obj;
+- (void)removeIMAddress:(GDataIM *)obj;
 
 - (GDataIM *)primaryIMAddress;
 - (void)setPrimaryIMAddress:(GDataIM *)obj;
@@ -86,6 +89,7 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)phoneNumbers;
 - (void)setPhoneNumbers:(NSArray *)array;
 - (void)addPhoneNumber:(GDataPhoneNumber *)obj;
+- (void)removePhoneNumber:(GDataPhoneNumber *)obj;
 
 - (GDataPhoneNumber *)primaryPhoneNumber;
 - (void)setPrimaryPhoneNumber:(GDataPhoneNumber *)obj;
@@ -93,6 +97,7 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)postalAddresses;
 - (void)setPostalAddresses:(NSArray *)array;
 - (void)addPostalAddress:(GDataPostalAddress *)obj;
+- (void)removePostalAddress:(GDataPostalAddress *)obj;
 
 - (GDataPostalAddress *)primaryPostalAddress;
 - (void)setPrimaryPostalAddress:(GDataPostalAddress *)obj;
@@ -100,14 +105,16 @@ _EXTERN NSString* kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schemas.goog
 - (NSArray *)groupMembershipInfos;
 - (void)setGroupMembershipInfos:(NSArray *)arr;
 - (void)addGroupMembershipInfo:(GDataGroupMembershipInfo *)obj;
+- (void)removeGroupMembershipInfo:(GDataGroupMembershipInfo *)obj;
 
 - (NSArray *)extendedProperties;
 - (void)setExtendedProperties:(NSArray *)arr;
 - (void)addExtendedProperty:(GDataExtendedProperty *)obj;
+- (void)removeExtendedProperty:(GDataExtendedProperty *)obj;
 
-@end
+// convenience accessors
+- (GDataExtendedProperty *)extendedPropertyForName:(NSString *)name;
 
-@interface NSArray (GDataEntryContactLinks)
 - (GDataLink *)photoLink;
 - (GDataLink *)editPhotoLink;
 @end

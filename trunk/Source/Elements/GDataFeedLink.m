@@ -44,9 +44,9 @@ static NSString *const kCountHintAttr = @"countHint";
   [self addLocalAttributeDeclarations:attrs];  
 }
 
-+ (GDataFeedLink *)feedLinkWithHref:(NSString *)href
-                         isReadOnly:(BOOL)isReadOnly {
-  GDataFeedLink* feedLink = [[[GDataFeedLink alloc] init] autorelease];
++ (id)feedLinkWithHref:(NSString *)href
+            isReadOnly:(BOOL)isReadOnly {
+  GDataFeedLink* feedLink = [[[[self class] alloc] init] autorelease];
   [feedLink setHref:href];
   [feedLink setIsReadOnly:isReadOnly];
   return feedLink;
@@ -163,23 +163,5 @@ static NSString *const kCountHintAttr = @"countHint";
   return nil;
 }
 
-@end
-
-@implementation NSArray (GDataFeedLinkArray)
-- (GDataFeedLink *)feedLinkWithRel:(NSString *)rel {
-  
-  NSEnumerator *enumerator = [self objectEnumerator]; 
-  GDataFeedLink *feedLink;
-  
-  while ((feedLink = [enumerator nextObject]) != nil) {
-    
-    NSString *thisRel = [feedLink rel];
-    
-    if (AreEqualOrBothNil(rel, thisRel)) {
-      return feedLink;
-    }
-  }
-  return nil;  
-}
 @end
 

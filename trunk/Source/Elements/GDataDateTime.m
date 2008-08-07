@@ -59,9 +59,8 @@
   
   GDataDateTime *newObj = [[GDataDateTime alloc] init];
   
-  [newObj setOffsetSeconds:[self offsetSeconds]];
   [newObj setIsUniversalTime:[self isUniversalTime]];
-  [newObj setTimeZone:[self timeZone]];
+  [newObj setTimeZone:[self timeZone] withOffsetSeconds:[self offsetSeconds]];
   
   NSDateComponents *newDateComponents;
   NSDateComponents *oldDateComponents = [self dateComponents];
@@ -144,6 +143,13 @@
   } else {
     [self setOffsetSeconds:NSUndefinedDateComponent];
   }
+}
+
+- (void)setTimeZone:(NSTimeZone *)timeZone withOffsetSeconds:(NSInteger)val {
+  [timeZone_ release];
+  timeZone_ = [timeZone retain];
+  
+  offsetSeconds_ = val;
 }
 
 - (NSCalendar *)calendar {

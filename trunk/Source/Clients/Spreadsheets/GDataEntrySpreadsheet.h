@@ -54,13 +54,7 @@ _EXTERN NSString* kGDataCategorySpreadsheet    _INITIALIZE_AS(@"http://schemas.g
 
 + (GDataEntrySpreadsheet *)spreadsheetEntry;
 
-@end
-
-@interface NSArray (GDataEntrySpreadsheetAdditions)
-// accessors for "rel" links
-- (GDataLink *)spreadsheetLink;
+// convenience accessors
+- (GDataLink *)spreadsheetLink; // link to web version
 - (GDataLink *)worksheetsLink;
-- (GDataLink *)listLink;
-- (GDataLink *)cellsLink;
-- (GDataLink *)sourceLink;
 @end

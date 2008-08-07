@@ -64,9 +64,7 @@
   return self;
 }
 
-@end
-
-@implementation NSArray(GDataEntrySpreadsheetAdditions)
+#pragma mark -
 
 - (GDataLink *)spreadsheetLink {
   return [self alternateLink]; 
@@ -74,18 +72,6 @@
 
 - (GDataLink *)worksheetsLink {
   return [self linkWithRelAttributeValue:kGDataLinkWorksheetsFeed]; 
-}
-
-- (GDataLink *)listLink {
-  return [self linkWithRelAttributeValue:kGDataLinkListFeed]; 
-}
-
-- (GDataLink *)cellsLink {
-  return [self linkWithRelAttributeValue:kGDataLinkCellsFeed]; 
-}
-
-- (GDataLink *)sourceLink { // cell source
-  return [self linkWithRelAttributeValue:kGDataLinkSource]; 
 }
 
 @end

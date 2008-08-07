@@ -33,9 +33,9 @@
 
   #define GDATA_FOUNDATION_ONLY 1
 
-  #import "GDataXMLNode.h"
-
   #define GDATA_USES_LIBXML 1
+
+  #import "GDataXMLNode.h"
 
   #define NSXMLDocument                  GDataXMLDocument
   #define NSXMLElement                   GDataXMLElement

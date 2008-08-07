@@ -87,9 +87,7 @@
 
 - (NSArray *)feedLinks;
 
-@end
-
-@interface NSArray (GDataYouTubeUserProfileAdditions)
+// convenience accessors
 
 - (GDataLink *)videoLogLink;
 

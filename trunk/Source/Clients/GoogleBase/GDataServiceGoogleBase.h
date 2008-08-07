@@ -78,7 +78,14 @@ _EXTERN NSString* kGDataGoogleBaseUserItemsFeed  _INITIALIZE_AS(@"http://www.goo
                                             didFailSelector:(SEL)failedSelector;
 
 // finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteGoogleBaseEntry:(GDataEntryGoogleBase *)entryToDelete
+                                     delegate:(id)delegate
+                            didFinishSelector:(SEL)finishedSelector
+                              didFailSelector:(SEL)failedSelector;
+  
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteGoogleBaseResourceURL:(NSURL *)resourceEditURL
+                                               ETag:(NSString *)etag
                                            delegate:(id)delegate
                                   didFinishSelector:(SEL)finishedSelector
                                     didFailSelector:(SEL)failedSelector;

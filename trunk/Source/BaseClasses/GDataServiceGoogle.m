@@ -455,11 +455,28 @@ enum {
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
-                                          ETag:nil
+                                          ETag:[entryToUpdate ETag]
                                     httpMethod:@"PUT"
                                       delegate:delegate
                              didFinishSelector:finishedSelector
                                didFailSelector:failedSelector];
+}  
+
+- (GDataServiceTicket *)deleteAuthenticatedEntry:(GDataEntryBase *)entryToDelete
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector
+                                 didFailSelector:(SEL)failedSelector {
+  
+  NSString *etag = [entryToDelete ETag];
+  NSURL *editURL = [[entryToDelete editLink] URL];
+  
+  NSAssert1(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
+  
+  return [self deleteAuthenticatedResourceURL:editURL
+                                         ETag:etag
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
 }  
 
 - (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
@@ -471,6 +488,8 @@ enum {
   // This is provided for compatibility with interfaces to v1 services (which
   // lack etag support.)  Interfaces for newer services should only call into
   // deleteAuthenticatedResourceURL:ETag: 
+
+  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
 
   return [self deleteAuthenticatedResourceURL:resourceEditURL
                                          ETag:nil
@@ -484,6 +503,8 @@ enum {
                                               delegate:(id)delegate
                                      didFinishSelector:(SEL)finishedSelector
                                        didFailSelector:(SEL)failedSelector {
+
+  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
   
   return [self fetchAuthenticatedObjectWithURL:resourceEditURL
                                    objectClass:nil

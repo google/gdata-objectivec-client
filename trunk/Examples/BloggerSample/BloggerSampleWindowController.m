@@ -310,7 +310,7 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
   GDataEntryBase *blog = [self selectedBlog];
   if (blog) {
     
-    GDataLink *link = [[blog links] feedLink];
+    GDataLink *link = [blog feedLink];
     NSString *href = [link href];
     
     if ([href length] > 0) {
@@ -373,7 +373,7 @@ failedWithError:(NSError *)error {
   [newEntry addAuthor:[GDataPerson personWithName:@"Blogger Sample App"
                                             email:nil]];
     
-  NSURL* postURL = [[[[self selectedBlog] links] postLink] URL];
+  NSURL* postURL = [[[self selectedBlog] postLink] URL];
   if (postURL) {
     mIsEntriesFetchPending = YES;
     
@@ -433,7 +433,7 @@ failedWithError:(NSError *)error {
     [editedEntry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
       
     // send the edited entry to the server
-    NSURL *linkURL = [[[editedEntry links] editLink] URL];
+    NSURL *linkURL = [[editedEntry editLink] URL];
     
     mIsEntriesFetchPending = YES;
     
@@ -492,7 +492,7 @@ failedWithError:(NSError *)error {
   if (entry) {
         
     // send the edited entry to the server
-    GDataLink *link = [[entry links] editLink];
+    GDataLink *link = [entry editLink];
         
     mIsEntriesFetchPending = YES;
     

@@ -58,7 +58,6 @@
                                               delegate:delegate
                                      didFinishSelector:finishedSelector
                                        didFailSelector:failedSelector];
-  
 }
 
 - (GDataServiceTicket *)fetchSpreadsheetEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
@@ -77,15 +76,27 @@
                                              delegate:delegate
                                     didFinishSelector:finishedSelector
                                       didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)deleteSpreadsheetEntry:(GDataEntryBase *)entryToDelete
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                               didFailSelector:(SEL)failedSelector {
   
+  return [self deleteAuthenticatedEntry:entryToDelete
+                               delegate:delegate
+                      didFinishSelector:finishedSelector
+                        didFailSelector:failedSelector];  
 }
 
 - (GDataServiceTicket *)deleteSpreadsheetResourceURL:(NSURL *)resourceEditURL
+                                                ETag:(NSString *)etag
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector
                                      didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];
@@ -100,7 +111,6 @@
                                   delegate:delegate
                          didFinishSelector:finishedSelector
                            didFailSelector:failedSelector];
-  
 }
 
 - (GDataServiceTicket *)fetchSpreadsheetFeedWithBatchFeed:(GDataFeedBase *)batchFeed
@@ -114,7 +124,6 @@
                                           delegate:delegate
                                  didFinishSelector:finishedSelector
                                    didFailSelector:failedSelector];
-  
 }
 
 - (NSString *)serviceID {

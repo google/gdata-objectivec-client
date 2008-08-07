@@ -326,7 +326,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   GDataEntrySpreadsheet *spreadsheet = [self selectedSpreadsheet];
   if (spreadsheet) {
     
-    GDataLink *link = [[spreadsheet links] worksheetsLink];
+    GDataLink *link = [spreadsheet worksheetsLink];
     NSURL *feedURL = [link URL];
     if (feedURL) {
       
@@ -390,10 +390,10 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     int segmentIndex = [mFeedSelectorSegments selectedSegment];
     GDataLink *link;
     if (segmentIndex == 0) {
-      link = [[worksheet links] cellsLink];
+      link = [worksheet cellsLink];
 
     } else {
-      link = [[worksheet links] listLink];
+      link = [worksheet listLink];
     }
     
     NSURL *feedURL = [link URL];

@@ -46,5 +46,9 @@ _EXTERN NSString* kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.google
 
 - (int)columnCount;
 - (void)setColumnCount:(int)val;  
+
+// convenience accessors
+- (GDataLink *)listLink;
+- (GDataLink *)cellsLink;
 @end
 

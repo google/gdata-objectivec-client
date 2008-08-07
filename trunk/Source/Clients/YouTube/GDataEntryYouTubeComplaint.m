@@ -51,7 +51,7 @@
 #pragma mark -
 
 - (NSURL *)videoURL {
-  return [[[self links] relatedLink] URL];
+  return [[self relatedLink] URL];
 }
 
 @end

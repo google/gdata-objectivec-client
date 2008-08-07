@@ -99,6 +99,11 @@ enum {
                                              didFinishSelector:(SEL)finishedSelector
                                                didFailSelector:(SEL)failedSelector;
 
+- (GDataServiceTicket *)deleteAuthenticatedEntry:(GDataEntryBase *)entryToDelete
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector
+                                 didFailSelector:(SEL)failedSelector;
+
 - (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
                                               delegate:(id)delegate
                                      didFinishSelector:(SEL)finishedSelector

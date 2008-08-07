@@ -42,5 +42,8 @@ _EXTERN NSString* kGDataCategorySpreadsheetCell _INITIALIZE_AS(@"http://schemas.
 
 - (GDataSpreadsheetCell *)cell;
 - (void)setCell:(GDataSpreadsheetCell *)cell;
+
+- (GDataLink *)sourceLink;
+
 @end
 

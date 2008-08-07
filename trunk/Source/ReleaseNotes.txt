@@ -12,9 +12,13 @@ Additions
   parameters to service callback methods.  Tickets inherit a copy of the
   properties set in the service instance.
   
-- Added Google Finance classes.
+- Added Google Finance and Webmaster Tools classes.
 
-- Added support for contact groups and extended properties
+- Picasa Web class, method, and constant names changed to Google Photos
+
+- Added support for contact groups and extended properties, and a method
+  to generate contact feed URLs for projections.  Added methods to remove
+  contact properties. (thanks stevec)
 
 - Added GDataXMLNode, a shim layer used for GDATA_IPHONE builds
 
@@ -24,11 +28,38 @@ Additions
 - GDataObject base class now handles parsing, generation, copying,
   and comparison of local attributes.
   
+- Added namespace utilities to GDataObject: completeNamespaces, 
+  which returns a union of an objects declared namespaces with those of its
+  parents, and pruneInheritedNamespaces, which removes an objects namespaces 
+  if they are also declared by its parents.
+
 - Added "strict" parameter to GDataQuery.
 
 - Made changes to support 64-bit builds on Leopard.
 
-- Added service support for Google AuthSub tokens
+- Added service support for Google AuthSub tokens.
+
+- Added a convenience routine for setting an entry's batch ID from a string.
+
+- Added YouTube "most_popular" feed ID, and query parameters for location
+  and language restriction.
+  
+- Moved array category method objectsWithValue:forKeyPath: to GDataUtilities
+
+- Added property methods to GTMHTTPFetcher.  These are convenient alternatives
+  to storing an NSDictionary in the userData.
+  
+- Added support for OpenSearch 1.1 elements in feeds.
+
+- Added deleteEntry methods to service classes, and changed deleteResorceURL
+  methods to require an ETag.
+  
+- Replaced Obj-C categories on NSArray (such as -editLink) with methods of
+  GDataObject classes to reduce the number of utility category names in
+  global namespace.
+  
+- Added more upload document types to docs sample application.
+
 
 Bugs fixed
 
@@ -36,6 +67,8 @@ Bugs fixed
   substantially reducing code in many classes derived from GDataObject.
 
 - Improved namespaced attribute support in GDataObject.
+
+- Improved parsing performance.
 
 - Fixed two ivar leaks in GDataServiceBase
 
@@ -51,9 +84,19 @@ Bugs fixed
 - Contact feed class now registered so it can be found for XML feeds
   with the proper category.
 
+- Extended property elements now explcitly declare that they have
+  no default namespace (xmlns="") to avoid child elements from
+  being interpreted as atom elements.
+
 - HTTP logging now uses NSDateFormatter rather than NSCalendarDate.
 
 - Escaping of links now done in http logging.
+
+- Replaced NSDecimalSeparator use with NSLocale in parsing NSDecimalNumber.
+
+- Fixed a potential GDataHTTPFetcher crash on failed http authentication.
+
+- Properly encode slug header on uploads, per Atom RFC 5023
 
 
 Release 1.4.0

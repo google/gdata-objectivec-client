@@ -122,7 +122,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   // enable the batch update button when appropriate (note: this does not
   // really indicate if any of the items can be updated)
   BOOL doEnableBatchUpdate = NO;
-  NSString *batchHref = [[[mGoogleBaseFeed links] batchLink] href];
+  NSString *batchHref = [[mGoogleBaseFeed batchLink] href];
   if ([batchHref length] > 0 
       && [[mGoogleBaseFeed entries] count] > 0
       && [[mUsernameField stringValue] length] > 0
@@ -321,7 +321,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     }
   }
   
-  NSURL *batchURL = [[[mGoogleBaseFeed links] batchLink] URL];
+  NSURL *batchURL = [[mGoogleBaseFeed batchLink] URL];
   if (batchURL != nil && [updatedEntries count] > 0) {
     
     // make a batch feed object: add entries, and since

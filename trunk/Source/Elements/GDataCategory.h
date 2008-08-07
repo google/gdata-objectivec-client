@@ -53,13 +53,12 @@ _EXTERN NSString* kGDataCategoryLabelStarred _INITIALIZE_AS(@"starred");
 - (NSString *)labelLang;
 - (void)setLabelLang:(NSString *)str;
 
-@end
+#pragma mark -
 
-@interface NSArray(GDataCategoryArray)
 // utilities for extracting a subset of categories
-- (NSArray *)categoriesWithScheme:(NSString *)scheme;
-- (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix;
++ (NSArray *)categoriesWithScheme:(NSString *)scheme fromCategories:(NSArray *)array;
++ (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix fromCategories:(NSArray *)array;
 
-- (NSArray *)categoryLabels;
-- (BOOL)containsCategoryWithLabel:(NSString *)label;
++ (NSArray *)categoryLabelsFromCategories:(NSArray *)array;
++ (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label;
 @end

@@ -47,32 +47,15 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoAccess class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoBytesUsed class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoCommentCount class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoCommentingEnabled class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoTimestamp class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoNumberUsed class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoNumberLeft class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoBytesUsed class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoUser class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoNickname class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoName class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoLocation class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataMediaGroup class]];  
-
+                                 childClasses:
+   [GDataPhotoAccess class], [GDataPhotoBytesUsed class],
+   [GDataPhotoCommentCount class], [GDataPhotoCommentingEnabled class],
+   [GDataPhotoTimestamp class], [GDataPhotoNumberUsed class],
+   [GDataPhotoNumberLeft class], [GDataPhotoBytesUsed class],
+   [GDataPhotoUser class], [GDataPhotoNickname class],
+   [GDataPhotoName class], [GDataPhotoLocation class],
+   [GDataMediaGroup class], nil];  
+  
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];
 }

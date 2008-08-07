@@ -38,6 +38,7 @@
                         " xmlns:app='http://purl.org/atom/app#'"
                         " xmlns:gcs='http://schemas.google.com/codesearch/2006'"
                         " xmlns:gf='http://schemas.google.com/finance/2007'"
+                        " xmlns:wt='http://schemas.google.com/webmasters/tools/2007'"
                         " xmlns:media='http://search.yahoo.com/mrss/'" 
                         " xmlns:gphoto='http://schemas.google.com/photos/2007'"
                         " xmlns:exif='http://schemas.google.com/photos/exif/2007'"
@@ -361,6 +362,7 @@
     { @"name", @"fred" },
     { @"XMLValues.0.XMLString", @"<mozq><lepper x=\"1\"></lepper></mozq>" },
     { @"XMLValues.1.XMLString", @"<frizq></frizq>" },
+    { @"namespaces.", @"" }, // this element explicitly overrides the default namespace for its children
     { @"unknownChildren.@count.stringValue", @"2" },
     { @"", @"" },
         
@@ -389,7 +391,6 @@
     { @"feed.columnCount", @"20" },
     { @"feed.entries.0.cell.column", @"1" },
     { @"", @"" },
-    
     
     { @"GDataGenerator", @" <generator version='1.0' uri='http://www.google.com/calendar/'>CL2</generator>" },
     { @"name", @"CL2" },
@@ -718,6 +719,48 @@
   
   [self runElementTests:tests];
   
+}
+
+- (void)testWebmasterToolsElements {
+  
+  ElementTestKeyPathValues tests[] =
+  {     
+    { @"GDataSitemapMobile", @"<wt:sitemap-mobile>"
+      "<wt:markup-language>HTML</wt:markup-language>"
+      "<wt:markup-language>WAP</wt:markup-language></wt:sitemap-mobile>" },
+    { @"markupLanguages.@count", @"2" },
+    { @"markupLanguages.0.stringValue", @"HTML" },
+    { @"markupLanguages.1.stringValue", @"WAP" },
+    { @"", @"" },
+    
+    { @"GDataSitemapNews", @"<wt:sitemap-news>"
+      "<wt:publication-label>Value1</wt:publication-label>"
+      "<wt:publication-label>Value2</wt:publication-label>"
+      "<wt:publication-label>Value3</wt:publication-label></wt:sitemap-news>" },
+    { @"publicationLabels.@count", @"3" },
+    { @"publicationLabels.0.stringValue", @"Value1" },
+    { @"", @"" },
+        
+    { @"GDataSiteVerificationMethod", @"<wt:verification-method type='htmlpage'"
+      " in-use='true'>456456-google.html</wt:verification-method>" },
+    { @"type", @"htmlpage" },
+    { @"isInUse", @"1" },
+    { @"value", @"456456-google.html" },
+    { @"", @"" },
+
+    { @"GDataSiteVerificationMethod", @"<wt:verification-method type='metatag'"
+      " in-use='false'> <meta name=\"verify-v1\" content=\"a2Ai\" />"
+      "</wt:verification-method>" },
+    { @"type", @"metatag" },
+    { @"isInUse", @"0" },
+    { @"XMLValues.0.localName", @"meta" },
+    { @"unknownChildren.@count", @"1" },
+    { @"", @"" },
+    
+    { nil, nil }
+  };
+  
+  [self runElementTests:tests];
 }
 
 - (void)testCodeSearchElements {
@@ -1118,6 +1161,25 @@
 
   testValue2 = [extProp2 XMLValueForKey:key2];
   STAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
+  
+  // verify that the default namespace is empty so that extended
+  // properties stored as XML children won't be considered part of the
+  // atom namespace
+
+  NSDictionary *namespaces = [extProp2 namespaces];
+  STAssertEqualObjects([namespaces objectForKey:@""], @"", 
+                       @"Missing default namespace from GDataObject");
+  
+#if !GDATA_USES_LIBXML
+  // verify that the NSXMLElement really has the default namespace we expect
+  //
+  // this is conditional to avoid a dependency on NSXMLElement's 
+  // namespaceForPrefix method in libxml builds
+  //
+  NSString *nsStr = [[element namespaceForPrefix:@""] XMLString];
+  STAssertEqualObjects(nsStr, @"xmlns=\"\"",
+                       @"Missing default namespace from XML element");
+#endif
 }
 
 - (void)testChangedNamespace {

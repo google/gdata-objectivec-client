@@ -45,25 +45,10 @@
 
 _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005#kind");
 
+
 @interface GDataEntryBase : GDataObject <NSCopying> {
 
-  BOOL canEdit_;
-  NSString *idString_;
-  NSString *versionIDString_;
   NSString *etag_;
-  
-  GDataDateTime *publishedDate_;
-  GDataDateTime *updatedDate_;
-  GDataDateTime *editedDate_;
-  
-  GDataTextConstruct *title_;
-  GDataTextConstruct *summary_;
-  GDataEntryContent *content_;
-  GDataTextConstruct *rightsString_;
-  
-  NSMutableArray *links_; // GDataLink objects
-  NSMutableArray *authors_; // GDataPerson objects
-  NSMutableArray *categories_; // GDataCategory objects
 
   NSData *uploadData_;
   NSString *uploadMIMEType_;
@@ -80,14 +65,8 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (NSMutableArray *)itemsForDescription; // subclasses may implement this
 
 // basic entry fields
-- (BOOL)canEdit;
-- (void)setCanEdit:(BOOL)flag;
-
 - (NSString *)identifier;
 - (void)setIdentifier:(NSString *)theIdString;
-
-- (NSString *)versionIDString;
-- (void)setVersionIDString:(NSString *)theVersionIDString;
 
 - (GDataDateTime *)publishedDate;
 - (void)setPublishedDate:(GDataDateTime *)thePublishedDate;
@@ -170,5 +149,20 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (GDataBatchInterrupted *)batchInterrupted;
 - (void)setBatchInterrupted:(GDataBatchInterrupted *)obj;
 
+// convenience accessors
+
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue;
+
+- (GDataLink *)feedLink;
+- (GDataLink *)editLink;
+- (GDataLink *)editMediaLink;
+- (GDataLink *)alternateLink;
+- (GDataLink *)relatedLink;
+- (GDataLink *)postLink;
+- (GDataLink *)selfLink;
+- (GDataLink *)HTMLLink;
+
+- (BOOL)canEdit;
+  
 @end
 

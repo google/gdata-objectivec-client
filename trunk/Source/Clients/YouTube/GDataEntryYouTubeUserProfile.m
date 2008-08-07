@@ -44,51 +44,25 @@
   
   [super addExtensionDeclarations];
   
-  Class entryClass = [self class];
-
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFeedLink class]];
-  
-  // YouTube element extensions
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeAge class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeBooks class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeCompany class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeGender class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeHobbies class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeHometown class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeLocation class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeMovies class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeMusic class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeOccupation class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeRelationship class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeSchool class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeUsername class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeFirstName class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeLastName class]];
-
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeStatistics class]];
-
-  // media extensions
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataMediaThumbnail class]];
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClasses:
+     [GDataFeedLink class],
+     
+     // YouTube element extensions
+     [GDataYouTubeAge class], 
+     [GDataYouTubeBooks class], 
+     [GDataYouTubeCompany class], 
+     [GDataYouTubeGender class], [GDataYouTubeHobbies class], 
+     [GDataYouTubeHometown class], [GDataYouTubeLocation class], 
+     [GDataYouTubeMovies class], [GDataYouTubeMusic class], 
+     [GDataYouTubeOccupation class], [GDataYouTubeRelationship class], 
+     [GDataYouTubeSchool class], [GDataYouTubeUsername class],
+     [GDataYouTubeFirstName class],  [GDataYouTubeLastName class], 
+     [GDataYouTubeStatistics class], [GDataFeedLink class],
+     [GDataYouTubeDescription class],
+     
+     // media extensions
+     [GDataMediaThumbnail class], nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -98,7 +72,7 @@
   NSString *selNames[] = {
     @"statistics", @"age", @"thumbnail", @"company", @"gender", @"hobbies", 
     @"hometown", @"location", @"movies", @"music", @"occupation",
-    @"relationship", @"school", @"username", @"firstName", @"lastName",
+    @"relationship", @"school", @"username", @"firstName", @"lastName", 
     @"youTubeDescription", nil
   };
   
@@ -128,8 +102,10 @@
 
 - (NSString *)channelType {
   
-  NSArray *categories = [self categories];
-  NSArray *channelCats = [categories categoriesWithScheme:kGDataSchemeYouTubeChannel];
+  NSArray *channelCats;
+  
+  channelCats = [GDataCategory categoriesWithScheme:kGDataSchemeYouTubeChannel
+                                     fromCategories:[self categories]];
   
   if ([channelCats count] > 0) {
     GDataCategory *category = [channelCats objectAtIndex:0];
@@ -298,7 +274,6 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeFirstName class]];
 }
 
-
 - (NSString *)lastName {
   GDataYouTubeLastName *obj = [self objectForExtensionClass:[GDataYouTubeLastName class]];
   return [obj stringValue];
@@ -323,36 +298,40 @@
   return [self objectsForExtensionClass:[GDataFeedLink class]]; 
 }
 
-@end
-
-@implementation NSArray (GDataYouTubeUserProfileAdditions)
+#pragma mark Convenience accessors
 
 - (GDataLink *)videoLogLink {
-  return [self linkWithRelAttributeValue:kGDataLinkYouTubeVlog];  
+  return [self linkWithRelAttributeValue:kGDataLinkYouTubeVlog];
+}
+
+- (GDataFeedLink *)feedLinkForRel:(NSString *)rel {
+  return [GDataUtilities firstObjectFromArray:[self feedLinks]
+                                    withValue:rel
+                                   forKeyPath:@"rel"];
 }
 
 - (GDataFeedLink *)favoritesFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubeFavorites];
+  return [self feedLinkForRel:kGDataLinkYouTubeFavorites];
 }
 
 - (GDataFeedLink *)contactsFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubeContacts];
+  return [self feedLinkForRel:kGDataLinkYouTubeContacts];
 }
 
 - (GDataFeedLink *)inboxFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubeInbox];
+  return [self feedLinkForRel:kGDataLinkYouTubeInbox];
 }
 
 - (GDataFeedLink *)playlistsFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubePlaylists];
+  return [self feedLinkForRel:kGDataLinkYouTubePlaylists];
 }
 
 - (GDataFeedLink *)subscriptionsFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubeSubscriptions];
+  return [self feedLinkForRel:kGDataLinkYouTubeSubscriptions];
 }
 
 - (GDataFeedLink *)uploadsFeedLink {
-  return [self feedLinkWithRel:kGDataLinkYouTubeUploads];
+  return [self feedLinkForRel:kGDataLinkYouTubeUploads];
 }
 
 @end

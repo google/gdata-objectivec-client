@@ -56,10 +56,11 @@ _EXTERN NSString* kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://schemas.
 - (void)setScope:(GDataACLScope *)obj;
 - (GDataACLScope *)scope;
 
+// convenience accessors
+
+- (GDataLink *)controlledObjectLink;
 @end
 
-@interface NSArray(GDataACLLinks)
-// utilities for extracting a GDataLink from an array of links
+@interface GDataEntryBase (GDataACLLinks)
 - (GDataLink *)ACLLink;
-- (GDataLink *)controlledObjectLink;
 @end

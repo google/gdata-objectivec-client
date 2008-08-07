@@ -21,6 +21,7 @@
 
 #import "GDataEntryBase.h"
 #import "GDataMIMEDocument.h"
+#import "GDataBaseElements.h"
 
 @implementation GDataEntryBase
 
@@ -40,29 +41,38 @@
   return entry;
 }
 
+
 - (void)addExtensionDeclarations {
   
   [super addExtensionDeclarations];
   
   Class entryClass = [self class];
   
-  // deletion marking support
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataDeleted class]];
-
-  // atom publishing control support
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataAtomPubControl class]];  
-  
-  // batch support
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataBatchOperation class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataBatchID class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataBatchStatus class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataBatchInterrupted class]];  
+                                 childClasses:
+   // Atom extensions
+   [GDataAtomID class], 
+   [GDataAtomPublishedDate class],
+   [GDataAtomUpdatedDate class], 
+   [GDataAtomPubEditedDate class],
+   [GDataAtomTitle class], 
+   [GDataAtomSummary class],
+   [GDataAtomContent class], 
+   [GDataAtomRights class],
+   [GDataLink class],
+   [GDataAtomAuthor class],
+   [GDataAtomCategory class],
+   
+   // deletion marking support
+   [GDataDeleted class],
+   
+   // atom publishing control support
+   [GDataAtomPubControl class], 
+   
+   // batch support
+   [GDataBatchOperation class], [GDataBatchID class],
+   [GDataBatchStatus class], [GDataBatchInterrupted class],
+   nil];
 }
 
 
@@ -71,91 +81,17 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    
+    // we parse ETags explicitly rather than using addLocalAttributeDeclarations
+    // because it requires a gd namespace
     [self setETag:[self stringForAttributeLocalName:@"etag"
                                                 URI:kGDataNamespaceGData
                                         fromElement:element]];
-    
-    NSXMLElement *idElement = [self childWithQualifiedName:@"id"
-                                              namespaceURI:kGDataNamespaceAtom
-                                               fromElement:element];
-    NSString *str = [self stringValueFromElement:idElement];
-    [self setIdentifier:str];
-    
-    NSXMLElement *pubElement = [self childWithQualifiedName:@"published"
-                                            namespaceURI:kGDataNamespaceAtom
-                                             fromElement:element];
-    GDataDateTime *dateTime = [self dateTimeFromElement:pubElement];
-    [self setPublishedDate:dateTime];
-    
-    NSXMLElement *updElement = [self childWithQualifiedName:@"updated"
-                                               namespaceURI:kGDataNamespaceAtom
-                                                fromElement:element];
-    dateTime = [self dateTimeFromElement:updElement];
-    [self setUpdatedDate:dateTime];
-    
-    NSXMLElement *editedElement = [self childWithQualifiedName:@"app:edited"
-                                                  namespaceURI:kGDataNamespaceAtomPub
-                                                   fromElement:element];
-    dateTime = [self dateTimeFromElement:editedElement];
-    [self setEditedDate:dateTime];
-    
-    [self setTitle:[self objectForChildOfElement:element
-                                   qualifiedName:@"title"
-                                    namespaceURI:kGDataNamespaceAtom
-                                     objectClass:[GDataTextConstruct class]]];
-    
-    [self setSummary:[self objectForChildOfElement:element
-                                     qualifiedName:@"summary"
-                                      namespaceURI:kGDataNamespaceAtom
-                                       objectClass:[GDataTextConstruct class]]];
-    
-    [self setContent:[self objectForChildOfElement:element
-                                     qualifiedName:@"content"
-                                      namespaceURI:kGDataNamespaceAtom
-                                       objectClass:[GDataEntryContent class]]];
-    
-    [self setRightsString:[self objectForChildOfElement:element
-                                          qualifiedName:@"rights"
-                                           namespaceURI:kGDataNamespaceAtom
-                                            objectClass:[GDataTextConstruct class]]];
-    
-    [self setLinks:[self objectsForChildrenOfElement:element
-                                       qualifiedName:@"link"
-                                        namespaceURI:kGDataNamespaceAtom
-                                         objectClass:[GDataLink class]]];
-    
-    [self setAuthors:[self objectsForChildrenOfElement:element
-                                         qualifiedName:@"author"
-                                          namespaceURI:kGDataNamespaceAtom
-                                           objectClass:[GDataPerson class]]];
-    
-    [self setCategories:[self objectsForChildrenOfElement:element
-                                            qualifiedName:@"category"
-                                             namespaceURI:kGDataNamespaceAtom
-                                              objectClass:[GDataCategory class]]];
   }
   return self;
 }
 
 - (void)dealloc {
-  [idString_ release];
-  [versionIDString_ release];
   [etag_ release];
-  
-  [publishedDate_ release];
-  [updatedDate_ release];
-  [editedDate_ release];
-  
-  [title_ release];
-  [summary_ release];
-  [content_ release];
-  [rightsString_ release];
-  
-  [links_ release];
-  [authors_ release];
-  [categories_ release];
-  
   [uploadData_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
@@ -169,17 +105,6 @@
   
   return [super isEqual:other]
     && AreEqualOrBothNil([self ETag], [other ETag])
-    && AreEqualOrBothNil([self identifier], [other identifier])
-    && AreEqualOrBothNil([self versionIDString], [other versionIDString])
-    && AreEqualOrBothNil([self publishedDate], [other publishedDate])
-    && AreEqualOrBothNil([self updatedDate], [other updatedDate])
-    && AreEqualOrBothNil([self editedDate], [other editedDate])
-    && AreEqualOrBothNil([self title], [other title])
-    && AreEqualOrBothNil([self summary], [other summary])
-    && AreEqualOrBothNil([self content], [other content])
-    && AreEqualOrBothNil([self rightsString], [other rightsString])
-    && AreEqualOrBothNil([self authors], [other authors])
-    && AreEqualOrBothNil([self categories], [other categories])
     && AreEqualOrBothNil([self uploadData], [other uploadData])
     && AreEqualOrBothNil([self uploadMIMEType], [other uploadMIMEType])
     && AreEqualOrBothNil([self uploadSlug], [other uploadSlug]);
@@ -189,19 +114,6 @@
   GDataEntryBase* newEntry = [super copyWithZone:zone];
     
   [newEntry setETag:[self ETag]];
-  [newEntry setCanEdit:[self canEdit]];
-  [newEntry setIdentifier:[self identifier]];
-  [newEntry setVersionIDString:[self versionIDString]];
-  [newEntry setPublishedDate:[self publishedDate]];
-  [newEntry setUpdatedDate:[self updatedDate]];
-  [newEntry setEditedDate:[self editedDate]];
-  [newEntry setTitle:[self title]];
-  [newEntry setSummary:[self summary]];
-  [newEntry setContent:[self content]];
-  [newEntry setRightsString:[self rightsString]];
-  [newEntry setLinks:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self links]]];
-  [newEntry setAuthors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self authors]]];
-  [newEntry setCategories:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self categories]]];
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
@@ -213,26 +125,31 @@
   
   NSMutableArray *items = [NSMutableArray array];
   
-  [self addToArray:items objectDescriptionIfNonNil:[title_ stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[summary_ stringValue] withName:@"summary"];
-  [self addToArray:items objectDescriptionIfNonNil:[content_ stringValue] withName:@"content"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self summary] stringValue] withName:@"summary"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"];
 
-  [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
+  [self addToArray:items objectDescriptionIfNonNil:[self ETag] withName:@"etag"];
 
-  [self addToArray:items arrayCountIfNonEmpty:authors_ withName:@"authors"];
-  [self addToArray:items arrayCountIfNonEmpty:categories_ withName:@"categories"];
+  [self addToArray:items arrayCountIfNonEmpty:[self authors] withName:@"authors"];
+  [self addToArray:items arrayCountIfNonEmpty:[self categories] withName:@"categories"];
   
-  if ([links_ count]) {
-    NSArray *linkNames = [GDataLink linkNamesFromLinks:links_];
+  if ([[self links] count]) {
+    NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
     NSString *linksStr = [linkNames componentsJoinedByString:@","];
     [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
   }
 
-  [self addToArray:items objectDescriptionIfNonNil:[editedDate_ RFC3339String] withName:@"edited"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self editedDate] RFC3339String] withName:@"edited"];
 
-  [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
+  [self addToArray:items objectDescriptionIfNonNil:[self identifier] withName:@"id"];
   
   [self addToArray:items objectDescriptionIfNonNil:[self atomPubControl] withName:@"app:control"];
+
+  [self addToArray:items objectDescriptionIfNonNil:[[self batchOperation] type] withName:@"batchOp"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self batchID] stringValue] withName:@"batchID"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self batchStatus] code] withName:@"batchStatus"];
+  [self addToArray:items objectDescriptionIfNonNil:[self batchInterrupted] withName:@"batchInterrupted"];
 
   [self addToArray:items objectDescriptionIfNonNil:uploadMIMEType_ withName:@"MIMEType"];
   [self addToArray:items objectDescriptionIfNonNil:uploadSlug_ withName:@"slug"];
@@ -253,42 +170,6 @@
 
   [self addToElement:element attributeValueIfNonNil:[self ETag] 
         withLocalName:@"etag" URI:kGDataNamespaceGData];
-
-  if ([[self identifier] length]) {
-    [element addChild:[NSXMLElement elementWithName:@"id"
-                                        stringValue:[self identifier]]];
-  }  
-  if ([self title]) {
-    [element addChild:[[self title] XMLElement]];
-  }
-  if ([self summary]) {
-    [element addChild:[[self summary] XMLElement]];
-  }
-  if ([self content]) {
-    [element addChild:[[self content] XMLElement]];
-  }
-  if ([self rightsString]) {
-    [element addChild:[[self rightsString] XMLElement]];
-  }
-  if ([self publishedDate]) {
-    [element addChild:[NSXMLNode elementWithName:@"published"
-                                     stringValue:[[self publishedDate] RFC3339String]]];
-  }
-  if ([self updatedDate]) {
-    [element addChild:[NSXMLNode elementWithName:@"updated"
-                                     stringValue:[[self updatedDate] RFC3339String]]];
-  }
-  if ([self editedDate]) {
-    NSXMLElement *editedElement = [NSXMLNode elementWithName:@"edited" 
-                                                         URI:kGDataNamespaceAtomPub];
-    [editedElement addStringValue:[[self editedDate] RFC3339String]];
-
-    [element addChild:editedElement];
-  }
-  [self addToElement:element XMLElementsForArray:[self links]];
-  [self addToElement:element XMLElementsForArray:[self authors]];
-  [self addToElement:element XMLElementsForArray:[self categories]];
-  
   return element;
 }
 
@@ -350,49 +231,6 @@
 
 #pragma mark -
 
-- (BOOL)canEdit {
-  return canEdit_;
-}
-
-- (void)setCanEdit:(BOOL)flag {
-  canEdit_ = flag;
-}
-
-- (NSString *)identifier {
-  return idString_; 
-}
-- (void)setIdentifier:(NSString *)theIdString {
-  [idString_ autorelease];
-  idString_ = [theIdString copy];
-}
-
-- (NSString *)versionIDString {
-  return versionIDString_; 
-}
-
-- (void)setVersionIDString:(NSString *)theVersionIDString {
-  [versionIDString_ autorelease];
-  versionIDString_ = [theVersionIDString copy];
-}
-
-- (GDataDateTime *)publishedDate {
-  return publishedDate_; 
-}
-
-- (void)setPublishedDate:(GDataDateTime *)thePublishedDate {
-  [publishedDate_ autorelease];
-  publishedDate_ = [thePublishedDate copy];
-}
-
-- (GDataDateTime *)updatedDate {
-  return updatedDate_; 
-}
-
-- (void)setUpdatedDate:(GDataDateTime *)theUpdatedDate {
-  [updatedDate_ autorelease];
-  updatedDate_ = [theUpdatedDate copy];
-}
-
 - (NSString *)ETag {
   return etag_; 
 }
@@ -402,132 +240,162 @@
   etag_ = [str copy];
 }
 
-- (GDataDateTime *)editedDate {
-  return editedDate_; 
+- (NSString *)identifier {
+  GDataAtomID *obj = [self objectForExtensionClass:[GDataAtomID class]];
+  return [obj stringValue];
 }
 
-- (void)setEditedDate:(GDataDateTime *)theEditedDate {
-  [editedDate_ autorelease];
-  editedDate_ = [theEditedDate copy];
+- (void)setIdentifier:(NSString *)str {
+  GDataAtomID *obj = [GDataAtomID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomID class]];
 }
+
+- (GDataDateTime *)publishedDate {
+  GDataAtomPublishedDate *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomPublishedDate class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setPublishedDate:(GDataDateTime *)dateTime {
+  GDataAtomPublishedDate *obj;
+  
+  obj = [GDataAtomPublishedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataAtomPublishedDate class]];
+}
+
+- (GDataDateTime *)updatedDate {
+  GDataAtomUpdatedDate *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomUpdatedDate class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setUpdatedDate:(GDataDateTime *)dateTime {
+  GDataAtomUpdatedDate *obj;
+  
+  obj = [GDataAtomUpdatedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataAtomUpdatedDate class]];
+}
+
+- (GDataDateTime *)editedDate {
+  GDataAtomPubEditedDate *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomPubEditedDate class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setEditedDate:(GDataDateTime *)dateTime {
+  GDataAtomPubEditedDate *obj;
+  
+  obj = [GDataAtomPubEditedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataAtomPubEditedDate class]];
+}
+
 
 - (GDataTextConstruct *)title {
-  return title_; 
+  GDataAtomTitle *obj = [self objectForExtensionClass:[GDataAtomTitle class]];
+  return obj;
 }
 
-- (void)setTitle:(GDataTextConstruct *)theTitle {
-  [title_ autorelease];
-  title_ = [theTitle copy];
-
-  [title_ setElementName:@"title"];
+- (void)setTitle:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomTitle class]];
 }
 
 - (void)setTitleWithString:(NSString *)str {
-  [self setTitle:[GDataTextConstruct textConstructWithString:str]]; 
+  GDataAtomTitle *obj = [GDataAtomTitle textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomTitle class]];
 }
 
 - (GDataTextConstruct *)summary {
-  return summary_; 
+  GDataAtomSummary *obj = [self objectForExtensionClass:[GDataAtomSummary class]];
+  return obj;
 }
 
-- (void)setSummary:(GDataTextConstruct *)theSummary {
-  [summary_ autorelease];
-  summary_ = [theSummary copy];
-
-  [summary_ setElementName:@"summary"];
+- (void)setSummary:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomSummary class]];
 }
 
 - (void)setSummaryWithString:(NSString *)str {
-  [self setSummary:[GDataTextConstruct textConstructWithString:str]];  
+  GDataAtomSummary *obj = [GDataAtomSummary textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomSummary class]];
 }
 
 - (GDataEntryContent *)content {
-  return content_; 
+  GDataAtomContent *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomContent class]];
+  return obj;
 }
 
-- (void)setContent:(GDataEntryContent *)theContent {
-  [content_ autorelease];
-  content_ = [theContent copy];
-
-  [content_ setElementName:@"content"];
+- (void)setContent:(GDataEntryContent *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomContent class]];
 }
 
 - (void)setContentWithString:(NSString *)str {
-  [self setContent:[GDataEntryContent textConstructWithString:str]];  
+  GDataAtomContent *obj = [GDataAtomContent textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomContent class]];
 }
 
 - (GDataTextConstruct *)rightsString {
-  return rightsString_; 
+  GDataAtomContent *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomRights class]];
+  return obj;
 }
 
-- (void)setRightsString:(GDataTextConstruct *)theRightsString {
-  [rightsString_ autorelease];
-  rightsString_ = [theRightsString copy];
-  
-  [rightsString_ setElementName:@"rights"];
+- (void)setRightsString:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
 
 - (void)setRightsStringWithString:(NSString *)str {
-  [self setRightsString:[GDataTextConstruct textConstructWithString:str]]; 
+  GDataAtomRights *obj;
+  
+  obj = [GDataAtomRights textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
 
 - (NSArray *)links {
-  return links_;
+  NSArray *array = [self objectsForExtensionClass:[GDataLink class]];
+  return array;
 }
 
-- (void)setLinks:(NSArray *)links {
-  [links_ autorelease];
-  links_ = [links mutableCopy];
+- (void)setLinks:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataLink class]];
 }
 
-- (void)addLink:(GDataLink *)link {
-  if (!links_) {
-    links_ = [[NSMutableArray alloc] init];
-  }
-  [links_ addObject:link]; 
+- (void)addLink:(GDataLink *)obj {
+  [self addObject:obj forExtensionClass:[GDataLink class]];
 }
 
 - (NSArray *)authors {
-  return authors_;
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomAuthor class]];
+  return array;
 }
 
-- (void)setAuthors:(NSArray *)authors {
-  [authors_ autorelease];
-  authors_ = [authors mutableCopy];
-  
-  [authors_ makeObjectsPerformSelector:@selector(setElementName:)
-                            withObject:@"author"];
+- (void)setAuthors:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAtomAuthor class]];
 }
 
-- (void)addAuthor:(GDataPerson *)authorElement {
-  [authorElement setElementName:@"author"];
-  if (!authors_) {
-    authors_ = [[NSMutableArray alloc] init]; 
-  }
-  [authors_ addObject:authorElement]; 
+- (void)addAuthor:(GDataPerson *)obj {
+  [self addObject:obj forExtensionClass:[GDataAtomAuthor class]];
 }
 
 - (NSArray *)categories {
-  return categories_;
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomCategory class]];
+  return array;
 }
 
-- (void)setCategories:(NSArray *)categories {
-  [categories_ autorelease];
-  categories_ = [categories mutableCopy];
+- (void)setCategories:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAtomCategory class]];
 }
 
 - (void)addCategory:(GDataCategory *)obj {
-  if (!categories_) {
-    categories_ = [[NSMutableArray alloc] init]; 
-  }
-  
-  if (![categories_ containsObject:obj]) {
-    [categories_ addObject:obj];
-  }
+  [self addObject:obj forExtensionClass:[GDataAtomCategory class]];
 }
 
-- (void)removeCategory:(GDataCategory *)category {
-  [categories_ removeObject:category];
+- (void)removeCategory:(GDataCategory *)obj {
+  [self removeObject:obj forExtensionClass:[GDataAtomCategory class]];
 }
 
 // Multipart MIME Uploading
@@ -556,7 +424,10 @@
 
 - (void)setUploadSlug:(NSString *)str {
   [uploadSlug_ autorelease];
-  uploadSlug_ = [str copy];
+  
+  // encode per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
+  NSString *encoded = [GDataUtilities stringByPercentEncodingUTF8ForString:str];
+  uploadSlug_ = [encoded copy];
 }
 
 // utility routine to convert a file path to the file's MIME type using
@@ -674,6 +545,52 @@
   return namespaces;
 }
 
+#pragma mark -
+
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
+  
+  return [GDataLink linkWithRelAttributeValue:rel
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)feedLink {
+  return [self linkWithRelAttributeValue:kGDataLinkRelFeed]; 
+}
+
+- (GDataLink *)editLink {
+  return [self linkWithRelAttributeValue:@"edit"]; 
+}
+
+- (GDataLink *)editMediaLink {
+  return [self linkWithRelAttributeValue:@"edit-media"]; 
+}
+
+- (GDataLink *)alternateLink {
+  return [self linkWithRelAttributeValue:@"alternate"]; 
+}
+
+- (GDataLink *)relatedLink {
+  return [self linkWithRelAttributeValue:@"related"]; 
+}
+
+- (GDataLink *)postLink {
+  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelPost
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)selfLink {
+  return [self linkWithRelAttributeValue:@"self"]; 
+}
+
+- (GDataLink *)HTMLLink {
+  return [GDataLink linkWithRel:@"alternate"
+                           type:@"text/html"
+                      fromLinks:[self links]]; 
+}
+
+- (BOOL)canEdit {
+  return ([self editLink] != nil);  
+}
 @end
 
 

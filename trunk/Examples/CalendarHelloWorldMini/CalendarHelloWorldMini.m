@@ -90,7 +90,7 @@ int main(int argc, const char *argv[]) {
     [event addTime:when];
     
     // Post the event.
-    NSURL *altLinkURL = [[[calendar links] alternateLink] URL];
+    NSURL *altLinkURL = [[calendar alternateLink] URL];
     
     ticket = [service fetchCalendarEventByInsertingEntry:event
                                               forFeedURL:altLinkURL

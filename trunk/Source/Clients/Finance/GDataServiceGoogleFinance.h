@@ -84,7 +84,14 @@ _EXTERN NSString* kGDataGoogleFinanceDefaultPortfoliosFeed _INITIALIZE_AS(@"http
                           didFailSelector:(SEL)failedSelector;
 
 // finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteFinanceEntry:(GDataEntryBase *)entryToDelete
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector
+                           didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteFinanceResourceURL:(NSURL *)resourceEditURL
+                                            ETag:(NSString *)etag
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector;

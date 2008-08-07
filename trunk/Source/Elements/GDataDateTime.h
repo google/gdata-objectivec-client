@@ -44,6 +44,7 @@
 
 - (NSTimeZone *)timeZone;
 - (void)setTimeZone:(NSTimeZone *)timeZone;
+- (void)setTimeZone:(NSTimeZone *)timeZone withOffsetSeconds:(NSInteger)val;
 
 - (NSString *)RFC3339String;
 - (NSString *)stringValue; // same as RFC3339String

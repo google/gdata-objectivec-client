@@ -26,7 +26,7 @@
 //
 // http://code.google.com/apis/contacts/reference.html#groupMembershipInfo
 
-@interface GDataGroupMembershipInfo : GDataObject <NSCopying, GDataExtension> {
+@interface GDataGroupMembershipInfo : GDataObject <GDataExtension> {
 }
 
 + (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)str;

@@ -60,6 +60,7 @@ _EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http:
 // constants above and calling -fetchContactFeedWithURL
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID;
++ (NSURL *)contactFeedURLForUserID:(NSString *)userID projection:(NSString *)projection;
 
 + (NSURL *)contactFeedURLForPropertyName:(NSString *)property;
 + (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property;
@@ -91,6 +92,11 @@ _EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http:
                                  delegate:(id)delegate
                         didFinishSelector:(SEL)finishedSelector
                           didFailSelector:(SEL)failedSelector;
+
+- (GDataServiceTicket *)deleteContactEntry:(id)entryToDelete
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector
+                           didFailSelector:(SEL)failedSelector;
 
 - (GDataServiceTicket *)deleteContactResourceURL:(NSURL *)resourceEditURL
                                             ETag:(NSString *)etag

@@ -46,27 +46,13 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 @interface GDataFeedBase : GDataObject {
 
-  GDataGenerator *generator_;
+  // generator is parsed manually to avoid comparison along with other 
+  // extensions
+  GDataGenerator *generator_; 
   
-  NSString *idString_;
-  GDataTextConstruct *title_;
-  GDataTextConstruct *subtitle_;
-  GDataTextConstruct *rights_;
-  NSString *icon_;
-  NSString *logo_;
+  // etag attribute is parsed manually because it has a namespace 
   NSString *etag_;
-  
-  NSMutableArray *links_;
-  NSMutableArray *authors_;
-  NSMutableArray *contributors_;
-  NSMutableArray *categories_;
-  
-  GDataDateTime* updatedDate_;
 
-  NSNumber *totalResults_;
-  NSNumber *startIndex_;
-  NSNumber *itemsPerPage_;
-  
   NSMutableArray *entries_;
 }
 
@@ -163,6 +149,15 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 - (void)setBatchOperation:(GDataBatchOperation *)obj;
 
 // convenience routines
+
+- (GDataLink *)feedLink;
+- (GDataLink *)alternateLink;
+- (GDataLink *)relatedLink;
+- (GDataLink *)postLink;
+- (GDataLink *)batchLink;
+- (GDataLink *)selfLink;
+- (GDataLink *)nextLink;
+- (GDataLink *)previousLink;
 
 // find the entry with the given identifier, or nil if none found
 - (id)entryForIdentifier:(NSString *)str;

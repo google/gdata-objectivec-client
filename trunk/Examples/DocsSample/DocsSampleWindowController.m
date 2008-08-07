@@ -118,13 +118,13 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [mDocListResultTextField setString:docResultStr];
   
   // enable the button for viewing the selected doc in a browser
-  BOOL doesDocHaveHTMLLink = ([[selectedDoc links] HTMLLink] != nil);
+  BOOL doesDocHaveHTMLLink = ([selectedDoc HTMLLink] != nil);
   [mViewSelectedDocButton setEnabled:doesDocHaveHTMLLink];
   
   BOOL doesDocHaveHTMLContent = ([[[selectedDoc content] type] isEqual:@"text/html"]);
   [mDownloadSelectedDocButton setEnabled:doesDocHaveHTMLContent];
   
-  BOOL doesDocHaveEditLink = ([[selectedDoc links] editLink] != nil);
+  BOOL doesDocHaveEditLink = ([selectedDoc editLink] != nil);
   [mDeleteSelectedDocButton setEnabled:doesDocHaveEditLink];
   
   // enable uploading buttons 
@@ -172,7 +172,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 - (IBAction)viewSelectedDocClicked:(id)sender {
   
-  NSURL *docURL = [[[[self selectedDoc] links] HTMLLink] URL];
+  NSURL *docURL = [[[self selectedDoc] HTMLLink] URL];
   
   if (docURL) {
     [[NSWorkspace sharedWorkspace] openURL:docURL];
@@ -263,7 +263,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [openPanel setPrompt:@"Upload"];
 
   NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"ods", 
-    @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls", nil];
+    @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
+    @"jpeg", @"jpg", @"bmp", @"gif", @"html", @"htm", @"tsv", 
+    @"tab", nil];
   
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
   [openPanel beginSheetForDirectory:nil
@@ -320,7 +322,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     
     // delete the document entry
     GDataEntryDocBase *entry = [self selectedDoc];
-    GDataLink *link = [[entry links] editLink];
+    GDataLink *link = [entry editLink];
     
     if (link) {
       GDataServiceGoogleDocs *service = [self docsService];
@@ -490,6 +492,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"sxw", @"application/vnd.sun.xml.writer", @"GDataEntryStandardDoc" },
     { @"txt", @"text/plain", @"GDataEntryStandardDoc" },
     { @"xls", @"application/vnd.ms-excel", @"GDataEntrySpreadsheetDoc" },
+    { @"jpg", @"image/jpeg", @"GDataEntryStandardDoc" },
+    { @"jpeg", @"image/jpeg", @"GDataEntryStandardDoc" },
+    { @"png", @"image/png", @"GDataEntryStandardDoc" },
+    { @"bmp", @"image/bmp", @"GDataEntryStandardDoc" },
+    { @"gif", @"image/gif", @"GDataEntryStandardDoc" },
+    { @"html", @"text/html", @"GDataEntryStandardDoc" },
+    { @"htm", @"text/html", @"GDataEntryStandardDoc" },
+    { @"tsv", @"text/tab-separated-value", @"GDataEntryStandardDoc" },
+    { @"tab", @"text/tab-separated-value", @"GDataEntryStandardDoc" },
+    
     { nil, nil, nil }
   };
   
@@ -540,7 +552,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
   
-      NSURL *postURL = [[[mDocListFeed links] postLink] URL];
+      NSURL *postURL = [[mDocListFeed postLink] URL];
       
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleDocs *service = [self docsService];
@@ -650,7 +662,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     // the kind category for a doc entry includes a label like "document"
     // or "spreadsheet"
     NSArray *categories;
-    categories = [[doc categories] categoriesWithScheme:kGDataCategoryScheme];
+    categories = [GDataCategory categoriesWithScheme:kGDataCategoryScheme
+                                      fromCategories:[doc categories]];
     if ([categories count] >= 1) {
       docKind = [[categories objectAtIndex:0] label];
     }

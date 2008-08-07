@@ -58,9 +58,6 @@ static NSString* const kLangAttr = @"xml:lang";
   NSArray *attrs = [NSArray arrayWithObjects:
                     kSchemeAttr, kTermAttr, kLabelAttr, kLangAttr, nil];
   
-  // we don't declare xml:lang since we'll be excluding it from
-  // the isEqual: comparison
-  
   [self addLocalAttributeDeclarations:attrs];    
 }
 
@@ -108,15 +105,14 @@ static NSString* const kLangAttr = @"xml:lang";
   [self setStringValue:str forAttribute:kLangAttr];
 }
 
-@end
-
-@implementation NSArray(GDataCategoryArray)
+#pragma mark Utilities
 
 // return all categories with the specified scheme
-- (NSArray *)categoriesWithScheme:(NSString *)scheme {
++ (NSArray *)categoriesWithScheme:(NSString *)scheme
+                   fromCategories:(NSArray *)array {
   
   NSMutableArray *matches = [NSMutableArray array];
-  NSEnumerator *enumerator = [self objectEnumerator];
+  NSEnumerator *enumerator = [array objectEnumerator];
   GDataCategory *category;
   
   while ((category = [enumerator nextObject]) != nil) {
@@ -130,9 +126,10 @@ static NSString* const kLangAttr = @"xml:lang";
 }
 
 // return all categories whose schemes have the specified prefix
-- (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix {
++ (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix 
+                         fromCategories:(NSArray *)array {
   NSMutableArray *matches = [NSMutableArray array];
-  NSEnumerator *enumerator = [self objectEnumerator];
+  NSEnumerator *enumerator = [array objectEnumerator];
   GDataCategory *category;
   
   while ((category = [enumerator nextObject]) != nil) {
@@ -144,10 +141,10 @@ static NSString* const kLangAttr = @"xml:lang";
   return matches;
 }
 
-- (NSArray *)categoryLabels {
++ (NSArray *)categoryLabelsFromCategories:(NSArray *)array {
   
   NSMutableArray *labels = [NSMutableArray array];
-  NSEnumerator *enumerator = [self objectEnumerator];
+  NSEnumerator *enumerator = [array objectEnumerator];
   GDataCategory *category;
   
   while ((category = [enumerator nextObject]) != nil) {
@@ -159,10 +156,10 @@ static NSString* const kLangAttr = @"xml:lang";
   return labels;
 }
 
-- (BOOL)containsCategoryWithLabel:(NSString *)label {
++ (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label {
   GDataCategory *category = [GDataCategory categoryWithLabel:label];
   
-  BOOL hasLabel = [self containsObject:category];
+  BOOL hasLabel = [array containsObject:category];
   return hasLabel;
 }
 @end

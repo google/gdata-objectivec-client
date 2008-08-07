@@ -31,7 +31,7 @@
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdOriginalEvent
 
-@interface GDataOriginalEvent : GDataObject <NSCopying, GDataExtension> {
+@interface GDataOriginalEvent : GDataObject <GDataExtension> {
 }
 + (GDataOriginalEvent *)originalEventWithID:(NSString *)originalID
                                        href:(NSString *)feedHref

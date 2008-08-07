@@ -185,7 +185,11 @@
 }
 
 - (void)addOrganization:(GDataOrganization *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  [self addObject:obj forExtensionClass:[GDataOrganization class]];
+}
+
+- (void)removeOrganization:(GDataOrganization *)obj {
+  [self removeObject:obj forExtensionClass:[GDataOrganization class]];
 }
 
 - (GDataOrganization *)primaryOrganization {
@@ -207,7 +211,11 @@
 }
 
 - (void)addEmailAddress:(GDataEmail *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  [self addObject:obj forExtensionClass:[GDataEmail class]];
+}
+
+- (void)removeEmailAddress:(GDataEmail *)obj {
+  [self removeObject:obj forExtensionClass:[GDataEmail class]];
 }
 
 - (GDataEmail *)primaryEmailAddress {
@@ -237,10 +245,14 @@
   [self setPrimaryObject:obj forExtensionClass:[GDataIM class]];
 }
 
-
 - (void)addIMAddress:(GDataIM *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  [self addObject:obj forExtensionClass:[GDataIM class]];
 }
+
+- (void)removeIMAddress:(GDataIM *)obj {
+  [self removeObject:obj forExtensionClass:[GDataIM class]];
+}
+
 
 - (NSArray *)phoneNumbers {
   return [self objectsForExtensionClass:[GDataPhoneNumber class]];
@@ -251,7 +263,11 @@
 }
 
 - (void)addPhoneNumber:(GDataPhoneNumber *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  [self addObject:obj forExtensionClass:[GDataPhoneNumber class]];
+}
+
+- (void)removePhoneNumber:(GDataPhoneNumber *)obj {
+  [self removeObject:obj forExtensionClass:[GDataPhoneNumber class]];
 }
 
 - (GDataPhoneNumber *)primaryPhoneNumber {
@@ -273,7 +289,11 @@
 }
 
 - (void)addPostalAddress:(GDataPostalAddress *)obj {
-  [self addObject:obj forExtensionClass:[obj class]];
+  [self addObject:obj forExtensionClass:[GDataPostalAddress class]];
+}
+
+- (void)removePostalAddress:(GDataPostalAddress *)obj {
+  [self removeObject:obj forExtensionClass:[GDataPostalAddress class]];
 }
 
 - (GDataPostalAddress *)primaryPostalAddress {
@@ -285,6 +305,7 @@
   [self setPrimaryObject:obj forExtensionClass:[GDataPostalAddress class]];
 }
 
+
 - (NSArray *)groupMembershipInfos {
   return [self objectsForExtensionClass:[GDataGroupMembershipInfo class]];
 }
@@ -295,6 +316,10 @@
 
 - (void)addGroupMembershipInfo:(GDataGroupMembershipInfo *)obj {
   [self addObject:obj forExtensionClass:[GDataGroupMembershipInfo class]];
+}
+
+- (void)removeGroupMembershipInfo:(GDataGroupMembershipInfo *)obj {
+  [self removeObject:obj forExtensionClass:[GDataGroupMembershipInfo class]];
 }
 
 - (NSArray *)extendedProperties {
@@ -309,9 +334,25 @@
   [self addObject:obj forExtensionClass:[GDataExtendedProperty class]];
 }
 
-@end
+- (void)removeExtendedProperty:(GDataExtendedProperty *)obj {
+  [self removeObject:obj forExtensionClass:[GDataExtendedProperty class]];
+}
 
-@implementation NSArray(GDataEntryContactLinks)
+- (GDataExtendedProperty *)extendedPropertyForName:(NSString *)str {
+  
+  GDataExtendedProperty *extProp = nil;
+  
+  NSArray *array = [self extendedProperties];
+  if (array != nil) {
+    extProp = [GDataUtilities firstObjectFromArray:array
+                                         withValue:str
+                                        forKeyPath:@"name"];
+  }
+  return extProp;
+}
+
+#pragma mark -
+
 - (GDataLink *)photoLink {
   return [self linkWithRelAttributeValue:kGDataContactPhotoRel]; 
 }

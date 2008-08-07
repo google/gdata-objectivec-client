@@ -20,6 +20,18 @@
 #define GDATAFEEDBASE_DEFINE_GLOBALS 1
 #import "GDataFeedBase.h"
 
+#import "GDataBaseElements.h"
+
+
+//   eventually we'll change the opensearch extensio URI, as in...
+//  @implementation GDataOpenSearchTotalResults1_1 
+//  + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
+//  @end
+//
+//  for now, we can rely on the openSearch: prefix string finding us any
+//  OpenSearch 1.1 elements despite the different URI
+
+
 @interface GDataFeedBase (PrivateMethods)
 - (void)setupFromXMLElement:(NSXMLElement *)root;
 @end
@@ -32,13 +44,32 @@
   
   Class feedClass = [self class];
   
-  // atom publishing control support
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataAtomPubControl class]];  
-  
-  // batch support
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataBatchOperation class]];  
+                                 childClasses:
+   
+   // Atom extensions
+   [GDataAtomID class], 
+   [GDataAtomTitle class], 
+   [GDataAtomSubtitle class], 
+   [GDataAtomRights class],
+   [GDataAtomIcon class], 
+   [GDataAtomLogo class], 
+   [GDataLink class],
+   [GDataAtomAuthor class],
+   [GDataAtomContributor class],
+   [GDataAtomCategory class],
+   [GDataAtomUpdatedDate class], 
+
+   [GDataOpenSearchTotalResults class], 
+   [GDataOpenSearchStartIndex class], 
+   [GDataOpenSearchItemsPerPage class], 
+   
+   // atom publishing control support
+   [GDataAtomPubControl class],
+   
+   // batch support
+   [GDataBatchOperation class],
+   nil];
 }
 
 + (id)feedWithXMLData:(NSData *)data {
@@ -88,6 +119,8 @@
 
 - (void)setupFromXMLElement:(NSXMLElement *)root {
   
+  // parse etag explicitly, since local attribute parsing doesn't support
+  // namespace lookup
   [self setETag:[self stringForAttributeLocalName:@"etag"
                                               URI:kGDataNamespaceGData
                                       fromElement:root]];
@@ -96,77 +129,7 @@
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
                                        objectClass:[GDataGenerator class]]];
-  
-  NSXMLElement *updElement = [self childWithQualifiedName:@"updated"
-                                             namespaceURI:kGDataNamespaceAtom
-                                              fromElement:root];
-  [self setUpdatedDate:[self dateTimeFromElement:updElement]];
     
-  [self setTitle:[self objectForChildOfElement:root
-                                 qualifiedName:@"title"
-                                  namespaceURI:kGDataNamespaceAtom
-                                   objectClass:[GDataTextConstruct class]]];
-  
-  [self setSubtitle:[self objectForChildOfElement:root
-                                    qualifiedName:@"subtitle"
-                                     namespaceURI:kGDataNamespaceAtom
-                                      objectClass:[GDataTextConstruct class]]];
-  
-  [self setIdentifier:[[self childWithQualifiedName:@"id" 
-                                       namespaceURI:kGDataNamespaceAtom
-                                        fromElement:root] stringValue]]; 
-  
-  [self setLinks:[self objectsForChildrenOfElement:root
-                                     qualifiedName:@"link"
-                                      namespaceURI:kGDataNamespaceAtom
-                                       objectClass:[GDataLink class]]];
-  
-  [self setAuthors:[self objectsForChildrenOfElement:root
-                                       qualifiedName:@"author"
-                                        namespaceURI:kGDataNamespaceAtom
-                                         objectClass:[GDataPerson class]]];  
-  
-  [self setContributors:[self objectsForChildrenOfElement:root
-                                            qualifiedName:@"contributor"
-                                             namespaceURI:kGDataNamespaceAtom
-                                              objectClass:[GDataPerson class]]];  
-  
-  [self setCategories:[self objectsForChildrenOfElement:root
-                                          qualifiedName:@"category"
-                                           namespaceURI:kGDataNamespaceAtom
-                                            objectClass:[GDataCategory class]]];
-  
-  [self setRights:[self objectForChildOfElement:root
-                                  qualifiedName:@"rights"
-                                   namespaceURI:kGDataNamespaceAtom
-                                    objectClass:[GDataTextConstruct class]]];
-  
-  [self setIcon:[[self childWithQualifiedName:@"icon" 
-                                 namespaceURI:kGDataNamespaceAtom
-                                  fromElement:root] stringValue]]; 
-
-  [self setLogo:[[self childWithQualifiedName:@"logo" 
-                                 namespaceURI:kGDataNamespaceAtom
-                                  fromElement:root] stringValue]]; 
-  
-  NSXMLElement *totElement = [self childWithQualifiedName:@"openSearch:totalResults"
-                                             namespaceURI:kGDataNamespaceOpenSearch
-                                              fromElement:root];
-  NSNumber *total = [self intNumberValueFromElement:totElement];
-  [self setTotalResults:total];
-
-  NSXMLElement *startElement = [self childWithQualifiedName:@"openSearch:startIndex"
-                                               namespaceURI:kGDataNamespaceOpenSearch
-                                                fromElement:root];
-  NSNumber *startIndex = [self intNumberValueFromElement:startElement];
-  [self setStartIndex:startIndex];
-  
-  NSXMLElement *itemsElement = [self childWithQualifiedName:@"openSearch:itemsPerPage"
-                                               namespaceURI:kGDataNamespaceOpenSearch
-                                                fromElement:root];
-  NSNumber *itemsPerPage = [self intNumberValueFromElement:itemsElement];
-  [self setItemsPerPage:itemsPerPage];
-  
   // call subclasses to set up their feed ivars
   [self initFeedWithXMLElement:root];
   
@@ -189,27 +152,8 @@
 
 - (void)dealloc {
   
-  [generator_ release];
-
-  [idString_ release];
-  [title_ release];
-  [subtitle_ release];
-  [rights_ release];
-  [icon_ release];
-  [logo_ release];
   [etag_ release];
-  
-  [links_ release];
-  [authors_ release];
-  [contributors_ release];
-  [categories_ release];
-  
-  [updatedDate_ release];
-  
-  [totalResults_ release];
-  [startIndex_ release];
-  [itemsPerPage_ release];
-  
+  [generator_ release];
   [entries_ release];
 
   [super dealloc];
@@ -221,26 +165,8 @@
   [newFeed setETag:[self ETag]];
 
   [newFeed setGenerator:[self generator]];
-  
-  [newFeed setIdentifier:[self identifier]];
-  [newFeed setTitle:[self title]];
-  [newFeed setSubtitle:[self subtitle]];
-  [newFeed setRights:[self rights]];
-  [newFeed setIcon:[self icon]];
-  [newFeed setLogo:[self logo]];
-  
-  [newFeed setLinks:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self links]]];
-  [newFeed setAuthors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self authors]]];
-  [newFeed setContributors:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self contributors]]];
-  [newFeed setCategories:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self categories]]];
-  [newFeed setUpdatedDate:[self updatedDate]];
-  
-  [newFeed setTotalResults:[self totalResults]];
-  [newFeed setStartIndex:[self startIndex]];
-  [newFeed setItemsPerPage:[self itemsPerPage]];
-  
+
   [newFeed setEntriesWithEntries:[self entries]];
-  
   return newFeed;
 }
 
@@ -252,21 +178,6 @@
 
   return [super isEqual:other]
     && AreEqualOrBothNil([self ETag], [other ETag])
-    && AreEqualOrBothNil([self identifier], [other identifier])
-    && AreEqualOrBothNil([self title], [other title])
-    && AreEqualOrBothNil([self subtitle], [other subtitle])
-    && AreEqualOrBothNil([self updatedDate], [other updatedDate])
-    && AreEqualOrBothNil([self rights], [other rights])
-    && AreEqualOrBothNil([self icon], [other icon])
-    && AreEqualOrBothNil([self logo], [other logo])
-    && AreEqualOrBothNil([self links], [other links])
-    && AreEqualOrBothNil([self authors], [other authors])
-    && AreEqualOrBothNil([self contributors], [other contributors])
-    && AreEqualOrBothNil([self categories], [other categories])
-    && AreEqualOrBothNil([self updatedDate], [other updatedDate])
-    && AreEqualOrBothNil([self totalResults], [other totalResults])
-    && AreEqualOrBothNil([self startIndex], [other startIndex])
-    && AreEqualOrBothNil([self itemsPerPage], [other itemsPerPage])
     && AreEqualOrBothNil([self entries], [other entries]);
     // excluding generator 
 }
@@ -279,17 +190,17 @@
 
   [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
 
-  [self addToArray:items objectDescriptionIfNonNil:[title_ stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[subtitle_ stringValue] withName:@"subtitle"];
-  [self addToArray:items objectDescriptionIfNonNil:[rights_ stringValue] withName:@"rights"];
-  [self addToArray:items objectDescriptionIfNonNil:[updatedDate_ stringValue] withName:@"updated"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self subtitle] stringValue] withName:@"subtitle"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self rights] stringValue] withName:@"rights"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self updatedDate] stringValue] withName:@"updated"];
   
-  [self addToArray:items arrayCountIfNonEmpty:authors_ withName:@"authors"];
-  [self addToArray:items arrayCountIfNonEmpty:contributors_ withName:@"contributors"];
-  [self addToArray:items arrayCountIfNonEmpty:categories_ withName:@"categories"];
+  [self addToArray:items arrayCountIfNonEmpty:[self authors] withName:@"authors"];
+  [self addToArray:items arrayCountIfNonEmpty:[self contributors] withName:@"contributors"];
+  [self addToArray:items arrayCountIfNonEmpty:[self categories] withName:@"categories"];
   
-  if ([links_ count]) {
-    NSArray *linkNames = [GDataLink linkNamesFromLinks:links_];
+  if ([[self links] count]) {
+    NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
     NSString *linksStr = [linkNames componentsJoinedByString:@","];
     [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
   }  
@@ -299,7 +210,7 @@
   // [self addToArray:items objectDescriptionIfNonNil:startIndex_ withName:@"startIndex"];
   // [self addToArray:items objectDescriptionIfNonNil:itemsPerPage_ withName:@"itemsPerPage"];
 
-  [self addToArray:items objectDescriptionIfNonNil:idString_ withName:@"id"];
+  [self addToArray:items objectDescriptionIfNonNil:[self identifier] withName:@"id"];
   
   return items;
 }
@@ -310,45 +221,11 @@
   
   [self addToElement:element attributeValueIfNonNil:[self ETag] 
         withLocalName:@"etag" URI:kGDataNamespaceGData];
-  
-  [self addToElement:element childWithStringValueIfNonEmpty:[self identifier] withName:@"id"];
 
   if ([self generator]) {
     [element addChild:[[self generator] XMLElement]]; 
   } 
-  
-  if ([self title]) {
-    [element addChild:[[self title] XMLElement]];
-  }
-  if ([self subtitle]) {
-    [element addChild:[[self subtitle] XMLElement]];
-  }
-  if ([self rights]) {
-    [element addChild:[[self rights] XMLElement]];
-  }
-  
-  [self addToElement:element childWithStringValueIfNonEmpty:[self icon] withName:@"icon"];
-  [self addToElement:element childWithStringValueIfNonEmpty:[self logo] withName:@"logo"];
-  
-  [self addToElement:element XMLElementsForArray:[self links]];
-  [self addToElement:element XMLElementsForArray:[self authors]];
-  [self addToElement:element XMLElementsForArray:[self contributors]];
-  [self addToElement:element XMLElementsForArray:[self categories]];
-  
-  if ([self updatedDate]) {
-    NSString *updatedDateStr = [[self updatedDate] RFC3339String];
 
-    [self addToElement:element childWithStringValueIfNonEmpty:updatedDateStr withName:@"updated"];
-  }
-  
-  NSString *totalResults = [[self totalResults] stringValue];
-  NSString *startIndex = [[self startIndex] stringValue];
-  NSString *itemsPerPage = [[self itemsPerPage] stringValue];
-  
-  [self addToElement:element childWithStringValueIfNonEmpty:totalResults withName:@"openSearch:totalResults"];
-  [self addToElement:element childWithStringValueIfNonEmpty:startIndex withName:@"openSearch:startIndex"];
-  [self addToElement:element childWithStringValueIfNonEmpty:itemsPerPage withName:@"openSearch:itemsPerPage"];
-  
   [self addToElement:element XMLElementsForArray:[self entries]];
 
   return element;
@@ -369,18 +246,19 @@
 }
 
 - (BOOL)canPost {
-  return ([[self links] postLink] != nil);  
+  return ([self postLink] != nil);  
 }
 
 #pragma mark Getters and Setters
 
 - (NSString *)identifier {
-  return idString_; 
+  GDataAtomID *obj = [self objectForExtensionClass:[GDataAtomID class]];
+  return [obj stringValue];
 }
 
-- (void)setIdentifier:(NSString *)theString {
-  [idString_ autorelease];
-  idString_ = [theString copy];
+- (void)setIdentifier:(NSString *)str {
+  GDataAtomID *obj = [GDataAtomID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomID class]];
 }
 
 - (GDataGenerator *)generator {
@@ -393,179 +271,185 @@
 }
 
 - (GDataTextConstruct *)title {
-  return title_; 
+  GDataAtomTitle *obj = [self objectForExtensionClass:[GDataAtomTitle class]];
+  return obj;
 }
 
-- (void)setTitle:(GDataTextConstruct *)theTitle {
-  [title_ autorelease];
-  title_ = [theTitle copy];
-  
-  [title_ setElementName:@"title"];
+- (void)setTitle:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomTitle class]];
 }
 
 - (void)setTitleWithString:(NSString *)str {
-  [self setTitle:[GDataTextConstruct textConstructWithString:str]];
+  GDataAtomTitle *obj = [GDataAtomTitle textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomTitle class]];
 }
 
 - (GDataTextConstruct *)subtitle {
-  return subtitle_; 
+  GDataAtomSubtitle *obj = [self objectForExtensionClass:[GDataAtomSubtitle class]];
+  return obj;
 }
 
-- (void)setSubtitle:(GDataTextConstruct *)theSubtitle {
-  [subtitle_ autorelease];
-  subtitle_ = [theSubtitle copy];
-
-  [subtitle_ setElementName:@"subtitle"];
+- (void)setSubtitle:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomSubtitle class]];
 }
 
 - (void)setSubtitleWithString:(NSString *)str {
-  [self setSubtitle:[GDataTextConstruct textConstructWithString:str]]; 
+  GDataAtomSubtitle *obj = [GDataAtomSubtitle textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomSubtitle class]];
 }
 
 - (GDataTextConstruct *)rights {
-  return rights_; 
+  GDataAtomContent *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomRights class]];
+  return obj;
 }
 
-- (void)setRights:(GDataTextConstruct *)theRights {
-  [rights_ autorelease];
-  rights_ = [theRights copy];
-  
-  [rights_ setElementName:@"rights"];
+- (void)setRights:(GDataTextConstruct *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
 
 - (void)setRightsWithString:(NSString *)str {
-  [self setRights:[GDataTextConstruct textConstructWithString:str]]; 
+  GDataAtomRights *obj;
+  
+  obj = [GDataAtomRights textConstructWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
 
 - (NSString *)icon {
-  return icon_; 
+  GDataAtomIcon *obj = [self objectForExtensionClass:[GDataAtomIcon class]];
+  return [obj stringValue];
 }
 
-- (void)setIcon:(NSString *)theString {
-  [icon_ autorelease];
-  icon_ = [theString copy];
+- (void)setIcon:(NSString *)str {
+  GDataAtomIcon *obj = [GDataAtomID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomIcon class]];
 }
 
 - (NSString *)logo {
-  return logo_; 
+  GDataAtomLogo *obj = [self objectForExtensionClass:[GDataAtomLogo class]];
+  return [obj stringValue];
 }
 
-- (void)setLogo:(NSString *)theString {
-  [logo_ autorelease];
-  logo_ = [theString copy];
+- (void)setLogo:(NSString *)str {
+  GDataAtomLogo *obj = [GDataAtomLogo valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataAtomLogo class]];
 }
 
 - (NSArray *)links {
-  return links_;
+  NSArray *array = [self objectsForExtensionClass:[GDataLink class]];
+  return array;
 }
 
-- (void)setLinks:(NSArray *)links {
-  [links_ autorelease];
-  links_ = [links mutableCopy];
+- (void)setLinks:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataLink class]];
 }
 
 - (void)addLink:(GDataLink *)obj {
-  if (!links_) {
-    links_ = [[NSMutableArray alloc] init]; 
-  }
-  [links_ addObject:obj];
+  [self addObject:obj forExtensionClass:[GDataLink class]];
 }
 
 - (void)removeLink:(GDataLink *)obj {
-  [links_ removeObject:obj];
+  [self removeObject:obj forExtensionClass:[GDataLink class]];
 }
 
 - (NSArray *)authors {
-  return authors_;
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomAuthor class]];
+  return array;
 }
 
-- (void)setAuthors:(NSArray *)authors {
-  [authors_ autorelease];
-  authors_ = [authors mutableCopy];
+- (void)setAuthors:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAtomAuthor class]];
 }
 
 - (void)addAuthor:(GDataPerson *)obj {
-  if (!authors_) {
-    authors_ = [[NSMutableArray alloc] init]; 
-  }
-  [obj setElementName:@"author"];
-  [authors_ addObject:obj];
+  [self addObject:obj forExtensionClass:[GDataAtomAuthor class]];
 }
 
 - (NSArray *)contributors {
-  return contributors_;
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomContributor class]];
+  return array;
 }
 
 - (void)setContributors:(NSArray *)array {
-  [contributors_ autorelease];
-  contributors_ = [array mutableCopy];
+  [self setObjects:array forExtensionClass:[GDataAtomContributor class]];
 }
 
 - (void)addContributor:(GDataPerson *)obj {
-  if (!contributors_) {
-    contributors_ = [[NSMutableArray alloc] init]; 
-  }
-  [obj setElementName:@"contributor"];
-  [contributors_ addObject:obj];
+  [self addObject:obj forExtensionClass:[GDataAtomContributor class]];
 }
 
 - (NSArray *)categories {
-  return categories_;
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomCategory class]];
+  return array;
 }
 
-- (void)setCategories:(NSArray *)categories {
-  [categories_ autorelease];
-  categories_ = [categories mutableCopy];
+- (void)setCategories:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAtomCategory class]];
 }
 
 - (void)addCategory:(GDataCategory *)obj {
-  if (!categories_) {
-    categories_ = [[NSMutableArray alloc] init]; 
-  }
-  
-  if (![categories_ containsObject:obj]) {
-    [categories_ addObject:obj];
-  }
+  [self addObject:obj forExtensionClass:[GDataAtomCategory class]];
 }
 
-- (void)removeCategory:(GDataCategory *)category {
-  [categories_ removeObject:category];
+- (void)removeCategory:(GDataCategory *)obj {
+  [self removeObject:obj forExtensionClass:[GDataAtomCategory class]];
 }
 
 - (GDataDateTime *)updatedDate {
-  return updatedDate_; 
+  GDataAtomUpdatedDate *obj;
+  
+  obj = [self objectForExtensionClass:[GDataAtomUpdatedDate class]];
+  return [obj dateTimeValue];
 }
 
-- (void)setUpdatedDate:(GDataDateTime *)theDate {
-  [updatedDate_ autorelease];
-  updatedDate_ = [theDate copy];
+- (void)setUpdatedDate:(GDataDateTime *)dateTime {
+  GDataAtomUpdatedDate *obj;
+  
+  obj = [GDataAtomUpdatedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataAtomUpdatedDate class]];
 }
 
 - (NSNumber *)totalResults {
-  return totalResults_; 
+  GDataValueElementConstruct *obj;
+  
+  obj = [self objectForExtensionClass:[GDataOpenSearchTotalResults class]];
+  return [obj intNumberValue];
 }
 
 - (void)setTotalResults:(NSNumber *)num {
-  [totalResults_ autorelease]; 
-  totalResults_ = [num copy];
+  GDataOpenSearchTotalResults *obj;
+  
+  obj = [GDataOpenSearchTotalResults valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchTotalResults class]];
 }
 
 - (NSNumber *)startIndex {
-  return startIndex_; 
+  GDataValueElementConstruct *obj;
+  
+  obj = [self objectForExtensionClass:[GDataOpenSearchStartIndex class]];
+  return [obj intNumberValue];
 }
 
 - (void)setStartIndex:(NSNumber *)num {
-  [startIndex_ autorelease]; 
-  startIndex_ = [num copy];
+  GDataOpenSearchStartIndex *obj;
+  
+  obj = [GDataOpenSearchStartIndex valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchStartIndex class]];
 }
 
 - (NSNumber *)itemsPerPage {
-  return itemsPerPage_; 
+  GDataValueElementConstruct *obj;
+  
+  obj = [self objectForExtensionClass:[GDataOpenSearchItemsPerPage class]];
+  return [obj intNumberValue];
 }
 
 - (void)setItemsPerPage:(NSNumber *)num {
-  [itemsPerPage_ autorelease]; 
-  itemsPerPage_ = [num copy];
+  GDataOpenSearchItemsPerPage *obj;
+  
+  obj = [GDataOpenSearchItemsPerPage valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchItemsPerPage class]];
 }
 
 - (NSString *)ETag {
@@ -662,6 +546,47 @@
 }
 
 // convenience routines
+
+- (GDataLink *)feedLink {
+  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelFeed
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)alternateLink {
+  return [GDataLink linkWithRelAttributeValue:@"alternate"
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)relatedLink {
+  return [GDataLink linkWithRelAttributeValue:@"related"
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)postLink {
+  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelPost
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)batchLink {
+  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelBatch
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)selfLink {
+  return [GDataLink linkWithRelAttributeValue:@"self"
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)nextLink {
+  return [GDataLink linkWithRelAttributeValue:@"next"
+                                    fromLinks:[self links]]; 
+}
+
+- (GDataLink *)previousLink {
+  return [GDataLink linkWithRelAttributeValue:@"previous"
+                                    fromLinks:[self links]]; 
+}
+
 - (id)entryForIdentifier:(NSString *)str {
   
   NSArray *entries = [self entries];

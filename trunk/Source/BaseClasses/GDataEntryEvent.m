@@ -77,27 +77,13 @@
   
   // EventEntry extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRecurrenceException class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataReminder class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRecurrence class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWhere class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataEventStatus class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataVisibility class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataTransparency class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWho class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWhen class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataOriginalEvent class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataComment class]];  
+                                 childClasses:
+   [GDataRecurrenceException class], [GDataReminder class],
+   [GDataRecurrence class], [GDataWhere class],
+   [GDataEventStatus class], [GDataVisibility class],
+   [GDataTransparency class], [GDataWho class],
+   [GDataWhen class], [GDataOriginalEvent class],
+   [GDataComment class], nil];  
   
   // a reminder may be at the event entry level (declared above) for
   // recurrence events, or inside a GDataWhen for single events

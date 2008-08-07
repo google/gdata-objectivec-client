@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataFeedTest.m
@@ -71,7 +71,7 @@
                                                             parent:nil] autorelease];
 
     STAssertTrue([feed2 isEqual:feed1copy], @"Failed using XML \n  %@\n\nto convert\n  %@ \nto\n  %@",  
-                outputXML, feed1copy, feed2);
+                 outputXML, feed1copy, feed2);
     
     // step through all the key-value path tests
     while (1) {
@@ -112,7 +112,8 @@
         
         NSString *substring = [expectedValue substringFromIndex:[@"contains:" length]];
         NSRange range = [result rangeOfString:substring];
-        STAssertTrue(range.location != NSNotFound, @"failed object %@ \n testing key path '%@' for substring:\n %@ \n!= contains:\n %@", 
+        STAssertTrue(result != nil && range.location != NSNotFound, 
+                     @"failed object %@ \n testing key path '%@' for substring:\n %@ \n!= contains:\n %@", 
                      feed2, keyPath, result, substring);      
       } else {
         STAssertTrue(AreEqualOrBothNil(result, expectedValue), @"failed object %@ \n testing key path '%@'\n %@ \n!= \n %@", 
@@ -121,7 +122,6 @@
     }
   }  
 }
-
 
 - (void)testCalendarFeed {
   
@@ -440,7 +440,7 @@
     //
     { @"GDataFeedGoogleBase", @"Tests/FeedGoogleBaseItemTypesTest1.xml" },
       
-      // GDataFeedContact paths 
+    // GDataFeedContact paths 
     { @"generator.URI", @"http://base.google.com" },
     { @"generator.name", @"GoogleBase" },
     { @"title", @"Item types for locale en_US" },
@@ -680,11 +680,11 @@
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
   NSString *template = @"Test %C Alb%Cm";
   NSString *photoAlbumName = [NSString stringWithFormat:template, 
-    0x262F, 0x00FC]; // yin yang, u with umlaut
+                              0x262F, 0x00FC]; // yin yang, u with umlaut
   
   // Non-ascii photo description, includes the Wheel of Dharma
   NSString *photoDescriptionText = [NSString stringWithFormat:
-    @"Caption for the car %C photo", 0x2638];  
+                                    @"Caption for the car %C photo", 0x2638];  
 
   TestKeyPathValues tests[] =
   { 
@@ -914,6 +914,76 @@
   [self runTests:tests];
 }
 
+- (void)testWebmasterToolsFeeds {
+  
+  TestKeyPathValues tests[] =
+  { 
+    //
+    // Feed of a user's sites
+    //
+    { @"GDataFeedSite", @"Tests/FeedWebmasterToolsSite1.xml" },
+    
+    { @"identifier", @"http://www.google.com/webmasters/tools/feeds/sites" },
+    
+    // GDataEntrySite methods
+    
+    { @"entries.0.categories.0.term", kGDataCategorySiteInfo },
+    { @"entries.0.isIndexed", @"1" },
+    { @"entries.0.crawledDate.date.timeIntervalSince1970", @"1206358560" },
+    { @"entries.0.isVerified", @"1" },
+    { @"entries.0.verificationMethods.@count", @"2" },
+    { @"entries.0.verificationMethods.0.type", kGDataSiteVerificationMethodMetatag },
+    { @"entries.0.verificationMethods.0.isInUse", @"0" },
+    { @"entries.0.verificationMethods.1.type", kGDataSiteVerificationMethodHTMLPage },
+    { @"entries.0.verificationMethods.1.isInUse", @"1" },
+    { @"entries.0.verificationMethods.1.value", @"google28a5eb30440fabf0.html" },
+    { @"entries.0.verificationMethodInUse.value", @"google28a5eb30440fabf0.html" },
+    { @"entries.0.verificationEntryLink.href", @"contains:/http%3A%2F%2Fwww.domain.com%2F/verification" },
+    { @"entries.0.sitemapsEntryLink.href", @"contains:/http%3A%2F%2Fwww.domain.com%2F/sitemaps" },
+    { @"entries.0.entryLinks.@count", @"2" },
+    
+    { @"", @"" }, // end of feed
+    
+    //
+    // Feed of a site's sitemaps
+    //
+    { @"GDataFeedSitemap", @"Tests/FeedWebmasterToolsSitemap1.xml" },
+    
+    { @"identifier", @"contains:http%3A%2F%2Fwww.domain.com%2F/sitemaps" },
+    
+    { @"sitemapNews.publicationLabels.@count", @"3" },
+    { @"sitemapNews.publicationLabels.2.stringValue", @"a third publabel" },
+    
+    { @"sitemapMobile.markupLanguages.@count", @"3" },
+    { @"sitemapMobile.markupLanguages.2.stringValue", @"cHTML" },
+    
+    // GDataEntrySitemap methods
+    
+    { @"entries.0.categories.0.term", kGDataCategorySitemapRegular },
+    { @"entries.0.sitemapType", @"WEB" },
+    { @"entries.0.sitemapStatus", @"Pending" },
+    { @"entries.0.lastDownloadDate", nil },
+    { @"entries.0.sitemapURLCount", @"99" },
+
+    { @"entries.1.categories.0.term", kGDataCategorySitemapMobile },
+    { @"entries.1.markupLanguage", @"HTML" },
+    { @"entries.1.sitemapStatus", @"StatusValue" },
+    { @"entries.1.lastDownloadDate.date.timeIntervalSince1970", @"1163878052" },
+    { @"entries.1.sitemapURLCount", @"102" },
+    
+    { @"entries.2.categories.0.term", kGDataCategorySitemapNews },
+    { @"entries.2.publicationLabel", @"pubLabelValue" },
+    { @"entries.2.sitemapStatus", @"AnotherStatusValue" },
+    { @"entries.2.lastDownloadDate.date.timeIntervalSince1970", @"1163878052" },
+    { @"entries.2.sitemapURLCount", @"102" },
+    
+    { @"", @"" }, // end of feed
+    
+    { nil, nil } // end of test array
+  };
+  
+  [self runTests:tests];
+}
 
 
 - (void)testMessageFeed {
@@ -923,30 +993,30 @@
     //
     // Message Feed
     //
-  { @"GDataFeedMessage", @"Tests/FeedMessageTest1.xml" },
-    
+    { @"GDataFeedMessage", @"Tests/FeedMessageTest1.xml" },
+      
     // GDataFeedMessage paths
-  { @"links.0.href", @"hasPrefix:http://www.google.com/calendar/feeds/default" },
-  { @"categories.0.term", kGDataMessage },
-    
-  { @"unknownAttributes.@count", @"0" },
-  { @"unknownChildren.@count", @"0" },
-    
+    { @"links.0.href", @"hasPrefix:http://www.google.com/calendar/feeds/default" },
+    { @"categories.0.term", kGDataMessage },
+      
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+      
     // GDataEntryMessage paths
-  { @"entries.0.categories.0.term", kGDataMessage },
-  { @"entries.0.categories.1.term", kGDataMessageSent },
-  { @"entries.0.identifier", @"http://mymail.example.com/feeds/jo/home/full/e1a2af06df8a563edf9d32ec9fd61e03f7f3b67b" },
-  { @"entries.0.content", @"Hi, Fritz -- The information you're looking for is on p. 47." },
-  { @"entries.0.title", @"Re: Info?" },
-  { @"entries.0.participants.0.rel", kGDataWhoMessageFrom },
-  { @"entries.0.participants.1.rel", kGDataWhoMessageTo },
-    
-  { @"entries.0.unknownAttributes.@count", @"0" },
-  { @"entries.0.unknownChildren.@count", @"0" },
-    
-  { @"", @"" }, // end of feed
-    
-  { nil, nil } // end of test array
+    { @"entries.0.categories.0.term", kGDataMessage },
+    { @"entries.0.categories.1.term", kGDataMessageSent },
+    { @"entries.0.identifier", @"http://mymail.example.com/feeds/jo/home/full/e1a2af06df8a563edf9d32ec9fd61e03f7f3b67b" },
+    { @"entries.0.content", @"Hi, Fritz -- The information you're looking for is on p. 47." },
+    { @"entries.0.title", @"Re: Info?" },
+    { @"entries.0.participants.0.rel", kGDataWhoMessageFrom },
+    { @"entries.0.participants.1.rel", kGDataWhoMessageTo },
+      
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+      
+    { @"", @"" }, // end of feed
+      
+    { nil, nil } // end of test array
   };
   
   [self runTests:tests];
@@ -1242,7 +1312,7 @@
     //
     { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
       
-      // GDataFeedACL paths
+    // GDataFeedACL paths
     { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
     { @"links.0.rel", kGDataLinkRelControlledObject },
     { @"categories.0.term", kGDataCategoryACL },
@@ -1251,7 +1321,7 @@
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
       
-      // GDataEntryACL paths (scope and role are the main elements)
+    // GDataEntryACL paths (scope and role are the main elements)
     { @"entries.0.categories.0.term", kGDataCategoryACL },
     { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com" },
     { @"entries.0.content", @"" },
@@ -1262,7 +1332,6 @@
       
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
-
       
     { @"", @"" }, // end of feed
       

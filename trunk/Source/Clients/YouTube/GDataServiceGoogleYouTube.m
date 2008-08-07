@@ -152,7 +152,6 @@
                                               delegate:delegate
                                      didFinishSelector:finishedSelector
                                        didFailSelector:failedSelector];
-  
 }
 
 - (GDataServiceTicket *)fetchYouTubeEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
@@ -165,21 +164,32 @@
     [entryToUpdate setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]]; 
   }
   
-  
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
                                           forEntryURL:youTubeEntryEditURL
                                              delegate:delegate
                                     didFinishSelector:finishedSelector
                                       didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)deleteYouTubeEntry:(GDataEntryBase *)entryToDelete
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector
+                           didFailSelector:(SEL)failedSelector {
   
+  return [self deleteAuthenticatedEntry:entryToDelete
+                               delegate:delegate
+                      didFinishSelector:finishedSelector
+                        didFailSelector:failedSelector];
 }
 
 - (GDataServiceTicket *)deleteYouTubeResourceURL:(NSURL *)resourceEditURL
+                                            ETag:(NSString *)etag
                                         delegate:(id)delegate
                                didFinishSelector:(SEL)finishedSelector
                                  didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];
@@ -194,6 +204,19 @@
                               delegate:delegate
                      didFinishSelector:finishedSelector
                        didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)fetchYouTubeBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                           forBatchFeedURL:(NSURL *)feedURL
+                                                  delegate:(id)delegate
+                                         didFinishSelector:(SEL)finishedSelector
+                                           didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
+                                   forBatchFeedURL:feedURL
+                                          delegate:delegate
+                                 didFinishSelector:finishedSelector
+                                   didFailSelector:failedSelector];
 }
 
 #pragma mark -

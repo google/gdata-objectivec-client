@@ -299,10 +299,10 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   [mAddContactButton setEnabled:(isAddInfoEntered && isFeedAvailable)];
   
-  BOOL canEditSelectedContactImage = ([[selectedContact links] editPhotoLink] != nil);
+  BOOL canEditSelectedContactImage = ([selectedContact editPhotoLink] != nil);
   [mSetContactImageButton setEnabled:canEditSelectedContactImage];
   
-  BOOL doesContactHaveImage = ([[selectedContact links] photoLink] != nil);
+  BOOL doesContactHaveImage = ([selectedContact photoLink] != nil);
   [mDeleteContactImageButton setEnabled:(doesContactHaveImage && 
                                          canEditSelectedContactImage)];
   
@@ -313,10 +313,10 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   BOOL canDeleteAllEntries = 
     (isDisplayingContacts 
       && [[mContactFeed entries] count] > 0 
-      && [[mContactFeed links] batchLink] != nil)
+      && [mContactFeed batchLink] != nil)
     || (!isDisplayingContacts 
       && [[mGroupFeed entries] count] > 0
-      && [[mGroupFeed links] batchLink] != nil);
+      && [mGroupFeed batchLink] != nil);
   
   [mDeleteAllButton setEnabled:canDeleteAllEntries];
   
@@ -341,7 +341,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     // if the new photo URL is different from the previous one,
     // save the new one, clear the image and fetch the new image
     
-    NSURL *imageURL = [[[contact links] photoLink] URL];
+    NSURL *imageURL = [[contact photoLink] URL];
     if (!imageURL || ![mContactImageURL isEqual:imageURL]) {
       
       [self setContactImageURL:imageURL];
@@ -878,7 +878,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
       
-      NSURL *putURL = [[[[self selectedContact] links] editPhotoLink] URL];
+      NSURL *putURL = [[[self selectedContact] editPhotoLink] URL];
       
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleContact *service = [self contactService];
@@ -920,7 +920,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
 // upload finished successfully
 - (void)uploadPhotoTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryDocBase *)entry {
+        finishedWithEntry:(GDataEntryBase *)entry {
   
   [mSetContactImageProgressIndicator setDoubleValue:0.0];
   
@@ -974,7 +974,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *editURL = [[[[self selectedContact] links] editPhotoLink] URL];
+    NSURL *editURL = [[[self selectedContact] editPhotoLink] URL];
     
     [service deleteContactResourceURL:editURL
                                  ETag:nil
@@ -1031,7 +1031,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *postURL = [[[mContactFeed links] postLink] URL];
+    NSURL *postURL = [[mContactFeed postLink] URL];
     
     [service fetchContactEntryByInsertingEntry:newContact
                                     forFeedURL:postURL
@@ -1082,7 +1082,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *postURL = [[[mGroupFeed links] postLink] URL];
+    NSURL *postURL = [[mGroupFeed postLink] URL];
     
     [service fetchContactEntryByInsertingEntry:newGroup
                                     forFeedURL:postURL
@@ -1148,14 +1148,10 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     id entry = [self selectedContactOrGroup];
     
-    NSURL *entryURL = [[[entry links] editLink] URL];
-    NSString *etag = [entry ETag];
-    
-    [service deleteContactResourceURL:entryURL
-                                 ETag:etag
-                             delegate:self
-                    didFinishSelector:@selector(deleteEntryTicket:finishedWithObject:)
-                      didFailSelector:@selector(deleteEntryTicket:failedWithError:)];
+    [service deleteContactEntry:entry
+                       delegate:self
+              didFinishSelector:@selector(deleteEntryTicket:finishedWithObject:)
+                didFailSelector:@selector(deleteEntryTicket:failedWithError:)];
   }
 }
 
@@ -1221,7 +1217,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
     
     NSArray *entries = [feed entries];
     
-    NSURL *batchURL = [[[feed links] batchLink] URL];
+    NSURL *batchURL = [[feed batchLink] URL];
     if (batchURL == nil) {
       // the button shouldn't be enabled when we can't batch delete, so we
       // shouldn't get here
@@ -1412,7 +1408,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
       // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[[selectedEntryCopy links] editLink] URL];
+      NSURL *entryURL = [[selectedEntryCopy editLink] URL];
       
       [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
                                     forEntryURL:entryURL
@@ -1488,7 +1484,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
       // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[[selectedEntryCopy links] editLink] URL];
+      NSURL *entryURL = [[selectedEntryCopy editLink] URL];
       
       [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
                                     forEntryURL:entryURL
@@ -1565,7 +1561,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
     // now update the contact on the server
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *entryURL = [[[selectedContact links] editLink] URL];
+    NSURL *entryURL = [[selectedContact editLink] URL];
     
     [service fetchContactEntryByUpdatingEntry:selectedContact
                                   forEntryURL:entryURL
@@ -1611,7 +1607,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   // now update the contact on the server
   GDataServiceGoogleContact *service = [self contactService];
   
-  NSURL *entryURL = [[[selectedContactCopy links] editLink] URL];
+  NSURL *entryURL = [[selectedContactCopy editLink] URL];
   
   GDataServiceTicket *ticket =
     [service fetchContactEntryByUpdatingEntry:selectedContactCopy

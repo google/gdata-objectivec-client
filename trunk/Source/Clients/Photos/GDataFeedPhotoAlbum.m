@@ -42,36 +42,19 @@
   
   [super addExtensionDeclarations];
   
-  // common photo extensions
   Class feedClass = [self class];
   
+  // common photo extensions
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoAccess class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoBytesUsed class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoCommentCount class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoCommentingEnabled class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoTimestamp class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoNumberUsed class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoNumberLeft class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoBytesUsed class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoUser class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoNickname class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoName class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoLocation class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataMediaGroup class]];
-
+                                 childClasses:
+   [GDataPhotoAccess class], [GDataPhotoBytesUsed class],
+   [GDataPhotoCommentCount class], [GDataPhotoCommentingEnabled class],
+   [GDataPhotoTimestamp class], [GDataPhotoNumberUsed class],
+   [GDataPhotoNumberLeft class], [GDataPhotoBytesUsed class],
+   [GDataPhotoUser class], [GDataPhotoNickname class],
+   [GDataPhotoName class], [GDataPhotoLocation class],
+   [GDataMediaGroup class], nil];
+  
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:feedClass];
 }

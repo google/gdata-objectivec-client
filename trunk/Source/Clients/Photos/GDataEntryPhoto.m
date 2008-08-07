@@ -47,37 +47,16 @@
   
   // Photo extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoVersion class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoPosition class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoWidth class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoHeight class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoRotation class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoSize class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoAlbumID class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoTimestamp class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoCommentCount class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoCommentingEnabled class]];
+                                 childClasses:
+   [GDataPhotoVersion class], [GDataPhotoPosition class],
+   [GDataPhotoWidth class], [GDataPhotoHeight class],
+   [GDataPhotoRotation class], [GDataPhotoSize class],
+   [GDataPhotoAlbumID class], [GDataPhotoTimestamp class],
+   [GDataPhotoCommentCount class], [GDataPhotoCommentingEnabled class],
+   [GDataPhotoClient class], [GDataPhotoChecksum class],
+   [GDataMediaGroup class], [GDataEXIFTags class],
+   nil];
   
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoClient class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoChecksum class]];
-  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataMediaGroup class]];
-
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataEXIFTags class]];
-
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];
 }

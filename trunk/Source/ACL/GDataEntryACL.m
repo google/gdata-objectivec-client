@@ -103,14 +103,18 @@
 - (GDataACLScope *)scope {
   return (GDataACLScope *)[self objectForExtensionClass:[GDataACLScope class]]; 
 }
-@end
 
-@implementation NSArray(GDataACLLinks)
-- (GDataLink *)ACLLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelACL]; 
-}
+#pragma mark -
 
 - (GDataLink *)controlledObjectLink {
   return [self linkWithRelAttributeValue:kGDataLinkRelControlledObject]; 
 }
+
+@end
+
+@implementation GDataEntryBase (GDataACLLinks)
+- (GDataLink *)ACLLink {
+  return [self linkWithRelAttributeValue:kGDataLinkRelACL]; 
+}
+
 @end

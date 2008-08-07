@@ -43,7 +43,7 @@ _EXTERN NSString* kGDataReminderMethodAll _INITIALIZE_AS(@"all");
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdReminder
 
-@interface GDataReminder : GDataObject <NSCopying, GDataExtension> {
+@interface GDataReminder : GDataObject <GDataExtension> {
 }
 + (GDataReminder *)reminder;
 

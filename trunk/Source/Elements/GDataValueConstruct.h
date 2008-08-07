@@ -24,6 +24,7 @@
 // See the examples with each subclass below.
 
 #import "GDataObject.h"
+#import "GDataDateTime.h"
 
 // an element with a value="" attribute, as in
 // <gCal:timezone value="America/Los_Angeles"/>
@@ -33,12 +34,15 @@
 
 // convenience functions: subclasses may call into these and
 // return the result, cast to the appropriate type
+//
+// if nil is passed in for pointer type args for these, nil is returned
 + (id)valueWithString:(NSString *)str;
 + (id)valueWithNumber:(NSNumber *)num;
 + (id)valueWithInt:(int)val;
 + (id)valueWithLongLong:(long long)val;
 + (id)valueWithDouble:(double)val;
 + (id)valueWithBool:(BOOL)flag;
++ (id)valueWithDateTime:(GDataDateTime *)dateTime;
 
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
@@ -61,6 +65,9 @@
 - (NSNumber *)boolNumberValue;
 - (BOOL)boolValue;
 - (void)setBoolValue:(BOOL)flag;
+
+- (GDataDateTime *)dateTimeValue;
+- (void)setDateTimeValue:(GDataDateTime *)dateTime;
 
 @end
 

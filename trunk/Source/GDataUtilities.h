@@ -15,6 +15,10 @@
 
 #import <Foundation/Foundation.h>
 
+// helper functions for implementing isEqual:
+BOOL AreEqualOrBothNil(id obj1, id obj2);
+BOOL AreBoolsEqual(BOOL b1, BOOL b2);
+
 @interface GDataUtilities : NSObject 
 
 // utility for removing non-whitespace control characters
@@ -32,9 +36,26 @@
 // values (2-deep)
 + (NSDictionary *)dictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source;
 
+// string encoding
+
 // URL encoding, different for parts of URLs and parts of URL parameters
 // (URL parameters get + in place of spaces)
 + (NSString *)stringByURLEncodingString:(NSString *)str;
 + (NSString *)stringByURLEncodingStringParameter:(NSString *)str;
 
+// percent-encoded UTF-8
++ (NSString *)stringByPercentEncodingUTF8ForString:(NSString *)str;
+
+// key-value coding searches in an array
+//
+// utilities to get from an array objects having a known value (or nil)
+// at a keyPath 
+
++ (NSArray *)objectsFromArray:(NSArray *)sourceArray 
+                    withValue:(id)desiredValue
+                   forKeyPath:(NSString *)keyPath;
+
++ (id)firstObjectFromArray:(NSArray *)sourceArray 
+                 withValue:(id)desiredValue
+                forKeyPath:(NSString *)keyPath;
 @end
