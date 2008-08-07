@@ -109,4 +109,17 @@
   [self setObject:obj forExtensionClass:[GDataColumnCount class]];
 }
 
+#pragma mark -
+
+- (GDataLink *)spreadsheetLink {
+  return [self alternateLink]; 
+}
+
+- (GDataLink *)listLink {
+  return [self linkWithRelAttributeValue:kGDataLinkListFeed]; 
+}
+
+- (GDataLink *)cellsLink {
+  return [self linkWithRelAttributeValue:kGDataLinkCellsFeed]; 
+}
 @end

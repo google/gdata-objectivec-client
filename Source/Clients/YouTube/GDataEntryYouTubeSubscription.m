@@ -76,9 +76,10 @@
 
 - (NSString *)subscriptionType {
   
-  NSArray *categories = [self categories];
+  NSArray *subs;
   
-  NSArray *subs = [categories categoriesWithScheme:kGDataSchemeYouTubeSubscription];
+  subs = [GDataCategory categoriesWithScheme:kGDataSchemeYouTubeSubscription
+                              fromCategories:[self categories]];
   
   if ([subs count] > 0) {
     GDataCategory *subscription = [subs objectAtIndex:0];

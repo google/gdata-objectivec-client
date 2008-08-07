@@ -28,8 +28,8 @@
   GDataFeedBase *feed_;
 }
 
-+ (GDataFeedLink *)feedLinkWithHref:(NSString *)href
-                         isReadOnly:(BOOL)isReadOnly;
++ (id)feedLinkWithHref:(NSString *)href
+            isReadOnly:(BOOL)isReadOnly;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
@@ -53,8 +53,4 @@
 
 // convert the href string into an URL
 - (NSURL *)URL;
-@end
-
-@interface NSArray (GDataFeedLinkArray)
-- (GDataFeedLink *)feedLinkWithRel:(NSString *)rel;
 @end

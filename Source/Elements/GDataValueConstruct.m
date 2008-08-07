@@ -33,12 +33,16 @@
 // and coerce the return type appropriately
 
 + (id)valueWithString:(NSString *)str {
+  if (str == nil) return nil;
+  
   GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
 
 + (id)valueWithNumber:(NSNumber *)num {
+  if (num == nil) return nil;
+  
   GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:[num stringValue]];
   return obj;
@@ -67,6 +71,15 @@
   [obj setBoolValue:flag];
   return obj;
 }
+
++ (id)valueWithDateTime:(GDataDateTime *)dateTime {
+  if (dateTime == nil) return nil;
+  
+  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  [obj setDateTimeValue:dateTime];
+  return obj;
+}
+
 
 #pragma mark -
 
@@ -193,6 +206,20 @@
 
 - (void)setBoolValue:(BOOL)flag {
   [self setStringValue:(flag ? @"true" : @"false")];
+}
+
+- (GDataDateTime *)dateTimeValue {
+  NSString *str = [self stringValue];
+  if ([str length] > 0) {
+    GDataDateTime *dateTime = [GDataDateTime dateTimeWithRFC3339String:str];
+    return dateTime;
+  }
+  return nil;
+}
+
+- (void)setDateTimeValue:(GDataDateTime *)dateTime {
+  NSString *str = [dateTime RFC3339String];
+  [self setStringValue:str];
 }
 
 @end

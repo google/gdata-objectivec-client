@@ -55,7 +55,6 @@
                                               delegate:delegate
                                      didFinishSelector:finishedSelector
                                        didFailSelector:failedSelector];
-  
 }
 
 - (GDataServiceTicket *)fetchDocEntryByUpdatingEntry:(GDataEntryDocBase *)entryToUpdate
@@ -68,13 +67,11 @@
     [entryToUpdate setNamespaces:[GDataEntryDocBase baseDocumentNamespaces]]; 
   }
   
-  
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
                                           forEntryURL:docEntryEditURL
                                              delegate:delegate
                                     didFinishSelector:finishedSelector
                                       didFailSelector:failedSelector];
-  
 }
 
 // finished callback (see above) is passed the doc list feed
@@ -91,12 +88,25 @@
                     didFailSelector:failedSelector];  
 }
 
+- (GDataServiceTicket *)deleteDocEntry:(GDataEntryDocBase *)entryToDelete
+                              delegate:(id)delegate
+                     didFinishSelector:(SEL)finishedSelector
+                       didFailSelector:(SEL)failedSelector {
+  
+  return [self deleteAuthenticatedEntry:entryToDelete
+                               delegate:delegate
+                      didFinishSelector:finishedSelector
+                        didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)deleteDocResourceURL:(NSURL *)resourceEditURL
+                                        ETag:(NSString *)etag
                                     delegate:(id)delegate
                            didFinishSelector:(SEL)finishedSelector
                              didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];

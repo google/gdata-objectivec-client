@@ -90,4 +90,10 @@
   [self setObject:cell forExtensionClass:[GDataSpreadsheetCell class]];
 }
 
+#pragma mark -
+
+- (GDataLink *)sourceLink { // cell source
+  return [self linkWithRelAttributeValue:kGDataLinkSource]; 
+}
+
 @end

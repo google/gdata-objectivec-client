@@ -88,6 +88,11 @@ typedef NSUInteger GDataXMLNodeKind;
   
   xmlNodePtr xmlNode_; // may also be an xmlAttrPtr or xmlNsPtr
   BOOL shouldFreeXMLNode_; // if yes, xmlNode_ will be free'd in dealloc
+  
+  // cached values
+  NSString *cachedName_;
+  NSArray *cachedChildren_;
+  NSArray *cachedAttributes_;
 }
 
 + (GDataXMLElement *)elementWithName:(NSString *)name;
@@ -104,7 +109,7 @@ typedef NSUInteger GDataXMLNodeKind;
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
 
-- (unsigned int)childCount;
+- (NSUInteger)childCount;
 - (NSArray *)children;
 - (GDataXMLNode *)childAtIndex:(unsigned)index;
 

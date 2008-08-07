@@ -147,19 +147,16 @@ static NSString *const kLengthAttr = @"length";
   }
   return names;
 }
-@end
 
-@implementation NSArray(GDataLinkArray)
-- (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue {
-  
-  return [self linkWithRel:relValue type:nil];
-}
+#pragma mark Utilities
 
 // Find the first link with the given rel and type values. Either argument
 // may be nil, which means "match any value".
-- (GDataLink *)linkWithRel:(NSString *)relValue type:(NSString *)typeValue {
++ (GDataLink *)linkWithRel:(NSString *)relValue 
+                      type:(NSString *)typeValue 
+                 fromLinks:(NSArray *)array {
   
-  NSEnumerator *linkEnumerator = [self objectEnumerator]; 
+  NSEnumerator *linkEnumerator = [array objectEnumerator]; 
   GDataLink *link;
   
   while ((link = [linkEnumerator nextObject]) != nil) {
@@ -175,9 +172,16 @@ static NSString *const kLengthAttr = @"length";
   return nil;  
 }
 
-- (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix {
++ (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue
+                               fromLinks:(NSArray *)array {
   
-  NSEnumerator *linkEnumerator = [self objectEnumerator]; 
+  return [self linkWithRel:relValue type:nil fromLinks:array];
+}
+
++ (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix 
+                                fromLinks:(NSArray *)array {
+  
+  NSEnumerator *linkEnumerator = [array objectEnumerator]; 
   GDataLink *link;
   
   while ((link = [linkEnumerator nextObject]) != nil) {
@@ -190,48 +194,4 @@ static NSString *const kLengthAttr = @"length";
   return nil;  
 }  
 
-- (GDataLink *)feedLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelFeed]; 
-}
-
-- (GDataLink *)postLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelPost]; 
-}
-
-- (GDataLink *)editLink {
-  return [self linkWithRelAttributeValue:@"edit"]; 
-}
-
-- (GDataLink *)editMediaLink {
-  return [self linkWithRelAttributeValue:@"edit-media"]; 
-}
-
-- (GDataLink *)alternateLink {
-  return [self linkWithRelAttributeValue:@"alternate"]; 
-}
-
-- (GDataLink *)relatedLink {
-  return [self linkWithRelAttributeValue:@"related"]; 
-}
-
-- (GDataLink *)selfLink {
-  return [self linkWithRelAttributeValue:@"self"]; 
-}
-
-- (GDataLink *)nextLink {
-  return [self linkWithRelAttributeValue:@"next"]; 
-}
-
-- (GDataLink *)previousLink {
-  return [self linkWithRelAttributeValue:@"previous"]; 
-}
-
-- (GDataLink *)HTMLLink {
-  return [self linkWithRel:@"alternate" type:@"text/html"];
-}
-
-- (GDataLink *)batchLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelBatch]; 
-}
 @end
-

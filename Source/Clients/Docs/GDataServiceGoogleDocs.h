@@ -72,8 +72,15 @@ _EXTERN NSString* kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http:/
                      didFinishSelector:(SEL)finishedSelector
                        didFailSelector:(SEL)failedSelector;
 
-  // finished callback (see above) is passed a nil object
+// finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteDocEntry:(GDataEntryDocBase *)entryToDelete
+                              delegate:(id)delegate
+                     didFinishSelector:(SEL)finishedSelector
+                       didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteDocResourceURL:(NSURL *)resourceEditURL
+                                        ETag:(NSString *)etag
                                     delegate:(id)delegate
                            didFinishSelector:(SEL)finishedSelector
                              didFailSelector:(SEL)failedSelector;

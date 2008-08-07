@@ -70,7 +70,14 @@ _EXTERN NSString* kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"http:
                               didFailSelector:(SEL)failedSelector;
 
 // finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteSpreadsheetEntry:(GDataEntryBase *)entryToDelete
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                               didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteSpreadsheetResourceURL:(NSURL *)resourceEditURL
+                                                ETag:(NSString *)etag
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector
                                      didFailSelector:(SEL)failedSelector;

@@ -169,11 +169,11 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [mCalendarResultTextField setString:calendarResultStr];
   
   // add/delete calendar controls
-  BOOL canAddCalendar = ([[mCalendarFeed links] postLink] != nil);
+  BOOL canAddCalendar = ([mCalendarFeed postLink] != nil);
   BOOL hasNewCalendarName = ([[mCalendarNameField stringValue] length] > 0);
   [mAddCalendarButton setEnabled:(canAddCalendar && hasNewCalendarName)];
   
-  BOOL canEditSelectedCalendar = ([[[self selectedCalendar] links] editLink] != nil);
+  BOOL canEditSelectedCalendar = ([[self selectedCalendar] editLink] != nil);
   [mDeleteCalendarButton setEnabled:canEditSelectedCalendar];
   [mRenameCalendarButton setEnabled:(hasNewCalendarName && canEditSelectedCalendar)];
   
@@ -223,7 +223,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   BOOL isCalendarSelected = ([self selectedCalendar] != nil);
   
   BOOL doesSelectedCalendarHaveACLFeed = 
-    ([[[self selectedCalendar] links] ACLLink] != nil);
+    ([[self selectedCalendar] ACLLink] != nil);
     
   if (isEventDisplay) {
     
@@ -242,15 +242,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       
       // 1 selected event
       GDataEntryCalendarEvent *event = [selectedEvents objectAtIndex:0];
-      BOOL isSelectedEntryEditable = 
-        ([[event links] editLink] != nil);
+      BOOL isSelectedEntryEditable = ([event editLink] != nil);
 
       [mDeleteEventButton setEnabled:isSelectedEntryEditable];
       [mEditEventButton setEnabled:isSelectedEntryEditable];
       
     } else {
       // zero or many selected events
-      BOOL canBatchEdit = ([[mEventFeed links] batchLink] != nil);
+      BOOL canBatchEdit = ([mEventFeed batchLink] != nil);
       BOOL canDeleteAll = (canBatchEdit && numberOfSelectedEvents > 1);
       
       [mDeleteEventButton setEnabled:canDeleteAll];
@@ -259,7 +258,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   } else {
     // ACL segment is selected
     BOOL isEditableACLEntrySelected = 
-      ([[[self selectedACLEntry] links] editLink] != nil);
+      ([[self selectedACLEntry] editLink] != nil);
 
     [mDeleteEventButton setEnabled:isEditableACLEntrySelected];
     [mEditEventButton setEnabled:isEditableACLEntrySelected];
@@ -524,7 +523,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   
   NSString *newCalendarName = [mCalendarNameField stringValue];
   
-  NSURL *postURL = [[[mCalendarFeed links] postLink] URL];
+  NSURL *postURL = [[mCalendarFeed postLink] URL];
 
   if ([newCalendarName length] > 0 && postURL != nil) {
     
@@ -576,7 +575,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   
   GDataEntryCalendar *selectedCalendar = [self selectedCalendar];
   NSString *newCalendarName = [mCalendarNameField stringValue];
-  NSURL *editURL = [[[[self selectedCalendar] links] editLink] URL];
+  NSURL *editURL = [[[self selectedCalendar] editLink] URL];
 
   if (selectedCalendar && editURL && [newCalendarName length] > 0) {
     
@@ -595,7 +594,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (returnCode == NSAlertDefaultReturn) {
     
     NSString *newCalendarName = [mCalendarNameField stringValue];
-    NSURL *editURL = [[[[self selectedCalendar] links] editLink] URL];
+    NSURL *editURL = [[[self selectedCalendar] editLink] URL];
     GDataEntryCalendar *selectedCalendar = [self selectedCalendar];
     
     GDataServiceGoogleCalendar *service = [self calendarService];
@@ -654,16 +653,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   
   if (returnCode == NSAlertDefaultReturn) {
     
-    NSURL *editURL = [[[[self selectedCalendar] links] editLink] URL];
+    NSURL *editURL = [[[self selectedCalendar] editLink] URL];
     
     if (editURL != nil) {
       
       GDataServiceGoogleCalendar *service = [self calendarService];
       
-      [service deleteCalendarResourceURL:editURL
-                                delegate:self
-                       didFinishSelector:@selector(deleteCalendarTicket:deletedEntry:)
-                         didFailSelector:@selector(deleteCalendarTicket:failedWithError:)];
+      [service deleteCalendarEntry:[self selectedCalendar]
+                          delegate:self
+                 didFinishSelector:@selector(deleteCalendarTicket:deletedEntry:)
+                   didFailSelector:@selector(deleteCalendarTicket:failedWithError:)];
     }
   }
 }
@@ -771,7 +770,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
     
-    BOOL hasACL = ([[[self selectedCalendar] links] ACLLink] != nil);
+    BOOL hasACL = ([[self selectedCalendar] ACLLink] != nil);
     BOOL isDisplayingEvents = [self isEventsSegmentSelected];
     
     if (isDisplayingEvents || !hasACL) {
@@ -792,7 +791,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (calendar) {
     
     // fetch the events feed
-    NSURL *feedURL = [[[calendar links] alternateLink] URL];
+    NSURL *feedURL = [[calendar alternateLink] URL];
     if (feedURL) {
       
       [self setEventFeed:nil];
@@ -884,7 +883,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       GDataServiceGoogleCalendar *service = [self calendarService];
       
       GDataEntryCalendar *calendar = [self selectedCalendar];
-      NSURL *feedURL = [[[calendar links] alternateLink] URL];
+      NSURL *feedURL = [[calendar alternateLink] URL];
       
       [service fetchCalendarEventByInsertingEntry:event
                                        forFeedURL:feedURL
@@ -943,7 +942,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     GDataEntryCalendarEvent *event = [editEventController event];
     if (event) {
       
-      GDataLink *link = [[event links] editLink];
+      GDataLink *link = [event editLink];
       
       GDataServiceGoogleCalendar *service = [self calendarService];
       [service fetchCalendarEventEntryByUpdatingEntry:event
@@ -1017,14 +1016,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     
     // delete the event
     GDataEntryCalendarEvent *event = [self singleSelectedEvent];
-    GDataLink *link = [[event links] editLink];
+    GDataLink *link = [event editLink];
     
     if (link) {
       GDataServiceGoogleCalendar *service = [self calendarService];
-      [service deleteCalendarResourceURL:[link URL]
-                                delegate:self 
-                       didFinishSelector:@selector(deleteTicket:deletedEntry:)
-                         didFailSelector:@selector(deleteTicket:failedWithError:)];
+      [service deleteCalendarEventEntry:event
+                               delegate:self
+                      didFinishSelector:@selector(deleteTicket:deletedEntry:)
+                        didFailSelector:@selector(deleteTicket:failedWithError:)];
     }
   }
 }
@@ -1081,7 +1080,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     //   if (idx == 1) { [event setIdentifier:nil]; }
   }
 
-  NSURL *batchURL = [[[mEventFeed links] batchLink] URL];
+  NSURL *batchURL = [[mEventFeed batchLink] URL];
   if (batchURL != nil && [selectedEvents count] > 0) {
     
     // make a batch feed object: add entries, and since
@@ -1192,7 +1191,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   GDataServiceGoogleCalendar *service = [self calendarService];
   
   GDataEntryCalendar *calendar = [self selectedCalendar];
-  NSURL *feedURL = [[[calendar links] alternateLink] URL];
+  NSURL *feedURL = [[calendar alternateLink] URL];
 
   // make start and end times for today, at the beginning and end of the day
   
@@ -1255,7 +1254,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
     
-    NSURL *aclFeedURL = [[[calendar links] ACLLink] URL];
+    NSURL *aclFeedURL = [[calendar ACLLink] URL];
     if (aclFeedURL) {
       
       // fetch the ACL feed
@@ -1335,7 +1334,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
       GDataServiceGoogleCalendar *service = [self calendarService];
       
       GDataEntryCalendar *calendar = [self selectedCalendar];
-      NSURL *feedURL = [[[calendar links] ACLLink] URL];
+      NSURL *feedURL = [[calendar ACLLink] URL];
       
       if (feedURL) {
         [service fetchAuthenticatedEntryByInsertingEntry:entry
@@ -1396,7 +1395,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
     GDataEntryACL *entry = [editACLEntryController ACLEntry];
     if (entry) {
       
-      GDataLink *link = [[entry links] editLink];
+      GDataLink *link = [entry editLink];
       if (link) {
         GDataServiceGoogleCalendar *service = [self calendarService];
         [service fetchAuthenticatedEntryByUpdatingEntry:entry
@@ -1456,7 +1455,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
     
     // delete the ACLEntry
     GDataEntryACL *entry = [self selectedACLEntry];
-    GDataLink *link = [[entry links] editLink];
+    GDataLink *link = [entry editLink];
     
     if (link) {
       GDataServiceGoogleCalendar *service = [self calendarService];
@@ -1503,7 +1502,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
     // if the calendar lacks an ACL feed, select the events segment;
     // the updateUI routine will disable the ACL segment for us
     BOOL doesSelectedCalendarHaveACLFeed = 
-      ([[[self selectedCalendar] links] ACLLink] != nil);
+      ([[self selectedCalendar] ACLLink] != nil);
     
     if (!doesSelectedCalendarHaveACLFeed) {
       [mEntrySegmentedControl setSelectedSegment:kEventsSegment]; 

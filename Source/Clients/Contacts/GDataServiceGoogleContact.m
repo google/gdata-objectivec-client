@@ -75,6 +75,15 @@
   return url;
 }
 
++ (NSURL *)contactFeedURLForUserID:(NSString *)userID 
+                        projection:(NSString *)projection {
+  
+  NSURL *url = [self feedURLForFeed:@"contacts" 
+                             userID:userID
+                         projection:projection];
+  return url;
+}
+
 - (GDataServiceTicket *)fetchContactFeedForUsername:(NSString *)username
                                            delegate:(id)delegate
                                   didFinishSelector:(SEL)finishedSelector
@@ -148,6 +157,17 @@
   
 }
 
+- (GDataServiceTicket *)deleteContactEntry:(id)entryToDelete
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector
+                           didFailSelector:(SEL)failedSelector {
+  
+  return [self deleteAuthenticatedEntry:entryToDelete
+                               delegate:delegate
+                      didFinishSelector:finishedSelector
+                        didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)deleteContactResourceURL:(NSURL *)resourceEditURL
                                             ETag:(NSString *)etag
                                         delegate:(id)delegate
@@ -155,7 +175,7 @@
                                  didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:(NSString *)etag
+                                         ETag:etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];

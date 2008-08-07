@@ -118,7 +118,8 @@ _EXTERN NSString* kGDataNamespaceAtomPrefix _INITIALIZE_AS(@"atom");
 _EXTERN NSString* kGDataNamespaceAtomPub _INITIALIZE_AS(@"http://purl.org/atom/app#");
 _EXTERN NSString* kGDataNamespaceAtomPubPrefix _INITIALIZE_AS(@"app");
 
-_EXTERN NSString* kGDataNamespaceOpenSearch _INITIALIZE_AS(@"http://a9.com/-/spec/opensearchrss/1.0/");
+_EXTERN NSString* kGDataNamespaceOpenSearch    _INITIALIZE_AS(@"http://a9.com/-/spec/opensearchrss/1.0/");
+_EXTERN NSString* kGDataNamespaceOpenSearch1_1 _INITIALIZE_AS(@"http://a9.com/-/spec/opensearch/1.1/");
 _EXTERN NSString* kGDataNamespaceOpenSearchPrefix _INITIALIZE_AS(@"openSearch");
 
 _EXTERN NSString* kGDataNamespaceXHTML _INITIALIZE_AS(@"http://www.w3.org/1999/xhtml");
@@ -129,10 +130,6 @@ _EXTERN NSString* kGDataNamespaceGDataPrefix _INITIALIZE_AS(@"gd");
 
 _EXTERN NSString* kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.com/gdata/batch");
 _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
-
-// helper function for subclasses implementing isEqual:
-BOOL AreEqualOrBothNil(id obj1, id obj2);
-BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 
 @class GDataDateTime;
 @class GDataCategory;
@@ -175,8 +172,9 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
   // GDataObjects keep namespaces as {key:prefix value:URI} dictionary entries
   NSMutableDictionary *namespaces_; 
 
-  // list of potential GDataExtensionDeclarations for this element and its children
-  NSMutableArray *extensionDeclarations_; 
+  // list of potential GDataExtensionDeclarations for this element and its
+  // children, keyed by the declaration's parent class
+  NSMutableDictionary *extensionDeclarations_; 
   
   // list of attributes to be parsed for this element
   NSMutableArray *attributeDeclarations_;
@@ -205,29 +203,20 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
   NSMutableDictionary *userProperties_;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//
+// Public methods
+//
+// These methods are intended for users of the library
+//
+
 - (id)copyWithZone:(NSZone *)zone;
 
-// this init method should  be used only when creating the base of a tree
-// containing surrogates (the surrogate map is a dictionary of
-// standard GDataObject classes to replacement subclasses); this method
-// calls through to [self initWithXMLElement:parent:]
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent
-              surrogates:(NSDictionary *)surrogates;
-  
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent; // subclasses must override
 - (NSXMLElement *)XMLElement; // subclasses must override
 
 - (NSXMLDocument *)XMLDocument; // returns this XMLElement wrapped in an NSXMLDocument
-
-- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
-                            length:(unsigned long long *)outLength
-                           headers:(NSDictionary **)outHeaders;
-
-- (void)addExtensionDeclarations; // subclasses may override this to declare extensions
-
-- (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
 
 // setters/getters
 
@@ -236,6 +225,14 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (void)setNamespaces:(NSDictionary *)namespaces;
 - (void)addNamespaces:(NSDictionary *)namespaces;
 - (NSDictionary *)namespaces;
+
+// return a dictionary containing all namespaces
+// in this object and its parent objects
+- (NSDictionary *)completeNamespaces;
+
+// if a prefix is explicitly defined the same for a parent as it is locally,
+// remove it, since we can rely on the parent's definition
+- (void)pruneInheritedNamespaces;
 
 // name from original XML; this will be used during XML generation
 - (void)setElementName:(NSString *)elementName;
@@ -270,6 +267,30 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 - (void)setUnknownAttributes:(NSArray *)arr;
 - (NSArray *)unknownAttributes;
 
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Protected methods
+//
+//  All remaining methods are intended for use only by subclasses
+//  of GDataObject.
+//
+
+// this init method should  be used only when creating the base of a tree
+// containing surrogates (the surrogate map is a dictionary of
+// standard GDataObject classes to replacement subclasses); this method
+// calls through to [self initWithXMLElement:parent:]
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent
+              surrogates:(NSDictionary *)surrogates;
+  
+- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
+                            length:(unsigned long long *)outLength
+                           headers:(NSDictionary **)outHeaders;
+
+- (void)addExtensionDeclarations; // subclasses may override this to declare extensions
+
+- (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
+
   
 //
 // Extensions
@@ -278,6 +299,9 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // declaring a potential extension; applies to this object and its children
 - (void)addExtensionDeclarationForParentClass:(Class)parentClass
                                    childClass:(Class)childClass;
+- (void)addExtensionDeclarationForParentClass:(Class)parentClass
+                                 childClasses:(Class)firstChildClass, ...;
+
 - (void)removeExtensionDeclarationForParentClass:(Class)parentClass
                                       childClass:(Class)childClass;
 
@@ -513,11 +537,4 @@ arrayCountIfNonEmpty:(NSArray *)array
 
 // creating objects from child elements
 + (id)elementWithName:(NSString *)name attributeName:(NSString *)attrName attributeValue:(NSString *)attrValue;
-@end
-
-@interface NSArray (GDataObjectExtensions)
-// utility to get from an array all objects having a known value (or nil)
-// at a keyPath 
-- (NSArray *)objectsWithValue:(id)desiredValue
-                   forKeyPath:(NSString *)keyPath;
 @end

@@ -279,13 +279,13 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   [mAddPhotoButton setEnabled:(isAlbumSelected && isPasswordProvided)];
   
   BOOL isSelectedEntryEditable = 
-    ([[[self selectedPhoto] links] editLink] != nil);
+    ([[self selectedPhoto] editLink] != nil);
   
   [mDeletePhotoButton setEnabled:isSelectedEntryEditable];
   [mChangeAlbumPopupButton setEnabled:isSelectedEntryEditable];
   
   BOOL hasPhotoFeed = 
-    ([[[self selectedPhoto] links] feedLink] != nil);
+    ([[self selectedPhoto] feedLink] != nil);
   
   BOOL isTagProvided = ([[mTagField stringValue] length] > 0);
   BOOL isCommentProvided = ([[mCommentField stringValue] length] > 0);
@@ -333,7 +333,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
     
     BOOL isSelectedPhotoEntryEditable = 
-      ([[selectedPhoto links] editLink] != nil);
+      ([selectedPhoto editLink] != nil);
     
     if (isSelectedPhotoEntryEditable) {
           
@@ -533,7 +533,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
   if (album) {
     
     // fetch the photos feed
-    NSURL *feedURL = [[[album links] feedLink] URL];
+    NSURL *feedURL = [[album feedLink] URL];
     if (feedURL) {
       
       [self setPhotoFeed:nil];
@@ -628,7 +628,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     // get the feed URL for the album we're inserting the photo into
     GDataEntryPhotoAlbum *album = [self selectedAlbum];
-    NSURL *feedURL = [[[album links] feedLink] URL];
+    NSURL *feedURL = [[album feedLink] URL];
     
     // make service tickets call back into our upload progress selector
     GDataServiceGooglePicasaWeb *service = [self picasaWebService];
@@ -715,7 +715,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     // delete the photo
     GDataEntryPhoto *photo = [self selectedPhoto];
-    GDataLink *link = [[photo links] editLink];
+    GDataLink *link = [photo editLink];
     
     if (link) {
       GDataServiceGooglePicasaWeb *service = [self picasaWebService];
@@ -793,7 +793,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
     
     // move the photo
     GDataEntryPhoto *photo = [self selectedPhoto];
-    GDataLink *link = [[photo links] editLink];
+    GDataLink *link = [photo editLink];
     
     if (link) {
       // set the album to move to as the photo's new album ID
@@ -866,7 +866,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
     
-    NSURL *postURL = [[[photo links] feedLink] URL];
+    NSURL *postURL = [[photo feedLink] URL];
     if (postURL) {
       
       GDataServiceGooglePicasaWeb *service = [self picasaWebService];

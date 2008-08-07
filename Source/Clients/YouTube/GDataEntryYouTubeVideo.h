@@ -110,9 +110,7 @@ _EXTERN NSString* kGDataLinkYouTubeVlog          _INITIALIZE_AS(@"http://gdata.y
 - (GDataYouTubePublicationState *)publicationState;
 - (void)setGDataYouTubePublicationState:(GDataYouTubePublicationState *)obj;
 
-@end
-
-@interface NSArray (GDataYouTubeVideoEntryAdditions)
+// convenience accessors
 - (GDataLink *)videoResponsesLink;
 - (GDataLink *)ratingsLink;
 - (GDataLink *)complaintsLink;

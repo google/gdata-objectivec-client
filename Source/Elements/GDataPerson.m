@@ -26,6 +26,10 @@
 //   <email>test@domain.net</email>
 // </author>
 
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtom; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPrefix; }
++ (NSString *)extensionElementLocalName { return @"author"; }
+
 + (GDataPerson *)personWithName:(NSString *)name email:(NSString *)email {
   GDataPerson* obj = [[[GDataPerson alloc] init] autorelease];
   [obj setName:name];

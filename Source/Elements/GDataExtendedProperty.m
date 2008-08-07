@@ -37,14 +37,39 @@ static NSString* const kValueAttr = @"value";
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"extendedProperty"; }
 
+- (void)addEmptyDefaultNamespace {
+
+  // We don't want child XML lacking a prefix to be intepreted as being in the 
+  // atom namespace, so we'll specify that no default namespace applies.
+  // This will add the attribute xmlns="" to the extendedProperty element.
+  
+  NSDictionary *defaultNS = [NSDictionary dictionaryWithObject:@""
+                                                        forKey:@""];
+  [self addNamespaces:defaultNS];
+}
+
 + (id)propertyWithName:(NSString *)name
                  value:(NSString *)value {
 
   GDataExtendedProperty* obj = [[[GDataExtendedProperty alloc] init] autorelease];
   [obj setName:name];
   [obj setValue:value];
+  [obj addEmptyDefaultNamespace];
   return obj;
 }
+
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent {
+  self = [super initWithXMLElement:element
+                            parent:parent];
+  if (self) {
+    if ([[self namespaces] objectForKey:@""] == nil) {
+      [self addEmptyDefaultNamespace];
+    }
+  }
+  return self;
+}
+
 
 - (void)addParseDeclarations {
   

@@ -115,10 +115,7 @@ static NSString* const kPrimaryAttr = @"primary";
 
 - (void)setOrgName:(NSString *)str {
   
-  GDataOrgName *obj = nil;
-  if ([str length] > 0) {
-    obj = [GDataOrgName valueWithString:str];
-  }
+  GDataOrgName *obj = [GDataOrgName valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataOrgName class]]; 
 }
 
@@ -129,10 +126,7 @@ static NSString* const kPrimaryAttr = @"primary";
 
 - (void)setOrgTitle:(NSString *)str {
   
-  GDataOrgTitle *obj = nil;
-  if ([str length] > 0) {
-    obj = [GDataOrgTitle valueWithString:str];
-  }
+  GDataOrgTitle *obj = [GDataOrgTitle valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataOrgTitle class]]; 
 }
 

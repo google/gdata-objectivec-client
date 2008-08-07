@@ -272,7 +272,8 @@
   NSArray *links = [self links];
 
   GDataLink *webContentLink;
-  webContentLink = [links linkWithRelAttributeValue:kGDataLinkRelWebContent];
+  webContentLink = [GDataLink linkWithRelAttributeValue:kGDataLinkRelWebContent
+                                              fromLinks:links];
 
   return webContentLink;
 }

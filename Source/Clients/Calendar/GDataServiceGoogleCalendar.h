@@ -130,7 +130,20 @@ _EXTERN NSString* kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"ht
                                 didFailSelector:(SEL)failedSelector;
 
 // finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteCalendarEntry:(GDataEntryCalendar *)entryToDelete
+                                   delegate:(id)delegate
+                          didFinishSelector:(SEL)finishedSelector
+                            didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
+- (GDataServiceTicket *)deleteCalendarEventEntry:(GDataEntryCalendarEvent *)entryToDelete
+                                   delegate:(id)delegate
+                          didFinishSelector:(SEL)finishedSelector
+                            didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a nil object
 - (GDataServiceTicket *)deleteCalendarResourceURL:(NSURL *)resourceEditURL
+                                             ETag:(NSString *)etag
                                          delegate:(id)delegate
                                 didFinishSelector:(SEL)finishedSelector
                                   didFailSelector:(SEL)failedSelector;

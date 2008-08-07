@@ -213,9 +213,7 @@
   [GDataGeo setGeoLocation:geo forObject:self];
 }
 
-@end
-
-@implementation NSArray (GDataYouTubeVideoEntryAdditions)
+#pragma mark -
 
 - (GDataLink *)videoResponsesLink {
   return [self linkWithRelAttributeValue:kGDataLinkYouTubeResponses]; 

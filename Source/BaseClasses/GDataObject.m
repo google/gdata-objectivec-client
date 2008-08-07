@@ -27,6 +27,17 @@
 #import "GDataEntryBase.h"
 #import "GDataCategory.h"
 
+// Creating a CFDictionary rather than an NSMutableDictionary here avoids
+// problems with the underlying map global variable becoming invalid across
+// unit tests when garbage collection is enabled
+static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
+  
+  CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,  
+          0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+  
+  return (NSMutableDictionary *)dict;
+}
+
 // Elements may call -addExtensionDeclarationForParentClass:childClass: and
 // addAttributeExtensionDeclarationForParentClass: to declare extensions to be
 // parsed; the declaration applies in the element and all children of the element.
@@ -67,8 +78,8 @@
 
 // array of extensions that may be found in this class and in 
 // subclasses of this class
-- (void)setExtensionDeclarations:(NSArray *)decls;
-- (NSArray *)extensionDeclarations;
+- (void)setExtensionDeclarations:(NSDictionary *)decls;
+- (NSDictionary *)extensionDeclarations;
 
 - (void)addExtensionDeclarationForParentClass:(Class)parentClass
                                    childClass:(Class)childClass
@@ -283,6 +294,46 @@
   return namespaces_; 
 }
 
+- (NSDictionary *)completeNamespaces {
+  // return a dictionary containing all namespaces
+  // in this object and its parent objects
+  NSDictionary *parentNamespaces = [parent_ completeNamespaces];
+  NSDictionary *ownNamespaces = namespaces_;
+
+  if (ownNamespaces == nil) return parentNamespaces;
+  if (parentNamespaces == nil) return ownNamespaces;
+ 
+  // combine them, replacing parent-defined prefixes with own ones
+  NSMutableDictionary *mutable;
+  
+  mutable = [NSMutableDictionary dictionaryWithDictionary:parentNamespaces];
+  [mutable addEntriesFromDictionary:ownNamespaces];
+  return mutable;
+}
+
+- (void)pruneInheritedNamespaces {
+  // if a prefix is explicitly defined the same for the parent as it is locally,
+  // remove it, since we can rely on the parent's definition
+  NSMutableDictionary *prunedNamespaces
+    = [NSMutableDictionary dictionaryWithDictionary:namespaces_];
+
+  NSDictionary *parentNamespaces = [parent_ completeNamespaces];
+  NSEnumerator *nsEnum = [namespaces_ keyEnumerator];
+  NSString *prefix;
+  
+  while ((prefix = [nsEnum nextObject]) != nil) {
+    
+    NSString *ownURI = [namespaces_ objectForKey:prefix]; 
+    NSString *parentURI = [parentNamespaces objectForKey:prefix]; 
+    
+    if (AreEqualOrBothNil(ownURI, parentURI)) {
+      [prunedNamespaces removeObjectForKey:prefix];
+    }
+  }
+  
+  [self setNamespaces:prunedNamespaces];
+}
+
 - (void)setParent:(GDataObject *)obj {
   parent_ = obj; // parent_ is a weak (not retained) reference
 }
@@ -318,12 +369,12 @@
   return extensions_; 
 }
 
-- (void)setExtensionDeclarations:(NSArray *)decls {
+- (void)setExtensionDeclarations:(NSDictionary *)decls {
   [extensionDeclarations_ autorelease];
   extensionDeclarations_ = [decls mutableCopy];
 }
 
-- (NSArray *)extensionDeclarations {
+- (NSDictionary *)extensionDeclarations {
   return extensionDeclarations_; 
 }
 
@@ -459,10 +510,13 @@
   
   for (int idx = 0; idx < [unknownAttributes_ count]; idx++) {
     NSXMLNode *attr = [unknownAttributes_ objectAtIndex:idx];
+    
+#if DEBUG
     NSAssert1([element attributeForName:[attr name]] == nil,
               @"adding duplicate of attribute %@ (perhaps an object parsed with"
               "attributeForName: instead of attributeForName:fromElement:)",
               attr);
+#endif
     [element addAttribute:[[attr copy] autorelease]];
   }
 }
@@ -736,8 +790,7 @@ objectDescriptionIfNonNil:(id)obj
 // the surrogate, or else the supplied class if no surrogate is found for it
 - (Class)classOrSurrogateForClass:(Class)standardClass {
   
-  GDataObject *currentObject = self;
-  for (currentObject = self;
+  for (GDataObject *currentObject = self;
        currentObject != nil;
        currentObject = [currentObject parent]) {
     
@@ -993,14 +1046,20 @@ objectDescriptionIfNonNil:(id)obj
 
 #pragma mark attribute parsing
 
+- (void)handleParsedAttribute:(NSXMLNode *)attribute {
+  
+  if (attribute) {
+    [unknownAttributes_ removeObject:attribute];
+  }
+}
+
 - (NSXMLNode *)attributeForName:(NSString *)attributeName 
                     fromElement:(NSXMLElement *)element {
   
   NSXMLNode* attribute = [element attributeForName:attributeName];
   
-  if (attribute) {
-    [unknownAttributes_ removeObject:attribute];
-  }
+  [self handleParsedAttribute:attribute];
+  
   return attribute;
 }
 
@@ -1010,10 +1069,8 @@ objectDescriptionIfNonNil:(id)obj
   
   NSXMLNode* attribute = [element attributeForLocalName:localName
                                                     URI:attributeURI];
-  
-  if (attribute) {
-    [unknownAttributes_ removeObject:attribute];
-  }
+  [self handleParsedAttribute:attribute];
+
   return attribute;
 }
 
@@ -1122,6 +1179,29 @@ objectDescriptionIfNonNil:(id)obj
                                   isAttribute:NO];
 }
 
+- (void)addExtensionDeclarationForParentClass:(Class)parentClass
+                                 childClasses:(Class)firstChildClass, ... {
+  
+  // like the method above, but for a list of child classes
+  id nextClass;
+  va_list argumentList;
+  
+  if (firstChildClass != nil) {
+    [self addExtensionDeclarationForParentClass:parentClass
+                                     childClass:firstChildClass
+                                    isAttribute:NO];
+    
+    va_start(argumentList, firstChildClass);
+    while ((nextClass = va_arg(argumentList, Class)) != nil) {
+      
+      [self addExtensionDeclarationForParentClass:parentClass
+                                       childClass:nextClass
+                                      isAttribute:NO];
+    }
+    va_end(argumentList);
+  }
+}
+
 - (void)addAttributeExtensionDeclarationForParentClass:(Class)parentClass
                                    childClass:(Class)childClass {
   // add an attribute extension
@@ -1135,18 +1215,26 @@ objectDescriptionIfNonNil:(id)obj
                                   isAttribute:(BOOL)isAttribute {
 
   if (extensionDeclarations_ == nil) {
-    extensionDeclarations_ = [[NSMutableArray alloc] init]; 
+    extensionDeclarations_ = [[NSMutableDictionary alloc] init]; 
   }
   
+  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  if (array == nil) {
+    array = [NSMutableArray array];
+    [extensionDeclarations_ setObject:array forKey:parentClass];
+  }
+  
+#if DEBUG
   NSAssert1([childClass conformsToProtocol:@protocol(GDataExtension)], 
                 @"%@ does not conform to GDataExtension protocol", childClass);
+#endif
   
   GDataExtensionDeclaration *decl = 
     [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
                                                  childClass:childClass
                                                 isAttribute:isAttribute] autorelease];
-  
-  [extensionDeclarations_ addObject:decl];
+
+  [array addObject:decl];
 }
 
 - (void)removeExtensionDeclarationForParentClass:(Class)parentClass
@@ -1156,7 +1244,8 @@ objectDescriptionIfNonNil:(id)obj
                                                  childClass:childClass
                                                 isAttribute:NO] autorelease];
   
-  [extensionDeclarations_ removeObject:decl];
+  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  [array removeObject:decl];
 }
 
 - (void)removeAttributeExtensionDeclarationForParentClass:(Class)parentClass
@@ -1166,23 +1255,14 @@ objectDescriptionIfNonNil:(id)obj
                                                  childClass:childClass
                                                 isAttribute:YES] autorelease];
   
-  [extensionDeclarations_ removeObject:decl];
+  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  [array removeObject:decl];
 }
 
 // utility routine for getting declared extensions to the specified class
 - (NSArray *)extensionDeclarationsForClass:(Class)parentClass {
-  NSUInteger numberOfDecls = [extensionDeclarations_ count];
-  if (numberOfDecls == 0) return nil;
-  
-  NSMutableArray *decls = [NSMutableArray array];
-  
-  for (NSUInteger idx = 0; idx < [extensionDeclarations_ count]; idx++) {
-    GDataExtensionDeclaration *decl = [extensionDeclarations_ objectAtIndex:idx];
-    if ([decl parentClass] == parentClass) {
-      [decls addObject:decl];
-    }
-  }
-  return decls;
+  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  return array;
 }
 
 // objectsForExtensionClass: returns the array of all
@@ -1216,15 +1296,27 @@ objectDescriptionIfNonNil:(id)obj
 
 // generate the qualified name for this extension's element
 - (NSString *)qualifiedNameForExtensionClass:(Class)class {
-  NSString *name;
-  NSString *extensionURI = [class extensionElementURI];
+ 
+ static NSMutableDictionary *qualifiedNameMap = nil;
+ 
+  if (qualifiedNameMap == nil) {
+    qualifiedNameMap = GDataCreateStaticDictionary();
+  }
   
-  if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
-    name = [class extensionElementLocalName];
-  } else {
-    name = [NSString stringWithFormat:@"%@:%@",
-      [class extensionElementPrefix],
-      [class extensionElementLocalName]];
+  NSString *name = [qualifiedNameMap objectForKey:class];
+  if (name == nil) {
+    
+    NSString *extensionURI = [class extensionElementURI];
+    
+    if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
+      name = [class extensionElementLocalName];
+    } else {
+      name = [NSString stringWithFormat:@"%@:%@",
+              [class extensionElementPrefix],
+              [class extensionElementLocalName]];
+    }
+    
+    [qualifiedNameMap setObject:name forKey:class];
   }
   return name;
 }
@@ -1278,9 +1370,7 @@ objectDescriptionIfNonNil:(id)obj
 // remove a known extension of the specified class
 - (void)removeObject:(id)object forExtensionClass:(Class)class {
   NSMutableArray *array = [extensions_ objectForKey:class];
-  if ([array containsObject:object]) {
-    [array removeObject:object]; 
-  } 
+  [array removeObject:object]; 
 }
 
 // addUnknownChildNodesForElement: is called by initWithXMLElement.  It builds
@@ -1288,16 +1378,22 @@ objectDescriptionIfNonNil:(id)obj
 // parseExtensionsForElement and objectForChildOfElement.
 - (void)addUnknownChildNodesForElement:(NSXMLElement *)element {
   
+  NSArray *children = [element children];
+
   [unknownChildren_ release];
-  unknownChildren_ = [[NSMutableArray alloc] init];
-  if ([element childCount]) {
-    [unknownChildren_ addObjectsFromArray:[element children]];
+  if (children != nil) {
+    unknownChildren_ = [[NSMutableArray alloc] initWithArray:children];
+  } else {
+    unknownChildren_ = [[NSMutableArray alloc] init];
   }
   
+  NSArray *attributes = [element attributes];
+
   [unknownAttributes_ release];
-  unknownAttributes_ = [[NSMutableArray alloc] init];
-  if ([[element attributes] count]) {
-    [unknownAttributes_ addObjectsFromArray:[element attributes]];
+  if (attributes != nil) {
+    unknownAttributes_ = [[NSMutableArray alloc] initWithArray:attributes];
+  } else {
+    unknownAttributes_ = [[NSMutableArray alloc] init];
   }
 }
 
@@ -1307,10 +1403,18 @@ objectDescriptionIfNonNil:(id)obj
 // at the current element to see if any of the declared extensions are present.
 
 - (void)parseExtensionsForElement:(NSXMLElement *)element {
-  GDataObject *currentExtensionSupplier = self;
   Class classBeingParsed = [self class];
   
-  for (currentExtensionSupplier = self;
+  // For performance, we'll avoid looking up extension elements whose
+  // local names aren't present in the element.  We don't bother doing
+  // this for attribute extensions since those are so rare (most attributes
+  // are parsed just by local declaration in parseAttributesForElement:.)
+  NSArray *childLocalNames = [element valueForKeyPath:@"children.localName"];
+  
+  // allow wildcard lookups
+  childLocalNames = [childLocalNames arrayByAddingObject:@"*"];
+  
+  for (GDataObject * currentExtensionSupplier = self;
        currentExtensionSupplier != nil;
        currentExtensionSupplier = [currentExtensionSupplier parent]) {
     
@@ -1321,39 +1425,50 @@ objectDescriptionIfNonNil:(id)obj
       for (int idx = 0; idx < [extnDecls count]; idx++) {
         
         GDataExtensionDeclaration *decl = [extnDecls objectAtIndex:idx];
-        Class extensionClass = [decl childClass];
-
-        if ([extensions_ objectForKey:extensionClass] == nil) {
         
-          NSAssert1([extensionClass conformsToProtocol:@protocol(GDataExtension)], 
-                    @"%@ does not conform to GDataExtension protocol", 
-                    extensionClass);
+        // if we've not already found this class when parsing at an earlier supplier
+        Class extensionClass = [decl childClass];
+        if ([extensions_ objectForKey:extensionClass] == nil) {
           
-          NSString *namespaceURI = [extensionClass extensionElementURI];
-          NSString *qualifiedName = [self qualifiedNameForExtensionClass:extensionClass];
-          
-          NSArray *objects = nil;
-          
-          if ([decl isAttribute]) {
-            // parse for an attribute extension
-            NSString *str = [self stringForAttributeName:qualifiedName
-                                             fromElement:element];
-            if (str) {
-              id attr = [[[extensionClass alloc] init] autorelease];
-              [attr setStringValue:str];
-              objects = [NSArray arrayWithObject:attr];
-            }
+          // if this extension's local name really matches some child's local
+          // name (or this is an attribute extension)
 
-          } else {
-            // parse for an element extension
-            objects = [self objectsForChildrenOfElement:element
-                                          qualifiedName:qualifiedName
-                                           namespaceURI:namespaceURI
-                                            objectClass:extensionClass];
-          }
-          
-          if ([objects count]) {
-            [self setObjects:objects forExtensionClass:extensionClass];
+          NSString *declLocalName = [extensionClass extensionElementLocalName];
+          if ([childLocalNames containsObject:declLocalName] 
+              || [decl isAttribute]) {
+
+#if DEBUG
+            NSAssert1([extensionClass conformsToProtocol:@protocol(GDataExtension)], 
+                      @"%@ does not conform to GDataExtension protocol", 
+                      extensionClass);
+#endif
+            
+            NSString *namespaceURI = [extensionClass extensionElementURI];
+            NSString *qualifiedName = [self qualifiedNameForExtensionClass:extensionClass];
+            
+            NSArray *objects = nil;
+            
+            if ([decl isAttribute]) {
+              // parse for an attribute extension
+              NSString *str = [self stringForAttributeName:qualifiedName
+                                               fromElement:element];
+              if (str) {
+                id attr = [[[extensionClass alloc] init] autorelease];
+                [attr setStringValue:str];
+                objects = [NSArray arrayWithObject:attr];
+              }
+              
+            } else {
+              // parse for an element extension
+              objects = [self objectsForChildrenOfElement:element
+                                            qualifiedName:qualifiedName
+                                             namespaceURI:namespaceURI
+                                              objectClass:extensionClass];
+            }
+            
+            if ([objects count] > 0) {
+              [self setObjects:objects forExtensionClass:extensionClass];
+            }
           }
         }
       }
@@ -1378,8 +1493,10 @@ objectDescriptionIfNonNil:(id)obj
 // attribute value getters
 - (NSString *)stringValueForAttribute:(NSString *)name {
   
+#if DEBUG
   NSAssert2([attributeDeclarations_ containsObject:name],
             @"%@ getting undeclared attribute: %@", [self class], name);
+#endif
 
   return [attributes_ valueForKey:name];
 }
@@ -1428,14 +1545,13 @@ objectDescriptionIfNonNil:(id)obj
   if ([str length] > 0) {
     
     // require periods as the separator
+    //
+    // Leopard requires that we use an NSLocale object instead of explicitly 
+    // setting NSDecimalSeparator in a dictionary.
     
-    // Leopard deprecated the constant NSDecimalSeparator but it's still
-    // needed by NSDecimalNumber (radar 5674482)
-    NSString *const kNSDecimalSeparator = @"NSDecimalSeparator";
-    NSDictionary *locale = [NSDictionary dictionaryWithObject:@"."
-                                                       forKey:kNSDecimalSeparator];
+    NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:str
-                                                                locale:locale];
+                                    locale:(id)usLocale]; // cast for 10.4
     return number;
   }
   return nil;
@@ -1470,8 +1586,10 @@ objectDescriptionIfNonNil:(id)obj
 // attribute value setters
 - (void)setStringValue:(NSString *)str forAttribute:(NSString *)name {
   
+#if DEBUG
   NSAssert2([attributeDeclarations_ containsObject:name],
             @"%@ setting undeclared attribute: %@", [self class], name);
+#endif
   
   if (attributes_ == nil) {
     attributes_ = [[NSMutableDictionary alloc] init]; 
@@ -1496,13 +1614,13 @@ objectDescriptionIfNonNil:(id)obj
   
   // for most NSNumbers, just calling -stringValue is fine, but for decimal
   // numbers we want to specify that a period be the separator
-  // Leopard deprecated the constant NSDecimalSeparator but it's still
-  // needed by NSDecimalNumber (radar 5674482)
-  NSString *const kNSDecimalSeparator = @"NSDecimalSeparator";
-  NSDictionary *locale = [NSDictionary dictionaryWithObject:@"."
-                                                     forKey:kNSDecimalSeparator];
+  // 
+  // Leopard requires that we use an NSLocale object instead of explicitly 
+  // setting NSDecimalSeparator in a dictionary.
   
-  NSString *str = [num descriptionWithLocale:locale];
+  NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
+  
+  NSString *str = [num descriptionWithLocale:(id)usLocale]; // cast for 10.4
   [self setStringValue:str forAttribute:name];
 }
 
@@ -1516,17 +1634,25 @@ objectDescriptionIfNonNil:(id)obj
 // It stores the value of all declared & present attributes in the dictionary
 - (void)parseAttributesForElement:(NSXMLElement *)element {
 
-  // step through 
-  NSString *name;
-  NSEnumerator *nameEnumerator = [attributeDeclarations_ objectEnumerator];
-  while ((name = [nameEnumerator nextObject]) != nil) {
+  // for better performance, look up the values for declared attributes only
+  // if they are really present in the node
+  NSArray *attributes = [element attributes];
 
-    // see if the element has an attribute with this declared name
-    NSString *str = [self stringForAttributeName:name
-                                     fromElement:element];
-    if (str != nil) {
-      [self setStringValue:str forAttribute:name];
-    }
+  NSEnumerator *attrEnum = [attributes objectEnumerator];
+  NSXMLNode *attribute;
+  
+  while ((attribute = [attrEnum nextObject]) != nil) {
+    
+    NSString *attrName = [attribute name];
+    if ([attributeDeclarations_ containsObject:attrName]) {
+      
+      NSString *str = [attribute stringValue];
+      if (str != nil) {
+        [self setStringValue:str forAttribute:attrName];
+      }
+      
+      [self handleParsedAttribute:attribute];
+    } 
   }
 }
 
@@ -1643,10 +1769,13 @@ objectDescriptionIfNonNil:(id)obj
 static NSMutableDictionary *gFeedClassCategoryMap = nil;
 static NSMutableDictionary *gEntryClassCategoryMap = nil;
 
+static NSString *const kCategoryTemplate = @"{\"%@\":\"%@\"}";
+
+
 // registerClass:inMap:forCategoryWithScheme:term: does the work for
 // registerFeedClass: and registerEntryClass: below
 //
-// This adds the class to the class:category map, ensuring
+// This adds the class to the {"scheme":"term"} map, ensuring
 // that it won't conflict with a previous class or category
 // entry
 
@@ -1658,13 +1787,8 @@ forCategoryWithScheme:(NSString *)scheme
   // there's no autorelease pool in place at +load time, so we'll create our own
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
   
-  if (!*map) {
-    // Creating a CFDictionary rather than an NSMutableDictionary here avoids
-    // problems with the underlying map global variable becoming invalid across
-    // unit tests when garbage collection is enabled
-    *map = (NSMutableDictionary *)
-      CFDictionaryCreateMutable(kCFAllocatorDefault,  
-          0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+  if (*map == nil) {
+    *map = GDataCreateStaticDictionary();
   }
   
   // ensure this is a unique registration
@@ -1676,9 +1800,21 @@ forCategoryWithScheme:(NSString *)scheme
   NSAssert2(prevClass == nil, @"%@ registration conflicts with %@", 
             theClass, prevClass);
   
-  GDataCategory *category = [GDataCategory categoryWithScheme:scheme
-                                                         term:term];
-  [*map setObject:category forKey:theClass];
+  // we have a map from the key "scheme:term" to the class
+  //
+  // generally, scheme will be nil or kGDataCategoryScheme, so we'll
+  // use just the term as the key for those categories, avoiding
+  // the need to format a string when looking up
+  
+  NSString *key;
+  if (scheme == nil || [scheme isEqual:kGDataCategoryScheme]) {
+    key = term;
+  } else {
+    key = [NSString stringWithFormat:kCategoryTemplate, 
+           scheme, term ? term : @""];  
+  }
+  
+  [*map setValue:theClass forKey:key];
   
   [pool release];
 }
@@ -1712,25 +1848,24 @@ forCategoryWithScheme:scheme
                             fromMap:(NSDictionary *)map {
   
   // |scheme| and |term| are from the XML that we're using to look up
-  // a registered class
-  NSEnumerator *classEnumerator = [map keyEnumerator];
-  Class foundClass;
-  while ((foundClass = [classEnumerator nextObject]) != nil) {
-
-    GDataCategory *foundCategory = [map objectForKey:foundClass];
-    
-    NSString *foundScheme = [foundCategory scheme];
-    NSString *foundTerm = [foundCategory term];
-    
-    // |foundScheme| and |foundTerm| are values found in the registration map;
-    // if they are non-nil, the values in the XML must be non-nil and matching
-    
-    if ((!foundScheme || [scheme isEqual:foundScheme])
-      && (!foundTerm || [term isEqual:foundTerm])) {
-      
-      return foundClass;
-    }
-  }
+  // a registered class.  The parameters should be non-nil,
+  // though the values stored in the map may have nil scheme or term.
+  // 
+  // if the registered scheme was nil or kGDataCategoryScheme then the key
+  // is just the term value.
+  
+  NSString *key = term;
+  Class class = [map valueForKey:key];
+  if (class) return class;
+  
+  key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
+  class = [map valueForKey:key];
+  if (class) return class;
+  
+  key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
+  class = [map valueForKey:key];
+  if (class) return class;
+  
   return nil;
 }
 
@@ -1776,83 +1911,48 @@ forCategoryWithScheme:scheme
     return nil; 
   }
   
-  
-  // use an XPath query to find the category elements  
-  //
   // category elements look like <category scheme="blah" term="blahblah"/>
   // and there may be more than one
   //
   // ? For feed elements, if there's no category, should we look into
   // the entry elements for a category?  Some calendar feeds have
   // lacked feed-level categories.
+
+  // step through the category elements, looking for one that matches
+  // a registered feed or entry class
   
-#if GDATA_USES_LIBXML
-  // find category elements with the AtomPub URI or with no namespace
-  NSString *categoryPath = 
-    @"*[local-name()='category']"
-     "[namespace-uri()='http://www.w3.org/2005/Atom' or namespace-uri()='']";
-#else
-  // the category element may need the proper atom namespace prefix
-  // (is there a way to avoid having to know the prefix with
-  // NSXMLNode's nodesForXPath:?)
-  
-  NSString *categoryTermPathTemplate = @"./%@category";
-  
-  NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
-  if ([atomPrefix length] > 0) {
-    atomPrefix = [atomPrefix stringByAppendingString:@":"]; 
-  } else {
-    atomPrefix = @""; 
-  }
-  
-  NSString *categoryPath = [NSString stringWithFormat:categoryTermPathTemplate, 
-    atomPrefix];
-#endif
-  
-  // nodesForXPath: throws exceptions for parsing errors
-  @try {
-    NSError *error = nil;
-    NSArray *nodes = [element nodesForXPath:categoryPath error:&error];
-    if ([nodes count] > 0 ) {
-      
-      // step through the category elements, looking for one that matches
-      // a registered feed or entry class
-      for (int idx = 0; idx < [nodes count]; idx++) {
-        NSString *scheme = nil;
-        NSString *term = nil;
-        
-        NSXMLNode *categoryNode = [nodes objectAtIndex:idx];
-        
-        // now we have a category element; use XPath to find the scheme and
-        // term attributes
-        NSArray *schemeNodes = [categoryNode nodesForXPath:@"./@scheme" 
-                                                     error:&error];
-        if ([schemeNodes count]) {
-          scheme = [[schemeNodes objectAtIndex:0] stringValue];
-        }
-        
-        NSArray *termNodes = [categoryNode nodesForXPath:@"./@term" 
-                                                   error:&error];
-        if ([termNodes count]) {
-          term = [[termNodes objectAtIndex:0] stringValue];
-        }
-        
-        if (scheme || term) {
-          // we have a scheme or a term, so look for a registered class
-          if (isFeed) {
-            result = [GDataObject feedClassForCategoryWithScheme:scheme 
-                                                            term:term];
-            if (result) break;
-          } else {
-            result = [GDataObject entryClassForCategoryWithScheme:scheme 
-                                                             term:term];
-            if (result) break;
-          }
-        }
-      }
+  NSArray *categories = [element elementsForLocalName:@"category"
+                                                  URI:kGDataNamespaceAtom];
+  if ([categories count] == 0) {
+    NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
+    if ([atomPrefix length] == 0) {
+      categories = [element elementsForName:@"category"];
     }
   }
-  @catch (NSException * e) {
+
+  NSEnumerator *enumerator = [categories objectEnumerator];
+  NSXMLElement *categoryNode;
+  while ((categoryNode = [enumerator nextObject]) != nil) {
+    
+    NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
+    NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
+    
+    if (scheme || term) {
+
+      // we have a scheme or a term, so look for a registered class
+      Class foundClass = nil;
+      if (isFeed) {
+        foundClass = [GDataObject feedClassForCategoryWithScheme:scheme 
+                                                        term:term];
+      } else {
+        foundClass = [GDataObject entryClassForCategoryWithScheme:scheme 
+                                                         term:term];
+      }
+      if (foundClass) {
+        result = foundClass;
+        break;
+      }
+    }
   }
   
   return result;
@@ -1883,29 +1983,6 @@ forCategoryWithScheme:scheme
   return element;  
 }
 
-@end
-
-@implementation NSArray (GDataObjectExtensions)
-// utility to get from an array all objects having a known value (or nil)
-// at a keyPath 
-- (NSArray *)objectsWithValue:(id)desiredValue
-                   forKeyPath:(NSString *)keyPath {
-  
-  // step through all entries, get the value from 
-  // the key path, and see if it's equal to the 
-  // desired value
-  NSMutableArray *results = [NSMutableArray array];
-  NSEnumerator *enumerator = [self objectEnumerator];
-  id obj;
-  
-  while ((obj = [enumerator nextObject]) != nil) {
-    id val = [obj valueForKeyPath:keyPath];
-    if (AreEqualOrBothNil(val, desiredValue)) {
-      [results addObject:obj];
-    }
-  }
-  return results;
-}
 @end
 
 @implementation GDataExtensionDeclaration
@@ -2020,33 +2097,4 @@ forCategoryWithScheme:scheme
   return value_; 
 }
 
-
 @end
-
-
-// isEqual: has the fatal flaw that it doesn't deal well with the received
-// being nil. We'll use this utility instead.
-BOOL AreEqualOrBothNil(id obj1, id obj2) {
-  if (obj1 == obj2) {
-    return YES;
-  }
-  if (obj1 && obj2) {
-    BOOL areEqual = [obj1 isEqual:obj2];
-    
-    // the following commented-out lines are useful for finding out what
-    // comparisons are failing when XML regeneration fails in unit tests
-    
-    //if (!areEqual) NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
-      
-    return areEqual; 
-  } else {
-     //NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
-  }
-  return NO;
-}
-
-BOOL AreBoolsEqual(BOOL b1, BOOL b2) {
-  // avoid comparison problems with boolean types by negating
-  // both booleans
-  return (!b1 == !b2);
-}

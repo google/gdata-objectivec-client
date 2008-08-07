@@ -28,7 +28,7 @@
 //
 // See http://code.google.com/apis/codesearch/reference.html
 
-@interface GDataCodeSearchMatch : GDataTextConstruct <NSCopying, GDataExtension> {
+@interface GDataCodeSearchMatch : GDataTextConstruct <GDataExtension> {
 }
 
 + (id)matchWithStringValue:(NSString *)valueStr

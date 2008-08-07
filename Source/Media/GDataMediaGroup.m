@@ -66,25 +66,13 @@
   [super addExtensionDeclarations];
   
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaContent class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaCategory class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaCredit class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaDescription class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaPlayer class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaRating class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaRestriction class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaThumbnail class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaKeywords class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataMediaTitle class]];  
+                                 childClasses:
+   [GDataMediaContent class], [GDataMediaCategory class],
+   [GDataMediaCredit class], [GDataMediaDescription class],
+   [GDataMediaPlayer class], [GDataMediaRating class],
+   [GDataMediaRestriction class], [GDataMediaThumbnail class],
+   [GDataMediaKeywords class], [GDataMediaTitle class], 
+   nil];  
   
   // still unsupported:
   // MediaCopyright, MediaHash, MediaText

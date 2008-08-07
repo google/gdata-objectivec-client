@@ -23,7 +23,7 @@
 //   <name>Fred Flintstone</name>
 //   <email>test@domain.net</email>
 // </author>
-@interface GDataPerson : GDataObject <NSCopying> {
+@interface GDataPerson : GDataObject <NSCopying, GDataExtension> {
   NSString *name_;
   NSString *nameLang_;
   NSString *uri_;
