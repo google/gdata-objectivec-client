@@ -565,6 +565,10 @@
 		4F7098BA0D790F71003CEFDF /* GDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7098B70D790F71003CEFDF /* GDataUtilities.m */; };
 		4F7098BB0D790F71003CEFDF /* GDataUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7098B70D790F71003CEFDF /* GDataUtilities.m */; };
 		4F777E070C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */; };
+		4F7A116B0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */; };
+		4F7A116C0E5E137700883F90 /* GDataEntryPDFDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F7A11690E5E137700883F90 /* GDataEntryPDFDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F7A116D0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */; };
+		4F7A116E0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */; };
 		4F848C6E0D887A2A007ECFCD /* GDataDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F848C6D0D887A2A007ECFCD /* GDataDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */; };
 		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1056,6 +1060,8 @@
 		4F7098B70D790F71003CEFDF /* GDataUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataUtilities.m; sourceTree = "<group>"; };
 		4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTimeTest.m; path = Tests/GDataNormalPlayTimeTest.m; sourceTree = "<group>"; };
 		4F777E060C03DA4E00058FA1 /* GDataNormalPlayTimeTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataNormalPlayTimeTest.h; path = Tests/GDataNormalPlayTimeTest.h; sourceTree = "<group>"; };
+		4F7A11690E5E137700883F90 /* GDataEntryPDFDoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryPDFDoc.h; path = Clients/Docs/GDataEntryPDFDoc.h; sourceTree = "<group>"; };
+		4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPDFDoc.m; path = Clients/Docs/GDataEntryPDFDoc.m; sourceTree = "<group>"; };
 		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
 		4F9708750BC5C35100C5B1C0 /* GDataServiceTest.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceTest.h; path = Tests/GDataServiceTest.h; sourceTree = "<group>"; };
@@ -1662,6 +1668,8 @@
 				4F4B93E40C5045020064B6F6 /* GDataEntrySpreadsheetDoc.m */,
 				4F4B93E50C5045020064B6F6 /* GDataEntryPresentationDoc.h */,
 				4F4B93E00C5045020064B6F6 /* GDataEntryPresentationDoc.m */,
+				4F7A11690E5E137700883F90 /* GDataEntryPDFDoc.h */,
+				4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */,
 				4F4B943A0C5048430064B6F6 /* GDataFeedDocList.h */,
 				4F4B94390C5048430064B6F6 /* GDataFeedDocList.m */,
 				4F4B94690C504A870064B6F6 /* GDataServiceGoogleDocs.h */,
@@ -2066,6 +2074,7 @@
 				4F2D4B8F0E4A5A3F008D49F8 /* GDataSitemapNews.h in Headers */,
 				4F2D4B910E4A5A3F008D49F8 /* GDataSiteVerificationMethod.h in Headers */,
 				4F2D4B930E4A5A3F008D49F8 /* GDataWebmasterTools.h in Headers */,
+				4F7A116C0E5E137700883F90 /* GDataEntryPDFDoc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2383,6 +2392,7 @@
 				4F2D4B800E4A5A3F008D49F8 /* GDataSitemapMobile.m in Sources */,
 				4F2D4B810E4A5A3F008D49F8 /* GDataSitemapNews.m in Sources */,
 				4F2D4B820E4A5A3F008D49F8 /* GDataSiteVerificationMethod.m in Sources */,
+				4F7A116B0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2568,6 +2578,7 @@
 				4F2D4B990E4A5A3F008D49F8 /* GDataSitemapMobile.m in Sources */,
 				4F2D4B9A0E4A5A3F008D49F8 /* GDataSitemapNews.m in Sources */,
 				4F2D4B9B0E4A5A3F008D49F8 /* GDataSiteVerificationMethod.m in Sources */,
+				4F7A116E0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2751,6 +2762,7 @@
 				4F2D4B8E0E4A5A3F008D49F8 /* GDataSitemapMobile.m in Sources */,
 				4F2D4B900E4A5A3F008D49F8 /* GDataSitemapNews.m in Sources */,
 				4F2D4B920E4A5A3F008D49F8 /* GDataSiteVerificationMethod.m in Sources */,
+				4F7A116D0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
