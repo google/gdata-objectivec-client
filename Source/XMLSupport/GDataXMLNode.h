@@ -29,7 +29,7 @@
 
 // libxml includes require that the target Header Search Paths contain
 //
-//   /usr/include/libxml
+//   /usr/include/libxml2
 //
 // and Other Linker Flags contain
 //

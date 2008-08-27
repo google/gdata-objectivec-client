@@ -19,36 +19,6 @@
 
 #import "FinanceSampleWindowController.h"
 
-//
-//  TEMPORARY...
-//  
-@interface MyCorpURLFinanceService : GDataServiceGoogleFinance
-@end
-
-@implementation MyCorpURLFinanceService
-+ (NSString *)serviceRootURLString {
-  return @"http://finance.corp.google.com/finance/feeds/";
-}
-@end
-
-#define GDataServiceGoogleFinance MyCorpURLFinanceService
-
-#define kGDataGoogleFinanceDefaultPortfoliosFeed @"http://finance.corp.google.com/finance/feeds/default/portfolios"
-
-static NSURL *TempFixFinanceURLToCorp(NSURL *externalURL) {
-  NSString *unmodStr = [externalURL absoluteString];
-  NSMutableString *modifiedURLStr = [NSMutableString stringWithString:unmodStr];
-  [modifiedURLStr replaceOccurrencesOfString:@"finance.google.com"
-                          withString:@"finance.corp.google.com"
-                             options:0
-                               range:NSMakeRange(0, [modifiedURLStr length])];
-  return [NSURL URLWithString:modifiedURLStr];
-}
-//
-//  ...END TEMPORARY
-//  
-
-
 @interface FinanceSampleWindowController (PrivateMethods)
 - (void)updateUI;
 
@@ -355,7 +325,6 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
     
     NSURL *feedURL = [portfolio positionURL];
     if (feedURL) {
-      feedURL = TempFixFinanceURLToCorp(feedURL);
       
       [self setPositionFeed:nil];
       [self setPositionFetchError:nil];
@@ -413,7 +382,6 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
     
     NSURL *feedURL = [position transactionURL];
     if (feedURL) {
-      feedURL = TempFixFinanceURLToCorp(feedURL);
       
       [self setTransactionFeed:nil];
       [self setTransactionFetchError:nil];
