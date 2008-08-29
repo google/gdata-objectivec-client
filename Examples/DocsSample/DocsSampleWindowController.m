@@ -482,7 +482,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   };
   
   static struct MapEntry sMap[] = {
-    { @"csv", @"text/comma-separated-values", @"GDataEntryStandardDoc" },
+    { @"csv", @"text/csv", @"GDataEntryStandardDoc" },
     { @"doc", @"application/msword", @"GDataEntryStandardDoc" },
     { @"ods", @"application/vnd.oasis.opendocument.spreadsheet", @"GDataEntrySpreadsheetDoc" },
     { @"odt", @"application/vnd.oasis.opendocument.text", @"GDataEntryStandardDoc" },
@@ -499,8 +499,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"gif", @"image/gif", @"GDataEntryStandardDoc" },
     { @"html", @"text/html", @"GDataEntryStandardDoc" },
     { @"htm", @"text/html", @"GDataEntryStandardDoc" },
-    { @"tsv", @"text/tab-separated-value", @"GDataEntryStandardDoc" },
-    { @"tab", @"text/tab-separated-value", @"GDataEntryStandardDoc" },
+    { @"tsv", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
+    { @"tab", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
     
     { nil, nil, nil }
   };
