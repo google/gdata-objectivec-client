@@ -35,7 +35,7 @@ or the header for a specific service, such as
 
 The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
-=== Compiling the source files directly into your own project ===
+==== Compiling the source files directly into your own project ====
 
 Rather than link to the GData framework, you can compile the GData library sources directly into your own project. To do this, drag the GData Sources source group from the GData Xcode project into your project's window (add by reference, not by copying the files.)  
 
@@ -50,9 +50,11 @@ With the source files compiled directly in your project, refer directly to the h
 
 `#import "GDataCalendar.h"`
 
-=== Development with the iPhone SDK ===
+==== Development with the iPhone SDK ====
 
-If you are building for the iPhone, follow the directions above to compile the source files directly into your own project.
+If you are building for the iPhone, check out the current versions of the sources using Subversion as described on the [http://code.google.com/p/gdata-objectivec-client/source/checkout Source Checkout page]. 
+
+Follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
 
 Also add the GDataXMLNode.m and GDataXMLNode.h files to your project.
 
@@ -232,7 +234,7 @@ service = [[GDataServiceGooglePicasaWeb alloc] init];
 
 These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can retain arbitrary data for users.
 
-To retain data from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` method.
+To retain data from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` or `setProperty:forKey:` methods.
 
 == Uploading files ==
 
