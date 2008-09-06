@@ -236,6 +236,97 @@ These three techniques only add data to elements _locally_ for the Objective-C c
 
 To retain data from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` or `setProperty:forKey:` methods.
 
+=== Batch Requests ===
+
+Some services support batch requests, allowing many insert, update, or delete operations to be performed with a single http request. 
+
+Services which allow batch operations on a feed's entries will provide a batch link in the feed:
+
+{{{
+NSURL *batchURL = [[feed batchLink] URL];
+}}}
+
+To execute a batch request, create an empty feed for the appropriate service, such as:
+
+{{{
+GDataFeedContact *batchFeed = [GDataFeedContact contactFeed];
+}}}
+
+Then add entries to insert, update, and delete to the batch feed. For updates and deletes, add entries that were previously fetched rather than ones created from scratch, as the fetched entries will have additional elements (edit links or ETags) that the server may need to check that operations are occurring on the expected entry versions.
+
+Using the first five entries from a fetched contacts feed in a batch feed might look like:
+
+{{{
+NSRange entryRange = NSMakeRange(0, 5);
+NSArray *entries = [[contactFeed entries] subarrayWithRange:entryRange];
+[batchFeed setEntriesWithEntries:entries];
+}}}
+
+If the same operation applies to all entries, add that operation to the batch feed instance:
+
+{{{
+GDataBatchOperation *op;
+op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationDelete];
+[batchFeed setBatchOperation:op];    
+}}}
+
+If different entries require different operations, add operation elements to the individual entries of the batch feed.
+
+Optionally, each entry may be assigned a batch ID.  A batch ID is an arbitrary string, created by your application, that is copied into the entries of the batch results feed.  This lets your code match the results to the entries of the original batch feed.  The server merely copies the ID string; the string's contents are up to the application.
+
+{{{
+static unsigned int staticID = 0;
+NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
+[entry setBatchIDWithString:batchID];
+}}}
+
+
+As with other kinds of fetches in the library, objects may be passed to the batch callbacks as properties or userData on the ticket:
+
+{{{
+GDataServiceGoogleContact *service = [self contactService];
+GDataServiceTicket *ticket;
+
+ticket = [service fetchContactBatchFeedWithBatchFeed:batchFeed
+                                     forBatchFeedURL:batchURL
+                                            delegate:self
+                                   didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:)
+                                     didFailSelector:@selector(batchDeleteTicket:failedWithError:)];
+
+[ticket setProperty:@"my data"
+             forKey:kMyDataKey];
+}}}
+
+The success callback for a batch operation receives a feed that includes entries as the response for each operation.  Each result entry has a status code element, and may have the optional ID string.  If batch processing was halted at an entry, the corresponding response entry will have a GDataBatchInterrupted element.
+
+{{{
+- (void)batchTicket:(GDataServiceTicket *)ticket
+   finishedWithFeed:(GDataFeedBase *)resultsFeed {
+    
+  for (int idx = 0; idx < [resultsFeed count]; idx++) {
+    
+    GDataEntryContact *entry = [resultsFeed objectAtIndex:idx];
+    
+    NSString *batchIDString = [[entry batchID] stringValue];
+    
+    GDataBatchStatus *status = [entry batchStatus];
+    int statusCode = [[status code] intValue];
+    NSString *statusReason = [status reason];
+    
+    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+    if (interrupted != nil) {
+      // batch processing was interrupted, probably by invalid XML;
+      // no further entries were processed, and no more result entries
+      // are provided
+    }
+  } 
+}
+}}}
+
+To ensure reasonable response times, a service may impose a limit on the number of entries in a single batch. See the service's documentation for specific details.
+
+The [http://code.google.com/apis/gdata/batch.html batch processing documentation] has additional information on batch requests.
+
 == Uploading files ==
 
 Some services allow uploading of a file when inserting an entry into a feed.  Uploading requires setting the upload data and MIME type in the entry. Some services also require a *slug* as the file name.  
