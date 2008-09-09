@@ -583,12 +583,23 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 #pragma mark Add a photo
 
 - (void)addAPhoto {
+  
+  // see the API documentation for the current list of file types accepted
+  // for uploading
+  NSArray *fileTypes = [NSArray arrayWithObjects:
+                        // image types
+                        @"jpeg", @"jpg", @"png", @"gif", @"bmp",
+                        
+                        // movies types
+                        @"mov", @"mpeg", @"avi", @"mpg", @"wmv", @"mp4", @"qt",
+                        nil];
+  
   // ask the user to choose an image file
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
   [openPanel beginSheetForDirectory:nil
                                file:nil
-                              types:[NSImage imageFileTypes]
+                              types:fileTypes
                      modalForWindow:[self window]
                       modalDelegate:self
                      didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
@@ -703,7 +714,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     NSBeginAlertSheet(@"Delete Photo", @"Delete", @"Cancel", nil,
                       [self window], self, 
                       @selector(deleteSheetDidEnd:returnCode:contextInfo:),
-                      nil, nil, @"Delete the photo \"%@\"?",
+                      nil, nil, @"Delete the item \"%@\"?",
                       [[photo title] stringValue]);
   }
 }
@@ -780,7 +791,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
                       [self window], self, 
                       @selector(moveSheetDidEnd:returnCode:contextInfo:),
                       nil, nil,
-                      @"Move the photo \"%@\" to the album \"%@\"?",
+                      @"Move the item \"%@\" to the album \"%@\"?",
                       [[photo title] stringValue],
                       [[albumEntry title] stringValue]);      
   }
