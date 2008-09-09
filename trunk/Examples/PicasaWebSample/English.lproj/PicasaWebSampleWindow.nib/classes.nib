@@ -1,45 +1,91 @@
-{
-    IBClasses = (
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
-        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
-        {
-            ACTIONS = {
-                addClicked = id; 
-                addCommentClicked = id; 
-                addTagClicked = id; 
-                cancelAlbumFetchClicked = id; 
-                cancelPhotoFetchClicked = id; 
-                changeAlbumClicked = id; 
-                deleteClicked = id; 
-                getAlbumClicked = id; 
-                loggingCheckboxClicked = id; 
-            }; 
-            CLASS = PicasaWebSampleWindowController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                mAddCommentButton = NSButton; 
-                mAddPhotoButton = NSButton; 
-                mAddTagButton = NSButton; 
-                mAlbumCancelButton = NSButton; 
-                mAlbumImageView = NSImageView; 
-                mAlbumProgressIndicator = NSProgressIndicator; 
-                mAlbumResultTextField = NSTextView; 
-                mAlbumTable = NSTableView; 
-                mChangeAlbumPopupButton = NSButton; 
-                mCommentField = NSTextField; 
-                mDeletePhotoButton = NSButton; 
-                mPasswordField = NSSecureTextField; 
-                mPhotoCancelButton = NSButton; 
-                mPhotoImageView = NSImageView; 
-                mPhotoProgressIndicator = NSProgressIndicator; 
-                mPhotoResultTextField = NSTextView; 
-                mPhotoTable = NSTableView; 
-                mTagField = NSTextField; 
-                mUploadProgressIndicator = NSProgressIndicator; 
-                mUsernameField = NSTextField; 
-            }; 
-            SUPERCLASS = NSWindowController; 
-        }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>addClicked</key>
+				<string>id</string>
+				<key>addCommentClicked</key>
+				<string>id</string>
+				<key>addTagClicked</key>
+				<string>id</string>
+				<key>cancelAlbumFetchClicked</key>
+				<string>id</string>
+				<key>cancelPhotoFetchClicked</key>
+				<string>id</string>
+				<key>changeAlbumClicked</key>
+				<string>id</string>
+				<key>deleteClicked</key>
+				<string>id</string>
+				<key>getAlbumClicked</key>
+				<string>id</string>
+				<key>loggingCheckboxClicked</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>PicasaWebSampleWindowController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>mAddCommentButton</key>
+				<string>NSButton</string>
+				<key>mAddPhotoButton</key>
+				<string>NSButton</string>
+				<key>mAddTagButton</key>
+				<string>NSButton</string>
+				<key>mAlbumCancelButton</key>
+				<string>NSButton</string>
+				<key>mAlbumImageView</key>
+				<string>NSImageView</string>
+				<key>mAlbumProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mAlbumResultTextField</key>
+				<string>NSTextView</string>
+				<key>mAlbumTable</key>
+				<string>NSTableView</string>
+				<key>mChangeAlbumPopupButton</key>
+				<string>NSPopUpButton</string>
+				<key>mCommentField</key>
+				<string>NSTextField</string>
+				<key>mDeletePhotoButton</key>
+				<string>NSButton</string>
+				<key>mPasswordField</key>
+				<string>NSSecureTextField</string>
+				<key>mPhotoCancelButton</key>
+				<string>NSButton</string>
+				<key>mPhotoImageView</key>
+				<string>NSImageView</string>
+				<key>mPhotoProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mPhotoResultTextField</key>
+				<string>NSTextView</string>
+				<key>mPhotoTable</key>
+				<string>NSTableView</string>
+				<key>mTagField</key>
+				<string>NSTextField</string>
+				<key>mUploadProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mUsernameField</key>
+				<string>NSTextField</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSWindowController</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>
