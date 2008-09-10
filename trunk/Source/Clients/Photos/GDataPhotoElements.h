@@ -34,6 +34,13 @@ _EXTERN NSString* kGDataPhotoAccessPrivate _INITIALIZE_AS(@"private");
 _EXTERN NSString* kGDataPhotoAccessPublic _INITIALIZE_AS(@"public");
 _EXTERN NSString* kGDataPhotoAccessAll _INITIALIZE_AS(@"all");
 
+// values for GDataPhotoVideoStatus
+_EXTERN NSString* kGDataPhotoStatusPending _INITIALIZE_AS(@"pending");
+_EXTERN NSString* kGDataPhotoStatusReady   _INITIALIZE_AS(@"ready");
+_EXTERN NSString* kGDataPhotoStatusFinal   _INITIALIZE_AS(@"final");
+_EXTERN NSString* kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
+
+
 // http://code.google.com/apis/picasaweb/reference.html#gphoto_reference
 
 // album id, like <gphoto:albumid>5024425138</gphoto:albumid>
@@ -139,6 +146,12 @@ _EXTERN NSString* kGDataPhotoAccessAll _INITIALIZE_AS(@"all");
 
 // photo width in pixels, <gphoto:width>1600</gphoto:width>
 @interface GDataPhotoWidth : GDataValueElementConstruct <GDataExtension>
+@end
+
+// video upload status, like <gphoto:videostatus>pending</gphoto:videostatus>
+//
+// see constants listed above
+@interface GDataPhotoVideoStatus : GDataValueElementConstruct <GDataExtension>
 @end
 
 // photo ID for the current comment, <gphoto:photoid>301521187</gphoto:photoid>

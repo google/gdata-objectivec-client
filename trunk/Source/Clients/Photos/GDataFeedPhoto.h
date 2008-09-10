@@ -64,6 +64,9 @@
 - (NSNumber *)width; // long long
 - (void)setWidth:(NSNumber *)num;
 
+- (NSString *)videoStatus;
+- (void)setVideoStatus:(NSString *)str;  
+
 - (GDataGeo *)geoLocation;
 - (void)setGeoLocation:(GDataGeo *)geo;
 

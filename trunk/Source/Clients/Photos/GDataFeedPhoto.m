@@ -54,6 +54,7 @@
    [GDataPhotoCommentCount class], [GDataPhotoCommentingEnabled class],
    [GDataPhotoClient class], [GDataPhotoChecksum class],
    [GDataMediaGroup class], [GDataEXIFTags class],
+   [GDataPhotoVideoStatus class],
    nil];
   
   [GDataGeo addGeoExtensionDeclarationsToObject:self
@@ -70,6 +71,7 @@
   [self addToArray:items objectDescriptionIfNonNil:[self commentsEnabled] withName:@"commentsEnabled"];
   [self addToArray:items objectDescriptionIfNonNil:[self height] withName:@"height"];
   [self addToArray:items objectDescriptionIfNonNil:[self width] withName:@"width"];
+  [self addToArray:items objectDescriptionIfNonNil:[self videoStatus] withName:@"status"];
   [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"];
   [self addToArray:items objectDescriptionIfNonNil:[self rotation] withName:@"rotation"];
   [self addToArray:items objectDescriptionIfNonNil:[self size] withName:@"size"];
@@ -213,6 +215,16 @@
   // long long
   GDataPhotoWidth *obj = [self objectForExtensionClass:[GDataPhotoWidth class]];
   return [obj longLongNumberValue];
+}
+
+- (NSString *)videoStatus {
+  GDataPhotoVideoStatus *obj = [self objectForExtensionClass:[GDataPhotoVideoStatus class]];
+  return [obj stringValue];
+}
+
+- (void)setVideoStatus:(NSString *)str {
+  GDataPhotoVideoStatus *obj = [GDataPhotoVideoStatus valueWithString:str];
+  [self setObject:obj forExtensionClass:[obj class]];  
 }
 
 - (void)setWidth:(NSNumber *)num {
