@@ -223,6 +223,13 @@
 + (NSString *)extensionElementLocalName { return @"width"; }
 @end
 
+// video upload status, like <gphoto:videostatus>pending</gphoto:videostatus>
+@implementation GDataPhotoVideoStatus
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"videostatus"; }
+@end
+
 // photo ID for the current comment, <gphoto:photoid>301521187</gphoto:photoid>
 // not to be confused with GDataPhotoGPhotoID
 @implementation GDataPhotoPhotoID
