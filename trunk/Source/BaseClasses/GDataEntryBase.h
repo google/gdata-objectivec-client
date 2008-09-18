@@ -53,6 +53,7 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
   NSData *uploadData_;
   NSString *uploadMIMEType_;
   NSString *uploadSlug_; // for http slug (filename) header when uploading
+  BOOL shouldUploadDataOnly_;
 }
 
 + (NSDictionary *)baseGDataNamespaces;
@@ -115,6 +116,10 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 - (NSString *)uploadMIMEType;
 - (void)setUploadMIMEType:(NSString *)str;
+
+// support for uploading media data without the XML from the GDataObject
+- (BOOL)shouldUploadDataOnly;
+- (void)setShouldUploadDataOnly:(BOOL)flag;
 
 - (NSString *)uploadSlug; // for http slug (filename) header when uploading
 - (void)setUploadSlug:(NSString *)str;
