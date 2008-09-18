@@ -75,6 +75,12 @@ _EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http:
                               didFinishSelector:(SEL)finishedSelector
                                 didFailSelector:(SEL)failedSelector;
 
+
+- (GDataServiceTicket *)fetchContactEntryWithURL:(NSURL *)entryURL
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector
+                                 didFailSelector:(SEL)failedSelector;
+
 // entry may be GDataContactEntry or GDataContactGroupEntry
 - (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert
                                                forFeedURL:(NSURL *)contactFeedURL

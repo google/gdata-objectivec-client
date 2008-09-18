@@ -18,7 +18,8 @@ Additions
 
 - Added support for contact groups and extended properties, and a method
   to generate contact feed URLs for projections.  Added methods to remove
-  contact properties. (thanks stevec)
+  contact properties. (thanks stevec)  Added a service method to fetch a 
+  contact entry given its URL.
 
 - Added GDataXMLNode, a shim layer used for GDATA_IPHONE builds
 
@@ -58,7 +59,11 @@ Additions
   GDataObject classes to reduce the number of utility category names in
   global namespace.
   
-- Added more upload document types to docs sample application.
+- Added more document type entry classes, and added more upload document types
+  to docs sample application.
+  
+- Added -setShouldUploadDataOnly setting to entry base class, allowing clients 
+  to upload media data to servers without the XML of the GDataObject.
 
 
 Bugs fixed

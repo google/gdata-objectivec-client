@@ -14,7 +14,7 @@
 */
 
 //
-//  GDataServiceGoogleCalendar.m
+//  GDataServiceGoogleContact.m
 //
 
 #define GDATASERVICEGOOGLECONTACT_DEFINE_GLOBALS 1
@@ -22,10 +22,6 @@
 #import "GDataServiceGoogleContact.h"
 #import "GDataQueryContact.h"
 #import "GDataFeedContact.h"
-
-@class GDataFeedCalendar;
-@class GDataFeedCalendarEvent;
-
 
 @implementation GDataServiceGoogleContact
 
@@ -107,6 +103,18 @@
                                     delegate:delegate
                            didFinishSelector:finishedSelector
                              didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)fetchContactEntryWithURL:(NSURL *)entryURL
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector
+                                 didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:[GDataEntryContact class]
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
 }
 
 - (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert

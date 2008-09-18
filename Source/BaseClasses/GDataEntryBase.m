@@ -107,7 +107,8 @@
     && AreEqualOrBothNil([self ETag], [other ETag])
     && AreEqualOrBothNil([self uploadData], [other uploadData])
     && AreEqualOrBothNil([self uploadMIMEType], [other uploadMIMEType])
-    && AreEqualOrBothNil([self uploadSlug], [other uploadSlug]);
+    && AreEqualOrBothNil([self uploadSlug], [other uploadSlug])
+    && AreBoolsEqual([self shouldUploadDataOnly], [other shouldUploadDataOnly]);
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -117,6 +118,7 @@
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
+  [newEntry setShouldUploadDataOnly:[self shouldUploadDataOnly]];
   
   return newEntry;
 }
@@ -151,10 +153,13 @@
   [self addToArray:items objectDescriptionIfNonNil:[[self batchStatus] code] withName:@"batchStatus"];
   [self addToArray:items objectDescriptionIfNonNil:[self batchInterrupted] withName:@"batchInterrupted"];
 
-  [self addToArray:items objectDescriptionIfNonNil:uploadMIMEType_ withName:@"MIMEType"];
-  [self addToArray:items objectDescriptionIfNonNil:uploadSlug_ withName:@"slug"];
-  if (uploadData_) {
-    NSString *str = [NSString stringWithFormat:@"%u_bytes", [uploadData_ length]];
+  [self addToArray:items objectDescriptionIfNonNil:[self uploadMIMEType] withName:@"MIMEType"];
+  [self addToArray:items objectDescriptionIfNonNil:[self uploadSlug] withName:@"slug"];
+  if ([self shouldUploadDataOnly]) {
+    [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:@"uploadDataOnly"];
+  }
+  if ([self uploadData]) {
+    NSString *str = [NSString stringWithFormat:@"%u_bytes", [[self uploadData] length]];
     [self addToArray:items objectDescriptionIfNonNil:str withName:@"UploadData"];
   }
   
@@ -182,13 +187,31 @@
   // check if a subclass is providing data
   NSData *uploadData = [self uploadData];
   NSString *uploadMIMEType = [self uploadMIMEType];
+  NSString *slug = [self uploadSlug];
   
   if ([uploadData length] == 0 || [uploadMIMEType length] == 0) {
+    
+#if DEBUG
+    NSAssert(![self shouldUploadDataOnly], @"missing data");
+#endif
+    
     // if there's no upload data, just fall back on GDataObject's
     // XML stream generation
     return [super generateContentInputStream:outInputStream
                                       length:outLength
                                      headers:outHeaders];
+  }
+  
+  if ([self shouldUploadDataOnly]) {
+    // we're not uploading the XML, so we don't need a multipart MIME document
+    *outInputStream = [NSInputStream inputStreamWithData:uploadData];
+    *outLength = [uploadData length];
+    *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+                   uploadMIMEType, @"Content-Type",
+                   @"1.0", @"MIME-Version",
+                   slug, @"Slug", // slug may be nil
+                   nil];
+    return YES;
   }
   
   // make a MIME document with an XML part and a binary part
@@ -218,7 +241,6 @@
   NSString *streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
   NSString *streamType = [NSString stringWithFormat:streamTypeTemplate,
     partBoundary];
-  NSString *slug = [self uploadSlug];
   
   *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
     streamType, @"Content-Type",
@@ -428,6 +450,14 @@
   // encode per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
   NSString *encoded = [GDataUtilities stringByPercentEncodingUTF8ForString:str];
   uploadSlug_ = [encoded copy];
+}
+
+- (BOOL)shouldUploadDataOnly {
+  return shouldUploadDataOnly_;
+}
+
+- (void)setShouldUploadDataOnly:(BOOL)flag {
+  shouldUploadDataOnly_ = flag;
 }
 
 // utility routine to convert a file path to the file's MIME type using
