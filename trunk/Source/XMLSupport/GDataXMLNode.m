@@ -68,8 +68,8 @@ static NSString* GDataStringFromXMLString(const xmlChar *chars) {
 //   {http://foo}:name
 // we'll search for the prefix in backwards from the end of the qualified name
 //
-// return qname as the local name if there's no prefix
-static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
+// returns a copy of qname as the local name if there's no prefix
+static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   
   // search backwards for a colon
   int qnameLen = xmlStrlen(qname);
@@ -97,7 +97,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
   }
   
   // no colon found, so the qualified name is the local name
-  return qname;
+  xmlChar *qnameCopy = xmlStrdup(qname);
+  return qnameCopy;
 }
 
 @interface GDataXMLNode (PrivateMethods)
@@ -1033,6 +1034,10 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
           [[self class] fixUpNamespacesForNode:(xmlNodePtr)newProp
                             graftingToTreeNode:xmlNode_];
         }
+        
+        if (value != NULL) {
+          xmlFree(value);
+        }
       }
     }
   }
@@ -1156,7 +1161,7 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
     xmlNsPtr foundNS = NULL;
     
     xmlChar* prefix = NULL;
-    const xmlChar* localName = SplitQNameReverse(nodeToFix->name, &prefix);
+    xmlChar* localName = SplitQNameReverse(nodeToFix->name, &prefix);
     if (localName != NULL) {
       if (prefix != NULL) {
         
@@ -1193,6 +1198,8 @@ static const xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) 
         xmlFree(prefix);
         prefix = NULL;
       }
+      
+      xmlFree(localName);
     }
   }
 }
