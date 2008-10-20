@@ -82,10 +82,10 @@
   if (bytesRead == 0) {
     // We are at the end our our stream, so we read all of the data on our
     // dummy input stream to make sure it is in the "fully read" state.
-    uint8_t buffer[2];
-    (void) [dummyStream_ read:buffer maxLength:sizeof(buffer)];    
+    uint8_t leftOverBytes[2];
+    (void) [dummyStream_ read:leftOverBytes maxLength:sizeof(leftOverBytes)];
   }
-  
+
   return bytesRead;
 }
 
@@ -109,6 +109,11 @@
 
 - (void)close {
   [dummyStream_ close];
+
+  // 10.4's NSURLConnection tends to retain streams needlessly,
+  // so we'll free up the data array right away
+  [dataArray_ release];
+  dataArray_ = nil;
 }
 
 - (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {

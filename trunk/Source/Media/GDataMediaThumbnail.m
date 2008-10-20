@@ -81,17 +81,17 @@ static NSString* const kTimeAttr = @"time";
 
 - (GDataNormalPlayTime *)time {
   
-  GDataNormalPlayTime *time = nil;
+  GDataNormalPlayTime *playTime = nil;
   
   NSString *timeStr = [self stringValueForAttribute:kTimeAttr];
   if ([timeStr length] > 0) {
-    time = [GDataNormalPlayTime normalPlayTimeWithString:timeStr];
+    playTime = [GDataNormalPlayTime normalPlayTimeWithString:timeStr];
   }
   
-  return time;
+  return playTime;
 }
 
-- (void)setTime:(GDataNormalPlayTime *)time {
+- (void)setTime:(GDataNormalPlayTime *)playTime {
   
   NSString *timeStr = [[self time] HHMMSSString];
 

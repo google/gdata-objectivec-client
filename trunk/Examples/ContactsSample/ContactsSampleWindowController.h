@@ -65,7 +65,7 @@
   GDataServiceTicket *mContactFetchTicket;
   NSError *mContactFetchError;
 
-  NSURL *mContactImageURL;
+  NSURL *mContactImageEditURL;
 
   GDataFeedContactGroup *mGroupFeed;
   GDataServiceTicket *mGroupFetchTicket;

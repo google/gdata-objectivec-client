@@ -550,6 +550,18 @@ enum {
                                didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchACLFeedWithURL:(NSURL *)feedURL
+                                   delegate:(id)delegate
+                          didFinishSelector:(SEL)finishedSelector
+                            didFailSelector:(SEL)failedSelector {
+  
+  return [self fetchAuthenticatedFeedWithURL:feedURL
+                                   feedClass:kGDataUseRegisteredClass
+                                    delegate:delegate
+                           didFinishSelector:finishedSelector
+                             didFailSelector:failedSelector];
+}
+
 // When the username or password changes, we invalidate any held auth token
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password {
@@ -683,14 +695,12 @@ enum {
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString {
   
   NSArray *lines = [responseString componentsSeparatedByString:@"\n"];
+  NSEnumerator *linesEnum = [lines objectEnumerator];
   
   NSMutableDictionary *responseDict = [NSMutableDictionary dictionary];
   
-  int idx;
-  for (idx = 0; idx < [lines count]; idx++) {
-    
-    NSString *line = [lines objectAtIndex:idx];
-    
+  NSString *line;
+  while ((line = [linesEnum nextObject]) != nil) {
     NSScanner *scanner = [NSScanner scannerWithString:line];
     NSString *key;
     NSString *value;

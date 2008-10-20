@@ -75,7 +75,7 @@
   NSError *error = nil;
   NSXMLElement *entryXML = [[[NSXMLElement alloc] initWithXMLString:wrappedXMLString
                                                               error:&error] autorelease];
-  STAssertNil(error, @"%@", error);
+  STAssertNil(error, @"%@ on wrapped XML:%@", error, wrappedXMLString);
   
   // skip over non-element children to find the first element
   NSXMLElement *element;
@@ -298,6 +298,12 @@
   NSString *inlineFeed = [NSString stringWithContentsOfFile:@"Tests/FeedSpreadsheetCellsTest1.xml"];
   inlineFeed = [inlineFeed substringFromIndex:[@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" length]];
   NSString *inlinedFeedLinkStr = [NSString stringWithFormat:@"<gd:feedLink>%@</gd:feedLink>", inlineFeed];
+
+  NSString *inlinedFeedContentStr = [NSString stringWithFormat:@"<content"
+    " type='application/atom+xml;feed'>%@</content>", inlineFeed];
+
+  NSString *inlinedLinkStr = [NSString stringWithFormat:@"<link"
+                        " rel='fuzzrel'>%@</link>", inlinedFeedContentStr];
   
   ElementTestKeyPathValues tests[] =
   { 
@@ -416,13 +422,26 @@
     { @"", @"" },
     
     { @"GDataLink", @"<link rel='alternate' type='text/html' "
-      "href='http://www.google.com/calendar/event?stff' title='alternate' />" },
+      "href='http://www.google.com/calendar/event?stff' title='alternate' "
+      " gd:etag='abcdefg' />" },
     { @"rel", @"alternate" },
     { @"type", @"text/html" },
     { @"href", @"http://www.google.com/calendar/event?stff" },
     { @"title", @"alternate" },
+    { @"content", nil },
+    { @"ETag", @"abcdefg" },
     { @"", @"" },
     
+    { @"GDataLink", inlinedLinkStr },
+    { @"rel", @"fuzzrel" },
+    { @"ETag", nil },
+    { @"content.type", @"application/atom+xml;feed" },
+    { @"content.childObject.className", @"GDataFeedSpreadsheetCell" },
+    { @"content.childObject.categories.0.term", kGDataCategorySpreadsheetCell },
+    { @"content.childObject.columnCount", @"20" },
+    { @"content.childObject.entries.0.cell.column", @"1" },    
+    { @"", @"" },
+        
     { @"GDataMoney", @"<gd:money amount='10.52' currencyCode='USD' />" },
     { @"amount", @"10.52" },
     { @"currencyCode", @"USD" },
@@ -535,10 +554,18 @@
     { @"type", @"image/jpeg" },
     { @"", @"" },
       
-    { @"GDataEntryContent", @"<title type='text' xml:lang='en'>Event title</title>" },
+    { @"GDataEntryContent", @"<content type='text' xml:lang='en'>Event title</content>" },
     { @"stringValue", @"Event title" },
     { @"lang", @"en" },
     { @"type", @"text" },
+    { @"", @"" },
+
+    { @"GDataEntryContent", inlinedFeedContentStr },
+    { @"type", @"application/atom+xml;feed" },
+    { @"childObject.className", @"GDataFeedSpreadsheetCell" },
+    { @"childObject.categories.0.term", kGDataCategorySpreadsheetCell },
+    { @"childObject.columnCount", @"20" },
+    { @"childObject.entries.0.cell.column", @"1" },
     { @"", @"" },
       
     { @"GDataWebContent", @"<gCal:webContent width='300' height='136' "
@@ -1227,6 +1254,54 @@
                        [obj0 XMLElement], [obj1 XMLElement]);
   STAssertEqualObjects(obj1, obj2, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
                        [obj1 XMLElement], [obj2 XMLElement]);
+}
+
+- (void)testVersionedNamespaces {
+  
+#if !GDATA_USES_LIBXML
+  
+  // verify that the NSXMLElement really has the version-specific namespace we
+  // expect
+  //
+  // this is conditional to avoid a dependency on NSXMLElement's 
+  // namespaceForPrefix method in libxml builds
+  
+  // Allocating entries with convenience methods should
+  // the appropriate namespaces
+  GDataEntryContact *entry 
+    = [GDataEntryContact contactEntryWithTitle:@"Joe Smith"]; 
+  NSXMLElement *element = [entry XMLElement];
+  NSString *nsStr;
+  
+  nsStr = [[element namespaceForPrefix:kGDataNamespaceAtomPubPrefix] stringValue];
+  STAssertEqualObjects(nsStr, kGDataNamespaceAtomPub1_0, 
+                       @"expected v1 app namespace");
+  
+  [entry setServiceVersion:@"2.0"];
+  element = [entry XMLElement];
+  nsStr = [[element namespaceForPrefix:kGDataNamespaceAtomPubPrefix] stringValue];
+  STAssertEqualObjects(nsStr, kGDataNamespaceAtomPubStd, 
+                       @"expected v1 app namespace");
+  
+  // Allocating entries with init calls should not add any namespaces,
+  // nor should copying
+  
+  // init from scratch
+  entry = [[[GDataEntryContact alloc] init] autorelease];
+  STAssertNil([[entry XMLElement] namespaces], @"unexpected namespaces");
+  
+  // init from XML and copy
+  NSError *error = nil;
+  NSString *xml = @"<entry><id>12345</id><title>Foo Bagz</title></entry>";
+  element = [[[NSXMLElement alloc] initWithXMLString:xml
+                                               error:&error] autorelease];
+  STAssertNil(error, @"error creating XML");
+
+  entry = [[[GDataEntryContact alloc] initWithXMLElement:element
+                                                  parent:nil] autorelease];
+  GDataEntryContact *entry2 = [[entry copy] autorelease];
+  STAssertNil([[entry2 XMLElement] namespaces], @"unexpected namespaces");
+#endif
 }
 
 - (void)testControlCharacterRemoval {

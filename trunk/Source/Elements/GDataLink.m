@@ -18,7 +18,9 @@
 //
 
 #define GDATALINK_DEFINE_GLOBALS 1
+
 #import "GDataLink.h"
+#import "GDataBaseElements.h"
 
 static NSString *const kRelAttr = @"rel";
 static NSString *const kTypeAttr = @"type";
@@ -39,11 +41,11 @@ static NSString *const kLengthAttr = @"length";
 + (GDataLink *)linkWithRel:(NSString *)rel
                       type:(NSString *)type
                       href:(NSString *)href {
-  GDataLink *link = [[[GDataLink alloc] init] autorelease];
-  [link setRel:rel];
-  [link setType:type];
-  [link setHref:href];
-  return link;
+  GDataLink *dataLink = [[[GDataLink alloc] init] autorelease];
+  [dataLink setRel:rel];
+  [dataLink setType:type];
+  [dataLink setHref:href];
+  return dataLink;
 }
 
 - (void)addParseDeclarations {
@@ -52,6 +54,69 @@ static NSString *const kLengthAttr = @"length";
                     kTitleAttr, kLangAttr, kLengthAttr, nil];
   
   [self addLocalAttributeDeclarations:attrs];    
+}
+
+- (void)addExtensionDeclarations {
+  
+  [super addExtensionDeclarations];
+  
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataAtomContent class]];  
+}
+
+- (id)initWithXMLElement:(NSXMLElement *)element
+                  parent:(GDataObject *)parent {
+  self = [super initWithXMLElement:element
+                            parent:parent];
+  if (self) {
+
+    // we parse ETags explicitly rather than using addLocalAttributeDeclarations
+    // because it requires a gd namespace
+    [self setETag:[self stringForAttributeLocalName:@"etag"
+                                                URI:kGDataNamespaceGData
+                                        fromElement:element]];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [etag_ release];
+
+  [super dealloc];
+}
+
+- (BOOL)isEqual:(GDataLink *)other {
+  if (self == other) return YES;
+  if (![other isKindOfClass:[GDataLink class]]) return NO;
+
+  return [super isEqual:other]
+    && AreEqualOrBothNil([self ETag], [other ETag]);
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+  GDataLink* newObj = [super copyWithZone:zone];
+
+  [newObj setETag:[self ETag]];
+
+  return newObj;
+}
+
+- (NSXMLElement *)XMLElement {
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"link"];
+
+  [self addToElement:element attributeValueIfNonNil:[self ETag]
+       withLocalName:@"etag" URI:kGDataNamespaceGData];
+  return element;
+}
+
+- (NSMutableArray *)itemsForDescription {
+
+  NSMutableArray *items = [super itemsForDescription];
+
+  [self addToArray:items objectDescriptionIfNonNil:[self content] withName:@"content"];
+  [self addToArray:items objectDescriptionIfNonNil:[self ETag] withName:@"etag"];
+
+  return items;
 }
 
 #pragma mark -
@@ -113,6 +178,23 @@ static NSString *const kLengthAttr = @"length";
   [self setStringValue:[length stringValue] forAttribute:kLengthAttr];
 }
 
+- (NSString *)ETag {
+  return etag_;
+}
+
+- (void)setETag:(NSString *)str {
+  [etag_ autorelease];
+  etag_ = [str copy];
+}
+
+- (GDataAtomContent *)content {
+  return [self objectForExtensionClass:[GDataAtomContent class]];
+}
+
+- (void)setContent:(GDataAtomContent *)obj {
+  [self setObject:obj forExtensionClass:[GDataAtomContent class]]; 
+}
+
 // convenience method
 
 - (NSURL *)URL {
@@ -133,10 +215,10 @@ static NSString *const kLengthAttr = @"length";
   NSMutableArray *names = [NSMutableArray array];
   
   NSEnumerator *linkEnum = [links objectEnumerator];
-  GDataLink *link;
-  while ((link = [linkEnum nextObject]) != nil) {
+  GDataLink *dataLink;
+  while ((dataLink = [linkEnum nextObject]) != nil) {
     
-    NSString *rel = [link rel];
+    NSString *rel = [dataLink rel];
     NSRange range = [rel rangeOfString:@"#" options:NSBackwardsSearch];
     if (range.location != NSNotFound) {
       NSString *suffix = [rel substringFromIndex:(1 + range.location)];
@@ -157,16 +239,16 @@ static NSString *const kLengthAttr = @"length";
                  fromLinks:(NSArray *)array {
   
   NSEnumerator *linkEnumerator = [array objectEnumerator]; 
-  GDataLink *link;
+  GDataLink *dataLink;
   
-  while ((link = [linkEnumerator nextObject]) != nil) {
+  while ((dataLink = [linkEnumerator nextObject]) != nil) {
     
-    NSString *foundRelValue = [link rel];
-    NSString *foundTypeValue = [link type];
+    NSString *foundRelValue = [dataLink rel];
+    NSString *foundTypeValue = [dataLink type];
     
     if ((relValue == nil || AreEqualOrBothNil(relValue, foundRelValue))
         && (typeValue == nil || AreEqualOrBothNil(typeValue, foundTypeValue))) {
-      return link;
+      return dataLink;
     }
   }
   return nil;  
@@ -182,13 +264,13 @@ static NSString *const kLengthAttr = @"length";
                                 fromLinks:(NSArray *)array {
   
   NSEnumerator *linkEnumerator = [array objectEnumerator]; 
-  GDataLink *link;
+  GDataLink *dataLink;
   
-  while ((link = [linkEnumerator nextObject]) != nil) {
+  while ((dataLink = [linkEnumerator nextObject]) != nil) {
     
-    NSString *attrValue = [link rel];
+    NSString *attrValue = [dataLink rel];
     if (attrValue && [attrValue hasSuffix:relSuffix]) {
-      return link;
+      return dataLink;
     }
   }
   return nil;  

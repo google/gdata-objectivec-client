@@ -127,6 +127,11 @@ enum {
                                           didFinishSelector:(SEL)finishedSelector
                                             didFailSelector:(SEL)failedSelector;
 
+- (GDataServiceTicket *)fetchACLFeedWithURL:(NSURL *)feedURL
+                                   delegate:(id)delegate
+                          didFinishSelector:(SEL)finishedSelector
+                            didFailSelector:(SEL)failedSelector;
+  
 - (void)setCaptchaToken:(NSString *)captchaToken
           captchaAnswer:(NSString *)captchaAnswer;
 

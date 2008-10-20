@@ -26,7 +26,7 @@
 @implementation GDataServiceGoogleContact
 
 // feed is contacts or groups; projection is thin, default, or property-<key>
-+ (NSURL *)feedURLForFeed:(NSString *)feed
++ (NSURL *)feedURLForFeed:(NSString *)feedName
                    userID:(NSString *)userID 
                projection:(NSString *)projection {
   
@@ -36,7 +36,7 @@
   
   NSString *feedURLString = [NSString stringWithFormat:template, 
                              baseURLString, 
-                             [GDataUtilities stringByURLEncodingString:feed], 
+                             [GDataUtilities stringByURLEncodingString:feedName], 
                              [GDataUtilities stringByURLEncodingString:userID], 
                              [GDataUtilities stringByURLEncodingString:projection]];
   

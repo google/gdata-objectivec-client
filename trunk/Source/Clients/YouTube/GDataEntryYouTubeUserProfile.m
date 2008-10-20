@@ -104,8 +104,7 @@
   
   NSArray *channelCats;
   
-  channelCats = [GDataCategory categoriesWithScheme:kGDataSchemeYouTubeChannel
-                                     fromCategories:[self categories]];
+  channelCats = [self categoriesWithScheme:kGDataSchemeYouTubeChannel];
   
   if ([channelCats count] > 0) {
     GDataCategory *category = [channelCats objectAtIndex:0];

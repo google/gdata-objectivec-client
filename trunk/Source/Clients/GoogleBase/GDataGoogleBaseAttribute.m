@@ -63,10 +63,10 @@
     
     type_ = [[self stringForAttributeName:@"type" fromElement:element] copy];
     
-    NSString *access = [self stringForAttributeName:@"access" 
-                                        fromElement:element];
-    if (access) {
-      isPrivate_ = ([access caseInsensitiveCompare:@"private"] == NSOrderedSame);
+    NSString *accessStr = [self stringForAttributeName:@"access" 
+                                           fromElement:element];
+    if (accessStr) {
+      isPrivate_ = ([accessStr caseInsensitiveCompare:@"private"] == NSOrderedSame);
     }
     
     NSString *elementName = [element localName];

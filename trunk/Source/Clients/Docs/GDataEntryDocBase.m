@@ -19,6 +19,7 @@
 
 #define GDATAENTRYDOCBASE_DEFINE_GLOBALS 1
 #import "GDataEntryDocBase.h"
+#import "GDataEntryACL.h"
 
 @implementation GDataEntryDocBase
 
@@ -41,6 +42,15 @@
   return entry;
 }
 
+- (void)addExtensionDeclarations {
+
+  [super addExtensionDeclarations];
+
+  // ACL feed URL is in a gd:feedLink
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataFeedLink class]];
+}
+
 #pragma mark -
 
 - (BOOL)isStarred {
@@ -51,6 +61,34 @@
 
 - (void)setIsStarred:(BOOL)isStarred {
   [self addCategory:[GDataCategory categoryWithLabel:kGDataCategoryLabelStarred]];  
+}
+
+#pragma mark -
+
+- (NSArray *)parentLinks {
+
+  NSArray *links = [self links];
+  if (links == nil) return nil;
+
+  NSArray *parentLinks = [GDataUtilities objectsFromArray:links
+                                                withValue:kGDataCategoryDocParent
+                                               forKeyPath:@"rel"];
+  return parentLinks;
+}
+
+- (GDataFeedLink *)ACLFeedLink {
+
+  // GDataEntryACL has an ACLLink method to get an entry's atom:link for
+  // the ACL feed, but the docs feed puts the ACL link into a gd:feedLink
+  // instead of into an atom:link
+
+  NSArray *feedLinks = [self objectsForExtensionClass:[GDataFeedLink class]];
+  GDataFeedLink *aclFeedLink;
+
+  aclFeedLink = [GDataUtilities firstObjectFromArray:feedLinks
+                                           withValue:kGDataLinkRelACL
+                                          forKeyPath:@"rel"];
+  return aclFeedLink;
 }
 
 @end

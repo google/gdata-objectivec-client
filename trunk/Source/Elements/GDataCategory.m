@@ -36,7 +36,7 @@ static NSString* const kLangAttr = @"xml:lang";
 
 + (GDataCategory *)categoryWithScheme:(NSString *)scheme
                                  term:(NSString *)term {
-  GDataCategory* obj = [[[GDataCategory alloc] init] autorelease];
+  GDataCategory* obj = [[[self alloc] init] autorelease];
   [obj setScheme:scheme];
   [obj setTerm:term];
   return obj;

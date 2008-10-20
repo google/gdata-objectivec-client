@@ -12,7 +12,7 @@ Additions
   parameters to service callback methods.  Tickets inherit a copy of the
   properties set in the service instance.
   
-- Added Google Finance and Webmaster Tools classes.
+- Added Google Finance, Webmaster Tools, and Google Books classes.
 
 - Picasa Web class, method, and constant names changed to Google Photos
 
@@ -60,7 +60,7 @@ Additions
   global namespace.
   
 - Added more document type entry classes, and added more upload document types
-  to docs sample application.
+  to docs sample application.  Added folder document support to DocList APIs.
   
 - Added -setShouldUploadDataOnly setting to entry base class, allowing clients 
   to upload media data to servers without the XML of the GDataObject.
@@ -93,6 +93,9 @@ Bugs fixed
   no default namespace (xmlns="") to avoid child elements from
   being interpreted as atom elements.
 
+- Fixed ContactsSample to check the photo edit link to determine if the
+  photo has changed on the server
+
 - HTTP logging now uses NSDateFormatter rather than NSCalendarDate.
 
 - Escaping of links now done in http logging.
@@ -102,6 +105,13 @@ Bugs fixed
 - Fixed a potential GDataHTTPFetcher crash on failed http authentication.
 
 - Properly encode slug header on uploads, per Atom RFC 5023
+
+- Reduced some potential leaks on 10.4 due to NSURLConnection bugs.
+
+- Fixed string leaks in GDataXMLNode (thanks ct)
+
+- Fixed some inner GDataObject data structures being improperly copied as
+  immutable
 
 
 Release 1.4.0

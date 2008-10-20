@@ -1264,11 +1264,10 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
         
       GDataServiceGoogleCalendar *service = [self calendarService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchAuthenticatedFeedWithURL:aclFeedURL
-                                            feedClass:kGDataUseRegisteredClass
-                                             delegate:self
-                                    didFinishSelector:@selector(calendarACLTicket:finishedWithEntries:)
-                                      didFailSelector:@selector(calendarACLTicket:failedWithError:)];
+      ticket = [service fetchACLFeedWithURL:aclFeedURL
+                                   delegate:self
+                          didFinishSelector:@selector(calendarACLTicket:finishedWithEntries:)
+                            didFailSelector:@selector(calendarACLTicket:failedWithError:)];
       
       [self setACLFetchTicket:ticket];
       

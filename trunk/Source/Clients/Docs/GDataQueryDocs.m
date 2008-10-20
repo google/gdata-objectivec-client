@@ -21,6 +21,8 @@
 
 static NSString *const kTitleParamName  = @"title";
 static NSString *const kExactTitleParamName  = @"title-exact";
+static NSString *const kParentFolderParamName  = @"folder";
+static NSString *const kShowFoldersParamName  = @"showfolders";
 
 @implementation GDataQueryDocs
 
@@ -47,6 +49,27 @@ static NSString *const kExactTitleParamName  = @"title-exact";
   NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kExactTitleParamName
                              value:value]; // nil value removes the parameter  
+}
+
+- (NSString *)parentFolderName {
+  NSString *str = [[self customParameters] objectForKey:kParentFolderParamName];
+  return str;
+}
+
+- (void)setParentFolderName:(NSString *)str {
+  [self addCustomParameterWithName:kParentFolderParamName value:str];
+}
+
+- (BOOL)shouldShowFolders {
+  NSString *val = [[self customParameters] objectForKey:kShowFoldersParamName];
+  return (val != nil) &&
+    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+}
+
+- (void)setShouldShowFolders:(BOOL)flag {
+  NSString *value = (flag ? @"true" : nil);
+  [self addCustomParameterWithName:kShowFoldersParamName
+                             value:value]; // nil value removes the parameter
 }
 
 @end

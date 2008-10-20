@@ -301,6 +301,34 @@
                        @"Finance query 2 generation error");
 }
 
+- (void)testBooksQuery {
+
+  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleBooksVolumeFeed];
+  GDataQueryBooks *query1 = [GDataQueryBooks booksQueryWithFeedURL:feedURL];
+
+  [query1 setMinimumViewability:kGDataGoogleBooksMinViewabilityFull];
+
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expected1 = @"http://books.google.com/books/feeds/volumes?min-viewability=full";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+                       @"Books query 1 generation error");
+}
+
+- (void)testDocsQuery {
+  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleDocsDefaultPrivateFullFeed];
+  GDataQueryDocs *query1 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
+
+  [query1 setTitleQuery:@"King Of Oceania"];
+  [query1 setIsTitleQueryExact:YES];
+  [query1 setParentFolderName:@"Major Folder"];
+  [query1 setShouldShowFolders:YES];
+
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expected1 = @"http://docs.google.com/feeds/documents/private/full?folder=Major+Folder&showfolders=true&title=King+Of+Oceania&title-exact=true";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+                       @"Docs query 1 generation error");
+}
+
 - (void)testURLParameterEncoding {
   
   // test all characters between 0x20 and 0x7f

@@ -216,11 +216,11 @@
 // than actual attribute names.
 - (NSDictionary *)attributeDictionary {
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-  NSArray *allAttributes = [self entryAttributes];
   
-  for (int idx = 0; idx < [allAttributes count]; idx++) {
-    
-    GDataGoogleBaseAttribute *attr = [allAttributes objectAtIndex:idx];
+  NSArray *allAttributes = [self entryAttributes];
+  NSEnumerator *allAttributesEnum = [allAttributes objectEnumerator];
+  GDataGoogleBaseAttribute *attr;
+  while ((attr = [allAttributesEnum nextObject]) != nil) {
     NSString *attrKey = [GDataGoogleBaseAttribute elementLocalNameFromAttributeName:[attr name]];
     
     NSMutableArray *previousArray = [dictionary objectForKey:attrKey];
@@ -243,11 +243,10 @@
                            type:(NSString *)type {
   
   NSArray *allAttributes = [self entryAttributes];
+  NSEnumerator *allAttributesEnum = [allAttributes objectEnumerator];
   NSMutableArray *matchingAttributes = [NSMutableArray array];
-  
-  for (int idx = 0; idx < [allAttributes count]; idx++) {
-    
-    GDataGoogleBaseAttribute *attr = [allAttributes objectAtIndex:idx];
+  GDataGoogleBaseAttribute *attr;
+  while ((attr = [allAttributesEnum nextObject]) != nil) {
     NSString *attrName = [attr name];
     NSString *attrType = [attr type];
     if (name == nil || (attrName != nil && [name isEqual:attrName])) {
@@ -304,8 +303,9 @@
   
   // make an array of the strings from the attributes
   NSMutableArray *strings = [NSMutableArray array];
-  for (int idx = 0; idx < [attributes count]; idx++) {
-    GDataGoogleBaseAttribute *attr = [attributes objectAtIndex:idx];
+  NSEnumerator *attrEnum = [attributes objectEnumerator];
+  GDataGoogleBaseAttribute *attr;
+  while ((attr = [attrEnum nextObject]) != nil) {
     NSString *str = [attr textValue];
     if (str) {
       [strings addObject:str];

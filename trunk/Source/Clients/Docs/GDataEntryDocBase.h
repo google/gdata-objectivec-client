@@ -18,6 +18,7 @@
 //
 
 #import "GDataEntryBase.h"
+#import "GDataFeedLink.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -29,7 +30,10 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceDocuments       _INITIALIZE_AS(@"http://schemas.google.com/docs/2007");
+_EXTERN NSString* kGDataNamespaceDocuments  _INITIALIZE_AS(@"http://schemas.google.com/docs/2007");
+
+_EXTERN NSString* kGDataCategoryDocFolders  _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/folders");
+_EXTERN NSString* kGDataCategoryDocParent   _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#parent");
 
 @interface GDataEntryDocBase : GDataEntryBase
 + (NSDictionary *)baseDocumentNamespaces;
@@ -38,5 +42,9 @@ _EXTERN NSString* kGDataNamespaceDocuments       _INITIALIZE_AS(@"http://schemas
 
 - (BOOL)isStarred;
 - (void)setIsStarred:(BOOL)isStarred;
-  
+
+- (NSArray *)parentLinks;
+
+- (GDataFeedLink *)ACLFeedLink;
+
 @end

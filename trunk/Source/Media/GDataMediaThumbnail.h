@@ -42,5 +42,5 @@
 - (void)setWidth:(NSNumber *)num;
 
 - (GDataNormalPlayTime *)time;
-- (void)setTime:(GDataNormalPlayTime *)time;
+- (void)setTime:(GDataNormalPlayTime *)playTime;
 @end

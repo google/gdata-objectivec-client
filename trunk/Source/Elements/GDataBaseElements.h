@@ -57,9 +57,6 @@
 @interface GDataAtomContributor : GDataPerson <GDataExtension>
 @end
 
-@interface GDataAtomCategory : GDataCategory <GDataExtension>
-@end
-
 @interface GDataAtomIcon : GDataValueElementConstruct <GDataExtension>
 @end
 
@@ -68,16 +65,30 @@
 
 // AtomPub
 
-@interface GDataAtomPubEditedDate : GDataValueElementConstruct <GDataExtension>
+@interface GDataAtomPubEditedDate1_0 : GDataValueElementConstruct <GDataExtension>
 @end
 
-// OpenSearch
-
-@interface GDataOpenSearchTotalResults : GDataValueElementConstruct <GDataExtension>
+@interface GDataAtomPubEditedDateStd : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataOpenSearchStartIndex : GDataValueElementConstruct <GDataExtension>
+// OpenSearch 1.0
+
+@interface GDataOpenSearchTotalResults1_0 : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataOpenSearchItemsPerPage : GDataValueElementConstruct <GDataExtension>  
+@interface GDataOpenSearchStartIndex1_0 : GDataValueElementConstruct <GDataExtension>
+@end
+
+@interface GDataOpenSearchItemsPerPage1_0 : GDataValueElementConstruct <GDataExtension>  
+@end
+
+// OpenSearch 1.1, adopted for GData version 2
+
+@interface GDataOpenSearchTotalResults1_1 : GDataValueElementConstruct <GDataExtension>
+@end
+
+@interface GDataOpenSearchStartIndex1_1 : GDataValueElementConstruct <GDataExtension>
+@end
+
+@interface GDataOpenSearchItemsPerPage1_1 : GDataValueElementConstruct <GDataExtension>  
 @end

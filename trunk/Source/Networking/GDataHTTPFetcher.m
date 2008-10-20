@@ -45,10 +45,11 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
            inArray:(NSMutableArray *)cookieStorageArray;
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
+
 - (BOOL)shouldRetryNowForStatus:(NSInteger)status error:(NSError *)error;
 - (void)destroyRetryTimer;
 - (void)beginRetryTimer;
-- (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs;
+- (void)primeRetryTimerWithNewTimeInterval:(NSTimeInterval)secs;
 - (void)retryFetch;
 @end
 
@@ -79,7 +80,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 }
 
 - (void)dealloc {
-  [self stopFetching]; // releases connection_
+  [self stopFetching]; // releases connection_, destroys timers
 
   [request_ release];
   [downloadedData_ release];
@@ -93,7 +94,6 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   [properties_ release];
   [runLoopModes_ release];
   [fetchHistory_ release];
-  [self destroyRetryTimer];
   
   [super dealloc];
 }
@@ -396,7 +396,7 @@ CannotBeginFetch:
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-  
+
   // this method is called when the server has determined that it
   // has enough information to create the NSURLResponse
   // it can be called multiple times, for example in the case of a 
@@ -461,7 +461,7 @@ CannotBeginFetch:
 
 -(void)connection:(NSURLConnection *)connection
        didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-  
+
   if ([challenge previousFailureCount] <= 2) {
     
     NSURLCredential *credential = credential_;
@@ -511,6 +511,7 @@ CannotBeginFetch:
 
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+
   [downloadedData_ appendData:data];
   
   if (receivedDataSEL_) {
@@ -663,13 +664,17 @@ CannotBeginFetch:
     NSString *const domain;
     int code;
   };
-  
+
+  // Previously we also retried for
+  //   { NSURLErrorDomain, NSURLErrorNetworkConnectionLost }
+  // but at least on 10.4, once that happened, retries would keep failing
+  // with the same error.
+
   struct retryRecord retries[] = {
     { kGDataHTTPFetcherStatusDomain, 408 }, // request timeout
     { kGDataHTTPFetcherStatusDomain, 503 }, // service unavailable
     { kGDataHTTPFetcherStatusDomain, 504 }, // request timeout
     { NSURLErrorDomain, NSURLErrorTimedOut },
-    { NSURLErrorDomain, NSURLErrorNetworkConnectionLost },
     { nil, 0 }
   };
 
@@ -735,10 +740,10 @@ CannotBeginFetch:
 
   NSTimeInterval newInterval = MIN(nextInterval, maxInterval);
     
-  [self primeTimerWithNewTimeInterval:newInterval];
+  [self primeRetryTimerWithNewTimeInterval:newInterval];
 }
 
-- (void)primeTimerWithNewTimeInterval:(NSTimeInterval)secs {
+- (void)primeRetryTimerWithNewTimeInterval:(NSTimeInterval)secs {
   
   [self destroyRetryTimer];
   

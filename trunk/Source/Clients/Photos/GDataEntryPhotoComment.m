@@ -22,8 +22,6 @@
 
 // extensions
 
-
-
 @implementation GDataEntryPhotoComment
 
 + (GDataEntryPhotoComment *)commentEntryWithString:(NSString *)commentStr {
@@ -32,7 +30,7 @@
 
   [entry setNamespaces:[GDataEntryPhotoComment photoNamespaces]];
   
-  [entry setContent:[GDataEntryContent textConstructWithString:commentStr]];
+  [entry setContent:[GDataEntryContent contentWithString:commentStr]];
   
   return entry;
 }

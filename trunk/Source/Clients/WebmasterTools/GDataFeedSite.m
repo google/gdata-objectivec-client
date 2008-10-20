@@ -33,11 +33,9 @@
 
 + (void)load {
   
-//  site feed kind category is not yet known - bug 1239708
-//
-//  [GDataObject registerFeedClass:[self class]
-//           forCategoryWithScheme:nil 
-//                            term:kGDataCategorySiteInfo];
+  [GDataObject registerFeedClass:[self class]
+           forCategoryWithScheme:nil 
+                            term:kGDataCategorySitesFeed];
 }
 
 // needs no custom -addExtensionDeclarations method
@@ -45,8 +43,8 @@
 - (id)init {
   self = [super init];
   if (self) {
-//    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-//                                                   term:kGDataCategorySiteInfo]];
+    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
+                                                   term:kGDataCategorySitesFeed]];
   }
   return self;
 }

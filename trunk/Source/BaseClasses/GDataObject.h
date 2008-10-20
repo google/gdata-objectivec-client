@@ -115,7 +115,8 @@
 _EXTERN NSString* kGDataNamespaceAtom _INITIALIZE_AS(@"http://www.w3.org/2005/Atom");
 _EXTERN NSString* kGDataNamespaceAtomPrefix _INITIALIZE_AS(@"atom");
 
-_EXTERN NSString* kGDataNamespaceAtomPub _INITIALIZE_AS(@"http://purl.org/atom/app#");
+_EXTERN NSString* kGDataNamespaceAtomPubStd _INITIALIZE_AS(@"http://www.w3.org/2007/app");
+_EXTERN NSString* kGDataNamespaceAtomPub1_0 _INITIALIZE_AS(@"http://purl.org/atom/app#");
 _EXTERN NSString* kGDataNamespaceAtomPubPrefix _INITIALIZE_AS(@"app");
 
 _EXTERN NSString* kGDataNamespaceOpenSearch    _INITIALIZE_AS(@"http://a9.com/-/spec/opensearchrss/1.0/");
@@ -197,6 +198,9 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
   // creating objects from XML
   NSDictionary *surrogates_;
   
+  // service version, set for feeds and entries
+  NSString *serviceVersion_;
+  
   // anything defined by the client; retained but not used internally; not 
   // copied by copyWithZone:
   id userData_; 
@@ -246,6 +250,12 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (void)setSurrogates:(NSDictionary *)surrogates;
 - (NSDictionary *)surrogates;
 
+// service API version
+- (void)setServiceVersion:(NSString *)str;
+- (NSString *)serviceVersion;
+
+- (BOOL)isServiceVersion1;
+
 // userData is available for client use; retained by GDataObject, but not 
 // copied by the copyWithZone
 - (void)setUserData:(id)obj; 
@@ -281,6 +291,7 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 // calls through to [self initWithXMLElement:parent:]
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent
+          serviceVersion:(NSString *)serviceVersion
               surrogates:(NSDictionary *)surrogates;
   
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream

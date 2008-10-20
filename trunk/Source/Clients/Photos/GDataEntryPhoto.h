@@ -77,6 +77,8 @@
 - (NSString *)videoStatus;
 - (void)setVideoStatus:(NSString *)str;  
 
+// setGeoLocation requires an instance of a subclass of GDataGeo, not an
+// instance of GDataGeo; see GDataGeo.h
 - (GDataGeo *)geoLocation;
 - (void)setGeoLocation:(GDataGeo *)geo;
 

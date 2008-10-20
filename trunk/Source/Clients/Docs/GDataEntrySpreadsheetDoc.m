@@ -37,4 +37,16 @@
   return self;
 }
 
+// convenience accessor
+
+- (GDataLink *)worksheetsLink {
+  // kWorksheetRel is the same as kGDataLinkWorksheetsFeed, but we want
+  // to avoid a cross dependency between the doc list and spreadsheet APIs,
+  // so the rel is defined explicitly here
+  
+  NSString *const kWorksheetRel = @"http://schemas.google.com/spreadsheets/2006#worksheetsfeed";
+  
+  return [self linkWithRelAttributeValue:kWorksheetRel]; 
+}
+
 @end

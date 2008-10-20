@@ -63,6 +63,19 @@ static NSString* GDataStringFromXMLString(const xmlChar *chars) {
   return result;
 }
 
+// Make a fake qualified name we use as local name internally in libxml
+// data structures when there's no actual namespace node available to point to
+// from an element or attribute node
+//
+// Returns an autoreleased NSString*
+
+static NSString *GDataFakeQNameForURIAndName(NSString *theURI, NSString *name) {
+
+  NSString *fakeQName = [NSString stringWithFormat:@"{%@}:%@", theURI, name];
+  return fakeQName;
+}
+
+
 // libxml2 offers xmlSplitQName2, but that searches forwards. Since we may
 // be searching for a whole URI shoved in as a prefix, like 
 //   {http://foo}:name
@@ -183,8 +196,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   // since we don't know a prefix yet, shove in the whole URI; we'll look for
   // a proper namespace ptr later when addChild calls fixUpNamespacesForNode
   
-  NSString *fakeQName = [NSString stringWithFormat:@"{%@}:%@", 
-                                                   theURI, name];
+  NSString *fakeQName = GDataFakeQNameForURIAndName(theURI, name);
 
   xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace 
                                      GDataGetXMLString(fakeQName));
@@ -213,8 +225,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   // since we don't know a prefix yet, shove in the whole URI; we'll look for
   // a proper namespace ptr later when addChild calls fixUpNamespacesForNode
   
-  NSString *fakeQName = [NSString stringWithFormat:@"{%@}:%@", 
-                                                   attributeURI, name];
+  NSString *fakeQName = GDataFakeQNameForURIAndName(attributeURI, name);
   
   xmlChar *xmlName = GDataGetXMLString(fakeQName);
   xmlChar *xmlValue = GDataGetXMLString(value);
@@ -926,34 +937,35 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)URI {
   
   if (xmlNode_ != NULL && xmlNode_->children != NULL) {
-    
+
     NSMutableArray *array = [NSMutableArray array];
-    
+
     xmlNodePtr currChild = xmlNode_->children;
-    
+
     xmlChar* desiredNSHref = GDataGetXMLString(URI);
     xmlChar* desiredLocalName = GDataGetXMLString(localName);
-    
-    xmlNsPtr foundNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, desiredNSHref);
 
-    if (foundNS != NULL) {
-      while (currChild != NULL) {
-        
-        // find all children which are elements with the desired name and 
-        // namespace
-        if (currChild->type == XML_ELEMENT_NODE) {
-          
-          if (currChild->ns == foundNS
-              && currChild->name != NULL
-              && xmlStrEqual(currChild->name, desiredLocalName)) {
-            
-            GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currChild]; 
-            [array addObject:node];
-            
-          } 
+    xmlNsPtr foundNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, desiredNSHref);
+    if (foundNS == NULL) {
+      NSString *fakeQName = GDataFakeQNameForURIAndName(URI, localName);
+      desiredLocalName = GDataGetXMLString(fakeQName);
+    }
+
+    while (currChild != NULL) {
+
+      // find all children which are elements with the desired name and
+      // namespace, or with the prefixed name and a null namespace
+      if (currChild->type == XML_ELEMENT_NODE) {
+
+        if (currChild->ns == foundNS
+            && currChild->name != NULL
+            && xmlStrEqual(currChild->name, desiredLocalName)) {
+
+          GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currChild];
+          [array addObject:node];
         }
-        currChild = currChild->next;
       }
+      currChild = currChild->next;
     }
     
     // we return nil, not an empty array, according to docs
@@ -1084,7 +1096,16 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
     const xmlChar* nsURI = GDataGetXMLString(attributeURI);
     
     xmlAttrPtr attr = xmlHasNsProp(xmlNode_, name, nsURI);
-    
+
+    if (attr == NULL) {
+      // if the attribute is in a tree lacking the proper namespace,
+      // the local name may include the full URI as a prefix
+      NSString *fakeQName = GDataFakeQNameForURIAndName(attributeURI, localName);
+      const xmlChar* xmlFakeQName = GDataGetXMLString(fakeQName);
+
+      attr = xmlHasProp(xmlNode_, xmlFakeQName);
+    }
+
     if (attr) {
       return [GDataXMLNode nodeBorrowingXMLNode:(xmlNodePtr) attr];
     }

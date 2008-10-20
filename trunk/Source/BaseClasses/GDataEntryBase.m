@@ -28,8 +28,8 @@
 + (NSDictionary *)baseGDataNamespaces {
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
-    kGDataNamespaceAtomPub, kGDataNamespaceAtomPubPrefix,
     kGDataNamespaceGData, kGDataNamespaceGDataPrefix, 
+    kGDataNamespaceAtomPubStd, kGDataNamespaceAtomPubPrefix, 
     nil];
   return namespaces;
 }
@@ -41,6 +41,14 @@
   return entry;
 }
 
+- (Class)atomPubEditedObjectClass {
+  // version 1 of GData used a preliminary namespace URI
+  if ([self isServiceVersion1]) {
+    return [GDataAtomPubEditedDate1_0 class];
+  } else {
+    return [GDataAtomPubEditedDateStd class];
+  }
+}
 
 - (void)addExtensionDeclarations {
   
@@ -54,33 +62,33 @@
    [GDataAtomID class], 
    [GDataAtomPublishedDate class],
    [GDataAtomUpdatedDate class], 
-   [GDataAtomPubEditedDate class],
    [GDataAtomTitle class], 
    [GDataAtomSummary class],
    [GDataAtomContent class], 
    [GDataAtomRights class],
    [GDataLink class],
    [GDataAtomAuthor class],
-   [GDataAtomCategory class],
+   [GDataCategory class],
    
    // deletion marking support
    [GDataDeleted class],
    
    // atom publishing control support
-   [GDataAtomPubControl class], 
+   [GDataAtomPubControl atomPubControlClassForObject:self],
+   [self atomPubEditedObjectClass],
    
    // batch support
    [GDataBatchOperation class], [GDataBatchID class],
    [GDataBatchStatus class], [GDataBatchInterrupted class],
-   nil];
+   nil];  
 }
-
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
+    
     // we parse ETags explicitly rather than using addLocalAttributeDeclarations
     // because it requires a gd namespace
     [self setETag:[self stringForAttributeLocalName:@"etag"
@@ -126,6 +134,8 @@
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [NSMutableArray array];
+  
+  [self addToArray:items objectDescriptionIfNonNil:[self serviceVersion] withName:@"v"];
   
   [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
   [self addToArray:items objectDescriptionIfNonNil:[[self summary] stringValue] withName:@"summary"];
@@ -301,19 +311,18 @@
 }
 
 - (GDataDateTime *)editedDate {
-  GDataAtomPubEditedDate *obj;
-  
-  obj = [self objectForExtensionClass:[GDataAtomPubEditedDate class]];
+  GDataValueElementConstruct *obj;
+
+  obj = [self objectForExtensionClass:[self atomPubEditedObjectClass]];
   return [obj dateTimeValue];
 }
 
 - (void)setEditedDate:(GDataDateTime *)dateTime {
-  GDataAtomPubEditedDate *obj;
-  
-  obj = [GDataAtomPubEditedDate valueWithDateTime:dateTime];
-  [self setObject:obj forExtensionClass:[GDataAtomPubEditedDate class]];
-}
+  Class class = [self atomPubEditedObjectClass];
 
+  GDataValueElementConstruct *obj = [class valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[self atomPubEditedObjectClass]];
+}
 
 - (GDataTextConstruct *)title {
   GDataAtomTitle *obj = [self objectForExtensionClass:[GDataAtomTitle class]];
@@ -355,12 +364,12 @@
 }
 
 - (void)setContentWithString:(NSString *)str {
-  GDataAtomContent *obj = [GDataAtomContent textConstructWithString:str];
+  GDataAtomContent *obj = [GDataAtomContent contentWithString:str];
   [self setObject:obj forExtensionClass:[GDataAtomContent class]];
 }
 
 - (GDataTextConstruct *)rightsString {
-  GDataAtomContent *obj;
+  GDataTextConstruct *obj;
   
   obj = [self objectForExtensionClass:[GDataAtomRights class]];
   return obj;
@@ -404,20 +413,20 @@
 }
 
 - (NSArray *)categories {
-  NSArray *array = [self objectsForExtensionClass:[GDataAtomCategory class]];
+  NSArray *array = [self objectsForExtensionClass:[GDataCategory class]];
   return array;
 }
 
 - (void)setCategories:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataAtomCategory class]];
+  [self setObjects:array forExtensionClass:[GDataCategory class]];
 }
 
 - (void)addCategory:(GDataCategory *)obj {
-  [self addObject:obj forExtensionClass:[GDataAtomCategory class]];
+  [self addObject:obj forExtensionClass:[GDataCategory class]];
 }
 
 - (void)removeCategory:(GDataCategory *)obj {
-  [self removeObject:obj forExtensionClass:[GDataAtomCategory class]];
+  [self removeObject:obj forExtensionClass:[GDataCategory class]];
 }
 
 // Multipart MIME Uploading
@@ -523,11 +532,15 @@
 // extensions for Atom publishing control
 
 - (GDataAtomPubControl *)atomPubControl {
-  return (GDataAtomPubControl *) [self objectForExtensionClass:[GDataAtomPubControl class]];
+  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
+
+  return [self objectForExtensionClass:class];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
-  [self setObject:obj forExtensionClass:[GDataAtomPubControl class]];
+  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
+
+  [self setObject:obj forExtensionClass:class];
 }
 
 // extensions for batch support
@@ -576,6 +589,12 @@
 }
 
 #pragma mark -
+
+- (NSArray *)categoriesWithScheme:(NSString *)scheme {
+  NSArray *array = [GDataCategory categoriesWithScheme:scheme
+                                        fromCategories:[self categories]];
+  return array;
+}
 
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
   

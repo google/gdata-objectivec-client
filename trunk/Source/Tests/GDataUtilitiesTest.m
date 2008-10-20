@@ -83,4 +83,187 @@
   STAssertEqualObjects(output, @"photo%E5%8F%83.jpg", @"cjk failure");
 }
 
+#pragma mark -
+
+- (void)doTestEqualAndDistinctElementsInArray:(NSArray *)testArray
+                                 andArrayCopy:(NSArray *)copyArray {
+
+  NSUInteger numItems = [testArray count];
+
+  // test that we got an equal copy
+  STAssertEqualObjects(copyArray, testArray,
+                       @"Array copy failed (%d items)", numItems);
+
+  // check that the objects in the copy are actual copies, not retains
+  // of the original objects
+  NSEnumerator *enumTest = [testArray objectEnumerator];
+  NSEnumerator *enumCopy = [copyArray objectEnumerator];
+
+  id objTest = [enumTest nextObject];
+  id objCopy = [enumCopy nextObject];
+
+  while (objTest) {
+    STAssertTrue(objTest != objCopy,
+                  @"array copy is reusing original object (%d items)", numItems);
+
+    objTest = [enumTest nextObject];
+    objCopy = [enumCopy nextObject];
+  }
+}
+
+- (void)doArrayCopyTestsForArray:(NSArray *)testArray {
+
+  NSUInteger numItems = [testArray count];
+
+  // immutable copy
+  id copyArray = [GDataUtilities arrayWithCopiesOfObjectsInArray:testArray];
+
+  [self doTestEqualAndDistinctElementsInArray:testArray
+                                 andArrayCopy:copyArray];
+
+  // mutable copy
+  copyArray = [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:testArray];
+
+  [self doTestEqualAndDistinctElementsInArray:testArray
+                                 andArrayCopy:copyArray];
+
+  // test that copy is mutable (isKindOfClass: will fail on the class
+  // cluster, so brute-force it)
+  @try {
+    [copyArray addObject:@"foo"];
+  }
+  @catch(NSException *exc) {
+    STFail(@"Array mutableCopy not mutable (%d items)", numItems);
+  }
+}
+
+- (void)doTestEqualAndDistinctElementsInDictionary:(NSDictionary *)testDict
+                                 andDictionaryCopy:(NSDictionary *)copyDict {
+
+  NSUInteger numItems = [testDict count];
+
+  // test that we got an equal copy
+  STAssertEqualObjects(copyDict, testDict,
+                       @"Dict copy failed (%d items)", numItems);
+
+  // check that the objects in the copy are actual copies, not retains
+  // of the original objects
+  NSEnumerator *enumTestKeys = [testDict keyEnumerator];
+
+  id testKey = [enumTestKeys nextObject];
+  while (testKey) {
+    id objTest = [testDict objectForKey:testKey];
+    id objCopy = [copyDict objectForKey:testKey];
+
+    STAssertTrue(objTest != objCopy,
+                  @"dict copy is reusing original object (%d items)", numItems);
+
+    // if the elements are arrays, apply the array comparison too
+    if ([objTest isKindOfClass:[NSArray class]]) {
+
+     [self doTestEqualAndDistinctElementsInArray:objTest
+                                    andArrayCopy:objCopy];
+    }
+
+    testKey = [enumTestKeys nextObject];
+  }
+}
+
+
+- (void)doDictionaryCopyTestsForDictionary:(NSDictionary *)testDict {
+
+  NSUInteger numItems = [testDict count];
+
+  // immutable copy
+  id copyDict = [GDataUtilities dictionaryWithCopiesOfObjectsInDictionary:testDict];
+
+  [self doTestEqualAndDistinctElementsInDictionary:testDict
+                                 andDictionaryCopy:copyDict];
+
+  // mutable copy
+  copyDict = [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:testDict];
+
+  [self doTestEqualAndDistinctElementsInDictionary:testDict
+                                 andDictionaryCopy:copyDict];
+
+  // test that copy is mutable (isKindOfClass: will fail on the class
+  // cluster, so brute-force it)
+  @try {
+     [copyDict setObject:@"foo" forKey:@"bar"];
+  }
+  @catch(NSException *exc) {
+    STFail(@"Dict mutableCopy not mutable (%d items)", numItems);
+  }
+}
+
+
+- (void)doDictionaryOfArraysCopyTestsForDictionary:(NSDictionary *)testDict {
+
+  NSUInteger numItems = [testDict count];
+
+  // immutable copy
+  id copyDict = [GDataUtilities dictionaryWithCopiesOfArraysInDictionary:testDict];
+
+  [self doTestEqualAndDistinctElementsInDictionary:testDict
+                                 andDictionaryCopy:copyDict];
+
+  // mutable copy
+  copyDict = [GDataUtilities mutableDictionaryWithCopiesOfArraysInDictionary:testDict];
+
+  [self doTestEqualAndDistinctElementsInDictionary:testDict
+                                 andDictionaryCopy:copyDict];
+
+  // test that copy is mutable
+  @try {
+    [copyDict setObject:@"foo" forKey:@"bar"];
+  }
+  @catch(NSException *exc) {
+    STFail(@"Dict of arrays mutableCopy not mutable (%d items)", numItems);
+  }
+}
+
+
+- (void)testCollectionCopying {
+
+  // test array copies
+
+  // mutable strings, when copied, will have unique pointers rather than
+  // just increased refCounts, so we can ensure we made a copy of the
+  // strings
+  NSMutableString *str1 = [NSMutableString stringWithString:@"one"];
+  NSMutableString *str2 = [NSMutableString stringWithString:@"two"];
+  NSMutableString *str3 = [NSMutableString stringWithString:@"three"];
+
+  NSArray *zeroArray = [NSArray array];
+  NSArray *oneArray = [NSArray arrayWithObject:str1];
+  NSArray *twoArray = [NSArray arrayWithObjects:str2, str3, nil];
+
+  [self doArrayCopyTestsForArray:zeroArray];
+  [self doArrayCopyTestsForArray:oneArray];
+  [self doArrayCopyTestsForArray:twoArray];
+
+
+  // test dictionary copies
+  NSMutableDictionary *zeroDict = [NSMutableDictionary dictionary];
+  NSMutableDictionary *oneDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  str1, @"1", nil];
+  NSMutableDictionary *twoDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  str2, @"2", str3, @"3", nil];
+  [self doDictionaryCopyTestsForDictionary:zeroDict];
+  [self doDictionaryCopyTestsForDictionary:oneDict];
+  [self doDictionaryCopyTestsForDictionary:twoDict];
+
+  // test dictionary-of-arrays copies
+  NSMutableDictionary *zeroArrayDict = [NSMutableDictionary dictionary];
+  NSMutableDictionary *oneArrayDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       oneArray, @"1a", nil];
+  NSMutableDictionary *twoArrayDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       oneArray, @"1aa", twoArray, @"2aa", nil];
+
+  [self doDictionaryOfArraysCopyTestsForDictionary:zeroArrayDict];
+  [self doDictionaryOfArraysCopyTestsForDictionary:oneArrayDict];
+  [self doDictionaryOfArraysCopyTestsForDictionary:twoArrayDict];
+}
+
+
 @end
