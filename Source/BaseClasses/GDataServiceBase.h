@@ -65,6 +65,7 @@ enum {
   GDataFeedBase *accumulatedFeed_;
   NSError *fetchError_;
   BOOL hasCalledCallback_;
+  NSUInteger nextLinksFollowedCounter_;
 }
 
 + (id)ticketForService:(GDataServiceBase *)service;
@@ -132,6 +133,9 @@ enum {
 // accumulateFeed is used by the service to append an incomplete feed
 // to the ticket when shouldFollowNextLinks is enabled
 - (void)accumulateFeed:(GDataFeedBase *)newFeed;
+
+- (void)setNextLinksFollowedCounter:(NSUInteger)val;
+- (NSUInteger)nextLinksFollowedCounter;
 
 - (NSInteger)statusCode;  // server status from object fetch
 @end

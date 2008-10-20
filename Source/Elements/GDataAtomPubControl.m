@@ -19,21 +19,27 @@
 
 #import "GDataAtomPubControl.h"
 
+@implementation GDataAtomPubControl1_0
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
++ (NSString *)extensionElementPrefix    { return [super extensionElementPrefix]; }
++ (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
+@end
+
 @implementation GDataAtomPubControl
 
 // For app:control, like:
 //   <app:control><app:draft>yes</app:draft></app:control>
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"control"; }
-
 
 + (GDataAtomPubControl *)atomPubControl {
   GDataAtomPubControl *obj = [[[GDataAtomPubControl alloc] init] autorelease];
   
   // add the "app" namespace
-  NSDictionary *namespace = [NSDictionary dictionaryWithObject:kGDataNamespaceAtomPub 
+  NSString *nsURI = [[self class] extensionElementURI];
+  NSDictionary *namespace = [NSDictionary dictionaryWithObject:nsURI 
                                                         forKey:kGDataNamespaceAtomPubPrefix];
   [obj setNamespaces:namespace];
 
@@ -59,8 +65,10 @@
                             parent:parent];
   if (self) {
     // get the <app:draft>yes</app:draft> from inside the <app:control>
+    NSString *namespaceURI = [[self class] extensionElementURI];
+    
     NSXMLElement *draftElement = [self childWithQualifiedName:@"app:draft"
-                                                 namespaceURI:kGDataNamespaceAtomPub
+                                                 namespaceURI:namespaceURI
                                                   fromElement:element];
     if (draftElement) {
       NSString *draftStr = [self stringValueFromElement:draftElement];
@@ -118,6 +126,18 @@
 
 - (void)setIsDraft:(BOOL)isDraft {
   isDraft_ = isDraft;
+}
+
+#pragma mark -
+
++ (Class)atomPubControlClassForObject:(GDataObject *)obj {
+  // version 1 of GData used a preliminary namespace URI for the atom pub 
+  // element; the standard version of the class uses the proper URI
+  if ([obj isServiceVersion1]) {
+    return [GDataAtomPubControl1_0 class];
+  } else {
+    return [GDataAtomPubControl class];
+  }
 }
 
 @end

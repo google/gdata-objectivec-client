@@ -51,16 +51,16 @@ NSString* const kNowString = @"now";
     return kNowString;
   }
   
-  long fraction = (long) (ms_ % 1000LL);
+  long fractional = (long) (ms_ % 1000LL);
   long totalSeconds = (long) (ms_ / 1000LL);
   long seconds = totalSeconds % 60L;
   long totalMinutes = totalSeconds / 60L;
   long minutes = totalMinutes % 60L;
   long hours = totalMinutes / 60L;
   
-  if (fraction > 0) {
+  if (fractional > 0) {
     return [NSString stringWithFormat:@"%ld:%02ld:%02ld.%03ld",
-      hours, minutes, seconds, fraction];
+      hours, minutes, seconds, fractional];
   } 
   return [NSString stringWithFormat:@"%ld:%02ld:%02ld",
     hours, minutes, seconds];
@@ -71,12 +71,12 @@ NSString* const kNowString = @"now";
     return kNowString;
   }
   long seconds = (long) (ms_ / 1000LL);
-  long fraction = (long) (ms_ % 1000LL);
+  long fractional = (long) (ms_ % 1000LL);
   
-  if (fraction == 0) {
+  if (fractional == 0) {
     return [NSString stringWithFormat:@"%d", seconds];
   }
-  return [NSString stringWithFormat:@"%d.%03d", seconds, fraction];
+  return [NSString stringWithFormat:@"%d.%03d", seconds, fractional];
 }
 
 - (void)setFromString:(NSString *)str {

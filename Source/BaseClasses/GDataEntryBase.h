@@ -156,6 +156,8 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 // convenience accessors
 
+- (NSArray *)categoriesWithScheme:(NSString *)scheme;
+
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue;
 
 - (GDataLink *)feedLink;

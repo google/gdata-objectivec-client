@@ -72,8 +72,8 @@ static const int kBallotX = 0x2717; // fancy X mark to indicate deleted items
 - (void)setContactFetchError:(NSError *)error;  
 - (GDataServiceTicket *)contactFetchTicket;
 - (void)setContactFetchTicket:(GDataServiceTicket *)ticket;
-- (NSURL *)contactImageURL;
-- (void)setContactImageURL:(NSURL *)url;
+- (NSURL *)contactImageEditURL;
+- (void)setContactImageEditURL:(NSURL *)url;
 
 - (GDataFeedContactGroup *)groupFeed;
 - (void)setGroupFeed:(GDataFeedContactGroup *)feed;
@@ -136,7 +136,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [mContactFeed release];
   [mContactFetchError release];
   [mContactFetchTicket release];
-  [mContactImageURL release];
+  [mContactImageEditURL release];
   
   [mGroupFeed release];
   [mGroupFetchError release];
@@ -335,30 +335,37 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   if (!contact) {
     // clear the image
     [mContactImageView setImage:nil];
-    [self setContactImageURL:nil];
-    
-  } else {    
-    // if the new photo URL is different from the previous one,
-    // save the new one, clear the image and fetch the new image
-    
-    NSURL *imageURL = [[contact photoLink] URL];
-    if (!imageURL || ![mContactImageURL isEqual:imageURL]) {
-      
-      [self setContactImageURL:imageURL];
+    [self setContactImageEditURL:nil];
+
+  } else {
+    // Google Contacts guarantees that the photo edit URL changes whenever
+    // the photo for the contact changes
+    //
+    // if the new photo edit URL is different from the previous one,
+    // clear the image and fetch the new image
+
+    NSURL *imageEditURL = [[contact editPhotoLink] URL];
+
+    if (!imageEditURL || ![mContactImageEditURL isEqual:imageEditURL]) {
+
+      // save the image edit URL for the contact we're fetching
+      [self setContactImageEditURL:imageEditURL];
+
       [mContactImageView setImage:nil];
-      
+
+      NSURL *imageURL = [[contact photoLink] URL];
       if (imageURL) {
-        
+
         // get an NSURLRequest object with an auth token
         GDataServiceGoogleContact *service = [self contactService];
         NSMutableURLRequest *request = [service requestForURL:imageURL
                                                          ETag:nil
                                                    httpMethod:nil];
-        
+
         [request setValue:@"image/*" forHTTPHeaderField:@"Accept"];
-        
+
         GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-        
+
         [fetcher beginFetchWithDelegate:self
                       didFinishSelector:@selector(imageFetcher:finishedWithData:)
               didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
@@ -373,7 +380,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   // code, we won't be rigorous about verifying that the selected contact hasn't
   // changed between when the fetch began and now.
   NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-  
+
   [mContactImageView setImage:image];
 }
 
@@ -1810,13 +1817,13 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   mContactFetchTicket = [ticket retain];
 }
 
-- (NSURL *)contactImageURL {
-  return mContactImageURL;
+- (NSURL *)contactImageEditURL {
+  return mContactImageEditURL;
 }
 
-- (void)setContactImageURL:(NSURL *)url {
-  [mContactImageURL autorelease];
-  mContactImageURL = [url copy];
+- (void)setContactImageEditURL:(NSURL *)url {
+  [mContactImageEditURL autorelease];
+  mContactImageEditURL = [url copy];
 }
 
 

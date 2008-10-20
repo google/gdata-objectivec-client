@@ -32,5 +32,9 @@
 _EXTERN NSString* kGDataCategorySpreadsheetDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#spreadsheet");
 
 @interface GDataEntrySpreadsheetDoc : GDataEntryDocBase
+
+// convenience accessor
+- (GDataLink *)worksheetsLink;
+
 @end
 

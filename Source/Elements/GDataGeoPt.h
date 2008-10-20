@@ -40,7 +40,7 @@
                            lat:(NSNumber *)lat
                            lon:(NSNumber *)lon
                           elev:(NSNumber *)elev
-                          time:(GDataDateTime *)time;
+                          time:(GDataDateTime *)aTime;
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;

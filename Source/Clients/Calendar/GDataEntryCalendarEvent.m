@@ -279,8 +279,8 @@
 }
 
 - (GDataWebContent *)webContent {
-  GDataLink *link = [self webContentLink];
-  GDataWebContent *content = (GDataWebContent *) [link objectForExtensionClass:[GDataWebContent class]];
+  GDataLink *dataLink = [self webContentLink];
+  GDataWebContent *content = (GDataWebContent *) [dataLink objectForExtensionClass:[GDataWebContent class]];
   return content;
 }
 

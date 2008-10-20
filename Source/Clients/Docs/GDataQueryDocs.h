@@ -32,5 +32,11 @@
 // non-exact title searches are keyword-based; exact title searches are literal
 - (BOOL)isTitleQueryExact;
 - (void)setIsTitleQueryExact:(BOOL)flag;
+
+- (NSString *)parentFolderName;
+- (void)setParentFolderName:(NSString *)str;
+
+- (BOOL)shouldShowFolders;
+- (void)setShouldShowFolders:(BOOL)flag;
 @end
 

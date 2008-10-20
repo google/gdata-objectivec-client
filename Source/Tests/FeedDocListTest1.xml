@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+<feed xmlns="http://www.w3.org/2005/Atom" 
+      xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
+      xmlns:gd="http://schemas.google.com/g/2005" >
     <id>http://docs.google.com/feeds/documents/private/full</id>
     <title type="text">Available Documents - test@domain.net</title>
     <link href="http://docs.google.com" rel="alternate" type="text/html"/>
@@ -75,5 +77,65 @@
             <name>test</name>
             <email>test@domain.net</email>
         </author>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/pdf%3A54595-47abfc9-842f-b44e09724f38</id>
+        <published>0001-01-03T00:00:00.000Z</published>
+        <updated>2008-08-20T23:19:53.637Z</updated>
+        <category label="pdf"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#pdf"/>
+        <category label="starred"
+            scheme="http://schemas.google.com/g/2005/labels" term="http://schemas.google.com/g/2005/labels#starred"/>
+        <category label="Other folder"
+            scheme="http://schemas.google.com/docs/2007/folders/test@domain.net" term="Other folder"/>
+        <title type="text">24HRflyer.pdf</title>
+        <content
+            src="http://docs.google.com/gb?export=download?id=F.54595c7b-47abfc9-842f-b44e09724f38" type="text/html"/>
+        <link
+            href="http://docs.google.com/fileview?id=F.54595c7b-47abfc9-842f-b44e09724f38"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38/fk4khr8l"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="http://schemas.google.com/docs/2007#parent"
+            title="Other folder" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <gd:feedLink
+            href="http://docs.google.com/feeds/acl/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38" 
+            rel="http://schemas.google.com/acl/2007#accessControlList"/>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e</id>
+        <published>0001-01-03T00:00:00.000Z</published>
+        <updated>2007-10-02T20:22:06.419Z</updated>
+        <category label="folder"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#folder"/>
+        <title type="text">Other folder</title>
+        <content
+            src="http://docs.google.com/feeds/folders/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/#folders/folder.0.4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3/f7auwz0z"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <gd:feedLink
+            href="http://docs.google.com/feeds/acl/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" 
+            rel="http://schemas.google.com/acl/2007#accessControlList"/>
     </entry>
 </feed>

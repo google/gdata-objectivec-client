@@ -57,19 +57,38 @@
    [GDataLink class],
    [GDataAtomAuthor class],
    [GDataAtomContributor class],
-   [GDataAtomCategory class],
+   [GDataCategory class],
    [GDataAtomUpdatedDate class], 
 
-   [GDataOpenSearchTotalResults class], 
-   [GDataOpenSearchStartIndex class], 
-   [GDataOpenSearchItemsPerPage class], 
-   
    // atom publishing control support
-   [GDataAtomPubControl class],
+   [GDataAtomPubControl atomPubControlClassForObject:self],
    
    // batch support
    [GDataBatchOperation class],
    nil];
+  
+  if ([self isServiceVersion1]) {
+    
+    // GData version 1 classes 
+    [self addExtensionDeclarationForParentClass:feedClass
+                                   childClasses:
+     
+     [GDataOpenSearchTotalResults1_0 class], 
+     [GDataOpenSearchStartIndex1_0 class], 
+     [GDataOpenSearchItemsPerPage1_0 class], 
+     nil];
+    
+  } else {
+    // GData version 2 classes
+    [self addExtensionDeclarationForParentClass:feedClass
+                                   childClasses:
+     
+     [GDataOpenSearchTotalResults1_1 class], 
+     [GDataOpenSearchStartIndex1_1 class], 
+     [GDataOpenSearchItemsPerPage1_1 class], 
+     nil];
+  }
+    
 }
 
 + (id)feedWithXMLData:(NSData *)data {
@@ -89,6 +108,11 @@
 }
 
 - (id)initWithData:(NSData *)data {
+  return [self initWithData:data serviceVersion:nil]; 
+}
+
+- (id)initWithData:(NSData *)data
+    serviceVersion:(NSString *)serviceVersion {
 
   // entry point for creation of feeds from file or network data
   NSError *error = nil;
@@ -99,7 +123,9 @@
     
     NSXMLElement* root = [xmlDocument rootElement];
     self = [super initWithXMLElement:root
-                              parent:nil];
+                              parent:nil
+                      serviceVersion:serviceVersion
+                          surrogates:nil];
     if (self) {
       [self setupFromXMLElement:root];
 
@@ -185,7 +211,9 @@
 - (NSMutableArray *)itemsForDescription { // subclasses may implement this
 
   NSMutableArray *items = [NSMutableArray array];
-  
+
+  [self addToArray:items objectDescriptionIfNonNil:[self serviceVersion] withName:@"v"];
+
   [self addToArray:items integerValue:[entries_ count] withName:@"entries"];
 
   [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
@@ -299,7 +327,7 @@
 }
 
 - (GDataTextConstruct *)rights {
-  GDataAtomContent *obj;
+  GDataTextConstruct *obj;
   
   obj = [self objectForExtensionClass:[GDataAtomRights class]];
   return obj;
@@ -380,20 +408,20 @@
 }
 
 - (NSArray *)categories {
-  NSArray *array = [self objectsForExtensionClass:[GDataAtomCategory class]];
+  NSArray *array = [self objectsForExtensionClass:[GDataCategory class]];
   return array;
 }
 
 - (void)setCategories:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataAtomCategory class]];
+  [self setObjects:array forExtensionClass:[GDataCategory class]];
 }
 
 - (void)addCategory:(GDataCategory *)obj {
-  [self addObject:obj forExtensionClass:[GDataAtomCategory class]];
+  [self addObject:obj forExtensionClass:[GDataCategory class]];
 }
 
 - (void)removeCategory:(GDataCategory *)obj {
-  [self removeObject:obj forExtensionClass:[GDataAtomCategory class]];
+  [self removeObject:obj forExtensionClass:[GDataCategory class]];
 }
 
 - (GDataDateTime *)updatedDate {
@@ -412,44 +440,86 @@
 
 - (NSNumber *)totalResults {
   GDataValueElementConstruct *obj;
+  Class objClass;
   
-  obj = [self objectForExtensionClass:[GDataOpenSearchTotalResults class]];
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchTotalResults1_0 class];
+  } else {
+    objClass = [GDataOpenSearchTotalResults1_1 class];
+  }
+  
+  obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
 
 - (void)setTotalResults:(NSNumber *)num {
-  GDataOpenSearchTotalResults *obj;
+  GDataValueElementConstruct *obj;
+  Class objClass;
+
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchTotalResults1_0 class];
+  } else {
+    objClass = [GDataOpenSearchTotalResults1_1 class];
+  }
   
-  obj = [GDataOpenSearchTotalResults valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataOpenSearchTotalResults class]];
+  obj = [objClass valueWithNumber:num];
+  [self setObject:obj forExtensionClass:objClass];
 }
 
 - (NSNumber *)startIndex {
   GDataValueElementConstruct *obj;
+  Class objClass;
   
-  obj = [self objectForExtensionClass:[GDataOpenSearchStartIndex class]];
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchStartIndex1_0 class];
+  } else {
+    objClass = [GDataOpenSearchStartIndex1_1 class];
+  }
+  
+  obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
 
 - (void)setStartIndex:(NSNumber *)num {
-  GDataOpenSearchStartIndex *obj;
+  GDataValueElementConstruct *obj;
+  Class objClass;
   
-  obj = [GDataOpenSearchStartIndex valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataOpenSearchStartIndex class]];
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchStartIndex1_0 class];
+  } else {
+    objClass = [GDataOpenSearchStartIndex1_1 class];
+  }
+    
+  obj = [objClass valueWithNumber:num];
+  [self setObject:obj forExtensionClass:objClass];
 }
 
 - (NSNumber *)itemsPerPage {
   GDataValueElementConstruct *obj;
+  Class objClass;
   
-  obj = [self objectForExtensionClass:[GDataOpenSearchItemsPerPage class]];
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchItemsPerPage1_0 class];
+  } else {
+    objClass = [GDataOpenSearchItemsPerPage1_1 class];
+  }
+  
+  obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
 
 - (void)setItemsPerPage:(NSNumber *)num {
-  GDataOpenSearchItemsPerPage *obj;
+  GDataValueElementConstruct *obj;
+  Class objClass;
+
+  if ([self isServiceVersion1]) {
+    objClass = [GDataOpenSearchItemsPerPage1_0 class];
+  } else {
+    objClass = [GDataOpenSearchItemsPerPage1_1 class];
+  }
   
-  obj = [GDataOpenSearchItemsPerPage valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataOpenSearchItemsPerPage class]];
+  obj = [objClass valueWithNumber:num];
+  [self setObject:obj forExtensionClass:objClass];
 }
 
 - (NSString *)ETag {
@@ -528,11 +598,15 @@
 // extensions for Atom publishing control
 
 - (GDataAtomPubControl *)atomPubControl {
-  return [self objectForExtensionClass:[GDataAtomPubControl class]];
+  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
+  
+  return [self objectForExtensionClass:class];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
-  [self setObject:obj forExtensionClass:[GDataAtomPubControl class]];
+  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
+  
+  [self setObject:obj forExtensionClass:class];
 }
 
 // extensions for batch support

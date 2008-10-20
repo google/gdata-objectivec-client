@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataObject.m
@@ -100,6 +100,16 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 
 @implementation GDataObject
 
+// The qualified name map avoids the need to regenerate qualified
+// element names (foo:bar) repeatedly
+static NSMutableDictionary *gQualifiedNameMap = nil;
+
++ (void)load {
+  // Initialize gQualifiedNameMap early so we can @synchronize on accesses
+  // to it
+  gQualifiedNameMap = GDataCreateStaticDictionary();
+}
+
 - (id)init {
   self = [super init];
   if (self) {
@@ -110,10 +120,13 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 }
 
 // this init routine is only used when passing in a top-level surrogates
-// dictionary.
+// dictionary
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent
+          serviceVersion:(NSString *)serviceVersion
               surrogates:(NSDictionary *)surrogates {
+  
+  [self setServiceVersion:serviceVersion];
   
   [self setSurrogates:surrogates];
   
@@ -128,6 +141,15 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   self = [super init];
   if (self) {
     [self setParent:parent];
+
+    if (parent != nil) {
+      // top-level objects (feeds and entries) have nil parents, and
+      // have their service version set previously in 
+      // initWithXMLElement:parent:serviceVersion:surrogates:; child
+      // objects have their service version set here
+      [self setServiceVersion:[parent serviceVersion]];
+    }
+    
     [self setNamespaces:[self dictionaryForElementNamespaces:element]];
     [self addUnknownChildNodesForElement:element];
     [self addExtensionDeclarations];
@@ -172,6 +194,7 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   //   extension declarations
   //   unknown attributes & children
   //   local element names
+  //   service version
   //   userData
 }
 
@@ -188,17 +211,18 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   GDataObject* newObject = [[[self class] allocWithZone:zone] init];
   [newObject setElementName:[self elementName]];
   [newObject setParent:nil];
+  [newObject setServiceVersion:[self serviceVersion]];
   
   NSDictionary *namespaces = 
-    [GDataUtilities dictionaryWithCopiesOfObjectsInDictionary:[self namespaces]];
+    [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self namespaces]];
   [newObject setNamespaces:namespaces];
 
   NSDictionary *extensions = 
-    [GDataUtilities dictionaryWithCopiesOfArraysInDictionary:[self extensions]];
+    [GDataUtilities mutableDictionaryWithCopiesOfArraysInDictionary:[self extensions]];
   [newObject setExtensions:extensions];
   
   NSDictionary *attributes = 
-    [GDataUtilities dictionaryWithCopiesOfObjectsInDictionary:[self attributes]];
+    [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self attributes]];
   [newObject setAttributes:attributes];
   
   if (shouldParseContentValue_) {
@@ -212,11 +236,11 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   [newObject setAttributeDeclarations:[self attributeDeclarations]];
   
   NSArray *unknownChildren = 
-    [GDataUtilities arrayWithCopiesOfObjectsInArray:[self unknownChildren]];
+    [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownChildren]];
   [newObject setUnknownChildren:unknownChildren];
   
   NSArray *unknownAttributes =
-    [GDataUtilities arrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
+    [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
   [newObject setUnknownAttributes:unknownAttributes];
   
   return newObject;
@@ -239,6 +263,7 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   [unknownChildren_ release];
   [unknownAttributes_ release];
   [surrogates_ release];
+  [serviceVersion_ release];
   [userData_ release];
   [userProperties_ release];
   [super dealloc]; 
@@ -312,6 +337,9 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 }
 
 - (void)pruneInheritedNamespaces {
+  
+  if (parent_ == nil || [namespaces_ count] == 0) return;
+  
   // if a prefix is explicitly defined the same for the parent as it is locally,
   // remove it, since we can rely on the parent's definition
   NSMutableDictionary *prunedNamespaces
@@ -405,6 +433,21 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   return surrogates_; 
 }
 
+- (void)setServiceVersion:(NSString *)str {
+  [serviceVersion_ autorelease];
+  serviceVersion_ = [str copy];
+}
+
+- (NSString *)serviceVersion {
+  return serviceVersion_; 
+}
+
+- (BOOL)isServiceVersion1 {
+  NSString *str = [self serviceVersion];
+  BOOL isV1 = ([str intValue] <= 1);
+  return isV1;
+}
+
 #pragma mark userData and properties
 
 - (void)setUserData:(id)userData {
@@ -453,6 +496,24 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 
 #pragma mark XML generation helpers
 
+- (NSString *)updatedVersionedNamespaceURIForPrefix:(NSString *)prefix 
+                                                URI:(NSString *)uri {
+
+  // If there are many more transforms like this needed for future version
+  // changes, we can create a global registry of version-specific
+  // namespace tuples, rather than rely on this narrow hack.
+  
+  if ([prefix isEqual:kGDataNamespaceAtomPubPrefix]) {
+    
+    if ([self isServiceVersion1]) {
+      uri = kGDataNamespaceAtomPub1_0;
+    } else {
+      uri = kGDataNamespaceAtomPubStd;
+    }
+  }
+  return uri;
+}
+
 - (void)addNamespacesToElement:(NSXMLElement *)element {
 
   // we keep namespaces in a dictionary with prefixes
@@ -463,9 +524,14 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   if (numberOfNamespaces) {
     
     NSArray *namespaceNames = [namespaces_ allKeys];
-    for (NSUInteger idx = 0; idx < numberOfNamespaces; idx++) {
-      NSString *name = [namespaceNames objectAtIndex:idx];
+    NSEnumerator *namespaceNamesEnum = [namespaceNames objectEnumerator];
+    NSString *name;
+    while ((name = [namespaceNamesEnum nextObject]) != nil) {
       NSString *uri = [namespaces_ objectForKey:name];
+      
+      uri = [self updatedVersionedNamespaceURIForPrefix:name
+                                                    URI:uri];
+      
       [element addNamespace:[NSXMLElement namespaceWithName:name
                                                stringValue:uri]];
     }
@@ -484,12 +550,10 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
     
     // step through each extension, by class, and add those
     // objects to the XML element
-    for (int idx = 0; idx < [classKeys count]; idx++) {
-      
-      Class oneClass = [classKeys objectAtIndex:idx];
-      
+    NSEnumerator *classEnum = [classKeys objectEnumerator];
+    Class oneClass;
+    while ((oneClass = [classEnum nextObject]) != nil) {
       NSArray *objects = [self objectsForExtensionClass:oneClass];
-      
       [self addToElement:element XMLElementsForArray:objects];
     }
   }
@@ -503,14 +567,15 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   
   // we have to copy the children so they don't point at the previous parent
   // nodes
-  for (int idx = 0; idx < [unknownChildren_ count]; idx++) {
-    NSXMLNode *child = [unknownChildren_ objectAtIndex:idx];
+  NSEnumerator *unknownEnum = [unknownChildren_ objectEnumerator];
+  NSXMLNode *child;
+  while ((child = [unknownEnum nextObject]) != nil) {
     [element addChild:[[child copy] autorelease]];
   }
   
-  for (int idx = 0; idx < [unknownAttributes_ count]; idx++) {
-    NSXMLNode *attr = [unknownAttributes_ objectAtIndex:idx];
-    
+  unknownEnum = [unknownAttributes_ objectEnumerator];
+  NSXMLNode *attr;
+  while ((attr = [unknownEnum nextObject]) != nil) {    
 #if DEBUG
     NSAssert1([element attributeForName:[attr name]] == nil,
               @"adding duplicate of attribute %@ (perhaps an object parsed with"
@@ -867,13 +932,11 @@ objectDescriptionIfNonNil:(id)obj
 // prefix
 - (NSMutableArray *)childrenOfElement:(NSXMLElement *)parentElement
                            withPrefix:(NSString *)prefix {
-  
   NSArray *allChildren = [parentElement children];
+  NSEnumerator *allChildrenEnum = [allChildren objectEnumerator];
   NSMutableArray *matchingChildren = [NSMutableArray array];
-  
-    for (int idx = 0; idx < [allChildren count]; idx++) {
-    
-    NSXMLNode *childNode = [allChildren objectAtIndex:idx];
+  NSXMLNode *childNode;
+  while ((childNode = [allChildrenEnum nextObject]) != nil) {
     if ([childNode kind] == NSXMLElementKind 
         && [[childNode prefix] isEqual:prefix]) {
       
@@ -960,14 +1023,23 @@ objectDescriptionIfNonNil:(id)obj
 
 
 // childOfElement:withName returns the element with the name, or nil if there 
-// are not exactly one of the element
+// are not exactly one of the element.  Pass "*" wildcards for name and URI
+// to retrieve the child element if there is exactly one.
 - (NSXMLElement *)childWithQualifiedName:(NSString *)qualifiedName
                             namespaceURI:(NSString *)namespaceURI
                              fromElement:(NSXMLElement *)parentElement {
   
-  NSArray *elementArray = [self elementsForName:qualifiedName
-                                   namespaceURI:namespaceURI
-                                  parentElement:parentElement];
+  NSArray *elementArray;
+  
+  if ([qualifiedName isEqual:@"*"] && [namespaceURI isEqual:@"*"]) {
+    // wilcards
+    elementArray = [parentElement children]; 
+  } else {
+    // find the element by name and namespace URI
+    elementArray = [self elementsForName:qualifiedName
+                            namespaceURI:namespaceURI
+                           parentElement:parentElement];
+  }
   
   NSUInteger numberOfElements = [elementArray count];
   
@@ -1005,9 +1077,9 @@ objectDescriptionIfNonNil:(id)obj
 
   // consider all text child nodes used to make this string value to now be known
   NSArray *children = [element children];
-  for (int idx = 0; idx < [children count]; idx++) {
-    NSXMLNode *childNode = [children objectAtIndex:idx];
-    
+  NSEnumerator *childrenEnum = [children objectEnumerator];
+  NSXMLNode *childNode;
+  while ((childNode = [childrenEnum nextObject]) != nil) {    
     if ([childNode kind] == NSXMLTextKind) {
       [result appendString:[childNode stringValue]];
       [unknownChildren_ removeObject:childNode];
@@ -1296,27 +1368,26 @@ objectDescriptionIfNonNil:(id)obj
 
 // generate the qualified name for this extension's element
 - (NSString *)qualifiedNameForExtensionClass:(Class)class {
- 
- static NSMutableDictionary *qualifiedNameMap = nil;
- 
-  if (qualifiedNameMap == nil) {
-    qualifiedNameMap = GDataCreateStaticDictionary();
-  }
   
-  NSString *name = [qualifiedNameMap objectForKey:class];
-  if (name == nil) {
+  NSString *name;
+  
+  @synchronized(gQualifiedNameMap) {
     
-    NSString *extensionURI = [class extensionElementURI];
-    
-    if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
-      name = [class extensionElementLocalName];
-    } else {
-      name = [NSString stringWithFormat:@"%@:%@",
-              [class extensionElementPrefix],
-              [class extensionElementLocalName]];
+    name = [gQualifiedNameMap objectForKey:class];
+    if (name == nil) {
+      
+      NSString *extensionURI = [class extensionElementURI];
+      
+      if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
+        name = [class extensionElementLocalName];
+      } else {
+        name = [NSString stringWithFormat:@"%@:%@",
+                [class extensionElementPrefix],
+                [class extensionElementLocalName]];
+      }
+      
+      [gQualifiedNameMap setObject:name forKey:class];
     }
-    
-    [qualifiedNameMap setObject:name forKey:class];
   }
   return name;
 }
@@ -1422,10 +1493,9 @@ objectDescriptionIfNonNil:(id)obj
     NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForClass:classBeingParsed];
     
     if (extnDecls) {
-      for (int idx = 0; idx < [extnDecls count]; idx++) {
-        
-        GDataExtensionDeclaration *decl = [extnDecls objectAtIndex:idx];
-        
+      NSEnumerator *extnDeclsEnum = [extnDecls objectEnumerator];
+      GDataExtensionDeclaration *decl;
+      while ((decl = [extnDeclsEnum nextObject]) != nil) {        
         // if we've not already found this class when parsing at an earlier supplier
         Class extensionClass = [decl childClass];
         if ([extensions_ objectForKey:extensionClass] == nil) {
@@ -1850,20 +1920,20 @@ forCategoryWithScheme:scheme
   // |scheme| and |term| are from the XML that we're using to look up
   // a registered class.  The parameters should be non-nil,
   // though the values stored in the map may have nil scheme or term.
-  // 
+  //
   // if the registered scheme was nil or kGDataCategoryScheme then the key
   // is just the term value.
-  
+
   NSString *key = term;
-  Class class = [map valueForKey:key];
+  Class class = [map objectForKey:key];
   if (class) return class;
   
   key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
-  class = [map valueForKey:key];
+  class = [map objectForKey:key];
   if (class) return class;
   
   key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
-  class = [map valueForKey:key];
+  class = [map objectForKey:key];
   if (class) return class;
   
   return nil;

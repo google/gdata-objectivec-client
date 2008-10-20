@@ -36,13 +36,13 @@
                            lat:(NSNumber *)lat
                            lon:(NSNumber *)lon
                           elev:(NSNumber *)elev
-                          time:(GDataDateTime *)time {
+                          time:(GDataDateTime *)aTime {
   GDataGeoPt *obj = [[[GDataGeoPt alloc] init] autorelease];
   [obj setLabel:label];
   [obj setLat:lat];
   [obj setLon:lon];
   [obj setElev:elev];
-  [obj setTime:time];
+  [obj setTime:aTime];
   return obj;
 }
 

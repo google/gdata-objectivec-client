@@ -59,6 +59,8 @@
 - (NSString *)username;
 - (void)setUsername:(NSString *)obj;
 
+// setGeoLocation requires an instance of a subclass of GDataGeo, not an
+// instance of GDataGeo; see GDataGeo.h
 - (GDataGeo *)geoLocation;
 - (void)setGeoLocation:(GDataGeo *)geo;
 

@@ -299,7 +299,7 @@ static inline BOOL ScanInteger(NSScanner *scanner, NSInteger *targetInteger) {
   [dateComponents setHour:hour];
   [dateComponents setMinute:minute];
   
-  if (secFloat != -1.0f) sec = (NSInteger)secFloat;
+  if (secFloat < -1.0f || secFloat > -1.0f) sec = (NSInteger)secFloat;
   [dateComponents setSecond:sec];
     
   [self setDateComponents:dateComponents];

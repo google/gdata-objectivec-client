@@ -431,6 +431,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query setMaxResults:1000];
+  [query setShouldShowFolders:YES];
     
   ticket = [service fetchDocsQuery:query
                           delegate:self

@@ -33,8 +33,8 @@ typedef struct ElementTestKeyPathValues {
 
 + (id)valueInObject:(id)obj forKeyPathIncludingArrays:(NSString *)keyPath;
 
-- (NSString *)entryNamespaceString;
-
 - (void)runElementTests:(ElementTestKeyPathValues *)tests;
+
+- (NSString *)entryNamespaceString;
 
 @end

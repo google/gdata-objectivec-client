@@ -33,6 +33,8 @@ static NSString* const kCallbackStreamDataKey = @"streamData";
 
 NSString* const kCallbackRetryInvocationKey = @"retryInvocation";
 
+const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
+
 // XorPlainMutableData is a simple way to keep passwords held in heap objects
 // from being visible as plain-text
 static void XorPlainMutableData(NSMutableData *mutable) {
@@ -490,8 +492,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         objectClass = baseSurrogate; 
       }
 
+      NSString *serviceVersion = [self serviceVersion];
+
       object = [[[objectClass alloc] initWithXMLElement:root
                                                  parent:nil
+                                         serviceVersion:serviceVersion
                                              surrogates:surrogates] autorelease];
 #if GDATA_USES_LIBXML
       // retain the document so that pointers to internal nodes remain valid
@@ -766,6 +771,20 @@ static void XorPlainMutableData(NSMutableData *mutable) {
              didFailSelector:(SEL)failedSelector
                       ticket:(GDataServiceTicketBase *)ticket {
   
+  // sanity check the number of pages fetched already
+  NSUInteger followedCounter = [ticket nextLinksFollowedCounter];
+
+  if (followedCounter > kMaxNumberOfNextLinksFollowed) {
+#if DEBUG
+    // the client should be querying with a higher max results per page
+    // to avoid this
+    NSAssert1(0, @"Following next links retrieves too many pages (URL %@)",
+              nextFeedURL);
+#endif
+    return NO;
+  }
+  [ticket setNextLinksFollowedCounter:(1 + followedCounter)];
+
   // by definition, feed requests are GETs, so objectToPost: and httpMethod:
   // should be nil
   GDataServiceTicketBase *startedTicket;
@@ -1309,6 +1328,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)cancelTicket {
   [objectFetcher_ stopFetching];
+  [objectFetcher_ setUserData:nil];
   
   [self setObjectFetcher:nil];
   [self setCurrentFetcher:nil];
@@ -1508,5 +1528,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
   }
 }
+
+- (void)setNextLinksFollowedCounter:(NSUInteger)val {
+  nextLinksFollowedCounter_ = val;
+}
+
+- (NSUInteger)nextLinksFollowedCounter {
+  return nextLinksFollowedCounter_;
+}
+
 @end
 

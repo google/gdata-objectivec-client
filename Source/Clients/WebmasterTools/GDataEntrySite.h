@@ -36,6 +36,7 @@ _EXTERN NSString* kGDataNamespaceWebmasterTools       _INITIALIZE_AS(@"http://sc
 _EXTERN NSString* kGDataNamespaceWebmasterToolsPrefix _INITIALIZE_AS(@"wt");
 
 _EXTERN NSString* kGDataCategorySiteInfo       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#site-info");
+_EXTERN NSString* kGDataCategorySitesFeed      _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sites-feed");
 _EXTERN NSString* kGDataCategorySitemapsFeed   _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemaps-feed");
 _EXTERN NSString* kGDataCategorySitemapRegular _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-regular");
 _EXTERN NSString* kGDataCategorySitemapMobile  _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-mobile");

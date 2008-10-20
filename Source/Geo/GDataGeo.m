@@ -270,7 +270,7 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataGeo* newObj = [super copyWithZone:zone];
-  [newObj setValues:[GDataUtilities arrayWithCopiesOfObjectsInArray:[self values]]];
+  [newObj setValues:[GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self values]]];
   return newObj;
 }
 

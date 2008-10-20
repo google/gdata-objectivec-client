@@ -78,41 +78,68 @@
 
 + (NSArray *)arrayWithCopiesOfObjectsInArray:(NSArray *)source {
   if (source == nil) return nil;
-  
+
   NSArray *result = [[[NSArray alloc] initWithArray:source
                                           copyItems:YES] autorelease];
   return result;
 }
 
++ (NSMutableArray *)mutableArrayWithCopiesOfObjectsInArray:(NSArray *)source {
+
+  if (source == nil) return nil;
+
+  NSMutableArray *result;
+
+  result = [[[NSMutableArray alloc] initWithArray:source
+                                        copyItems:YES] autorelease];
+  return result;
+}
+
 + (NSDictionary *)dictionaryWithCopiesOfObjectsInDictionary:(NSDictionary *)source {
   if (source == nil) return nil;
-  
+
   NSDictionary *result = [[[NSDictionary alloc] initWithDictionary:source
                                                          copyItems:YES] autorelease];
   return result;
 }
 
++ (NSMutableDictionary *)mutableDictionaryWithCopiesOfObjectsInDictionary:(NSDictionary *)source {
+
+  if (source == nil) return nil;
+
+  NSMutableDictionary *result;
+
+  result = [[[NSMutableDictionary alloc] initWithDictionary:source
+                                                  copyItems:YES] autorelease];
+  return result;
+}
+
 + (NSDictionary *)dictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source {
-  
+  // we don't enforce return of an immutable for this
+  return [self mutableDictionaryWithCopiesOfArraysInDictionary:source];
+}
+
++ (NSMutableDictionary *)mutableDictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source {
+
   // The extensions dictionary maps classes to arrays of extension objects.
   //
   // We want to copy each extension object in each array.
-  
+
   if (source == nil) return nil;
-  
+
   // Using CFPropertyListCreateDeepCopy would be nice, but it fails on non-plist
   // classes of objects
-  
+
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   NSEnumerator *keyEnum = [source keyEnumerator];
   NSArray *key;
   while ((key = [keyEnum nextObject]) != nil) {
-    NSArray *origArray = [source objectForKey:key];
-    NSArray *copyArray = [self arrayWithCopiesOfObjectsInArray:origArray];
-    
+    NSMutableArray *origArray = [source objectForKey:key];
+    NSMutableArray *copyArray = [self mutableArrayWithCopiesOfObjectsInArray:origArray];
+
     [dict setObject:copyArray forKey:key];
   }
-  
+
   return dict;
 }
 

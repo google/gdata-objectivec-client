@@ -94,11 +94,13 @@
   
   // make an array of "name:value" items for each tag
   NSArray *tags = [self tags];
+  NSEnumerator *tagsEnum = [tags objectEnumerator];
   NSMutableArray *tagsArray = [NSMutableArray array];
-  
-  for (int idx = 0; idx < [tags count]; idx++) {
-    GDataEXIFTag *tag = [tags objectAtIndex:idx];
-    [tagsArray addObject:[NSString stringWithFormat:@"%@:%@", [tag name], [tag stringValue]]];
+  GDataEXIFTag *tag;
+  while ((tag = [tagsEnum nextObject]) != nil) {
+    NSString *string = [NSString stringWithFormat:@"%@:%@", 
+                        [tag name], [tag stringValue]];
+    [tagsArray addObject:string];
   }
  
   
@@ -134,16 +136,14 @@
 
 - (GDataEXIFTag *)tagWithName:(NSString *)name {
   NSArray *tags = [self tags];
-  
-  for (int idx = 0; idx < [tags count]; idx++) { 
-    
-    GDataEXIFTag *tag = [tags objectAtIndex:idx];
+  NSEnumerator *tagsEnum = [tags objectEnumerator];
+  GDataEXIFTag *tag = nil;
+  while ((tag = [tagsEnum nextObject]) != nil) {
     if ([[tag name] isEqual:name]) {
-      return tag; 
+      break;
     }
   }
-  
-  return nil;
+  return tag;
 }
 
 - (NSString *)valueForTagName:(NSString *)name {

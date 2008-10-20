@@ -36,9 +36,18 @@ _EXTERN NSString* kGDataLinkRelBatch _INITIALIZE_AS(@"http://schemas.google.com/
 
 _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
-// for links, like <link rel="alternate" type="text/html"
-//     href="http://www.google.com/calendar/event?eid=b..." title="alternate"/>
+// for links, like 
+//
+//  <link rel="alternate" type="text/html"
+//        href="http://www.google.com/calendar/event?eid=b..." title="alternate">
+//     <content type="application/atom+xml;feed"> <feed>...</feed> </content>
+//  </link>
+//
+
+@class GDataAtomContent;
+
 @interface GDataLink : GDataObject <GDataExtension> {
+  NSString *etag_;
 }
 
 + (GDataLink *)linkWithRel:(NSString *)rel
@@ -47,18 +56,30 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
+
 - (NSString *)type;
 - (void)setType:(NSString *)str;
+
 - (NSString *)href;
 - (void)setHref:(NSString *)str;
+
 - (NSString *)hrefLang;
 - (void)setHrefLang:(NSString *)str;
+
 - (NSString *)title;
 - (void)setTitle:(NSString *)str;
+
 - (NSString *)titleLang;
 - (void)setTitleLang:(NSString *)str;
+
 - (NSNumber *)resourceLength;
 - (void)setResourceLength:(NSNumber *)length;
+
+- (NSString *)ETag;
+- (void)setETag:(NSString *)str;
+
+- (GDataAtomContent *)content;
+- (void)setContent:(GDataAtomContent *)obj;  
 
 // convenience method
 

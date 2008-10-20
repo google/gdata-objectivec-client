@@ -28,13 +28,16 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 
 // array with copies of the objects in the source array (1-deep)
 + (NSArray *)arrayWithCopiesOfObjectsInArray:(NSArray *)source;
++ (NSMutableArray *)mutableArrayWithCopiesOfObjectsInArray:(NSArray *)source;
 
 // dicionary with copies of the objects in the source dictionary (1-deep)
 + (NSDictionary *)dictionaryWithCopiesOfObjectsInDictionary:(NSDictionary *)source;
++ (NSMutableDictionary *)mutableDictionaryWithCopiesOfObjectsInDictionary:(NSDictionary *)source;
 
 // dictionary with 1-deep copies of the arrays which are the source dictionary's
 // values (2-deep)
 + (NSDictionary *)dictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source;
++ (NSMutableDictionary *)mutableDictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source;
 
 // string encoding
 

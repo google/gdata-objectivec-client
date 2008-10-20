@@ -85,7 +85,8 @@
   
   // the publication state element is an extension to the Atom publishing
   // control element
-  [self addExtensionDeclarationForParentClass:[GDataAtomPubControl class]
+  Class appClass = [GDataAtomPubControl atomPubControlClassForObject:self];
+  [self addExtensionDeclarationForParentClass:appClass
                                    childClass:[GDataYouTubePublicationState class]];
 
   // the token element is an extension to the edit-media GDataLink

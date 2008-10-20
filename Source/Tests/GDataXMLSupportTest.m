@@ -43,6 +43,16 @@
   NSXMLElement *child3 = [NSXMLElement elementWithName:@"chyld"];
   [child3 setStringValue:@"fuzz3"];
   
+  // create with a missing namespace URI that we'll never actually add,
+  // so we can test searches based on our faked use of {uri}: as
+  // a prefix for the local name
+  NSXMLElement *attr4 = [NSXMLElement attributeWithName:@"zorgbot"
+                                                    URI:kGDataNamespaceBatch
+                                            stringValue:@"gollyfum"];
+  NSXMLElement *child4 = [NSXMLElement elementWithName:@"zorgtree"
+                                                   URI:kGDataNamespaceBatch];
+  [child4 setStringValue:@"gollyfoo"];
+
   // add these to a parent element, along with namespaces
   NSXMLElement *parent = [NSXMLElement elementWithName:@"dad"];
   [parent setStringValue:@"buzz"];
@@ -65,6 +75,8 @@
   [parent addChild:child2];
   [parent addAttribute:attr2];
   [parent addChild:child3];
+  [parent addChild:child4];
+  [parent addAttribute:attr4];
   
   // search for attr1 and child1 by qualified name, since they were
   // created by URI
@@ -102,19 +114,35 @@
   NSXMLNode *child3aFound = [elements3 objectAtIndex:0];
   STAssertEqualObjects([child3aFound stringValue], @"fuzz3", @"child chyld");
   
+  // search for attr4 and child4 by local name and URI, since they were
+  // created by URI and never bound to a prefix by a namespace declaration
+  NSXMLNode *attr4Found = [parent attributeForLocalName:@"zorgbot"
+                                                    URI:kGDataNamespaceBatch];
+  STAssertEqualObjects([attr4Found stringValue], @"gollyfum", @"in test batch zorgbot");
+
+  NSArray *elements4 = [parent elementsForLocalName:@"zorgtree"
+                                                URI:kGDataNamespaceBatch];
+  STAssertEquals((int)[elements4 count], 1, @"getting batch zorgtree");
+  NSXMLNode *child4Found = [elements4 objectAtIndex:0];
+  STAssertEqualObjects([child4Found stringValue], @"gollyfoo", @"in test batch zorgtree");
+
   // test output
 #if GDATA_USES_LIBXML
   NSString *expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
   "xmlns:gd=\"http://schemas.google.com/g/2005\" "
   "xmlns:openSearch=\"http://a9.com/-/spec/opensearchrss/1.0/\" "
-  "gd:foo=\"baz\" openSearch:foo=\"baz2\">buzz<gd:chyld>fuzz</gd:chyld><openSearch:chyld>"
-  "fuzz2</openSearch:chyld><chyld>fuzz3</chyld></dad>";
+  "gd:foo=\"baz\" openSearch:foo=\"baz2\" "
+  "{http://schemas.google.com/gdata/batch}:zorgbot=\"gollyfum\">"
+  "buzz<gd:chyld>fuzz</gd:chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
+  "<chyld>fuzz3</chyld><{http://schemas.google.com/gdata/batch}:zorgtree>"
+  "gollyfoo</{http://schemas.google.com/gdata/batch}:zorgtree></dad>";
 #else
   NSString *expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
   "xmlns:gd=\"http://schemas.google.com/g/2005\" "
   "xmlns:openSearch=\"http://a9.com/-/spec/opensearchrss/1.0/\" "
-  "foo=\"baz\" openSearch:foo=\"baz2\">buzz<chyld>fuzz</chyld><openSearch:chyld>"
-  "fuzz2</openSearch:chyld><chyld>fuzz3</chyld></dad>";
+  "foo=\"baz\" openSearch:foo=\"baz2\" zorgbot=\"gollyfum\">"
+  "buzz<chyld>fuzz</chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
+  "<chyld>fuzz3</chyld><zorgtree>gollyfoo</zorgtree></dad>";
 #endif
   NSString *actualXML = [parent XMLString];
   STAssertEqualObjects(actualXML, expectedXML, @"unexpected xml output");

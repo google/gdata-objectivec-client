@@ -50,8 +50,8 @@
             <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
         </author>
         <yt:username>googletechtalks</yt:username>
-        <gd:feedLink countHint="654"
-            href="http://gdata.youtube.com/feeds/api/users/googletechtalks/uploads" rel="http://gdata.youtube.com/schemas/2007#user.uploads"/>
+        <content src="http://gdata.youtube.com/feeds/api/users/googletechtalks/uploads" 
+          type="application/atom+xml"/>
     </entry>
     <entry>
         <id>http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/396213cdaa07d677</id>
@@ -75,7 +75,7 @@
             <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
         </author>
         <yt:queryString>cute dogs</yt:queryString>
-        <gd:feedLink
-            href="http://gdata.youtube.com/feeds/api/videos?vq=cute+dogs" rel="http://gdata.youtube.com/schemas/2007#video.query"/>
+        <content src="http://gdata.youtube.com/feeds/api/videos?vq=cute+dogs" 
+                  type="application/atom+xml"/>
     </entry>
 </feed>

@@ -113,8 +113,8 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
                              value:(flag ? @"true" : nil)];
 }
 - (BOOL)shouldReturnEmpty {
-  NSString *reverse = [[self customParameters] objectForKey:kReturnEmptyParamName];
-  return reverse && [reverse isEqual:@"true"];
+  NSString *str = [[self customParameters] objectForKey:kReturnEmptyParamName];
+  return str && [str isEqual:@"true"];
 }
 
 
