@@ -47,7 +47,7 @@ Additions
   
 - Moved array category method objectsWithValue:forKeyPath: to GDataUtilities
 
-- Added property methods to GTMHTTPFetcher.  These are convenient alternatives
+- Added property methods to GDataHTTPFetcher.  These are convenient alternatives
   to storing an NSDictionary in the userData.
   
 - Added support for OpenSearch 1.1 elements in feeds.
