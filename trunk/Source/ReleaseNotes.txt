@@ -40,6 +40,8 @@ Additions
 
 - Added service support for Google AuthSub tokens.
 
+- Added service methods for fetching ACL feeds and entries.
+
 - Added a convenience routine for setting an entry's batch ID from a string.
 
 - Added YouTube "most_popular" feed ID, and query parameters for location

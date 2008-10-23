@@ -1336,11 +1336,11 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
       NSURL *feedURL = [[calendar ACLLink] URL];
       
       if (feedURL) {
-        [service fetchAuthenticatedEntryByInsertingEntry:entry
-                                              forFeedURL:feedURL
-                                                delegate:self
-                                       didFinishSelector:@selector(addACLEntryTicket:addedEntry:)
-                                         didFailSelector:@selector(addACLEntryTicket:failedWithError:)];
+        [service fetchACLEntryByInsertingEntry:entry
+                                    forFeedURL:feedURL
+                                      delegate:self
+                             didFinishSelector:@selector(addACLEntryTicket:addedEntry:)
+                               didFailSelector:@selector(addACLEntryTicket:failedWithError:)];
       }
     }
   }
@@ -1397,11 +1397,11 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
       GDataLink *link = [entry editLink];
       if (link) {
         GDataServiceGoogleCalendar *service = [self calendarService];
-        [service fetchAuthenticatedEntryByUpdatingEntry:entry
-                                            forEntryURL:[link URL]
-                                               delegate:self
-                                      didFinishSelector:@selector(editACLEntryTicket:editedEntry:)
-                                        didFailSelector:@selector(editACLEntryTicket:failedWithError:)];
+        [service fetchACLEntryByUpdatingEntry:entry
+                                  forEntryURL:[link URL]
+                                     delegate:self
+                            didFinishSelector:@selector(editACLEntryTicket:editedEntry:)
+                              didFailSelector:@selector(editACLEntryTicket:failedWithError:)];
       }
     }
   }
@@ -1454,14 +1454,13 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
     
     // delete the ACLEntry
     GDataEntryACL *entry = [self selectedACLEntry];
-    GDataLink *link = [entry editLink];
-    
-    if (link) {
+
+    if (entry) {
       GDataServiceGoogleCalendar *service = [self calendarService];
-      [service deleteAuthenticatedResourceURL:[link URL]
-                                     delegate:self 
-                            didFinishSelector:@selector(deleteACLEntryTicket:deletedEntry:)
-                              didFailSelector:@selector(deleteACLEntryTicket:failedWithError:)];
+      [service deleteACLEntry:entry
+                     delegate:self
+            didFinishSelector:@selector(deleteACLEntryTicket:deletedEntry:)
+              didFailSelector:@selector(deleteACLEntryTicket:failedWithError:)];
     }
   }
 }

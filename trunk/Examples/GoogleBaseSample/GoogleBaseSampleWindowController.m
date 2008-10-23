@@ -299,13 +299,13 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     
     // get this entry's content string
     GDataEntryGoogleBase *entry = [entries objectAtIndex:idx];
-    GDataTextConstruct *textConstruct = [entry content];
-    NSString *str = [textConstruct stringValue];
+    GDataEntryContent *content = [entry content];
+    NSString *str = [content stringValue];
     if (str) {
       
       // append newline and the current date/time to this entry's content
       str = [NSString stringWithFormat:@"%@\n%@", str, [NSDate date]];
-      [textConstruct setStringValue:str];
+      [content setStringValue:str];
       
       // add a batch ID to this entry
       static int staticID = 0;
