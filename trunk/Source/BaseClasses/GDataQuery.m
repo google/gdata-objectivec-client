@@ -19,6 +19,22 @@
 
 #import "GDataQuery.h"
 
+static NSString *const kAuthorParamName  = @"author";
+static NSString *const kFullTextQueryStringParamName  = @"q";
+static NSString *const kLanguageParamName  = @"hl";
+static NSString *const kMaxResultsParamName = @"max-results";
+static NSString *const kOrderByParamName  = @"orderby";
+static NSString *const kPrettyPrintParamName  = @"prettyprint";
+static NSString *const kProtocolVersionParamName  = @"v";
+static NSString *const kPublishedMaxParamName  = @"published-max";
+static NSString *const kPublishedMinParamName  = @"published-min";
+static NSString *const kShowDeletedParamName  = @"showdeleted";
+static NSString *const kSortOrderParamName  = @"sortorder";
+static NSString *const kStartIndexParamName = @"start-index";
+static NSString *const kStrictParamName  = @"strict";
+static NSString *const kUpdatedMaxParamName  = @"updated-max";
+static NSString *const kUpdatedMinParamName  = @"updated-min";
+
 @implementation GDataCategoryFilter
 
 + (GDataCategoryFilter *)categoryFilter {
@@ -130,8 +146,6 @@
 - (id)initWithFeedURL:(NSURL *)feedURL {
   self = [super init];
   if (self) {
-    startIndex_ = -1;
-    maxResults_ = -1;
     [self setFeedURL:feedURL];
   }
   return self;
@@ -139,13 +153,6 @@
 
 - (void)dealloc {
   [feedURL_ release];
-  [fullTextQueryString_ release];
-  [author_ release];
-  [orderBy_ release];
-  [publishedMinDateTime_ release];
-  [publishedMaxDateTime_ release];
-  [updatedMinDateTime_ release];
-  [updatedMaxDateTime_ release];
   [categoryFilters_ release];
   [customParameters_ release];
   [super dealloc];
@@ -155,18 +162,6 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataQuery *query = [[GDataQuery alloc] init];
   [query setFeedURL:feedURL_];
-  [query setStartIndex:startIndex_];
-  [query setMaxResults:maxResults_];
-  [query setFullTextQueryString:fullTextQueryString_];
-  [query setAuthor:author_];
-  [query setOrderBy:orderBy_];
-  if (sortOrder_ != 0) [query setIsAscendingOrder:(sortOrder_ > 0)];
-  [query setShouldShowDeleted:shouldShowDeleted_];
-  [query setIsStrict:isStrict_];
-  [query setPublishedMinDateTime:publishedMinDateTime_];
-  [query setPublishedMaxDateTime:publishedMaxDateTime_];
-  [query setUpdatedMinDateTime:updatedMinDateTime_];
-  [query setUpdatedMaxDateTime:updatedMaxDateTime_];
   [query setCategoryFilters:categoryFilters_];
   [query setCustomParameters:customParameters_];
   return query;
@@ -188,106 +183,166 @@
 }
 
 - (int)startIndex {
-  return startIndex_; 
+  return [self intValueForParameterWithName:kStartIndexParamName
+                      missingParameterValue:-1];
 }
 
 - (void)setStartIndex:(int)startIndex {
-  startIndex_ = startIndex; 
+  if (startIndex != -1) {
+    [self addCustomParameterWithName:kStartIndexParamName
+                            intValue:startIndex];
+  } else {
+    [self removeCustomParameterWithName:kStartIndexParamName];
+  }
 }
 
 - (int)maxResults {
-  return maxResults_; 
+  return [self intValueForParameterWithName:kMaxResultsParamName
+                      missingParameterValue:-1];
 }
 
 - (void)setMaxResults:(int)maxResults {
-  maxResults_ = maxResults;  
+  if (maxResults != -1) {
+    [self addCustomParameterWithName:kMaxResultsParamName
+                            intValue:maxResults];
+  } else {
+    [self removeCustomParameterWithName:kMaxResultsParamName];
+  }
 }
 
 - (NSString *)fullTextQueryString {
-  return fullTextQueryString_; 
+  NSString *str;
+
+  str = [self valueForParameterWithName:kFullTextQueryStringParamName];
+  return str;
 }
 
 - (void)setFullTextQueryString:(NSString *)str {
-  [fullTextQueryString_ autorelease];  
-  fullTextQueryString_ = [str copy];
+  [self addCustomParameterWithName:kFullTextQueryStringParamName
+                             value:str];
 }
 
 - (NSString *)author {
-  return author_; 
+  NSString *str = [self valueForParameterWithName:kAuthorParamName];
+  return str;
 }
 
-- (void)setAuthor:(NSString *)author {
-  [author_ autorelease];  
-  author_ = [author copy];
+- (void)setAuthor:(NSString *)str {
+  [self addCustomParameterWithName:kAuthorParamName
+                             value:str];
 }
 
 - (NSString *)orderBy {
-  return orderBy_; 
+  NSString *str = [self valueForParameterWithName:kOrderByParamName];
+  return str;
 }
 
 - (void)setOrderBy:(NSString *)str {
-  [orderBy_ autorelease];  
-  orderBy_ = [str copy];
+  [self addCustomParameterWithName:kOrderByParamName
+                             value:str];
 }
 
 - (BOOL)isAscendingOrder {
-  return sortOrder_ > 0; 
+  NSString *str = [self valueForParameterWithName:kSortOrderParamName];
+
+  BOOL isAscending = (str != nil)
+    && ([str caseInsensitiveCompare:@"ascending"] == NSOrderedSame);
+
+  return isAscending;
 }
 
 - (void)setIsAscendingOrder:(BOOL)flag {
-  sortOrder_ = (flag ? 1 : -1); 
+  NSString *str = (flag ? @"ascending" : @"descending");
+
+  [self addCustomParameterWithName:kSortOrderParamName
+                             value:str];
 }
 
 - (BOOL)shouldShowDeleted {
-  return shouldShowDeleted_;
+  return [self boolValueForParameterWithName:kShowDeletedParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldShowDeleted:(BOOL)flag {
-  shouldShowDeleted_ = flag; 
+  [self addCustomParameterWithName:kShowDeletedParamName
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (BOOL)isStrict {
-  return isStrict_;
+  return [self boolValueForParameterWithName:kStrictParamName
+                                defaultValue:NO];
 }
 
 - (void)setIsStrict:(BOOL)flag {
-  isStrict_ = flag; 
+  [self addCustomParameterWithName:kStrictParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldPrettyPrint {
+  return [self boolValueForParameterWithName:kPrettyPrintParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldPrettyPrint:(BOOL)flag {
+  [self addCustomParameterWithName:kPrettyPrintParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (NSString *)protocolVersion {
+  return [self valueForParameterWithName:kProtocolVersionParamName];
+}
+
+- (void)setProtocolVersion:(NSString *)str {
+  [self addCustomParameterWithName:kProtocolVersionParamName
+                             value:str];
+}
+
+- (NSString *)language {
+  return [self valueForParameterWithName:kLanguageParamName];
+}
+
+- (void)setLanguage:(NSString *)str {
+  [self addCustomParameterWithName:kLanguageParamName
+                             value:str];
 }
 
 - (GDataDateTime *)publishedMinDateTime {
-  return publishedMinDateTime_;
+  return [self dateTimeForParameterWithName:kPublishedMinParamName];
 }
 
 - (void)setPublishedMinDateTime:(GDataDateTime *)dateTime {
-  [publishedMinDateTime_ autorelease];
-  publishedMinDateTime_ = [dateTime retain]; 
+  [self addCustomParameterWithName:kPublishedMinParamName
+                          dateTime:dateTime];
 }
 
 - (GDataDateTime *)publishedMaxDateTime {
-  return publishedMaxDateTime_;
+  return [self dateTimeForParameterWithName:kPublishedMaxParamName];
 }
 
 - (void)setPublishedMaxDateTime:(GDataDateTime *)dateTime {
-  [publishedMaxDateTime_ autorelease];
-  publishedMaxDateTime_ = [dateTime retain]; 
+  [self addCustomParameterWithName:kPublishedMaxParamName
+                          dateTime:dateTime];
 }
 
 - (GDataDateTime *)updatedMinDateTime {
-  return updatedMinDateTime_;
+  return [self dateTimeForParameterWithName:kUpdatedMinParamName];
 }
 
 - (void)setUpdatedMinDateTime:(GDataDateTime *)dateTime {
-  [updatedMinDateTime_ autorelease];
-  updatedMinDateTime_ = [dateTime retain]; 
+  [self addCustomParameterWithName:kUpdatedMinParamName
+                          dateTime:dateTime];
 }
 
 - (GDataDateTime *)updatedMaxDateTime {
-  return updatedMaxDateTime_;
+  return [self dateTimeForParameterWithName:kUpdatedMaxParamName];
 }
 
 - (void)setUpdatedMaxDateTime:(GDataDateTime *)dateTime {
-  [updatedMaxDateTime_ autorelease];
-  updatedMaxDateTime_ = [dateTime retain]; 
+  [self addCustomParameterWithName:kUpdatedMaxParamName
+                          dateTime:dateTime];
 }
 
 - (NSArray *)categoryFilters {
@@ -306,6 +361,8 @@
   
   [categoryFilters_ addObject:filter];
 }
+
+#pragma mark -
 
 - (NSDictionary *)customParameters {
   return customParameters_; 
@@ -335,6 +392,85 @@
   [customParameters_ removeObjectForKey:name];
 }
 
+- (NSString *)valueForParameterWithName:(NSString *)name {
+  NSString *str = [[self customParameters] objectForKey:name];
+  return str; 
+}
+
+// convenience methods for dateTime parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                          dateTime:(GDataDateTime *)dateTime {
+
+  [self addCustomParameterWithName:name
+                             value:[dateTime RFC3339String]];
+}
+
+- (GDataDateTime *)dateTimeForParameterWithName:(NSString *)name {
+
+  NSString *str = [customParameters_ objectForKey:name];
+  if (str) {
+    return [GDataDateTime dateTimeWithRFC3339String:str];
+  }
+  return nil;
+}
+
+// convenience methods for int parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                          intValue:(int)val {
+
+  NSString *str = [[NSNumber numberWithInt:val] stringValue];
+
+  [self addCustomParameterWithName:name
+                             value:str];
+}
+
+- (int)intValueForParameterWithName:(NSString *)name
+              missingParameterValue:(int)missingVal {
+
+  NSString *str = [customParameters_ objectForKey:name];
+  if (str != nil) return [str intValue];
+
+  return missingVal;
+}
+
+// convenience method for boolean parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                         boolValue:(BOOL)flag
+                      defaultValue:(BOOL)defaultValue {
+
+  NSString *str = nil;
+  if (defaultValue) {
+    // default is true
+    if (!flag) str = @"false";
+  } else {
+    // default is false
+    if (flag) str = @"true";
+  }
+
+  // nil value will remove the parameter
+  [self addCustomParameterWithName:name
+                             value:str];
+}
+
+- (BOOL)boolValueForParameterWithName:(NSString *)name
+                         defaultValue:(BOOL)defaultValue {
+
+  NSString *str = [self valueForParameterWithName:name];
+  if (defaultValue) {
+    // default is true, so return true if param is missing or
+    // is "true"
+    return (str == nil)
+      || ([str caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  } else {
+    // default is false, so return true only if the param is present
+    // and "true"
+    return (str != nil)
+      && ([str caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  }
+}
+
+#pragma mark -
+
 - (NSString *)pathQueryURI {
   
   // make a path string containing the category filters
@@ -359,82 +495,6 @@
   
   NSMutableArray *queryItems = [NSMutableArray array];
   
-  NSString *ftQueryStr = [self fullTextQueryString];
-  if ([ftQueryStr length] > 0) {
-    
-    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:ftQueryStr];
-    NSString *ftQueryItem = [NSString stringWithFormat:@"q=%@", param];
-    [queryItems addObject:ftQueryItem];
-  }
- 
-  NSString *author = [self author];
-  if ([author length] > 0) {
-    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:author];
-    NSString *authorItem = [NSString stringWithFormat:@"author=%@", param];
-    [queryItems addObject:authorItem];
-  }
-
-  NSString *orderBy = [self orderBy];
-  if ([orderBy length] > 0) {
-    NSString *param = [GDataUtilities stringByURLEncodingStringParameter:orderBy];
-    NSString *orderByItem = [NSString stringWithFormat:@"orderby=%@", param];
-    [queryItems addObject:orderByItem];
-  }
-  
-  if (sortOrder_ != 0) {
-    NSString *param = (sortOrder_ > 0 ? @"ascending" : @"descending");
-    NSString *sortOrderItem = [NSString stringWithFormat:@"sortorder=%@", param];
-    [queryItems addObject:sortOrderItem];
-  }
-  
-  if (shouldShowDeleted_) {
-    [queryItems addObject:@"showdeleted=true"];
-  }
-  
-  if (isStrict_) {
-    [queryItems addObject:@"strict=true"];
-  }
-  
-  GDataDateTime *minUpdatedDate = [self updatedMinDateTime];
-  if (minUpdatedDate) {
-    NSString *minUpdateDateItem = [NSString stringWithFormat:@"updated-min=%@",
-      [GDataUtilities stringByURLEncodingStringParameter:[minUpdatedDate RFC3339String]]];
-    [queryItems addObject:minUpdateDateItem];
-  }
-  
-  GDataDateTime *maxUpdatedDate = [self updatedMaxDateTime];
-  if (maxUpdatedDate) {
-    NSString *maxUpdateDateItem = [NSString stringWithFormat:@"updated-max=%@",
-      [GDataUtilities stringByURLEncodingStringParameter:[maxUpdatedDate RFC3339String]]];
-    [queryItems addObject:maxUpdateDateItem];
-  }
-  
-  GDataDateTime *minPublishedDate = [self publishedMinDateTime];
-  if (minPublishedDate) {
-    NSString *minPublishedDateItem = [NSString stringWithFormat:@"published-min=%@",
-      [GDataUtilities stringByURLEncodingStringParameter:[minPublishedDate RFC3339String]]];
-    [queryItems addObject:minPublishedDateItem];
-  }
-  
-  GDataDateTime *maxPublishedDate = [self publishedMaxDateTime];
-  if (maxPublishedDate) {
-    NSString *maxPublishedDateItem = [NSString stringWithFormat:@"published-max=%@",
-      [GDataUtilities stringByURLEncodingStringParameter:[maxPublishedDate RFC3339String]]];
-    [queryItems addObject:maxPublishedDateItem];
-  }
-  
-  int startIndex = [self startIndex];
-  if (startIndex != -1) {
-    NSString *startIndexItem = [NSString stringWithFormat:@"start-index=%d", startIndex];
-    [queryItems addObject:startIndexItem];
-  }
-  
-  int maxResults = [self maxResults];
-  if (maxResults != -1) {
-    NSString *maxResultsItem = [NSString stringWithFormat:@"max-results=%d", maxResults];
-    [queryItems addObject:maxResultsItem];
-  }
-
   // sort the custom parameter keys so that we have deterministic parameter
   // order for unit tests
   NSDictionary *customParameters = [self customParameters];

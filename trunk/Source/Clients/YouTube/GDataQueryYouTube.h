@@ -40,6 +40,10 @@ _EXTERN NSString* kGDataYouTubePeriodThisWeek  _INITIALIZE_AS(@"this_week");
 _EXTERN NSString* kGDataYouTubePeriodThisMonth _INITIALIZE_AS(@"this_month");
 _EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 
+_EXTERN NSString* kGDataYouTubeSafeSearchNone     _INITIALIZE_AS(@"none");
+_EXTERN NSString* kGDataYouTubeSafeSearchStrict   _INITIALIZE_AS(@"strict");
+_EXTERN NSString* kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderate");
+
 
 // http://code.google.com/apis/youtube/reference.html#Parameters
 
@@ -64,10 +68,24 @@ _EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 - (void)setLanguageRestriction:(NSString *)str;
 - (NSString *)languageRestriction;
 
+// location as latitude,longitude
 - (void)setLocation:(NSString *)str;
-- (NSString *)location;  
+- (NSString *)location;
 
+// radius like "100km" with units "ft", "mi", "m", or "km"
+- (void)setLocationRadius:(NSString *)str;
+- (NSString *)locationRadius;
+
+- (void)setUploader:(NSString *)str;
+- (NSString *)uploader;
+
+// safeSearch replaces allowRacy
+- (void)setSafeSearch:(NSString *)str;
+- (NSString *)safeSearch;
+
+// racy is deprecated for GData v2
 - (void)setAllowRacy:(BOOL)flag;
 - (BOOL)allowRacy;
+
 @end
 

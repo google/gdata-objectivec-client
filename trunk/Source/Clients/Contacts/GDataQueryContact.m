@@ -36,7 +36,7 @@ static NSString *const kGroupParamName = @"group";
 
 
 - (NSString *)groupIdentifier {
-  NSString *str = [[self customParameters] objectForKey:kGroupParamName];
+  NSString *str = [self valueForParameterWithName:kGroupParamName];
   return str;
 }
 

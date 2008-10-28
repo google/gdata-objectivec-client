@@ -40,12 +40,17 @@
 
   // test query with params but no categories
   GDataQuery* query2 = [GDataQuery queryWithFeedURL:feedURL];
-  [query2 setStartIndex:10];
-  [query2 setMaxResults:20];
-  [query2 setFullTextQueryString:@"Darcy"];
   [query2 setAuthor:@"Fred Flintstone"];
-  [query2 setOrderBy:@"random"];
+  [query2 setFullTextQueryString:@"Darcy Dingo"];
   [query2 setIsAscendingOrder:YES];
+  [query2 setIsStrict:YES];
+  [query2 setLanguage:@"en"];
+  [query2 setMaxResults:20];
+  [query2 setOrderBy:@"random"];
+  [query2 setProtocolVersion:@"2.0"];
+  [query2 setShouldPrettyPrint:YES];
+  [query2 setShouldShowDeleted:YES];
+  [query2 setStartIndex:10];
   [query2 setPublishedMinDateTime:dateTime1];
   [query2 setPublishedMaxDateTime:dateTime2];
   [query2 setUpdatedMinDateTime:dateTime3];
@@ -54,11 +59,15 @@
   [query2 addCustomParameterWithName:@"Wilma" value:@"Betty"];
   
   NSURL* resultURL2 = [query2 URL];
-  NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&sortorder=ascending"
-    "&updated-min=2006-04-29T07%3A35%3A59Z&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
-    "&published-min=2006-03-29T07%3A35%3A59Z&published-max=2006-03-30T07%3A35%3A59Z"
-    "&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
+  
+  NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
+    "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&orderby=random"
+    "&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
+    "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true"
+    "&sortorder=ascending&start-index=10&strict=true"
+    "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
+    "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
+  
   STAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
   
   GDataCategoryFilter *categoryFilter = [GDataCategoryFilter categoryFilter];
@@ -88,14 +97,17 @@
   [query2 addCategoryFilter:categoryFilter2];
   
   NSURL* resultURL2a = [query2 URL];
-  NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/basic/"
-    "-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/Zonk4"
-    "?q=Darcy&author=Fred+Flintstone&orderby=random&sortorder=ascending"
-    "&updated-min=2006-04-29T07%3A35%3A59Z&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00&published-min=2006-03-29T07%3A35%3A59Z"
-    "&published-max=2006-03-30T07%3A35%3A59Z&start-index=10&max-results=20&Fred=Barney&Wilma=Betty";
-    
+
+  NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/basic"
+    "/-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/Zonk4?"
+    "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&orderby=random"
+    "&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
+    "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true"
+    "&sortorder=ascending&start-index=10&strict=true"
+    "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
+    "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
+
   STAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
-  //NSLog(@"======+++++> %@", [[resultURL2a absoluteString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]);
   
   //
   // test a calendar query
@@ -108,7 +120,8 @@
   
   NSURL* resultURLC1 = [queryCal URL];
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "start-index=10&max-results=20&start-max=2006-03-30T07%3A35%3A59Z&start-min=2006-03-29T07%3A35%3A59Z";
+    "max-results=20&start-index=10&start-max=2006-03-30T07%3A35%3A59Z&start-min=2006-03-29T07%3A35%3A59Z";
+
   STAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
   
   GDataQueryCalendar* queryCal2 = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
@@ -138,7 +151,7 @@
   
   NSURL* resultURLGB1 = [queryGB1 URL];
   NSString *expectedGB1 = @"http://www.google.com/base/feeds/snippets/?"
-    "orderby=modification_time&sortorder=ascending&max-values=7";
+    "max-values=7&orderby=modification_time&sortorder=ascending";
   STAssertEqualObjects([resultURLGB1 absoluteString], expectedGB1, @"Google Base query 1 generation error");
   
   // Try a "bq" base query
@@ -148,8 +161,8 @@
   [queryGB2 setMaxResults:1];
   
   NSURL* resultURLGB2 = [queryGB2 URL];
-  NSString *expectedGB2 = @"http://www.google.com/base/feeds/snippets/"
-    "?max-results=1&bq=digital+camera";
+  NSString *expectedGB2 = @"http://www.google.com/base/feeds/snippets/?"
+    "bq=digital+camera&max-results=1";
   STAssertEqualObjects([resultURLGB2 absoluteString], expectedGB2, @"Google Base query 2 generation error");
 }
 
@@ -247,13 +260,16 @@
   [ytQuery1 setRestriction:@"127.0.0.1"];
   [ytQuery1 setLanguageRestriction:@"en"];
   [ytQuery1 setLocation:@"Canada"];
-  [ytQuery1 setAllowRacy:YES];
+  [ytQuery1 setLocationRadius:@"2km"];
+  [ytQuery1 setSafeSearch:kGDataYouTubeSafeSearchStrict];
+  [ytQuery1 setUploader:@"foo"];
   
   NSURL* resultURL1 = [ytQuery1 URL];
-  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
-    "favorites?orderby=relevance&format=0%2C5%2C6&location=Canada&lr=en"
-    "&racy=include&restriction=127.0.0.1&time=this_week"
+  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/favorites?"
+    "format=0%2C5%2C6&location=Canada&location-radius=2km&lr=en&orderby=relevance"
+    "&restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo"
     "&vq=%22Fred+Flintstone%22";
+  
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"YouTube query 1 generation error");
 }

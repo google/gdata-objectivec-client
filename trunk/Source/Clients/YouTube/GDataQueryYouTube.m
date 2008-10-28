@@ -25,10 +25,13 @@
 static NSString *const kVideoQueryParamName = @"vq";
 static NSString *const kTimeParamName = @"time";
 static NSString *const kFormatParamName = @"format";
-static NSString *const kRacyParamName = @"racy";
+static NSString *const kSafeSearchParamName = @"safeSearch";
 static NSString *const kRestrictionParamName = @"restriction";
 static NSString *const kLanguageRestrictionParamName = @"lr";
 static NSString *const kLocationParamName = @"location";
+static NSString *const kLocationRadiusParamName = @"location-radius";
+static NSString *const kRacyParamName = @"racy";
+static NSString *const kUploaderParamName = @"uploader";
 
 @implementation GDataQueryYouTube
 
@@ -43,7 +46,7 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)videoQuery {
-  return [[self customParameters] objectForKey:kVideoQueryParamName];
+  return [self valueForParameterWithName:kVideoQueryParamName];
 }
 
 - (void)setFormat:(NSString *)str {
@@ -52,7 +55,7 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)format {
-  return [[self customParameters] objectForKey:kFormatParamName];
+  return [self valueForParameterWithName:kFormatParamName];
 }
 
 - (void)setTimePeriod:(NSString *)str {
@@ -61,7 +64,7 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)timePeriod {
-  return [[self customParameters] objectForKey:kTimeParamName];
+  return [self valueForParameterWithName:kTimeParamName];
 }
 
 - (void)setRestriction:(NSString *)str {
@@ -70,7 +73,7 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)restriction {
-  return [[self customParameters] objectForKey:kRestrictionParamName];
+  return [self valueForParameterWithName:kRestrictionParamName];
 }
 
 - (void)setLanguageRestriction:(NSString *)str {
@@ -79,7 +82,7 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)languageRestriction {
-  return [[self customParameters] objectForKey:kLanguageRestrictionParamName];
+  return [self valueForParameterWithName:kLanguageRestrictionParamName];
 }
 
 - (void)setLocation:(NSString *)str {
@@ -88,18 +91,45 @@ static NSString *const kLocationParamName = @"location";
 }
 
 - (NSString *)location {
-  return [[self customParameters] objectForKey:kLocationParamName];
+  return [self valueForParameterWithName:kLocationParamName];
 }
 
+- (void)setLocationRadius:(NSString *)str {
+  [self addCustomParameterWithName:kLocationRadiusParamName
+                             value:str];
+}
+
+- (NSString *)locationRadius {
+  return [self valueForParameterWithName:kLocationRadiusParamName];
+}
+
+- (void)setUploader:(NSString *)str {
+  [self addCustomParameterWithName:kUploaderParamName
+                             value:str];
+}
+
+- (NSString *)uploader {
+  return [self valueForParameterWithName:kUploaderParamName];
+}
+
+- (void)setSafeSearch:(NSString *)str {
+  [self addCustomParameterWithName:kSafeSearchParamName
+                             value:str];
+}
+
+- (NSString *)safeSearch {
+  return [self valueForParameterWithName:kSafeSearchParamName];
+}
+
+// racy is deprecated for GData v2
 - (void)setAllowRacy:(BOOL)flag {
-  
-  // adding nil removes the custom parameter
+    // adding nil removes the custom parameter
   [self addCustomParameterWithName:kRacyParamName
                              value:(flag ? @"include" : nil)];
 }
 
 - (BOOL)allowRacy {
-  NSString *str = [[self customParameters] objectForKey:kRacyParamName];
+  NSString *str = [self valueForParameterWithName:kRacyParamName];
   return ([str caseInsensitiveCompare:@"include"] == NSOrderedSame);
 }
 

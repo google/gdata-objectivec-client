@@ -43,18 +43,6 @@
 
 @interface GDataQuery : NSObject <NSCopying> {
   NSURL *feedURL_;
-  int startIndex_;
-  int maxResults_;
-  NSString *fullTextQueryString_;
-  NSString *author_;
-  NSString *orderBy_;
-  int sortOrder_; // +1, -1, or 0 for unspecified
-  BOOL shouldShowDeleted_;
-  BOOL isStrict_;
-  GDataDateTime *publishedMinDateTime_;
-  GDataDateTime *publishedMaxDateTime_;
-  GDataDateTime *updatedMinDateTime_;
-  GDataDateTime *updatedMaxDateTime_;
   NSMutableArray *categoryFilters_;
   NSMutableDictionary *customParameters_;
 }
@@ -70,6 +58,7 @@
 - (NSURL *)feedURL;
 - (void)setFeedURL:(NSURL *)feedURL;
 
+// startIndex and maxResults use -1 to indicate parameter is not set
 - (int)startIndex;
 - (void)setStartIndex:(int)startIndex;
 
@@ -94,6 +83,15 @@
 - (BOOL)isStrict;
 - (void)setIsStrict:(BOOL)flag;
 
+- (BOOL)shouldPrettyPrint;
+- (void)setShouldPrettyPrint:(BOOL)flag;
+
+- (NSString *)protocolVersion;
+- (void)setProtocolVersion:(NSString *)str;
+
+- (NSString *)language;
+- (void)setLanguage:(NSString *)str;
+
 - (GDataDateTime *)publishedMinDateTime;
 - (void)setPublishedMinDateTime:(GDataDateTime *)dateTime;
 
@@ -112,8 +110,31 @@
 
 - (NSDictionary *)customParameters;
 - (void)setCustomParameters:(NSDictionary *)dict;
+
+
+// adding a parameter with a value of nil will remove
+// the parameter from the list
 - (void)addCustomParameterWithName:(NSString *)name
                              value:(NSString *)value;
 - (void)removeCustomParameterWithName:(NSString *)name;
+- (NSString *)valueForParameterWithName:(NSString *)name;
 
+// convenience methods for int parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                          intValue:(int)val;
+- (int)intValueForParameterWithName:(NSString *)name
+              missingParameterValue:(int)missingVal;
+
+// convenience methods for boolean parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                         boolValue:(BOOL)flag
+                      defaultValue:(BOOL)defaultValue;
+
+- (BOOL)boolValueForParameterWithName:(NSString *)name
+                         defaultValue:(BOOL)defaultValue;
+
+// convenience methods for dateTime parameters
+- (void)addCustomParameterWithName:(NSString *)name
+                          dateTime:(GDataDateTime *)dateTime;
+- (GDataDateTime *)dateTimeForParameterWithName:(NSString *)name;
 @end
