@@ -42,21 +42,22 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 }
 
 - (NSString *)spreadsheetQuery {
-  return [[self customParameters] objectForKey:kSpreadsheetQueryParamName];
+  return [self valueForParameterWithName:kSpreadsheetQueryParamName];
 }
 
 - (void)setIsReverseSort:(BOOL)isReverse {
   [self addCustomParameterWithName:kReverseParamName
-                             value:(isReverse ? @"true" : nil)];
+                         boolValue:isReverse
+                      defaultValue:NO];
 }
 
 - (BOOL)isReverseSort {
-  NSString *reverse = [[self customParameters] objectForKey:kReverseParamName];
-  return reverse && [reverse isEqual:@"true"];
+  return [self boolValueForParameterWithName:kReverseParamName
+                                defaultValue:NO];
 }
 
 // cell feed parameters
-- (NSString *)stringParamForInt:(int)val {
+- (NSString *)stringParamOrNilForInt:(int)val {
   if (val > 0) {
     return [NSString stringWithFormat:@"%d", val]; 
   }
@@ -65,39 +66,43 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 
 - (void)setMinimumRow:(int)val {
   [self addCustomParameterWithName:kMinRowParamName
-                             value:[self stringParamForInt:val]];
+                             value:[self stringParamOrNilForInt:val]];
 }
 
 - (int)minimumRow {
-  return [[[self customParameters] objectForKey:kMinRowParamName] intValue];
+  return [self intValueForParameterWithName:kMinRowParamName
+                      missingParameterValue:0];
 }
 
 - (void)setMaximumRow:(int)val {
   [self addCustomParameterWithName:kMaxRowParamName
-                             value:[self stringParamForInt:val]];
+                             value:[self stringParamOrNilForInt:val]];
 }
 
 - (int)maximumRow {
-  return [[[self customParameters] objectForKey:kMaxRowParamName] intValue];
+  return [self intValueForParameterWithName:kMaxRowParamName
+                      missingParameterValue:0];
 }
 
 
 - (void)setMinimumColumn:(int)val {
   [self addCustomParameterWithName:kMinColParamName
-                             value:[self stringParamForInt:val]];
+                             value:[self stringParamOrNilForInt:val]];
 }
 
 - (int)minimumColumn {
-  return [[[self customParameters] objectForKey:kMinColParamName] intValue];
+  return [self intValueForParameterWithName:kMinColParamName
+                      missingParameterValue:0];
 }
 
 - (void)setMaximumColumn:(int)val {
   [self addCustomParameterWithName:kMaxColParamName
-                             value:[self stringParamForInt:val]];
+                             value:[self stringParamOrNilForInt:val]];
 }
 
 - (int)maximumColumn {
-  return [[[self customParameters] objectForKey:kMaxColParamName] intValue];
+  return [self intValueForParameterWithName:kMaxColParamName
+                      missingParameterValue:0];
 }
 
 - (void)setRange:(NSString *)str {
@@ -105,16 +110,17 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
                              value:str];
 }
 - (NSString *)range {
-  return [[self customParameters] objectForKey:kRangeParamName];
+  return [self valueForParameterWithName:kRangeParamName];
 }
 
 - (void)setShouldReturnEmpty:(BOOL)flag {
   [self addCustomParameterWithName:kReturnEmptyParamName
-                             value:(flag ? @"true" : nil)];
+                         boolValue:flag
+                      defaultValue:NO];
 }
 - (BOOL)shouldReturnEmpty {
-  NSString *str = [[self customParameters] objectForKey:kReturnEmptyParamName];
-  return str && [str isEqual:@"true"];
+  return [self boolValueForParameterWithName:kReturnEmptyParamName
+                                defaultValue:NO];
 }
 
 

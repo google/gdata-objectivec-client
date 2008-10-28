@@ -35,32 +35,35 @@ static NSString *const kTransactionsParamName = @"transactions";
 
 - (void)setShouldIncludeReturns:(BOOL)flag {
   [self addCustomParameterWithName:kReturnsParamName
-                             value:(flag ? @"true" : nil)];
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (BOOL)shouldIncludeReturns {
-  NSString *str = [[self customParameters] objectForKey:kReturnsParamName];
-  return str && [str isEqual:@"true"];
+  return [self boolValueForParameterWithName:kReturnsParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldIncludePositions:(BOOL)flag {
   [self addCustomParameterWithName:kPositionsParamName
-                             value:(flag ? @"true" : nil)];
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (BOOL)shouldIncludePositions {
-  NSString *str = [[self customParameters] objectForKey:kPositionsParamName];
-  return str && [str isEqual:@"true"];
+  return [self boolValueForParameterWithName:kPositionsParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldIncludeTransactions:(BOOL)flag {
   [self addCustomParameterWithName:kTransactionsParamName
-                             value:(flag ? @"true" : nil)];
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (BOOL)shouldIncludeTransactions {
-  NSString *str = [[self customParameters] objectForKey:kTransactionsParamName];
-  return str && [str isEqual:@"true"];
+  return [self boolValueForParameterWithName:kTransactionsParamName
+                                defaultValue:NO];
 }
 
 @end

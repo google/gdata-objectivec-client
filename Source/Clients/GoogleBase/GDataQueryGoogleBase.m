@@ -31,7 +31,7 @@ static NSString *const kBQParamName = @"bq";
 }
 
 - (NSString *)googleBaseQuery {
-  NSString *str =  [[self customParameters] objectForKey:kBQParamName];
+  NSString *str =  [self valueForParameterWithName:kBQParamName];
   return str;
 }
 
@@ -41,7 +41,7 @@ static NSString *const kBQParamName = @"bq";
 
 - (int)maxValues {
   int maxVal = 0;
-  NSString *str =  [[self customParameters] objectForKey:kMaxValuesParamName];
+  NSString *str =  [self valueForParameterWithName:kMaxValuesParamName];
   if (str) {
     NSScanner *scanner = [NSScanner scannerWithString:str];
     [scanner scanInt:&maxVal];    

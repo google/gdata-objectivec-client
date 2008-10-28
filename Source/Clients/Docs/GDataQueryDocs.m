@@ -31,7 +31,7 @@ static NSString *const kShowFoldersParamName  = @"showfolders";
 }
 
 - (NSString *)titleQuery {
-  NSString *str = [[self customParameters] objectForKey:kTitleParamName];
+  NSString *str = [self valueForParameterWithName:kTitleParamName];
   return str;  
 }
 
@@ -40,19 +40,18 @@ static NSString *const kShowFoldersParamName  = @"showfolders";
 }
 
 - (BOOL)isTitleQueryExact {
-  NSString *val = [[self customParameters] objectForKey:kExactTitleParamName];
-  return (val != nil) && 
-    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  return [self boolValueForParameterWithName:kExactTitleParamName
+                                defaultValue:NO];
 }
 
 - (void)setIsTitleQueryExact:(BOOL)flag {
-  NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kExactTitleParamName
-                             value:value]; // nil value removes the parameter  
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (NSString *)parentFolderName {
-  NSString *str = [[self customParameters] objectForKey:kParentFolderParamName];
+  NSString *str = [self valueForParameterWithName:kParentFolderParamName];
   return str;
 }
 
@@ -61,15 +60,14 @@ static NSString *const kShowFoldersParamName  = @"showfolders";
 }
 
 - (BOOL)shouldShowFolders {
-  NSString *val = [[self customParameters] objectForKey:kShowFoldersParamName];
-  return (val != nil) &&
-    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  return [self boolValueForParameterWithName:kShowFoldersParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldShowFolders:(BOOL)flag {
-  NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kShowFoldersParamName
-                             value:value]; // nil value removes the parameter
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 @end

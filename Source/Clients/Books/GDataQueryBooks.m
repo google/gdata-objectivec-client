@@ -36,7 +36,7 @@ static NSString *const kMinViewabilityParamName = @"min-viewability";
 }
 
 - (NSString *)minimumViewability {
-  NSString *str = [[self customParameters] objectForKey:kMinViewabilityParamName];
+  NSString *str = [self valueForParameterWithName:kMinViewabilityParamName];
   return str;
 }
 

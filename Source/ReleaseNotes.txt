@@ -3,7 +3,20 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.5.0
 
+Additions
+
+- Added query parameters prettyprint, protocolVersion, language
+
+- Added YouTube query parameters uploader, locationRadius
+
+
+Bugs Fixed
+
+
+Release 1.5.0
+23-October-2008
 Changes since 1.4.0
 
 Additions

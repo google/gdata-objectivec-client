@@ -37,83 +37,77 @@ static NSString *const kCurrentTimeZoneParamName = @"ctz";
 }
 
 - (GDataDateTime *)minimumStartTime {
-  NSString *str = [[self customParameters] objectForKey:kMinimumStartTimeParamName];
-  if (str) {
-    return [GDataDateTime dateTimeWithRFC3339String:str];
-  }
-  return nil;
+  GDataDateTime *dateTime;
+
+  dateTime = [self dateTimeForParameterWithName:kMinimumStartTimeParamName];
+  return dateTime;
 }
 
 - (void)setMinimumStartTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kMinimumStartTimeParamName
-                             value:[dateTime RFC3339String]];
+                          dateTime:dateTime];
 }
 
 - (GDataDateTime *)maximumStartTime {
-  NSString *str = [[self customParameters] objectForKey:kMaximumStartTimeParamName];
-  if (str) {
-    return [GDataDateTime dateTimeWithRFC3339String:str];
-  }
-  return nil;
+  GDataDateTime *dateTime;
+
+  dateTime = [self dateTimeForParameterWithName:kMaximumStartTimeParamName];
+  return dateTime;
 }
 
 - (void)setMaximumStartTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kMaximumStartTimeParamName
-                             value:[dateTime RFC3339String]];
+                          dateTime:dateTime];
 }
 
 - (GDataDateTime *)recurrenceExpansionStartTime {
-  NSString *str = [[self customParameters] objectForKey:kRecurrenceExpansionStartTimeParamName];
-  if (str) {
-    return [GDataDateTime dateTimeWithRFC3339String:str];
-  }
-  return nil;
+  GDataDateTime *dateTime;
+
+  dateTime = [self dateTimeForParameterWithName:kRecurrenceExpansionStartTimeParamName];
+  return dateTime;
 }
 
 - (void)setRecurrenceExpansionStartTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kRecurrenceExpansionStartTimeParamName
-                             value:[dateTime RFC3339String]];
+                             dateTime:dateTime];
 }
 
 - (GDataDateTime *)recurrenceExpansionEndTime {
-  NSString *str = [[self customParameters] objectForKey:kRecurrenceExpansionEndTimeParamName];
-  if (str) {
-    return [GDataDateTime dateTimeWithRFC3339String:str];
-  }
-  return nil;
+  GDataDateTime *dateTime;
+
+  dateTime = [self dateTimeForParameterWithName:kRecurrenceExpansionEndTimeParamName];
+  return dateTime;
 }
 
 - (void)setRecurrenceExpansionEndTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kRecurrenceExpansionEndTimeParamName
-                             value:[dateTime RFC3339String]];
+                          dateTime:dateTime];
 }
 
 - (BOOL)shouldQueryAllFutureEvents {
-  NSString *val = [[self customParameters] objectForKey:kFutureEventsParamName];
-  return (val != nil) && 
-    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  return [self boolValueForParameterWithName:kFutureEventsParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldQueryAllFutureEvents:(BOOL)flag {
-  NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kFutureEventsParamName
-                             value:value]; // nil value removes the parameter
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (BOOL)shouldExpandRecurrentEvents {
-  NSString *val = [[self customParameters] objectForKey:kSingleEventsParamName];
-  return (val != nil) && 
-    ([val caseInsensitiveCompare:@"true"] == NSOrderedSame);
+  return [self boolValueForParameterWithName:kSingleEventsParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldExpandRecurrentEvents:(BOOL)flag {
-  NSString *value = (flag ? @"true" : nil);
   [self addCustomParameterWithName:kSingleEventsParamName
-                             value:value]; // nil value removes the parameter
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (NSString *)currentTimeZoneName {
-  NSString *str = [[self customParameters] objectForKey:kCurrentTimeZoneParamName];
+  NSString *str = [self valueForParameterWithName:kCurrentTimeZoneParamName];
   return str;
 }
 
