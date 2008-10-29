@@ -204,7 +204,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 // and NSObject's default hash method just returns the instance pointer.  
 // We'll define hash here for all of our GDataObjects.
 - (NSUInteger)hash {
-  return (NSUInteger) [GDataObject class];
+  return (NSUInteger) (void *) [GDataObject class];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -2097,7 +2097,7 @@ forCategoryWithScheme:scheme
 }  
 
 - (NSUInteger)hash {
-  return (NSUInteger) [GDataExtensionDeclaration class];
+  return (NSUInteger) (void *) [GDataExtensionDeclaration class];
 }
 
 @end
@@ -2155,7 +2155,7 @@ forCategoryWithScheme:scheme
 }  
 
 - (NSUInteger)hash {
-  return (NSUInteger) [GDataAttribute class];
+  return (NSUInteger) (void *) [GDataAttribute class];
 }
 
 - (void)setStringValue:(NSString *)str {

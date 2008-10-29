@@ -735,11 +735,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }  
 
 - (NSUInteger)hash {
-  return (NSUInteger) [GDataXMLNode class];
+  return (NSUInteger) (void *) [GDataXMLNode class];
 }
 
-- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
-{
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
   return [super methodSignatureForSelector:selector];
 }
 
