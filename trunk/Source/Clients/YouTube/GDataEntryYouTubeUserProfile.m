@@ -49,16 +49,17 @@
      [GDataFeedLink class],
      
      // YouTube element extensions
-     [GDataYouTubeAge class], 
-     [GDataYouTubeBooks class], 
-     [GDataYouTubeCompany class], 
+     [GDataYouTubeAge class], [GDataYouTubeBooks class], 
+     [GDataYouTubeCompany class], [GDataYouTubeAboutMe class], 
      [GDataYouTubeGender class], [GDataYouTubeHobbies class], 
      [GDataYouTubeHometown class], [GDataYouTubeLocation class], 
      [GDataYouTubeMovies class], [GDataYouTubeMusic class], 
      [GDataYouTubeOccupation class], [GDataYouTubeRelationship class], 
      [GDataYouTubeSchool class], [GDataYouTubeUsername class],
      [GDataYouTubeFirstName class],  [GDataYouTubeLastName class], 
-     [GDataYouTubeStatistics class], [GDataFeedLink class],
+     [GDataYouTubeStatistics class], 
+     
+     // elements deprecated for GData v2
      [GDataYouTubeDescription class],
      
      // media extensions
@@ -122,6 +123,18 @@
 
 - (void)setStatistics:(GDataYouTubeStatistics *)obj {
   [self setObject:obj forExtensionClass:[GDataYouTubeStatistics class]];
+}
+
+- (NSString *)aboutMe {
+  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDataYouTubeAboutMe *obj = [self objectForExtensionClass:[GDataYouTubeAboutMe class]];
+  return [obj stringValue];
+}
+
+- (void)setAboutMe:(NSString *)str {
+  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDataYouTubeAboutMe *obj = [GDataYouTubeAboutMe valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeAboutMe class]];
 }
 
 - (NSString *)books {
@@ -283,12 +296,21 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeLastName class]];
 }
 
+// youTubeDescription is deprecated for GData v2
 - (NSString *)youTubeDescription {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  
   GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
   return [obj stringValue];
 }
 
 - (void)setYouTubeDescription:(NSString *)str {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  
   GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }

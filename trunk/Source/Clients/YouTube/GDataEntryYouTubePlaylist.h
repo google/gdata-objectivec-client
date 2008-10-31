@@ -27,7 +27,7 @@
 - (GDataYouTubePosition *)position;
 - (void)setPosition:(GDataYouTubePosition *)obj;
 
+// for GData v2, use -summary and setSummary: instead
 - (GDataYouTubeDescription *)youTubeDescription;
 - (void)setYouTubeDescription:(GDataYouTubeDescription *)obj;
-  
 @end

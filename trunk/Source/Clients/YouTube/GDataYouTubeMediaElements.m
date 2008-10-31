@@ -30,6 +30,20 @@
 + (NSString *)extensionElementLocalName { return @"format"; }
 @end
 
+// v2.0 additions
+
+@implementation GDataYouTubeVideoID
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"videoid"; }
+@end
+
+@implementation GDataYouTubeUploadedDate
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"uploaded"; }
+@end
+
 @implementation GDataMediaContent (YouTubeExtensions)
 
 // media content with YouTube's addition of an integer format attribute, 
@@ -46,6 +60,55 @@
 
 @end
 
+@interface GDataYouTubeCountryAttribute : GDataAttribute <GDataExtension>
+@end
+
+@implementation GDataYouTubeCountryAttribute
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"country"; }
+@end
+
+@implementation GDataMediaRating (YouTubeExtensions)
+
+// media rating with YouTube's addition of a country attribute, 
+// like yt:country="USA"
+- (NSString *)youTubeCountry {
+  NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeCountryAttribute class]];
+  return str;
+}
+
+- (void)setYouTubeCountry:(NSString *)str {
+  [self setAttributeValue:str
+        forExtensionClass:[GDataYouTubeCountryAttribute class]];
+}
+
+@end
+
+// type attribute extension to media credit (v2.0)
+@interface GDataYouTubeTypeAttribute : GDataAttribute <GDataExtension>
+@end
+
+@implementation GDataYouTubeTypeAttribute
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"type"; }
+@end
+
+@implementation GDataMediaCredit (YouTubeExtensions)
+// media credit with YouTube's addition of a type attribute, 
+// like yt:type="partner"
+- (NSString *)youTubeCreditType {
+  NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeTypeAttribute class]];
+  return str;
+}
+
+- (void)setYouTubeCreditType:(NSString *)str {
+  [self setAttributeValue:str
+        forExtensionClass:[GDataYouTubeTypeAttribute class]];
+}
+@end
+
 @implementation GDataYouTubeMediaGroup
 
 // a media group with YouTube extensions
@@ -55,13 +118,24 @@
   [super addExtensionDeclarations];
   
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataYouTubeDuration class]];
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataYouTubePrivate class]];
+                                 childClasses:
+   [GDataYouTubeDuration class],
+   [GDataYouTubePrivate class],
+   [GDataYouTubeVideoID class],
+   [GDataYouTubeUploadedDate class],
+   nil];
   
   // add the yt:format attribute to GDataMediaContent
   [self addAttributeExtensionDeclarationForParentClass:[GDataMediaContent class]
                                             childClass:[GDataYouTubeFormatAttribute class]];
+
+  // add the yt:country attribute to GDataMediaRating
+  [self addAttributeExtensionDeclarationForParentClass:[GDataMediaRating class]
+                                            childClass:[GDataYouTubeCountryAttribute class]];
+
+  // add the yt:type attribute to GDataMediaCredit
+  [self addAttributeExtensionDeclarationForParentClass:[GDataMediaCredit class]
+                                            childClass:[GDataYouTubeTypeAttribute class]];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -69,6 +143,8 @@
   NSMutableArray *items = [super itemsForDescription];
   
   [self addToArray:items objectDescriptionIfNonNil:[self duration] withName:@"duration"];
+  [self addToArray:items objectDescriptionIfNonNil:[self videoID] withName:@"videoID"];
+  [self addToArray:items objectDescriptionIfNonNil:[self uploadedDate] withName:@"uploaded"];
   
   if ([self isPrivate]) [items addObject:@"private"];
   
@@ -101,5 +177,32 @@
   }
 }
 
+// videoID available in v2.0
+- (NSString *)videoID {
+  GDataYouTubeVideoID *obj;
+  
+  obj = [self objectForExtensionClass:[GDataYouTubeVideoID class]];
+  return [obj stringValue];
+}
+
+- (void)setVideoID:(NSString *)str {
+  GDataYouTubeVideoID *obj = [GDataYouTubeVideoID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeVideoID class]];
+}
+
+// uploadedDate available in v2.0
+- (GDataDateTime *)uploadedDate {
+  GDataYouTubeUploadedDate *obj;
+  
+  obj = [self objectForExtensionClass:[GDataYouTubeUploadedDate class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setUploadedDate:(GDataDateTime *)dateTime {
+  GDataYouTubeUploadedDate *obj;
+  
+  obj = [GDataYouTubeUploadedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataYouTubeUploadedDate class]];
+}
 
 @end

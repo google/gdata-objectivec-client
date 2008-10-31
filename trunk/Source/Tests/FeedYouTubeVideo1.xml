@@ -93,6 +93,7 @@
                 url="http://img.youtube.com/vi/Dl643JFJWig/3.jpg" width="130"/>
             <media:thumbnail height="240" time="00:27:13"
                 url="http://img.youtube.com/vi/Dl643JFJWig/0.jpg" width="320"/>
+            <media:rating yt:country="KR">1</media:rating>
         </media:group>
         <yt:statistics viewCount="177"/>
         <gd:rating average="3.00" max="5" min="1" numRaters="4"/>

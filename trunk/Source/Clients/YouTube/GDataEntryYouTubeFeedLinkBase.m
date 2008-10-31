@@ -31,14 +31,17 @@
   
   Class entryClass = [self class];
 
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFeedLink class]];
-  
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
-  [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataYouTubePrivate class]];
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataYouTubeCountHint class]];
+  
+  // elements present in GData v1 only
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataFeedLink class]];
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataYouTubeDescription class]];
 
   // media extensions
   [self addExtensionDeclarationForParentClass:entryClass
@@ -46,12 +49,17 @@
 }
 
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
 
-  [self addToArray:items objectDescriptionIfNonNil:[self feedLink] withName:@"feedLink"]; 
-  [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"]; 
-  [self addToArray:items objectDescriptionIfNonNil:[self thumbnail] withName:@"thumbnail"]; 
+  [self addToArray:items objectDescriptionIfNonNil:[self thumbnail] withName:@"thumbnail"];
+  [self addToArray:items objectDescriptionIfNonNil:[self countHint] withName:@"countHint"];
+
+  // elements present in GData v1 only
+  if ([self isServiceVersion1]) {
+    [self addToArray:items objectDescriptionIfNonNil:[self feedLink] withName:@"feedLink"];
+    [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"];
+  }
 
   return items;
 }
@@ -65,14 +73,6 @@
 
 #pragma mark -
 
-- (GDataFeedLink *)feedLink {
-  return [self objectForExtensionClass:[GDataFeedLink class]]; 
-}
-
-- (void)setFeedLink:(GDataFeedLink *)feedLink {
-  return [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
-}
-
 - (GDataMediaThumbnail *)thumbnail {
   GDataMediaThumbnail *obj = [self objectForExtensionClass:[GDataMediaThumbnail class]];
   return obj;
@@ -82,14 +82,48 @@
   [self setObject:obj forExtensionClass:[GDataMediaThumbnail class]];
 }
 
+- (NSString *)countHint {
+  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDataYouTubeCountHint *obj = [self objectForExtensionClass:[GDataYouTubeCountHint class]];
+  return [obj stringValue];
+}
+
+- (void)setCountHint:(NSString *)str {
+  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDataYouTubeCountHint *obj = [GDataYouTubeCountHint valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeCountHint class]];
+}
+
+// elements present in GData v1 only
+- (GDataFeedLink *)feedLink {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  return [self objectForExtensionClass:[GDataFeedLink class]]; 
+}
+
+- (void)setFeedLink:(GDataFeedLink *)feedLink {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  return [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
+}
+
 - (NSString *)youTubeDescription {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
   GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
   return [obj stringValue];
 }
 
 - (void)setYouTubeDescription:(NSString *)str {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
   GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
+
 
 @end

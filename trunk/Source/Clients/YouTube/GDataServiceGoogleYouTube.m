@@ -270,7 +270,14 @@
 }
 
 + (NSString *)serviceUploadRootURLString {
- return @"http://uploads.gdata.youtube.com/feeds/"; 
+  return @"http://uploads.gdata.youtube.com/feeds/";
+}
+
+- (NSString *)serviceVersion {
+  NSString *str = [super serviceVersion];
+  if (str != nil) return str;
+
+  return @"2.0";
 }
 
 @end

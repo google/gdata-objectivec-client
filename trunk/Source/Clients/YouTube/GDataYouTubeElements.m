@@ -23,15 +23,20 @@
 #import "GDataEntryYouTubeVideo.h"
 
 
-// user's age, an integer, like <yt:age>32</yt:age>
+// user info, like <yt:aboutMe>I am hot</yt:about me>
+@implementation GDataYouTubeAboutMe
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"aboutMe"; }
+@end
 
+// user's age, an integer, like <yt:age>32</yt:age>
 @implementation GDataYouTubeAge
 // user's age, an integer, like <yt:age>32</yt:age>
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"age"; }
 @end
-
 
 // user's books, like <yt:books>Pride and Prejudice</yt:books>
 @implementation GDataYouTubeBooks 
@@ -45,6 +50,13 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"company"; }
+@end
+
+// count hint for entry content, like <yt:countHint>10</yt:countHint>
+@implementation GDataYouTubeCountHint
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"countHint"; }
 @end
 
 // user's hobbies, like <yt:hobbies>Reading, skiing</yt:hobbies>
@@ -110,13 +122,6 @@
 + (NSString *)extensionElementLocalName { return @"relationship"; }
 @end
 
-// user or playlist description, like <yt:description>User's description goes here.</yt:description>
-@implementation GDataYouTubeDescription
-+ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"description"; }
-@end
-
 // video duration in seconds, like <yt:duration seconds="2462" />
 @implementation GDataYouTubeDuration
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
@@ -140,13 +145,6 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"position"; }
-@end
-
-// element indicating adult-oriented video, <yt:racy/>
-@implementation GDataYouTubeRacy
-+ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"racy"; }
 @end
 
 @implementation GDataYouTubePrivate
@@ -192,4 +190,27 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"token"; }
+@end
+
+// date video was recorded <yt:recorded>1998-12-1</yt:recorded>
+@implementation GDataYouTubeRecordedDate
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"recorded"; }
+@end
+
+// elements deprecated for GData v2
+
+// user or playlist description, like <yt:description>User's description goes here.</yt:description>
+@implementation GDataYouTubeDescription
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"description"; }
+@end
+
+// element indicating adult-oriented video, <yt:racy/>
+@implementation GDataYouTubeRacy
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"racy"; }
 @end

@@ -46,9 +46,11 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
-  [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataYouTubePosition class]];
+
+  // elements for GData v1 only
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataYouTubeDescription class]];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -56,22 +58,17 @@
   NSMutableArray *items = [super itemsForDescription];
 
   [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"]; 
+  
+  // elements for GData v1 only
   [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"]; 
     
   return items;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    // replace the category from the YouTube video entry superclass
-    [self removeCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                      term:kGDataCategoryYouTubeVideo]];
-    
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubePlaylist]];
-  }
-  return self;
++ (NSString *)videoEntryCategoryTerm {
+  // declare the term for the category that each entry gets in the superclass's
+  // init method
+  return kGDataCategoryYouTubePlaylist;
 }
 
 #pragma mark -
@@ -84,11 +81,18 @@
   [self setObject:obj forExtensionClass:[GDataYouTubePosition class]];
 }
 
+// elements for GData v1 only
 - (GDataYouTubeDescription *)youTubeDescription {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
   return [self objectForExtensionClass:[GDataYouTubeDescription class]];
 }
 
 - (void)setYouTubeDescription:(GDataYouTubeDescription *)obj {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 

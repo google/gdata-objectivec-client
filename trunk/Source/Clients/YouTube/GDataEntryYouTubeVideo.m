@@ -63,22 +63,22 @@
   Class entryClass = [self class];
 
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataComment class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRating class]];
+                                 childClasses:
+   [GDataComment class],
+   [GDataRating class],
+   
+   // YouTube element extensions
+   [GDataYouTubeStatistics class],
+   [GDataYouTubeNonEmbeddable class],
+   [GDataYouTubeLocation class],
+   [GDataYouTubeRecordedDate class],
+   
+   [GDataYouTubeRacy class], // racy is deprecated for GData v2
+   
+   // YouTubeMediaGroup encapsulates YouTubeMediaContent
+   [GDataYouTubeMediaGroup class],
+   nil];
   
-  // YouTube element extensions
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeRacy class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeStatistics class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeNonEmbeddable class]];
-  
-  // YouTubeMediaGroup encapsulates YouTubeMediaContent
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeMediaGroup class]];
-
   // Geo
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];  
@@ -107,7 +107,7 @@
   [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
   [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
 
-  if ([self isRacy])        [items addObject:@"racy"];
+  if ([self isServiceVersion1] && [self isRacy]) [items addObject:@"racy"];
   if (![self isEmbeddable]) [items addObject:@"notEmbeddable"];
 
   return items;
@@ -116,10 +116,18 @@
 - (id)init {
   self = [super init];
   if (self) {
+    NSString *categoryTerm = [[self class] videoEntryCategoryTerm];
+    
     [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeVideo]];
+                                                   term:categoryTerm]];
   }
   return self;
+}
+
+// subclasses implement this to declare the proper category term for their
+// entries
++ (NSString *)videoEntryCategoryTerm {
+  return kGDataCategoryYouTubeVideo;
 }
 
 #pragma mark -
@@ -140,12 +148,46 @@
   [self setObject:obj forExtensionClass:[GDataComment class]];
 }
 
+- (NSString *)location {
+  GDataYouTubeLocation *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubeLocation class]];
+  return [obj stringValue];
+}
+
+- (void)setLocation:(NSString *)str {
+  GDataYouTubeLocation *obj = [GDataYouTubeLocation valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeLocation class]];
+}
+
+- (GDataDateTime *)recordedDate {
+  GDataYouTubeRecordedDate *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubeRecordedDate class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setRecordedDate:(GDataDateTime *)dateTime {
+  GDataYouTubeRecordedDate *obj;
+
+  obj = [GDataYouTubeRecordedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataYouTubeRecordedDate class]];
+}
+
 - (BOOL)isRacy {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+
   GDataYouTubeRacy *obj = [self objectForExtensionClass:[GDataYouTubeRacy class]];
   return (obj != nil);
 }
 
 - (void)setIsRacy:(BOOL)flag {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  
   if (flag) {
     GDataYouTubeRacy *racy = [GDataYouTubeRacy implicitValue];
     [self setObject:racy forExtensionClass:[GDataYouTubeRacy class]];
