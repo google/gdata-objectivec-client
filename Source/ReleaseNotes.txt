@@ -9,7 +9,9 @@ Additions
 
 - Added query parameters prettyprint, protocolVersion, language
 
-- Added YouTube query parameters uploader, locationRadius
+- Updated YouTube API for GData v2 servers
+
+- Added support for using GDataHTTPFetcher with a single failure selector.
 
 
 Bugs Fixed

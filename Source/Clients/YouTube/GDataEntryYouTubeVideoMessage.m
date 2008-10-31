@@ -46,6 +46,7 @@
   
   Class entryClass = [self class];
 
+  // GDataYouTubeDescription has been deprecated for GData v2
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataYouTubeDescription class]];
 }
@@ -59,26 +60,27 @@
   return items;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    // replace the category from the YouTube video entry superclass
-    [self removeCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                      term:kGDataCategoryYouTubeVideo]];
-    
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeVideoMessage]];
-  }
-  return self;
++ (NSString *)videoEntryCategoryTerm {
+  // declare the term for the category that each entry gets in the superclass's
+  // init method
+  return kGDataCategoryYouTubeVideoMessage;
 }
 
 #pragma mark -
 
 - (GDataYouTubeDescription *)youTubeDescription {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  
   return [self objectForExtensionClass:[GDataYouTubeDescription class]];
 }
 
 - (void)setYouTubeDescription:(GDataYouTubeDescription *)obj {
+#if DEBUG
+  NSAssert([self isServiceVersion1], @"deprecated");
+#endif
+  
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 

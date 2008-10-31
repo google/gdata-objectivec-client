@@ -44,6 +44,7 @@ _EXTERN NSString* kGDataCategoryYouTubeComplaint    _INITIALIZE_AS(@"http://gdat
 _EXTERN NSString* kGDataCategoryYouTubeComment      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#comment");
 _EXTERN NSString* kGDataCategoryYouTubePlaylistLink _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#playlistLink");
 _EXTERN NSString* kGDataCategoryYouTubeSubscription _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#subscription");
+_EXTERN NSString* kGDataCategoryYouTubeFavorite     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#favorite");
 _EXTERN NSString* kGDataCategoryYouTubeFriend       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#friend");
 _EXTERN NSString* kGDataCategoryYouTubeRating       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#rating");
 _EXTERN NSString* kGDataCategoryYouTubeUserProfile  _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#userProfile");
@@ -68,6 +69,7 @@ _EXTERN NSString* kGDataLinkYouTubePlaylists     _INITIALIZE_AS(@"http://gdata.y
 _EXTERN NSString* kGDataLinkYouTubeFavorites     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.favorites");
 _EXTERN NSString* kGDataLinkYouTubeContacts      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.contacts");
 _EXTERN NSString* kGDataLinkYouTubeInbox         _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.inbox");
+_EXTERN NSString* kGDataLinkYouTubeMobile        _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#mobile");
 _EXTERN NSString* kGDataLinkYouTubeResponses     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#video.responses");
 _EXTERN NSString* kGDataLinkYouTubeRatings       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#video.ratings");
 _EXTERN NSString* kGDataLinkYouTubeComments      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#comments");
@@ -92,9 +94,6 @@ _EXTERN NSString* kGDataLinkYouTubeVlog          _INITIALIZE_AS(@"http://gdata.y
 - (GDataComment *)comment;
 - (void)setComment:(GDataComment *)obj;
 
-- (BOOL)isRacy;
-- (void)setIsRacy:(BOOL)flag;
-
 - (BOOL)isEmbeddable;
 - (void)setIsEmbeddable:(BOOL)flag;
 
@@ -104,16 +103,33 @@ _EXTERN NSString* kGDataLinkYouTubeVlog          _INITIALIZE_AS(@"http://gdata.y
 - (GDataYouTubeMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataYouTubeMediaGroup *)obj;
 
+// setGeoLocation requires an instance of a subclass of GDataGeo, not an
+// instance of GDataGeo; see GDataGeo.h
 - (GDataGeo *)geoLocation;
 - (void)setGeoLocation:(GDataGeo *)geo;
 
 - (GDataYouTubePublicationState *)publicationState;
 - (void)setGDataYouTubePublicationState:(GDataYouTubePublicationState *)obj;
 
+- (NSString *)location; // yt:location
+- (void)setLocation:(NSString *)str;
+
+- (GDataDateTime *)recordedDate;
+- (void)setRecordedDate:(GDataDateTime *)dateTime;
+
+// isRacy is deprecated for GData v2, replaced by GDataMediaRating
+- (BOOL)isRacy;
+- (void)setIsRacy:(BOOL)flag;
+
+
 // convenience accessors
 - (GDataLink *)videoResponsesLink;
 - (GDataLink *)ratingsLink;
 - (GDataLink *)complaintsLink;
+
+// protected methods (for subclasses only)
++ (NSString *)videoEntryCategoryTerm;
+
 @end
 
 @interface GDataLink (GDataYouTubeVideoEntryAdditions)

@@ -23,6 +23,10 @@
 
 // http://code.google.com/apis/youtube/reference.html#Elements
 
+// user info, like <yt:aboutMe>I am hot</yt:about me>
+@interface GDataYouTubeAboutMe : GDataValueElementConstruct <GDataExtension>
+@end
+
 // user's age, an integer, like <yt:age>32</yt:age>
 @interface GDataYouTubeAge : GDataValueElementConstruct <GDataExtension>
 @end
@@ -35,6 +39,10 @@
 @interface GDataYouTubeCompany : GDataValueElementConstruct <GDataExtension>
 @end
 
+// count hint for entry content, like <yt:countHint>10</yt:countHint>
+@interface GDataYouTubeCountHint : GDataValueElementConstruct <GDataExtension>
+@end
+
 // user's hobbies, like <yt:hobbies>Reading, skiing</yt:hobbies>
 @interface GDataYouTubeHobbies : GDataValueElementConstruct <GDataExtension>
 @end
@@ -45,6 +53,10 @@
 
 // user's location, like <yt:location>Longbourn in Hertfordshire, Pemberley in Derbyshire</yt:location>
 @interface GDataYouTubeLocation : GDataValueElementConstruct <GDataExtension>
+@end
+
+// recorded date, like <yt:recorded>1998-12-01</yt:recorded>
+@interface GDataYouTubeRecordedDate : GDataValueElementConstruct <GDataExtension>
 @end
 
 // user's movies, like <yt:movies>Pride and Prejudice, 2005</yt:movies>
@@ -71,10 +83,6 @@
 @interface GDataYouTubeRelationship : GDataValueElementConstruct <GDataExtension>
 @end
 
-// user or playlist description, like <yt:description>User's description goes here.</yt:description>
-@interface GDataYouTubeDescription : GDataValueElementConstruct <GDataExtension>
-@end
-
 // video duration in seconds, like <yt:duration seconds="2462" />
 @interface GDataYouTubeDuration : GDataValueConstruct <GDataExtension>
 - (NSString *)attributeName; // returns "seconds"
@@ -86,10 +94,6 @@
 
 // position in a playlist, an integer, like <yt:position>1</yt:position>
 @interface GDataYouTubePosition : GDataValueElementConstruct <GDataExtension>
-@end
-
-// element indicating adult-oriented video, <yt:racy/>
-@interface GDataYouTubeRacy : GDataImplicitValueConstruct <GDataExtension>
 @end
 
 // <yt:private/>
@@ -118,4 +122,23 @@
 
 // token extension to edit-media links, like <yt:token>LongForm</yt:token>
 @interface GDataYouTubeToken : GDataValueElementConstruct <GDataExtension>
+@end
+
+// video ID for v2 feeds, like <yt:videoid>I-t-7lTw6mA</yt:videoid>
+@interface GDataYouTubeVideoID : GDataValueElementConstruct <GDataExtension>
+@end
+
+// uploaded date for v2 feeds, like <yt:uploaded>2008-03-06T23:49:12.000Z</yt:uploaded>
+@interface GDataYouTubeUploadedDate : GDataValueElementConstruct <GDataExtension>
+@end
+
+// note: GDataYouTubeDescription has been deprecated; use the entry's
+// -summary and -setSummary: methods instead
+// user or playlist description, like <yt:description>User's description goes here.</yt:description>
+@interface GDataYouTubeDescription : GDataValueElementConstruct <GDataExtension>
+@end
+
+// GDataYouTubeRacy has been deprecated for GData v2; use GDataMediaRating
+// instead element indicating adult-oriented video, <yt:racy/>
+@interface GDataYouTubeRacy : GDataImplicitValueConstruct <GDataExtension>
 @end

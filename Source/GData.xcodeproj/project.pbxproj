@@ -504,6 +504,14 @@
 		4F4B94C50C514DE00064B6F6 /* GDataQueryDocs.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B94C30C514DE00064B6F6 /* GDataQueryDocs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B94C60C514DE00064B6F6 /* GDataQueryDocs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */; };
 		4F4B94C70C514DE00064B6F6 /* GDataQueryDocs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */; };
+		4F4E92370EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */; };
+		4F4E92380EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4E92390EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */; };
+		4F4E923A0EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */; };
+		4F4E923D0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4E923B0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4E923E0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E923C0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m */; };
+		4F4E923F0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E923C0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m */; };
+		4F4E92400EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E923C0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m */; };
 		4F63FFD80C1F595500C65F18 /* GDataCodeSearchMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F63FFCE0C1F595500C65F18 /* GDataCodeSearchMatch.m */; };
 		4F63FFD90C1F595500C65F18 /* GDataEntryCodeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F63FFD20C1F595500C65F18 /* GDataEntryCodeSearch.m */; };
 		4F63FFDA0C1F595500C65F18 /* GDataFeedCodeSearch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F63FFD30C1F595500C65F18 /* GDataFeedCodeSearch.m */; };
@@ -1053,6 +1061,11 @@
 		4F4B946A0C504A870064B6F6 /* GDataServiceGoogleDocs.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogleDocs.m; path = Clients/Docs/GDataServiceGoogleDocs.m; sourceTree = "<group>"; };
 		4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryDocs.m; path = Clients/Docs/GDataQueryDocs.m; sourceTree = "<group>"; };
 		4F4B94C30C514DE00064B6F6 /* GDataQueryDocs.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryDocs.h; path = Clients/Docs/GDataQueryDocs.h; sourceTree = "<group>"; };
+		4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedYouTubeFavorite.m; path = Clients/YouTube/GDataFeedYouTubeFavorite.m; sourceTree = "<group>"; };
+		4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeFavorite.h; path = Clients/YouTube/GDataFeedYouTubeFavorite.h; sourceTree = "<group>"; };
+		4F4E923B0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeFavorite.h; path = Clients/YouTube/GDataEntryYouTubeFavorite.h; sourceTree = "<group>"; };
+		4F4E923C0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeFavorite.m; path = Clients/YouTube/GDataEntryYouTubeFavorite.m; sourceTree = "<group>"; };
+		4F4E92410EBB8F4A00C59A7E /* FeedYouTubeFavorites1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedYouTubeFavorites1.xml; path = Tests/FeedYouTubeFavorites1.xml; sourceTree = "<group>"; };
 		4F63FFCE0C1F595500C65F18 /* GDataCodeSearchMatch.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataCodeSearchMatch.m; path = Clients/CodeSearch/GDataCodeSearchMatch.m; sourceTree = "<group>"; };
 		4F63FFCF0C1F595500C65F18 /* GDataCodeSearchFile.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataCodeSearchFile.h; path = Clients/CodeSearch/GDataCodeSearchFile.h; sourceTree = "<group>"; };
 		4F63FFD00C1F595500C65F18 /* GDataCodeSearchPackage.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataCodeSearchPackage.h; path = Clients/CodeSearch/GDataCodeSearchPackage.h; sourceTree = "<group>"; };
@@ -1692,6 +1705,7 @@
 				4F02327E0D59372200EE6862 /* FeedYouTubeContacts1.xml */,
 				4F02304D0D5910A600EE6862 /* FeedYouTubePlaylistLink1.xml */,
 				4F02305E0D5911DA00EE6862 /* FeedYouTubePlaylist1.xml */,
+				4F4E92410EBB8F4A00C59A7E /* FeedYouTubeFavorites1.xml */,
 			);
 			name = YouTube;
 			sourceTree = "<group>";
@@ -1762,6 +1776,10 @@
 				4F45AAAF0D4ECA6D00004F37 /* GDataEntryYouTubeSubscription.m */,
 				4F02386F0D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.m */,
 				4F0238700D5BB30100EE6862 /* GDataEntryYouTubeFeedLinkBase.h */,
+				4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */,
+				4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */,
+				4F4E923B0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h */,
+				4F4E923C0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m */,
 				4F45AB9C0D4FD9B300004F37 /* GDataFeedYouTubeFriend.h */,
 				4F45AB980D4FD9AD00004F37 /* GDataFeedYouTubeFriend.m */,
 				4F45ABFE0D4FDD5200004F37 /* GDataEntryYouTubeFriend.h */,
@@ -2143,6 +2161,8 @@
 				4FD66F590EA80000001D365E /* GDataBooks.h in Headers */,
 				4FD66F5B0EA80000001D365E /* GDataFeedVolume.h in Headers */,
 				4FD66F750EA806DD001D365E /* GDataEntryFolderDoc.h in Headers */,
+				4F4E92380EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h in Headers */,
+				4F4E923D0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2467,6 +2487,8 @@
 				4FD66F5F0EA80000001D365E /* GDataFeedVolume.m in Sources */,
 				4FD66F600EA80000001D365E /* GDataDublinCore.m in Sources */,
 				4FD66F730EA806DD001D365E /* GDataEntryFolderDoc.m in Sources */,
+				4F4E92390EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */,
+				4F4E923F0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2659,6 +2681,8 @@
 				4FD66F640EA80000001D365E /* GDataFeedVolume.m in Sources */,
 				4FD66F650EA80000001D365E /* GDataDublinCore.m in Sources */,
 				4FD66F760EA806DD001D365E /* GDataEntryFolderDoc.m in Sources */,
+				4F4E923A0EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */,
+				4F4E92400EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2849,6 +2873,8 @@
 				4FD66F570EA80000001D365E /* GDataFeedVolume.m in Sources */,
 				4FD66F5A0EA80000001D365E /* GDataDublinCore.m in Sources */,
 				4FD66F740EA806DD001D365E /* GDataEntryFolderDoc.m in Sources */,
+				4F4E92370EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */,
+				4F4E923E0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

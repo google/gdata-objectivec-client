@@ -22,7 +22,6 @@
 
 #import "GDataServiceGoogleYouTube.h"
 
-static NSString *const kVideoQueryParamName = @"vq";
 static NSString *const kTimeParamName = @"time";
 static NSString *const kFormatParamName = @"format";
 static NSString *const kSafeSearchParamName = @"safeSearch";
@@ -32,6 +31,10 @@ static NSString *const kLocationParamName = @"location";
 static NSString *const kLocationRadiusParamName = @"location-radius";
 static NSString *const kRacyParamName = @"racy";
 static NSString *const kUploaderParamName = @"uploader";
+
+// Deprecated: The vq parameter has been replaced with
+// "q" (kFullTextQueryStringParamName) for v2
+static NSString *const kVideoQueryParamName = @"vq";
 
 @implementation GDataQueryYouTube
 

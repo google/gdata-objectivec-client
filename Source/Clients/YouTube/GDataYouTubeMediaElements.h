@@ -33,7 +33,9 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 
 #import "GDataObject.h"
 #import "GDataMediaContent.h"
+#import "GDataMediaRating.h"
 #import "GDataMediaGroup.h"
+#import "GDataMediaCredit.h"
 #import "GDataYouTubeElements.h"
 
 // media content with YouTube's addition of an integer format attribute, 
@@ -43,6 +45,21 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 - (void)setYouTubeFormatNumber:(NSNumber *)num;
 @end
 
+// media rating with YouTube's addition of a country attribute, 
+// like yt:country="USA"
+@interface GDataMediaRating (YouTubeExtensions)
+- (NSString *)youTubeCountry;
+- (void)setYouTubeCountry:(NSString *)str;
+@end
+
+// media credit with YouTube's addition of a type attribute,
+// like yt:type="partner" (v2.0)
+@interface GDataMediaCredit (YouTubeExtensions)
+- (NSString *)youTubeCreditType;
+- (void)setYouTubeCreditType:(NSString *)str;
+@end
+
+
 // a media group that uses the YouTube media content elements instead
 // of the generic media content elements
 @interface GDataYouTubeMediaGroup : GDataMediaGroup
@@ -51,4 +68,12 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 
 - (BOOL)isPrivate;
 - (void)setIsPrivate:(BOOL)flag;
+
+// videoID available in v2.0
+- (NSString *)videoID;
+- (void)setVideoID:(NSString *)str;
+
+// uploadedDate available in v2.0
+- (GDataDateTime *)uploadedDate;
+- (void)setUploadedDate:(GDataDateTime *)dateTime;
 @end

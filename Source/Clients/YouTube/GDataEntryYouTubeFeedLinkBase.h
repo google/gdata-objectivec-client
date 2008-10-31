@@ -30,9 +30,15 @@
 - (GDataMediaThumbnail *)thumbnail;
 - (void)setThumbnail:(GDataMediaThumbnail *)obj;
 
+- (NSString *)countHint;
+- (void)setCountHint:(NSString *)str;
+
+// for GData v2, use -summary and setSummary: instead
 - (NSString *)youTubeDescription;
 - (void)setYouTubeDescription:(NSString *)str;
 
+// for GData v2, feedLink has been replaced with the content element's 
+// sourceURI attribute
 - (GDataFeedLink *)feedLink;
 - (void)setFeedLink:(GDataFeedLink *)feedLink;
 

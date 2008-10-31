@@ -213,6 +213,7 @@
 _EXTERN NSString* const kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
 _EXTERN NSString* const kGDataHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.HTTPStatus");
 _EXTERN NSString* const kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
+_EXTERN NSString* const kGDataHTTPFetcherStatusDataKey _INITIALIZE_AS(@"data"); // data returned with a kGDataHTTPFetcherStatusDomain error
 
 
 // fetch history mutable dictionary keys
@@ -248,7 +249,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSURLResponse *response_;         // set in connection:didReceiveResponse:
   id delegate_;                     // WEAK (though retained during an open connection)
   SEL finishedSEL_;                 // should by implemented by delegate
-  SEL statusFailedSEL_;             // should by implemented by delegate
+  SEL statusFailedSEL_;             // implemented by delegate if it needs separate network error callbacks
   SEL networkFailedSEL_;            // should be implemented by delegate
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
   id userData_;                     // retained, if set by caller
@@ -355,14 +356,37 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // interval delay to precede next retry
 - (NSTimeInterval)nextRetryInterval;
 
-/// Begin fetching the request.  
+// Begin fetching the request (simplified interface)
 //
-/// |delegate| can optionally implement the 
-/// three selectors |finishedSEL|, |statusFailedSEL| and |networkFailedSEL| 
-/// or pass nil for them.  
-/// Returns YES if the fetch is initiated.  Delegate is retained between
-/// the beginFetch call until after the finish/fail callbacks.
-/// |statusFailedSEL| is called if the server returns status >= 300
+// The delegate can optionally implement the finished and failure selectors
+// or pass nil for them.
+//
+// Returns YES if the fetch is initiated.  The delegate is retained between
+// the beginFetch call until after the finish/fail callbacks.
+//
+// The failure selector is called for server statuses 300 or higher, with the
+// status stored as the error object's code.
+//
+// finishedSEL has a signature like:
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data
+// failedSEL has a signature like:
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error
+//
+
+- (BOOL)beginFetchWithDelegate:(id)delegate
+             didFinishSelector:(SEL)finishedSEL
+               didFailSelector:(SEL)failedSEL;
+
+
+// Begin fetching the request (original interface)
+//
+// The delegate can optionally implement the finished, status failure, and
+// network failure selectors, or pass nill for them.
+//
+// Returns YES if the fetch is initiated.  The delegate is retained between
+// the beginFetch call until after the finish/fail callbacks.
+//
+// The failure selector is called if the server returns status >= 300
 //
 // finishedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data

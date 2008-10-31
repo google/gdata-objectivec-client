@@ -23,9 +23,9 @@
         <name>TestAccount</name>
         <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
     </author>
+    <yt:aboutMe>Narf narf</yt:aboutMe>
     <yt:firstName>Test</yt:firstName>
     <yt:lastName>Account</yt:lastName>
-    <yt:description>About me stuff</yt:description>
     <yt:age>49</yt:age>
     <yt:username>TestAccount</yt:username>
     <yt:books>Booksz</yt:books>

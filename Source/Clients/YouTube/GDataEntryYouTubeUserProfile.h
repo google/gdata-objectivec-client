@@ -34,6 +34,9 @@
 - (GDataYouTubeStatistics *)statistics;
 - (void)setStatistics:(GDataYouTubeStatistics *)obj;
 
+- (NSString *)aboutMe;
+- (void)setAboutMe:(NSString *)str;
+
 - (NSString *)books;
 - (void)setBooks:(NSString *)str;
 
@@ -82,6 +85,7 @@
 - (NSString *)lastName;
 - (void)setLastName:(NSString *)str;
 
+// youTubeDescription has been deprecated for GData v2; use -summary and setSummary: instead
 - (NSString *)youTubeDescription;
 - (void)setYouTubeDescription:(NSString *)str;
 

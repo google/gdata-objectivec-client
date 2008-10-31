@@ -33,6 +33,7 @@
 NSString* const kGDataLastModifiedHeader = @"Last-Modified";
 NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
+SEL const kUnifiedFailureCallback = (SEL) (void *) -1;
 
 NSMutableArray* gGDataFetcherStaticCookies = nil;
 Class gGDataFetcherConnectionClass = nil;
@@ -100,7 +101,35 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 
 #pragma mark -
 
-// Begin fetching the URL.  |delegate| is not retained
+// Updated fetched API
+//
+// Begin fetching the URL.  The delegate is retained for the duration of
+// the fetch connection.
+//
+// The delegate must provide and implement the finished and failed selectors.
+//
+// finishedSEL has a signature like:
+//   - (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data
+// failedSEL has a signature like:
+//   - (void)fetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error
+//
+// Server errors (status >= 300) are reported as the code of the error object.
+
+- (BOOL)beginFetchWithDelegate:(id)delegate
+             didFinishSelector:(SEL)finishedSEL
+               didFailSelector:(SEL)failedSEL {
+
+  return [self beginFetchWithDelegate:delegate
+                    didFinishSelector:finishedSEL
+            didFailWithStatusSelector:kUnifiedFailureCallback
+             didFailWithErrorSelector:failedSEL];
+}
+
+// Original fetcher API
+//
+// Begin fetching the URL.  The delegate is retained for the duration of
+// the fetch connection.
+//
 // The delegate must provide and implement the finished and failed selectors.
 //
 // finishedSEL has a signature like:
@@ -116,11 +145,14 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
       didFailWithErrorSelector:(SEL)networkFailedSEL {
   
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSEL, @encode(GDataHTTPFetcher *), @encode(NSData *), 0);
-  AssertSelectorNilOrImplementedWithArguments(delegate, statusFailedSEL, @encode(GDataHTTPFetcher *), @encode(int), @encode(NSData *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, networkFailedSEL, @encode(GDataHTTPFetcher *), @encode(NSError *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, receivedDataSEL_, @encode(GDataHTTPFetcher *), @encode(NSData *), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, retrySEL_, @encode(GDataHTTPFetcher *), @encode(BOOL), @encode(NSError *), 0);
-    
+
+  if (statusFailedSEL != kUnifiedFailureCallback) {
+    AssertSelectorNilOrImplementedWithArguments(delegate, statusFailedSEL, @encode(GDataHTTPFetcher *), @encode(int), @encode(NSData *), 0);
+  }
+
   if (connection_ != nil) {
     NSAssert1(connection_ != nil, @"fetch object %@ being reused; this should never happen", self);
     goto CannotBeginFetch;
@@ -608,9 +640,26 @@ CannotBeginFetch:
       
       [self beginRetryTimer];
       
+    } else if (statusFailedSEL_ == kUnifiedFailureCallback) {
+
+      // not retrying, and no separate status callback, so call the
+      // sole failure selector
+      NSDictionary *userInfo =
+        [NSDictionary dictionaryWithObject:downloadedData_
+                                    forKey:kGDataHTTPFetcherStatusDataKey];
+
+      NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherStatusDomain
+                                           code:status
+                                       userInfo:userInfo];
+
+      [delegate_ performSelector:networkFailedSEL_
+                      withObject:self
+                      withObject:error];
+
+      [self stopFetching];
+
     } else {
-      
-      // not retrying
+      // not retrying, call status failure callback
       NSMethodSignature *signature = [delegate_ methodSignatureForSelector:statusFailedSEL_];
       NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
       [invocation setSelector:statusFailedSEL_];
@@ -622,7 +671,6 @@ CannotBeginFetch:
 
       [self stopFetching];
     }
-    
   } else if (finishedSEL_) {
     
     // successful http status (under 300)

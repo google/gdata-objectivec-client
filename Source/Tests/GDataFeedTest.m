@@ -1211,13 +1211,18 @@
   
   TestKeyPathValues tests[] =
   { 
-    // not that the user profile "feed" is really an entry
+    //
+    // user profile
+    // 
+    
+    // note that the user profile "feed" is really an entry returned by the
+    // YouTube server
     { @"GDataEntryYouTubeUserProfile/2.0", @"Tests/FeedYouTubeUserProfile1.xml" },
 
     // entry elements
     { @"identifier", @"http://gdata.youtube.com/feeds/api/users/TestAccount" },
 
-    // subscription entry elements
+    // user profile entry elements
     { @"className", @"GDataEntryYouTubeUserProfile" },    
 
     { @"channelType", @"Standard" },
@@ -1227,6 +1232,7 @@
     { @"statistics.favoriteCount", @"7" },
     
     { @"books", @"Booksz" },
+    { @"aboutMe", @"Narf narf" },
     { @"age", @"49" },
     { @"thumbnail.URLString", @"http://i.ytimg.com/vi/Bkhnvn1PIHs/default.jpg" },
     { @"company", @"Apple, Google" },
@@ -1250,8 +1256,9 @@
 
     { @"", @"" }, // end of feed
 
-    
+    //
     // video feed
+    //
     { @"GDataFeedYouTubeVideo", @"Tests/FeedYouTubeVideo1.xml" },
     
     // video entry elements
@@ -1266,6 +1273,8 @@
     { @"entries.0.mediaGroup.duration", @"3266" },
     { @"entries.0.mediaGroup.isPrivate", @"1" },
     { @"entries.0.mediaGroup.mediaPlayers.0.URLString", @"http://www.youtube.com/watch?v=Dl643JFJWig" },
+    { @"entries.0.mediaGroup.mediaRatings.0.stringValue", @"1" },
+    { @"entries.0.mediaGroup.mediaRatings.0.youTubeCountry", @"KR" },
     { @"entries.0.publicationState.state", @"rejected" },
     { @"entries.0.publicationState.reasonCode", @"32" },
     { @"entries.0.publicationState.helpURLString", @"http://www.youtube.com/" },
@@ -1276,19 +1285,22 @@
       
     { @"", @"" }, // end of feed
     
+    //
     // playlist link feed, v2
+    //
     
     { @"GDataFeedYouTubePlaylistLink/2.0", @"Tests/FeedYouTubePlaylistLink1.xml" },
     { @"categories.0.term", kGDataCategoryYouTubePlaylistLink },
     { @"totalResults", @"2" },
     { @"startIndex", @"1" },
-    { @"itemsPerPage", @"25" },
+    { @"itemsPerPage", @"22" },
     
     { @"entries.0.className", @"GDataEntryYouTubePlaylistLink" },    
     { @"entries.0.isPrivate", @"1" },
     { @"entries.0.categories.0.term", kGDataCategoryYouTubePlaylistLink },
     { @"entries.0.categories.1.scheme", kGDataSchemeYouTubeTag },
     { @"entries.0.categories.1.term", @"moreplaylisttags" },
+    { @"entries.0.countHint", @"10" },
     
     { @"entries.1.categories.0.scheme", kGDataSchemeYouTubeTag },
     { @"entries.1.categories.0.term", @"PlaylistTags" },
@@ -1300,7 +1312,9 @@
       
     { @"", @"" }, // end of feed
         
+    //
     // playlist link feed, v1
+    //
     
     { @"GDataFeedYouTubePlaylistLink", @"Tests/FeedYouTubePlaylistLink1v1.xml" },
     { @"categories.0.term", kGDataCategoryYouTubePlaylistLink },
@@ -1327,7 +1341,9 @@
     
     { @"", @"" }, // end of feed
     
+    //
     // playlist feed
+    //
       
     { @"GDataFeedYouTubePlaylist", @"Tests/FeedYouTubePlaylist1.xml" },
   
@@ -1355,8 +1371,9 @@
       
     { @"", @"" }, // end of feed
       
-    
+    //
     // contacts feed
+    //
     { @"GDataFeedYouTubeFriend", @"Tests/FeedYouTubeContacts1.xml" },
       
     { @"categories.0.term", kGDataCategoryYouTubeFriend },
@@ -1371,7 +1388,9 @@
       
     { @"", @"" }, // end of feed
 
+    //
     // subscription feed
+    //
     { @"GDataFeedYouTubeSubscription/2.0", @"Tests/FeedYouTubeSubscriptions1.xml" },
 
     // feed elements
@@ -1384,10 +1403,47 @@
     { @"entries.0.subscriptionType", @"channel" },
     { @"entries.0.username", @"googletechtalks" },
     { @"entries.0.content.sourceURI", @"http://gdata.youtube.com/feeds/api/users/googletechtalks/uploads" },
+    { @"entries.0.countHint", @"2" },
     
     { @"entries.1.youTubeQueryString", @"cute dogs" },
 
-    // thumbnail
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // favorites feed
+    //
+    { @"GDataFeedYouTubeFavorite/2.0", @"Tests/FeedYouTubeFavorites1.xml" },
+
+    // feed elements
+    { @"ETag", @"W/\"CUACQX47eCp7ImA9WxdSEkg.\"" },
+    { @"identifier", @"tag:youtube,2008:user:fredflintstone:favorites" },
+    { @"logo", @"http://www.youtube.com/img/pic_youtubelogo_123x63.gif" },
+
+    // favorites entry elements
+    { @"entries.0.className", @"GDataEntryYouTubeFavorite" },
+    { @"entries.0.ETag", @"W/\"CUACQX47eCp7ImA9WxdSEkg.\"" },
+    { @"entries.0.identifier", @"tag:youtube,2008:favorite:vjVQa1PpcFP8fBdcAc_YTSRHgC1CE_ageg03_RO2EVk" },
+    { @"entries.0.content.sourceURI", @"http://www.youtube.com/v/I-t-7lTw6mA&f=gdata_user_favorites" },
+
+    { @"entries.0.location", @"mountain view, ca" },
+    { @"entries.0.recordedDate", @"2008-03-04" },
+
+    { @"entries.0.mediaGroup.mediaTitle", @"Authors@Google: Michael Pollan" },
+    { @"entries.0.mediaGroup.mediaDescription", @"Michael Pollan visits Google" },
+    { @"entries.0.mediaGroup.videoID", @"I-t-7lTw6mA" },
+    { @"entries.0.mediaGroup.uploadedDate.date.timeIntervalSince1970", @"1204847352" },
+    { @"entries.0.mediaGroup.mediaCredits.0.role", @"uploader" },
+    { @"entries.0.mediaGroup.mediaCredits.0.scheme", @"urn:youtube" },
+    { @"entries.0.mediaGroup.mediaCredits.0.youTubeCreditType", @"partner" },
+    { @"entries.0.mediaGroup.mediaContents.0.duration", @"3554" },
+    { @"entries.0.mediaGroup.mediaContents.0.expression", @"full" },
+    { @"entries.0.mediaGroup.mediaContents.0.medium", @"video" },
+    { @"entries.0.mediaGroup.mediaContents.0.type", @"application/x-shockwave-flash" },
+    { @"entries.0.mediaGroup.mediaContents.0.URLString", @"http://www.youtube.com/v/I-t-7lTw6mA&f=gdata_user_favorites" },
+    { @"entries.0.mediaGroup.mediaContents.0.youTubeFormatNumber", @"5" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },

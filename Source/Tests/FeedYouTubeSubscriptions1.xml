@@ -29,6 +29,7 @@
     <openSearch:startIndex>1</openSearch:startIndex>
     <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
     <entry>
+        <yt:countHint>2</yt:countHint>
         <id>http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/bce51d3be347600a</id>
         <published>2008-01-29T16:29:11.000-08:00</published>
         <updated>2008-01-29T16:29:11.000-08:00</updated>
@@ -57,6 +58,7 @@
         <id>http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/396213cdaa07d677</id>
         <published>2008-02-05T16:49:41.000-08:00</published>
         <updated>2008-02-05T16:49:41.000-08:00</updated>
+        <yt:countHint>3</yt:countHint>
         <category
             scheme="http://gdata.youtube.com/schemas/2007/subscriptiontypes.cat" term="query"/>
         <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#subscription"/>

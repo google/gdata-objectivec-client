@@ -14,21 +14,12 @@
 */
 
 //
-//  GDataEntryYouTubeVideoMessage.h
+//  GDataEntryYouTubeFavorite.h
 //
 
 #import "GDataYouTubeElements.h"
 #import "GDataEntryYouTubeVideo.h"
 
-@interface GDataEntryYouTubeVideoMessage : GDataEntryYouTubeVideo
-
-+ (GDataEntryYouTubeVideoMessage *)videoMessageEntry;
-
-// youTubeDescription has been deprecated for GData v2; use -summary and setSummary: instead
-- (GDataYouTubeDescription *)youTubeDescription;
-- (void)setYouTubeDescription:(GDataYouTubeDescription *)obj;
+@interface GDataEntryYouTubeFavorite : GDataEntryYouTubeVideo
 
 @end
-
-
-

@@ -4,7 +4,7 @@
     xmlns:georss="http://www.georss.org/georss"
     xmlns:gml="http://www.opengis.net/gml"
     xmlns:media="http://search.yahoo.com/mrss/"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
     <id>http://gdata.youtube.com/feeds/api/playlists/BBA2B78EF2F08B10?start-index=1&amp;max-results=25</id>
     <updated>2008-02-05T13:40:52.000-08:00</updated>
     <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#playlist"/>
