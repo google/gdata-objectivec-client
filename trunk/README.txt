@@ -1,4 +1,4 @@
-Information on using the Goodle Data APIs Objective-C Client Library 
-is avaliable at
+Information on using the Google Data APIs Objective-C Client Library 
+is available at
 
 http://code.google.com/p/gdata-objectivec-client/
