@@ -36,6 +36,9 @@ _EXTERN Class kGDataUseRegisteredClass _INITIALIZE_AS(nil);
 
 _EXTERN NSString* kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
 
+_EXTERN NSString* kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors");
+
+
 enum {
  kGDataCouldNotConstructObjectError = -100 
 };

@@ -184,6 +184,10 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
   [self deleteSelectedEntry];
 }
 
+- (IBAction)loggingCheckboxClicked:(id)sender {
+  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+}
+
 #pragma mark -
 
 // get a google service object with the current username/password

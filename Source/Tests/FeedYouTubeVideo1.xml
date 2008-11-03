@@ -96,11 +96,10 @@
             <media:rating yt:country="KR">1</media:rating>
         </media:group>
         <yt:statistics viewCount="177"/>
-        <gd:rating average="3.00" max="5" min="1" numRaters="4"/>
+        <gd:rating average="3.00" max="5" min="1" numRaters="4" />
         <gd:comments>
             <gd:feedLink countHint="0" href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/comments"/>
         </gd:comments>
-        <yt:racy/>
         <yt:noembed/>
         <app:control>
           <yt:state name="rejected" reasonCode="32" helpUrl="http://www.youtube.com/">incorrect format</yt:state>

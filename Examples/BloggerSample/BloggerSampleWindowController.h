@@ -56,4 +56,7 @@
 - (IBAction)addPostClicked:(id)sender;
 - (IBAction)updatePostClicked:(id)sender;
 - (IBAction)deletePostClicked:(id)sender;
+
+- (IBAction)loggingCheckboxClicked:(id)sender;
+
 @end

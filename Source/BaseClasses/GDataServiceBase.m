@@ -22,7 +22,10 @@
 #define GDATASERVICEBASE_DEFINE_GLOBALS 1
 #import "GDataServiceBase.h"
 #import "GDataProgressMonitorInputStream.h"
+#import "GDataServerError.h"
 #import "GDataFramework.h"
+
+static NSString *const kXMLErrorContentType = @"application/vnd.google.gdata.error+xml";
 
 static NSString* const kCallbackDelegateKey = @"delegate";
 static NSString* const kCallbackObjectClassKey = @"objectClass";
@@ -620,14 +623,39 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   NSDictionary *userInfo = nil;
   
-  if ([data length]) {
-    // typically, along with a failure status code is a string describing the 
-    // problem
-    NSString *failureStr = [[[NSString alloc] initWithData:data
-                                                   encoding:NSUTF8StringEncoding] autorelease];
-    if (failureStr) {
-      userInfo = [NSDictionary dictionaryWithObject:failureStr
-                                             forKey:@"error"];
+  if ([data length] > 0) {
+
+    // check if the response is a structured XML error string, according to the
+    // response content-type header; if so, convert the XML to a
+    // GDataServerErrorGroup
+    NSURLResponse *response = [fetcher response];
+    if ([response respondsToSelector:@selector(allHeaderFields)]) {
+
+      NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+      NSString *contentType = [headers objectForKey:@"Content-Type"];
+
+      if ([[contentType lowercaseString] hasPrefix:kXMLErrorContentType]) {
+
+        GDataServerErrorGroup *errorGroup
+          = [[[GDataServerErrorGroup alloc] initWithData:data] autorelease];
+
+        if (errorGroup != nil) {
+          userInfo = [NSDictionary dictionaryWithObject:errorGroup
+                                                 forKey:kGDataStructuredErrorsKey];
+        }
+      }
+    }
+
+    if (userInfo == nil) {
+
+      // typically, along with a failure status code is a string describing the
+      // problem
+      NSString *failureStr = [[[NSString alloc] initWithData:data
+                                                     encoding:NSUTF8StringEncoding] autorelease];
+      if (failureStr) {
+        userInfo = [NSDictionary dictionaryWithObject:failureStr
+                                               forKey:@"error"];
+      }
     }
   }
     

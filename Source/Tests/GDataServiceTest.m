@@ -143,6 +143,9 @@ static int kServerPortNumber = 54579;
   // we exclude the "?status=" that would indicate that the URL
   // should cause a retryable error
   NSRange range = [filePath rangeOfString:@"?status="];
+  if (range.location == NSNotFound) {
+    range = [filePath rangeOfString:@"?statusxml="];
+  }
   if (range.length > 0) {
     filePath = [filePath substringToIndex:range.location]; 
   }

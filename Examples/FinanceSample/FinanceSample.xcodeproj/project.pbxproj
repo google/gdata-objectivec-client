@@ -375,7 +375,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = SpreadsheetSample;
+				PRODUCT_NAME = FinanceSample;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
