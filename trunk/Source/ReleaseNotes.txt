@@ -7,6 +7,11 @@ Changes since 1.5.0
 
 Additions
 
+- Added GDataServerError, representing error responses from services supporting
+  structured errors.  On feed and entry fetch errors, a GDataServerErrorGroup
+  will be available from the NSError object's userInfo dictionary
+  with the key kGDataStructuredErrorsKey.
+
 - Added query parameters prettyprint, protocolVersion, language
 
 - Updated YouTube API for GData v2 servers

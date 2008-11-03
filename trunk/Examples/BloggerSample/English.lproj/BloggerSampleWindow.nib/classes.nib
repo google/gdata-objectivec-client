@@ -1,57 +1,69 @@
-{
-    IBClasses = (
-        {
-            ACTIONS = {
-                addPostClicked = id; 
-                deletePostClicked = id; 
-                getBlogsClicked = id; 
-                updatePostClicked = id; 
-            }; 
-            CLASS = BloggerSampleWindowController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                mAddPostButton = NSButton; 
-                mBlogsProgressIndicator = NSProgressIndicator; 
-                mBlogsResultTextField = NSTextField; 
-                mBlogsTable = NSTableView; 
-                mDeletePostButton = NSButton; 
-                mEntriesProgressIndicator = NSProgressIndicator; 
-                mEntriesResultTextField = NSTextField; 
-                mEntriesTable = NSTableView; 
-                mEntryEditField = NSTextField; 
-                mPasswordField = NSSecureTextField; 
-                mUpdatePostButton = NSButton; 
-                mUpdateProgressIndicator = NSProgressIndicator; 
-                mUsernameField = NSTextField; 
-            }; 
-            SUPERCLASS = NSWindowController; 
-        }, 
-        {
-            ACTIONS = {
-                addPostClicked = id; 
-                deletePostClicked = id; 
-                getBlogsClicked = id; 
-                updatePostClicked = id; 
-            }; 
-            CLASS = CalendarSampleWindowController; 
-            LANGUAGE = ObjC; 
-            OUTLETS = {
-                mAddPostButton = NSButton; 
-                mBlogsProgressIndicator = NSProgressIndicator; 
-                mBlogsResultTextField = NSTextField; 
-                mBlogsTable = NSTableView; 
-                mDeletePostButton = NSButton; 
-                mEntriesProgressIndicator = NSProgressIndicator; 
-                mEntriesResultTextField = NSTextField; 
-                mEntriesTable = NSTableView; 
-                mEntryEditField = NSTextField; 
-                mPasswordField = NSSecureTextField; 
-                mUpdatePostButton = NSButton; 
-                mUsernameField = NSTextField; 
-            }; 
-            SUPERCLASS = NSWindowController; 
-        }, 
-        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
-    ); 
-    IBVersion = 1; 
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>addPostClicked</key>
+				<string>id</string>
+				<key>deletePostClicked</key>
+				<string>id</string>
+				<key>getBlogsClicked</key>
+				<string>id</string>
+				<key>loggingCheckboxClicked</key>
+				<string>id</string>
+				<key>updatePostClicked</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>BloggerSampleWindowController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>mAddPostButton</key>
+				<string>NSButton</string>
+				<key>mBlogsProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mBlogsResultTextField</key>
+				<string>NSTextField</string>
+				<key>mBlogsTable</key>
+				<string>NSTableView</string>
+				<key>mDeletePostButton</key>
+				<string>NSButton</string>
+				<key>mEntriesProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mEntriesResultTextField</key>
+				<string>NSTextField</string>
+				<key>mEntriesTable</key>
+				<string>NSTableView</string>
+				<key>mEntryEditField</key>
+				<string>NSTextField</string>
+				<key>mPasswordField</key>
+				<string>NSSecureTextField</string>
+				<key>mUpdatePostButton</key>
+				<string>NSButton</string>
+				<key>mUpdateProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mUsernameField</key>
+				<string>NSTextField</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSWindowController</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>

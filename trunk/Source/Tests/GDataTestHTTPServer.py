@@ -215,6 +215,24 @@ class SimpleServer(BaseHTTPRequestHandler):
             "Test HTTP server status parameter: %s" % self.path)
           return
           
+        # queries that have something like "?statusxml=456" should fail with the
+        # status code and structured XML response
+        searchResult = re.search("(statusxml=)([0-9]+)", self.path)
+        if searchResult:
+          status = searchResult.group(2)
+          self.send_response(int(status))
+          self.send_header("Content-type",
+            "application/vnd.google.gdata.error+xml")
+          self.end_headers()
+          resultString = ("<errors xmlns='http://schemas.google.com/g/2005'>"
+            "<error><domain>GData</domain><code>code_%s</code>"
+            "<internalReason>forced status error on path %s</internalReason>"
+            "<extendedHelp>http://help.com</extendedHelp>"
+            "<sendReport>http://report.com</sendReport></error>"
+            "</errors>" % (status, self.path))
+          self.wfile.write(resultString)
+          return
+          
         # if the client gave us back our modified date, then say there's no
         # change in the response
         if ifModifiedSince == modifiedDate:
