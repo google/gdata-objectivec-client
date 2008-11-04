@@ -22,6 +22,8 @@
 // CoreErrorDomain.java
 //
 
+#import <Foundation/Foundation.h>
+
 #import "GDataDefines.h"
 
 #undef _EXTERN
