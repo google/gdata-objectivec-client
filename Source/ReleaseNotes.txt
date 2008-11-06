@@ -18,6 +18,8 @@ Additions
 
 - Added support for using GDataHTTPFetcher with a single failure selector.
 
+- Added GDataTargetNamespace.h (and a tool to generate it) to allow plug-ins
+  to use the library with less risk of class name collision
 
 Bugs Fixed
 

@@ -15,6 +15,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
+
 //  Time specification object which tries to conform to section 3.6
 //  of RFC 2326 (Normal Play Time).  http://www.ietf.org/rfc/rfc2326.txt
 //

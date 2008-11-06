@@ -15,7 +15,6 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-#import "GDataDefines.h"
 #import "GDataMIMEDocument.h"
 #import "GDataMIMEDocumentTest.h"
 

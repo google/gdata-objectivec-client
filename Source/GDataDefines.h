@@ -23,6 +23,11 @@
 //   #define STRIP_GDATA_FETCH_LOGGING 1 // omit http logging code
 //
 
+#ifdef GDATA_TARGET_NAMESPACE
+// prefix all GData class names with GDATA_TARGET_NAMESPACE for this target
+  #import "GDataTargetNamespace.h"
+#endif
+
 #if TARGET_OS_IPHONE // iPhone SDK
 
   #define GDATA_IPHONE 1
@@ -59,7 +64,6 @@
   #define kGDataXMLDocumentPropertyKey @"_XMLDocument"
   #define kGDataXMLElementPropertyKey  @"_XMLElement"
 #endif
-
 
 // To simplify support for 64bit (and Leopard in general), we provide the type
 // defines for non Leopard SDKs

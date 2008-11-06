@@ -45,6 +45,11 @@
       serviceVersion = [components objectAtIndex:1];
     }
     
+#ifdef GDATA_TARGET_NAMESPACE
+    className = [NSString stringWithFormat:@"%s_%@",
+                 GDATA_TARGET_NAMESPACE_STRING, className];
+#endif
+
     Class gdataClass = NSClassFromString(className);
     STAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
     
@@ -104,7 +109,7 @@
       // brackets and other minor differences
       if ([keyPath hasSuffix:@".XMLString"]) continue;
 #endif
-      
+
       NSString *result = [GDataElementsTest valueInObject:feed2
                                 forKeyPathIncludingArrays:keyPath];
       
@@ -132,6 +137,17 @@
                      @"failed object %@ \n testing key path '%@' for substring:\n %@ \n!= contains:\n %@", 
                      feed2, keyPath, result, substring);      
       } else {
+
+#ifdef GDATA_TARGET_NAMESPACE
+        // tests for class name need the prefix added
+        if ([keyPath hasSuffix:@"className"]
+            && [expectedValue hasPrefix:@"GData"]) {
+
+          expectedValue = [NSString stringWithFormat:@"%s_%@",
+                           GDATA_TARGET_NAMESPACE_STRING, expectedValue];
+        }
+#endif
+
         STAssertTrue(AreEqualOrBothNil(result, expectedValue), @"failed object %@ \n testing key path '%@'\n %@ \n!= \n %@", 
                      feed2, keyPath, result, expectedValue);      
       }

@@ -179,6 +179,11 @@
     NSString *className = tests[testIndex].str1;
     NSString *testXMLString = tests[testIndex].str2;
     
+#ifdef GDATA_TARGET_NAMESPACE
+    className = [NSString stringWithFormat:@"%s_%@", 
+                GDATA_TARGET_NAMESPACE_STRING, className];
+#endif
+
     Class gdataClass = NSClassFromString(className);
     STAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
     
@@ -235,7 +240,17 @@
           && [result respondsToSelector:@selector(stringValue)]) {
         
         result = [(id)result stringValue];     
-      }      
+      }
+      
+#ifdef GDATA_TARGET_NAMESPACE
+      // tests for class name need the prefix added
+      if ([keyPath hasSuffix:@"className"]
+          && [expectedValue hasPrefix:@"GData"]) {
+
+        expectedValue = [NSString stringWithFormat:@"%s_%@",
+                         GDATA_TARGET_NAMESPACE_STRING, expectedValue];
+      }
+#endif
       
       STAssertTrue(AreEqualOrBothNil(result, expectedValue), 
                    @"failed %@ testing key path %@:\n %@ \n!= \n %@", 
@@ -1311,8 +1326,11 @@
   NSXMLElement *elem = [tc XMLElement];
   NSString *elemStr = [elem XMLString];
   
-  STAssertEqualObjects(elemStr, @"<GDataTextConstruct>bunnyrabbit"
-                       "</GDataTextConstruct>", @"failed to remove control chars");
+  NSString *className = [GDataTextConstruct className];
+  NSString *expectedStr = [NSString stringWithFormat:@"<%@>bunnyrabbit</%@>",
+                           className, className];
+
+  STAssertEqualObjects(elemStr, expectedStr, @"failed to remove control chars");
 }
 
 - (void)testProperties {
@@ -1349,6 +1367,12 @@
 @end
 
 // class for testing GDataGeo (used above)
+
+// this internal test class doesn't have a macro defined in GDataTargetNamespace
+#ifdef GDATA_TARGET_NAMESPACE
+  #define GDataGeoTestClass _GDATA_NS_SYMBOL(GDataGeoTestClass)
+#endif
+
 @interface GDataGeoTestClass : GDataObject
 @end
 
