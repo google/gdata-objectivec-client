@@ -15,6 +15,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
+
 // helper functions for implementing isEqual:
 BOOL AreEqualOrBothNil(id obj1, id obj2);
 BOOL AreBoolsEqual(BOOL b1, BOOL b2);

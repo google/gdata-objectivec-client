@@ -23,6 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
+
 @interface GDataMIMEDocument : NSObject {
   NSMutableArray* parts_;         // Contains an ordered set of MimeParts
   unsigned long long length_;     // Length in bytes of the document.
