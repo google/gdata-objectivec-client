@@ -236,7 +236,7 @@ enum {
 
 void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 
-/// async retrieval of an http get or post
+// async retrieval of an http get or post
 @interface GDataHTTPFetcher : NSObject {
   NSMutableURLRequest *request_;
   NSURLConnection *connection_;    // while connection_ is non-nil, delegate_ is retained
@@ -269,7 +269,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSTimeInterval lastRetryInterval_;
 }
 
-/// create a fetcher
+// create a fetcher
 //
 // httpFetcherWithRequest will return an autoreleased fetcher, but if
 // the connection is successfully created, the connection should retain the
@@ -404,17 +404,20 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // Returns YES if this is in the process of fetching a URL
 - (BOOL)isFetching;
 
-/// Cancel the fetch of the request that's currently in progress
+// Cancel the fetch of the request that's currently in progress
 - (void)stopFetching;
 
-/// return the status code from the server response
+// return the status code from the server response
 - (NSInteger)statusCode;
 
-/// the response, once it's been received
+// return the http headers from the response
+- (NSDictionary *)responseHeaders;
+
+// the response, once it's been received
 - (NSURLResponse *)response;
 - (void)setResponse:(NSURLResponse *)response;
 
-/// if the caller supplies a mutable dictionary, it's used for Last-Modified-Since
+// if the caller supplies a mutable dictionary, it's used for Last-Modified-Since
 //  checks and for cookie storage
 //  side effect: setFetchHistory implicitly calls setCookieStorageMethod:
 - (NSMutableDictionary *)fetchHistory;
@@ -433,7 +436,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // delete last-modified dates and cached data from the fetch history
 - (void)clearDatedDataHistory;
 
-/// userData is retained for the convenience of the caller
+// userData is retained for the convenience of the caller
 - (id)userData;
 - (void)setUserData:(id)theObj;
 

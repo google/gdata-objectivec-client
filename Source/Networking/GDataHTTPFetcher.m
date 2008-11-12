@@ -322,6 +322,16 @@ CannotBeginFetch:
   return statusCode;
 }
 
+- (NSDictionary *)responseHeaders {
+  if (response_ != nil
+      && [response_ respondsToSelector:@selector(allHeaderFields)]) {
+
+    NSDictionary *headers = [(NSHTTPURLResponse *)response_ allHeaderFields];
+    return headers;
+  }
+  return nil;
+}
+
 // Cancel the fetch of the URL that's currently in progress.
 - (void)stopFetching {
   [self destroyRetryTimer];
