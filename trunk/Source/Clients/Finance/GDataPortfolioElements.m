@@ -109,18 +109,17 @@ static NSString *const kSharesAttr = @"shares";
 @implementation GDataPortfolioBase 
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class elementClass = [self class];
   [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataCostBasis class]];  
-  [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataDaysGain class]];  
-  [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataGain class]];  
-  [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataMarketValue class]];  
+                                 childClasses:
+   [GDataCostBasis class],
+   [GDataDaysGain class],
+   [GDataGain class],
+   [GDataMarketValue class],
+   nil];
 }
 
 - (void)addParseDeclarations {
@@ -139,9 +138,9 @@ static NSString *const kSharesAttr = @"shares";
   
   // extensions
   [self addToArray:items objectDescriptionIfNonNil:[self costBasis] withName:@"costBasis"];
-  [self addToArray:items objectDescriptionIfNonNil:[self daysGain] withName:@"gain"];
-  [self addToArray:items objectDescriptionIfNonNil:[self costBasis] withName:@"daysGain"];
-  [self addToArray:items objectDescriptionIfNonNil:[self costBasis] withName:@"marketValue"];
+  [self addToArray:items objectDescriptionIfNonNil:[self daysGain] withName:@"daysGain"];
+  [self addToArray:items objectDescriptionIfNonNil:[self gain] withName:@"gain"];
+  [self addToArray:items objectDescriptionIfNonNil:[self marketValue] withName:@"marketValue"];
 
   return items;
 }

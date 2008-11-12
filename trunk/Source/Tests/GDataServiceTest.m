@@ -207,6 +207,7 @@ static int gFetchCounter = 0;
   // an ".auth" extension tells the server to require the success auth token,
   // but the server will ignore the .auth extension when looking for the file
   NSURL *feedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml"];
+  NSURL *feedErrorURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml?statusxml=499"];
   NSURL *authFeedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.auth"];
   NSURL *authSubFeedURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.authsub"];
   
@@ -317,6 +318,43 @@ static int gFetchCounter = 0;
   // verify the underlying fetcher got a 200 (good) status
   STAssertEquals([[ticket_ objectFetcher] statusCode], (NSInteger)200,
                  @"fetching uncached copy of %@", feedURL);
+
+  //
+  // test: download feed only, no auth, forcing a structured xml error
+  //
+  [self resetFetchResponse];
+
+  ticket_ = (GDataServiceTicket *)
+    [service_ fetchFeedWithURL:feedErrorURL
+                     feedClass:kGDataUseRegisteredClass
+                      delegate:self
+             didFinishSelector:@selector(ticket:finishedWithObject:)
+               didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertNil(fetchedObject_, @"fetching %@", feedURL);
+  STAssertEquals([fetcherError_ code], (NSInteger)499,
+                 @"fetcherError_=%@", fetcherError_);
+
+  // get the error group from the error's userInfo and test the main
+  // error's fields
+  GDataServerErrorGroup *errorGroup =
+    [[fetcherError_ userInfo] objectForKey:kGDataStructuredErrorsKey];
+  STAssertNotNil(errorGroup, @"lacks error group");
+
+  GDataServerError *serverError = [errorGroup mainError];
+
+  STAssertEqualObjects([serverError domain], kGDataErrorDomainCore, @"domain");
+  STAssertEqualObjects([serverError code], @"code_499", @"code");
+  STAssertTrue([[serverError internalReason] hasPrefix:@"forced status error"],
+               @"internalReason: %@", [serverError internalReason]);
+  STAssertEqualObjects([serverError extendedHelpURI], @"http://help.com",
+                       @"help");
+  STAssertEqualObjects([serverError sendReportURI], @"http://report.com",
+                       @"sendReport");
+
   
   //
   // test: download feed only, no auth, allocating a surrogate feed class
