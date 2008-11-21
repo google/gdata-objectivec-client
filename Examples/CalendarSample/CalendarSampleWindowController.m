@@ -1332,12 +1332,10 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
       
       GDataServiceGoogleCalendar *service = [self calendarService];
       
-      GDataEntryCalendar *calendar = [self selectedCalendar];
-      NSURL *feedURL = [[calendar ACLLink] URL];
-      
-      if (feedURL) {
+      NSURL *postURL = [[mACLFeed postLink] URL];
+      if (postURL) {
         [service fetchACLEntryByInsertingEntry:entry
-                                    forFeedURL:feedURL
+                                    forFeedURL:postURL
                                       delegate:self
                              didFinishSelector:@selector(addACLEntryTicket:addedEntry:)
                                didFailSelector:@selector(addACLEntryTicket:failedWithError:)];
@@ -1439,11 +1437,14 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
   GDataEntryACL *entry = [self selectedACLEntry];
   if (entry) {
     // make the user confirm that the selected ACLEntry should be deleted
+    NSString *entryDesc = [NSString stringWithFormat:@"%@ %@",
+                           [[entry scope] type], [[entry scope] value]];
+    
     NSBeginAlertSheet(@"Delete ACLEntry", @"Delete", @"Cancel", nil,
                       [self window], self, 
                       @selector(deleteACLSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the ACL entry \"%@\"?",
-                      [entry description]);
+                      entryDesc);
   }
 }
 
