@@ -35,6 +35,10 @@
 @interface GDataYouTubeBooks : GDataValueElementConstruct <GDataExtension>
 @end
 
+// rating of comment, like <yt:commentRating>1</yt:commentRating>
+@interface GDataYouTubeCommentRating : GDataValueElementConstruct <GDataExtension>
+@end
+
 // user's company, like <yt:company>Self employed</yt:company>
 @interface GDataYouTubeCompany : GDataValueElementConstruct <GDataExtension>
 @end
@@ -110,6 +114,18 @@
 
 // <yt:queryString>Smith</yt:queryString>
 @interface GDataYouTubeQueryString : GDataValueElementConstruct <GDataExtension>
+@end
+
+// <yt:playlistId>1x4aa23</yt:playlistId>
+@interface GDataYouTubePlaylistID : GDataValueElementConstruct <GDataExtension>
+@end
+
+// <yt:playlistTitle>Fred's Playlist</yt:playlistTitle>
+@interface GDataYouTubePlaylistTitle : GDataValueElementConstruct <GDataExtension>
+@end
+
+// spam hint, like <yt:spamHint/>
+@interface GDataYouTubeSpamHint : GDataImplicitValueConstruct <GDataExtension>
 @end
 
 // status, like <yt:status>accepted</yt:status>

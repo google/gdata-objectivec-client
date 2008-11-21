@@ -662,20 +662,22 @@
 }
 
 - (id)entryForIdentifier:(NSString *)str {
-  
-  NSArray *entries = [self entries];
-  NSEnumerator *enumerator = [entries objectEnumerator];
-  
-  GDataEntryBase *entry;
-  
-  while ((entry = [enumerator nextObject]) != nil) {
-    NSString *entryID = [entry identifier];
-    if ([entryID isEqual:str]) {
-      return entry; 
-    }
-  }
-  return nil;
+
+  GDataEntryBase *desiredEntry;
+  desiredEntry = [GDataUtilities firstObjectFromArray:[self entries]
+                                            withValue:str
+                                           forKeyPath:@"identifier"];
+  return desiredEntry;
 }
+
+- (NSArray *)entriesWithCategoryKind:(NSString *)term {
+
+  NSArray *kindEntries = [GDataUtilities objectsFromArray:[self entries]
+                                                withValue:term
+                                               forKeyPath:@"kindCategory.term"];
+  return kindEntries;
+}
+
 @end
 
 

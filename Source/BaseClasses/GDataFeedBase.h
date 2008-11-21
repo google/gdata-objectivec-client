@@ -163,5 +163,10 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 // find the entry with the given identifier, or nil if none found
 - (id)entryForIdentifier:(NSString *)str;
 
+// find all entries with a kind category for the specified term
+//
+// this is useful for feeds which contain various kinds of entries with
+// distinct entry kind categories
+- (NSArray *)entriesWithCategoryKind:(NSString *)term;
 @end
 

@@ -23,4 +23,10 @@
 
 + (GDataEntryYouTubeComment *)commentEntry;
 
+- (NSNumber *)totalRating; // int
+- (void)setTotalRating:(NSNumber *)num;
+
+- (BOOL)hasSpamHint;
+- (void)setHasSpamHint:(BOOL)flag;
+
 @end

@@ -30,6 +30,7 @@
 
 _EXTERN int kGDataYouTubeMediaContentFormatRTSPStream _INITIALIZE_AS(1);
 _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
+_EXTERN int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS(6);
 
 #import "GDataObject.h"
 #import "GDataMediaContent.h"

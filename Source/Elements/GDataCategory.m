@@ -111,18 +111,10 @@ static NSString* const kLangAttr = @"xml:lang";
 + (NSArray *)categoriesWithScheme:(NSString *)scheme
                    fromCategories:(NSArray *)array {
   
-  NSMutableArray *matches = [NSMutableArray array];
-  NSEnumerator *enumerator = [array objectEnumerator];
-  GDataCategory *category;
-  
-  while ((category = [enumerator nextObject]) != nil) {
-    NSString *currScheme = [category scheme];
-    if (currScheme != nil && [currScheme isEqual:scheme]) {
-      
-      [matches addObject:category];
-    }
-  }
-  return matches;
+  NSArray *cats = [GDataUtilities objectsFromArray:array
+                                         withValue:scheme
+                                        forKeyPath:@"scheme"];
+  return cats;
 }
 
 // return all categories whose schemes have the specified prefix

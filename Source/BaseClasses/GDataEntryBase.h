@@ -158,6 +158,12 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 - (NSArray *)categoriesWithScheme:(NSString *)scheme;
 
+// most entries have a category element with scheme kGDataCategoryScheme 
+// that indicates the kind of entry
+- (GDataCategory *)kindCategory;
+
+- (NSArray *)linksWithRelAttributeValue:(NSString *)relValue;
+
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue;
 
 - (GDataLink *)feedLink;

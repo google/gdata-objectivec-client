@@ -33,6 +33,9 @@
   IBOutlet NSButton *mViewSelectedDocButton;
   IBOutlet NSButton *mDeleteSelectedDocButton;
   IBOutlet NSButton *mDownloadSelectedDocButton;
+  IBOutlet NSButton *mCreateFolderButton;
+
+  IBOutlet NSPopUpButton *mFolderMembershipPopup;
 
   IBOutlet NSButton *mUploadFileButton;
   IBOutlet NSButton *mStopUploadButton;
@@ -54,6 +57,8 @@
 
 - (IBAction)viewSelectedDocClicked:(id)sender;
 - (IBAction)downloadSelectedDocClicked:(id)sender;
+
+- (IBAction)createFolderClicked:(id)sender;
 
 - (IBAction)deleteSelectedDocClicked:(id)sender;
 
