@@ -45,6 +45,13 @@
 + (NSString *)extensionElementLocalName { return @"books"; }
 @end
 
+// rating of comment, like <yt:commentRating>1</yt:commentRating>
+@implementation GDataYouTubeCommentRating
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"commentRating"; }
+@end
+
 // user's company, like <yt:company>Self employed</yt:company>
 @implementation GDataYouTubeCompany
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
@@ -165,10 +172,29 @@
 + (NSString *)extensionElementLocalName { return @"lastName"; }
 @end
 
+@implementation GDataYouTubePlaylistID
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"playlistId"; }
+@end
+
+@implementation GDataYouTubePlaylistTitle
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"playlistTitle"; }
+@end
+
 @implementation GDataYouTubeQueryString
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"queryString"; }
+@end
+
+// spam hint, like <yt:spamHint/>
+@implementation GDataYouTubeSpamHint
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"spamHint"; }
 @end
 
 // status, like <yt:status>accepted</yt:status>

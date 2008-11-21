@@ -77,4 +77,14 @@
   [self setSubtitle:[GDataTextConstruct textConstructWithString:str]]; 
 }
 
+#pragma mark -
+
+- (id)entryWithGPhotoID:(NSString *)str {
+  GDataEntryPhotoBase *obj;
+
+  obj = [GDataUtilities firstObjectFromArray:[self entries]
+                                   withValue:str
+                                  forKeyPath:@"GPhotoID"];
+  return obj;
+}
 @end

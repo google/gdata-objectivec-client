@@ -45,20 +45,26 @@
   [super addExtensionDeclarations];
   
   Class entryClass = [self class];
-
+  
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeUsername class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeQueryString class]];
-
+                                 childClasses:
+   [GDataYouTubeUsername class],
+   [GDataYouTubeQueryString class],
+   [GDataYouTubePlaylistID class],
+   [GDataYouTubePlaylistTitle class],
+   nil];
+  
 }
 
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
   
-//  [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
+  [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
+  [self addToArray:items objectDescriptionIfNonNil:[self youTubeQueryString] withName:@"query"];
+  [self addToArray:items objectDescriptionIfNonNil:[self playlistID] withName:@"playlistID"];
+  [self addToArray:items objectDescriptionIfNonNil:[self playlistTitle] withName:@"playlistTitle"];
 
   return items;
 }
@@ -109,5 +115,30 @@
   GDataYouTubeQueryString *obj = [GDataYouTubeQueryString valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeQueryString class]];
 }
+
+- (NSString *)playlistID {
+  GDataYouTubePlaylistID *obj = [self objectForExtensionClass:[GDataYouTubePlaylistID class]];
+  return [obj stringValue];
+}
+
+- (void)setPlaylistID:(NSString *)str {
+  GDataYouTubePlaylistID *obj = [GDataYouTubePlaylistID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubePlaylistID class]];
+}
+
+- (NSString *)playlistTitle {
+  GDataYouTubePlaylistTitle *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubePlaylistTitle class]];
+  return [obj stringValue];
+}
+
+- (void)setPlaylistTitle:(NSString *)str {
+  GDataYouTubePlaylistTitle *obj;
+
+  obj = [GDataYouTubePlaylistTitle valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubePlaylistTitle class]];
+}
+
 
 @end

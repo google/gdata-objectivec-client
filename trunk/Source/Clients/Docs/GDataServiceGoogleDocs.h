@@ -52,6 +52,12 @@ _EXTERN NSString* kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http:/
                            didFinishSelector:(SEL)finishedSelector
                              didFailSelector:(SEL)failedSelector;
 
+// finished callback (see above) is passed an appropriate doc entry
+- (GDataServiceTicket *)fetchDocEntryWithURL:(NSURL *)feedURL
+                                    delegate:(id)delegate
+                           didFinishSelector:(SEL)finishedSelector
+                             didFailSelector:(SEL)failedSelector;
+
 // finished callback (see above) is passed the inserted entry
 - (GDataServiceTicket *)fetchDocEntryByInsertingEntry:(GDataEntryDocBase *)entryToInsert
                                            forFeedURL:(NSURL *)feedURL

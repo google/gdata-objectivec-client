@@ -23,11 +23,11 @@
 @implementation GDataEntryYouTubeComment
 
 + (GDataEntryYouTubeComment *)commentEntry {
-  
+
   GDataEntryYouTubeComment *entry = [[[self alloc] init] autorelease];
 
   [entry setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -35,7 +35,7 @@
 
 + (void)load {
   [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
+            forCategoryWithScheme:nil
                              term:kGDataCategoryYouTubeComment];
 }
 
@@ -46,6 +46,61 @@
                                                    term:kGDataCategoryYouTubeComment]];
   }
   return self;
+}
+
+- (void)addExtensionDeclarations {
+
+  [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                 childClasses:
+   [GDataYouTubeCommentRating class],
+   [GDataYouTubeSpamHint class],
+   nil];
+}
+
+- (NSMutableArray *)itemsForDescription {
+
+  NSMutableArray *items = [super itemsForDescription];
+
+  [self addToArray:items objectDescriptionIfNonNil:[self totalRating] withName:@"rating"];
+
+  if ([self hasSpamHint]) [items addObject:@"spamHint"];
+
+  return items;
+}
+
+#pragma mark -
+
+- (NSNumber *)totalRating {
+  GDataYouTubeCommentRating *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubeCommentRating class]];
+  return [obj intNumberValue];
+}
+
+- (void)setTotalRating:(NSNumber *)num {
+  GDataYouTubeCommentRating *obj;
+
+  obj = [GDataYouTubeCommentRating valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataYouTubeCommentRating class]];
+}
+
+- (BOOL)hasSpamHint {
+  GDataYouTubeSpamHint *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubeSpamHint class]];
+  return (obj != nil);
+}
+
+- (void)setHasSpamHint:(BOOL)flag {
+  if (flag) {
+    GDataYouTubeSpamHint *spamHint = [GDataYouTubeSpamHint implicitValue];
+
+    [self setObject:spamHint forExtensionClass:[GDataYouTubeSpamHint class]];
+  } else {
+    [self setObject:nil forExtensionClass:[GDataYouTubeSpamHint class]];
+  }
 }
 
 @end

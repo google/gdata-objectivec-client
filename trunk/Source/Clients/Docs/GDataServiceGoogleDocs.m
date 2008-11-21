@@ -40,11 +40,23 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchDocEntryWithURL:(NSURL *)entryURL
+                                    delegate:(id)delegate
+                           didFinishSelector:(SEL)finishedSelector
+                             didFailSelector:(SEL)failedSelector {
+
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:kUseRegisteredEntryClass
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)fetchDocEntryByInsertingEntry:(GDataEntryDocBase *)entryToInsert
-                                            forFeedURL:(NSURL *)docsFeedURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
+                                           forFeedURL:(NSURL *)docsFeedURL
+                                             delegate:(id)delegate
+                                    didFinishSelector:(SEL)finishedSelector
+                                      didFailSelector:(SEL)failedSelector {
   
   if ([entryToInsert namespaces] == nil) {
     [entryToInsert setNamespaces:[GDataEntryDocBase baseDocumentNamespaces]]; 
@@ -114,6 +126,13 @@
 
 - (NSString *)serviceID {
   return @"writely";
+}
+
+- (NSString *)serviceVersion {
+  NSString *str = [super serviceVersion];
+  if (str != nil) return str;
+
+  return @"2.0";
 }
 
 @end

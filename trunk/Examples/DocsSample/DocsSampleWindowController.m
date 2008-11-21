@@ -27,6 +27,7 @@
 
 @interface DocsSampleWindowController (PrivateMethods)
 - (void)updateUI;
+- (void)updateChangeFolderPopup;
 
 - (void)fetchDocList;
 
@@ -129,10 +130,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   
   // enable uploading buttons 
   BOOL isUploading = (mUploadTicket != nil);
-  BOOL hasFeed = (mDocListFeed != nil);
+  BOOL canPostToFeed = ([mDocListFeed postLink] != nil);
 
-  [mUploadFileButton setEnabled:(hasFeed && !isUploading)];
+  [mUploadFileButton setEnabled:(canPostToFeed && !isUploading)];
   [mStopUploadButton setEnabled:isUploading];
+  [mCreateFolderButton setEnabled:canPostToFeed];
+
+  // fill in the add-to-folder pop-up for the selected doc
+  [self updateChangeFolderPopup];
 
   // show the title of the file currently uploading
   NSString *uploadingStr = @"";
@@ -143,6 +148,56 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     uploadingStr = [NSString stringWithFormat:@"Uploading: %@", uploadingTitle];
   }
   [mUploadingTextField setStringValue:uploadingStr];
+}
+
+- (void)updateChangeFolderPopup {
+
+  // replace all menu items in the button with the folder titles and pointers
+  // of the feed's folder entries, but preserve the pop-up's "Change Folder"
+  // title as the first item
+
+  NSString *title = [mFolderMembershipPopup title];
+
+  NSMenu *addMenu = [[[NSMenu alloc] initWithTitle:title] autorelease];
+  [addMenu setAutoenablesItems:NO];
+  [addMenu addItemWithTitle:title action:nil keyEquivalent:@""];
+  [mFolderMembershipPopup setMenu:addMenu];
+
+  // get all folder entries
+  NSArray *folderEntries = [mDocListFeed entriesWithCategoryKind:kGDataCategoryFolderDoc];
+
+  // get hrefs of folders that already contain the selected doc
+  GDataEntryDocBase *doc = [self selectedDoc];
+  NSArray *parentLinks = [doc linksWithRelAttributeValue:kGDataCategoryDocParent];
+  NSArray *parentHrefs = [parentLinks valueForKey:@"href"];
+
+  // disable the pop-up if a folder entry is selected
+  BOOL isMovableDocSelected = (doc != nil)
+    && ![doc isKindOfClass:[GDataEntryFolderDoc class]];
+  [mFolderMembershipPopup setEnabled:isMovableDocSelected];
+
+  if (isMovableDocSelected) {
+    // step through the folders in this feed, add them to the
+    // pop-up, and add a checkmark to the names of folders that
+    // contain the selected document
+    NSEnumerator *folderEnum = [folderEntries objectEnumerator];
+    GDataEntryFolderDoc *folderEntry;
+    while ((folderEntry = [folderEnum nextObject]) != nil) {
+
+      NSString *title = [[folderEntry title] stringValue];
+      NSMenuItem *item = [addMenu addItemWithTitle:title
+                                            action:@selector(changeFolderSelected:)
+                                     keyEquivalent:@""];
+      [item setTarget:self];
+      [item setRepresentedObject:folderEntry];
+
+      NSString *folderHref = [[folderEntry selfLink] href];
+
+      BOOL shouldCheckItem = (folderHref != nil)
+        && [parentHrefs containsObject:folderHref];
+      [item setState:shouldCheckItem];
+    }
+  }
 }
 
 #pragma mark IBActions
@@ -302,13 +357,58 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
 }
 
+#pragma mark -
+
+- (IBAction)createFolderClicked:(id)sender {
+
+  GDataServiceGoogleDocs *service = [self docsService];
+
+  GDataEntryFolderDoc *docEntry = [GDataEntryFolderDoc documentEntry];
+
+  NSString *title = [NSString stringWithFormat:@"New Folder %@", [NSDate date]];
+  [docEntry setTitleWithString:title];
+
+  NSURL *postURL = [[mDocListFeed postLink] URL];
+
+  [service fetchDocEntryByInsertingEntry:docEntry
+                              forFeedURL:postURL
+                                delegate:self
+                       didFinishSelector:@selector(createFolderTicket:finishedWithEntry:)
+                         didFailSelector:@selector(createFolderTicket:failedWithError:)];
+}
+
+// folder created successfully
+- (void)createFolderTicket:(GDataServiceTicket *)ticket
+         finishedWithEntry:(GDataEntryFolderDoc *)entry {
+
+  NSBeginAlertSheet(@"Created folder", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Created folder \"%@\"",
+                    [[entry title] stringValue]);
+
+  // re-fetch the document list
+  [self fetchDocList];
+  [self updateUI];
+}
+
+// failure to create folder
+- (void)createFolderTicket:(GDataServiceTicket *)ticket
+           failedWithError:(NSError *)error {
+
+  NSBeginAlertSheet(@"Create failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Folder create failed: %@", error);
+}
+
+#pragma mark -
+
 - (IBAction)deleteSelectedDocClicked:(id)sender {
-  
+
   GDataEntryDocBase *doc = [self selectedDoc];
   if (doc) {
     // make the user confirm that the selected doc should be deleted
     NSBeginAlertSheet(@"Delete Document", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(deleteDocSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the document \"%@\"?",
                       [[doc title] stringValue]);
@@ -317,19 +417,18 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 // delete dialog callback
 - (void)deleteDocSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     // delete the document entry
     GDataEntryDocBase *entry = [self selectedDoc];
-    GDataLink *link = [entry editLink];
-    
-    if (link) {
+
+    if (entry) {
       GDataServiceGoogleDocs *service = [self docsService];
-      [service deleteAuthenticatedResourceURL:[link URL]
-                                     delegate:self 
-                            didFinishSelector:@selector(deleteDocEntryTicket:deletedEntry:)
-                              didFailSelector:@selector(deleteDocEntryTicket:failedWithError:)];
+      [service deleteDocEntry:entry
+                     delegate:self
+            didFinishSelector:@selector(deleteDocEntryTicket:deletedEntry:)
+              didFailSelector:@selector(deleteDocEntryTicket:failedWithError:)];
     }
   }
 }
@@ -337,28 +436,154 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 // Doc entry deleted successfully
 - (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
                 deletedEntry:(GDataEntryDocBase *)object {
-  
+
   // note: object is nil in the delete callback
-  
+
   NSBeginAlertSheet(@"Deleted Doc", nil, nil, nil,
                     [self window], nil, nil,
                     nil, nil, @"Document deleted");
-  
+
   // re-fetch the document list
   [self fetchDocList];
   [self updateUI];
-} 
+}
 
 // failure to delete document
 - (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
              failedWithError:(NSError *)error {
-  
+
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
                     nil, nil, @"Document delete failed: %@", error);
 }
 
+#pragma mark -
 
+- (IBAction)changeFolderSelected:(id)sender {
+
+  // the selected menu item represents a folder; fetch the folder's feed
+  //
+  // with the folder's feed, we can insert or remove the selected document
+  // entry in the folder's feed
+
+  GDataEntryFolderDoc *folderEntry = [sender representedObject];
+  NSString *folderFeedURI = [[folderEntry content] sourceURI];
+  if (folderFeedURI != nil) {
+    NSURL *feedURL = [NSURL URLWithString:folderFeedURI];
+
+    GDataServiceGoogleDocs *service = [self docsService];
+
+    GDataServiceTicket *ticket;
+    ticket = [service fetchDocsFeedWithURL:feedURL
+                                  delegate:self
+                         didFinishSelector:@selector(fetchFolderTicket:finishedWithFeed:)
+                           didFailSelector:@selector(fetchFolderTicket:failedWithError:)];
+
+    // save the selected doc in the ticket's userData
+    GDataEntryDocBase *doc = [self selectedDoc];
+    [ticket setUserData:doc];
+  }
+}
+
+
+- (void)fetchFolderTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(GDataFeedDocList *)feed {
+
+  GDataEntryDocBase *docEntry = [ticket userData];
+
+  GDataServiceGoogleDocs *service = [self docsService];
+  GDataServiceTicket *ticket2;
+
+  // if the entry is not in the folder's feed, insert it; otherwise, delete
+  // it from the folder's feed
+  //
+  // We should be able to look up entries by ID
+  //  foundEntry = [feed entryForIdentifier:[docEntry identifier]];
+  // but currently the DocList server doesn't use consistent IDs for entries in
+  // different feeds, so we'll look up the entry by etag instead.  (Bug 1498057)
+  
+  GDataEntryDocBase *foundEntry;
+
+  foundEntry = [GDataUtilities firstObjectFromArray:[feed entries]
+                                          withValue:[docEntry ETag]
+                                         forKeyPath:@"ETag"];
+  if (foundEntry == nil) {
+    // the doc isn't in this folder's feed
+    //
+    // post the doc to the folder's feed
+    NSURL *postURL = [[feed postLink] URL];
+
+    ticket2 = [service fetchDocEntryByInsertingEntry:docEntry
+                                          forFeedURL:postURL
+                                            delegate:self
+                                   didFinishSelector:@selector(addToFolderTicket:finishedWithEntry:)
+                                     didFailSelector:@selector(addToFolderTicket:failedWithError:)];
+    [ticket2 setUserData:feed];
+  } else {
+    ticket2 = [service deleteDocEntry:foundEntry
+                             delegate:self
+                    didFinishSelector:@selector(removeFromFolderTicket:finishedWithEntry:)
+                      didFailSelector:@selector(removeFromFolderTicket:failedWithError:)];
+    [ticket2 setUserData:feed];
+  }
+}
+
+// failure to delete document
+- (void)fetchFolderTicket:(GDataServiceTicket *)ticket
+             failedWithError:(NSError *)error {
+
+  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Fetch of folder feed failed: %@", error);
+}
+
+- (void)addToFolderTicket:(GDataServiceTicket *)ticket
+        finishedWithEntry:(GDataEntryDocBase *)entry {
+
+  GDataFeedDocList *feed = [ticket userData];
+
+  NSBeginAlertSheet(@"Added", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Added document \"%@\" to feed \"%@\"",
+                    [[entry title] stringValue], [[feed title] stringValue]);
+
+  // re-fetch the document list
+  [self fetchDocList];
+  [self updateUI];
+}
+
+// failure to delete document
+- (void)addToFolderTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
+
+  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Insert to folder feed failed: %@", error);
+}
+
+- (void)removeFromFolderTicket:(GDataServiceTicket *)ticket
+             finishedWithEntry:(GDataEntryDocBase *)entry {
+
+  GDataFeedDocList *feed = [ticket userData];
+
+  NSBeginAlertSheet(@"Removed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Removed document from feed \"%@\"",
+                    [[feed title] stringValue]);
+
+  // re-fetch the document list
+  [self fetchDocList];
+  [self updateUI];
+}
+
+// failure to delete document
+- (void)removeFromFolderTicket:(GDataServiceTicket *)ticket
+               failedWithError:(NSError *)error {
+
+  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
+                    [self window], nil, nil,
+                    nil, nil, @"Delete from folder feed failed: %@", error);
+}
 
 #pragma mark -
 

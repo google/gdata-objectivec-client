@@ -48,12 +48,14 @@ _EXTERN NSString* kGDataCategoryYouTubeFavorite     _INITIALIZE_AS(@"http://gdat
 _EXTERN NSString* kGDataCategoryYouTubeFriend       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#friend");
 _EXTERN NSString* kGDataCategoryYouTubeRating       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#rating");
 _EXTERN NSString* kGDataCategoryYouTubeUserProfile  _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#userProfile");
+_EXTERN NSString* kGDataCategoryYouTubeChannel      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#channel");
 _EXTERN NSString* kGDataCategoryYouTubePlaylist     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#playlist");
 _EXTERN NSString* kGDataCategoryYouTubeVideoMessage _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#videoMessage");
 
 _EXTERN NSString* kGDataSchemeYouTubeSubscription _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/subscriptiontypes.cat");
 _EXTERN NSString* kGDataSchemeYouTubeChannel      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/channeltypes.cat");
 _EXTERN NSString* kGDataSchemeYouTubeContact      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/contact.cat");
+_EXTERN NSString* kGDataSchemeYouTubeChannelType  _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/channeltypes.cat");
 _EXTERN NSString* kGDataSchemeYouTubeTag          _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/tags.cat");
 _EXTERN NSString* kGDataSchemeYouTubeKeyword      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/keywords.cat");
 _EXTERN NSString* kGDataSchemeYouTubeCategory     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007/categories.cat");
@@ -64,6 +66,7 @@ _EXTERN NSString* kGDataSchemeYouTubeDeveloper    _INITIALIZE_AS(@"http://gdata.
 
 _EXTERN NSString* kGDataLinkYouTubePlaylist      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#playlist");
 _EXTERN NSString* kGDataLinkYouTubeUploads       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.uploads");
+_EXTERN NSString* kGDataLinkYouTubeFeatured      _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#featured-video");
 _EXTERN NSString* kGDataLinkYouTubeSubscriptions _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.subscriptions");
 _EXTERN NSString* kGDataLinkYouTubePlaylists     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.playlists");
 _EXTERN NSString* kGDataLinkYouTubeFavorites     _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.favorites");

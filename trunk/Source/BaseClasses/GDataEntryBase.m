@@ -596,10 +596,25 @@
   return array;
 }
 
+- (GDataCategory *)kindCategory {
+  GDataCategory *cat = [GDataUtilities firstObjectFromArray:[self categories]
+                                                  withValue:kGDataCategoryScheme
+                                                 forKeyPath:@"scheme"];
+  return cat;
+}
+
+- (NSArray *)linksWithRelAttributeValue:(NSString *)relValue {
+
+  NSArray *array = [GDataUtilities objectsFromArray:[self links]
+                                          withValue:relValue
+                                         forKeyPath:@"rel"];
+  return array;
+}
+
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
-  
+
   return [GDataLink linkWithRelAttributeValue:rel
-                                    fromLinks:[self links]]; 
+                                    fromLinks:[self links]];
 }
 
 - (GDataLink *)feedLink {
@@ -641,6 +656,3 @@
   return ([self editLink] != nil);  
 }
 @end
-
-
-
