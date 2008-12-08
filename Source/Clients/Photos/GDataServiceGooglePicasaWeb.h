@@ -35,6 +35,7 @@ _EXTERN NSString* kGDataPicasaWebAllFeed _INITIALIZE_AS(@"http://picasaweb.googl
 _EXTERN NSString* kGDataPicasaWebAccessAll _INITIALIZE_AS(@"all");
 _EXTERN NSString* kGDataPicasaWebAccessPublic _INITIALIZE_AS(@"public");
 _EXTERN NSString* kGDataPicasaWebAccessPrivate _INITIALIZE_AS(@"private");
+_EXTERN NSString* kGDataPicasaWebAccessProtected _INITIALIZE_AS(@"protected"); // "sign-in required"
 
 _EXTERN NSString* kGDataPicasaWebKindAlbum   _INITIALIZE_AS(@"album");
 _EXTERN NSString* kGDataPicasaWebKindPhoto   _INITIALIZE_AS(@"photo");
