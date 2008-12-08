@@ -533,6 +533,9 @@ arrayCountIfNonEmpty:(NSArray *)array
 //
 // subclasses may implement -itemsForDescription and add to or
 // replace the superclass's array of items
+//
+// The base class itemsForDescription provides items for local attributes and
+// content, but not for any element extensions or attribute extensions
 - (NSMutableArray *)itemsForDescription;
 - (NSString *)descriptionWithItems:(NSArray *)items;
 - (NSString *)description;

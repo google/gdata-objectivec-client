@@ -46,9 +46,7 @@ _EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
 @class GDataAtomContent;
 
-@interface GDataLink : GDataObject <GDataExtension> {
-  NSString *etag_;
-}
+@interface GDataLink : GDataObject <GDataExtension>
 
 + (GDataLink *)linkWithRel:(NSString *)rel
                       type:(NSString *)type

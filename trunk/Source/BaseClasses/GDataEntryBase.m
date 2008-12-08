@@ -80,26 +80,13 @@
    // batch support
    [GDataBatchOperation class], [GDataBatchID class],
    [GDataBatchStatus class], [GDataBatchInterrupted class],
-   nil];  
-}
+   nil];
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    
-    // we parse ETags explicitly rather than using addLocalAttributeDeclarations
-    // because it requires a gd namespace
-    [self setETag:[self stringForAttributeLocalName:@"etag"
-                                                URI:kGDataNamespaceGData
-                                        fromElement:element]];
-  }
-  return self;
+  [self addAttributeExtensionDeclarationForParentClass:entryClass
+                                            childClass:[GDataETagAttribute class]];
 }
 
 - (void)dealloc {
-  [etag_ release];
   [uploadData_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
@@ -112,7 +99,6 @@
   if (![other isKindOfClass:[GDataEntryBase class]]) return NO;
   
   return [super isEqual:other]
-    && AreEqualOrBothNil([self ETag], [other ETag])
     && AreEqualOrBothNil([self uploadData], [other uploadData])
     && AreEqualOrBothNil([self uploadMIMEType], [other uploadMIMEType])
     && AreEqualOrBothNil([self uploadSlug], [other uploadSlug])
@@ -122,7 +108,6 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryBase* newEntry = [super copyWithZone:zone];
     
-  [newEntry setETag:[self ETag]];
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
@@ -178,14 +163,6 @@
   }
 
   return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"entry"];
-
-  [self addToElement:element attributeValueIfNonNil:[self ETag] 
-        withLocalName:@"etag" URI:kGDataNamespaceGData];
-  return element;
 }
 
 #pragma mark -
@@ -264,12 +241,12 @@
 #pragma mark -
 
 - (NSString *)ETag {
-  return etag_; 
+  NSString *str = [self attributeValueForExtensionClass:[GDataETagAttribute class]];
+  return str;
 }
 
 - (void)setETag:(NSString *)str {
-  [etag_ autorelease];
-  etag_ = [str copy];
+  [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
 }
 
 - (NSString *)identifier {

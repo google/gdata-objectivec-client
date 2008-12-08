@@ -49,6 +49,31 @@
   return kNamespaceString;
 }
 
+- (NSArray *)entryNamespaceNodes {
+
+  // convert the above string into an array of NSXML namespace nodes
+  NSMutableArray *namespaces = [NSMutableArray array];
+  NSScanner *scanner = [NSScanner scannerWithString:[self entryNamespaceString]];
+
+  while ([scanner scanString:@"xmlns" intoString:nil]) {
+
+    NSString *prefix = @""; // default namespace won't scan, but is an empty string
+    NSString *uri = nil;
+
+    [scanner scanString:@":" intoString:nil];
+    [scanner scanUpToString:@"=" intoString:&prefix];
+    [scanner scanString:@"='" intoString:nil];
+    [scanner scanUpToString:@"'" intoString:&uri];
+    [scanner scanString:@"'" intoString:nil];
+
+    if (uri && prefix) {
+      [namespaces addObject:[NSXMLElement namespaceWithName:prefix
+                                                stringValue:uri]];
+    }
+  }
+  return namespaces;
+}
+
 // Allocate a GDataObject of a known class, initialized from the 
 // given XML.
 //
@@ -192,22 +217,39 @@
                                             XMLString:testXMLString
                       shouldWrapWithNamespaceAndEntry:YES];
     
-    // make a copy of the object, and verify that it equals the original 
+    // make a copy of the object, and verify that it equals the original
     GDataObject *obj1copy = [[obj1 copy] autorelease];
-    STAssertTrue([obj1 isEqual:obj1copy], @
-                 "Failed copy from %@ to %@\nfor class %@ and original XML string:\n  %@",
+    STAssertTrue([obj1 isEqual:obj1copy],
+                 @"Failed copy from %@ to %@\nfor class %@ and original XML string:\n  %@",
                  obj1, obj1copy, className, testXMLString);
-    
+
     // get XML from the copy, make a new instance from the XML, and verify
     // the the new instance equals the previous copy
+
     NSXMLElement *outputXML = [obj1copy XMLElement];
-    
+
+    // before using the XML element from the copy, we need to give it
+    // a parent containing the same implicit namespaces that the original
+    // element had; otherwise, unbound URIs and prefixes won't resolve
+    // identically
+    NSXMLElement *tempParent = [NSXMLElement elementWithName:@"temp"];
+    [tempParent setNamespaces:[self entryNamespaceNodes]];
+    [tempParent addChild:outputXML];
+
+#if GDATA_USES_LIBXML
+    // GDataXMLElement's addChild: will fix up the namespaces in its new
+    // copy of the child element, so we'll want to use the new copy of the
+    // child for generating the new object
+    outputXML = (NSXMLElement *)[tempParent childAtIndex:0];
+#endif
+
     GDataObject *obj2 = [[[gdataClass alloc] initWithXMLElement:outputXML
                                                          parent:nil] autorelease];
-    STAssertTrue([obj2 isEqual:obj1copy], 
-                 @"Failed using XML to convert\n  %@\nas XML:\n  %@\nto\n  %@\nfor class %@ and original XML string:\n  %@",  
+
+    STAssertTrue([obj2 isEqual:obj1copy],
+                 @"Failed using XML to convert\n  %@\nas XML:\n  %@\nto\n  %@\nfor class %@ and original XML string:\n  %@",
                  obj1copy, outputXML, obj2, className, testXMLString);
-    
+
     // step through each test for this element, evaluate the key-value path,
     // and compare the result to the expected value string
     //

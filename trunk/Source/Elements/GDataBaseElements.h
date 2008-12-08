@@ -92,3 +92,8 @@
 
 @interface GDataOpenSearchItemsPerPage1_1 : GDataValueElementConstruct <GDataExtension>  
 @end
+
+// Attributes
+@interface GDataETagAttribute : GDataAttribute <GDataExtension>
+@end
+

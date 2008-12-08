@@ -836,6 +836,36 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   return nil;
 }
 
+- (void)setNamespaces:(NSArray *)namespaces {
+
+  if (xmlNode_ != NULL) {
+
+    [self releaseCachedValues];
+
+    // remove previous namespaces
+    if (xmlNode_->nsDef) {
+      xmlFreeNsList(xmlNode_->nsDef);
+      xmlNode_->nsDef = NULL;
+    }
+
+    // add a namespace for each object in the array
+    NSEnumerator *enumerator = [namespaces objectEnumerator];
+    GDataXMLNode *namespace;
+    while ((namespace = [enumerator nextObject]) != nil) {
+
+      xmlNsPtr ns = (xmlNsPtr) [namespace XMLNode];
+      if (ns) {
+        (void)xmlNewNs(xmlNode_, ns->href, ns->prefix);
+      }
+    }
+
+    // we may need to fix this node's own name; the graft point is where
+    // the namespace search starts, so that points to this node too
+    [[self class] fixUpNamespacesForNode:xmlNode_
+                      graftingToTreeNode:xmlNode_];
+  }
+}
+
 - (void)addNamespace:(GDataXMLNode *)aNamespace {
   
   if (xmlNode_ != NULL) {
@@ -855,7 +885,6 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)addChild:(GDataXMLNode *)child {
-  
   if ([child kind] == GDataXMLAttributeKind) {
     [self addAttribute:child];
     return;
@@ -1196,7 +1225,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
           
           if (uri != NULL) {
             foundNS = xmlSearchNsByHref(graftPointNode->doc, graftPointNode, uri);
-            
+
             xmlFree(uri);
           }
         }
