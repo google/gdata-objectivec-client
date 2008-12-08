@@ -149,3 +149,11 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
 + (NSString *)extensionElementLocalName { return @"itemsPerPage"; }
 @end
+
+// Attributes
+
+@implementation GDataETagAttribute
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"etag"; }
+@end

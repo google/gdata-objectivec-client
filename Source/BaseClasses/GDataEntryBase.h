@@ -48,8 +48,6 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 
 @interface GDataEntryBase : GDataObject <NSCopying> {
 
-  NSString *etag_;
-
   NSData *uploadData_;
   NSString *uploadMIMEType_;
   NSString *uploadSlug_; // for http slug (filename) header when uploading
@@ -59,9 +57,6 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 + (NSDictionary *)baseGDataNamespaces;
 
 + (GDataEntryBase *)entry;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 
 - (NSMutableArray *)itemsForDescription; // subclasses may implement this
 

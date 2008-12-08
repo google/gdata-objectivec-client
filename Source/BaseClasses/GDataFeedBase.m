@@ -66,7 +66,7 @@
    // batch support
    [GDataBatchOperation class],
    nil];
-  
+
   if ([self isServiceVersion1]) {
     
     // GData version 1 classes 
@@ -88,7 +88,10 @@
      [GDataOpenSearchItemsPerPage1_1 class], 
      nil];
   }
-    
+
+  // Attributes
+  [self addAttributeExtensionDeclarationForParentClass:feedClass
+                                            childClass:[GDataETagAttribute class]];
 }
 
 + (id)feedWithXMLData:(NSData *)data {
@@ -145,12 +148,6 @@
 
 - (void)setupFromXMLElement:(NSXMLElement *)root {
   
-  // parse etag explicitly, since local attribute parsing doesn't support
-  // namespace lookup
-  [self setETag:[self stringForAttributeLocalName:@"etag"
-                                              URI:kGDataNamespaceGData
-                                      fromElement:root]];
-  
   [self setGenerator:[self objectForChildOfElement:root
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
@@ -178,7 +175,6 @@
 
 - (void)dealloc {
   
-  [etag_ release];
   [generator_ release];
   [entries_ release];
 
@@ -188,8 +184,6 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataFeedBase* newFeed = [super copyWithZone:zone];
   
-  [newFeed setETag:[self ETag]];
-
   [newFeed setGenerator:[self generator]];
 
   [newFeed setEntriesWithEntries:[self entries]];
@@ -203,7 +197,6 @@
   if (![other isKindOfClass:[GDataFeedBase class]]) return NO;
 
   return [super isEqual:other]
-    && AreEqualOrBothNil([self ETag], [other ETag])
     && AreEqualOrBothNil([self entries], [other entries]);
     // excluding generator 
 }
@@ -216,7 +209,7 @@
 
   [self addToArray:items integerValue:[entries_ count] withName:@"entries"];
 
-  [self addToArray:items objectDescriptionIfNonNil:etag_ withName:@"etag"];
+  [self addToArray:items objectDescriptionIfNonNil:[self ETag] withName:@"etag"];
 
   [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
   [self addToArray:items objectDescriptionIfNonNil:[[self subtitle] stringValue] withName:@"subtitle"];
@@ -247,9 +240,6 @@
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"feed"];
   
-  [self addToElement:element attributeValueIfNonNil:[self ETag] 
-        withLocalName:@"etag" URI:kGDataNamespaceGData];
-
   if ([self generator]) {
     [element addChild:[[self generator] XMLElement]]; 
   } 
@@ -523,12 +513,12 @@
 }
 
 - (NSString *)ETag {
-  return etag_; 
+  NSString *str = [self attributeValueForExtensionClass:[GDataETagAttribute class]];
+  return str;
 }
 
 - (void)setETag:(NSString *)str {
-  [etag_ autorelease];
-  etag_ = [str copy];
+  [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
 }
 
 - (NSArray *)entries {

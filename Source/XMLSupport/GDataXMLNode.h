@@ -136,6 +136,7 @@ typedef NSUInteger GDataXMLNodeKind;
 - (id)initWithXMLString:(NSString *)str error:(NSError **)error;
 
 - (NSArray *)namespaces;
+- (void)setNamespaces:(NSArray *)namespaces;
 - (void)addNamespace:(GDataXMLNode *)aNamespace;
 
 - (void)addChild:(GDataXMLNode *)child;

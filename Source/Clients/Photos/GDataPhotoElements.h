@@ -30,7 +30,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+// values for GDataPhotoAccess
 _EXTERN NSString* kGDataPhotoAccessPrivate _INITIALIZE_AS(@"private");
+_EXTERN NSString* kGDataPhotoAccessProtected _INITIALIZE_AS(@"protected"); // "sign-in required"
 _EXTERN NSString* kGDataPhotoAccessPublic _INITIALIZE_AS(@"public");
 _EXTERN NSString* kGDataPhotoAccessAll _INITIALIZE_AS(@"all");
 

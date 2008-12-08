@@ -169,6 +169,68 @@ static NSString* gLoggingProcessName = nil;
   return gLoggingDateStamp;
 }
 
+
+// formattedStringFromData returns a prettyprinted string for XML input,
+// and a plain string for other input data
+- (NSString *)formattedStringFromData:(NSData *)inputData {
+
+#if (!GDATA_IPHONE || TARGET_IPHONE_SIMULATOR) && !GDATA_SKIP_LOG_XMLFORMAT
+  // verify that this data starts with the bytes indicating XML
+
+  NSString *const kXMLLintPath = @"/usr/bin/xmllint";
+  static BOOL hasCheckedAvailability = NO;
+  static BOOL isXMLLintAvailable;
+
+  if (!hasCheckedAvailability) {
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    isXMLLintAvailable = [fileManager fileExistsAtPath:kXMLLintPath];
+    hasCheckedAvailability = YES;
+  }
+
+  if (isXMLLintAvailable
+      && [inputData length] > 5
+      && strncmp([downloadedData_ bytes], "<?xml", 5) == 0) {
+
+    // call xmllint to format the data
+    NSTask *task = [[[NSTask alloc] init] autorelease];
+    [task setLaunchPath:kXMLLintPath];
+
+    // use the dash argument to specify stdin as the source file
+    [task setArguments:[NSArray arrayWithObjects:@"--format", @"-", nil]];
+    [task setEnvironment:[NSDictionary dictionary]];
+
+    NSPipe *inputPipe = [NSPipe pipe];
+    NSPipe *outputPipe = [NSPipe pipe];
+    [task setStandardInput:inputPipe];
+    [task setStandardOutput:outputPipe];
+
+    [task launch];
+
+    [[inputPipe fileHandleForWriting] writeData:inputData];
+    [[inputPipe fileHandleForWriting] closeFile];
+
+    // drain the stdout before waiting for the task to exit
+    NSData *formattedData =
+    [[outputPipe fileHandleForReading] readDataToEndOfFile];
+
+    [task waitUntilExit];
+
+    int status = [task terminationStatus];
+    if (status == 0 && [formattedData length] > 0) {
+      // success
+      inputData = formattedData;
+    }
+  }
+#else
+  // we can't call external tasks on the iPhone; leave the XML unformatted
+#endif
+
+  NSString *dataStr = [[[NSString alloc] initWithData:inputData
+                                             encoding:NSUTF8StringEncoding] autorelease];
+  return dataStr;
+}
+
+
 - (NSString *)cleanParameterFollowing:(NSString *)paramName
                            fromString:(NSString *)originalStr {
   // We don't want the password written to disk 
@@ -221,8 +283,7 @@ static NSString* gLoggingProcessName = nil;
   if (data == nil) return nil;
   
   // optimistically, see if the whole data block is UTF-8
-  NSString *streamDataStr = [[[NSString alloc] initWithData:data
-                                   encoding:NSUTF8StringEncoding] autorelease];
+  NSString *streamDataStr = [self formattedStringFromData:data];
   if (streamDataStr) return streamDataStr;
     
   // Munge a buffer by replacing non-ASCII bytes with underscores,
@@ -339,28 +400,27 @@ static NSString* gLoggingProcessName = nil;
     responseBaseName = [NSString stringWithFormat:@"%@_http_response_%@_%d",
       processName, dateStamp, zResponseCounter];
     
-    NSString *dataStr = [[[NSString alloc] initWithData:downloadedData_ 
-                                   encoding:NSUTF8StringEncoding] autorelease];
+    NSString *dataStr = [self formattedStringFromData:downloadedData_];
     if (dataStr) {
       // we were able to make a UTF-8 string from the response data
-      
+
       NSCharacterSet *whitespaceSet = [NSCharacterSet whitespaceCharacterSet];
       dataStr = [dataStr stringByTrimmingCharactersInSet:whitespaceSet];
-      
-      // save a plain-text version of the response data in an html cile  
+
+      // save a plain-text version of the response data in an html file
       // containing a wrapped, scrollable <textarea>
       //
-      // we'll use <textarea rows="33" cols="108" readonly=true wrap=soft>
+      // we'll use <textarea rows="29" cols="108" readonly=true wrap=soft>
       //   </textarea>  to fit inside our iframe
       responseDataUnformattedFileName = [responseBaseName stringByAppendingPathExtension:@"html"];
       NSString *textFilePath = [logDirectory stringByAppendingPathComponent:responseDataUnformattedFileName];
-      
-      NSString* wrapFmt = @"<textarea rows=\"33\" cols=\"108\" readonly=true"
+
+      NSString* wrapFmt = @"<textarea rows=\"29\" cols=\"108\" readonly=true"
         " wrap=soft>\n%@\n</textarea>";
       NSString* wrappedStr = [NSString stringWithFormat:wrapFmt, dataStr];
-      [wrappedStr writeToFile:textFilePath 
-                   atomically:NO 
-                     encoding:NSUTF8StringEncoding 
+      [wrappedStr writeToFile:textFilePath
+                   atomically:NO
+                     encoding:NSUTF8StringEncoding
                         error:nil];
       
       // now determine the extension for the "formatted" file, which is really 

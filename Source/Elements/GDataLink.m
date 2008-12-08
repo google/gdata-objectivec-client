@@ -57,56 +57,16 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataAtomContent class]];  
-}
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
+  Class elementClass = [self class];
 
-    // we parse ETags explicitly rather than using addLocalAttributeDeclarations
-    // because it requires a gd namespace
-    [self setETag:[self stringForAttributeLocalName:@"etag"
-                                                URI:kGDataNamespaceGData
-                                        fromElement:element]];
-  }
-  return self;
-}
+  [self addExtensionDeclarationForParentClass:elementClass
+                                   childClass:[GDataAtomContent class]];
 
-- (void)dealloc {
-  [etag_ release];
-
-  [super dealloc];
-}
-
-- (BOOL)isEqual:(GDataLink *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataLink class]]) return NO;
-
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self ETag], [other ETag]);
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataLink* newObj = [super copyWithZone:zone];
-
-  [newObj setETag:[self ETag]];
-
-  return newObj;
-}
-
-- (NSXMLElement *)XMLElement {
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"link"];
-
-  [self addToElement:element attributeValueIfNonNil:[self ETag]
-       withLocalName:@"etag" URI:kGDataNamespaceGData];
-  return element;
+  [self addAttributeExtensionDeclarationForParentClass:elementClass
+                                            childClass:[GDataETagAttribute class]];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -179,12 +139,12 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)ETag {
-  return etag_;
+  NSString *str = [self attributeValueForExtensionClass:[GDataETagAttribute class]];
+  return str;
 }
 
 - (void)setETag:(NSString *)str {
-  [etag_ autorelease];
-  etag_ = [str copy];
+  [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
 }
 
 - (GDataAtomContent *)content {

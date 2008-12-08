@@ -1480,11 +1480,32 @@ objectDescriptionIfNonNil:(id)obj
   // local names aren't present in the element.  We don't bother doing
   // this for attribute extensions since those are so rare (most attributes
   // are parsed just by local declaration in parseAttributesForElement:.)
+
+#if GDATA_USES_LIBXML || MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
   NSArray *childLocalNames = [element valueForKeyPath:@"children.localName"];
-  
+
   // allow wildcard lookups
   childLocalNames = [childLocalNames arrayByAddingObject:@"*"];
-  
+#else
+  // Unfortunately, [element valueForKeyPath:@"children.localName"]
+  // causes an exception on 10.4/PPC, where children may not
+  // be an NSArray but an NSXMLChildren object which doesn't properly
+  // handle KVC array operators.
+  NSArray *children = [element children];
+  NSMutableArray *childLocalNames = [NSMutableArray arrayWithCapacity:[children count]];
+  NSEnumerator *childEnum = [children objectEnumerator];
+  NSXMLNode *child;
+  while ((child = [childEnum nextObject]) != nil) {
+    NSString *localName = [child localName];
+    if ([localName length] > 0) {
+      [childLocalNames addObject:localName];
+    }
+  }
+
+  // allow wildcard lookups
+  [childLocalNames addObject:@"*"];
+#endif
+
   for (GDataObject * currentExtensionSupplier = self;
        currentExtensionSupplier != nil;
        currentExtensionSupplier = [currentExtensionSupplier parent]) {
@@ -1549,14 +1570,29 @@ objectDescriptionIfNonNil:(id)obj
 #pragma mark Local Attributes 
 
 - (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames {
-  
+
   if (attributeDeclarations_ == nil) {
-    
+
     // we'll use an array rather than a set because ordering in arrays
     // is deterministic
-    attributeDeclarations_ = [[NSMutableArray alloc] init]; 
+    attributeDeclarations_ = [[NSMutableArray alloc] init];
   }
-  
+
+#if DEBUG
+  // check that no local attributes being declared have a prefix, except for
+  // the hardcoded xml: prefix. Namespaced attributes must be parsed and
+  // emitted manually, or be declared as GDataAttribute extensions;
+  // they cannot be handled as local attributes, since this class makes no
+  // attempt to keep track of namespace URIs for local attributes
+  NSEnumerator *enumerator = [attributeLocalNames objectEnumerator];
+  NSString *attr;
+  while ((attr = [enumerator nextObject]) != nil) {
+    NSAssert1([attr rangeOfString:@":"].location == NSNotFound
+              || [attr hasPrefix:@"xml:"],
+              @"invalid namespaced local attribute: %@", attr);
+  }
+#endif
+
   [attributeDeclarations_ addObjectsFromArray:attributeLocalNames];
 }
 

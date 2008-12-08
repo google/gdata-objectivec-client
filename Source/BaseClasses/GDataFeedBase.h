@@ -50,9 +50,6 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
   // extensions
   GDataGenerator *generator_; 
   
-  // etag attribute is parsed manually because it has a namespace 
-  NSString *etag_;
-
   NSMutableArray *entries_;
 }
 
@@ -169,4 +166,3 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 // distinct entry kind categories
 - (NSArray *)entriesWithCategoryKind:(NSString *)term;
 @end
-
