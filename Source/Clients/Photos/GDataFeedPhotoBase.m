@@ -79,7 +79,7 @@
 
 #pragma mark -
 
-- (id)entryWithGPhotoID:(NSString *)str {
+- (id)entryForGPhotoID:(NSString *)str {
   GDataEntryPhotoBase *obj;
 
   obj = [GDataUtilities firstObjectFromArray:[self entries]

@@ -25,7 +25,10 @@ Additions
 
 - Added -fetchDocEntryWithURL for fetching a single doc entry
 
-- Added -entryWithGPhotoID for findnig a photo or album with the given ID
+- Added -entryForGPhotoID for finding a photo or album with the given ID
+
+- Added -entryForSystemGroupID for finding a contact group with the given
+  system group ID
 
 - Added feed method for finding feed entries of a single kind
 
@@ -35,6 +38,8 @@ Additions
   in Safari
   
 - Added setNamespaces: to GDataXMLNode
+
+- Added new Docs query parameters and new category label constants
 
 Bugs Fixed
 

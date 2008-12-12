@@ -37,5 +37,5 @@
 - (void)setPhotoDescriptionWithString:(NSString *)str;
 
 // convenience accessors
-- (id)entryWithGPhotoID:(NSString *)str;
+- (id)entryForGPhotoID:(NSString *)str;
 @end
