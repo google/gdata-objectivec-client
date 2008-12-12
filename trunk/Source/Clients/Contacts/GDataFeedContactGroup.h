@@ -25,4 +25,7 @@
 
 - (Class)classForEntries;
 
+// convenience method
+- (id)entryForSystemGroupID:(NSString *)str;
+
 @end

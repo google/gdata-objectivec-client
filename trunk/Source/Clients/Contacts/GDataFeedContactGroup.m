@@ -57,4 +57,15 @@
   return [GDataEntryContactGroup class];
 }
 
+#pragma mark -
+
+- (id)entryForSystemGroupID:(NSString *)str {
+  GDataEntryContactGroup *obj;
+  
+  obj = [GDataUtilities firstObjectFromArray:[self entries]
+                                   withValue:str
+                                  forKeyPath:@"systemGroup.identifier"];
+  return obj;
+}
+
 @end
