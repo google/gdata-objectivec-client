@@ -345,6 +345,101 @@
                        @"Docs query 1 generation error");
 }
 
+- (void)testMixedCategoryParamQueries {
+
+  GDataCategory *cat = [GDataCategory categoryWithScheme:nil
+                                                    term:@"ferret"];
+  GDataCategory *excludeCat = [GDataCategory categoryWithScheme:nil
+                                                           term:@"iguana"];
+
+  GDataCategory *catB = [GDataCategory categoryWithScheme:nil
+                                                     term:@"monkey"];
+
+  GDataCategoryFilter *categoryFilterA = [GDataCategoryFilter categoryFilter];
+  [categoryFilterA addCategory:cat];
+  [categoryFilterA addExcludeCategory:excludeCat];
+
+  GDataCategoryFilter *categoryFilterB = [GDataCategoryFilter categoryFilter];
+  [categoryFilterB addCategory:catB];
+
+  // four flavors of URL: with and without trailing /, with and without params
+  NSURL *url1 = [NSURL URLWithString:@"http://domain.net/?x=y"];
+  NSURL *url2 = [NSURL URLWithString:@"http://domain.net?x=y"];
+  NSURL *url3 = [NSURL URLWithString:@"http://domain.net/"];
+  NSURL *url4 = [NSURL URLWithString:@"http://domain.net"];
+
+  // URL 1
+  //
+  // changes to the URL made by the query
+  //
+  // category filters
+  GDataQuery *query1 = [GDataQuery queryWithFeedURL:url1];
+  [query1 addCategoryFilter:categoryFilterA];
+  [query1 addCategoryFilter:categoryFilterB];
+
+  // new parameter
+  [query1 setStartIndex:10];
+
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expectedStr1 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y&start-index=10";
+  STAssertEqualObjects([resultURL1 absoluteString], expectedStr1,
+                       @"Mixed query generation error");
+
+  // URL 2
+  GDataQuery *query2 = [GDataQuery queryWithFeedURL:url2];
+  [query2 addCategoryFilter:categoryFilterA];
+  [query2 addCategoryFilter:categoryFilterB];
+  [query2 setStartIndex:10];
+
+  NSURL *resultURL2 = [query2 URL];
+  NSString *expectedStr2 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y&start-index=10";
+  STAssertEqualObjects([resultURL2 absoluteString], expectedStr2,
+                       @"Mixed query generation error");
+
+  // URL 3
+  GDataQuery *query3 = [GDataQuery queryWithFeedURL:url3];
+  [query3 addCategoryFilter:categoryFilterA];
+  [query3 addCategoryFilter:categoryFilterB];
+  [query3 setStartIndex:10];
+
+  NSURL *resultURL3 = [query3 URL];
+  NSString *expectedStr3 = @"http://domain.net/-/ferret%7C-iguana/monkey?start-index=10";
+  STAssertEqualObjects([resultURL3 absoluteString], expectedStr3,
+                       @"Mixed query generation error");
+
+  // URL 4
+  GDataQuery *query4 = [GDataQuery queryWithFeedURL:url4];
+  [query4 addCategoryFilter:categoryFilterA];
+  [query4 addCategoryFilter:categoryFilterB];
+  [query4 setStartIndex:10];
+
+  NSURL *resultURL4 = [query4 URL];
+  NSString *expectedStr4 = @"http://domain.net/-/ferret%7C-iguana/monkey?start-index=10";
+  STAssertEqualObjects([resultURL4 absoluteString], expectedStr4,
+                       @"Mixed query generation error");
+
+  // URL 1 again
+
+  // repeat the first test, but with no category filters added to the query
+  GDataQuery *query5 = [GDataQuery queryWithFeedURL:url1];
+  [query5 setStartIndex:10];
+
+  NSURL *resultURL5 = [query5 URL];
+  NSString *expectedStr5 = @"http://domain.net/?x=y&start-index=10";
+  STAssertEqualObjects([resultURL5 absoluteString], expectedStr5,
+                       @"Mixed query generation error");
+
+  // repeat the first test, but with no params added to the query
+  GDataQuery *query6 = [GDataQuery queryWithFeedURL:url1];
+  [query6 addCategoryFilter:categoryFilterA];
+  [query6 addCategoryFilter:categoryFilterB];
+
+  NSURL *resultURL6 = [query6 URL];
+  NSString *expectedStr6 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y";
+  STAssertEqualObjects([resultURL6 absoluteString], expectedStr6,
+                       @"Mixed query generation error");
+}
+
 - (void)testURLParameterEncoding {
   
   // test all characters between 0x20 and 0x7f

@@ -132,6 +132,12 @@ _EXTERN NSString* kGDataNamespaceGDataPrefix _INITIALIZE_AS(@"gd");
 _EXTERN NSString* kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.com/gdata/batch");
 _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
+#define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
+  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"requires newer version")
+
+#define GDATA_DEBUG_ASSERT_MAX_SERVICE_V1() \
+  GDATA_DEBUG_ASSERT([self isServiceVersion1], @"deprecated")
+
 @class GDataDateTime;
 @class GDataCategory;
 
@@ -518,11 +524,15 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)addToArray:(NSMutableArray *)stringItems
       integerValue:(NSInteger)val
-          withName:(NSString *)name;  
+          withName:(NSString *)name;
 
 - (void)addToArray:(NSMutableArray *)stringItems
 arrayCountIfNonEmpty:(NSArray *)array
-          withName:(NSString *)name;  
+          withName:(NSString *)name;
+
+- (void)addToArray:(NSMutableArray *)stringItems
+arrayDescriptionIfNonEmpty:(NSArray *)array
+          withName:(NSString *)name;
 
 - (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems;
 

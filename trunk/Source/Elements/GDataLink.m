@@ -174,9 +174,8 @@ static NSString *const kLengthAttr = @"length";
   
   NSMutableArray *names = [NSMutableArray array];
   
-  NSEnumerator *linkEnum = [links objectEnumerator];
   GDataLink *dataLink;
-  while ((dataLink = [linkEnum nextObject]) != nil) {
+  GDATA_FOREACH(dataLink, links) {
     
     NSString *rel = [dataLink rel];
     NSRange range = [rel rangeOfString:@"#" options:NSBackwardsSearch];
@@ -198,10 +197,8 @@ static NSString *const kLengthAttr = @"length";
                       type:(NSString *)typeValue 
                  fromLinks:(NSArray *)array {
   
-  NSEnumerator *linkEnumerator = [array objectEnumerator]; 
   GDataLink *dataLink;
-  
-  while ((dataLink = [linkEnumerator nextObject]) != nil) {
+  GDATA_FOREACH(dataLink, array) {
     
     NSString *foundRelValue = [dataLink rel];
     NSString *foundTypeValue = [dataLink type];
@@ -223,10 +220,8 @@ static NSString *const kLengthAttr = @"length";
 + (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix 
                                 fromLinks:(NSArray *)array {
   
-  NSEnumerator *linkEnumerator = [array objectEnumerator]; 
   GDataLink *dataLink;
-  
-  while ((dataLink = [linkEnumerator nextObject]) != nil) {
+  GDATA_FOREACH(dataLink, array) {
     
     NSString *attrValue = [dataLink rel];
     if (attrValue && [attrValue hasSuffix:relSuffix]) {

@@ -539,6 +539,11 @@ enum {
                                                    delegate:(id)delegate
                                           didFinishSelector:(SEL)finishedSelector
                                             didFailSelector:(SEL)failedSelector {
+  // add basic namespaces to feed, if needed
+  if ([[batchFeed namespaces] objectForKey:kGDataNamespaceGDataPrefix] == nil) {
+    [batchFeed addNamespaces:[GDataEntryBase baseGDataNamespaces]];
+  }
+  
   // add batch namespace, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceBatchPrefix] == nil) {
     
@@ -755,13 +760,11 @@ enum {
 // convert responses of the form "a=foo \n b=bar"   to a dictionary
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString {
   
-  NSArray *lines = [responseString componentsSeparatedByString:@"\n"];
-  NSEnumerator *linesEnum = [lines objectEnumerator];
-  
+  NSArray *allLines = [responseString componentsSeparatedByString:@"\n"];
   NSMutableDictionary *responseDict = [NSMutableDictionary dictionary];
-  
+
   NSString *line;
-  while ((line = [linesEnum nextObject]) != nil) {
+  GDATA_FOREACH(line, allLines) {
     NSScanner *scanner = [NSScanner scannerWithString:line];
     NSString *key;
     NSString *value;

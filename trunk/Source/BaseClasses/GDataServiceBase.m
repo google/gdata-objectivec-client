@@ -522,7 +522,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 #endif
     }
   }
-  
+
   // if we created the object (or we got empty data back, as from a GData
   // delete resource request) then we succeeded  
   if (object != nil || dataLength == 0) {
@@ -803,12 +803,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSUInteger followedCounter = [ticket nextLinksFollowedCounter];
 
   if (followedCounter > kMaxNumberOfNextLinksFollowed) {
-#if DEBUG
+
     // the client should be querying with a higher max results per page
     // to avoid this
-    NSAssert1(0, @"Following next links retrieves too many pages (URL %@)",
+    GDATA_DEBUG_ASSERT(0, @"Following next links retrieves too many pages (URL %@)",
               nextFeedURL);
-#endif
     return NO;
   }
   [ticket setNextLinksFollowedCounter:(1 + followedCounter)];
@@ -1547,10 +1546,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     // addEntry:.
     
     NSArray *newEntries = [newFeed entries];
-    NSEnumerator *entryEnum = [newEntries objectEnumerator];
     GDataEntryBase *entry;
     
-    while ((entry = [entryEnum nextObject]) != nil) {
+    GDATA_FOREACH(entry, newEntries) {
       [entry setParent:nil];
       [accumulatedFeed addEntry:entry];
     }

@@ -51,7 +51,6 @@
 
 - (id)initWithFeedURL:(NSURL *)feedURL;
 
-- (NSString *)pathQueryURI;
 - (NSURL *)URL;
 
 

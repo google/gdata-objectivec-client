@@ -112,9 +112,8 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   NSMutableString *result = [NSMutableString string];
   
   // append include categories
-  NSEnumerator *catEnum = [categories_ objectEnumerator];
   GDataCategory *cat;
-  while ((cat = [catEnum nextObject]) != nil) {    
+  GDATA_FOREACH(cat, categories_) {
     if ([result length]) {
       [result appendString:@"|"]; 
     }
@@ -122,8 +121,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   }
 
   // append exclude categories, preceded by "-"
-  catEnum = [excludeCategories_ objectEnumerator];
-  while ((cat = [catEnum nextObject]) != nil) {    
+  GDATA_FOREACH(cat, excludeCategories_) {
     if ([result length]) {
       [result appendString:@"|"]; 
     }
@@ -471,17 +469,17 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 
 #pragma mark -
 
-- (NSString *)pathQueryURI {
-  
+// categoryFilterString generates the category portion of the URL path
+- (NSString *)categoryFilterString {
+
   // make a path string containing the category filters
   NSMutableString *pathStr = [NSMutableString string];
-  
+
   if ([categoryFilters_ count] > 0) {
     [pathStr appendString:@"-"];
-    
-    NSEnumerator *filterEnum = [categoryFilters_ objectEnumerator];
+
     id filter;
-    while ((filter = [filterEnum nextObject]) != nil) {
+    GDATA_FOREACH(filter, categoryFilters_) {
       NSString *filterValue = [filter stringValue];
       NSString *filterStr = [GDataUtilities stringByURLEncodingString:filterValue];
       if ([filterStr length] > 0) {
@@ -489,68 +487,107 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
       }
     }
   }
-  
+
+  return pathStr;
+}
+
+- (NSString *)queryParamString {
   // make a query string containing all the query params.  We'll put them
   // all into an array, then use NSArray's componentsJoinedByString:
-  
+
   NSMutableArray *queryItems = [NSMutableArray array];
-  
+
   // sort the custom parameter keys so that we have deterministic parameter
   // order for unit tests
   NSDictionary *customParameters = [self customParameters];
   NSArray *customKeys = [customParameters allKeys];
   NSArray *sortedCustomKeys = [customKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
-  
-  NSEnumerator *paramEnum = [sortedCustomKeys objectEnumerator];
+
   id paramKey;
-  while ((paramKey = [paramEnum nextObject]) != nil) {
+  GDATA_FOREACH(paramKey, sortedCustomKeys) {
     NSString *paramValue = [customParameters valueForKey:paramKey];
-    
+
     NSString *paramItem = [NSString stringWithFormat:@"%@=%@",
-      [GDataUtilities stringByURLEncodingStringParameter:paramKey],
-      [GDataUtilities stringByURLEncodingStringParameter:paramValue]];
+                           [GDataUtilities stringByURLEncodingStringParameter:paramKey],
+                           [GDataUtilities stringByURLEncodingStringParameter:paramValue]];
 
     [queryItems addObject:paramItem];
   }
-  
-  NSString *queryStr = [queryItems componentsJoinedByString:@"&"];
-  
-  // combine the query and path strings, if either are non-empty
-  NSString *result;
-  if ([queryStr length] == 0) {
-    result = pathStr;
-  } else {
-    result = [NSString stringWithFormat:@"%@?%@", pathStr, queryStr];
-  }
-  return result;
+
+  NSString *paramStr = [queryItems componentsJoinedByString:@"&"];
+  return paramStr;
 }
 
-- (NSURL *)URL { 
-   // append the resource URL to the feed base URL
-  
-  NSString *pathQueryURI = [self pathQueryURI]; // should conform to RFC 2396
-  
-  if ([pathQueryURI length] == 0) {
-    return [self feedURL];
-  }
-  
+- (NSURL *)URL {
+  // add the category filter string and the query params to the feed base URL
+
   // NSURL's URLWithString:relativeToURL: would be appropriate, but it deletes the
   // last path component of the feed when we're appending something.
   // Note that a similar deletion occurs in Java's resolve call.
-  //  
+  //
   // CFURLCreateCopyAppendingPathComponent seems to implicitly percent-escape
   // the path component, including any ? character, so we can't use it here,
   // either.
   //
-  // We'll just do dumb string appending instead.
-  
+  // We'll just do simple string appending instead.
+
+  NSString *categoryFilterStr = [self categoryFilterString];
+  NSString *queryParamString = [self queryParamString];
+
+  // split the original URL into path and query components
+
   NSString *feedURLString = [[self feedURL] absoluteString];
-  if (![feedURLString hasSuffix:@"/"] && ![pathQueryURI hasPrefix:@"?"]) {
-    feedURLString = [feedURLString stringByAppendingString:@"/"];
+
+  NSString *origPath, *origQuery, *newURLStr, *newQuery;
+
+  // find the first question mark
+  NSRange quoteMark = [feedURLString rangeOfString:@"?"];
+  if (quoteMark.location == NSNotFound) {
+    // no query part
+    origPath = feedURLString;
+    origQuery = @"";
+  } else {
+    // has a query part
+    origPath = [feedURLString substringToIndex:quoteMark.location];
+    if (quoteMark.location < [feedURLString length]) {
+      // skip the leading ? mark
+      origQuery = [feedURLString substringFromIndex:quoteMark.location + 1];
+    } else {
+      // nothing follows the ? mark
+      origQuery = @"";
+    }
   }
-  NSString *combinedURLString = [feedURLString stringByAppendingString:pathQueryURI];
-  
-  NSURL *fullURL = [NSURL URLWithString:combinedURLString];
+
+  newURLStr = origPath;
+
+  // add the generated category filter string, if any, to the URL string,
+  // ensuring it's preceded by a slash
+  if ([categoryFilterStr length] > 0) {
+    if (![newURLStr hasSuffix:@"/"]) {
+      newURLStr = [newURLStr stringByAppendingString:@"/"];
+    }
+    newURLStr = [newURLStr stringByAppendingString:categoryFilterStr];
+  }
+
+  // append the generated param query string, if any, to the original query
+  if ([origQuery length] > 0) {
+    // there was an original query
+    if ([queryParamString length] > 0) {
+      newQuery = [origQuery stringByAppendingFormat:@"&%@", queryParamString];
+    } else {
+      newQuery = origQuery;
+    }
+  } else {
+    // there was no original query
+    newQuery = queryParamString;
+  }
+
+  // append the query to the URL
+  if ([newQuery length] > 0) {
+    newURLStr = [newURLStr stringByAppendingFormat:@"?%@", newQuery];
+  }
+
+  NSURL *fullURL = [NSURL URLWithString:newURLStr];
   return fullURL;
 }
 

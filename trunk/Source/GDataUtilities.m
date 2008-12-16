@@ -59,10 +59,9 @@
     NSMutableString *mutableStr = [NSMutableString stringWithString:str];  
     while (range.location != NSNotFound) {
       
-#if DEBUG
-      NSLog(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"", 
+      GDATA_DEBUG_LOG(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"", 
             [mutableStr characterAtIndex:range.location], str);
-#endif
+
       [mutableStr deleteCharactersInRange:range];
       
       range = [mutableStr rangeOfCharacterFromSet:filterChars]; 
@@ -248,10 +247,9 @@
   // the key path, and see if it's equal to the 
   // desired value
   NSMutableArray *results = [NSMutableArray array];
-  NSEnumerator *enumerator = [sourceArray objectEnumerator];
   id obj;
   
-  while ((obj = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(obj, sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
       
@@ -266,10 +264,8 @@
                  withValue:(id)desiredValue
                 forKeyPath:(NSString *)keyPath {
   
-  NSEnumerator *enumerator = [sourceArray objectEnumerator];
   id obj;
-  
-  while ((obj = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(obj, sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
       

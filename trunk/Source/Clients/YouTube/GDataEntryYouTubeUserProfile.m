@@ -126,13 +126,15 @@
 }
 
 - (NSString *)aboutMe {
-  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+  
   GDataYouTubeAboutMe *obj = [self objectForExtensionClass:[GDataYouTubeAboutMe class]];
   return [obj stringValue];
 }
 
 - (void)setAboutMe:(NSString *)str {
-  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
   GDataYouTubeAboutMe *obj = [GDataYouTubeAboutMe valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeAboutMe class]];
 }
@@ -298,18 +300,14 @@
 
 // youTubeDescription is deprecated for GData v2
 - (NSString *)youTubeDescription {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
-  
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
   GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
   return [obj stringValue];
 }
 
 - (void)setYouTubeDescription:(NSString *)str {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
   
   GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];

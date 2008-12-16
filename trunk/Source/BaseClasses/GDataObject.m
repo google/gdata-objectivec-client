@@ -524,9 +524,8 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   if (numberOfNamespaces) {
     
     NSArray *namespaceNames = [namespaces_ allKeys];
-    NSEnumerator *namespaceNamesEnum = [namespaceNames objectEnumerator];
     NSString *name;
-    while ((name = [namespaceNamesEnum nextObject]) != nil) {
+    GDATA_FOREACH(name, namespaceNames) {
       NSString *uri = [namespaces_ objectForKey:name];
       
       uri = [self updatedVersionedNamespaceURIForPrefix:name
@@ -550,9 +549,8 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     
     // step through each extension, by class, and add those
     // objects to the XML element
-    NSEnumerator *classEnum = [classKeys objectEnumerator];
     Class oneClass;
-    while ((oneClass = [classEnum nextObject]) != nil) {
+    GDATA_FOREACH(oneClass, classKeys) {
       NSArray *objects = [self objectsForExtensionClass:oneClass];
       [self addToElement:element XMLElementsForArray:objects];
     }
@@ -567,21 +565,19 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   
   // we have to copy the children so they don't point at the previous parent
   // nodes
-  NSEnumerator *unknownEnum = [unknownChildren_ objectEnumerator];
   NSXMLNode *child;
-  while ((child = [unknownEnum nextObject]) != nil) {
+  GDATA_FOREACH(child, unknownChildren_) {
     [element addChild:[[child copy] autorelease]];
   }
   
-  unknownEnum = [unknownAttributes_ objectEnumerator];
   NSXMLNode *attr;
-  while ((attr = [unknownEnum nextObject]) != nil) {    
-#if DEBUG
-    NSAssert1([element attributeForName:[attr name]] == nil,
+  GDATA_FOREACH(attr, unknownAttributes_) {
+
+    GDATA_DEBUG_ASSERT([element attributeForName:[attr name]] == nil,
               @"adding duplicate of attribute %@ (perhaps an object parsed with"
               "attributeForName: instead of attributeForName:fromElement:)",
               attr);
-#endif
+
     [element addAttribute:[[attr copy] autorelease]];
   }
 }
@@ -624,10 +620,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       } else {
         // if not an extension, just use the class name
         elementName = NSStringFromClass([self class]); 
-#if DEBUG
-        NSLog(@"GDataObject generating XML element with unknown name for class %@",
+
+        GDATA_DEBUG_LOG(@"GDataObject generating XML element with unknown name for class %@",
               elementName);
-#endif
       }
     }
   }
@@ -719,9 +714,8 @@ childWithStringValueIfNonEmpty:(NSString *)str
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects {
   
-  NSEnumerator *enumerator = [arrayOfGDataObjects objectEnumerator];
   id item;
-  while ((item = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(item, arrayOfGDataObjects) {
     
     if ([item isKindOfClass:[GDataAttribute class]]) {
       
@@ -753,7 +747,11 @@ objectDescriptionIfNonNil:(id)obj
           withName:(NSString *)name {
 
   if (obj) {
-    [stringItems addObject:[NSString stringWithFormat:@"%@:%@", name, obj]];
+    if (name) {
+      [stringItems addObject:[NSString stringWithFormat:@"%@:%@", name, obj]];
+    } else {
+      [stringItems addObject:[obj description]];
+    }
   }
 }
 
@@ -766,18 +764,24 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addToArray:(NSMutableArray *)stringItems
       arrayCountIfNonEmpty:(NSArray *)array
           withName:(NSString *)name {
-  if ([array count]) {
+  if ([array count] > 0) {
     [self addToArray:stringItems integerValue:[array count] withName:name];
+  }
+}
+
+- (void)addToArray:(NSMutableArray *)stringItems
+arrayDescriptionIfNonEmpty:(NSArray *)array
+          withName:(NSString *)name {
+  if ([array count] > 0) {
+    [self addToArray:stringItems objectDescriptionIfNonNil:array withName:name];
   }
 }
 
 - (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems {
   
   // add attribute descriptions in the order the attributes were declared
-  NSEnumerator *enumerator = [attributeDeclarations_ objectEnumerator];
   NSString *name;
-  
-  while ((name = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(name, attributeDeclarations_) {
     
     NSString *value = [attributes_ valueForKey:name];
     [self addToArray:stringItems objectDescriptionIfNonNil:value withName:name];
@@ -933,10 +937,9 @@ objectDescriptionIfNonNil:(id)obj
 - (NSMutableArray *)childrenOfElement:(NSXMLElement *)parentElement
                            withPrefix:(NSString *)prefix {
   NSArray *allChildren = [parentElement children];
-  NSEnumerator *allChildrenEnum = [allChildren objectEnumerator];
   NSMutableArray *matchingChildren = [NSMutableArray array];
   NSXMLNode *childNode;
-  while ((childNode = [allChildrenEnum nextObject]) != nil) {
+  GDATA_FOREACH(childNode, allChildren) {
     if ([childNode kind] == NSXMLElementKind 
         && [[childNode prefix] isEqual:prefix]) {
       
@@ -985,10 +988,8 @@ objectDescriptionIfNonNil:(id)obj
   }
   
   // step through all child elements and create an appropriate GData object
-  NSEnumerator *objEnumerator = [objElements objectEnumerator];
   NSXMLElement *objElement;
-    
-  while ((objElement = [objEnumerator nextObject]) != nil) {
+  GDATA_FOREACH(objElement, objElements) {
     
     Class elementClass = objectClass;
     if (elementClass == nil) {
@@ -1077,9 +1078,9 @@ objectDescriptionIfNonNil:(id)obj
 
   // consider all text child nodes used to make this string value to now be known
   NSArray *children = [element children];
-  NSEnumerator *childrenEnum = [children objectEnumerator];
   NSXMLNode *childNode;
-  while ((childNode = [childrenEnum nextObject]) != nil) {    
+
+  GDATA_FOREACH(childNode, children) {
     if ([childNode kind] == NSXMLTextKind) {
       [result appendString:[childNode stringValue]];
       [unknownChildren_ removeObject:childNode];
@@ -1296,10 +1297,8 @@ objectDescriptionIfNonNil:(id)obj
     [extensionDeclarations_ setObject:array forKey:parentClass];
   }
   
-#if DEBUG
-  NSAssert1([childClass conformsToProtocol:@protocol(GDataExtension)], 
+  GDATA_DEBUG_ASSERT([childClass conformsToProtocol:@protocol(GDataExtension)], 
                 @"%@ does not conform to GDataExtension protocol", childClass);
-#endif
   
   GDataExtensionDeclaration *decl = 
     [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
@@ -1493,9 +1492,8 @@ objectDescriptionIfNonNil:(id)obj
   // handle KVC array operators.
   NSArray *children = [element children];
   NSMutableArray *childLocalNames = [NSMutableArray arrayWithCapacity:[children count]];
-  NSEnumerator *childEnum = [children objectEnumerator];
   NSXMLNode *child;
-  while ((child = [childEnum nextObject]) != nil) {
+  GDATA_FOREACH(child, children) {
     NSString *localName = [child localName];
     if ([localName length] > 0) {
       [childLocalNames addObject:localName];
@@ -1514,9 +1512,8 @@ objectDescriptionIfNonNil:(id)obj
     NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForClass:classBeingParsed];
     
     if (extnDecls) {
-      NSEnumerator *extnDeclsEnum = [extnDecls objectEnumerator];
       GDataExtensionDeclaration *decl;
-      while ((decl = [extnDeclsEnum nextObject]) != nil) {        
+      GDATA_FOREACH(decl, extnDecls) {
         // if we've not already found this class when parsing at an earlier supplier
         Class extensionClass = [decl childClass];
         if ([extensions_ objectForKey:extensionClass] == nil) {
@@ -1528,11 +1525,9 @@ objectDescriptionIfNonNil:(id)obj
           if ([childLocalNames containsObject:declLocalName] 
               || [decl isAttribute]) {
 
-#if DEBUG
-            NSAssert1([extensionClass conformsToProtocol:@protocol(GDataExtension)], 
+            GDATA_DEBUG_ASSERT([extensionClass conformsToProtocol:@protocol(GDataExtension)], 
                       @"%@ does not conform to GDataExtension protocol", 
                       extensionClass);
-#endif
             
             NSString *namespaceURI = [extensionClass extensionElementURI];
             NSString *qualifiedName = [self qualifiedNameForExtensionClass:extensionClass];
@@ -1584,9 +1579,8 @@ objectDescriptionIfNonNil:(id)obj
   // emitted manually, or be declared as GDataAttribute extensions;
   // they cannot be handled as local attributes, since this class makes no
   // attempt to keep track of namespace URIs for local attributes
-  NSEnumerator *enumerator = [attributeLocalNames objectEnumerator];
   NSString *attr;
-  while ((attr = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(attr, attributeLocalNames) {
     NSAssert1([attr rangeOfString:@":"].location == NSNotFound
               || [attr hasPrefix:@"xml:"],
               @"invalid namespaced local attribute: %@", attr);
@@ -1599,10 +1593,8 @@ objectDescriptionIfNonNil:(id)obj
 // attribute value getters
 - (NSString *)stringValueForAttribute:(NSString *)name {
   
-#if DEBUG
-  NSAssert2([attributeDeclarations_ containsObject:name],
+  GDATA_DEBUG_ASSERT([attributeDeclarations_ containsObject:name],
             @"%@ getting undeclared attribute: %@", [self class], name);
-#endif
 
   return [attributes_ valueForKey:name];
 }
@@ -1692,10 +1684,8 @@ objectDescriptionIfNonNil:(id)obj
 // attribute value setters
 - (void)setStringValue:(NSString *)str forAttribute:(NSString *)name {
   
-#if DEBUG
-  NSAssert2([attributeDeclarations_ containsObject:name],
+  GDATA_DEBUG_ASSERT([attributeDeclarations_ containsObject:name],
             @"%@ setting undeclared attribute: %@", [self class], name);
-#endif
   
   if (attributes_ == nil) {
     attributes_ = [[NSMutableDictionary alloc] init]; 
@@ -1743,11 +1733,9 @@ objectDescriptionIfNonNil:(id)obj
   // for better performance, look up the values for declared attributes only
   // if they are really present in the node
   NSArray *attributes = [element attributes];
-
-  NSEnumerator *attrEnum = [attributes objectEnumerator];
   NSXMLNode *attribute;
-  
-  while ((attribute = [attrEnum nextObject]) != nil) {
+
+  GDATA_FOREACH(attribute, attributes) {
     
     NSString *attrName = [attribute name];
     if ([attributeDeclarations_ containsObject:attrName]) {
@@ -2036,9 +2024,8 @@ forCategoryWithScheme:scheme
     }
   }
 
-  NSEnumerator *enumerator = [categories objectEnumerator];
   NSXMLElement *categoryNode;
-  while ((categoryNode = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(categoryNode, categories) {
     
     NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
     NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
