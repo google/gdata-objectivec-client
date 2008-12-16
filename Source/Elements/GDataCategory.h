@@ -31,7 +31,12 @@
 
 _EXTERN NSString* kGDataCategoryLabelScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005/labels");
 
-_EXTERN NSString* kGDataCategoryLabelStarred _INITIALIZE_AS(@"starred");
+_EXTERN NSString* kGDataCategoryLabelStarred          _INITIALIZE_AS(@"starred");
+_EXTERN NSString* kGDataCategoryLabelTrashed          _INITIALIZE_AS(@"trashed");
+_EXTERN NSString* kGDataCategoryLabelPublished        _INITIALIZE_AS(@"published");
+_EXTERN NSString* kGDataCategoryLabelMine             _INITIALIZE_AS(@"mine");
+_EXTERN NSString* kGDataCategoryLabelSharedWithDomain _INITIALIZE_AS(@"shared-with-domain");
+_EXTERN NSString* kGDataCategoryLabelHidden           _INITIALIZE_AS(@"hidden");
 
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"

@@ -121,10 +121,9 @@ static NSString* const kLangAttr = @"xml:lang";
 + (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix 
                          fromCategories:(NSArray *)array {
   NSMutableArray *matches = [NSMutableArray array];
-  NSEnumerator *enumerator = [array objectEnumerator];
   GDataCategory *category;
-  
-  while ((category = [enumerator nextObject]) != nil) {
+
+  GDATA_FOREACH(category, array) {
     NSString *scheme = [category scheme];
     if (scheme != nil && [scheme hasPrefix:prefix]) {
       [matches addObject:category];
@@ -136,10 +135,9 @@ static NSString* const kLangAttr = @"xml:lang";
 + (NSArray *)categoryLabelsFromCategories:(NSArray *)array {
   
   NSMutableArray *labels = [NSMutableArray array];
-  NSEnumerator *enumerator = [array objectEnumerator];
   GDataCategory *category;
-  
-  while ((category = [enumerator nextObject]) != nil) {
+
+  GDATA_FOREACH(category, array) {
     NSString *label = [category label];
     if (label != nil && ![labels containsObject:label]) {
       [labels addObject:label];

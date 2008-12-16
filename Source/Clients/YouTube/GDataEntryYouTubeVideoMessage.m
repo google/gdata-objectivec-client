@@ -69,17 +69,13 @@
 #pragma mark -
 
 - (GDataYouTubeDescription *)youTubeDescription {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
   
   return [self objectForExtensionClass:[GDataYouTubeDescription class]];
 }
 
 - (void)setYouTubeDescription:(GDataYouTubeDescription *)obj {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
   
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }

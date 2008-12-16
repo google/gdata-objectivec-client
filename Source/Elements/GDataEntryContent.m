@@ -61,9 +61,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
   
   // deprecated; kept for compatibility with the previous
   // implementation of GDataEntryContent
-#if DEBUG
-  NSLog(@"GDataEntryContent: +textConstructWithString deprecated, use +contentWithString");
-#endif
+  GDATA_DEBUG_LOG(@"GDataEntryContent: +textConstructWithString deprecated, use +contentWithString");
   
   return [self contentWithString:str];
 }

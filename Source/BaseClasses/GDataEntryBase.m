@@ -178,9 +178,7 @@
   
   if ([uploadData length] == 0 || [uploadMIMEType length] == 0) {
     
-#if DEBUG
-    NSAssert(![self shouldUploadDataOnly], @"missing data");
-#endif
+    GDATA_DEBUG_ASSERT(![self shouldUploadDataOnly], @"missing data");
     
     // if there's no upload data, just fall back on GDataObject's
     // XML stream generation

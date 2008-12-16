@@ -83,44 +83,42 @@
 }
 
 - (NSString *)countHint {
-  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
   GDataYouTubeCountHint *obj = [self objectForExtensionClass:[GDataYouTubeCountHint class]];
   return [obj stringValue];
 }
 
 - (void)setCountHint:(NSString *)str {
-  NSAssert(![self isServiceVersion1], @"requires newer version");
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
   GDataYouTubeCountHint *obj = [GDataYouTubeCountHint valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeCountHint class]];
 }
 
 // elements present in GData v1 only
 - (GDataFeedLink *)feedLink {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  
   return [self objectForExtensionClass:[GDataFeedLink class]]; 
 }
 
 - (void)setFeedLink:(GDataFeedLink *)feedLink {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  
   return [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
 }
 
 - (NSString *)youTubeDescription {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  
   GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
   return [obj stringValue];
 }
 
 - (void)setYouTubeDescription:(NSString *)str {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  
   GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }

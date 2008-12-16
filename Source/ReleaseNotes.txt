@@ -41,9 +41,14 @@ Additions
 
 - Added new Docs query parameters and new category label constants
 
+- Builds for iPhone and requiring 10.5 and higher now take advantage of
+  fast enumeration
+
 Bugs Fixed
 
 - Fixed finance portfolio description method (thanks dujunfly)
+
+- Fixed query generation for URLs that already contain some parameters
 
 
 Release 1.5.0

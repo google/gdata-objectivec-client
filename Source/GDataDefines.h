@@ -65,6 +65,65 @@
   #define kGDataXMLElementPropertyKey  @"_XMLElement"
 #endif
 
+//
+// GDATA_ASSERT is like NSAssert, but takes a variable number of arguments:
+//
+//     GDATA_ASSERT(condition, @"Problem in argument %@", argStr);
+//
+// GDATA_DEBUG_ASSERT is similar, but compiles in only for debug builds
+//
+
+#ifndef GDATA_ASSERT
+  // we directly invoke the NSAssert handler so we can pass on the varargs
+  #if !defined(NS_BLOCK_ASSERTIONS)
+    #define GDATA_ASSERT(condition, ...)                                 \
+      do {                                                                   \
+        if (!(condition)) {                                                  \
+          [[NSAssertionHandler currentHandler]                               \
+              handleFailureInFunction:[NSString stringWithCString:__PRETTY_FUNCTION__] \
+                                 file:[NSString stringWithCString:__FILE__]  \
+                           lineNumber:__LINE__                               \
+                          description:__VA_ARGS__];                          \
+        }                                                                    \
+      } while(0)
+  #else
+    #define GDATA_ASSERT(condition, ...) do { } while (0)
+  #endif // !defined(NS_BLOCK_ASSERTIONS)
+#endif // GDATA_ASSERT
+
+#ifndef GDATA_DEBUG_ASSERT
+  #if DEBUG
+    #define GDATA_DEBUG_ASSERT(condition, ...) GDATA_ASSERT(condition, __VA_ARGS__)
+  #else
+    #define GDATA_DEBUG_ASSERT(condition, ...) do { } while (0)
+  #endif
+#endif
+
+#ifndef GDATA_DEBUG_LOG
+  #if DEBUG
+    #define GDATA_DEBUG_LOG(...) NSLog(__VA_ARGS__)
+  #else
+    #define GDATA_DEBUG_LOG(...) do { } while (0)
+  #endif
+#endif
+
+
+//
+// macro to allow fast enumeration when building for 10.5 or later, and
+// reliance on NSEnumerator for 10.4
+//
+#ifndef GDATA_FOREACH
+  #if defined(TARGET_OS_IPHONE) || MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    #define GDATA_FOREACH(element, collection) \
+      for (element in collection)
+  #else
+    #define GDATA_FOREACH(element, collection) \
+      for(id _ ## element ## _enum = [collection objectEnumerator]; \
+          (element = [_ ## element ## _enum nextObject]) != nil; )
+  #endif
+#endif
+
+
 // To simplify support for 64bit (and Leopard in general), we provide the type
 // defines for non Leopard SDKs
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4

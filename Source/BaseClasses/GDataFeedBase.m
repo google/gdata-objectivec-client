@@ -159,10 +159,8 @@
   // allocate individual entries
   Class entryClass = [self classForEntries];
   
-#if DEBUG
-  NSAssert1([[root localName] isEqual:@"feed"], 
+  GDATA_DEBUG_ASSERT([[root localName] isEqual:@"feed"], 
             @"initing a feed from a non-feed element (%@)", [root name]);
-#endif
   
   // create entries of the proper class from each "entry" element
   NSArray *entries = [self objectsForChildrenOfElement:root
@@ -536,10 +534,8 @@
   
   // step through the entries, ensure that none have other parents,
   // make each have this feed as parent
-  NSEnumerator *enumerator = [entries_ objectEnumerator];
   GDataObject* entry;
-  
-  while ((entry = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(entry, entries_) {
     GDataObject *oldParent = [entry parent];
     NSAssert(oldParent == self || oldParent == nil,
               @"Trying to replace existing feed parent; use setEntriesWithEntries: instead");
@@ -569,10 +565,9 @@
   [entries_ autorelease];
   entries_ = [[NSMutableArray alloc] init];
 
-  NSEnumerator *enumerator = [entries objectEnumerator];
   GDataObject* entry;
   
-  while ((entry = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH(entry, entries) {
     GDataEntryBase *entryCopy = [[entry copy] autorelease]; // clears parent in copy
     [entryCopy setParent:self];
     [entries_ addObject:entryCopy];

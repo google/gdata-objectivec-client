@@ -175,18 +175,14 @@
 }
 
 - (BOOL)isRacy {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
 
   GDataYouTubeRacy *obj = [self objectForExtensionClass:[GDataYouTubeRacy class]];
   return (obj != nil);
 }
 
 - (void)setIsRacy:(BOOL)flag {
-#if DEBUG
-  NSAssert([self isServiceVersion1], @"deprecated");
-#endif
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
   
   if (flag) {
     GDataYouTubeRacy *racy = [GDataYouTubeRacy implicitValue];
