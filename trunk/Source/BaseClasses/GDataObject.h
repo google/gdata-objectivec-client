@@ -257,6 +257,8 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (NSDictionary *)surrogates;
 
 // service API version
++ (NSString *)defaultServiceVersion;
+
 - (void)setServiceVersion:(NSString *)str;
 - (NSString *)serviceVersion;
 
@@ -495,7 +497,7 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
      attributeValueIfNonNil:(NSString *)val
-              withLocalName:(NSString *)localName
+          withQualifiedName:(NSString *)qName
                         URI:(NSString *)attributeURI;
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element

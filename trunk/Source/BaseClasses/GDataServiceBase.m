@@ -1030,11 +1030,20 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 #pragma mark -
 
-// Subclasses typically override serviceVersion to specify the expected
+// Subclasses typically implement defaultServiceVersion to specify the expected
 // version of the feed, but clients may also explicitly set the version
 // if they are using an instance of the base class directly.
++ (NSString *)defaultServiceVersion {
+  return nil;
+}
+
 - (NSString *)serviceVersion {
-  return serviceVersion_;  
+  if (serviceVersion_ != nil) {
+    return serviceVersion_;
+  }
+
+  NSString *str = [[self class] defaultServiceVersion];
+  return str;
 }
 
 - (void)setServiceVersion:(NSString *)str {
