@@ -18,12 +18,45 @@
 //
 
 #import "GDataPerson.h"
+#import "GDataValueConstruct.h"
+
+static NSString *const kLangAttr = @"xml:lang";
+
+// name, like <atom:name>Fred Flintstone<atom:name>
+@interface GDataPersonName : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataPersonName
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtom; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPrefix; }
++ (NSString *)extensionElementLocalName { return @"name"; }
+@end
+
+// email, like <atom:email>fred@flintstone.com<atom:email>
+@interface GDataPersonEmail : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataPersonEmail
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtom; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPrefix; }
++ (NSString *)extensionElementLocalName { return @"email"; }
+@end
+
+// URI, like <atom:uri>http://flintstone.com/resource<atom:uri>
+@interface GDataPersonURI : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataPersonURI
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtom; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPrefix; }
++ (NSString *)extensionElementLocalName { return @"uri"; }
+@end
 
 @implementation GDataPerson
 // a person, as in
 // <author>
 //   <name>Fred Flintstone</name>
-//   <email>test@domain.net</email>
+//   <email>fred@flintstone.com</email>
 // </author>
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceAtom; }
@@ -37,118 +70,67 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    [self setNameLang:[self stringForAttributeName:@"xml:lang"
-                                       fromElement:element]];
-    
-    NSXMLElement *child = [self childWithQualifiedName:@"name"
-                                          namespaceURI:kGDataNamespaceAtom
-                                           fromElement:element];
-    [self setName:[self stringValueFromElement:child]];
-    
-    child = [self childWithQualifiedName:@"uri"
-                            namespaceURI:kGDataNamespaceAtom
-                             fromElement:element];
-    [self setURI:[self stringValueFromElement:child]];
-    
-    element = [self childWithQualifiedName:@"email"
-                              namespaceURI:kGDataNamespaceAtom
-                               fromElement:element];
-    [self setEmail:[self stringValueFromElement:element]];
-  }
-  return self;
+- (void)addParseDeclarations {
+  [self addLocalAttributeDeclarations:[NSArray arrayWithObject:kLangAttr]];
 }
 
-- (void)dealloc {
-  [name_ release];
-  [nameLang_ release];
-  [uri_ release];
-  [email_ release];
-  [super dealloc];
-}
+- (void)addExtensionDeclarations {
 
-- (id)copyWithZone:(NSZone *)zone {
-  GDataPerson* newPerson = [super copyWithZone:zone];
-  [newPerson setName:[self name]];
-  [newPerson setNameLang:[self nameLang]];
-  [newPerson setURI:[self URI]];
-  [newPerson setEmail:[self email]];
-  return newPerson;
-}
+  [super addExtensionDeclarations];
 
-- (BOOL)isEqual:(GDataPerson *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataPerson class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self name], [other name])
-    && AreEqualOrBothNil([self nameLang], [other nameLang])
-    && AreEqualOrBothNil([self URI], [other URI])
-    && AreEqualOrBothNil([self email], [other email]);
+  [self addExtensionDeclarationForParentClass:[self class]
+                                 childClasses:
+   [GDataPersonName class],
+   [GDataPersonEmail class],
+   [GDataPersonURI class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:name_ withName:@"name"];
-  [self addToArray:items objectDescriptionIfNonNil:nameLang_ withName:@"nameLang"];
-  [self addToArray:items objectDescriptionIfNonNil:uri_ withName:@"URI"];
-  [self addToArray:items objectDescriptionIfNonNil:email_ withName:@"email"];
+  NSMutableArray *items = [super itemsForDescription];
+
+  [self addToArray:items objectDescriptionIfNonNil:[self name] withName:@"name"];
+  [self addToArray:items objectDescriptionIfNonNil:[self URI] withName:@"URI"];
+  [self addToArray:items objectDescriptionIfNonNil:[self email] withName:@"email"];
 
   return items;
 }
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil]; // author, typically
-  
-  [self addToElement:element childWithStringValueIfNonEmpty:[self name]     withName:@"name"];
-  [self addToElement:element childWithStringValueIfNonEmpty:[self URI]      withName:@"uri"];
-  [self addToElement:element childWithStringValueIfNonEmpty:[self email]    withName:@"email"];
-
-  [self addToElement:element attributeValueIfNonNil:nameLang_ withName:@"xml:lang"];
-
-  return element;
-}
-
 - (NSString *)name {
-  return name_;
+  GDataPersonName *obj = [self objectForExtensionClass:[GDataPersonName class]];
+  return [obj stringValue];
 }
 
 - (void)setName:(NSString *)str {
-  [name_ autorelease];
-  name_ = [str copy];
+  GDataPersonName *obj = [GDataPersonName valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPersonName class]];
 }
 
 - (NSString *)nameLang {
-  return nameLang_;
+  return [self stringValueForAttribute:kLangAttr];
 }
 
 - (void)setNameLang:(NSString *)str {
-  [nameLang_ autorelease];
-  nameLang_ = [str copy];
+  [self setStringValue:str forAttribute:kLangAttr];
 }
 
 - (NSString *)URI {
-  return uri_;
+  GDataPersonURI *obj = [self objectForExtensionClass:[GDataPersonURI class]];
+  return [obj stringValue];
 }
 
 - (void)setURI:(NSString *)str {
-  [uri_ autorelease];
-  uri_ = [str copy];
+  GDataPersonURI *obj = [GDataPersonURI valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPersonURI class]];
 }
 
 - (NSString *)email {
-  return email_;
+  GDataPersonEmail *obj = [self objectForExtensionClass:[GDataPersonEmail class]];
+  return [obj stringValue];
 }
 
 - (void)setEmail:(NSString *)str {
-  [email_ autorelease];
-  email_ = [str copy];
+  GDataPersonEmail *obj = [GDataPersonEmail valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPersonEmail class]];
 }
 @end
-

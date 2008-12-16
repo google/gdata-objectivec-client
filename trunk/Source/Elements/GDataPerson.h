@@ -23,23 +23,19 @@
 //   <name>Fred Flintstone</name>
 //   <email>test@domain.net</email>
 // </author>
-@interface GDataPerson : GDataObject <NSCopying, GDataExtension> {
-  NSString *name_;
-  NSString *nameLang_;
-  NSString *uri_;
-  NSString *email_;
-}
+@interface GDataPerson : GDataObject <GDataExtension>
 
 + (GDataPerson *)personWithName:(NSString *)name email:(NSString *)email;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
 - (NSString *)name;
 - (void)setName:(NSString *)str;
+
 - (NSString *)nameLang;
 - (void)setNameLang:(NSString *)str;
+
 - (NSString *)URI;
 - (void)setURI:(NSString *)str;
+
 - (NSString *)email;
 - (void)setEmail:(NSString *)str;
 @end
