@@ -433,13 +433,22 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return surrogates_; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return nil;
+}
+
 - (void)setServiceVersion:(NSString *)str {
   [serviceVersion_ autorelease];
   serviceVersion_ = [str copy];
 }
 
 - (NSString *)serviceVersion {
-  return serviceVersion_; 
+  if (serviceVersion_ != nil) {
+    return serviceVersion_;
+  }
+
+  NSString *str = [[self class] defaultServiceVersion];
+  return str;
 }
 
 - (BOOL)isServiceVersion1 {
@@ -651,19 +660,19 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
      attributeValueIfNonNil:(NSString *)val
-              withLocalName:(NSString *)localName 
+          withQualifiedName:(NSString *)qName
                         URI:(NSString *)attributeURI {
   
   if (attributeURI == nil) {
     return [self addToElement:element
        attributeValueIfNonNil:val 
-                     withName:localName];
+                     withName:qName];
   }
   
   if (val) {
     NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:val];
     
-    NSXMLNode *attr = [NSXMLNode attributeWithName:localName 
+    NSXMLNode *attr = [NSXMLNode attributeWithName:qName
                                                URI:attributeURI
                                        stringValue:filtered];
     if (attr != nil) {
@@ -722,12 +731,12 @@ childWithStringValueIfNonEmpty:(NSString *)str
       // attribute extensions are not GDataObjects and don't implement 
       // XMLElement; we just get the attribute value from them
       NSString *str = [item stringValue];
-      NSString *localName = [[item class] extensionElementLocalName];
+      NSString *qName = [self qualifiedNameForExtensionClass:[item class]];
       NSString *theURI = [[item class] extensionElementURI];
       
       [self addToElement:element 
-  attributeValueIfNonNil:str 
-           withLocalName:localName
+  attributeValueIfNonNil:str
+       withQualifiedName:qName
                      URI:theURI];
       
     } else {

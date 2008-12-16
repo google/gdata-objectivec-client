@@ -71,7 +71,9 @@ static NSString* GDataStringFromXMLString(const xmlChar *chars) {
 
 static NSString *GDataFakeQNameForURIAndName(NSString *theURI, NSString *name) {
 
-  NSString *fakeQName = [NSString stringWithFormat:@"{%@}:%@", theURI, name];
+  NSString *localName = [GDataXMLNode localNameForName:name];
+  NSString *fakeQName = [NSString stringWithFormat:@"{%@}:%@",
+                         theURI, localName];
   return fakeQName;
 }
 

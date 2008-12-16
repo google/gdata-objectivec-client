@@ -273,10 +273,7 @@
   return @"http://uploads.gdata.youtube.com/feeds/";
 }
 
-- (NSString *)serviceVersion {
-  NSString *str = [super serviceVersion];
-  if (str != nil) return str;
-
++ (NSString *)defaultServiceVersion {
   return @"2.0";
 }
 

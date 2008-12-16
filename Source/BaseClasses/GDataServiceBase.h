@@ -366,9 +366,11 @@ enum {
 - (NSString *)username;
 - (NSString *)password;
 
-// Subclasses typically override serviceVersion to specify the expected
+// Subclasses typically override defaultServiceVersion to specify the expected
 // version of the feed, but clients may also explicitly set the version
 // if they are using an instance of the base class directly.
++ (NSString *)defaultServiceVersion;
+
 - (NSString *)serviceVersion;
 - (void)setServiceVersion:(NSString *)str;
 
