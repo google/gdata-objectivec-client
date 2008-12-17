@@ -165,6 +165,11 @@
   return items;
 }
 
+- (NSXMLElement *)XMLElement {
+  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"entry"];
+  return element;
+}
+
 #pragma mark -
 
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
