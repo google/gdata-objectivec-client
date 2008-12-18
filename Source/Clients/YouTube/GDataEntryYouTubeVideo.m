@@ -130,6 +130,10 @@
   return kGDataCategoryYouTubeVideo;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (GDataYouTubeStatistics *)statistics {

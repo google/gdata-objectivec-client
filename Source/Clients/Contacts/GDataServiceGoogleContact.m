@@ -210,5 +210,9 @@
   return @"http://www.google.com/m8/feeds/"; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataContactDefaultServiceVersion;
+}
+
 @end
 

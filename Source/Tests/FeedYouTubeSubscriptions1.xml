@@ -77,6 +77,8 @@
             <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
         </author>
         <yt:queryString>cute dogs</yt:queryString>
+        <yt:playlistId>1sbd45</yt:playlistId>
+        <yt:playlistTitle>Dog Playlist</yt:playlistTitle>
         <content src="http://gdata.youtube.com/feeds/api/videos?vq=cute+dogs" 
                   type="application/atom+xml"/>
     </entry>

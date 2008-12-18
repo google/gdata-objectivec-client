@@ -62,6 +62,10 @@
   return [GDataEntryContact class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataContactDefaultServiceVersion;
+}
+
 #pragma mark -
 
 @end

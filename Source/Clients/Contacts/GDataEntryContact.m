@@ -114,6 +114,9 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataContactDefaultServiceVersion;
+}
 
 #pragma mark -
 
@@ -358,6 +361,8 @@
 }
 
 - (GDataLink *)editPhotoLink {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  
   return [self linkWithRelAttributeValue:kGDataContactEditPhotoRel]; 
 }
 @end

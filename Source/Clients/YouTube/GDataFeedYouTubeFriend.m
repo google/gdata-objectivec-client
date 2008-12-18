@@ -65,4 +65,8 @@
   return kUseRegisteredEntryClass;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 @end

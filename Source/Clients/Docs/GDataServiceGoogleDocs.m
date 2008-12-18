@@ -128,10 +128,7 @@
   return @"writely";
 }
 
-- (NSString *)serviceVersion {
-  NSString *str = [super serviceVersion];
-  if (str != nil) return str;
-
++ (NSString *)defaultServiceVersion {
   return @"2.0";
 }
 

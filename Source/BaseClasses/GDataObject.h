@@ -222,6 +222,8 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 - (id)copyWithZone:(NSZone *)zone;
 
+- (id)initWithServiceVersion:(NSString *)serviceVersion;
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent; // subclasses must override
 - (NSXMLElement *)XMLElement; // subclasses must override

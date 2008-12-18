@@ -119,6 +119,15 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return self;
 }
 
+// intended mainly for testing, initWithServiceVersion allows the service
+// version to be set prior to declaring extensions; this is useful
+// for overriding the default service version for the class when
+// manually allocating a copy of the object
+- (id)initWithServiceVersion:(NSString *)serviceVersion {
+  [self setServiceVersion:serviceVersion];
+  return [self init];
+}
+
 // this init routine is only used when passing in a top-level surrogates
 // dictionary
 - (id)initWithXMLElement:(NSXMLElement *)element

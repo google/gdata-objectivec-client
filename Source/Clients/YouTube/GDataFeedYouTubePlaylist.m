@@ -100,4 +100,8 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeMediaGroup class]];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 @end

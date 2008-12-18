@@ -30,7 +30,6 @@
                                               MIMEType:(NSString *)mimeType
                                                   slug:(NSString *)fileName {
   
-  
   GDataEntryYouTubeUpload *entry = [[[self alloc] init] autorelease];
 
   [entry setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]];
@@ -44,6 +43,10 @@
 }
 
 #pragma mark -
+
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
 
 - (void)addExtensionDeclarations {
   

@@ -48,6 +48,10 @@
   return self;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSURL *)videoURL {
