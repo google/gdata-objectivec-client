@@ -189,7 +189,7 @@ static NSString* gLoggingProcessName = nil;
 
   if (isXMLLintAvailable
       && [inputData length] > 5
-      && strncmp([downloadedData_ bytes], "<?xml", 5) == 0) {
+      && strncmp([inputData bytes], "<?xml", 5) == 0) {
 
     // call xmllint to format the data
     NSTask *task = [[[NSTask alloc] init] autorelease];

@@ -72,6 +72,10 @@
   return self;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSString *)username {

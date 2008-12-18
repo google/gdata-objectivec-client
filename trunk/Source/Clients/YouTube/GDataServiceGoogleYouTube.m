@@ -274,7 +274,7 @@
 }
 
 + (NSString *)defaultServiceVersion {
-  return @"2.0";
+  return kGDataYouTubeDefaultServiceVersion;
 }
 
 @end

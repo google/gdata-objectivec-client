@@ -71,6 +71,10 @@
   return self;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (GDataMediaThumbnail *)thumbnail {

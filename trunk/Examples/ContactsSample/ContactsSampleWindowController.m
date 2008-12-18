@@ -72,8 +72,8 @@ static const int kBallotX = 0x2717; // fancy X mark to indicate deleted items
 - (void)setContactFetchError:(NSError *)error;  
 - (GDataServiceTicket *)contactFetchTicket;
 - (void)setContactFetchTicket:(GDataServiceTicket *)ticket;
-- (NSURL *)contactImageEditURL;
-- (void)setContactImageEditURL:(NSURL *)url;
+- (NSString *)contactImageETag;
+- (void)setContactImageETag:(NSString *)str;
 
 - (GDataFeedContactGroup *)groupFeed;
 - (void)setGroupFeed:(GDataFeedContactGroup *)feed;
@@ -136,7 +136,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [mContactFeed release];
   [mContactFetchError release];
   [mContactFetchTicket release];
-  [mContactImageEditURL release];
+  [mContactImageETag release];
   
   [mGroupFeed release];
   [mGroupFetchError release];
@@ -299,10 +299,10 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   [mAddContactButton setEnabled:(isAddInfoEntered && isFeedAvailable)];
   
-  BOOL canEditSelectedContactImage = ([selectedContact editPhotoLink] != nil);
+  BOOL canEditSelectedContactImage = ([selectedContact photoLink] != nil);
   [mSetContactImageButton setEnabled:canEditSelectedContactImage];
   
-  BOOL doesContactHaveImage = ([selectedContact photoLink] != nil);
+  BOOL doesContactHaveImage = ([[selectedContact photoLink] ETag] != nil);
   [mDeleteContactImageButton setEnabled:(doesContactHaveImage && 
                                          canEditSelectedContactImage)];
   
@@ -331,32 +331,34 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 
 // get or clear the image for this specified contact
 - (void)updateImageForContact:(GDataEntryContact *)contact {
-  
+
   if (!contact) {
     // clear the image
     [mContactImageView setImage:nil];
-    [self setContactImageEditURL:nil];
+    [self setContactImageETag:nil];
 
   } else {
-    // Google Contacts guarantees that the photo edit URL changes whenever
+    // Google Contacts guarantees that the photo link ETag changes whenever
     // the photo for the contact changes
     //
-    // if the new photo edit URL is different from the previous one,
+    // if the new photo link ETag is different from the previous one,
     // clear the image and fetch the new image
+    
+    GDataLink *photoLink = [contact photoLink];
 
-    NSURL *imageEditURL = [[contact editPhotoLink] URL];
+    NSString *imageETag = [photoLink ETag];
+    if (imageETag == nil || ![mContactImageETag isEqual:imageETag]) {
 
-    if (!imageEditURL || ![mContactImageEditURL isEqual:imageEditURL]) {
-
-      // save the image edit URL for the contact we're fetching
-      [self setContactImageEditURL:imageEditURL];
+      // save the image ETag for the contact we're fetching so later we can
+      // use it to determine if the image on the server has changed
+      [self setContactImageETag:imageETag];
 
       [mContactImageView setImage:nil];
 
-      NSURL *imageURL = [[contact photoLink] URL];
-      if (imageURL) {
+      if (imageETag != nil) {
 
         // get an NSURLRequest object with an auth token
+        NSURL *imageURL = [photoLink URL];
         GDataServiceGoogleContact *service = [self contactService];
         NSMutableURLRequest *request = [service requestForURL:imageURL
                                                          ETag:nil
@@ -881,11 +883,17 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     if (!uploadData) {
       errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
     } else {
+      GDataLink *photoLink = [[self selectedContact] photoLink];
+
+      [newEntry setShouldUploadDataOnly:YES];
       [newEntry setUploadData:uploadData];
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
-      
-      NSURL *putURL = [[[self selectedContact] editPhotoLink] URL];
+
+      // provide the ETag of the photo we are replacing, if any
+      [newEntry setETag:[photoLink ETag]];
+
+      NSURL *putURL = [photoLink URL];
       
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleContact *service = [self contactService];
@@ -981,10 +989,13 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *editURL = [[[self selectedContact] editPhotoLink] URL];
+    GDataLink *photoLink = [[self selectedContact] photoLink];
+
+    NSURL *editURL = [photoLink URL];
+    NSString *etag = [photoLink ETag];
     
     [service deleteContactResourceURL:editURL
-                                 ETag:nil
+                                 ETag:etag
                              delegate:self
                     didFinishSelector:@selector(deletePhotoTicket:finishedWithNil:)
                       didFailSelector:@selector(deletePhotoTicket:failedWithError:)];
@@ -1177,7 +1188,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 // failure to delete entry
 - (void)deleteEntryTicket:(GDataServiceTicket *)ticket
           failedWithError:(NSError *)error {
-  
+
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
                     nil, nil, @"Entry delete failed: %@\nUser info:%@", 
@@ -1250,7 +1261,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
         static int staticID = 0;
         NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
         [entry setBatchIDWithString:batchID];
-        
+
         // we don't need to add the batch operation to the entries since
         // we're putting it in the feed to apply to all entries
         
@@ -1268,7 +1279,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
           // add the operation to the feed
           
           GDataFeedContact *batchFeed = [GDataFeedContact contactFeed];
-          
+
           unsigned int rangeStart = idx - (idx % kMaxBatchSize);
           NSRange batchEntryRange = NSMakeRange(rangeStart, 
                                                 idx - rangeStart + 1);
@@ -1817,13 +1828,13 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   mContactFetchTicket = [ticket retain];
 }
 
-- (NSURL *)contactImageEditURL {
-  return mContactImageEditURL;
+- (NSString *)contactImageETag {
+  return mContactImageETag;
 }
 
-- (void)setContactImageEditURL:(NSURL *)url {
-  [mContactImageEditURL autorelease];
-  mContactImageEditURL = [url copy];
+- (void)setContactImageETag:(NSString *)str {
+  [mContactImageETag autorelease];
+  mContactImageETag = [str copy];
 }
 
 

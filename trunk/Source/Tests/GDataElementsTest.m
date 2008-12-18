@@ -1325,8 +1325,11 @@
   
   // Allocating entries with convenience methods should
   // the appropriate namespaces
-  GDataEntryContact *entry 
-    = [GDataEntryContact contactEntryWithTitle:@"Joe Smith"]; 
+  GDataEntryContact *entry = [[[GDataEntryContact alloc] initWithServiceVersion:@"1.0"] autorelease];
+  
+  [entry setNamespaces:[GDataEntryContact contactNamespaces]];
+  [entry setTitleWithString:@"Joe Smith"];
+  
   NSXMLElement *element = [entry XMLElement];
   NSString *nsStr;
   
@@ -1334,11 +1337,15 @@
   STAssertEqualObjects(nsStr, kGDataNamespaceAtomPub1_0, 
                        @"expected v1 app namespace");
   
-  [entry setServiceVersion:@"2.0"];
-  element = [entry XMLElement];
+  GDataEntryContact *entry2 = [[[GDataEntryContact alloc] initWithServiceVersion:@"2.0"] autorelease];
+  
+  [entry2 setNamespaces:[GDataEntryContact contactNamespaces]];
+  [entry2 setTitleWithString:@"Joe Smith"];
+  
+  element = [entry2 XMLElement];
   nsStr = [[element namespaceForPrefix:kGDataNamespaceAtomPubPrefix] stringValue];
   STAssertEqualObjects(nsStr, kGDataNamespaceAtomPubStd, 
-                       @"expected v1 app namespace");
+                       @"expected v2 app namespace");
   
   // Allocating entries with init calls should not add any namespaces,
   // nor should copying
@@ -1356,8 +1363,8 @@
 
   entry = [[[GDataEntryContact alloc] initWithXMLElement:element
                                                   parent:nil] autorelease];
-  GDataEntryContact *entry2 = [[entry copy] autorelease];
-  STAssertNil([[entry2 XMLElement] namespaces], @"unexpected namespaces");
+  GDataEntryContact *entry3 = [[entry copy] autorelease];
+  STAssertNil([[entry3 XMLElement] namespaces], @"unexpected namespaces");
 #endif
 }
 

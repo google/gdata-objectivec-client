@@ -70,6 +70,10 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataYouTubeDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSNumber *)totalRating {

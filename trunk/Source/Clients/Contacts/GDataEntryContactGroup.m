@@ -95,6 +95,10 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataContactDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSArray *)extendedProperties {
