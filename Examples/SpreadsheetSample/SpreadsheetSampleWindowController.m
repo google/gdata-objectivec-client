@@ -326,8 +326,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   GDataEntrySpreadsheet *spreadsheet = [self selectedSpreadsheet];
   if (spreadsheet) {
     
-    GDataLink *link = [spreadsheet worksheetsLink];
-    NSURL *feedURL = [link URL];
+    NSURL *feedURL = [spreadsheet worksheetsFeedURL];
     if (feedURL) {
       
       [self setWorksheetFeed:nil];
@@ -388,15 +387,15 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     // the segmented control lets the user retrieve cell entries (position 0)
     // or list entries (position 1)
     int segmentIndex = [mFeedSelectorSegments selectedSegment];
-    GDataLink *link;
+    NSURL *feedURL;
+
     if (segmentIndex == 0) {
-      link = [worksheet cellsLink];
+      feedURL = [[worksheet cellsLink] URL];
 
     } else {
-      link = [worksheet listLink];
+      feedURL = [worksheet listFeedURL];
     }
     
-    NSURL *feedURL = [link URL];
     if (feedURL) {
       
       [self setEntryFeed:nil];

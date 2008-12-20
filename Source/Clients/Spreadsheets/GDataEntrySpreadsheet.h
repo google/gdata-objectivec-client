@@ -49,8 +49,7 @@ _EXTERN NSString* const kGDataCategorySpreadsheet    _INITIALIZE_AS(@"http://sch
 
 // SpreadsheetEntry extensions
 
-@interface GDataEntrySpreadsheet : GDataEntryBase {
-}
+@interface GDataEntrySpreadsheet : GDataEntryBase
 
 + (NSDictionary *)spreadsheetNamespaces;
 
@@ -58,5 +57,9 @@ _EXTERN NSString* const kGDataCategorySpreadsheet    _INITIALIZE_AS(@"http://sch
 
 // convenience accessors
 - (GDataLink *)spreadsheetLink; // link to web version
+- (NSURL *)worksheetsFeedURL;
+
+// worksheetsLink is deprecated in V2; use worksheetsFeedURL instead
 - (GDataLink *)worksheetsLink;
+
 @end

@@ -120,10 +120,27 @@
 }
 
 - (GDataLink *)listLink {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
   return [self linkWithRelAttributeValue:kGDataLinkListFeed]; 
 }
 
 - (GDataLink *)cellsLink {
   return [self linkWithRelAttributeValue:kGDataLinkCellsFeed]; 
 }
+
+- (NSURL *)listFeedURL {
+
+  // the worksheets feed URL is the URI in the entry's content element
+  GDataEntryContent *content = [self content];
+
+  if ([[content type] hasPrefix:@"application/atom+xml"]) {
+    return [content sourceURL];
+  }
+
+  // prior to V2 feeds, the URL is in a link
+  return [[self linkWithRelAttributeValue:kGDataLinkListFeed] URL];
+}
+
 @end
+

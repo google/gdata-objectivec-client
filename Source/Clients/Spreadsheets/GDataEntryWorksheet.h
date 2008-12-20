@@ -30,12 +30,11 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#worksheet");
+_EXTERN NSString* const kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#worksheet");
 
 // WorksheetEntry extensions
 
-@interface GDataEntryWorksheet : GDataEntryBase {
-}
+@interface GDataEntryWorksheet : GDataEntryBase
 
 + (GDataEntryWorksheet *)worksheetEntry;
 
@@ -48,7 +47,10 @@ _EXTERN NSString* kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.google
 - (void)setColumnCount:(int)val;  
 
 // convenience accessors
-- (GDataLink *)listLink;
 - (GDataLink *)cellsLink;
+- (NSURL *)listFeedURL;
+
+// listLink is deprecated in V2; use worksheetsFeedURL instead
+- (GDataLink *)listLink;
 @end
 
