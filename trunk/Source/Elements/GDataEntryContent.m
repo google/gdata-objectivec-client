@@ -191,6 +191,16 @@ static BOOL IsTypeEqualToText(NSString *str) {
   [self setStringValue:str forAttribute:kSourceAttr];
 }
 
+- (NSURL *)sourceURL {
+  NSString *sourceURI = [self sourceURI];
+  if ([sourceURI length] > 0) {
+
+    NSURL *url = [NSURL URLWithString:sourceURI];
+    return url;
+  }
+  return nil;
+}
+
 - (void)setType:(NSString *)str {
   [self setStringValue:str forAttribute:kTypeAttr];
 }

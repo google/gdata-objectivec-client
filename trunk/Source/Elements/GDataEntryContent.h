@@ -50,6 +50,7 @@
 
 - (NSString *)sourceURI;
 - (void)setSourceURI:(NSString *)str;
+- (NSURL *)sourceURL;
 
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;

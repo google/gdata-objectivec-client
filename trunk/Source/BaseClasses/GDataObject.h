@@ -133,7 +133,7 @@ _EXTERN NSString* kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.co
 _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 #define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
-  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"requires newer version")
+  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"%s requires newer version", _cmd)
 
 #define GDATA_DEBUG_ASSERT_MAX_SERVICE_V1() \
   GDATA_DEBUG_ASSERT([self isServiceVersion1], @"deprecated")
