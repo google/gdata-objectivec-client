@@ -83,6 +83,10 @@
   return [GDataEntrySpreadsheetCell class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (int)rowCount {

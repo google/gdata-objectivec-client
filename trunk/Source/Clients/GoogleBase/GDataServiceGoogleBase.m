@@ -167,6 +167,9 @@
   return request;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataGoogleBaseDefaultServiceVersion;
+}
 
 @end
 

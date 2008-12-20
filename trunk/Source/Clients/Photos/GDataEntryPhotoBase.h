@@ -31,20 +31,21 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespacePhotos       _INITIALIZE_AS(@"http://schemas.google.com/photos/2007");
-_EXTERN NSString* kGDataNamespacePhotosPrefix _INITIALIZE_AS(@"gphoto");
+_EXTERN NSString* const kGDataPhotosDefaultServiceVersion _INITIALIZE_AS(@"1.0");
 
-_EXTERN NSString* kGDataNamespacePhotosEXIF       _INITIALIZE_AS(@"http://schemas.google.com/photos/exif/2007");
-_EXTERN NSString* kGDataNamespacePhotosEXIFPrefix _INITIALIZE_AS(@"exif");
+_EXTERN NSString* const kGDataNamespacePhotos       _INITIALIZE_AS(@"http://schemas.google.com/photos/2007");
+_EXTERN NSString* const kGDataNamespacePhotosPrefix _INITIALIZE_AS(@"gphoto");
 
-_EXTERN NSString* kGDataCategoryPhotosPhoto    _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#photo");
-_EXTERN NSString* kGDataCategoryPhotosAlbum    _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#album");
-_EXTERN NSString* kGDataCategoryPhotosUser     _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#user");
-_EXTERN NSString* kGDataCategoryPhotosTag      _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#tag");
-_EXTERN NSString* kGDataCategoryPhotosComment  _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#comment");
+_EXTERN NSString* const kGDataNamespacePhotosEXIF       _INITIALIZE_AS(@"http://schemas.google.com/photos/exif/2007");
+_EXTERN NSString* const kGDataNamespacePhotosEXIFPrefix _INITIALIZE_AS(@"exif");
 
-@interface GDataEntryPhotoBase : GDataEntryBase {
-}
+_EXTERN NSString* const kGDataCategoryPhotosPhoto    _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#photo");
+_EXTERN NSString* const kGDataCategoryPhotosAlbum    _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#album");
+_EXTERN NSString* const kGDataCategoryPhotosUser     _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#user");
+_EXTERN NSString* const kGDataCategoryPhotosTag      _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#tag");
+_EXTERN NSString* const kGDataCategoryPhotosComment  _INITIALIZE_AS(@"http://schemas.google.com/photos/2007#comment");
+
+@interface GDataEntryPhotoBase : GDataEntryBase
 
 + (NSDictionary *)photoNamespaces;
 

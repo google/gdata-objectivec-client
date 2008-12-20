@@ -58,6 +58,10 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataPhotosDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSString *)GPhotoID {

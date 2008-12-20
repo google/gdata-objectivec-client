@@ -202,7 +202,7 @@
     //
     // Calendar Feed
     //
-    { @"GDataFeedCalendar", @"Tests/FeedCalendarTest1.xml" },
+    { @"GDataFeedCalendar/1.0", @"Tests/FeedCalendarTest1.xml" },
       
     // GDataFeedCalendar paths 
     { @"title", @"Fred Flintstone's Calendar List" },

@@ -55,4 +55,8 @@
   return kUseRegisteredEntryClass;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataWebmasterToolsDefaultServiceVersion;
+}
+
 @end

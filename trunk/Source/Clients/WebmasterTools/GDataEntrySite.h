@@ -32,18 +32,20 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceWebmasterTools       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007");
-_EXTERN NSString* kGDataNamespaceWebmasterToolsPrefix _INITIALIZE_AS(@"wt");
+_EXTERN NSString* const kGDataWebmasterToolsDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
-_EXTERN NSString* kGDataCategorySiteInfo       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#site-info");
-_EXTERN NSString* kGDataCategorySitesFeed      _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sites-feed");
-_EXTERN NSString* kGDataCategorySitemapsFeed   _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemaps-feed");
-_EXTERN NSString* kGDataCategorySitemapRegular _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-regular");
-_EXTERN NSString* kGDataCategorySitemapMobile  _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-mobile");
-_EXTERN NSString* kGDataCategorySitemapNews    _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-news");
+_EXTERN NSString* const kGDataNamespaceWebmasterTools       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007");
+_EXTERN NSString* const kGDataNamespaceWebmasterToolsPrefix _INITIALIZE_AS(@"wt");
 
-_EXTERN NSString* kGDataSiteVerificationRel    _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#verification");
-_EXTERN NSString* kGDataSiteSitemapsRel        _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemaps");
+_EXTERN NSString* const kGDataCategorySiteInfo       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#site-info");
+_EXTERN NSString* const kGDataCategorySitesFeed      _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sites-feed");
+_EXTERN NSString* const kGDataCategorySitemapsFeed   _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemaps-feed");
+_EXTERN NSString* const kGDataCategorySitemapRegular _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-regular");
+_EXTERN NSString* const kGDataCategorySitemapMobile  _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-mobile");
+_EXTERN NSString* const kGDataCategorySitemapNews    _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemap-news");
+
+_EXTERN NSString* const kGDataSiteVerificationRel    _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#verification");
+_EXTERN NSString* const kGDataSiteSitemapsRel        _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007#sitemaps");
 
 @interface GDataSiteCrawledDate : GDataValueElementConstruct <GDataExtension>
 + (NSString *)extensionElementURI;

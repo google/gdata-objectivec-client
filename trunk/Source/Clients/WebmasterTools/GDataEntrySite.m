@@ -120,6 +120,9 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataWebmasterToolsDefaultServiceVersion;
+}
 
 #pragma mark -
 

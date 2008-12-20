@@ -226,6 +226,8 @@
   return @"http://www.google.com/calendar/feeds/"; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCalendarDefaultServiceVersion;
+}
 
 @end
-

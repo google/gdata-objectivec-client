@@ -43,6 +43,10 @@
   return kUseRegisteredEntryClass;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataPhotosDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSString *)GPhotoID {

@@ -128,5 +128,9 @@
   return @"https://www.google.com/webmasters/tools/feeds/"; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataWebmasterToolsDefaultServiceVersion;
+}
+
 @end
 

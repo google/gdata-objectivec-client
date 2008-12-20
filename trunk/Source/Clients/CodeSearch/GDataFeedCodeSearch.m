@@ -51,4 +51,8 @@
   return [GDataEntryCodeSearch class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCodeSearchDefaultServiceVersion;
+}
+
 @end

@@ -31,6 +31,8 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+_EXTERN NSString* const kGDataCalendarDefaultServiceVersion _INITIALIZE_AS(@"2.0");
+
 // http://code.google.com/apis/calendar/reference.html#Elements  Says:
 // "accessLevel must be one of the following:"
 _EXTERN NSString* const kGDataCalendarAccessNone        _INITIALIZE_AS(@"none");

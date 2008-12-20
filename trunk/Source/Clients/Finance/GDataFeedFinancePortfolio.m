@@ -54,4 +54,8 @@
   return [GDataEntryFinancePortfolio class]; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataFinanceDefaultServiceVersion;
+}
+
 @end

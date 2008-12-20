@@ -31,26 +31,28 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceBooks       _INITIALIZE_AS(@"http://schemas.google.com/books/2008");
-_EXTERN NSString* kGDataNamespaceBooksPrefix _INITIALIZE_AS(@"gbs");
+_EXTERN NSString* const kGDataBooksDefaultServiceVersion _INITIALIZE_AS(@"1.0");
 
-_EXTERN NSString* kGDataCategoryBooksVolume       _INITIALIZE_AS(@"http://schemas.google.com/books/2008#volume");
-_EXTERN NSString* kGDataCategoryBooksCollection   _INITIALIZE_AS(@"http://schemas.google.com/books/2008#collection");
+_EXTERN NSString* const kGDataNamespaceBooks       _INITIALIZE_AS(@"http://schemas.google.com/books/2008");
+_EXTERN NSString* const kGDataNamespaceBooksPrefix _INITIALIZE_AS(@"gbs");
 
-_EXTERN NSString* kGDataBooksViewAllPages _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_all_pages");
-_EXTERN NSString* kGDataBooksViewNoPages  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_no_pages");
-_EXTERN NSString* kGDataBooksViewPartial  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_partial");
-_EXTERN NSString* kGDataBooksViewUnknown  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_unknown");
+_EXTERN NSString* const kGDataCategoryBooksVolume       _INITIALIZE_AS(@"http://schemas.google.com/books/2008#volume");
+_EXTERN NSString* const kGDataCategoryBooksCollection   _INITIALIZE_AS(@"http://schemas.google.com/books/2008#collection");
 
-_EXTERN NSString* kGDataBooksEmbeddable     _INITIALIZE_AS(@"http://schemas.google.com/books/2008#embeddable");
-_EXTERN NSString* kGDataBooksNotEmbeddable  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#not_embeddable");
+_EXTERN NSString* const kGDataBooksViewAllPages _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_all_pages");
+_EXTERN NSString* const kGDataBooksViewNoPages  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_no_pages");
+_EXTERN NSString* const kGDataBooksViewPartial  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_partial");
+_EXTERN NSString* const kGDataBooksViewUnknown  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#view_unknown");
 
-_EXTERN NSString* kGDataBooksInfoRel       _INITIALIZE_AS(@"http://schemas.google.com/books/2008/info");
-_EXTERN NSString* kGDataBooksPreviewRel    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/preview");
-_EXTERN NSString* kGDataBooksThumbnailRel  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/thumbnail");
-_EXTERN NSString* kGDataBooksAnnotationRel _INITIALIZE_AS(@"http://schemas.google.com/books/2008/annotation");
+_EXTERN NSString* const kGDataBooksEmbeddable     _INITIALIZE_AS(@"http://schemas.google.com/books/2008#embeddable");
+_EXTERN NSString* const kGDataBooksNotEmbeddable  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#not_embeddable");
 
-_EXTERN NSString* kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/labels");
+_EXTERN NSString* const kGDataBooksInfoRel       _INITIALIZE_AS(@"http://schemas.google.com/books/2008/info");
+_EXTERN NSString* const kGDataBooksPreviewRel    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/preview");
+_EXTERN NSString* const kGDataBooksThumbnailRel  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/thumbnail");
+_EXTERN NSString* const kGDataBooksAnnotationRel _INITIALIZE_AS(@"http://schemas.google.com/books/2008/annotation");
+
+_EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/labels");
 
 
 @interface GDataVolumeViewability : GDataValueConstruct <GDataExtension>

@@ -130,5 +130,9 @@
   return @"wise";
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
+
 @end
 

@@ -143,5 +143,9 @@
   return @"http://books.google.com/books/feeds/"; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataBooksDefaultServiceVersion;
+}
+
 @end
 

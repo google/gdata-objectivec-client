@@ -18,11 +18,11 @@
 //
 
 #import "GDataFeedDocList.h"
+#import "GDataEntryDocBase.h"
 
 @implementation GDataFeedDocList
 
-- (Class)classForEntries {
-  return kUseRegisteredEntryClass;
++ (NSString *)defaultServiceVersion {
+  return kGDataDocsDefaultServiceVersion;
 }
-
 @end

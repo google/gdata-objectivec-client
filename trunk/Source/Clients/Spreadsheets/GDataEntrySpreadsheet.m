@@ -74,4 +74,7 @@
   return [self linkWithRelAttributeValue:kGDataLinkWorksheetsFeed]; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
 @end
