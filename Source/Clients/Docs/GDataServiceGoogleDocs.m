@@ -129,7 +129,7 @@
 }
 
 + (NSString *)defaultServiceVersion {
-  return @"2.0";
+  return kGDataDocsDefaultServiceVersion;
 }
 
 @end

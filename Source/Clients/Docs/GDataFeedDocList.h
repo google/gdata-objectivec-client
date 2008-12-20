@@ -20,7 +20,4 @@
 #import "GDataFeedBase.h"
 
 @interface GDataFeedDocList : GDataFeedBase
-
-- (Class)classForEntries;
-
 @end

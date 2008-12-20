@@ -91,4 +91,8 @@
   return aclFeedLink;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataDocsDefaultServiceVersion;
+}
+
 @end

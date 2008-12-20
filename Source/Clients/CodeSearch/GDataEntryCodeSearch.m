@@ -91,6 +91,9 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCodeSearchDefaultServiceVersion;
+}
 
 #pragma mark -
 

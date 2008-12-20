@@ -38,6 +38,8 @@
   return [GDataEntryGoogleBase class];
 }
 
-#pragma mark -
++ (NSString *)defaultServiceVersion {
+  return kGDataGoogleBaseDefaultServiceVersion;
+}
 
 @end

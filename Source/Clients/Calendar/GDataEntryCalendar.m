@@ -134,6 +134,10 @@
   return [super description];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCalendarDefaultServiceVersion;
+}
+
 #pragma mark Actual iVars
 
 - (GDataColorProperty *)color {

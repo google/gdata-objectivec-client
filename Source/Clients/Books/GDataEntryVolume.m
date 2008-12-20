@@ -133,6 +133,10 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataBooksDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (GDataComment *)comment {

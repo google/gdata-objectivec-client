@@ -83,6 +83,9 @@
   return items;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataFinanceDefaultServiceVersion;
+}
 
 #pragma mark -
 

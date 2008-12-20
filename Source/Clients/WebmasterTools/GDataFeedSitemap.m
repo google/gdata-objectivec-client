@@ -75,6 +75,10 @@
   return kUseRegisteredEntryClass;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataWebmasterToolsDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (GDataSitemapMobile *)sitemapMobile {

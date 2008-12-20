@@ -85,6 +85,10 @@
   return self;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (int)rowCount {

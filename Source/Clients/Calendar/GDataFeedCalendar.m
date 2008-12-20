@@ -47,4 +47,8 @@
   return [GDataEntryCalendar class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCalendarDefaultServiceVersion;
+}
+
 @end

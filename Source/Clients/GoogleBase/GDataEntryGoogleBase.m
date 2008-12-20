@@ -25,7 +25,6 @@
 #import "GDataGoogleBaseMetadataAttribute.h"
 #import "GDataGoogleBaseMetadataAttributeList.h"
 #import "GDataGoogleBaseMetadataItemType.h"
-// extensions
 
 // GoogleBaseEntry extensions
 
@@ -105,8 +104,8 @@
   return items;
 }
 
-- (void)dealloc {
-  [super dealloc]; 
++ (NSString *)defaultServiceVersion {
+  return kGDataGoogleBaseDefaultServiceVersion;
 }
 
 #pragma mark -

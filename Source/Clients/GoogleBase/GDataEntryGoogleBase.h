@@ -34,27 +34,29 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceGoogleBase _INITIALIZE_AS(@"http://base.google.com/ns/1.0");
-_EXTERN NSString* kGDataNamespaceGoogleBasePrefix _INITIALIZE_AS(@"g");
-_EXTERN NSString* kGDataNamespaceGoogleBaseMetadata _INITIALIZE_AS(@"http://base.google.com/ns-metadata/1.0");
-_EXTERN NSString* kGDataNamespaceGoogleBaseMetadataPrefix _INITIALIZE_AS(@"gm");
+_EXTERN NSString* const kGDataGoogleBaseDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
-_EXTERN NSString* kGDataCategoryGoogleBaseItemTypesScheme _INITIALIZE_AS(@"http://base.google.com/categories/itemtypes");
+_EXTERN NSString* const kGDataNamespaceGoogleBase _INITIALIZE_AS(@"http://base.google.com/ns/1.0");
+_EXTERN NSString* const kGDataNamespaceGoogleBasePrefix _INITIALIZE_AS(@"g");
+_EXTERN NSString* const kGDataNamespaceGoogleBaseMetadata _INITIALIZE_AS(@"http://base.google.com/ns-metadata/1.0");
+_EXTERN NSString* const kGDataNamespaceGoogleBaseMetadataPrefix _INITIALIZE_AS(@"gm");
 
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeText _INITIALIZE_AS(@"text");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeNumber _INITIALIZE_AS(@"number");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeInt _INITIALIZE_AS(@"int");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeFloat _INITIALIZE_AS(@"float");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeNumberUnit _INITIALIZE_AS(@"numberUnit");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeIntUnit _INITIALIZE_AS(@"intUnit");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeFloatUnit _INITIALIZE_AS(@"floatUnit");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeDateTimeRange _INITIALIZE_AS(@"dateTimeRange");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeDate _INITIALIZE_AS(@"date");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeDateTime _INITIALIZE_AS(@"dateTime");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeURL _INITIALIZE_AS(@"url");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeBoolean _INITIALIZE_AS(@"boolean");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeShipping _INITIALIZE_AS(@"shipping");
-_EXTERN NSString* kGDataGoogleBaseAttributeTypeLocation _INITIALIZE_AS(@"location");
+_EXTERN NSString* const kGDataCategoryGoogleBaseItemTypesScheme _INITIALIZE_AS(@"http://base.google.com/categories/itemtypes");
+
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeText _INITIALIZE_AS(@"text");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeNumber _INITIALIZE_AS(@"number");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeInt _INITIALIZE_AS(@"int");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeFloat _INITIALIZE_AS(@"float");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeNumberUnit _INITIALIZE_AS(@"numberUnit");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeIntUnit _INITIALIZE_AS(@"intUnit");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeFloatUnit _INITIALIZE_AS(@"floatUnit");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeDateTimeRange _INITIALIZE_AS(@"dateTimeRange");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeDate _INITIALIZE_AS(@"date");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeDateTime _INITIALIZE_AS(@"dateTime");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeURL _INITIALIZE_AS(@"url");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeBoolean _INITIALIZE_AS(@"boolean");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeShipping _INITIALIZE_AS(@"shipping");
+_EXTERN NSString* const kGDataGoogleBaseAttributeTypeLocation _INITIALIZE_AS(@"location");
 
 
 @interface GDataEntryGoogleBase : GDataEntryBase {

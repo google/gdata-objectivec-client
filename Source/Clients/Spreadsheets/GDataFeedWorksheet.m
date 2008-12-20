@@ -55,4 +55,8 @@
   return [GDataEntryWorksheet class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
+
 @end

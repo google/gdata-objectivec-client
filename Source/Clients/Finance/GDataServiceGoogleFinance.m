@@ -144,5 +144,9 @@
   return @"http://finance.google.com/finance/feeds/"; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataFinanceDefaultServiceVersion;
+}
+
 @end
 

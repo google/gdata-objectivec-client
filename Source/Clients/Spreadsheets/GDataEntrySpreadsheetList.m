@@ -83,6 +83,10 @@
   return self;
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataSpreadsheetDefaultServiceVersion;
+}
+
 #pragma mark -
 
 - (NSArray *)customElements {

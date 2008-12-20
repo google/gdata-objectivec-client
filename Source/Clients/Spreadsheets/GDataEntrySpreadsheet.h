@@ -30,20 +30,22 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceGSpread _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006");
-_EXTERN NSString* kGDataNamespaceGSpreadPrefix _INITIALIZE_AS(@"gs");
+_EXTERN NSString* const kGDataSpreadsheetDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
-_EXTERN NSString* kGDataNamespaceGSpreadCustom _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006/extended");
-_EXTERN NSString* kGDataNamespaceGSpreadCustomPrefix _INITIALIZE_AS(@"gsx");
+_EXTERN NSString* const kGDataNamespaceGSpread _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006");
+_EXTERN NSString* const kGDataNamespaceGSpreadPrefix _INITIALIZE_AS(@"gs");
 
-_EXTERN NSString* kGDataLinkWorksheetsFeed  _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#worksheetsfeed");
-_EXTERN NSString* kGDataLinkListFeed  _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#listfeed");
-_EXTERN NSString* kGDataLinkCellsFeed _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#cellsfeed");
-_EXTERN NSString* kGDataLinkSource    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#source"); // cell source
+_EXTERN NSString* const kGDataNamespaceGSpreadCustom _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006/extended");
+_EXTERN NSString* const kGDataNamespaceGSpreadCustomPrefix _INITIALIZE_AS(@"gsx");
 
-_EXTERN NSString* kGDataCategorySchemeSpreadsheet    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006");
+_EXTERN NSString* const kGDataLinkWorksheetsFeed  _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#worksheetsfeed");
+_EXTERN NSString* const kGDataLinkListFeed  _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#listfeed");
+_EXTERN NSString* const kGDataLinkCellsFeed _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#cellsfeed");
+_EXTERN NSString* const kGDataLinkSource    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#source"); // cell source
 
-_EXTERN NSString* kGDataCategorySpreadsheet    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#spreadsheet");
+_EXTERN NSString* const kGDataCategorySchemeSpreadsheet    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006");
+
+_EXTERN NSString* const kGDataCategorySpreadsheet    _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#spreadsheet");
 
 // SpreadsheetEntry extensions
 

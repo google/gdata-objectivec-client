@@ -181,6 +181,10 @@
   return items;  
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCalendarDefaultServiceVersion;
+}
+
 #pragma mark Actual iVars
 - (BOOL)shouldSendEventNotifications {
   GDataBoolValueConstruct *obj = (GDataBoolValueConstruct *)

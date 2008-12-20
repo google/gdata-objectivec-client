@@ -58,6 +58,9 @@
   return [GDataEntryCalendarEvent class];
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataCalendarDefaultServiceVersion;
+}
 
 #pragma mark -
 

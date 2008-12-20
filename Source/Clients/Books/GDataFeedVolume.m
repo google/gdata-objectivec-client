@@ -54,4 +54,8 @@
   return [GDataEntryVolume class]; 
 }
 
++ (NSString *)defaultServiceVersion {
+  return kGDataBooksDefaultServiceVersion;
+}
+
 @end
