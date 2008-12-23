@@ -52,9 +52,7 @@ With the source files compiled directly in your project, refer directly to the h
 
 ==== Development with the iPhone SDK ====
 
-If you are building for the iPhone, check out the current versions of the sources using Subversion as described on the [http://code.google.com/p/gdata-objectivec-client/source/checkout Source Checkout page]. 
-
-Follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
+For iPhone application development, follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
 
 Also add the GDataXMLNode.m and GDataXMLNode.h files to your project.
 
@@ -135,13 +133,19 @@ Feeds and entries typically contain *links* to themselves or to other objects. T
 
 Typically, the alternate link points to an html or user-friendly representation of the data, though Google Calendar uses it as a link to the event feed for a calendar.  
 
-Modifiable feeds may have a *post link*, which contains the URL for inserting new entries into the feed.  Modifiable entries have an *edit link*, which is used to update or delete the entry. Entries that refer to non-XML data, such as photographs, may include an *edit media link* for modifying or deleting the media data.  Both entries and feeds have *self links*, which self-referentially contain the URL of the XML for the entry or feed.
+Modifiable feeds may have a *post link*, which contains the URL for inserting new entries into the feed.  Modifiable entries have an *edit link*, which is used to update or delete the entry. Entries that refer to non-XML data, such as photographs, may include an *edit media link* for modifying or deleting the media data.
+
+Both entries and feeds have *self links*, which self-referentially contain the URL of the XML for the entry or feed.  The self link is useful for fetching a complete, current version of an entry prior to updating the entry on the server.
 
 A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.  
 
 To make the library's service object follow "next" links automatically, call `[service setServiceShouldFollowNextLinks:YES]`. The returned ticket then applies to the sequence of http requests needed to obtain the feed entries.  
 
 Note, however, that large feeds may take a long time to be retrieved, as each "next" link will lead to a new http request.  Assigning a large value to a feed query's maxResults argument will give results faster than will following "next" links. Additionally, accumulating entries into a feed by following "next" links means that the feed's elements reflect only one of the fetches, even though the entries array contains the entries returned by multiple requests.
+
+Beginning with version 2 of the Google Data API core protocol, each fetched feed and entry has an *ETag* attribute. The ETag is just a string identifying the version of the resource. Services may require that the ETag attribute be present when updating or deleting an entry or other file, such as a photo. This prevents the client application from accidentally modifying or deleting the wrong version of the resource on the server.
+
+ETag strings are also useful to clients for determining if a feed, entry, or other file on the server has changed.  If the underlying resource data has changed, the ETag is guaranteed to have changed as well.
 
 Service-specific *query* objects can generate URLs with parameters appropriate for restricting a feed's entries. For example, a query could request a feed of Calendar events between specific dates, or of database items of a specified category.  Here is an example of a query to retrieve the first 5 events from a user's calendar:
 {{{
