@@ -45,6 +45,9 @@ If you compile the project's source files directly into your own project file, s
 
  C Language Dialect: `C99 [-std=c99]`
 
+For just the Debug configuration of your target, add this compiler definition:
+
+ Other C Flags: `-DDEBUG=1`
 
 With the source files compiled directly in your project, refer directly to the headers by omitting the framework name, like
 
