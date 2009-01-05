@@ -67,6 +67,8 @@ static NSString* const kInUseAttr = @"in-use";
   [self addLocalAttributeDeclarations:attrs];    
   
   [self addContentValueDeclaration];
+
+  [self addChildXMLElementsDeclaration];
 }
 
 #pragma mark -
@@ -97,16 +99,11 @@ static NSString* const kInUseAttr = @"in-use";
 }
 
 - (NSArray *)XMLValues {
-  NSArray *unknownChildren = [self unknownChildren];
-  
-  if ([unknownChildren count] == 0) {
-    return nil;
-  }
-  return unknownChildren; 
+  return [super childXMLElements];
 }
 
 - (void)setXMLValues:(NSArray *)arr {
-  [self setUnknownChildren:arr]; 
+  [self setChildXMLElements:arr]; 
 }
 
 @end

@@ -497,10 +497,18 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
       NSString *serviceVersion = [self serviceVersion];
 
+      // feeds may optionally be instantiated without unknown elements tracked
+      //
+      // we only ever want to fetch feeds and discard the unknown XML, never
+      // entries
+      BOOL shouldIgnoreUnknowns = (shouldServiceFeedsIgnoreUnknowns_
+                      && [objectClass isSubclassOfClass:[GDataFeedBase class]]);
+
       object = [[[objectClass alloc] initWithXMLElement:root
                                                  parent:nil
                                          serviceVersion:serviceVersion
-                                             surrogates:surrogates] autorelease];
+                                             surrogates:surrogates
+                                   shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
 #if GDATA_USES_LIBXML
       // retain the document so that pointers to internal nodes remain valid
       [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
@@ -917,13 +925,25 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                            ticket:nil];
 }
 
-
 - (GDataServiceTicketBase *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                           forEntryURL:(NSURL *)entryURL
                                              delegate:(id)delegate
                                     didFinishSelector:(SEL)finishedSelector
                                       didFailSelector:(SEL)failedSelector {
-  
+
+  // Entries should be updated only if they contain copies of any unparsed XML
+  // (unknown children and attributes.)
+  //
+  // To update an entry that ignores unparsed XML, first fetch a complete copy
+  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
+  // the URL from the entry's selfLink.
+  //
+  // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
+  // information.
+
+  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
+               @"unsafe update of %@", [entryToUpdate class]);
+
   return [self fetchObjectWithURL:entryURL
                       objectClass:[entryToUpdate class]
                      objectToPost:entryToUpdate
@@ -944,7 +964,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *etag = [entryToDelete ETag];
   NSURL *editURL = [[entryToDelete editLink] URL];
   
-  NSAssert1(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
+  GDATA_ASSERT(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
   
   return [self deleteResourceURL:editURL
                             ETag:etag
@@ -962,7 +982,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   //
   // pass through with a nil ETag
 
-  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
+  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
 
   return [self deleteResourceURL:resourceEditURL
                             ETag:nil
@@ -977,7 +997,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                             didFinishSelector:(SEL)finishedSelector
                               didFailSelector:(SEL)failedSelector {
   
-  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
+  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
   
   return [self fetchObjectWithURL:resourceEditURL
                       objectClass:nil
@@ -1201,14 +1221,21 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   serviceSurrogates_ = [dict retain];
 }
 
-- (void)setServiceUploadProgressSelector:(SEL)progressSelector {
-  serviceUploadProgressSelector_ = progressSelector; 
+- (BOOL)shouldServiceFeedsIgnoreUnknowns {
+  return shouldServiceFeedsIgnoreUnknowns_;
+}
+
+- (void)setShouldServiceFeedsIgnoreUnknowns:(BOOL)flag {
+  shouldServiceFeedsIgnoreUnknowns_ = flag;
 }
 
 - (SEL)serviceUploadProgressSelector {
   return serviceUploadProgressSelector_;
 }
 
+- (void)setServiceUploadProgressSelector:(SEL)progressSelector {
+  serviceUploadProgressSelector_ = progressSelector; 
+}
 
 // retrying; see comments on retry support at the top of GDataHTTPFetcher
 - (BOOL)isServiceRetryEnabled {

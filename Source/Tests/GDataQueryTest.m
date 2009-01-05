@@ -340,7 +340,8 @@
   [query1 setShouldShowFolders:YES];
 
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://docs.google.com/feeds/documents/private/full?folder=Major+Folder&showfolders=true&title=King+Of+Oceania&title-exact=true";
+  NSString *expected1 = @"http://docs.google.com/feeds/documents/private/full?"
+    "folder=Major+Folder&showfolders=true&title=King+Of+Oceania&title-exact=true";
   STAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Docs query 1 generation error");
 }

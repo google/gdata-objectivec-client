@@ -35,14 +35,25 @@
     
     // get the class of this feed and the path to the test file of xml data 
     //
-    // The class name may specify a service version, like GDataFeedCalendar/2.0
+    // The class name may specify a service version, like GDataFeedCalendar/2.0,
+    // and may have a "-ignoreUnknown" suffix indicating unknown elements should be
+    // ignored, like GDataFeedCalendar-ignore/2.0
+
     NSString *className = tests[testIndex].str1;
     NSString *serviceVersion = nil;
+    BOOL shouldIgnoreUnknowns = NO;
     
     NSArray *components = [className componentsSeparatedByString:@"/"];
     if ([components count] == 2) {
       className = [components objectAtIndex:0];
       serviceVersion = [components objectAtIndex:1];
+    }
+
+    if ([className hasSuffix:@"-ignoreUnknown"]) {
+      shouldIgnoreUnknowns = YES;
+
+      NSUInteger nameLen = [className length] - [@"-ignoreUnknown" length];
+      className = [className substringToIndex:nameLen];
     }
     
 #ifdef GDATA_TARGET_NAMESPACE
@@ -61,7 +72,8 @@
     GDataFeedBase *feed1 = nil;
     if ([gdataClass instancesRespondToSelector:@selector(initWithData:serviceVersion:)]) {
       feed1 = [[[gdataClass alloc] initWithData:data
-                                 serviceVersion:serviceVersion] autorelease];
+                                 serviceVersion:serviceVersion
+                           shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
     } else {
       // this "feed" isn't a proper feed, and might be an entry
       NSError *error = nil;
@@ -75,7 +87,8 @@
       feed1 = [[[gdataClass alloc] initWithXMLElement:root 
                                                parent:nil
                                        serviceVersion:serviceVersion
-                                           surrogates:nil] autorelease];
+                                           surrogates:nil
+                                 shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
     }
     
     // copy the feed object 
@@ -90,7 +103,8 @@
     GDataFeedBase *feed2 = [[[gdataClass alloc] initWithXMLElement:outputXML
                                                             parent:nil
                                                     serviceVersion:serviceVersion
-                                                        surrogates:nil] autorelease];
+                                                        surrogates:nil
+                                              shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
 
     STAssertTrue([feed2 isEqual:feed1copy], @"Failed for %@ using XML \n  %@\n\nto convert\n  %@ \nto\n  %@",  
                  feedPath, outputXML, feed1copy, feed2);
@@ -420,6 +434,7 @@
     { @"entries.0.extendedProperties.1.name", @"com.mycompany.myprop2" },
     { @"entries.0.extendedProperties.1.value", nil },
     { @"entries.0.extendedProperties.1.XMLValues.0.XMLString", @"<myXML><myChild attr=\"nerf\"></myChild></myXML>" },
+    { @"entries.0.extendedProperties.1.unknownChildren.@count.stringValue", @"0" },
     
     { @"entries.1.identifier", @"contains:b001135" },
     { @"entries.1.categories.0.term", kGDataCategoryContact },
@@ -602,6 +617,25 @@
     { @"entries.0.categories.2.scheme", kGDataCategorySchemeSpreadsheet },
     { @"entries.0.categories.2.term", kGDataCategorySpreadsheet },
     { @"entries.0.title", @"My Test Spreadsheet" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"1" },
+
+    { @"", @"" }, // end of feed
+
+    // repeat the test, with unknown children turned off
+    { @"GDataFeedSpreadsheet-ignoreUnknown", @"Tests/FeedSpreadsheetTest1.xml" },
+
+    // feed paths
+    { @"identifier", @"http://spreadsheets.google.com/feeds/spreadsheets/private/full" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry paths
+    // There is one entry
+    { @"entries.0.identifier", @"http://spreadsheets.google.com/feeds/spreadsheets/private/full/o04181601172097104111.497668944883620000" },
+    { @"entries.0.updatedDate.RFC3339String", @"2007-03-22T23:25:53Z" },
     
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },

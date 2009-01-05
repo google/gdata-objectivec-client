@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataExtendedProperty.m
@@ -70,46 +70,14 @@ static NSString* const kValueAttr = @"value";
   return self;
 }
 
-
 - (void)addParseDeclarations {
   
   NSArray *attrs = [NSArray arrayWithObjects:
                     kNameAttr, kValueAttr, nil];
   
   [self addLocalAttributeDeclarations:attrs];  
-  
-  // we don't add a content value declaration since we want the
-  // XML blob to remain as unparsed children
-}
 
-- (BOOL)isEqual:(GDataExtendedProperty *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataExtendedProperty class]]) return NO;
-  
-  return [super isEqual:other]
-  
-    // unknown children are normally not compared by GDataObject,
-    // so we'll compare them here
-    && AreEqualOrBothNil([self XMLValues], [other XMLValues]);
-}
-
-- (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addAttributeDescriptionsToArray:items];
-  
-  if ([[self XMLValues] count] > 0) {
-    NSArray *xmlStrings  = [[self XMLValues] valueForKey:@"XMLString"];
-    NSString *combinedStr = [xmlStrings componentsJoinedByString:@""];
-    
-    [self addToArray:items objectDescriptionIfNonNil:combinedStr withName:@"XML"];
-  }
-  
-  return items;
-}
-
-- (NSXMLElement *)XMLElement {
-  return [self XMLElementWithExtensionsAndDefaultName:nil];
+  [self addChildXMLElementsDeclaration];
 }
 
 - (NSString *)value {
@@ -129,31 +97,15 @@ static NSString* const kValueAttr = @"value";
 }
 
 - (NSArray *)XMLValues {
-  NSArray *unknownChildren = [self unknownChildren];
-  
-  if ([unknownChildren count] == 0) {
-    return nil;
-  }
-  return unknownChildren; 
+  return [super childXMLElements];
 }
 
 - (void)setXMLValues:(NSArray *)arr {
-  [self setUnknownChildren:arr]; 
+  [self setChildXMLElements:arr]; 
 }
 
 - (void)addXMLValue:(NSXMLNode *)node {
-  
-  NSArray *oldUnknownChildren = [self unknownChildren];
-  NSMutableArray *newUnknownChildren;
-
-  if (oldUnknownChildren == nil) {
-    newUnknownChildren = [NSMutableArray array]; 
-  } else {
-    newUnknownChildren = [NSMutableArray arrayWithArray:oldUnknownChildren];
-  }
-  [newUnknownChildren addObject:node];
-                          
-  [self setUnknownChildren:newUnknownChildren];
+  [self addChildXMLElement:node]; 
 }
 
 #pragma mark -
@@ -185,7 +137,7 @@ static NSString* const kValueAttr = @"value";
   NSArray *xmlNodes = [self XMLValues];
   if (xmlNodes == nil) return nil;
   
-  // step through all elements in the unknown XML children and make a dictionary
+  // step through all elements in the XML children and make a dictionary
   // entry for each
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   NSEnumerator *enumerator = [xmlNodes objectEnumerator];

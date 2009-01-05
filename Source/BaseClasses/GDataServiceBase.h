@@ -161,7 +161,9 @@ enum {
   NSMutableDictionary *serviceProperties_; // initial values for properties in future tickets
   
   NSDictionary *serviceSurrogates_; // initial value for surrogates in future tickets
-  
+
+  BOOL shouldServiceFeedsIgnoreUnknowns_; // YES when feeds should ignore unknown XML
+
   SEL serviceUploadProgressSelector_; // optional
   
   BOOL isServiceRetryEnabled_;      // user allows auto-retries
@@ -326,6 +328,17 @@ enum {
 //
 - (NSDictionary *)serviceSurrogates;
 - (void)setServiceSurrogates:(NSDictionary *)dict;
+
+// Set if feeds fetched (and the entries and elements contained in the feeds)
+// keep track of unparsed XML elements.  Setting this to YES offers a
+// performance and memory improvement, particularly for iPhone apps.  However,
+// the entries in those feeds cannot be updated (as the unparsed XML inside the
+// entries has been lost, so cannot be sent back to the server.)  An entry
+// can be re-fetched singly for updating.  Default is NO.  iPhone
+// apps retrieving large feeds should probably set this to YES.
+//
+- (BOOL)shouldServiceFeedsIgnoreUnknowns;
+- (void)setShouldServiceFeedsIgnoreUnknowns:(BOOL)flag;
 
 // The service uploadProgressSelector becomes the initial value for each future
 // ticket's uploadProgressSelector.

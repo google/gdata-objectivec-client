@@ -73,7 +73,7 @@
 - (GDataLink *)worksheetsLink {
   GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
 
-  return [self linkWithRelAttributeValue:kGDataLinkWorksheetsFeed]; 
+  return [self linkWithRelAttributeValue:kGDataLinkWorksheetsFeed];
 }
 
 - (NSURL *)worksheetsFeedURL {
