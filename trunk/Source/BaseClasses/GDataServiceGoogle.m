@@ -452,7 +452,20 @@ enum {
                                                       delegate:(id)delegate
                                              didFinishSelector:(SEL)finishedSelector
                                                didFailSelector:(SEL)failedSelector {
-  
+
+  // Entries should be updated only if they contain copies of any unparsed XML
+  // (unknown children and attributes.)
+  //
+  // To update an entry that ignores unparsed XML, first fetch a complete copy
+  // with fetchAuthenticatedEntryWithURL: (or a service-specific entry
+  // fetch method) using the URL from the entry's selfLink.
+  //
+  // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
+  // information.
+
+  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
+               @"unsafe update of %@", [entryToUpdate class]);
+
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
@@ -471,7 +484,7 @@ enum {
   NSString *etag = [entryToDelete ETag];
   NSURL *editURL = [[entryToDelete editLink] URL];
   
-  NSAssert1(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
+  GDATA_ASSERT(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
   
   return [self deleteAuthenticatedResourceURL:editURL
                                          ETag:etag
@@ -490,7 +503,7 @@ enum {
   // lack etag support.)  Interfaces for newer services should only call into
   // deleteAuthenticatedResourceURL:ETag: 
 
-  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
+  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
 
   return [self deleteAuthenticatedResourceURL:resourceEditURL
                                          ETag:nil
@@ -505,7 +518,7 @@ enum {
                                      didFinishSelector:(SEL)finishedSelector
                                        didFailSelector:(SEL)failedSelector {
 
-  NSAssert(resourceEditURL != nil, @"deleting unspecified resource");
+  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
   
   return [self fetchAuthenticatedObjectWithURL:resourceEditURL
                                    objectClass:nil
@@ -711,7 +724,7 @@ enum {
     return serviceID_;
   }
   
-  NSAssert(0, @"GDataServiceGoogle should have a serviceID");
+  GDATA_ASSERT(0, @"GDataServiceGoogle should have a serviceID");
   return nil;
 }
 

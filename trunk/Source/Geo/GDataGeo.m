@@ -240,8 +240,8 @@
     // to initialize from XML, this must be one of the
     // subclasses that parses the XML appropriately,
     // so we'll use a strict equal-to class test
-    NSAssert1(![self isMemberOfClass:[GDataGeo class]],
-             @"Subclass of %@ should handle initWithXMLElement:", [self class]);
+    GDATA_ASSERT(![self isMemberOfClass:[GDataGeo class]],
+                 @"Subclass of %@ should handle initWithXMLElement:", [self class]);
   }
   return self;
 }
@@ -390,8 +390,8 @@
   
   // GDataGeo itself lacks support for the GDataExtension protocol;
   // only instances of its subclasses can be used as extensions
-  NSAssert(![geo isMemberOfClass:[GDataGeo class]], 
-             @"setGeoLocation requires an instance of a subclass of GDataGeo");
+  GDATA_ASSERT(![geo isMemberOfClass:[GDataGeo class]], 
+               @"setGeoLocation requires an instance of a subclass of GDataGeo");
   
   [object setObject:geo forExtensionClass:[geo class]];
 }

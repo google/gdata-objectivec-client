@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataObject.h
@@ -133,10 +133,12 @@ _EXTERN NSString* kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.co
 _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 #define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
-  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"%s requires newer version", _cmd)
+  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"%s requires newer version", \
+    _cmd)
 
 #define GDATA_DEBUG_ASSERT_MAX_SERVICE_V1() \
-  GDATA_DEBUG_ASSERT([self isServiceVersion1], @"deprecated")
+  GDATA_DEBUG_ASSERT([self isServiceVersion1], @"%s deprecated under v%@", \
+    _cmd, [self serviceVersion])
 
 @class GDataDateTime;
 @class GDataCategory;
@@ -195,10 +197,15 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
   // string for element body, if declared as parseable
   BOOL shouldParseContentValue_;
   NSString *contentValue_;
-  
+
+  // XMLElements saved from element body but not parsed, if declared by the subclass
+  BOOL shouldKeepChildXMLElements_;
+  NSMutableArray *childXMLElements_;
+
   // arrays of XMLNodes of attributes and child elements not yet parsed
   NSMutableArray *unknownChildren_;    
-  NSMutableArray *unknownAttributes_;  
+  NSMutableArray *unknownAttributes_;
+  BOOL shouldIgnoreUnknowns_;
   
   // mapping of standard classes to user's surrogate subclasses, used when
   // creating objects from XML
@@ -287,6 +294,11 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (void)setUnknownAttributes:(NSArray *)arr;
 - (NSArray *)unknownAttributes;
 
+// feeds and their elements may exclude tracking of unknown child elements
+// and unknown attributes; see GDataServiceBase for more information
+- (void)setShouldIgnoreUnknowns:(BOOL)flag;
+- (BOOL)shouldIgnoreUnknowns;
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Protected methods
@@ -302,7 +314,8 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent
           serviceVersion:(NSString *)serviceVersion
-              surrogates:(NSDictionary *)surrogates;
+              surrogates:(NSDictionary *)surrogates
+    shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
   
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
                             length:(unsigned long long *)outLength
@@ -311,7 +324,6 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (void)addExtensionDeclarations; // subclasses may override this to declare extensions
 
 - (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
-
   
 //
 // Extensions
@@ -378,12 +390,25 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 //
 
 // derived classes should call -addContentValueDeclaration in their
-// -addParseDeclarations method if they want element context to 
+// -addParseDeclarations method if they want element content to 
 // automatically be parsed as a string
 - (void)addContentValueDeclaration;
 - (void)setContentStringValue:(NSString *)str;
 - (NSString *)contentStringValue;
-  
+
+//
+// Unparsed XML child elements
+//
+
+// derived classes should call -addXMLValuesDeclaration in their
+// -addParseDeclarations method if they want all child elements to
+// be held as an array of NSXMLElements
+- (void)addChildXMLElementsDeclaration;
+- (NSArray *)childXMLElements;
+- (void)setChildXMLElements:(NSArray *)array;
+- (void)addChildXMLElement:(NSXMLNode *)node;
+
+
 //
 // Dynamic GDataObject generation
 //
@@ -484,6 +509,7 @@ _EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 - (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
                             fromElement:(NSXMLElement *)element;
+
 
 //
 // XML generation helpers

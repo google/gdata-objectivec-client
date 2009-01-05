@@ -111,11 +111,14 @@
 }
 
 - (id)initWithData:(NSData *)data {
-  return [self initWithData:data serviceVersion:nil]; 
+  return [self initWithData:data
+             serviceVersion:nil
+       shouldIgnoreUnknowns:NO];
 }
 
 - (id)initWithData:(NSData *)data
-    serviceVersion:(NSString *)serviceVersion {
+    serviceVersion:(NSString *)serviceVersion
+shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 
   // entry point for creation of feeds from file or network data
   NSError *error = nil;
@@ -128,7 +131,8 @@
     self = [super initWithXMLElement:root
                               parent:nil
                       serviceVersion:serviceVersion
-                          surrogates:nil];
+                          surrogates:nil
+                shouldIgnoreUnknowns:NO];
     if (self) {
       [self setupFromXMLElement:root];
 
@@ -537,8 +541,8 @@
   GDataObject* entry;
   GDATA_FOREACH(entry, entries_) {
     GDataObject *oldParent = [entry parent];
-    NSAssert(oldParent == self || oldParent == nil,
-              @"Trying to replace existing feed parent; use setEntriesWithEntries: instead");
+    GDATA_ASSERT(oldParent == self || oldParent == nil,
+                 @"Trying to replace existing feed parent; use setEntriesWithEntries: instead");
     [entry setParent:self];
   }
 }
@@ -551,8 +555,8 @@
   
   // ensure the entry doesn't have another parent
   GDataObject *oldParent = [obj parent];
-  NSAssert(oldParent == self || oldParent == nil, 
-           @"Trying to replace existing feed parent; use addEntryWithEntry: instead");  
+  GDATA_ASSERT(oldParent == self || oldParent == nil, 
+               @"Trying to replace existing feed parent; use addEntryWithEntry: instead");  
 
   [obj setParent:self];
   [entries_ addObject:obj];

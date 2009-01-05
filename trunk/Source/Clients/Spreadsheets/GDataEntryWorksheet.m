@@ -122,11 +122,11 @@
 - (GDataLink *)listLink {
   GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
 
-  return [self linkWithRelAttributeValue:kGDataLinkListFeed]; 
+  return [self linkWithRelAttributeValue:kGDataLinkListFeed];
 }
 
 - (GDataLink *)cellsLink {
-  return [self linkWithRelAttributeValue:kGDataLinkCellsFeed]; 
+  return [self linkWithRelAttributeValue:kGDataLinkCellsFeed];
 }
 
 - (NSURL *)listFeedURL {

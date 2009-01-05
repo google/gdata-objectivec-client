@@ -55,7 +55,9 @@ _EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 + (id)feedWithXMLData:(NSData *)data;
 - (id)initWithData:(NSData *)data;
-- (id)initWithData:(NSData *)data serviceVersion:(NSString *)serviceVersion;
+- (id)initWithData:(NSData *)data
+    serviceVersion:(NSString *)serviceVersion
+shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
 // subclasses override initFeed to set up their ivars
 - (void)initFeedWithXMLElement:(NSXMLElement *)element;

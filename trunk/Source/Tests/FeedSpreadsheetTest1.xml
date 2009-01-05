@@ -36,5 +36,6 @@
             <name>test</name>
             <email>test@foo.net</email>
         </author>
+        <unknownXMLThang><wazzit>fish hat</wazzit></unknownXMLThang>
     </entry>
 </feed>

@@ -426,7 +426,7 @@
     { @"XMLValues.0.XMLString", @"<mozq><lepper x=\"1\"></lepper></mozq>" },
     { @"XMLValues.1.XMLString", @"<frizq></frizq>" },
     { @"namespaces.", @"" }, // this element explicitly overrides the default namespace for its children
-    { @"unknownChildren.@count.stringValue", @"2" },
+    { @"unknownChildren.@count.stringValue", @"0" },
     { @"", @"" },
         
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='fred'><flub>"
@@ -436,7 +436,7 @@
     { @"XMLValues.1.XMLString", @"<nackro>whoodle buzz</nackro>" },
     { @"XMLValuesDictionary.flub", @"cuckoo" },
     { @"XMLValuesDictionary.nackro", @"whoodle buzz" },
-    { @"unknownChildren.@count.stringValue", @"2" },
+    { @"unknownChildren.@count.stringValue", @"0" },
     { @"", @"" },
     
     { @"GDataFeedLink", @"<gd:feedLink href='http://example.com/Jo/posts/MyFirstPost/comments' "
@@ -838,7 +838,6 @@
     { @"type", @"metatag" },
     { @"isInUse", @"0" },
     { @"XMLValues.0.localName", @"meta" },
-    { @"unknownChildren.@count", @"1" },
     { @"", @"" },
     
     { nil, nil }

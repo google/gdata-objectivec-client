@@ -72,6 +72,12 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 
 - (BOOL)hasContentValueEqualToContentValueOf:(GDataObject *)other;
 
+// XML values content (kept unparsed)
+- (void)keepChildXMLElementsForElement:(NSXMLElement *)element;
+- (void)addChildXMLElementsToElement:(NSXMLElement *)element;
+
+- (BOOL)hasChildXMLElementsEqualToChildXMLElementsOf:(GDataObject *)other;
+
 // dictionary of all extensions actually found in the XML element
 - (void)setExtensions:(NSDictionary *)extensions;
 - (NSDictionary *)extensions;
@@ -88,6 +94,9 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 - (void)addUnknownChildNodesForElement:(NSXMLElement *)element;
 
 - (void)parseExtensionsForElement:(NSXMLElement *)element;
+
+- (void)handleParsedElement:(NSXMLNode *)element;
+- (void)handleParsedElements:(NSArray *)array;
 
 - (NSString *)qualifiedNameForExtensionClass:(Class)class;
 
@@ -113,7 +122,6 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (id)init {
   self = [super init];
   if (self) {
-    [self addExtensionDeclarations];
     [self addParseDeclarations];
   }
   return self;
@@ -133,12 +141,15 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent
           serviceVersion:(NSString *)serviceVersion
-              surrogates:(NSDictionary *)surrogates {
+              surrogates:(NSDictionary *)surrogates
+    shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
   
   [self setServiceVersion:serviceVersion];
   
   [self setSurrogates:surrogates];
   
+  [self setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
+
   return [self initWithXMLElement:element
                            parent:parent];
 }
@@ -157,8 +168,12 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       // initWithXMLElement:parent:serviceVersion:surrogates:; child
       // objects have their service version set here
       [self setServiceVersion:[parent serviceVersion]];
+
+      // feeds may specify that contained entries and their child elements
+      // should ignore any unparsed XML
+      [self setShouldIgnoreUnknowns:[parent shouldIgnoreUnknowns]];
     }
-    
+
     [self setNamespaces:[self dictionaryForElementNamespaces:element]];
     [self addUnknownChildNodesForElement:element];
     [self addExtensionDeclarations];
@@ -166,11 +181,21 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     [self parseExtensionsForElement:element];
     [self parseAttributesForElement:element];
     [self parseContentValueForElement:element];
+    [self keepChildXMLElementsForElement:element];
     [self setElementName:[element name]];
     
+    // We are done parsing extensions and no longer need the extension
+    // declarations. (But we keep local attribute declarations since they're
+    // used for determining the order of the attributes in the description
+    // method.)
+    [extensionDeclarations_ release];
+    extensionDeclarations_ = nil;
+
 #if GDATA_USES_LIBXML
-    // retain the element so that pointers to internal nodes remain valid
-    [self setProperty:element forKey:kGDataXMLElementPropertyKey];
+    if (!shouldIgnoreUnknowns_) {
+      // retain the element so that pointers to internal nodes remain valid
+      [self setProperty:element forKey:kGDataXMLElementPropertyKey];
+    }
 #endif    
   }
   return self;
@@ -190,11 +215,13 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // on those when comparing nodes
   return AreEqualOrBothNil([self extensions], [other extensions])
     && [self hasAttributesEqualToAttributesOf:other]
-    && [self hasContentValueEqualToContentValueOf:other];
+    && [self hasContentValueEqualToContentValueOf:other]
+    && [self hasChildXMLElementsEqualToChildXMLElementsOf:other];
 #else
   return AreEqualOrBothNil([self extensions], [other extensions])
     && [self hasAttributesEqualToAttributesOf:other]
     && [self hasContentValueEqualToContentValueOf:other]
+    && [self hasChildXMLElementsEqualToChildXMLElementsOf:other]
     && AreEqualOrBothNil([self namespaces], [other namespaces]);
 #endif
   
@@ -238,19 +265,32 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     [newObject addContentValueDeclaration];
     [newObject setContentStringValue:[self contentStringValue]];
   }
+
+  if (shouldKeepChildXMLElements_) {
+    [newObject addChildXMLElementsDeclaration];
+
+    NSArray *childElements = [self childXMLElements];
+    NSArray *arr = [GDataUtilities arrayWithCopiesOfObjectsInArray:childElements];
+    [newObject setChildXMLElements:arr];
+  }
   
   // extension and attribute declarations are immutable, so don't need to be 
   // deep copied
   [newObject setExtensionDeclarations:[self extensionDeclarations]];
   [newObject setAttributeDeclarations:[self attributeDeclarations]];
-  
-  NSArray *unknownChildren = 
-    [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownChildren]];
-  [newObject setUnknownChildren:unknownChildren];
-  
-  NSArray *unknownAttributes =
-    [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
-  [newObject setUnknownAttributes:unknownAttributes];
+
+  BOOL shouldIgnoreUnknowns = [self shouldIgnoreUnknowns];
+  [newObject setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
+
+  if (!shouldIgnoreUnknowns) {
+    NSArray *unknownChildren =
+      [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownChildren]];
+    [newObject setUnknownChildren:unknownChildren];
+
+    NSArray *unknownAttributes =
+      [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
+    [newObject setUnknownAttributes:unknownAttributes];
+  }
   
   return newObject;
   
@@ -269,6 +309,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [extensions_ release];
   [attributes_ release];
   [contentValue_ release];
+  [childXMLElements_ release];
   [unknownChildren_ release];
   [unknownAttributes_ release];
   [surrogates_ release];
@@ -433,6 +474,14 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return unknownAttributes_; 
 }
 
+- (void)setShouldIgnoreUnknowns:(BOOL)flag {
+  shouldIgnoreUnknowns_ = flag;
+}
+
+- (BOOL)shouldIgnoreUnknowns {
+  return shouldIgnoreUnknowns_; 
+}
+
 - (void)setSurrogates:(NSDictionary *)surrogates {
   [surrogates_ autorelease];
   surrogates_ = [surrogates retain];
@@ -581,6 +630,8 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // from this list as we parse them to create the GData object. Anything
   // left remaining in this list is considered unknown.
   
+  if (shouldIgnoreUnknowns_) return;
+
   // we have to copy the children so they don't point at the previous parent
   // nodes
   NSXMLNode *child;
@@ -649,6 +700,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [self addNamespacesToElement:element];
   [self addAttributesToElement:element];
   [self addContentValueToElement:element];
+  [self addChildXMLElementsToElement:element];
   [self addExtensionsToElement:element];
   [self addUnknownChildNodesToElement:element];
   return element;
@@ -814,11 +866,26 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   }
 }
 
+- (void)addChildXMLElementsDescriptionToArray:(NSMutableArray *)stringItems {
+  if (shouldKeepChildXMLElements_) {
+
+    NSArray *childXMLElements = [self childXMLElements];
+    if ([childXMLElements count] > 0) {
+
+      NSArray *xmlStrings = [childXMLElements valueForKey:@"XMLString"];
+      NSString *combinedStr = [xmlStrings componentsJoinedByString:@""];
+
+      [self addToArray:stringItems objectDescriptionIfNonNil:combinedStr withName:@"XML"];
+    }
+  }
+}
+
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [NSMutableArray array];
   [self addAttributeDescriptionsToArray:items];
   [self addContentDescriptionToArray:items withName:@"content"];
+  [self addChildXMLElementsDescriptionToArray:items];
   return items;
 }
 
@@ -1036,7 +1103,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   }
   
   // remove these elements from the unknown list
-  [unknownChildren_ removeObjectsInArray:objElements];
+  [self handleParsedElements:objElements];
   return objects;
 }
 
@@ -1066,21 +1133,33 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
     NSXMLElement *element = [elementArray objectAtIndex:0];
     
     // remove this element from the unknown list
-    [unknownChildren_ removeObject:element];
+    [self handleParsedElement:element];
     
     return element;
   }
   
   // We might want to get rid of this assert if there turns out to be
   // legitimate reasons to call this where there are >1 elements available
-  NSAssert3(numberOfElements == 0, @"childWithQualifiedName: could not handle "
-            "multiple '%@' elements in list, use elementsForName:\n"
-            "Found elements: %@\nURI: %@", qualifiedName, elementArray, 
-            namespaceURI);
+  GDATA_ASSERT(numberOfElements == 0, @"childWithQualifiedName: could not handle "
+               "multiple '%@' elements in list, use elementsForName:\n"
+               "Found elements: %@\nURI: %@", qualifiedName, elementArray, 
+               namespaceURI);
   return nil;
 }
 
 #pragma mark element parsing
+
+- (void)handleParsedElement:(NSXMLNode *)element {
+  if (element) {
+    [unknownChildren_ removeObject:element];
+  }
+}
+
+- (void)handleParsedElements:(NSArray *)array {
+  if (array) {
+    [unknownChildren_ removeObjectsInArray:array];
+  }
+}
 
 - (NSString *)stringValueFromElement:(NSXMLElement *)element {
   // Originally, this was
@@ -1101,7 +1180,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   GDATA_FOREACH(childNode, children) {
     if ([childNode kind] == NSXMLTextKind) {
       [result appendString:[childNode stringValue]];
-      [unknownChildren_ removeObject:childNode];
+      [self handleParsedElement:childNode];
     }
   }
   
@@ -1465,23 +1544,28 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 // the initial list of unknown child elements; this list is whittled down by
 // parseExtensionsForElement and objectForChildOfElement.
 - (void)addUnknownChildNodesForElement:(NSXMLElement *)element {
-  
-  NSArray *children = [element children];
 
   [unknownChildren_ release];
-  if (children != nil) {
-    unknownChildren_ = [[NSMutableArray alloc] initWithArray:children];
-  } else {
-    unknownChildren_ = [[NSMutableArray alloc] init];
-  }
-  
-  NSArray *attributes = [element attributes];
+  unknownChildren_ = nil;
 
   [unknownAttributes_ release];
-  if (attributes != nil) {
-    unknownAttributes_ = [[NSMutableArray alloc] initWithArray:attributes];
-  } else {
-    unknownAttributes_ = [[NSMutableArray alloc] init];
+  unknownAttributes_ = nil;
+
+  if (!shouldIgnoreUnknowns_) {
+
+    NSArray *children = [element children];
+    if (children != nil) {
+      unknownChildren_ = [[NSMutableArray alloc] initWithArray:children];
+    } else {
+      unknownChildren_ = [[NSMutableArray alloc] init];
+    }
+
+    NSArray *attributes = [element attributes];
+    if (attributes != nil) {
+      unknownAttributes_ = [[NSMutableArray alloc] initWithArray:attributes];
+    } else {
+      unknownAttributes_ = [[NSMutableArray alloc] init];
+    }
   }
 }
 
@@ -1599,9 +1683,9 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   // attempt to keep track of namespace URIs for local attributes
   NSString *attr;
   GDATA_FOREACH(attr, attributeLocalNames) {
-    NSAssert1([attr rangeOfString:@":"].location == NSNotFound
-              || [attr hasPrefix:@"xml:"],
-              @"invalid namespaced local attribute: %@", attr);
+    GDATA_ASSERT([attr rangeOfString:@":"].location == NSNotFound
+                 || [attr hasPrefix:@"xml:"],
+                 @"invalid namespaced local attribute: %@", attr);
   }
 #endif
 
@@ -1825,8 +1909,8 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 
 - (void)setContentStringValue:(NSString *)str {
   
-  NSAssert1(shouldParseContentValue_, @"%@ setting undeclared content value",
-            [self class]);
+  GDATA_ASSERT(shouldParseContentValue_, @"%@ setting undeclared content value",
+               [self class]);
 
   [contentValue_ autorelease];
   contentValue_ = [str copy];
@@ -1834,8 +1918,8 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 
 - (NSString *)contentStringValue {
   
-  NSAssert1(shouldParseContentValue_, @"%@ getting undeclared content value",
-            [self class]);
+  GDATA_ASSERT(shouldParseContentValue_, @"%@ getting undeclared content value",
+               [self class]);
 
   return contentValue_;
 }
@@ -1868,6 +1952,90 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   }
   
   return AreEqualOrBothNil([self contentStringValue], [other contentStringValue]);
+}
+
+#pragma mark Child XML Elements
+
+- (void)addChildXMLElementsDeclaration {
+  // derived classes should call this if they want the element's unparsed
+  // XML children to be accessible later
+  shouldKeepChildXMLElements_ = YES;
+}
+
+- (NSArray *)childXMLElements {
+  if ([childXMLElements_ count] == 0) {
+    return nil;
+  }
+  return childXMLElements_;
+}
+
+- (void)setChildXMLElements:(NSArray *)array {
+  GDATA_DEBUG_ASSERT(shouldKeepChildXMLElements_,
+                     @"%@ setting undeclared XML values", [self class]);
+
+  [childXMLElements_ release];
+  childXMLElements_ = [array mutableCopy];
+}
+
+- (void)addChildXMLElement:(NSXMLNode *)node {
+  GDATA_DEBUG_ASSERT(shouldKeepChildXMLElements_,
+                     @"%@ adding undeclared XML values", [self class]);
+
+  if (childXMLElements_ == nil) {
+    childXMLElements_ = [[NSMutableArray alloc] init];
+  }
+  [childXMLElements_ addObject:node];
+}
+
+// keepChildXMLElementsForElement: is called by initWithXMLElement.
+// This stores a copy of the element's child XMLElements.
+- (void)keepChildXMLElementsForElement:(NSXMLElement *)element {
+
+  if (shouldKeepChildXMLElements_) {
+
+    NSArray *children = [element children];
+    if (children != nil) {
+
+      // save only top-level nodes that are elements
+      NSXMLNode *childNode;
+
+      GDATA_FOREACH(childNode, children) {
+        if ([childNode kind] == NSXMLElementKind) {
+          if (childXMLElements_ == nil) {
+            childXMLElements_ = [[NSMutableArray alloc] init];
+          }
+          [childXMLElements_ addObject:[childNode copy]];
+
+          [self handleParsedElement:childNode];
+        }
+      }
+    }
+  }
+}
+
+// XML generator for kept child XML elements
+- (void)addChildXMLElementsToElement:(NSXMLElement *)element {
+
+  if (shouldKeepChildXMLElements_) {
+
+    NSArray *childXMLElements = [self childXMLElements];
+    if (childXMLElements != nil) {
+
+      NSXMLNode *child;
+      GDATA_FOREACH(child, childXMLElements) {
+        [element addChild:child];
+      }
+    }
+  }
+}
+
+- (BOOL)hasChildXMLElementsEqualToChildXMLElementsOf:(GDataObject *)other {
+
+  if (!shouldKeepChildXMLElements_) {
+    // no values being stored
+    return YES;
+  }
+  return AreEqualOrBothNil([self childXMLElements], [other childXMLElements]);
 }
 
 #pragma mark Dynamic GDataObject 
@@ -1904,13 +2072,13 @@ forCategoryWithScheme:(NSString *)scheme
   }
   
   // ensure this is a unique registration
-  NSAssert1(nil == [gFeedClassCategoryMap objectForKey:theClass],
-            @"%@ already registered", theClass);
+  GDATA_ASSERT(nil == [gFeedClassCategoryMap objectForKey:theClass],
+               @"%@ already registered", theClass);
   Class prevClass = [self classForCategoryWithScheme:scheme 
                                                 term:term
                                              fromMap:*map];
-  NSAssert2(prevClass == nil, @"%@ registration conflicts with %@", 
-            theClass, prevClass);
+  GDATA_ASSERT(prevClass == nil, @"%@ registration conflicts with %@", 
+               theClass, prevClass);
   
   // we have a map from the key "scheme:term" to the class
   //
