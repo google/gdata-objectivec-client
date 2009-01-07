@@ -21,7 +21,22 @@
 // unit tests
 #if !GDATA_SKIPSERVICETEST
 
-#import "GDataServiceTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+
+#import "GData.h"
+
+@interface GDataServiceTest : SenTestCase {
+  NSTask *server_;
+  BOOL isServerRunning_;
+  
+  GDataServiceGoogle *service_;
+  
+  GDataServiceTicket *ticket_;
+  GDataObject *fetchedObject_;
+  NSError *fetcherError_;
+  int retryCounter_;
+}
+@end
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 

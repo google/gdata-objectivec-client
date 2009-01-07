@@ -13,9 +13,13 @@
 * limitations under the License.
 */
 
+#import <SenTestingKit/SenTestingKit.h>
+#import "GDataServerError.h"
+
 #define typeof __typeof__ // fixes http://brethorsting.com/blog/2006/02/25/stupid-issue-with-ocunit/
 
-#import "GDataServerErrorTest.h"
+@interface GDataServerErrorTest : SenTestCase
+@end
 
 @implementation GDataServerErrorTest
 

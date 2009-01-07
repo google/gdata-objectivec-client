@@ -7,6 +7,11 @@ Changes since 1.5.0
 
 Additions
 
+- Added -setShouldServiceFeedsIgnoreUnknowns to service classes, allowing
+  for faster feed parsing on iPhone by ignoring unexpected XML, but requiring
+  that entries from such feeds must be individually fetched by the client 
+  before being updated.
+  
 - Added GDataServerError, representing error responses from services supporting
   structured errors.  On feed and entry fetch errors, a GDataServerErrorGroup
   will be available from the NSError object's userInfo dictionary
@@ -14,7 +19,8 @@ Additions
 
 - Added query parameters prettyprint, protocolVersion, language
 
-- Updated YouTube and DocList APIs for GData v2 servers
+- Updated YouTube, DocList, and Spreadsheet APIs for GData v2, and Spreadsheet
+  and Contacts samples for v2 API changes
 
 - Added support for using GDataHTTPFetcher with a single failure selector.
 
@@ -46,9 +52,18 @@ Additions
 
 Bugs Fixed
 
-- Fixed finance portfolio description method (thanks dujunfly)
+- Moved GDataEntryEvent, GDataFeedEvent, GData from common sources to Calendar
+  service folder, along with some elements used only for calendar
+  (GDataOriginalEvent, GDataReminder, GDataRecurrence,
+  GDataRecurrenceException.)  NOTE: Clients building directly against source
+  files will have to remove those files from their projects (except for calendar
+  clients, which will have to re-add the source files from their new locations.)
 
 - Fixed query generation for URLs that already contain some parameters
+
+- Fixed finance portfolio description method (thanks dujunfly)
+
+- Removed some header files for unit test sources
 
 
 Release 1.5.0

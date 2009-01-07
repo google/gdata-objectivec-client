@@ -21,9 +21,18 @@
 
 // Google Calendar
 #import "GDataWebContent.h"
+#import "GDataOriginalEvent.h"
+#import "GDataRecurrence.h"
+#import "GDataRecurrenceException.h"
+#import "GDataReminder.h"
+
 #import "GDataEntryCalendar.h"
 #import "GDataFeedCalendar.h"
+#import "GDataEntryEvent.h"
+#import "GDataFeedEvent.h"
 #import "GDataEntryCalendarEvent.h"
 #import "GDataFeedCalendarEvent.h"
+#import "GDataEntryMessage.h"
+#import "GDataFeedMessage.h"
 #import "GDataServiceGoogleCalendar.h"
 #import "GDataQueryCalendar.h"

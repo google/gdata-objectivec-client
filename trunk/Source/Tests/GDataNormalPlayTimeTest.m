@@ -17,10 +17,14 @@
 //  GDataNormalPlayTimeTest.m
 //
 
-#import "GDataNormalPlayTimeTest.h"
+#define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
+
+#import <SenTestingKit/SenTestingKit.h>
+
 #import "GDataNormalPlayTime.h"
 
-#define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
+@interface GDataNormalPlayTimeTest : SenTestCase
+@end
 
 @implementation GDataNormalPlayTimeTest
 
