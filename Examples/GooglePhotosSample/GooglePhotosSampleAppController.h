@@ -14,13 +14,13 @@
 */
 
 //
-//  PicasaWebSampleAppController.h
+//  GooglePhotosSampleAppController.h
 //
 
 #import <Cocoa/Cocoa.h>
 
 
-@interface PicasaWebSampleAppController : NSObject {
+@interface GooglePhotosSampleAppController : NSObject {
 
 }
 

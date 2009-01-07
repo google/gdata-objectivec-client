@@ -32,5 +32,5 @@
 #import "GDataFeedPhoto.h"
 #import "GDataFeedPhotoAlbum.h"
 #import "GDataFeedPhotoUser.h"
-#import "GDataServiceGooglePicasaWeb.h"
-#import "GDataQueryPicasaWeb.h"
+#import "GDataServiceGooglePhotos.h"
+#import "GDataQueryGooglePhotos.h"

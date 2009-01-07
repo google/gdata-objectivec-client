@@ -14,7 +14,7 @@
 */
 
 //
-//  PicasaWebSampleWindowController.h
+//  GooglePhotosSampleWindowController.h
 //
 
 #import <Cocoa/Cocoa.h>
@@ -23,7 +23,7 @@
 #import "GData/GDataFeedPhotoAlbum.h"
 #import "GData/GDataFeedPhoto.h"
 
-@interface PicasaWebSampleWindowController : NSWindowController {
+@interface GooglePhotosSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
   IBOutlet NSSecureTextField *mPasswordField;
   
@@ -60,7 +60,7 @@
   NSString *mPhotoImageURLString;
 }
 
-+ (PicasaWebSampleWindowController *)sharedPicasaWebSampleWindowController;
++ (GooglePhotosSampleWindowController *)sharedGooglePhotosSampleWindowController;
 
 - (IBAction)getAlbumClicked:(id)sender;
 

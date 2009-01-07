@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4F2B96170BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B96150BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.m */; };
-		4F2B963F0BFA7EBB00A70CB3 /* PicasaWebSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F2B96390BFA7EBB00A70CB3 /* PicasaWebSampleWindow.nib */; };
-		4F38F5D20B66E1BA00B24B81 /* PicasaWebSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F5D10B66E1BA00B24B81 /* PicasaWebSampleAppController.m */; };
+		4F5C29C00D9C68B900C647A5 /* GooglePhotosSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C29BC0D9C68B900C647A5 /* GooglePhotosSampleWindowController.m */; };
+		4F5C29C10D9C68B900C647A5 /* GooglePhotosSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */; };
+		4F5C29C50D9C691100C647A5 /* GooglePhotosSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */; };
 		4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
@@ -70,12 +70,12 @@
 		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		4F2B95A90BFA7D6600A70CB3 /* PicasaWebSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicasaWebSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F2B96140BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = PicasaWebSampleWindowController.h; sourceTree = "<group>"; };
-		4F2B96150BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = PicasaWebSampleWindowController.m; sourceTree = "<group>"; };
-		4F2B963A0BFA7EBB00A70CB3 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/PicasaWebSampleWindow.nib; sourceTree = "<group>"; };
-		4F38F5D00B66E1BA00B24B81 /* PicasaWebSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PicasaWebSampleAppController.h; sourceTree = "<group>"; };
-		4F38F5D10B66E1BA00B24B81 /* PicasaWebSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PicasaWebSampleAppController.m; sourceTree = "<group>"; };
+		4F2B95A90BFA7D6600A70CB3 /* GooglePhotosSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePhotosSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F5C29BC0D9C68B900C647A5 /* GooglePhotosSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePhotosSampleWindowController.m; sourceTree = "<group>"; };
+		4F5C29BD0D9C68B900C647A5 /* GooglePhotosSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleAppController.h; sourceTree = "<group>"; };
+		4F5C29BE0D9C68B900C647A5 /* GooglePhotosSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleWindowController.h; sourceTree = "<group>"; };
+		4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePhotosSampleAppController.m; sourceTree = "<group>"; };
+		4F5C29C40D9C691100C647A5 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/GooglePhotosSampleWindow.nib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1570CBC638E00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1580CBC638E00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -98,10 +98,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				4F38F5D00B66E1BA00B24B81 /* PicasaWebSampleAppController.h */,
-				4F38F5D10B66E1BA00B24B81 /* PicasaWebSampleAppController.m */,
-				4F2B96140BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.h */,
-				4F2B96150BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.m */,
+				4F5C29BD0D9C68B900C647A5 /* GooglePhotosSampleAppController.h */,
+				4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */,
+				4F5C29BE0D9C68B900C647A5 /* GooglePhotosSampleWindowController.h */,
+				4F5C29BC0D9C68B900C647A5 /* GooglePhotosSampleWindowController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -127,7 +127,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F2B95A90BFA7D6600A70CB3 /* PicasaWebSample.app */,
+				4F2B95A90BFA7D6600A70CB3 /* GooglePhotosSample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -158,7 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107310486CEB800E47090 /* Info.plist */,
-				4F2B96390BFA7EBB00A70CB3 /* PicasaWebSampleWindow.nib */,
+				4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */,
 				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -196,9 +196,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D1107260486CEB800E47090 /* PicasaWebSample */ = {
+		8D1107260486CEB800E47090 /* GooglePhotosSample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "PicasaWebSample" */;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "GooglePhotosSample" */;
 			buildPhases = (
 				4FAB41C50BAA21B600FBBDC9 /* Copy GData.framework to BUILT_PRODUCTS_DIR */,
 				8D1107290486CEB800E47090 /* Resources */,
@@ -212,10 +212,10 @@
 			dependencies = (
 				4FA1CB8B0C03C097006D556A /* PBXTargetDependency */,
 			);
-			name = PicasaWebSample;
+			name = GooglePhotosSample;
 			productInstallPath = "$(HOME)/Applications";
 			productName = CalendarSample;
-			productReference = 4F2B95A90BFA7D6600A70CB3 /* PicasaWebSample.app */;
+			productReference = 4F2B95A90BFA7D6600A70CB3 /* GooglePhotosSample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -223,7 +223,7 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "PicasaWebSample" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GooglePhotosSample" */;
 			compatibilityVersion = "Xcode 2.4";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
@@ -236,7 +236,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* PicasaWebSample */,
+				8D1107260486CEB800E47090 /* GooglePhotosSample */,
 			);
 		};
 /* End PBXProject section */
@@ -272,7 +272,7 @@
 			files = (
 				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F2B963F0BFA7EBB00A70CB3 /* PicasaWebSampleWindow.nib in Resources */,
+				4F5C29C50D9C691100C647A5 /* GooglePhotosSampleWindow.nib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -315,8 +315,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				4F38F5D20B66E1BA00B24B81 /* PicasaWebSampleAppController.m in Sources */,
-				4F2B96170BFA7E4A00A70CB3 /* PicasaWebSampleWindowController.m in Sources */,
+				4F5C29C00D9C68B900C647A5 /* GooglePhotosSampleWindowController.m in Sources */,
+				4F5C29C10D9C68B900C647A5 /* GooglePhotosSampleAppController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,12 +347,12 @@
 			name = MainMenu.nib;
 			sourceTree = "<group>";
 		};
-		4F2B96390BFA7EBB00A70CB3 /* PicasaWebSampleWindow.nib */ = {
+		4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F2B963A0BFA7EBB00A70CB3 /* English */,
+				4F5C29C40D9C691100C647A5 /* English */,
 			);
-			name = PicasaWebSampleWindow.nib;
+			name = GooglePhotosSampleWindow.nib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -373,7 +373,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = PicasaWebSample;
+				PRODUCT_NAME = GooglePhotosSample;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -395,7 +395,7 @@
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				PRODUCT_NAME = PicasaWebSample;
+				PRODUCT_NAME = GooglePhotosSample;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
 			};
@@ -430,7 +430,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "PicasaWebSample" */ = {
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "GooglePhotosSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4B08A954540054247B /* Debug */,
@@ -439,7 +439,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "PicasaWebSample" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "GooglePhotosSample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,

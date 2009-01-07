@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,35 +14,35 @@
 */
 
 //
-//  GDataServiceGooglePicasaWeb.m
+//  GDataServiceGooglePhotos.m
 //
 
-#define GDATASERVICEPICASAWEB_DEFINE_GLOBALS 1
-#import "GDataServiceGooglePicasaWeb.h"
+#define GDATASERVICEGOOGLEPHOTOS_DEFINE_GLOBALS 1
+#import "GDataServiceGooglePhotos.h"
 #import "GDataEntryPhotoBase.h"
-#import "GDataQueryPicasaWeb.h"
+#import "GDataQueryGooglePhotos.h"
 
 // These routines are all simple wrappers around GDataServiceGoogle methods
 
-@implementation GDataServiceGooglePicasaWeb
+@implementation GDataServiceGooglePhotos
 
-+ (NSURL *)picasaWebFeedURLForUserID:(NSString *)userID
-                             albumID:(NSString *)albumIDorNil
-                           albumName:(NSString *)albumNameOrNil
-                             photoID:(NSString *)photoIDorNil
-                                kind:(NSString *)feedKindOrNil
-                              access:(NSString *)accessOrNil {
++ (NSURL *)photoFeedURLForUserID:(NSString *)userID
+                         albumID:(NSString *)albumIDorNil
+                       albumName:(NSString *)albumNameOrNil
+                         photoID:(NSString *)photoIDorNil
+                            kind:(NSString *)feedKindOrNil
+                          access:(NSString *)accessOrNil {
   
   NSString *albumID = @"";
   if (albumIDorNil) {
     albumID = [NSString stringWithFormat:@"/albumid/%@", 
-      [GDataUtilities stringByURLEncodingString:albumIDorNil]]; 
+               [GDataUtilities stringByURLEncodingString:albumIDorNil]]; 
   }
   
   NSString *albumName = @"";
   if (albumNameOrNil && !albumIDorNil) {
     albumName = [NSString stringWithFormat:@"/album/%@", 
-      [GDataUtilities stringByURLEncodingString:albumNameOrNil]];
+                 [GDataUtilities stringByURLEncodingString:albumNameOrNil]];
   }
   
   NSString *photo = @"";
@@ -78,28 +78,28 @@
   
   NSString *template = @"%@feed/api/user/%@%@%@%@%@";
   NSString *urlString = [NSString stringWithFormat:template,
-    root, [GDataUtilities stringByURLEncodingString:userID], 
-    albumID, albumName, photo, query];
+                         root, [GDataUtilities stringByURLEncodingString:userID], 
+                         albumID, albumName, photo, query];
   
   return [NSURL URLWithString:urlString];
 }
 
-+ (NSURL *)picasaWebContactsFeedURLForUserID:(NSString *)userID {
-    
++ (NSURL *)photoContactsFeedURLForUserID:(NSString *)userID {
+  
   NSString *root = [self serviceRootURLString];
   
   NSString *template = @"%@feed/api/user/%@/contacts?kind=user";
   
   NSString *urlString = [NSString stringWithFormat:template,
-    root, [GDataUtilities stringByURLEncodingString:userID]];
+                         root, [GDataUtilities stringByURLEncodingString:userID]];
   
   return [NSURL URLWithString:urlString];
 }
 
-- (GDataServiceTicket *)fetchPicasaWebFeedWithURL:(NSURL *)feedURL
-                                         delegate:(id)delegate
-                                didFinishSelector:(SEL)finishedSelector
-                                  didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchPhotoFeedWithURL:(NSURL *)feedURL
+                                     delegate:(id)delegate
+                            didFinishSelector:(SEL)finishedSelector
+                              didFailSelector:(SEL)failedSelector {
   
   return [self fetchAuthenticatedFeedWithURL:feedURL 
                                    feedClass:kGDataUseRegisteredClass
@@ -108,64 +108,74 @@
                              didFailSelector:failedSelector];
 }
 
-- (GDataServiceTicket *)fetchPicasaWebEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
-                                                 forFeedURL:(NSURL *)picasaWebFeedURL
-                                                   delegate:(id)delegate
-                                          didFinishSelector:(SEL)finishedSelector
-                                            didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchPhotoEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
+                                             forFeedURL:(NSURL *)photoFeedURL
+                                               delegate:(id)delegate
+                                      didFinishSelector:(SEL)finishedSelector
+                                        didFailSelector:(SEL)failedSelector {
   
   if ([entryToInsert namespaces] == nil) {
     [entryToInsert setNamespaces:[GDataEntryPhotoBase photoNamespaces]]; 
   }
   
   return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:picasaWebFeedURL
+                                            forFeedURL:photoFeedURL
                                               delegate:delegate
                                      didFinishSelector:finishedSelector
                                        didFailSelector:failedSelector];
   
 }
 
-- (GDataServiceTicket *)fetchPicasaWebEntryByUpdatingEntry:(GDataEntryPhotoBase *)entryToUpdate
-                                               forEntryURL:(NSURL *)picasaWebEntryEditURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchPhotoEntryByUpdatingEntry:(GDataEntryPhotoBase *)entryToUpdate
+                                           forEntryURL:(NSURL *)photoEntryEditURL
+                                              delegate:(id)delegate
+                                     didFinishSelector:(SEL)finishedSelector
+                                       didFailSelector:(SEL)failedSelector {
   
   if ([entryToUpdate namespaces] == nil) {
     [entryToUpdate setNamespaces:[GDataEntryPhotoBase photoNamespaces]]; 
   }
   
-  
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:picasaWebEntryEditURL
+                                          forEntryURL:photoEntryEditURL
                                              delegate:delegate
                                     didFinishSelector:finishedSelector
                                       didFailSelector:failedSelector];
-  
 }
 
-- (GDataServiceTicket *)deletePicasaWebResourceURL:(NSURL *)resourceEditURL
-                                          delegate:(id)delegate
-                                 didFinishSelector:(SEL)finishedSelector
-                                   didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)deletePhotoEntry:(GDataEntryPhotoBase *)entryToDelete
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector
+                         didFailSelector:(SEL)failedSelector {
+  
+  return [self deleteAuthenticatedEntry:entryToDelete
+                               delegate:delegate
+                      didFinishSelector:finishedSelector
+                        didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)deletePhotoResourceURL:(NSURL *)resourceEditURL
+                                          ETag:(NSString *)etag
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                               didFailSelector:(SEL)failedSelector {
   
   return [self deleteAuthenticatedResourceURL:resourceEditURL
+                                         ETag:etag
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];
 }
 
-- (GDataServiceTicket *)fetchPicasaWebQuery:(GDataQueryPicasaWeb *)query
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchPhotoQuery:(GDataQueryGooglePhotos *)query
+                               delegate:(id)delegate
+                      didFinishSelector:(SEL)finishedSelector
+                        didFailSelector:(SEL)failedSelector {
   
-  return [self fetchPicasaWebFeedWithURL:[query URL]
-                                delegate:delegate
-                       didFinishSelector:finishedSelector
-                         didFailSelector:failedSelector];
-  
+  return [self fetchPhotoFeedWithURL:[query URL]
+                            delegate:delegate
+                   didFinishSelector:finishedSelector
+                     didFailSelector:failedSelector];
 }
 
 - (NSString *)serviceID {
@@ -173,7 +183,11 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://picasaweb.google.com/data/"; 
+  return @"http://photos.googleapis.com/data/"; 
+}
+
++ (NSString *)defaultServiceVersion {
+  return kGDataPhotosDefaultServiceVersion;
 }
 
 @end

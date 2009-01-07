@@ -13,22 +13,22 @@
     <gphoto:nickname>Greg</gphoto:nickname>
     <gphoto:user>TestdomainTestAccount</gphoto:user>
     <gphoto:thumbnail>http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo/AAAAAAAAAAA/LRLjNgdEmmU/TestdomainTestAccount.jpg?imgmax=64&amp;crop=1</gphoto:thumbnail>
-    <id>http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount</id>
+    <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount</id>
     <title type="text">TestdomainTestAccount</title>
     <summary type="text"/>
     <published>2007-05-23T18:18:39Z</published>
     <updated>2007-05-23T18:18:39Z</updated>
     <link
-        href="http://picasaweb.google.com/data/feed/api/user/TestdomainTestAccount"
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount"
         rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
-    <link href="http://picasaweb.google.com/TestdomainTestAccount"
+    <link href="http://photos.googleapis.com/TestdomainTestAccount"
         rel="alternate" type="text/html"/>
     <link
-        href="http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount"
+        href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount"
         rel="self" type="application/atom+xml"/>
     <author>
         <name>Greg</name>
-        <uri>http://picasaweb.google.com/TestdomainTestAccount</uri>
+        <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
     </author>
     <category scheme="http://schemas.google.com/g/2005#kind" 
     	term="http://schemas.google.com/photos/2007#user"/>
