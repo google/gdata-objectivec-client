@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'PicasaWebAlbumsSample' target in the 'PicasaWebAlbumsSample' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

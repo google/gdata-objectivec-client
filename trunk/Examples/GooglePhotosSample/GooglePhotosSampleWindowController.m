@@ -14,16 +14,16 @@
 */
 
 //
-//  PicasaWebSampleWindowController.m
+//  GooglePhotosSampleWindowController.m
 //
 
-#import "PicasaWebSampleWindowController.h"
-#import "GData/GDataServiceGooglePicasaWeb.h"
+#import "GooglePhotosSampleWindowController.h"
+#import "GData/GDataServiceGooglePhotos.h"
 #import "GData/GDataEntryPhotoAlbum.h"
 #import "GData/GDataEntryPhoto.h"
 #import "GData/GDataFeedPhoto.h"
 
-@interface PicasaWebSampleWindowController (PrivateMethods)
+@interface GooglePhotosSampleWindowController (PrivateMethods)
 - (void)updateUI;
 
 - (void)fetchAllAlbums;
@@ -39,7 +39,7 @@
 - (void)addCommentToSelectedPhoto;
 - (void)postToSelectedPhotoEntry:(GDataEntryPhotoBase *)entry;
 
-- (GDataServiceGooglePicasaWeb *)picasaWebService;
+- (GDataServiceGooglePhotos *)googlePhotosService;
 - (GDataEntryPhotoAlbum *)selectedAlbum;
 - (GDataEntryPhoto *)selectedPhoto;
 
@@ -65,22 +65,22 @@
 - (NSString *)MIMETypeForPhotoAtPath:(NSString *)path;
 @end
 
-@implementation PicasaWebSampleWindowController
+@implementation GooglePhotosSampleWindowController
 
-static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
+static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController = nil;
 
 
-+ (PicasaWebSampleWindowController *)sharedPicasaWebSampleWindowController {
++ (GooglePhotosSampleWindowController *)sharedGooglePhotosSampleWindowController {
   
-  if (!gPicasaWebSampleWindowController) {
-    gPicasaWebSampleWindowController = [[PicasaWebSampleWindowController alloc] init];
+  if (!gGooglePhotosSampleWindowController) {
+    gGooglePhotosSampleWindowController = [[GooglePhotosSampleWindowController alloc] init];
   }  
-  return gPicasaWebSampleWindowController;
+  return gGooglePhotosSampleWindowController;
 }
 
 
 - (id)init {
-  return [self initWithWindowNibName:@"PicasaWebSampleWindow"];
+  return [self initWithWindowNibName:@"GooglePhotosSampleWindow"];
 }
 
 - (void)windowDidLoad {
@@ -278,14 +278,12 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
   [mAddPhotoButton setEnabled:(isAlbumSelected && isPasswordProvided)];
   
-  BOOL isSelectedEntryEditable = 
-    ([[self selectedPhoto] editLink] != nil);
+  BOOL isSelectedEntryEditable = ([[self selectedPhoto] editLink] != nil);
   
   [mDeletePhotoButton setEnabled:isSelectedEntryEditable];
   [mChangeAlbumPopupButton setEnabled:isSelectedEntryEditable];
   
-  BOOL hasPhotoFeed = 
-    ([[self selectedPhoto] feedLink] != nil);
+  BOOL hasPhotoFeed = ([[self selectedPhoto] feedLink] != nil);
   
   BOOL isTagProvided = ([[mTagField stringValue] length] > 0);
   BOOL isCommentProvided = ([[mCommentField stringValue] length] > 0);
@@ -332,8 +330,7 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
     
-    BOOL isSelectedPhotoEntryEditable = 
-      ([selectedPhoto editLink] != nil);
+    BOOL isSelectedPhotoEntryEditable = ([selectedPhoto editLink] != nil);
     
     if (isSelectedPhotoEntryEditable) {
           
@@ -408,14 +405,14 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 // state information (such as cookies and the "last modified" date for
 // fetched data.)
 
-- (GDataServiceGooglePicasaWeb *)picasaWebService {
+- (GDataServiceGooglePhotos *)googlePhotosService {
   
-  static GDataServiceGooglePicasaWeb* service = nil;
+  static GDataServiceGooglePhotos* service = nil;
   
   if (!service) {
-    service = [[GDataServiceGooglePicasaWeb alloc] init];
+    service = [[GDataServiceGooglePhotos alloc] init];
     
-    [service setUserAgent:@"Google-SamplePicasaWebApp-1.0"];
+    [service setUserAgent:@"Google-SampleGooglePhotosApp-1.0"];
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
@@ -475,19 +472,19 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
 
   NSString *username = [mUsernameField stringValue];
   
-  GDataServiceGooglePicasaWeb *service = [self picasaWebService];
+  GDataServiceGooglePhotos *service = [self googlePhotosService];
   GDataServiceTicket *ticket;
   
-  NSURL *feedURL = [GDataServiceGooglePicasaWeb picasaWebFeedURLForUserID:username
-                                                                  albumID:nil
-                                                                albumName:nil
-                                                                  photoID:nil
-                                                                     kind:nil
-                                                                   access:nil];
-  ticket = [service fetchPicasaWebFeedWithURL:feedURL
-                                     delegate:self
-                            didFinishSelector:@selector(albumListFetchTicket:finishedWithFeed:)
-                              didFailSelector:@selector(albumListFetchTicket:failedWithError:)];
+  NSURL *feedURL = [GDataServiceGooglePhotos photoFeedURLForUserID:username
+                                                           albumID:nil
+                                                         albumName:nil
+                                                           photoID:nil
+                                                              kind:nil
+                                                            access:nil];
+  ticket = [service fetchPhotoFeedWithURL:feedURL
+                                 delegate:self
+                        didFinishSelector:@selector(albumListFetchTicket:finishedWithFeed:)
+                          didFailSelector:@selector(albumListFetchTicket:failedWithError:)];
   [self setAlbumFetchTicket:ticket];
   
   [self updateUI];
@@ -540,12 +537,12 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
       [self setPhotoFetchError:nil];
       [self setPhotoFetchTicket:nil];
       
-      GDataServiceGooglePicasaWeb *service = [self picasaWebService];
+      GDataServiceGooglePhotos *service = [self googlePhotosService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchPicasaWebFeedWithURL:feedURL
-                                         delegate:self
-                                didFinishSelector:@selector(photosTicket:finishedWithEntries:)
-                                  didFailSelector:@selector(photosTicket:failedWithError:)];
+      ticket = [service fetchPhotoFeedWithURL:feedURL
+                                     delegate:self
+                            didFinishSelector:@selector(photosTicket:finishedWithEntries:)
+                              didFailSelector:@selector(photosTicket:failedWithError:)];
       [self setPhotoFetchTicket:ticket];
 
       [self updateUI];
@@ -642,19 +639,19 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     NSURL *feedURL = [[album feedLink] URL];
     
     // make service tickets call back into our upload progress selector
-    GDataServiceGooglePicasaWeb *service = [self picasaWebService];
+    GDataServiceGooglePhotos *service = [self googlePhotosService];
     
     SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
     [service setServiceUploadProgressSelector:progressSel];
     
     // insert the entry into the album feed
     GDataServiceTicket *ticket;
-    ticket = [service fetchPicasaWebEntryByInsertingEntry:newEntry
-                                               forFeedURL:feedURL
-                                                 delegate:self
-                                        didFinishSelector:@selector(addPhotoTicket:finishedWithEntry:)
-                                          didFailSelector:@selector(addPhotoTicket:failedWithError:)];
-
+    ticket = [service fetchPhotoEntryByInsertingEntry:newEntry
+                                           forFeedURL:feedURL
+                                             delegate:self
+                                    didFinishSelector:@selector(addPhotoTicket:finishedWithEntry:)
+                                      didFailSelector:@selector(addPhotoTicket:failedWithError:)];
+    
     // no need for future tickets to monitor progress
     [service setServiceUploadProgressSelector:nil];
 
@@ -726,14 +723,13 @@ static PicasaWebSampleWindowController* gPicasaWebSampleWindowController = nil;
     
     // delete the photo
     GDataEntryPhoto *photo = [self selectedPhoto];
-    GDataLink *link = [photo editLink];
     
-    if (link) {
-      GDataServiceGooglePicasaWeb *service = [self picasaWebService];
-      [service deletePicasaWebResourceURL:[link URL]
-                                 delegate:self 
-                        didFinishSelector:@selector(deleteTicket:deletedEntry:)
-                          didFailSelector:@selector(deleteTicket:failedWithError:)];
+    if ([photo canEdit]) {
+      GDataServiceGooglePhotos *service = [self googlePhotosService];
+      [service deletePhotoEntry:photo
+                       delegate:self 
+              didFinishSelector:@selector(deleteTicket:deletedEntry:)
+                didFailSelector:@selector(deleteTicket:failedWithError:)];
     }
   }
 }
@@ -811,12 +807,12 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
       NSString *albumID = [photo propertyForKey:kDestAlbumKey];
       [photo setAlbumID:albumID];
       
-      GDataServiceGooglePicasaWeb *service = [self picasaWebService];
-      [service fetchPicasaWebEntryByUpdatingEntry:photo
-                                      forEntryURL:[link URL]
-                                         delegate:self
-                                didFinishSelector:@selector(moveTicket:finishedWithEntry:)
-                                  didFailSelector:@selector(moveTicket:failedWithError:)];
+      GDataServiceGooglePhotos *service = [self googlePhotosService];
+      [service fetchPhotoEntryByUpdatingEntry:photo
+                                  forEntryURL:[link URL]
+                                     delegate:self
+                            didFinishSelector:@selector(moveTicket:finishedWithEntry:)
+                              didFailSelector:@selector(moveTicket:failedWithError:)];
     }
   }
 }
@@ -880,12 +876,12 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
     NSURL *postURL = [[photo feedLink] URL];
     if (postURL) {
       
-      GDataServiceGooglePicasaWeb *service = [self picasaWebService];
-      [service fetchPicasaWebEntryByInsertingEntry:entry
-                                        forFeedURL:postURL
-                                          delegate:self
-                                 didFinishSelector:@selector(postToPhotoTicket:finishedWithEntry:)
-                                   didFailSelector:@selector(postToPhotoTicket:failedWithError:)];
+      GDataServiceGooglePhotos *service = [self googlePhotosService];
+      [service fetchPhotoEntryByInsertingEntry:entry
+                                    forFeedURL:postURL
+                                      delegate:self
+                             didFinishSelector:@selector(postToPhotoTicket:finishedWithEntry:)
+                               didFailSelector:@selector(postToPhotoTicket:failedWithError:)];
     }
   }
 }

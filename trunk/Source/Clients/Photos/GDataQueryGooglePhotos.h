@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2008 Google Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
 */
 
 //
-//  GDataQueryPicasaWeb.h
+//  GDataQueryGooglePhotos.h
 //
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
-#ifdef GDATAQUERYPICASAWEB_DEFINE_GLOBALS
+#ifdef GDATAQUERYGOOGLEPHOTOS_DEFINE_GLOBALS
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
@@ -27,18 +27,18 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN int kGDataPicasaWebImageSizeDownloadable _INITIALIZE_AS(-1);
+_EXTERN int kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
 
 #import "GDataQuery.h"
 
-@interface GDataQueryPicasaWeb : GDataQuery 
+@interface GDataQueryGooglePhotos : GDataQuery 
 
-+ (GDataQueryPicasaWeb *)picasaWebQueryWithFeedURL:(NSURL *)feedURL;
++ (GDataQueryGooglePhotos *)photoQueryWithFeedURL:(NSURL *)feedURL;
 
-+ (GDataQueryPicasaWeb *)picasaWebQueryForUserID:(NSString *)userID
-                                         albumID:(NSString *)albumIDorNil
-                                       albumName:(NSString *)albumNameOrNil
-                                         photoID:(NSString *)photoIDorNil;
++ (GDataQueryGooglePhotos *)photoQueryForUserID:(NSString *)userID
+                                        albumID:(NSString *)albumIDorNil
+                                      albumName:(NSString *)albumNameOrNil
+                                        photoID:(NSString *)photoIDorNil;
 
 - (void)setKind:(NSString *)str;
 - (NSString *)kind;
@@ -52,7 +52,7 @@ _EXTERN int kGDataPicasaWebImageSizeDownloadable _INITIALIZE_AS(-1);
 // imageSize is the imgmax parameter; see documentation for legal values,
 // and explanation of which sizes may be cropped or embedded into web pages
 //
-// Pass kGDataPicasaWebImageSizeDownloadable to specify that links should be
+// Pass kGDataGooglePhotosImageSizeDownloadable to specify that links should be
 // for the native download size for each photo ("imgmax=d")
 - (void)setImageSize:(int)val;
 - (int)imageSize;

@@ -31,22 +31,22 @@
     <gphoto:timestamp>1179786301000</gphoto:timestamp>
 	<gphoto:position>1.1</gphoto:position>
 	<gphoto:client>Picasa 2.6</gphoto:client>
-    <id>http://picasaweb.google.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306</id>
-    <generator uri="http://picasaweb.google.com/" version="1.00">Picasaweb</generator>
+    <id>http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306</id>
+    <generator version="1.00" uri="http://photos.google.com/">Google Photos</generator>
     <title type="text">Car.jpg</title>
     <subtitle type="text">Caption for the car ☸ photo</subtitle>
     <icon>http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=288</icon>
     <link
-        href="http://picasaweb.google.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
         rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
     <link
-        href="http://picasaweb.google.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
         rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
     <link
-        href="http://picasaweb.google.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
+        href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
         rel="alternate" type="text/html"/>
     <link
-        href="http://picasaweb.google.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306?start-index=1&amp;max-results=1000&amp;kind=comment"
+        href="http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306?start-index=1&amp;max-results=1000&amp;kind=comment"
         rel="self" type="application/atom+xml"/>
     <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
     <updated>2007-05-21T22:34:35Z</updated>
@@ -56,23 +56,23 @@
     <entry>
         <gphoto:photoid>5067143579329304306</gphoto:photoid>
         <gphoto:id>5067146044640532244</gphoto:id>
-        <id>http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244</id>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244</id>
         <title type="text">Greg</title>
         <summary type="text">Comment on the car headlight. Z☻☺m.</summary>
         <published>2007-05-21T22:34:35Z</published>
         <updated>2007-05-21T22:34:35Z</updated>
         <link
-            href="http://picasaweb.google.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
+            href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
             rel="alternate" type="text/html"/>
         <link
-            href="http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
             rel="self" type="application/atom+xml"/>
         <link
-            href="http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
             rel="edit" type="application/atom+xml"/>
         <author>
             <name>Greg</name>
-            <uri>http://picasaweb.google.com/username</uri>
+            <uri>http://photos.googleapis.com/username</uri>
         </author>
         <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#comment"/>
     </entry>

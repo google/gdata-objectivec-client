@@ -444,7 +444,7 @@
     { @"entries.0.unknownChildren.@count.stringValue", @"0" },
       
     { @"", @"" }, // end of feed
-      
+    
     { nil, nil } // end of test array
   };
   
@@ -835,7 +835,7 @@
     { @"entries.0.location", @"Album Site" },
     { @"entries.0.timestamp.dateValue.timeIntervalSince1970", @"1179730800" },
     { @"entries.0.username", @"TestdomainTestAccount" },
-    { @"entries.0.identifier", @"http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993" },
+    { @"entries.0.identifier", @"http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993" },
     { @"entries.0.title.type", @"text" },
     { @"entries.0.title", photoAlbumName },
     { @"entries.0.photoDescription", @"Album description" },
@@ -864,7 +864,7 @@
     { @"location", @"Album Site" },
     { @"timestamp.dateValue.timeIntervalSince1970", @"1179730800" },
     { @"username", @"TestdomainTestAccount" },
-    { @"identifier", @"http://picasaweb.google.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993" },
+    { @"identifier", @"http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993" },
     { @"title.type", @"text" },
     { @"title", photoAlbumName },
     { @"photoDescription", @"Album description" },
@@ -920,8 +920,8 @@
     { @"GDataFeedPhoto", @"Tests/FeedPhotosPhotoComment1.xml" },
 
     // GDataFeedPhoto - feed paths
-    { @"generator.URI", @"http://picasaweb.google.com/" },
-    { @"generator.name", @"Picasaweb" },
+    { @"generator.URI", @"http://photos.google.com/" },
+    { @"generator.name", @"Google Photos" },
     { @"generator.version", @"1.00" },
     { @"EXIFTags.tagDictionary.exposure", @"0.0080" },
     { @"categories.0.term", kGDataCategoryPhotosPhoto },
@@ -996,7 +996,7 @@
     //
     // This is really a fake feed created by requesting just a single
     // user entry from the picasa server, using
-    // GET http://picasaweb.google.com/data/entry/api/user/<username>
+    // GET http://photos.googleapis.com/data/entry/api/user/<username>
     //
     
     // GDataFeedPhotoUser - feed paths (none)
@@ -1007,7 +1007,7 @@
     { @"entries.0.nickname", @"Greg" },
     { @"entries.0.username", @"TestdomainTestAccount" }, 
     { @"entries.0.thumbnail", @"hasPrefix:http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo" },
-    { @"entries.0.identifier", @"http://picasaweb.google.com/data/entry/api/user/TestdomainTestAccount" },
+    { @"entries.0.identifier", @"http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount" },
     { @"entries.0.categories.0.term", kGDataCategoryPhotosUser },
       
     { @"entries.0.unknownAttributes.@count", @"0" },

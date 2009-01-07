@@ -203,49 +203,49 @@
                        @"Spreadsheet query 2 generation error");
 }
 
-- (void)testPicasaWebQuery {
+- (void)testGooglePhotosQuery {
   
-  GDataQueryPicasaWeb *pwaQuery1;
-  pwaQuery1 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
-                                                   albumID:@"12345"
-                                                 albumName:nil
-                                                   photoID:@"987654321"];
-  [pwaQuery1 setKind:kGDataPicasaWebKindPhoto];
-  [pwaQuery1 setAccess:kGDataPicasaWebAccessPrivate];
+  GDataQueryGooglePhotos *pwaQuery1;
+  pwaQuery1 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
+                                                  albumID:@"12345"
+                                                albumName:nil
+                                                  photoID:@"987654321"];
+  [pwaQuery1 setKind:kGDataGooglePhotosKindPhoto];
+  [pwaQuery1 setAccess:kGDataGooglePhotosAccessPrivate];
   [pwaQuery1 setThumbsize:80];
   [pwaQuery1 setImageSize:32];
   [pwaQuery1 setTag:@"dog"];
   
   NSURL* resultURL1 = [pwaQuery1 URL];
-  NSString *expected1 = @"http://picasaweb.google.com/data/feed/api/"
+  NSString *expected1 = @"http://photos.googleapis.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
     "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"PWA query 1 generation error");
   STAssertEquals([pwaQuery1 imageSize], 32, @"image size error");
   
-  GDataQueryPicasaWeb *pwaQuery2; 
-  pwaQuery2 = [GDataQueryPicasaWeb picasaWebQueryForUserID:@"fredflintstone"
-                                                   albumID:nil
-                                                 albumName:@"froggy photos"
-                                                   photoID:nil];  
-  [pwaQuery2 setImageSize:kGDataPicasaWebImageSizeDownloadable];
+  GDataQueryGooglePhotos *pwaQuery2; 
+  pwaQuery2 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
+                                                  albumID:nil
+                                                albumName:@"froggy photos"
+                                                  photoID:nil];  
+  [pwaQuery2 setImageSize:kGDataGooglePhotosImageSizeDownloadable];
   
   NSURL* resultURL2 = [pwaQuery2 URL];
-  NSString *expected2 = @"http://picasaweb.google.com/data/feed/api/user/"
+  NSString *expected2 = @"http://photos.googleapis.com/data/feed/api/user/"
     "fredflintstone/album/froggy%20photos?imgmax=d";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"PWA query 2 generation error");
   
   // image size special cases mapping -1 to "d" and back; test that we get back
   // -1
-  STAssertEquals([pwaQuery2 imageSize], kGDataPicasaWebImageSizeDownloadable,
+  STAssertEquals([pwaQuery2 imageSize], kGDataGooglePhotosImageSizeDownloadable,
                  @"image size error (2)");
   
   // test the generator for photo contact feed URLs
-  NSURL *contactsURL = [GDataServiceGooglePicasaWeb picasaWebContactsFeedURLForUserID:@"fred@gmail.com"];
+  NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@gmail.com"];
   NSString *contactsURLString = [contactsURL absoluteString];
-  NSString *expectedContactsURLString = @"http://picasaweb.google.com/data/feed/api/user/fred@gmail.com/contacts?kind=user";
+  NSString *expectedContactsURLString = @"http://photos.googleapis.com/data/feed/api/user/fred@gmail.com/contacts?kind=user";
   STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
                        @"contacts URL error");
 }

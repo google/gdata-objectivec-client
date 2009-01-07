@@ -14,17 +14,17 @@
 */
 
 //
-//  PicasaWebSampleAppController.m
+//  GooglePhotosSampleAppController.m
 //
 
-#import "PicasaWebSampleAppController.h"
-#import "PicasaWebSampleWindowController.h"
+#import "GooglePhotosSampleAppController.h"
+#import "GooglePhotosSampleWindowController.h"
 
-@implementation PicasaWebSampleAppController
+@implementation GooglePhotosSampleAppController
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notifcation {
   
-  PicasaWebSampleWindowController* windowController = [PicasaWebSampleWindowController sharedPicasaWebSampleWindowController];
+  GooglePhotosSampleWindowController* windowController = [GooglePhotosSampleWindowController sharedGooglePhotosSampleWindowController];
   [windowController showWindow:self];
   
 }
