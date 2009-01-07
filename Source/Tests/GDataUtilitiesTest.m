@@ -15,7 +15,12 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-#import "GDataUtilitiesTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+
+#import "GDataUtilities.h"
+
+@interface GDataUtilitiesTest : SenTestCase
+@end
 
 @implementation GDataUtilitiesTest
 

@@ -13,10 +13,14 @@
 * limitations under the License.
 */
 
-#import "GDataGatherInputStreamTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+
 #import "GDataGatherInputStream.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
+
+@interface GDataGatherInputStreamTest : SenTestCase
+@end
 
 @implementation GDataGatherInputStreamTest
 

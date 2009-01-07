@@ -17,10 +17,14 @@
 //  GDataDateTimeTest.m
 //
 
-#import "GDataDateTimeTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+
 #import "GDataDateTime.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
+
+@interface GDataDateTimeTest : SenTestCase
+@end
 
 @implementation GDataDateTimeTest
 - (void)testGDataDateTime {

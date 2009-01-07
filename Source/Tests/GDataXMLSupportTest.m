@@ -17,7 +17,12 @@
 //  GDataXMLSupportTest.m
 //
 
-#import "GDataXMLSupportTest.h"
+#import <SenTestingKit/SenTestingKit.h>
+
+#import "GData/GData.h"
+
+@interface GDataXMLSupportTest : SenTestCase
+@end
 
 @implementation GDataXMLSupportTest
 

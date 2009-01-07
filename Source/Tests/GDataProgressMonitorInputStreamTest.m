@@ -17,11 +17,19 @@
 //  GDataProgressMonitorInputStreamTest.m
 //
 
+#import <SenTestingKit/SenTestingKit.h>
+
 #import "GDataDefines.h"
-#import "GDataProgressMonitorInputStreamTest.h"
+
 #import "GDataProgressMonitorInputStream.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
+
+@interface GDataProgressMonitorInputStreamTest : SenTestCase {
+  NSMutableArray *callbackProgressArray_; // non-retained
+  unsigned long long dataSize_;
+}
+@end
 
 @implementation GDataProgressMonitorInputStreamTest
 
