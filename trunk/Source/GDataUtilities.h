@@ -26,6 +26,11 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // utility for removing non-whitespace control characters
 + (NSString *)stringWithControlsFilteredForString:(NSString *)str;
 
+// utility for converting NSNumber to/from string, including inf/-inf
+//
+// an empty string returns a nil NSNumber
++ (NSNumber *)doubleNumberOrInfForString:(NSString *)str;
+
 // copy method helpers
 
 // array with copies of the objects in the source array (1-deep)
