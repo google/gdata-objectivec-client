@@ -45,6 +45,8 @@ Additions
   
 - Added setNamespaces: to GDataXMLNode
 
+- Added openAccess element to books volume entry
+
 - Added new Docs query parameters and new category label constants
 
 - Builds for iPhone and requiring 10.5 and higher now take advantage of
@@ -59,6 +61,8 @@ Bugs Fixed
 - Fixed query generation for URLs that already contain some parameters
 
 - Fixed finance portfolio description method (thanks dujunfly)
+
+- Fixed books volume entry embeddability and viewability accessors
 
 - Renamed photos server and query classes, and changed photos feed domain
 

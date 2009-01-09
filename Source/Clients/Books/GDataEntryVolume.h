@@ -47,6 +47,9 @@ _EXTERN NSString* const kGDataBooksViewUnknown  _INITIALIZE_AS(@"http://schemas.
 _EXTERN NSString* const kGDataBooksEmbeddable     _INITIALIZE_AS(@"http://schemas.google.com/books/2008#embeddable");
 _EXTERN NSString* const kGDataBooksNotEmbeddable  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#not_embeddable");
 
+_EXTERN NSString* const kGDataBooksEnabled   _INITIALIZE_AS(@"http://schemas.google.com/books/2008#enabled");
+_EXTERN NSString* const kGDataBooksDisabled  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#disabled");
+
 _EXTERN NSString* const kGDataBooksInfoRel       _INITIALIZE_AS(@"http://schemas.google.com/books/2008/info");
 _EXTERN NSString* const kGDataBooksPreviewRel    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/preview");
 _EXTERN NSString* const kGDataBooksThumbnailRel  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/thumbnail");
@@ -62,6 +65,12 @@ _EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas
 @end
 
 @interface GDataVolumeEmbeddability : GDataValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataVolumeOpenAccess : GDataValueConstruct <GDataExtension>
 + (NSString *)extensionElementURI;
 + (NSString *)extensionElementPrefix;
 + (NSString *)extensionElementLocalName;
@@ -101,6 +110,9 @@ _EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas
 
 - (NSString *)embeddability;
 - (void)setEmbeddability:(NSString *)str;
+
+- (NSString*)openAccess;
+- (void)setOpenAccess:(NSString *)str;
 
 - (NSArray *)formats;
 - (void)setFormats:(NSArray *)arr;

@@ -188,6 +188,7 @@
     { @"entries.0.dates.0", @"2006-01-31" },
     { @"entries.0.volumeDescriptions.0", @"contains:Pig Out" },
     { @"entries.0.embeddability", kGDataBooksNotEmbeddable },
+    { @"entries.0.openAccess", kGDataBooksEnabled },
     { @"entries.0.formats.0", @"93 pages" },
     { @"entries.0.volumeIdentifiers.0", @"_PRJAAAACAAJ" },
     { @"entries.0.volumeIdentifiers.1", @"ISBN:0345464664" },
