@@ -1207,11 +1207,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 
 - (NSNumber *)doubleNumberValueFromElement:(NSXMLElement *)element {
   NSString *str = [self stringValueFromElement:element];
-  if ([str length] > 0) {
-    NSNumber *number = [NSNumber numberWithDouble:[str doubleValue]];
-    return number;
-  }
-  return nil;
+  return [GDataUtilities doubleNumberOrInfForString:str];
 }
 
 #pragma mark attribute parsing
@@ -1289,11 +1285,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
   NSString* str = [attribute stringValue];
-  if (str) {
-    NSNumber *number = [NSNumber numberWithDouble:[str doubleValue]]; 
-    return number;
-  }
-  return nil;
+  return [GDataUtilities doubleNumberOrInfForString:str];
 }
 
 - (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
@@ -1714,11 +1706,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 - (NSNumber *)doubleNumberForAttribute:(NSString *)name {
   
   NSString *str = [self stringValueForAttribute:name];
-  if ([str length] > 0) {
-    NSNumber *number = [NSNumber numberWithDouble:[str doubleValue]];
-    return number;
-  }
-  return nil;
+  return [GDataUtilities doubleNumberOrInfForString:str];
 }
 
 - (NSNumber *)longLongNumberForAttribute:(NSString *)name {
@@ -1870,7 +1858,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 // to specify attributes not to be considered for equality comparison
 
 - (BOOL)hasAttributesEqualToAttributesOf:(GDataObject *)other {
-  
+
   NSArray *attributesToIgnore = [self attributesIgnoredForEquality];
 
   NSDictionary *selfAttrs = [self attributes];

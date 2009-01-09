@@ -172,19 +172,17 @@
 }
 
 - (double)doubleValue {
-  NSString *str = [self stringValue];
-  if (str) {
-    double result;
-    NSScanner *scanner = [NSScanner scannerWithString:str];
-    if ([scanner scanDouble:&result]) {
-      return result; 
-    }
-  }
-  return 0;
+  NSNumber *num = [self doubleNumberValue];
+  double val = [num doubleValue];
+  return val;
 }
 
 - (NSNumber *)doubleNumberValue {
-  return [NSNumber numberWithDouble:[self doubleValue]];
+  NSString *str = [self stringValue];
+  NSNumber *num = [GDataUtilities doubleNumberOrInfForString:str];
+  if (num != nil) return num;
+
+  return [NSNumber numberWithDouble:0];
 }
 
 - (void)setDoubleValue:(double)val {

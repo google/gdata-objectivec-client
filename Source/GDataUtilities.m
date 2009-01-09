@@ -73,6 +73,22 @@
   return str;
 }
 
++ (NSNumber *)doubleNumberOrInfForString:(NSString *)str {
+  if ([str length] == 0) return nil;
+
+  double val = [str doubleValue];
+  NSNumber *number = [NSNumber numberWithDouble:val];
+
+  if (val == 0) {
+    if ([str caseInsensitiveCompare:@"INF"] == NSOrderedSame) {
+      number = (NSNumber *)kCFNumberPositiveInfinity;
+    } else if ([str caseInsensitiveCompare:@"-INF"] == NSOrderedSame) {
+      number = (NSNumber *)kCFNumberNegativeInfinity;
+    }
+  }
+  return number;
+}
+
 #pragma mark Copy method helpers
 
 + (NSArray *)arrayWithCopiesOfObjectsInArray:(NSArray *)source {

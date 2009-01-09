@@ -594,6 +594,18 @@
     { @"doubleValue", @"1.51" },
     { @"", @"" },
       
+    { @"GDataValueConstruct", @"<myValue value=''/>" },
+    { @"doubleValue", @"0" },
+    { @"", @"" },
+    
+    { @"GDataValueConstruct", @"<myValue value='INF'/>" },
+    { @"doubleValue", (id)kCFNumberPositiveInfinity },
+    { @"", @"" },
+    
+    { @"GDataValueConstruct", @"<myValue value='-INF'/>" },
+    { @"doubleValue", (id)kCFNumberNegativeInfinity },
+    { @"", @"" },
+    
     { @"GDataValueConstruct", @"<myValue value='987654321987'/>" },
     { @"longLongValue", @"987654321987" },
     { @"", @"" },

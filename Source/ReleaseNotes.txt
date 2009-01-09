@@ -179,6 +179,8 @@ Bugs fixed
 
 - Fixed string leaks in GDataXMLNode (thanks ct)
 
+- XML INF/-INF now interpreted as infinity
+
 - Fixed some inner GDataObject data structures being improperly copied as
   immutable
 
