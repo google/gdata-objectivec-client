@@ -36,6 +36,12 @@
 + (NSString *)extensionElementLocalName { return @"embeddability"; }
 @end
 
+@implementation GDataVolumeOpenAccess
++ (NSString *)extensionElementURI       { return kGDataNamespaceBooks; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceBooksPrefix; }
++ (NSString *)extensionElementLocalName { return @"openAccess"; }
+@end
+
 @implementation GDataVolumeReview
 + (NSString *)extensionElementURI       { return kGDataNamespaceBooks; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceBooksPrefix; }
@@ -89,7 +95,7 @@
 
    // local extensions
    [GDataVolumeViewability class], [GDataVolumeEmbeddability class],
-   [GDataVolumeReview class],
+   [GDataVolumeReview class], [GDataVolumeOpenAccess class],
 
    // DublinCore extensions
    [GDataDCCreator class], [GDataDCDate class], [GDataDCDescription class],
@@ -119,7 +125,8 @@
   [self addToArray:items objectDescriptionIfNonNil:[self creators] withName:@"creators"];
   [self addToArray:items objectDescriptionIfNonNil:[self dates] withName:@"dates"];
   [self addToArray:items objectDescriptionIfNonNil:[self volumeDescriptions] withName:@"descriptions"];
-  [self addToArray:items objectDescriptionIfNonNil:[self embeddability] withName:@"embedability"];
+  [self addToArray:items objectDescriptionIfNonNil:[self embeddability] withName:@"embeddability"];
+  [self addToArray:items objectDescriptionIfNonNil:[self openAccess] withName:@"openAccess"];
   [self addToArray:items objectDescriptionIfNonNil:[self formats] withName:@"formats"];
   [self addToArray:items objectDescriptionIfNonNil:[self volumeIdentifiers] withName:@"identifiers"];
   [self addToArray:items objectDescriptionIfNonNil:[self languages] withName:@"languages"];
@@ -184,7 +191,8 @@
 }
 
 - (NSString *)embeddability {
-  return [self objectForExtensionClass:[GDataVolumeEmbeddability class]]; 
+  GDataVolumeEmbeddability* obj = [self objectForExtensionClass:[GDataVolumeEmbeddability class]];
+  return [obj stringValue];
 }
 
 - (void)setEmbeddability:(NSString *)str {
@@ -195,6 +203,21 @@
   }
   
   [self setObject:obj forExtensionClass:[GDataVolumeEmbeddability class]];
+}
+
+- (NSString *)openAccess {
+  GDataVolumeOpenAccess* obj = [self objectForExtensionClass:[GDataVolumeOpenAccess class]];
+  return [obj stringValue];
+}
+
+- (void)setOpenAccess:(NSString *) str {
+  GDataVolumeOpenAccess *obj = nil;
+
+  if (str != nil) {
+    obj = [GDataVolumeOpenAccess valueWithString:str];
+  }
+
+  [self setObject:obj forExtensionClass:[GDataVolumeOpenAccess class]];
 }
 
 - (NSArray *)formats {
@@ -286,7 +309,8 @@
 }
 
 - (NSString *)viewability {
-  return [self objectForExtensionClass:[GDataVolumeViewability class]]; 
+  GDataVolumeViewability* obj = [self objectForExtensionClass:[GDataVolumeViewability class]];
+  return [obj stringValue];
 }
 
 - (void)setViewability:(NSString *)str {

@@ -54,6 +54,7 @@
         <gbs:embeddability value="http://schemas.google.com/books/2008#not_embeddable"/>
         <gd:rating average="2.00" max="5" min="1" value="3" />
         <gbs:review type="text">Ageless? No way.</gbs:review>
+        <gbs:openAccess value="http://schemas.google.com/books/2008#enabled" />
         <gbs:viewability value="http://schemas.google.com/books/2008#view_no_pages"/>
         <dc:creator>Jim Davis</dc:creator>
         <dc:date>2006-01-31</dc:date>
