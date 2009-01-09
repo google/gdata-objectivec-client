@@ -108,6 +108,18 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchPhotoEntryWithURL:(NSURL *)entryURL
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                               didFailSelector:(SEL)failedSelector {
+
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:kGDataUseRegisteredClass
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)fetchPhotoEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
                                              forFeedURL:(NSURL *)photoFeedURL
                                                delegate:(id)delegate

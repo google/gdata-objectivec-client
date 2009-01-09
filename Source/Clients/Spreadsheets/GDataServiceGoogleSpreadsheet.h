@@ -49,6 +49,12 @@ _EXTERN NSString* kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"http:
                                   didFinishSelector:(SEL)finishedSelector
                                     didFailSelector:(SEL)failedSelector;
 
+// finished callback (see above) is passed an appropriate spreadsheet entry
+- (GDataServiceTicket *)fetchSpreadsheetEntryWithURL:(NSURL *)entryURL
+                                            delegate:(id)delegate
+                                   didFinishSelector:(SEL)finishedSelector
+                                     didFailSelector:(SEL)failedSelector;
+
 // finished callback (see above) is passed the inserted entry
 - (GDataServiceTicket *)fetchSpreadsheetEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
                                                    forFeedURL:(NSURL *)spreadsheetFeedURL

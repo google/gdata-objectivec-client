@@ -43,6 +43,18 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchSpreadsheetEntryWithURL:(NSURL *)entryURL
+                                            delegate:(id)delegate
+                                   didFinishSelector:(SEL)finishedSelector
+                                     didFailSelector:(SEL)failedSelector {
+
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:kGDataUseRegisteredClass
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)fetchSpreadsheetEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
                                                    forFeedURL:(NSURL *)spreadsheetFeedURL
                                                      delegate:(id)delegate

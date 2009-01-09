@@ -1872,25 +1872,31 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 - (BOOL)hasAttributesEqualToAttributesOf:(GDataObject *)other {
   
   NSArray *attributesToIgnore = [self attributesIgnoredForEquality];
-  
-  if (attributesToIgnore != nil) {
-    
-    // make a list of declared attributes minus the ones being excluded
-    NSMutableArray *filteredAttrDecls 
-      = [NSMutableArray arrayWithArray:attributeDeclarations_];
-    
-    [filteredAttrDecls removeObjectsInArray:attributesToIgnore];
-    
-    // compare values for all other declared attributes
-    NSArray *selfValues = [[self attributes] objectsForKeys:filteredAttrDecls
-                                             notFoundMarker:[NSNull null]];
-    NSArray *otherValues = [[other attributes] objectsForKeys:filteredAttrDecls
-                                               notFoundMarker:[NSNull null]];
 
-    return AreEqualOrBothNil(selfValues, otherValues);
-  } 
-  
-  return AreEqualOrBothNil([self attributes], [other attributes]);
+  NSDictionary *selfAttrs = [self attributes];
+  NSDictionary *otherAttrs = [other attributes];
+
+  if ([attributesToIgnore count] == 0) {
+    // none to ignore; just compare attribute dictionaries
+    return AreEqualOrBothNil(selfAttrs, otherAttrs);
+  }
+
+  // step through attributes, comparing each non-ignored attribute
+  // to look for a mismatch
+  NSString *attrKey;
+  GDATA_FOREACH(attrKey, attributeDeclarations_) {
+
+    if (![attributesToIgnore containsObject:attrKey]) {
+      
+      NSString *val1 = [selfAttrs objectForKey:attrKey];
+      NSString *val2 = [otherAttrs objectForKey:attrKey];
+
+      if (!AreEqualOrBothNil(val1, val2)) {
+        return NO;
+      }
+    }
+  }
+  return YES;
 }
 
 - (NSArray *)attributesIgnoredForEquality {
