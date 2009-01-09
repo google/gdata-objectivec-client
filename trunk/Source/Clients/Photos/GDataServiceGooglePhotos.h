@@ -76,6 +76,12 @@ _EXTERN NSString* kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
                             didFinishSelector:(SEL)finishedSelector
                               didFailSelector:(SEL)failedSelector;
 
+// finished callback (see above) is passed an appropriate GooglePhotos entry
+- (GDataServiceTicket *)fetchPhotoEntryWithURL:(NSURL *)entryURL
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                               didFailSelector:(SEL)failedSelector;
+
 // finished callback (see above) is passed the inserted entry
 - (GDataServiceTicket *)fetchPhotoEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
                                              forFeedURL:(NSURL *)photoFeedURL

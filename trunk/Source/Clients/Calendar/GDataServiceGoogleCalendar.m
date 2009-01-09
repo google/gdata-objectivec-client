@@ -61,6 +61,18 @@
                              didFailSelector:failedSelector];
 }
 
+- (GDataServiceTicket *)fetchCalendarEntryWithURL:(NSURL *)entryURL
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector
+                                  didFailSelector:(SEL)failedSelector {
+
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:[GDataEntryCalendar class]
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
+}
+
 - (GDataServiceTicket *)fetchCalendarEntryByInsertingEntry:(GDataEntryCalendar *)entryToInsert
                                                 forFeedURL:(NSURL *)calendarFeedURL
                                                   delegate:(id)delegate
@@ -107,6 +119,18 @@
                                     delegate:delegate
                            didFinishSelector:finishedSelector
                              didFailSelector:failedSelector];
+}
+
+- (GDataServiceTicket *)fetchCalendarEventEntryWithURL:(NSURL *)entryURL
+                                              delegate:(id)delegate
+                                     didFinishSelector:(SEL)finishedSelector
+                                       didFailSelector:(SEL)failedSelector {
+
+  return [self fetchAuthenticatedEntryWithURL:entryURL
+                                   entryClass:[GDataEntryCalendarEvent class]
+                                     delegate:delegate
+                            didFinishSelector:finishedSelector
+                              didFailSelector:failedSelector];
 }
 
 - (GDataServiceTicket *)fetchCalendarEventByInsertingEntry:(GDataEntryCalendarEvent *)entryToInsert

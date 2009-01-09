@@ -52,16 +52,15 @@ Additions
 
 Bugs Fixed
 
-- Moved GDataEntryEvent, GDataFeedEvent, GData from common sources to Calendar
-  service folder, along with some elements used only for calendar
-  (GDataOriginalEvent, GDataReminder, GDataRecurrence,
-  GDataRecurrenceException.)  NOTE: Clients building directly against source
-  files will have to remove those files from their projects (except for calendar
-  clients, which will have to re-add the source files from their new locations.)
+- Moved some classes from common sources to Calendar folder
+
+- Added methods to fetch individual calendar, photo, and spreadsheet entries
 
 - Fixed query generation for URLs that already contain some parameters
 
 - Fixed finance portfolio description method (thanks dujunfly)
+
+- Renamed photos server and query classes, and changed photos feed domain
 
 - Removed some header files for unit test sources
 
