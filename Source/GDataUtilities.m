@@ -14,6 +14,7 @@
 */
 
 #import "GDataUtilities.h"
+#import <math.h>
 
 @implementation GDataUtilities
 
@@ -79,7 +80,7 @@
   double val = [str doubleValue];
   NSNumber *number = [NSNumber numberWithDouble:val];
 
-  if (val == 0) {
+  if (fpclassify(val) == FP_ZERO) {
     if ([str caseInsensitiveCompare:@"INF"] == NSOrderedSame) {
       number = (NSNumber *)kCFNumberPositiveInfinity;
     } else if ([str caseInsensitiveCompare:@"-INF"] == NSOrderedSame) {

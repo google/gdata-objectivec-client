@@ -163,7 +163,7 @@ enum {
     [invocation getArgument:&failedSelector atIndex:kInvocationFailedSelectorIndex];
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"empty username/password"
-                                                         forKey:@"error"];
+                                                         forKey:kGDataServerErrorStringKey];
     NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
                                          code:-1
                                      userInfo:userInfo];
@@ -244,8 +244,9 @@ enum {
       // auth server's error to "error" as a convenience to clients, and hope
       // few are confused about why the error appears twice in the dictionary.
       NSString *authErrStr = [userInfo authenticationError];
-      if (authErrStr != nil && [userInfo objectForKey:@"error"] == nil) {
-        [userInfo setObject:authErrStr forKey:@"error"];
+      if (authErrStr != nil 
+          && [userInfo objectForKey:kGDataServerErrorStringKey] == nil) {
+        [userInfo setObject:authErrStr forKey:kGDataServerErrorStringKey];
       }
     }
   }
