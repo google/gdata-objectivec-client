@@ -61,6 +61,7 @@
   STAssertEqualObjects([error internalReason], @"something happened", @"reason test");
   STAssertEqualObjects([error extendedHelpURI], @"http://domain.com?whatever=no", @"help test");
   STAssertEqualObjects([error sendReportURI], @"http://domain.com/send", @"send test");
+  STAssertEqualObjects([error summary], @"GData domain error code red: \"something happened\"", @"summary test");
 
   GDataServerError *error2 = [[group errors] lastObject];
   STAssertEqualObjects([error2 domain], @"Second domain", @"domain test");

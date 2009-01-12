@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceBase.m
@@ -68,6 +68,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
          didFinishedSelector:(SEL)finishedSelector
              didFailSelector:(SEL)failedSelector
                       ticket:(GDataServiceTicketBase *)ticket;
+
+- (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
+                                   contentType:(NSString *)contentType;
 @end
 
 @implementation GDataServiceBase
@@ -618,56 +621,32 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 #endif
 
   NSDictionary *callbackDict = [[[fetcher userData] retain] autorelease];
-  
+
   // hide our parameters from any future inspection of the fetcher's userdata
   [fetcher setUserData:nil];
 
   id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
-  
+
   GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
 
   NSString *failedSelectorStr = [callbackDict objectForKey:kCallbackFailedSelectorKey];
   SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
-  
-  NSDictionary *userInfo = nil;
-  
-  if ([data length] > 0) {
 
-    // check if the response is a structured XML error string, according to the
-    // response content-type header; if so, convert the XML to a
-    // GDataServerErrorGroup
-    NSURLResponse *response = [fetcher response];
-    if ([response respondsToSelector:@selector(allHeaderFields)]) {
+  // determine the type of server response, since we will need to know if it
+  // is structured XML
+  NSURLResponse *response = [fetcher response];
+  NSString *contentType = nil;
 
-      NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
-      NSString *contentType = [headers objectForKey:@"Content-Type"];
+  if ([response respondsToSelector:@selector(allHeaderFields)]) {
 
-      if ([[contentType lowercaseString] hasPrefix:kXMLErrorContentType]) {
-
-        GDataServerErrorGroup *errorGroup
-          = [[[GDataServerErrorGroup alloc] initWithData:data] autorelease];
-
-        if (errorGroup != nil) {
-          userInfo = [NSDictionary dictionaryWithObject:errorGroup
-                                                 forKey:kGDataStructuredErrorsKey];
-        }
-      }
-    }
-
-    if (userInfo == nil) {
-
-      // typically, along with a failure status code is a string describing the
-      // problem
-      NSString *failureStr = [[[NSString alloc] initWithData:data
-                                                     encoding:NSUTF8StringEncoding] autorelease];
-      if (failureStr) {
-        userInfo = [NSDictionary dictionaryWithObject:failureStr
-                                               forKey:@"error"];
-      }
-    }
+    NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+    contentType = [headers objectForKey:@"Content-Type"];
   }
-    
-  NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain 
+
+  NSDictionary *userInfo = [self userInfoForErrorResponseData:data
+                                                  contentType:contentType];
+
+  NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
                                        code:status
                                    userInfo:userInfo];
   if (failedSelector) {
@@ -675,7 +654,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                    withObject:ticket
                    withObject:error];
   }
-  
+
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
@@ -702,6 +681,62 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
+}
+
+// create an error userInfo dictionary containing a useful reason string and,
+// for structured XML errors, a server error group object
+- (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
+                                   contentType:(NSString *)contentType {
+
+  // NSError's default localizedReason value looks like
+  //   "(com.google.GDataServiceDomain error -4.)"
+  //
+  // The NSError domain and numeric code aren't the ones we care about
+  // so much as the error present in the server response data, so
+  // we'll try to store a more useful reason in the userInfo dictionary
+
+  NSString *reasonStr = nil;
+  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+
+  if ([data length] > 0) {
+
+    // check if the response is a structured XML error string, according to the
+    // response content-type header; if so, convert the XML to a
+    // GDataServerErrorGroup
+    if ([[contentType lowercaseString] hasPrefix:kXMLErrorContentType]) {
+
+      GDataServerErrorGroup *errorGroup
+        = [[[GDataServerErrorGroup alloc] initWithData:data] autorelease];
+
+      if (errorGroup != nil) {
+
+        // store the server group in the userInfo for the error
+        [userInfo setObject:errorGroup forKey:kGDataStructuredErrorsKey];
+
+        reasonStr = [[errorGroup mainError] summary];
+      }
+    }
+
+    if ([userInfo count] == 0) {
+
+      // no structured XML error was available; deal with a plaintext server
+      // error response
+      reasonStr = [[[NSString alloc] initWithData:data
+                                         encoding:NSUTF8StringEncoding] autorelease];
+    }
+  }
+
+  if (reasonStr != nil) {
+    // we always store an error in the userInfo key "error"
+    [userInfo setObject:reasonStr forKey:kGDataServerErrorStringKey];
+
+    // store a user-readable "reason" to show up when an error is logged,
+    // in parentheses like NSError does it
+    NSString *parenthesized = [NSString stringWithFormat:@"(%@)", reasonStr];
+    [userInfo setObject:parenthesized forKey:NSLocalizedFailureReasonErrorKey];
+  }
+
+  return userInfo;
 }
 
 // The object fetcher may call into this retry method; this one invokes the
