@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataEntryCalendar.m
@@ -49,6 +49,12 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"overridename"; }
+@end
+
+@implementation GDataTimesCleanedProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"timesCleaned"; }
 @end
 
 @implementation GDataTimeZoneProperty
@@ -90,22 +96,17 @@
   
   // Calendar extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataAccessLevelProperty class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataColorProperty class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataHiddenProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataOverrideNameProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSelectedProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataTimeZoneProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWhen class]];  // are whens really a property of calendars? Java has the extension but not the accessor
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWhere class]];  
-  
+                                   childClasses:
+   [GDataAccessLevelProperty class],
+   [GDataColorProperty class],
+   [GDataHiddenProperty class],
+   [GDataOverrideNameProperty class],
+   [GDataSelectedProperty class],
+   [GDataTimeZoneProperty class],
+   [GDataTimesCleanedProperty class],
+   [GDataWhen class],  // are whens really a property of calendars? Java has the extension but not the accessor
+   [GDataWhere class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -113,6 +114,7 @@
   NSMutableArray *items = [super itemsForDescription];
   
   [self addToArray:items objectDescriptionIfNonNil:[[self timeZoneName] stringValue] withName:@"timezone"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self timesCleaned] stringValue] withName:@"timesCleaned"];
   [self addToArray:items objectDescriptionIfNonNil:[[self overrideName] stringValue] withName:@"override"];
   [self addToArray:items objectDescriptionIfNonNil:[[self accessLevel] stringValue] withName:@"accessLevel"];
   
@@ -194,6 +196,20 @@
   [self setObject:val forExtensionClass:[GDataTimeZoneProperty class]];
 }
 
+- (NSNumber *)timesCleaned { // int
+  GDataTimesCleanedProperty *obj;
+
+  obj = [self objectForExtensionClass:[GDataTimesCleanedProperty class]];
+  return [obj intNumberValue];
+}
+
+- (void)setTimesCleaned:(NSNumber *)num {
+  GDataTimesCleanedProperty *obj;
+
+  obj = [GDataTimesCleanedProperty valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataTimesCleanedProperty class]];
+}
+
 - (GDataOverrideNameProperty *)overrideName {
   return [self objectForExtensionClass:[GDataOverrideNameProperty class]];
 }
@@ -225,6 +241,5 @@
 - (void)addLocation:(GDataWhere *)obj {
   [self addObject:obj forExtensionClass:[obj class]]; 
 }
-
 
 @end

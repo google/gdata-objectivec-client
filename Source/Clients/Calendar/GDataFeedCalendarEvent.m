@@ -22,7 +22,6 @@
 #import "GDataFeedCalendarEvent.h"
 
 @class GDataTimeZoneProperty;
-
 @class GDataEntryCalendarEvent;
 
 @implementation GDataFeedCalendarEvent
@@ -46,12 +45,15 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class feedClass = [self class];
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataTimeZoneProperty class]];  
+                                 childClasses:
+   [GDataTimeZoneProperty class],
+   [GDataTimesCleanedProperty class],
+   nil];
 }
 
 - (Class)classForEntries {
@@ -71,4 +73,19 @@
 - (void)setTimeZoneName:(GDataTimeZoneProperty *)val {
  [self setObject:val forExtensionClass:[GDataTimeZoneProperty class]];
 }
+
+- (NSNumber *)timesCleaned { // int
+  GDataTimesCleanedProperty *obj;
+
+  obj = [self objectForExtensionClass:[GDataTimesCleanedProperty class]];
+  return [obj intNumberValue];
+}
+
+- (void)setTimesCleaned:(NSNumber *)num {
+  GDataTimesCleanedProperty *obj;
+
+  obj = [GDataTimesCleanedProperty valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataTimesCleanedProperty class]];
+}
+
 @end

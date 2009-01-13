@@ -247,6 +247,7 @@
     { @"entries.0.authors.0.email", @"fred@gmail.com" },
     { @"entries.0.isHidden", @"0" },
     { @"entries.0.timeZoneName", @"America/Los_Angeles" },
+    { @"entries.0.timesCleaned", @"31" },
     { @"entries.0.color", @"#B1365F" },
     { @"entries.0.accessLevel", kGDataCalendarAccessOwner},
     { @"entries.0.overrideName", @"over-ride-name" },
@@ -282,6 +283,7 @@
     { @"startIndex", @"1" },
     { @"itemsPerPage", @"100000" },
     { @"timeZoneName", @"America/Los_Angeles" },
+    { @"timesCleaned", @"7" },
     
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },

@@ -19,6 +19,7 @@
 	<openSearch:startIndex>1</openSearch:startIndex>
 	<openSearch:itemsPerPage>100000</openSearch:itemsPerPage>
 	<gCal:timezone value="America/Los_Angeles"/>
+	<gCal:timesCleaned value="7"/>
 	<entry>
 		<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908</id>
 		<published>2006-10-27T22:48:14.000Z</published>

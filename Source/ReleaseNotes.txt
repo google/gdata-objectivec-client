@@ -51,6 +51,11 @@ Additions
 
 - Builds for iPhone and requiring 10.5 and higher now take advantage of
   fast enumeration
+  
+- Added realm attribute to GDataExtendedProperty element
+  
+- Added timesCleaned read-only property to calendar entries, and removed
+  unsupported "contributor" access role
 
 Bugs Fixed
 

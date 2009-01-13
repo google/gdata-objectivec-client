@@ -19,6 +19,18 @@
 
 #import "GDataObject.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAEXTENDEDPROPERTY_DEFINE_GLOBALS
+#define _EXTERN
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+_EXTERN NSString* const kGDataExtendedPropertyRealmShared _INITIALIZE_AS(@"http://schemas.google.com/g/2005#shared");
+
 
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
@@ -39,6 +51,9 @@
 
 - (NSString *)name;
 - (void)setName:(NSString *)str;
+
+- (NSString *)realm;
+- (void)setRealm:(NSString *)str;
 
 - (NSArray *)XMLValues;
 - (void)setXMLValues:(NSArray *)arr;
