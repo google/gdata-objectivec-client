@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataEntryCalendar.h
@@ -33,6 +33,9 @@
 
 _EXTERN NSString* const kGDataCalendarDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
+_EXTERN NSString* const kGDataExtendedPropertyRealmCalendar _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#calendar");
+
+
 // http://code.google.com/apis/calendar/reference.html#Elements  Says:
 // "accessLevel must be one of the following:"
 _EXTERN NSString* const kGDataCalendarAccessNone        _INITIALIZE_AS(@"none");
@@ -40,7 +43,6 @@ _EXTERN NSString* const kGDataCalendarAccessRead        _INITIALIZE_AS(@"read");
 _EXTERN NSString* const kGDataCalendarAccessFreeBusy    _INITIALIZE_AS(@"freebusy");
 _EXTERN NSString* const kGDataCalendarAccessRespond     _INITIALIZE_AS(@"respond");
 _EXTERN NSString* const kGDataCalendarAccessOverride    _INITIALIZE_AS(@"override");
-_EXTERN NSString* const kGDataCalendarAccessContributor _INITIALIZE_AS(@"contributor");
 _EXTERN NSString* const kGDataCalendarAccessEditor      _INITIALIZE_AS(@"editor");
 _EXTERN NSString* const kGDataCalendarAccessOwner       _INITIALIZE_AS(@"owner");
 _EXTERN NSString* const kGDataCalendarAccessRoot        _INITIALIZE_AS(@"root");
@@ -67,6 +69,12 @@ _EXTERN NSString* const kGDataRoleCalendarRoot        _INITIALIZE_AS(@"http://sc
 @end
 
 @interface GDataSelectedProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataTimesCleanedProperty : GDataValueConstruct <GDataExtension>
 + (NSString *)extensionElementURI;
 + (NSString *)extensionElementPrefix;
 + (NSString *)extensionElementLocalName;
@@ -114,6 +122,9 @@ _EXTERN NSString* const kGDataRoleCalendarRoot        _INITIALIZE_AS(@"http://sc
 
 - (GDataTimeZoneProperty *)timeZoneName;
 - (void)setTimeZoneName:(GDataTimeZoneProperty *)theString;
+
+- (NSNumber *)timesCleaned; // int
+- (void)setTimesCleaned:(NSNumber *)num;
 
 - (GDataOverrideNameProperty *)overrideName;
 - (void)setOverrideName:(GDataOverrideNameProperty *)theString;

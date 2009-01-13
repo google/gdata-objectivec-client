@@ -212,10 +212,11 @@ static int DoGDataClassSearch(NSBundle *targetBundle, NSString *outputPath) {
      "%@\n"
      "#endif\n";
 
-  NSString *versionInfo = [NSString stringWithFormat:@"%@ v. %@ (%d classes)",
+  NSString *versionInfo = [NSString stringWithFormat:@"%@ v. %@ (%d classes) %@",
              [targetBundle bundleIdentifier],
              [[targetBundle infoDictionary] objectForKey:@"CFBundleVersion"],
-             (int) [sortedNames count]];
+             (int) [sortedNames count],
+             [NSDate date]];
 
   NSString *fileStr = [NSString stringWithFormat:kTemplate,
                        versionInfo, nameListStr];

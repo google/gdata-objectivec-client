@@ -33,6 +33,7 @@
 		</author>
 		<gCal:hidden value="false"/>
 		<gCal:timezone value="America/Los_Angeles"/>
+		<gCal:timesCleaned value="31"/>
 		<gCal:color value="#B1365F"/>
 		<gCal:accesslevel value="owner"/>
 		<gCal:overridename value="over-ride-name"/>

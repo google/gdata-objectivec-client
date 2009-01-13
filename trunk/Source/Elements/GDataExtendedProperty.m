@@ -17,11 +17,13 @@
 //  GDataExtendedProperty.m
 //
 
+#define GDATAEXTENDEDPROPERTY_DEFINE_GLOBALS 1
+
 #import "GDataExtendedProperty.h"
 
 static NSString* const kNameAttr = @"name";
 static NSString* const kValueAttr = @"value";
-
+static NSString* const kRealmAttr = @"realm";
 
 @implementation GDataExtendedProperty
 // an element with a name="" and a value="" attribute, as in
@@ -73,7 +75,7 @@ static NSString* const kValueAttr = @"value";
 - (void)addParseDeclarations {
   
   NSArray *attrs = [NSArray arrayWithObjects:
-                    kNameAttr, kValueAttr, nil];
+                    kNameAttr, kValueAttr, kRealmAttr, nil];
   
   [self addLocalAttributeDeclarations:attrs];  
 
@@ -94,6 +96,14 @@ static NSString* const kValueAttr = @"value";
 
 - (void)setName:(NSString *)str {
   [self setStringValue:str forAttribute:kNameAttr];
+}
+
+- (NSString *)realm {
+  return [self stringValueForAttribute:kRealmAttr];
+}
+
+- (void)setRealm:(NSString *)str {
+  [self setStringValue:str forAttribute:kRealmAttr];
 }
 
 - (NSArray *)XMLValues {
