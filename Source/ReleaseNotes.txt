@@ -54,8 +54,9 @@ Additions
   
 - Added realm attribute to GDataExtendedProperty element
   
-- Added timesCleaned read-only property to calendar entries, and removed
-  unsupported "contributor" access role
+- Added timesCleaned read-only property to calendar entries, added privateCopy
+  property to calendar event entries, and removed unsupported "contributor"
+  access role
 
 Bugs Fixed
 

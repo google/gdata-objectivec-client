@@ -420,6 +420,7 @@
       " realm='http://schemas.google.com/g/2005#shared' />" },
     { @"name", @"X-MOZ-ALARM-LAST-ACK" },
     { @"value", @"2006-10-03T19:01:14Z" },
+    { @"realm", kGDataExtendedPropertyRealmShared },
     { @"", @"" },
 
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='fred'><mozq>"

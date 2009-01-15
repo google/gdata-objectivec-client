@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataEntryCalendarEvent.m
@@ -32,6 +32,12 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"sendEventNotifications"; }
+@end
+
+@implementation GDataPrivateCopyProperty 
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"privateCopy"; }
 @end
 
 @implementation GDataQuickAddProperty
@@ -120,29 +126,27 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // CalendarEventEntry extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSendEventNotifications class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataQuickAddProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataExtendedProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSyncEventProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSequenceProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataICalUIDProperty class]];  
-  
+                                 childClasses:
+   [GDataSendEventNotifications class],
+   [GDataPrivateCopyProperty class],
+   [GDataQuickAddProperty class],
+   [GDataExtendedProperty class],
+   [GDataSyncEventProperty class],
+   [GDataSequenceProperty class],
+   [GDataICalUIDProperty class],
+   nil];
+
   [self addExtensionDeclarationForParentClass:[GDataWho class]
-                                   childClass:[GDataResourceProperty class]];  
+                                   childClass:[GDataResourceProperty class]];
   [self addExtensionDeclarationForParentClass:[GDataLink class]
-                                   childClass:[GDataWebContent class]];  
+                                   childClass:[GDataWebContent class]];
 }
 
 - (id)init {
@@ -163,6 +167,10 @@
     [items addObject:@"sendsEventNotification"];
   }
 
+  if ([self isPrivateCopy]) {
+    [items addObject:@"privateCopy"];
+  }
+  
   if ([self isQuickAdd]) {
     [items addObject:@"quickAdd"];
   }
@@ -199,8 +207,24 @@
   [self setObject:obj forExtensionClass:[GDataSendEventNotifications class]];
 }
 
+- (BOOL)isPrivateCopy {
+  GDataBoolValueConstruct *obj =
+    [self objectForExtensionClass:[GDataPrivateCopyProperty class]];
+  return [obj boolValue];
+}
+
+- (void)setIsPrivateCopy:(BOOL)flag {
+  GDataBoolValueConstruct *obj;
+  if (flag) {
+    obj = [GDataPrivateCopyProperty boolValueWithBool:YES];
+  } else {
+    obj = nil; // removes the extension
+  }
+  [self setObject:obj forExtensionClass:[GDataPrivateCopyProperty class]];
+}
+
 - (BOOL)isQuickAdd {
-  GDataBoolValueConstruct *obj = (GDataBoolValueConstruct *)
+  GDataBoolValueConstruct *obj =
     [self objectForExtensionClass:[GDataQuickAddProperty class]];
   return [obj boolValue];
 }

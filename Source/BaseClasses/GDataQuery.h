@@ -20,6 +20,19 @@
 #import "GDataCategory.h"
 #import "GDataDateTime.h"
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAQUERY_DEFINE_GLOBALS
+#define _EXTERN
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// result formats
+_EXTERN NSString* kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-service"); // service introspection
+
 // categories within a filter are ORed; multiple filters in
 // a query are ANDed
 
@@ -87,6 +100,9 @@
 
 - (NSString *)protocolVersion;
 - (void)setProtocolVersion:(NSString *)str;
+
+- (NSString *)resultFormat;  // the "alt" parameter
+- (void)setResultFormat:(NSString *)str;
 
 - (NSString *)language;
 - (void)setLanguage:(NSString *)str;

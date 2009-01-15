@@ -2158,7 +2158,8 @@ forCategoryWithScheme:scheme
 }
 
 // objectClassForXMLElement: returns a found registered feed
-// or entry class for the XML according to its contained category
+// or entry class for the XML according to its contained category,
+// or an Atom service document class
 //
 // If no registered class is found with a matching category,
 // this returns GDataFeedBase for feed elements, GDataEntryBase
@@ -2168,66 +2169,96 @@ forCategoryWithScheme:scheme
   Class result;
   NSString *elementName = [element localName];
   BOOL isFeed = [elementName isEqual:@"feed"];
+  BOOL isEntry = [elementName isEqual:@"entry"];
   
   if (isFeed) {
     
     // default to returning a feed base class
     result = [GDataFeedBase class];
     
-  } else if ([elementName isEqual:@"entry"]) {
+  } else if (isEntry) {
     
     // default to returning an entry base class
     result = [GDataEntryBase class];
+    
+  } else if ([elementName isEqual:@"service"]) {
+
+    // introspection - return service document
+    NSString *serviceDocClassName;
+
+    if ([[element URI] isEqual:kGDataNamespaceAtomPub1_0]) {
+      // old namespace URI
+      serviceDocClassName = @"GDataAtomServiceDocument1_0";
+    } else {
+      serviceDocClassName = @"GDataAtomServiceDocument";
+    }
+
+#ifdef GDATA_TARGET_NAMESPACE
+    // prepend the class name prefix
+    serviceDocClassName = [NSString stringWithFormat:@"%s_%@",
+                           GDATA_TARGET_NAMESPACE_STRING, serviceDocClassName];
+#endif
+
+    Class serviceClass = NSClassFromString(serviceDocClassName);
+
+    GDATA_DEBUG_ASSERT(serviceClass != nil, @"service class %@ unavailable",
+                       serviceDocClassName);
+
+    result = serviceClass;
 
   } else {
     // we look only at feed and entry elements, and this is
     // some other kind of element
-    return nil; 
+    result = nil; 
   }
   
-  // category elements look like <category scheme="blah" term="blahblah"/>
-  // and there may be more than one
-  //
-  // ? For feed elements, if there's no category, should we look into
-  // the entry elements for a category?  Some calendar feeds have
-  // lacked feed-level categories.
+  if (isFeed || isEntry) {
 
-  // step through the category elements, looking for one that matches
-  // a registered feed or entry class
-  
-  NSArray *categories = [element elementsForLocalName:@"category"
-                                                  URI:kGDataNamespaceAtom];
-  if ([categories count] == 0) {
-    NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
-    if ([atomPrefix length] == 0) {
-      categories = [element elementsForName:@"category"];
+    // step through the feed or entry's category elements, looking for one that
+    // matches a registered feed or entry class
+    //
+    // category elements look like <category scheme="blah" term="blahblah"/>
+    // and there may be more than one
+    //
+    // ? For feed elements, if there's no category, should we look into
+    // the entry elements for a category?  Some calendar feeds have
+    // lacked feed-level categories.
+
+
+    NSArray *categories = [element elementsForLocalName:@"category"
+                                                    URI:kGDataNamespaceAtom];
+    if ([categories count] == 0) {
+      NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
+      if ([atomPrefix length] == 0) {
+        categories = [element elementsForName:@"category"];
+      }
+    }
+
+    NSXMLElement *categoryNode;
+    GDATA_FOREACH(categoryNode, categories) {
+
+      NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
+      NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
+
+      if (scheme || term) {
+
+        // we have a scheme or a term, so look for a registered class
+        Class foundClass = nil;
+        if (isFeed) {
+          foundClass = [GDataObject feedClassForCategoryWithScheme:scheme
+                                                              term:term];
+        } else {
+          foundClass = [GDataObject entryClassForCategoryWithScheme:scheme
+                                                               term:term];
+        }
+        if (foundClass) {
+          result = foundClass;
+          break;
+        }
+      }
     }
   }
 
-  NSXMLElement *categoryNode;
-  GDATA_FOREACH(categoryNode, categories) {
-    
-    NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
-    NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
-    
-    if (scheme || term) {
-
-      // we have a scheme or a term, so look for a registered class
-      Class foundClass = nil;
-      if (isFeed) {
-        foundClass = [GDataObject feedClassForCategoryWithScheme:scheme 
-                                                        term:term];
-      } else {
-        foundClass = [GDataObject entryClassForCategoryWithScheme:scheme 
-                                                         term:term];
-      }
-      if (foundClass) {
-        result = foundClass;
-        break;
-      }
-    }
-  }
-  
   return result;
 }
 

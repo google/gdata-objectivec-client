@@ -248,7 +248,20 @@
   NSString *expectedContactsURLString = @"http://photos.googleapis.com/data/feed/api/user/fred@gmail.com/contacts?kind=user";
   STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
                        @"contacts URL error");
+
+  // test service document request
+  GDataQueryGooglePhotos *pwaQuery3;
+  pwaQuery3 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
+                                                  albumID:nil
+                                                albumName:nil
+                                                  photoID:nil];
+  [pwaQuery3 setResultFormat:kGDataQueryResultServiceDocument];
+  NSURL *resultURL3 = [pwaQuery3 URL];
+  NSString *expected3 = @"http://photos.googleapis.com/data/feed/api/user/fredflintstone?alt=atom-service";
+  STAssertEqualObjects([resultURL3 absoluteString], expected3,
+                       @"PWA query 3 generation error");
 }
+
 
 - (void)testYouTubeQuery {
   

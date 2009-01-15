@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.5 (343 classes)
+// com.google.GDataFramework v. 1.5 (356 classes) 2009-01-15 15:37:06 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -27,7 +27,13 @@
   #define GDataAccessLevelProperty             _GDATA_NS_SYMBOL(GDataAccessLevelProperty)
   #define GDataACLRole                         _GDATA_NS_SYMBOL(GDataACLRole)
   #define GDataACLScope                        _GDATA_NS_SYMBOL(GDataACLScope)
+  #define GDataAtomAccept                      _GDATA_NS_SYMBOL(GDataAtomAccept)
+  #define GDataAtomAccept1_0                   _GDATA_NS_SYMBOL(GDataAtomAccept1_0)
   #define GDataAtomAuthor                      _GDATA_NS_SYMBOL(GDataAtomAuthor)
+  #define GDataAtomCategoryGroup               _GDATA_NS_SYMBOL(GDataAtomCategoryGroup)
+  #define GDataAtomCategoryGroup1_0            _GDATA_NS_SYMBOL(GDataAtomCategoryGroup1_0)
+  #define GDataAtomCollection                  _GDATA_NS_SYMBOL(GDataAtomCollection)
+  #define GDataAtomCollection1_0               _GDATA_NS_SYMBOL(GDataAtomCollection1_0)
   #define GDataAtomContent                     _GDATA_NS_SYMBOL(GDataAtomContent)
   #define GDataAtomContributor                 _GDATA_NS_SYMBOL(GDataAtomContributor)
   #define GDataAtomIcon                        _GDATA_NS_SYMBOL(GDataAtomIcon)
@@ -39,10 +45,14 @@
   #define GDataAtomPubEditedDateStd            _GDATA_NS_SYMBOL(GDataAtomPubEditedDateStd)
   #define GDataAtomPublishedDate               _GDATA_NS_SYMBOL(GDataAtomPublishedDate)
   #define GDataAtomRights                      _GDATA_NS_SYMBOL(GDataAtomRights)
+  #define GDataAtomServiceDocument             _GDATA_NS_SYMBOL(GDataAtomServiceDocument)
+  #define GDataAtomServiceDocument1_0          _GDATA_NS_SYMBOL(GDataAtomServiceDocument1_0)
   #define GDataAtomSubtitle                    _GDATA_NS_SYMBOL(GDataAtomSubtitle)
   #define GDataAtomSummary                     _GDATA_NS_SYMBOL(GDataAtomSummary)
   #define GDataAtomTitle                       _GDATA_NS_SYMBOL(GDataAtomTitle)
   #define GDataAtomUpdatedDate                 _GDATA_NS_SYMBOL(GDataAtomUpdatedDate)
+  #define GDataAtomWorkspace                   _GDATA_NS_SYMBOL(GDataAtomWorkspace)
+  #define GDataAtomWorkspace1_0                _GDATA_NS_SYMBOL(GDataAtomWorkspace1_0)
   #define GDataAttendeeStatus                  _GDATA_NS_SYMBOL(GDataAttendeeStatus)
   #define GDataAttendeeType                    _GDATA_NS_SYMBOL(GDataAttendeeType)
   #define GDataAttribute                       _GDATA_NS_SYMBOL(GDataAttribute)
@@ -258,6 +268,7 @@
   #define GDataPositionData                    _GDATA_NS_SYMBOL(GDataPositionData)
   #define GDataPostalAddress                   _GDATA_NS_SYMBOL(GDataPostalAddress)
   #define GDataPrice                           _GDATA_NS_SYMBOL(GDataPrice)
+  #define GDataPrivateCopyProperty             _GDATA_NS_SYMBOL(GDataPrivateCopyProperty)
   #define GDataProgressMonitorInputStream      _GDATA_NS_SYMBOL(GDataProgressMonitorInputStream)
   #define GDataQuery                           _GDATA_NS_SYMBOL(GDataQuery)
   #define GDataQueryBooks                      _GDATA_NS_SYMBOL(GDataQueryBooks)
@@ -314,6 +325,7 @@
   #define GDataSpreadsheetCustomElement        _GDATA_NS_SYMBOL(GDataSpreadsheetCustomElement)
   #define GDataSyncEventProperty               _GDATA_NS_SYMBOL(GDataSyncEventProperty)
   #define GDataTextConstruct                   _GDATA_NS_SYMBOL(GDataTextConstruct)
+  #define GDataTimesCleanedProperty            _GDATA_NS_SYMBOL(GDataTimesCleanedProperty)
   #define GDataTimeZoneProperty                _GDATA_NS_SYMBOL(GDataTimeZoneProperty)
   #define GDataTransparency                    _GDATA_NS_SYMBOL(GDataTransparency)
   #define GDataUtilities                       _GDATA_NS_SYMBOL(GDataUtilities)
@@ -321,6 +333,7 @@
   #define GDataValueElementConstruct           _GDATA_NS_SYMBOL(GDataValueElementConstruct)
   #define GDataVisibility                      _GDATA_NS_SYMBOL(GDataVisibility)
   #define GDataVolumeEmbeddability             _GDATA_NS_SYMBOL(GDataVolumeEmbeddability)
+  #define GDataVolumeOpenAccess                _GDATA_NS_SYMBOL(GDataVolumeOpenAccess)
   #define GDataVolumeReview                    _GDATA_NS_SYMBOL(GDataVolumeReview)
   #define GDataVolumeViewability               _GDATA_NS_SYMBOL(GDataVolumeViewability)
   #define GDataWebContent                      _GDATA_NS_SYMBOL(GDataWebContent)

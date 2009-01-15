@@ -1549,4 +1549,82 @@
   [self runTests:tests];
 }
 
+- (void)testServiceDocuments {
+
+  TestKeyPathValues tests[] =
+  {
+    //
+    // service document, v2
+    //
+    { @"GDataAtomServiceDocument", @"Tests/FeedServiceDocTest2.xml" },
+
+    // GDataAtomServiceDocument paths
+    { @"namespaces.app", kGDataNamespaceAtomPubStd },
+    { @"workspaces.@count", @"2" },
+
+    // workspace paths
+    { @"workspaces.0.title", @"fredflintstone workspace" },
+    { @"workspaces.0.collections.@count", @"1" },
+    { @"workspaces.0.collections.0.title", @"filetypes" },
+    { @"workspaces.0.collections.0.serviceAcceptStrings.@count", @"5" },
+    { @"workspaces.0.collections.0.serviceAcceptStrings.0", @"image/png" },
+    { @"workspaces.0.collections.0.serviceAcceptStrings.1", @"image/jpeg" },
+
+    { @"workspaces.1.title", @"Second Workspace" },
+    { @"workspaces.1.collections.@count", @"1" },
+    { @"workspaces.1.collections.0.href", @"http://example.org/hrefcollection" },
+    { @"workspaces.1.collections.0.title", @"Remaindered Links" },
+    { @"workspaces.1.collections.0.serviceAcceptStrings.@count", @"1" },
+    { @"workspaces.1.collections.0.serviceAcceptStrings.0", @"entry" },
+    { @"workspaces.1.collections.0.categoryGroup.isFixed", @"1" },
+    { @"workspaces.1.collections.0.categoryGroup.scheme", @"bogusscheme" },
+    { @"workspaces.1.collections.0.categoryGroup.href", @"bogushref" },
+    { @"workspaces.1.collections.0.categoryGroup.categories.@count", @"2" },
+    { @"workspaces.1.collections.0.categoryGroup.categories.1.term", @"serious" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // service document, v1
+    //
+    { @"GDataAtomServiceDocument1_0", @"Tests/FeedServiceDocTest1.xml" },
+
+    // GDataAtomServiceDocument paths
+    { @"namespaces.app", kGDataNamespaceAtomPub1_0 },
+    { @"workspaces.@count", @"2" },
+
+    // workspace paths
+    { @"workspaces.0.title", @"wilmaflintstone" },
+    { @"workspaces.0.collections.@count", @"1" },
+    { @"workspaces.0.collections.0.title", @"photo types" },
+    { @"workspaces.0.collections.0.serviceAcceptStrings.@count", @"1" },
+    { @"workspaces.0.collections.0.serviceAcceptStrings.0", @"image/png,image/gif,video/*,image/jpg" },
+
+    { @"workspaces.1.title", @"forgespace" },
+    { @"workspaces.1.collections.@count", @"1" },
+    { @"workspaces.1.collections.0.href", @"http://example.org/hrefcollection" },
+    { @"workspaces.1.collections.0.title", @"Remaindered Links" },
+    { @"workspaces.1.collections.0.serviceAcceptStrings.@count", @"1" },
+    { @"workspaces.1.collections.0.serviceAcceptStrings.0", @"entry" },
+    { @"workspaces.1.collections.0.categoryGroup.isFixed", @"1" },
+    { @"workspaces.1.collections.0.categoryGroup.scheme", @"hocus-scheme" },
+    { @"workspaces.1.collections.0.categoryGroup.href", @"hocus-href" },
+    { @"workspaces.1.collections.0.categoryGroup.categories.@count", @"2" },
+    { @"workspaces.1.collections.0.categoryGroup.categories.1.term", @"serious" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    { nil, nil } // end of test array
+
+  };
+
+  [self runTests:tests];
+}
+
 @end
