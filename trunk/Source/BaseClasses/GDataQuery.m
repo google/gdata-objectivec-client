@@ -17,8 +17,10 @@
 //  GDataQuery.m
 //
 
+#define GDATAQUERY_DEFINE_GLOBALS 1
 #import "GDataQuery.h"
 
+static NSString *const kAltParamName = @"alt";
 static NSString *const kAuthorParamName  = @"author";
 static NSString *const kFullTextQueryStringParamName  = @"q";
 static NSString *const kLanguageParamName  = @"hl";
@@ -296,6 +298,15 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 - (void)setProtocolVersion:(NSString *)str {
   [self addCustomParameterWithName:kProtocolVersionParamName
                              value:str];
+}
+
+- (NSString *)resultFormat {
+  NSString *str = [self valueForParameterWithName:kAltParamName];
+  return str;
+}
+
+- (void)setResultFormat:(NSString *)str {
+  [self addCustomParameterWithName:kAltParamName value:str];
 }
 
 - (NSString *)language {

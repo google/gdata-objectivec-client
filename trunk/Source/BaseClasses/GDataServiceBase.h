@@ -218,6 +218,20 @@ enum {
                                         ETag:(NSString *)etag
                                   httpMethod:(NSString *)httpMethod;
 
+//
+// Fetch methods
+//
+//  fetchFeed/fetchEntry/fetchQuery (GET)
+//  fetchEntryByInsertingEntry (POST)
+//  fetchEntryByUpdatingEntry (PUT)
+//  deleteEntry/deleteResourceURL (DELETE)
+//
+// These base class methods are for unauthenticated fetches to public feeds.
+//
+// To make authenticated fetches to a user's account, use the methods in the
+// service's GDataServiceXxxx class, or in the GDataServiceGoogle class.
+//
+
 // finishedSelector has signature like:
 //   serviceTicket:(GDataServiceTicketBase *)ticket finishedWithObject:(GDataObject *)object;
 // failedSelector has signature like:

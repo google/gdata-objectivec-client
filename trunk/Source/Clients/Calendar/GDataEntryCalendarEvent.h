@@ -37,6 +37,12 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 
 
 // CalendarEventEntry extensions
+@interface GDataPrivateCopyProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
 @interface GDataQuickAddProperty : GDataBoolValueConstruct <GDataExtension>
 + (NSString *)extensionElementURI;
 + (NSString *)extensionElementPrefix;
@@ -98,8 +104,7 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 @end
 
 
-@interface GDataEntryCalendarEvent : GDataEntryEvent {
-}
+@interface GDataEntryCalendarEvent : GDataEntryEvent
 
 + (NSDictionary *)calendarEventNamespaces;
 
@@ -107,6 +112,9 @@ _EXTERN NSString* kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 
 - (BOOL)shouldSendEventNotifications;
 - (void)setShouldSendEventNotifications:(BOOL)flag;
+
+- (BOOL)isPrivateCopy;
+- (void)setIsPrivateCopy:(BOOL)flag;
 
 - (BOOL)isQuickAdd;
 - (void)setIsQuickAdd:(BOOL)flag;
