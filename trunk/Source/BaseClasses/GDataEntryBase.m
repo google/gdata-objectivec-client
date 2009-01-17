@@ -454,43 +454,10 @@
 + (NSString *)MIMETypeForFileAtPath:(NSString *)path
                     defaultMIMEType:(NSString *)defaultType {
 
-#ifndef GDATA_FOUNDATION_ONLY
-  
-  NSString *result = defaultType;
-  
-  // convert the path to an FSRef
-  FSRef fileFSRef;
-  Boolean isDirectory;
-  OSStatus err = FSPathMakeRef((UInt8 *) [path fileSystemRepresentation], 
-                               &fileFSRef, &isDirectory);
-  if (err == noErr) {
-    
-    // get the UTI (content type) for the FSRef    
-    CFStringRef fileUTI;
-    err = LSCopyItemAttribute(&fileFSRef, kLSRolesAll, kLSItemContentType, 
-                              (CFTypeRef *)&fileUTI);
-    if (err == noErr) {
-      
-      // get the MIME type for the UTI
-      CFStringRef mimeTypeTag;
-      mimeTypeTag = UTTypeCopyPreferredTagWithClass(fileUTI, 
-                                                    kUTTagClassMIMEType);
-      if (mimeTypeTag) {
-        
-        // convert the CFStringRef to an autoreleased NSString (ObjC 2.0-safe)
-        result = [NSString stringWithString:(NSString *)mimeTypeTag]; 
-        CFRelease(mimeTypeTag);
-      }
-      CFRelease(fileUTI);
-    }
-  }
-  return result;
-  
-#else // !GDATA_FOUNDATION_ONLY
-  
-  return defaultType;
-  
-#endif
+  GDATA_DEBUG_ASSERT(0, @"MIMETypeForFileAtPath moved to GDataUtilities");
+
+  return [GDataUtilities MIMETypeForFileAtPath:path
+                               defaultMIMEType:defaultType];
 }
 
 // extension for deletion marking

@@ -31,14 +31,16 @@
 #import "GDataObject.h"
 
 @class GDataTextConstruct;
+@class GDataAtomCollection;
 
 @interface GDataAtomWorkspace : GDataObject <GDataExtension>
 
 - (GDataTextConstruct *)title;
 - (void)setTitle:(GDataTextConstruct *)obj;
 
-- (NSArray *)collections; // array of GDataAtomCollection objects
+- (NSArray *)collections;
 - (void)setCollections:(NSArray *)array;
+- (GDataAtomCollection *)primaryCollection; // returns the first collection, or nil
 
 @end
 

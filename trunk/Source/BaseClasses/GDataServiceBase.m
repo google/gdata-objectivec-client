@@ -180,7 +180,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   NSString *serviceVersion = [self serviceVersion];
   if ([serviceVersion length] > 0) {
-    [request setValue:serviceVersion forHTTPHeaderField:@"GData-Version"];
+
+    // only add a version header if the URL lacks a v= version parameter
+    NSString *queryString = [url query];
+    if  ([queryString rangeOfString:@"&v="].location == NSNotFound
+         && ![queryString hasPrefix:@"v="]) {
+
+      [request setValue:serviceVersion forHTTPHeaderField:@"GData-Version"];
+    }
   }
   
   if ([httpMethod length] > 0) {
@@ -498,7 +505,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         objectClass = baseSurrogate; 
       }
 
-      NSString *serviceVersion = [self serviceVersion];
+      // use the actual service version indicated by the response headers
+      NSDictionary *responseHeaders = [fetcher responseHeaders];
+      NSString *serviceVersion = [responseHeaders objectForKey:@"Gdata-Version"];
 
       // feeds may optionally be instantiated without unknown elements tracked
       //
@@ -634,14 +643,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   // determine the type of server response, since we will need to know if it
   // is structured XML
-  NSURLResponse *response = [fetcher response];
-  NSString *contentType = nil;
-
-  if ([response respondsToSelector:@selector(allHeaderFields)]) {
-
-    NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
-    contentType = [headers objectForKey:@"Content-Type"];
-  }
+  NSDictionary *responseHeaders = [fetcher responseHeaders];
+  NSString *contentType = [responseHeaders objectForKey:@"Content-Type"];
 
   NSDictionary *userInfo = [self userInfoForErrorResponseData:data
                                                   contentType:contentType];

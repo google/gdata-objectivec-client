@@ -75,6 +75,16 @@
   [self setObjects:array forExtensionClass:workspaceClass];
 }
 
+- (GDataAtomWorkspace *)primaryWorkspace {
+  NSArray *workspaces = [self workspaces];
+
+  if ([workspaces count] > 0) {
+    return [workspaces objectAtIndex:0];
+  }
+
+  return nil;
+}
+
 + (NSString *)defaultServiceVersion {
   return @"2.0";
 }

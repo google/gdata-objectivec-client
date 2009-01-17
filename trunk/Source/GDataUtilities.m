@@ -292,8 +292,52 @@
   }
   return nil;
 }
-@end
 
+#pragma mark File type helpers
+
+// utility routine to convert a file path to the file's MIME type using
+// Mac OS X's UTI database
++ (NSString *)MIMETypeForFileAtPath:(NSString *)path
+                    defaultMIMEType:(NSString *)defaultType {
+#ifndef GDATA_FOUNDATION_ONLY
+
+  NSString *result = defaultType;
+
+  // convert the path to an FSRef
+  FSRef fileFSRef;
+  Boolean isDirectory;
+  OSStatus err = FSPathMakeRef((UInt8 *) [path fileSystemRepresentation],
+                               &fileFSRef, &isDirectory);
+  if (err == noErr) {
+
+    // get the UTI (content type) for the FSRef
+    CFStringRef fileUTI;
+    err = LSCopyItemAttribute(&fileFSRef, kLSRolesAll, kLSItemContentType,
+                              (CFTypeRef *)&fileUTI);
+    if (err == noErr) {
+
+      // get the MIME type for the UTI
+      CFStringRef mimeTypeTag;
+      mimeTypeTag = UTTypeCopyPreferredTagWithClass(fileUTI,
+                                                    kUTTagClassMIMEType);
+      if (mimeTypeTag) {
+
+        // convert the CFStringRef to an autoreleased NSString (ObjC 2.0-safe)
+        result = [(id)CFMakeCollectable(mimeTypeTag) autorelease];
+      }
+      CFRelease(fileUTI);
+    }
+  }
+  return result;
+
+#else // !GDATA_FOUNDATION_ONLY
+
+  return defaultType;
+
+#endif
+}
+
+@end
 
 // isEqual: has the fatal flaw that it doesn't deal well with the received
 // being nil. We'll use this utility instead.

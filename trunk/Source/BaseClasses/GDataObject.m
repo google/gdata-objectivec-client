@@ -586,21 +586,17 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // we keep namespaces in a dictionary with prefixes
   // as keys.  We'll step through our namespaces and convert them
   // to NSXML-stype namespaces.
-  
-  NSUInteger numberOfNamespaces = [namespaces_ count];
-  if (numberOfNamespaces) {
-    
-    NSArray *namespaceNames = [namespaces_ allKeys];
-    NSString *name;
-    GDATA_FOREACH(name, namespaceNames) {
-      NSString *uri = [namespaces_ objectForKey:name];
-      
-      uri = [self updatedVersionedNamespaceURIForPrefix:name
-                                                    URI:uri];
-      
-      [element addNamespace:[NSXMLElement namespaceWithName:name
-                                               stringValue:uri]];
-    }
+
+  NSString *prefix;
+  GDATA_FOREACH_KEY(prefix, namespaces_) {
+
+    NSString *uri = [namespaces_ objectForKey:prefix];
+
+    uri = [self updatedVersionedNamespaceURIForPrefix:prefix
+                                                  URI:uri];
+
+    [element addNamespace:[NSXMLElement namespaceWithName:prefix
+                                              stringValue:uri]];
   }
 }
 
@@ -1574,7 +1570,7 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   // this for attribute extensions since those are so rare (most attributes
   // are parsed just by local declaration in parseAttributesForElement:.)
 
-#if GDATA_USES_LIBXML || MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+#if GDATA_USES_LIBXML || MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSArray *childLocalNames = [element valueForKeyPath:@"children.localName"];
 
   // allow wildcard lookups

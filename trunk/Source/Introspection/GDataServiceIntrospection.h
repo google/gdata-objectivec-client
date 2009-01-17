@@ -19,6 +19,15 @@
 
 #import "GDataElements.h"
 
+//
+// This group of classes is used for retrieving the service documents
+// that describe a feed's supported features (AtomPub introspection,
+// <http://tools.ietf.org/html/rfc5023>).
+//
+// Client applications that do not need to retrieve service documents may
+// omit these classes.
+//
+
 #import "GDataAtomCategoryGroup.h"
 #import "GDataAtomCollection.h"
 #import "GDataAtomServiceDocument.h"

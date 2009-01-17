@@ -119,6 +119,8 @@ _EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.co
 - (NSString *)uploadSlug; // for http slug (filename) header when uploading
 - (void)setUploadSlug:(NSString *)str;
 
+// MIMETypeForFileAtPath has been moved to GDataUtilities and will be
+// removed from GDataEntryBase in a future release
 + (NSString *)MIMETypeForFileAtPath:(NSString *)path
                     defaultMIMEType:(NSString *)defaultType;
 

@@ -36,10 +36,10 @@
   return namespaces;
 }
 
-+ (GDataEntryACL *)ACLEntryWithScope:(GDataACLScope *)scope
-                                role:(GDataACLRole *)role {
-  
-  GDataEntryACL *obj = [[[GDataEntryACL alloc] init] autorelease];
++ (id)ACLEntryWithScope:(GDataACLScope *)scope
+                   role:(GDataACLRole *)role {
+
+  GDataEntryACL *obj = [[[self alloc] init] autorelease];
   [obj setNamespaces:[self ACLNamespaces]];
   [obj setScope:scope];
   [obj setRole:role];

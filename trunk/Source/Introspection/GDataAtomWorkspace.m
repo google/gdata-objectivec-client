@@ -109,4 +109,14 @@ static NSString *const kTitleAttr = @"title";
   [self setObjects:array forExtensionClass:collectionClass];
 }
 
+- (GDataAtomCollection *)primaryCollection {
+  NSArray *collections = [self collections];
+
+  if ([collections count] > 0) {
+    return [collections objectAtIndex:0];
+  }
+
+  return nil;
+}
+
 @end
