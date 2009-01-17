@@ -252,7 +252,7 @@ NSDictionary *surrogates = [NSDictionary dictionaryWithObjectsAndKeys:
   [MyEntryAlbum class], [GDataEntryPhotoAlbum class],
   nil];
 
-service = [[GDataServiceGooglePicasaWeb alloc] init];
+service = [[GDataServiceGooglePhotos alloc] init];
 [service setServiceSurrogates:surrogates];
 }}}
 
@@ -618,28 +618,29 @@ To update an entry from a feed that ignores the unknown XML, fetch a complete co
 
 == Service Introspection ==
 
-For each feed, services provide a document that describes capabilities of the feed, typically including the types of media data that is accepted for upload.  Applications can dynamically adjust how they use a feed by retrieving the feed's service document.
+For each feed, services provide a document that describes capabilities of the feed, typically including the types of media data that is accepted for upload.  Applications can dynamically adjust how they use a feed by retrieving the feed's *service document*.
 
 For instance, given the URL to a feed for a user's photo album, the service document for the feed can be fetched like this:
 
 {{{
-GDataQuery *introspectQuery = [GDataQuery queryWithFeedURL:albumFeedURL];
+GDataQueryGooglePhotos *introspectQuery;
+introspectQuery = [GDataQueryGooglePhotos photoQueryWithFeedURL:albumFeedURL];
 [introspectQuery setResultFormat:kGDataQueryResultServiceDocument];
 
 GDataServiceTicket *ticket;
-NSURL *introspectURL = [introspectQuery URL];
-ticket = [photosService fetchPhotoFeedWithURL:introspectURL
-                                     delegate:self
-                            didFinishSelector:@selector(introspectTicket:finishedWithServiceDocument:)
-                              didFailSelector:@selector(introspectTicket:failedWithError:)];
+ticket = [photosService fetchPhotoQuery:introspectQuery
+                               delegate:self
+                      didFinishSelector:@selector(introspectTicket:finishedWithServiceDocument:)
+                        didFailSelector:@selector(introspectTicket:failedWithError:)];
 }}}
 
-The service document includes a *workspace* that has a *collection* describing the feed (or, for feeds whose entries refer to other feeds, one collection per entry.)
+The service document includes a *workspace* that has a *collection* describing the feed. Feeds whose entries refer to other feeds will have one collection for each entry's feed.
 
 For an album feed, the MIME types that can be uploaded would be obtained from the fetched service document this way:
 
 {{{
-- (void)introspectTicket:(GDataServiceTicket *)ticket finishedWithServiceDocument:(GDataAtomServiceDocument *)serviceDoc {
+- (void)introspectTicket:(GDataServiceTicket *)ticket
+finishedWithServiceDocument:(GDataAtomServiceDocument *)serviceDoc {
   
   GDataAtomCollection *collection = [[serviceDoc primaryWorkspace] primaryCollection];
   NSArray *theMIMETypes = [collection serviceAcceptStrings];
