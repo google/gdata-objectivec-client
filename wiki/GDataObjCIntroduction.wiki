@@ -539,6 +539,52 @@ to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugL
 
 To view the most recently saved logs, use a web browser to open the symlink named !My_App_Name_http_log_newest.html (for whatever your application's name is) in the logging directory.  Note that Camino and Firefox display XML in a more useful fashion than does Safari.
 
+== Optimizations for iPhone Applications ==
+
+[GDataObjCIntroduction#Development_with_the_iPhone_SDK Development with the iPhone SDK] explains how to add the library to your iPhone application project.
+
+iPhone application projects should include only the source files in the Common group from the GData framework project, plus the source groups for just the services needed by the application (Calendar, Contacts, and so on.)  Sources from the Optional subgroup of the Common group may be omitted.
+
+iPhone applications can speed up parsing of feeds and reduce memory usage during parsing of feeds by calling
+
+{{{
+  [service setShouldServiceFeedsIgnoreUnknowns:YES];
+}}}
+
+After this call, the library will not attempt to retain the unexpected child elements and attributes for any parsed objects in a feed.  This improves parsing performance and reduces memory usage when parsing large feeds (such as feeds having over 100 entries.)  The benefit is not noticeable in desktop applications.
+
+The downside is that the entries in the feed fetched this way cannot be directly used for updates; attempting to update one will make the library throw an assert.
+
+To update an entry from a feed that ignores the unknown XML, fetch a complete copy of the entry using the self link before doing the update fetch. Here's how it might look to fetch a complete contact entry, given the entry from the feed.
+
+{{{
+- (void)retrieveCompleteEntryForEntry:(GDataEntryContact *)entry
+                             userData:(id)userData {
+ 
+  GDataServiceGoogleContact *service = [self contactService];
+
+  // fetch a complete copy of the entry, including unknown XML, by using the self link
+  GDataServiceTicket *ticket = [service fetchContactEntryWithURL:[[entry selfLink] URL]
+    delegate:self
+    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:)
+    didFailSelector:@selector(fetchEntryTicket:failedWithError:)];
+   
+  [ticket setUserData:userData];
+}
+
+- (void)fetchEntryTicket:(GDataServiceTicket *)ticket
+       finishedWithEntry:(GDataEntryContact *)completeEntry {
+ 
+  // now we can modify the complete entry and update it on the
+  // server by calling -fetchContactEntryByUpdatingEntry:
+}
+
+- (void)fetchEntryTicket:(GDataServiceTicket *)ticket
+         failedWithError:(NSError *)error {
+}
+}}}
+
+
 == Questions and Comments ==
 
-Please join the [http://groups.google.com/group/gdata-objectivec-client discussion group] to post any questions or comments you have about the library and this documentation.
+*If you have any questions or comments* about the library or this documentation, please join the [http://groups.google.com/group/gdata-objectivec-client discussion group].
