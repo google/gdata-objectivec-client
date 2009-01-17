@@ -19,9 +19,19 @@
 
 //
 // The developer may choose to define these in the project:
-//   #define GDATA_FOUNDATION_ONLY 1     // builds without AppKit or Carbon  
+//   #define GDATA_FOUNDATION_ONLY 1     // builds without AppKit or Carbon
+//   #define GDATA_TARGET_NAMESPACE Xxx  // preface all GData class names with Xxx
 //   #define STRIP_GDATA_FETCH_LOGGING 1 // omit http logging code
 //
+
+// Define later OS versions when building on earlier versions
+#ifndef MAC_OS_X_VERSION_10_5
+  #define MAC_OS_X_VERSION_10_5 1050
+#endif
+#ifndef MAC_OS_X_VERSION_10_6
+  #define MAC_OS_X_VERSION_10_6 1060
+#endif
+
 
 #ifdef GDATA_TARGET_NAMESPACE
 // prefix all GData class names with GDATA_TARGET_NAMESPACE for this target
@@ -113,13 +123,18 @@
 // reliance on NSEnumerator for 10.4
 //
 #ifndef GDATA_FOREACH
-  #if defined(TARGET_OS_IPHONE) || MAC_OS_X_VERSION_MIN_REQUIRED >= 1050
+  #if defined(TARGET_OS_IPHONE) || MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
     #define GDATA_FOREACH(element, collection) \
       for (element in collection)
+    #define GDATA_FOREACH_KEY(key, dict) \
+      for (key in dict)
   #else
     #define GDATA_FOREACH(element, collection) \
-      for(id _ ## element ## _enum = [collection objectEnumerator]; \
+      for (NSEnumerator* _ ## element ## _enum = [collection objectEnumerator]; \
           (element = [_ ## element ## _enum nextObject]) != nil; )
+    #define GDATA_FOREACH_KEY(key, dict) \
+      for (NSEnumerator* _ ## key ## _enum = [dict keyEnumerator]; \
+          (key = [_ ## key ## _enum nextObject]) != nil; )
   #endif
 #endif
 

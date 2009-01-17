@@ -16,6 +16,12 @@ Additions
   structured errors.  On feed and entry fetch errors, a GDataServerErrorGroup
   will be available from the NSError object's userInfo dictionary
   with the key kGDataStructuredErrorsKey.
+  
+- Added Optional group to project common sources to more easily identify
+  non-service specific sources which may be omitted
+  
+- Added service document query parameter and classes for introspection
+  of feed capabilities
 
 - Added query parameters prettyprint, protocolVersion, language
 
@@ -73,6 +79,8 @@ Bugs Fixed
 - Renamed photos server and query classes, and changed photos feed domain
 
 - Removed some header files for unit test sources
+
+- Moved MIMETypeForFileAtPath routine to GDataUtilities
 
 
 Release 1.5.0

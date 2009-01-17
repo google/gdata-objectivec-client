@@ -31,7 +31,9 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // an empty string returns a nil NSNumber
 + (NSNumber *)doubleNumberOrInfForString:(NSString *)str;
 
+//
 // copy method helpers
+//
 
 // array with copies of the objects in the source array (1-deep)
 + (NSArray *)arrayWithCopiesOfObjectsInArray:(NSArray *)source;
@@ -46,7 +48,9 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 + (NSDictionary *)dictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source;
 + (NSMutableDictionary *)mutableDictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source;
 
+//
 // string encoding
+//
 
 // URL encoding, different for parts of URLs and parts of URL parameters
 // (URL parameters get + in place of spaces)
@@ -56,6 +60,7 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // percent-encoded UTF-8
 + (NSString *)stringByPercentEncodingUTF8ForString:(NSString *)str;
 
+//
 // key-value coding searches in an array
 //
 // utilities to get from an array objects having a known value (or nil)
@@ -68,4 +73,15 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 + (id)firstObjectFromArray:(NSArray *)sourceArray 
                  withValue:(id)desiredValue
                 forKeyPath:(NSString *)keyPath;
+
+//
+// file type helpers
+//
+
+// utility routine to convert a file path to the file's MIME type using
+// Mac OS X's UTI database
++ (NSString *)MIMETypeForFileAtPath:(NSString *)path
+                    defaultMIMEType:(NSString *)defaultType;
+
+
 @end

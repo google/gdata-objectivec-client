@@ -597,7 +597,7 @@ enum {
                                       didFailSelector:(SEL)failedSelector {
   // add ACL namespaces, if needed
   if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataEntryACL ACLNamespaces]];
+    [entryToInsert setNamespaces:[[entryToInsert class] ACLNamespaces]];
   }
 
   return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
@@ -615,7 +615,7 @@ enum {
 
   // add ACL namespaces, if needed
   if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataEntryACL ACLNamespaces]];
+    [entryToUpdate setNamespaces:[[entryToUpdate class] ACLNamespaces]];
   }
 
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate

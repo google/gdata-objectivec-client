@@ -30,10 +30,13 @@
 
 #import "GDataObject.h"
 
+@class GDataAtomWorkspace;
+
 @interface GDataAtomServiceDocument : GDataObject
 
-- (NSArray *)workspaces; // array of GDataAtomWorkspace objects
+- (NSArray *)workspaces;
 - (void)setWorkspaces:(NSArray *)array;
+- (GDataAtomWorkspace *)primaryWorkspace; // returns the first workspace, or nil
 
 @end
 
