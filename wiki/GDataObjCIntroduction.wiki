@@ -1,6 +1,8 @@
 #summary Introduction for Objective-C Developers
 #labels Featured
 
+<wiki:toc max_depth="4" />
+
 = Introduction to Google Data APIs for Cocoa Developers =
 
 [http://code.google.com/apis/gdata/index.html Google Data APIs] allow client software to access and manipulate data hosted by Google services.
@@ -35,7 +37,7 @@ or the header for a specific service, such as
 
 The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
-==== Compiling the source files directly into your own project ====
+=== Compiling the source files directly into your own project ===
 
 Rather than link to the GData framework, you can compile the GData library sources directly into your own project. To do this, drag the GData Sources source group from the GData Xcode project into your project's window (add by reference, not by copying the files.)  
 
@@ -53,7 +55,7 @@ With the source files compiled directly in your project, refer directly to the h
 
 `#import "GDataCalendar.h"`
 
-==== Development with the iPhone SDK ====
+=== Development with the iPhone SDK ===
 
 For iPhone application development, follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
 
