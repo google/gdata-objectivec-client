@@ -618,7 +618,7 @@ To update an entry from a feed that ignores the unknown XML, fetch a complete co
 
 == Service Introspection ==
 
-For each feed, services provide a document that describes capabilities of the feed, typically including the types of media data that is accepted for upload.  Applications can dynamically adjust how they use a feed by retrieving the feed's *service document*.
+For each feed, services provide an XML document that describes capabilities of the feed, typically including the types of media data that is accepted for upload.  Applications can dynamically adjust how they use a feed by retrieving the feed's *service document*.
 
 For instance, given the URL to a feed for a user's photo album, the service document for the feed can be fetched like this:
 
