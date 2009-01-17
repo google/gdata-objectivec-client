@@ -223,9 +223,24 @@ Often it is useful to add data locally to a GDataObject. For example, an entry u
 
 Your application can add data to any instance of a GDataObject (such as entry and feed objects, as well as individual elements) in three ways.
 
-Each GDataObject has methods `setUserData:` and `userData` to set and retrieve a single NSObject.
+Each GDataObject has methods `setUserData:` and `userData` to set and retrieve a single NSObject. Adding a local path string to a photo entry with `setUserData:` would look like this:
 
-An application can set and retrieve objects as named properties of any GDataObject instance with the methods `setProperty:forKey:` and `propertyForKey:`.  Note that property names beginning with an underscore are reserved by the library and should not be used by applications.
+{{{
+GDataEntryPhoto *newPhotoEntry = [GDataEntryPhoto photoEntry];
+[newPhotoEntry setUserData:localPathString];
+}}}
+
+An application can set and retrieve multiple objects as named properties of any GDataObject instance with the methods `setProperty:forKey:` and `propertyForKey:`. This is useful when there is more than one bit of data to attach to the object:
+
+{{{
+GDataEntryPhoto *newPhotoEntry = [GDataEntryPhoto photoEntry];
+[newPhotoEntry setProperty:localPathString forKey:@"myPath"];
+[newPhotoEntry setProperty:thumbnailImage forKey:@"myThumbnail"];
+}}}
+
+Property names beginning with an underscore are reserved by the library and should not be used by applications.
+
+
 
 Finally, applications may subclass GDataObjects to add fields and methods.  To have your subclasses be instantiated in place of the standard object class during the parsing of XML following a fetch, call `setServiceSurrogates:`, as demonstrated here:
 
@@ -241,7 +256,22 @@ service = [[GDataServiceGooglePicasaWeb alloc] init];
 
 These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can retain arbitrary data for users.
 
-To retain data from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` or `setProperty:forKey:` methods.
+
+To retain an object from a fetch call to its success or failure callback, use GDataServiceTicket's `setUserData:` or `setProperty:forKey:` methods.  For example:
+
+{{{
+GDataServiceTicket *ticket = [service fetchFeedWithURL:...];
+[ticket setProperty:callbackData withKey:@"myCallbackData"];
+}}}
+
+The success or failure callback can then access the data:
+{{{
+- (void)ticket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed {
+  id myCallbackData = [ticket propertyForKey:@"myCallbackData"];
+  ...
+  }
+}}}
+
 
 === Batch Requests ===
 
