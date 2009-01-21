@@ -50,7 +50,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-  GDataCategoryFilter *newFilter = [[GDataCategoryFilter alloc] init];
+  GDataCategoryFilter *newFilter = [[[self class] allocWithZone:zone] init];
   [newFilter setCategories:categories_];
   [newFilter setExcludeCategories:excludeCategories_];
   return newFilter;
@@ -139,7 +139,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 // 
 @implementation GDataQuery
 
-+ (GDataQuery *)queryWithFeedURL:(NSURL *)feedURL {
++ (id)queryWithFeedURL:(NSURL *)feedURL {
   return [[[self alloc] initWithFeedURL:feedURL] autorelease];  
 }
 
@@ -160,7 +160,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 
 
 - (id)copyWithZone:(NSZone *)zone {
-  GDataQuery *query = [[GDataQuery alloc] init];
+  GDataQuery *query = [[[self class] allocWithZone:zone] init];
   [query setFeedURL:feedURL_];
   [query setCategoryFilters:categoryFilters_];
   [query setCustomParameters:customParameters_];

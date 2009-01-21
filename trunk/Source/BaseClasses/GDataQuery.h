@@ -60,7 +60,7 @@ _EXTERN NSString* kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-service
   NSMutableDictionary *customParameters_;
 }
 
-+ (GDataQuery *)queryWithFeedURL:(NSURL *)feedURL;
++ (id)queryWithFeedURL:(NSURL *)feedURL;
 
 - (id)initWithFeedURL:(NSURL *)feedURL;
 

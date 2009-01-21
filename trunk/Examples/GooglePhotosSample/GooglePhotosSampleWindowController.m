@@ -62,7 +62,6 @@
 - (void)setPhotoImageURLString:(NSString *)str;
 
 - (void)uploadPhotoAtPath:(NSString *)photoPath;
-- (NSString *)MIMETypeForPhotoAtPath:(NSString *)path;
 @end
 
 @implementation GooglePhotosSampleWindowController
@@ -630,7 +629,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // attach the NSData and set the MIME type for the photo
     [newEntry setPhotoData:photoData];
     
-    NSString *mimeType = [GDataEntryBase MIMETypeForFileAtPath:photoPath
+    NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:photoPath
                                                defaultMIMEType:@"image/jpeg"];
     [newEntry setPhotoMIMEType:mimeType];
     
