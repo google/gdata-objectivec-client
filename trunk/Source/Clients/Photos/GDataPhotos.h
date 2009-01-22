@@ -18,6 +18,7 @@
 //
 
 #import "GDataElements.h"
+#import "GDataMedia.h"
 
 // Google Photos/Picasa Web
 #import "GDataPhotoElements.h"

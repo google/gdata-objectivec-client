@@ -19,7 +19,6 @@
 
 #define GDATAENTRYDOCBASE_DEFINE_GLOBALS 1
 #import "GDataEntryDocBase.h"
-#import "GDataEntryACL.h"
 
 @implementation GDataEntryDocBase
 
@@ -85,8 +84,11 @@
   NSArray *feedLinks = [self objectsForExtensionClass:[GDataFeedLink class]];
   GDataFeedLink *aclFeedLink;
 
+  // same as kGDataLinkRelACL but avoids the dependence on GDataEntryACL.h
+  NSString* const kACLRel = @"http://schemas.google.com/acl/2007#accessControlList";
+
   aclFeedLink = [GDataUtilities firstObjectFromArray:feedLinks
-                                           withValue:kGDataLinkRelACL
+                                           withValue:kACLRel
                                           forKeyPath:@"rel"];
   return aclFeedLink;
 }

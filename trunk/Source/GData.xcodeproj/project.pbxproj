@@ -676,6 +676,12 @@
 		4FB414650E12F6130037D894 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414320E12F6130037D894 /* GDataPortfolioElements.m */; };
 		4FB414660E12F6130037D894 /* GDataQueryFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414340E12F6130037D894 /* GDataQueryFinance.m */; };
 		4FB414670E12F6130037D894 /* GDataServiceGoogleFinance.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB414360E12F6130037D894 /* GDataServiceGoogleFinance.m */; };
+		4FB49CC70F27F3EB003FF39E /* GDataACL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB49CC60F27F3EB003FF39E /* GDataACL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB49CC90F27F3F7003FF39E /* GDataMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB49CC80F27F3F7003FF39E /* GDataMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB49D010F27F56A003FF39E /* GDataServiceACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB49CFF0F27F56A003FF39E /* GDataServiceACL.m */; };
+		4FB49D020F27F56A003FF39E /* GDataServiceACL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB49D000F27F56A003FF39E /* GDataServiceACL.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB49D030F27F56A003FF39E /* GDataServiceACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB49CFF0F27F56A003FF39E /* GDataServiceACL.m */; };
+		4FB49D040F27F56A003FF39E /* GDataServiceACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB49CFF0F27F56A003FF39E /* GDataServiceACL.m */; };
 		4FB730D50BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */; };
 		4FB730DC0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
 		4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1176,6 +1182,10 @@
 		4FB414680E12F6890037D894 /* FeedFinancePositionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePositionTest1.xml; path = Tests/FeedFinancePositionTest1.xml; sourceTree = "<group>"; };
 		4FB414690E12F6890037D894 /* FeedFinancePortfolioTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePortfolioTest1.xml; path = Tests/FeedFinancePortfolioTest1.xml; sourceTree = "<group>"; };
 		4FB4146A0E12F6890037D894 /* FeedFinanceTransactionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinanceTransactionTest1.xml; path = Tests/FeedFinanceTransactionTest1.xml; sourceTree = "<group>"; };
+		4FB49CC60F27F3EB003FF39E /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataACL.h; path = ACL/GDataACL.h; sourceTree = "<group>"; };
+		4FB49CC80F27F3F7003FF39E /* GDataMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataMedia.h; path = Media/GDataMedia.h; sourceTree = "<group>"; };
+		4FB49CFF0F27F56A003FF39E /* GDataServiceACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceACL.m; path = ACL/GDataServiceACL.m; sourceTree = "<group>"; };
+		4FB49D000F27F56A003FF39E /* GDataServiceACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceACL.h; path = ACL/GDataServiceACL.h; sourceTree = "<group>"; };
 		4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStreamTest.m; path = Tests/GDataProgressMonitorInputStreamTest.m; sourceTree = "<group>"; };
 		4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStream.h; path = Networking/GDataProgressMonitorInputStream.h; sourceTree = "<group>"; };
 		4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStream.m; path = Networking/GDataProgressMonitorInputStream.m; sourceTree = "<group>"; };
@@ -1386,6 +1396,7 @@
 			isa = PBXGroup;
 			children = (
 				4F10BE000F1FFF1E002AE29A /* XML Support (for iPhone) */,
+				4F25E9F30BE9667A007C0836 /* ACL */,
 				4F10BDEB0F1FFEBF002AE29A /* Service Introspection */,
 			);
 			name = Optional;
@@ -1595,6 +1606,7 @@
 		4F25E9F30BE9667A007C0836 /* ACL */ = {
 			isa = PBXGroup;
 			children = (
+				4FB49CC60F27F3EB003FF39E /* GDataACL.h */,
 				4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */,
 				4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */,
 				4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */,
@@ -1603,6 +1615,8 @@
 				4F25E9F90BE9667B007C0836 /* GDataACLScope.m */,
 				4F25E9FA0BE9667B007C0836 /* GDataACLRole.h */,
 				4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */,
+				4FB49D000F27F56A003FF39E /* GDataServiceACL.h */,
+				4FB49CFF0F27F56A003FF39E /* GDataServiceACL.m */,
 			);
 			name = ACL;
 			sourceTree = "<group>";
@@ -1645,8 +1659,7 @@
 				4F14B1240B13A59E0072EBB8 /* BaseClasses */,
 				4F14AA7E0B1283660072EBB8 /* Elements */,
 				4FB730D70BE27A92000C493E /* Networking */,
-				4F25E9F30BE9667A007C0836 /* ACL */,
-				4F35DE4C0C023B770038AE68 /* Media */,
+				4F35DE4C0C023B770038AE68 /* Media (for Photos and YouTube) */,
 				4F35DE490C023B770038AE68 /* Geo */,
 				4F10BDE70F1FFEAD002AE29A /* Optional */,
 			);
@@ -1684,9 +1697,10 @@
 			name = Geo;
 			sourceTree = "<group>";
 		};
-		4F35DE4C0C023B770038AE68 /* Media */ = {
+		4F35DE4C0C023B770038AE68 /* Media (for Photos and YouTube) */ = {
 			isa = PBXGroup;
 			children = (
+				4FB49CC80F27F3F7003FF39E /* GDataMedia.h */,
 				4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */,
 				4F35DE4E0C023B770038AE68 /* GDataNormalPlayTime.h */,
 				4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */,
@@ -1708,7 +1722,7 @@
 				4F45B7BC0D515B7100004F37 /* GDataMediaRestriction.h */,
 				4F45B7B80D515B6900004F37 /* GDataMediaRestriction.m */,
 			);
-			name = Media;
+			name = "Media (for Photos and YouTube)";
 			sourceTree = "<group>";
 		};
 		4F35DE750C023B880038AE68 /* Photos */ = {
@@ -2223,6 +2237,9 @@
 				4F10BE140F1FFF4C002AE29A /* GDataServiceIntrospection.h in Headers */,
 				4F10BE150F1FFF4C002AE29A /* GDataAtomCollection.h in Headers */,
 				4F10BE160F1FFF4C002AE29A /* GDataAtomWorkspace.h in Headers */,
+				4FB49CC70F27F3EB003FF39E /* GDataACL.h in Headers */,
+				4FB49CC90F27F3F7003FF39E /* GDataMedia.h in Headers */,
+				4FB49D020F27F56A003FF39E /* GDataServiceACL.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2555,6 +2572,7 @@
 				4F10BE190F1FFF4C002AE29A /* GDataAtomCollection.m in Sources */,
 				4F10BE1A0F1FFF4C002AE29A /* GDataAtomCategoryGroup.m in Sources */,
 				4F10BE1B0F1FFF4C002AE29A /* GDataAtomWorkspace.m in Sources */,
+				4FB49D030F27F56A003FF39E /* GDataServiceACL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2754,6 +2772,7 @@
 				4F10BE1D0F1FFF4C002AE29A /* GDataAtomCollection.m in Sources */,
 				4F10BE1E0F1FFF4C002AE29A /* GDataAtomCategoryGroup.m in Sources */,
 				4F10BE1F0F1FFF4C002AE29A /* GDataAtomWorkspace.m in Sources */,
+				4FB49D040F27F56A003FF39E /* GDataServiceACL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2951,6 +2970,7 @@
 				4F10BE110F1FFF4C002AE29A /* GDataAtomCollection.m in Sources */,
 				4F10BE130F1FFF4C002AE29A /* GDataAtomCategoryGroup.m in Sources */,
 				4F10BE170F1FFF4C002AE29A /* GDataAtomWorkspace.m in Sources */,
+				4FB49D010F27F56A003FF39E /* GDataServiceACL.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

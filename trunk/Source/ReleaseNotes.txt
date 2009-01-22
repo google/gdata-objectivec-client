@@ -18,7 +18,8 @@ Additions
   with the key kGDataStructuredErrorsKey.
   
 - Added Optional group to project common sources to more easily identify
-  non-service specific sources which may be omitted
+  non-service specific sources which may be omitted. ACL classes are now
+  optional.  Media classes are now required only for YouTube and Photos classes.
   
 - Added service document query parameter and classes for introspection
   of feed capabilities

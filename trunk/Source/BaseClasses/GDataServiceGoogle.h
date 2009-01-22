@@ -43,7 +43,6 @@ enum {
 @end
 
 @class GDataServiceGoogle;
-@class GDataEntryACL;
 
 // GDataServiceTicket is the version of a ticket that supports
 // Google authentication
@@ -127,30 +126,6 @@ enum {
                                                    delegate:(id)delegate
                                           didFinishSelector:(SEL)finishedSelector
                                             didFailSelector:(SEL)failedSelector;
-
-// ACL feeds and entries
-
-- (GDataServiceTicket *)fetchACLFeedWithURL:(NSURL *)feedURL
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)fetchACLEntryByInsertingEntry:(GDataEntryACL *)entryToInsert
-                                           forFeedURL:(NSURL *)feedURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)fetchACLEntryByUpdatingEntry:(GDataEntryACL *)entryToUpdate
-                                         forEntryURL:(NSURL *)entryURL
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)deleteACLEntry:(GDataEntryACL *)entryToDelete
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector;
 
 - (void)setCaptchaToken:(NSString *)captchaToken
           captchaAnswer:(NSString *)captchaAnswer;
