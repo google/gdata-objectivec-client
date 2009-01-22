@@ -411,7 +411,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   if (!service) {
     service = [[GDataServiceGooglePhotos alloc] init];
     
-    [service setUserAgent:@"Google-SampleGooglePhotosApp-1.0"];
+    [service setUserAgent:@"MyCompany-SamplePhotosApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }

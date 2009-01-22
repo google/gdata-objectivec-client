@@ -48,7 +48,7 @@ int main(int argc, const char *argv[]) {
                                  password:password];
   
   // Each program should have a unique userAgent,
-  [service setUserAgent:@"ExampleCompany-CalendarHelloWorldMini-1.0"];
+  [service setUserAgent:@"MyCompany-CalendarHelloWorldMini-1.0"]; // set this to yourName-appName-appVersion
   
   // Fetch the list of calendars
   GDataServiceTicket *ticket = [service fetchCalendarFeedForUsername:account

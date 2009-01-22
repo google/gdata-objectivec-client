@@ -216,7 +216,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
   
-  [service setUserAgent:@"Google-SampleFinanceApp-1.0"];
+  [service setUserAgent:@"MyCompany-SampleFinanceApp-1.0"]; // set this to yourName-appName-appVersion
   [service setUserCredentialsWithUsername:username
                                  password:password];
   

@@ -57,6 +57,14 @@
   NSXMLElement *child4 = [NSXMLElement elementWithName:@"zorgtree"
                                                    URI:kGDataNamespaceBatch];
   [child4 setStringValue:@"gollyfoo"];
+  
+  // create an element with a local namespace not defined in the parent level
+  NSString *lonerURI = @"http://loner.ns";
+  NSXMLElement *child5 = [NSXMLElement elementWithName:@"ln:loner"
+                                                   URI:lonerURI];
+  NSXMLNode *ns5 = [NSXMLNode namespaceWithName:@"ln"
+                                     stringValue:lonerURI];
+  [child5 addNamespace:ns5];
 
   // add these to a parent element, along with namespaces
   NSXMLElement *parent = [NSXMLElement elementWithName:@"dad"];
@@ -82,6 +90,7 @@
   [parent addChild:child3];
   [parent addChild:child4];
   [parent addAttribute:attr4];
+  [parent addChild:child5];
   
   // search for attr1 and child1 by qualified name, since they were
   // created by URI
@@ -131,6 +140,12 @@
   NSXMLNode *child4Found = [elements4 objectAtIndex:0];
   STAssertEqualObjects([child4Found stringValue], @"gollyfoo", @"in test batch zorgtree");
 
+  // search for child 5 by local name and URI, since it has a locally-defined
+  // namespace
+  NSArray *elements5 = [parent elementsForLocalName:@"loner"
+                                                URI:lonerURI];
+  STAssertEquals((int)[elements5 count], 1, @"getting loner");
+  
   // test output
 #if GDATA_USES_LIBXML
   NSString *expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
@@ -140,14 +155,16 @@
   "{http://schemas.google.com/gdata/batch}:zorgbot=\"gollyfum\">"
   "buzz<gd:chyld>fuzz</gd:chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
   "<chyld>fuzz3</chyld><{http://schemas.google.com/gdata/batch}:zorgtree>"
-  "gollyfoo</{http://schemas.google.com/gdata/batch}:zorgtree></dad>";
+  "gollyfoo</{http://schemas.google.com/gdata/batch}:zorgtree>"
+  "<ln:loner xmlns:ln=\"http://loner.ns\"/></dad>";
 #else
   NSString *expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
   "xmlns:gd=\"http://schemas.google.com/g/2005\" "
   "xmlns:openSearch=\"http://a9.com/-/spec/opensearchrss/1.0/\" "
   "foo=\"baz\" openSearch:foo=\"baz2\" zorgbot=\"gollyfum\">"
   "buzz<chyld>fuzz</chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
-  "<chyld>fuzz3</chyld><zorgtree>gollyfoo</zorgtree></dad>";
+  "<chyld>fuzz3</chyld><zorgtree>gollyfoo</zorgtree>"
+  "<ln:loner xmlns:ln=\"http://loner.ns\"></ln:loner></dad>";
 #endif
   NSString *actualXML = [parent XMLString];
   STAssertEqualObjects(actualXML, expectedXML, @"unexpected xml output");

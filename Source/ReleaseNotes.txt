@@ -64,6 +64,9 @@ Additions
 - Added timesCleaned read-only property to calendar entries, added privateCopy
   property to calendar event entries, and removed unsupported "contributor"
   access role
+  
+- Added -userAgentStringForString to GDataUtilities, and moved
+  MIMETypeForFileAtPath to GDataUtilities
 
 Bugs Fixed
 
@@ -73,6 +76,9 @@ Bugs Fixed
 
 - Fixed query generation for URLs that already contain some parameters
 
+- Fixed GDataXMLElement's elementsForLocalName:URI: to find child elements with
+  prefixes dependent on their own namespace declarations
+
 - Fixed finance portfolio description method (thanks dujunfly)
 
 - Fixed books volume entry embeddability and viewability accessors
@@ -81,7 +87,7 @@ Bugs Fixed
 
 - Removed some header files for unit test sources
 
-- Moved MIMETypeForFileAtPath routine to GDataUtilities
+- Added a log message to indicate when an explicit user-agent is not provided
 
 
 Release 1.5.0

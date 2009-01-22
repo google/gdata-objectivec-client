@@ -218,7 +218,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
   
-  [service setUserAgent:@"Google-SampleSpreadsheetApp-1.0"];
+  [service setUserAgent:@"MyCompany-SampleSpreadsheetApp-1.0"]; // set this to yourName-appName-appVersion
   [service setUserCredentialsWithUsername:username
                                  password:password];
   

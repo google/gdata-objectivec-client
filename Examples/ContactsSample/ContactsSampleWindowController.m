@@ -501,7 +501,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleContact alloc] init];
     
-    [service setUserAgent:@"SampleContactApp"];
+    [service setUserAgent:@"MyCompany-SampleContactsApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES]; 
     [service setServiceShouldFollowNextLinks:YES];
   }
