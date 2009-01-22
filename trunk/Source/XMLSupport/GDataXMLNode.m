@@ -965,7 +965,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSArray *)elementsForLocalName:(NSString *)localName URI:(NSString *)URI {
-  
+
   if (xmlNode_ != NULL && xmlNode_->children != NULL) {
 
     NSMutableArray *array = [NSMutableArray array];
@@ -973,12 +973,16 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
     xmlNodePtr currChild = xmlNode_->children;
 
     xmlChar* desiredNSHref = GDataGetXMLString(URI);
-    xmlChar* desiredLocalName = GDataGetXMLString(localName);
+    xmlChar* requestedLocalName = GDataGetXMLString(localName);
+    xmlChar* expectedLocalName = requestedLocalName;
 
-    xmlNsPtr foundNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, desiredNSHref);
-    if (foundNS == NULL) {
+    // resolve the URI at the parent level, since usually children won't
+    // have their own namespace definitions, and we don't want to try to
+    // resolve it once for every child
+    xmlNsPtr foundParentNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, desiredNSHref);
+    if (foundParentNS == NULL) {
       NSString *fakeQName = GDataFakeQNameForURIAndName(URI, localName);
-      desiredLocalName = GDataGetXMLString(fakeQName);
+      expectedLocalName = GDataGetXMLString(fakeQName);
     }
 
     while (currChild != NULL) {
@@ -987,9 +991,39 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       // namespace, or with the prefixed name and a null namespace
       if (currChild->type == XML_ELEMENT_NODE) {
 
-        if (currChild->ns == foundNS
+        // normally, we can assume the resolution done for the parent will apply
+        // to the child, as most children do not define their own namespaces
+        xmlNsPtr childLocalNS = foundParentNS;
+        xmlChar* childDesiredLocalName = expectedLocalName;
+
+        if (currChild->nsDef != NULL) {
+          // this child has its own namespace definitons; do a fresh resolve
+          // of the namespace starting from the child, and see if it differs
+          // from the resolve done starting from the parent.  If the resolve
+          // finds a different namespace, then override the desired local
+          // name just for this child.
+          childLocalNS = xmlSearchNsByHref(xmlNode_->doc, currChild, desiredNSHref);
+          if (childLocalNS != foundParentNS) {
+
+            // this child does indeed have a different namespace resolution
+            // result than was found for its parent
+            if (childLocalNS == NULL) {
+              // no namespace found
+              NSString *fakeQName = GDataFakeQNameForURIAndName(URI, localName);
+              childDesiredLocalName = GDataGetXMLString(fakeQName);
+            } else {
+              // a namespace was found; use the original local name requested,
+              // not a faked one expected from resolving the parent
+              childDesiredLocalName = requestedLocalName;
+            }
+          }
+        }
+
+        // check if this child's namespace and local name are what we're
+        // seeking
+        if (currChild->ns == childLocalNS
             && currChild->name != NULL
-            && xmlStrEqual(currChild->name, desiredLocalName)) {
+            && xmlStrEqual(currChild->name, childDesiredLocalName)) {
 
           GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currChild];
           [array addObject:node];
@@ -997,7 +1031,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       }
       currChild = currChild->next;
     }
-    
+
     // we return nil, not an empty array, according to docs
     if ([array count] > 0) {
       return array;

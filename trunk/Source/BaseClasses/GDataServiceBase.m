@@ -100,40 +100,80 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 - (NSString *)systemVersionString {
-  
+
   NSString *systemString = @"";
-  
+
 #ifndef GDATA_FOUNDATION_ONLY
+  // Mac build
   SInt32 systemMajor = 0, systemMinor = 0, systemRelease = 0;
   (void) Gestalt(gestaltSystemVersionMajor, &systemMajor);
   (void) Gestalt(gestaltSystemVersionMinor, &systemMinor);
   (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
-  
+
   systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
     systemMajor, systemMinor, systemRelease];
+
+#elif GDATA_IPHONE && TARGET_OS_IPHONE
+  // compiling against the iPhone SDK
+
+  static NSString *savedSystemString = nil;
+
+  @synchronized([GDataServiceBase class]) {
+
+    if (savedSystemString == nil) {
+      // avoid the slowness of calling currentDevice repeatedly on the iPhone
+      UIDevice* currentDevice = [UIDevice currentDevice];
+
+      NSString *rawModel = [currentDevice model];
+      NSString *model = [GDataUtilities userAgentStringForString:rawModel];
+
+      NSString *systemVersion = [currentDevice systemVersion];
+
+      savedSystemString = [[NSString alloc] initWithFormat:@"%@/%@",
+                           model, systemVersion]; // "iPod_Touch/2.2"
+    }
+  }
+  systemString = savedSystemString;
+
+#elif GDATA_IPHONE
+  // GDATA_IPHONE defined but compiling against the Mac SDK
+  systemString = @"iPhone/x.x";
+
 #elif defined(_SYS_UTSNAME_H)
+  // Foundation-only build
   struct utsname unameRecord;
   uname(&unameRecord);
-  
-#if GDATA_IPHONE
-  systemString = [NSString stringWithFormat:@"iPhone %s/%s",
-                  unameRecord.sysname, unameRecord.release]; // "iPhone Darwin/9.2.0"
-#else
+
   systemString = [NSString stringWithFormat:@"%s/%s",
                   unameRecord.sysname, unameRecord.release]; // "Darwin/8.11.1"
 #endif
-#endif
-      
+
   return systemString;
 }
 
 - (NSString *)requestUserAgent {
-  
+
   NSString *userAgent = [self userAgent];
+  BOOL hasSpecifiedUserAgent = YES;
+
   if ([userAgent length] == 0) {
+    // missing user-agent; use the process name
     userAgent = [self defaultApplicationIdentifier];
+    hasSpecifiedUserAgent = NO;
+
+  } else if ([userAgent hasPrefix:@"MyCompany-"]) {
+    // user-agent for sample applications; append the process name
+    NSString *defaultID = [self defaultApplicationIdentifier];
+    userAgent = [userAgent stringByAppendingFormat:@" (%@)", defaultID];
+    hasSpecifiedUserAgent = NO;
   }
-  
+
+  if (!hasSpecifiedUserAgent) {
+    // remind developer to call the service object's setUserAgent:
+    // method
+    NSLog(@"gdata developer user-agent unspecified");
+  }
+
   NSString *requestUserAgent = userAgent;
 
   // if the user agent already specifies the library version, we'll
@@ -177,7 +217,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   
   NSString *requestUserAgent = [self requestUserAgent];
   [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
-  
+
   NSString *serviceVersion = [self serviceVersion];
   if ([serviceVersion length] > 0) {
 
@@ -1335,34 +1375,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 // return a default process name suitable for GData and http 
 - (NSString *)cleanProcessName {
   
-  NSMutableString *procName = [NSMutableString stringWithString:
-    [[NSProcessInfo processInfo] processName]];
-  
-  // make a proper token from the process name 
-  // per http://www.w3.org/Protocols/rfc2616/rfc2616-sec2.html
-  // and http://www.mozilla.org/build/user-agent-strings.html
-  
-  // replace spaces with underscores
-  [procName replaceOccurrencesOfString:@" "
-                            withString:@"_"
-                               options:0
-                                 range:NSMakeRange(0, [procName length])];
-
-  // delete http token separators and remaining whitespace
-  NSString *const kSeparators = @"()<>@,;:\\\"/[]?={}";
-  
-  NSMutableCharacterSet *charsToDelete;
-  charsToDelete = [[[NSCharacterSet whitespaceAndNewlineCharacterSet] mutableCopy] autorelease];
-  [charsToDelete addCharactersInString:kSeparators];
-  
-  while (true) {
-    NSRange separatorRange = [procName rangeOfCharacterFromSet:charsToDelete];
-    if (separatorRange.location == NSNotFound) break;
-  
-    [procName deleteCharactersInRange:separatorRange];
-  }; 
-  
-  return procName;
+  NSString *procName = [[NSProcessInfo processInfo] processName];
+  NSString *result = [GDataUtilities userAgentStringForString:procName];
+  return result;
 }
 
 // return a generic name and version for the current application; this avoids
@@ -1370,12 +1385,16 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 // to avoid the need for this method to be used.
 - (NSString *)defaultApplicationIdentifier {
   NSString *procName = [self cleanProcessName];
-  
+
+  // append _proc to the application ID with so it's clear in the logs
+  // that it was auto-generated from the process name
+  NSString *result = [procName stringByAppendingString:@"_proc"];
+
+  // if there's a version number, append that
   NSString *version = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
-  if (!version || [version isEqual:@"CFBundleShortVersionString"]) {
-    version = @"version_unknown";    
+  if (version != nil && ![version isEqual:@"CFBundleShortVersionString"]) {
+    result = [result stringByAppendingFormat:@"-%@", version];
   }
-  NSString *result = [NSString stringWithFormat:@"%@-%@", procName, version];
   return result;
 }
 @end

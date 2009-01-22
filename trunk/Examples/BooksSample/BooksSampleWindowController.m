@@ -290,7 +290,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
     service = [[GDataServiceGoogleBooks alloc] init];
 
-    [service setUserAgent:@"Google-SampleBooksApp-1.0"];
+    [service setUserAgent:@"MyCompany-SampleBooksApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }

@@ -439,7 +439,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleCalendar alloc] init];
     
-    [service setUserAgent:@"Google-SampleCalendarApp-1.0"];
+    [service setUserAgent:@"MyCompany-SampleCalendarApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }

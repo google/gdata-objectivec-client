@@ -601,7 +601,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleDocs alloc] init];
     
-    [service setUserAgent:@"Google-SampleDocsApp-1.0"];
+    [service setUserAgent:@"MyCompany-SampleDocsApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }

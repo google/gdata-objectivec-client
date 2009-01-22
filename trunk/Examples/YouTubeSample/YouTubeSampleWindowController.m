@@ -303,7 +303,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleYouTube alloc] init];
     
-    [service setUserAgent:@"Google-SampleMacYouTubeApp-1.0"];
+    [service setUserAgent:@"MyCompany-SampleYouTubeApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     // [service setServiceShouldFollowNextLinks:YES];
   }
