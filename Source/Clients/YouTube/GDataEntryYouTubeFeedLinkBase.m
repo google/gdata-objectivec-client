@@ -110,7 +110,7 @@
 - (void)setFeedLink:(GDataFeedLink *)feedLink {
   GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
   
-  return [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
+  [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
 }
 
 - (NSString *)youTubeDescription {

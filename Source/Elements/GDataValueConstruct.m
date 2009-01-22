@@ -114,9 +114,9 @@
   NSString *attrName = [self attributeName];
   
   if (attrName != nil) {
-    return [self setStringValue:str forAttribute:attrName]; 
+    [self setStringValue:str forAttribute:attrName]; 
   } else {
-    return [self setContentStringValue:str]; 
+    [self setContentStringValue:str]; 
   }
 }
 

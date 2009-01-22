@@ -20,7 +20,6 @@
 #import "GDataQueryGoogleBase.h"
 
 static NSString *const kMaxValuesParamName = @"max-values";
-static NSString *const kSortByParamName = @"sortorder";
 static NSString *const kBQParamName = @"bq";
 
 @implementation GDataQueryGoogleBase

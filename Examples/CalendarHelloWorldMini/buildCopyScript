@@ -10,5 +10,5 @@
 
 if [ -d "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" ] ; then
   rm -rf "$BUILT_PRODUCTS_DIR/GData.framework"
-  cp -Rf "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" "$BUILT_PRODUCTS_DIR"
+  ditto -v "$SRCROOT/../../Source/build/$CONFIGURATION/GData.framework" "$BUILT_PRODUCTS_DIR/GData.framework"
 fi

@@ -19,7 +19,6 @@
 
 #define GDATASERVICEGOOGLE_DEFINE_GLOBALS 1
 #import "GDataServiceGoogle.h"
-#import "GDataEntryACL.h"
 
 extern NSString* const kCallbackRetryInvocationKey;
 
@@ -572,68 +571,6 @@ enum {
                                       delegate:delegate
                              didFinishSelector:finishedSelector
                                didFailSelector:failedSelector];
-}
-
-#pragma mark -
-
-// ACL feed and entry support
-
-- (GDataServiceTicket *)fetchACLFeedWithURL:(NSURL *)feedURL
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithURL:feedURL
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchACLEntryByInsertingEntry:(GDataEntryACL *)entryToInsert
-                                           forFeedURL:(NSURL *)feedURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
-  // add ACL namespaces, if needed
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[[entryToInsert class] ACLNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:feedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchACLEntryByUpdatingEntry:(GDataEntryACL *)entryToUpdate
-                                         forEntryURL:(NSURL *)entryURL
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector {
-
-  // add ACL namespaces, if needed
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[[entryToUpdate class] ACLNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:entryURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteACLEntry:(GDataEntryACL *)entryToDelete
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
 }
 
 #pragma mark -

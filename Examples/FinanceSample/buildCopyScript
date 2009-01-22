@@ -1,6 +1,6 @@
 #!/bin/sh -x
 #
-# This script tries to move the built GData.framework from
+# This script tries to move the built GData.framework
 # into a place the example application's Copy Frameworks phase
 # will find it, regardless of whether projects are set to share
 # a build location or use the default build location

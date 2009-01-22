@@ -64,24 +64,6 @@
 #import "GDataBatchOperation.h"
 #import "GDataBatchStatus.h"
 
-// ACL
-#import "GDataACLScope.h"
-#import "GDataACLRole.h"
-#import "GDataEntryACL.h"
-#import "GDataFeedACL.h"
-
-// Media
-#import "GDataNormalPlayTime.h"
-#import "GDataMediaContent.h"
-#import "GDataMediaCategory.h"
-#import "GDataMediaCredit.h"
-#import "GDataMediaGroup.h"
-#import "GDataMediaKeywords.h"
-#import "GDataMediaThumbnail.h"
-#import "GDataMediaPlayer.h"
-#import "GDataMediaRating.h"
-#import "GDataMediaRestriction.h"
-
 // Geo
 #import "GDataGeo.h"
 

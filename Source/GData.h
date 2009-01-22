@@ -33,3 +33,7 @@
 #import "GDataSpreadsheet.h"
 #import "GDataWebmasterTools.h"
 #import "GDataYouTube.h"
+
+// Optional common interfaces
+#import "GDataACL.h"
+#import "GDataServiceIntrospection.h"

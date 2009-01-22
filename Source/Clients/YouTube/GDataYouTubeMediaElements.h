@@ -33,10 +33,7 @@ _EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
 _EXTERN int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS(6);
 
 #import "GDataObject.h"
-#import "GDataMediaContent.h"
-#import "GDataMediaRating.h"
-#import "GDataMediaGroup.h"
-#import "GDataMediaCredit.h"
+#import "GDataMedia.h"
 #import "GDataYouTubeElements.h"
 
 // media content with YouTube's addition of an integer format attribute, 
