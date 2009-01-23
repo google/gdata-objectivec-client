@@ -154,21 +154,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (NSString *)requestUserAgent {
 
   NSString *userAgent = [self userAgent];
-  BOOL hasSpecifiedUserAgent = YES;
 
-  if ([userAgent length] == 0) {
-    // missing user-agent; use the process name
+  if ([userAgent length] == 0 || [userAgent hasPrefix:@"MyCompany-"]) {
+
+    // missing explicit user-agent; use the process name and bundle ID
     userAgent = [self defaultApplicationIdentifier];
-    hasSpecifiedUserAgent = NO;
 
-  } else if ([userAgent hasPrefix:@"MyCompany-"]) {
-    // user-agent for sample applications; append the process name
-    NSString *defaultID = [self defaultApplicationIdentifier];
-    userAgent = [userAgent stringByAppendingFormat:@" (%@)", defaultID];
-    hasSpecifiedUserAgent = NO;
-  }
-
-  if (!hasSpecifiedUserAgent) {
     // remind developer to call the service object's setUserAgent:
     // method
     NSLog(@"gdata developer user-agent unspecified");
@@ -187,20 +178,20 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     long major, minor, release;
     NSString *libVersionString;
     GDataFrameworkVersion(&major, &minor, &release);
-    
+
     // most library releases will have a release value of zero
     if (release != 0) {
-      libVersionString = [NSString stringWithFormat:@"%d.%d.%d", 
+      libVersionString = [NSString stringWithFormat:@"%d.%d.%d",
         major, minor, release];
     } else {
       libVersionString = [NSString stringWithFormat:@"%d.%d", major, minor];
     }
-    
+
     NSString *systemString = [self systemVersionString];
-        
+
     // Google servers look for gzip in the user agent before sending gzip-
     // encoded responses.  See Service.java
-    requestUserAgent = [NSString stringWithFormat:@"%@ %@/%@ %@ (gzip)", 
+    requestUserAgent = [NSString stringWithFormat:@"%@ %@/%@ %@ (gzip)",
       userAgent, libraryString, libVersionString, systemString];
   }
   return requestUserAgent;
@@ -1372,29 +1363,38 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return resultStr;
 }
 
-// return a default process name suitable for GData and http 
-- (NSString *)cleanProcessName {
-  
-  NSString *procName = [[NSProcessInfo processInfo] processName];
-  NSString *result = [GDataUtilities userAgentStringForString:procName];
-  return result;
-}
-
 // return a generic name and version for the current application; this avoids
 // anonymous server transactions.  Applications should call setUserAgent
 // to avoid the need for this method to be used.
 - (NSString *)defaultApplicationIdentifier {
-  NSString *procName = [self cleanProcessName];
 
-  // append _proc to the application ID with so it's clear in the logs
-  // that it was auto-generated from the process name
-  NSString *result = [procName stringByAppendingString:@"_proc"];
+  // if there's a bundle ID, use that; otherwise, use the process name
+  //
+  // we'll take a leap of faith that the bundle ID represents the actual
+  // bundle of interest, as opposed to a host app which loaded
+  // a plug-in that uses this library. We could try to load
+  // +bundleForClass: on a ticket's delegate's class, but that feels
+  // too fragile
+  NSString *identifier;
+
+  NSBundle *mainBundle = [NSBundle mainBundle];
+  NSString *bundleID = [mainBundle bundleIdentifier];
+
+  if ([bundleID length] > 0) {
+    identifier = bundleID;
+  } else {
+    identifier = [[NSProcessInfo processInfo] processName];
+  }
 
   // if there's a version number, append that
-  NSString *version = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
-  if (version != nil && ![version isEqual:@"CFBundleShortVersionString"]) {
-    result = [result stringByAppendingFormat:@"-%@", version];
+  NSDictionary *infoDict = [mainBundle infoDictionary];
+  NSString *version = [infoDict valueForKey:@"CFBundleShortVersionString"];
+  if (version != nil) {
+    identifier = [identifier stringByAppendingFormat:@"-%@", version];
   }
+
+  // clean up whitespace and special characters
+  NSString *result = [GDataUtilities userAgentStringForString:identifier];
   return result;
 }
 @end
