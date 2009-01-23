@@ -1369,17 +1369,20 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (NSString *)defaultApplicationIdentifier {
 
   // if there's a bundle ID, use that; otherwise, use the process name
-  //
-  // we'll take a leap of faith that the bundle ID represents the actual
-  // bundle of interest, as opposed to a host app which loaded
-  // a plug-in that uses this library. We could try to load
-  // +bundleForClass: on a ticket's delegate's class, but that feels
-  // too fragile
+
+  // if this code is compiled directly into an app or plug-in, we want
+  // that app or plug-in's bundle; if it was loaded as part of the
+  // GData framework, we'll settle for the main bundle's ID
+  NSBundle *owningBundle = [NSBundle bundleForClass:[self class]];
+  if (owningBundle == nil
+      || [[owningBundle bundleIdentifier] isEqual:@"com.google.GDataFramework"]) {
+
+    owningBundle = [NSBundle mainBundle];
+  }
+
   NSString *identifier;
 
-  NSBundle *mainBundle = [NSBundle mainBundle];
-  NSString *bundleID = [mainBundle bundleIdentifier];
-
+  NSString *bundleID = [owningBundle bundleIdentifier];
   if ([bundleID length] > 0) {
     identifier = bundleID;
   } else {
@@ -1387,8 +1390,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 
   // if there's a version number, append that
-  NSDictionary *infoDict = [mainBundle infoDictionary];
-  NSString *version = [infoDict valueForKey:@"CFBundleShortVersionString"];
+  NSString *version = [owningBundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+
   if (version != nil) {
     identifier = [identifier stringByAppendingFormat:@"-%@", version];
   }
