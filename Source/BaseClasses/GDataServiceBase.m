@@ -214,8 +214,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     // only add a version header if the URL lacks a v= version parameter
     NSString *queryString = [url query];
-    if  ([queryString rangeOfString:@"&v="].location == NSNotFound
-         && ![queryString hasPrefix:@"v="]) {
+    if  (queryString == nil
+         || ([queryString rangeOfString:@"&v="].location == NSNotFound
+             && ![queryString hasPrefix:@"v="])) {
 
       [request setValue:serviceVersion forHTTPHeaderField:@"GData-Version"];
     }
