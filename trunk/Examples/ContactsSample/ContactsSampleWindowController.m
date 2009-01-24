@@ -868,7 +868,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   NSString *errorMsg = nil;
   
   // make a new entry for the file
-  NSString *mimeType = [GDataEntryBase MIMETypeForFileAtPath:path
+  NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:path
                                              defaultMIMEType:@"image/jpeg"];
   if (!mimeType) {
     errorMsg = [NSString stringWithFormat:@"need MIME type for file %@", path];
@@ -958,9 +958,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   
   NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Photo upload failed: %@\nUser info:%@", 
-                    error, [error userInfo]);
-  
+                    nil, nil, @"Photo upload failed: %@", error);
 }
 
 #pragma mark Delete contact image
@@ -1021,8 +1019,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   
   NSBeginAlertSheet(@"Delete photo failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Photo delete failed: %@\nUser info:%@", 
-                    error, [error userInfo]);
+                    nil, nil, @"Photo delete failed: %@", error);
 }
 
 #pragma mark Add a Contact
@@ -1083,8 +1080,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   
   NSBeginAlertSheet(@"Add failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Contact add failed: %@\nUser info:%@", 
-                    error, [error userInfo]);  
+                    nil, nil, @"Contact add failed: %@", error);
 }
 
 #pragma mark Add a Group
@@ -1134,8 +1130,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   
   NSBeginAlertSheet(@"Add failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Group add failed: %@\nUser info:%@", 
-                    error, [error userInfo]);  
+                    nil, nil, @"Group add failed: %@", error);
 }
 
 #pragma mark Delete a Contact or Group
@@ -1191,8 +1186,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Entry delete failed: %@\nUser info:%@", 
-                    error, [error userInfo]); 
+                    nil, nil, @"Entry delete failed: %@", error);
 }
 
 
@@ -1375,8 +1369,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Batch delete failed: %@\nUser info:%@", 
-                    error, [error userInfo]); 
+                    nil, nil, @"Batch delete failed: %@", error);
 }
 
 
@@ -1534,8 +1527,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   
   NSBeginAlertSheet(@"Update failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Entry update failed: %@\nUser info:%@", 
-                    error, [error userInfo]);
+                    nil, nil, @"Entry update failed: %@", error);
   
 }
 
@@ -1608,8 +1600,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   
   NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Item delete failed: %@\nUser info:%@", 
-                    error, [error userInfo]);
+                    nil, nil, @"Item delete failed: %@", error);
 }
 
 #pragma mark Make selected item primary
@@ -1656,8 +1647,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   
   NSBeginAlertSheet(@"Make primary failed", nil, nil, nil,
                     [self window], nil, nil,
-                    nil, nil, @"Could not make item primary: %@\nUser info:%@", 
-                    error, [error userInfo]);
+                    nil, nil, @"Could not make item primary: %@", error);
 } 
 
 
