@@ -436,12 +436,14 @@ enum {
                                                        delegate:(id)delegate
                                               didFinishSelector:(SEL)finishedSelector
                                                 didFailSelector:(SEL)failedSelector {
-  
+
+  NSString *etag = [entryToInsert ETag];
+
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:[entryToInsert class]
                                   objectToPost:entryToInsert
-                                          ETag:nil
-                                    httpMethod:nil
+                                          ETag:etag
+                                    httpMethod:@"POST"
                                       delegate:delegate
                              didFinishSelector:finishedSelector
                                didFailSelector:failedSelector];
