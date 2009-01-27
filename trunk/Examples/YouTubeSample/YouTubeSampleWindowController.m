@@ -435,7 +435,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [mediaGroup setMediaKeywords:keywords];
   [mediaGroup setIsPrivate:isPrivate];
  
-  NSString *mimeType = [GDataEntryBase MIMETypeForFileAtPath:path
+  NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:path
                                              defaultMIMEType:@"video/mp4"];
   
   // create the upload entry with the mediaGroup and the file data
