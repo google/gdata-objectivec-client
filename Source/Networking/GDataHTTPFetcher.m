@@ -218,7 +218,6 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   if (cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodSystemDefault) {
     
     NSArray *cookies = [self cookiesForURL:[request_ URL]];
-    
     if ([cookies count]) {
       
       NSDictionary *headerFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
@@ -1155,9 +1154,9 @@ CannotBeginFetch:
 // domain, path, cookie name, expiration, security setting.
 // Side effect: removed expired cookies from the storage array
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray {
-  
+
   [self removeExpiredCookiesInArray:cookieStorageArray];
-  
+
   NSMutableArray *foundCookies = [NSMutableArray array];
 
   // we'll prepend "." to the desired domain, since we want the
@@ -1166,30 +1165,41 @@ CannotBeginFetch:
   NSString *host = [theURL host];
   NSString *path = [theURL path];
   NSString *scheme = [theURL scheme];
-  
+
   NSString *domain = nil;
+  BOOL isLocalhostRetrieval = NO;
+
   if ([host isEqual:@"localhost"]) {
-    // the domain stored into NSHTTPCookies for localhost is "localhost.local"
-    domain = @"localhost.local"; 
+    isLocalhostRetrieval = YES;
   } else {
     if (host) {
-      domain = [@"." stringByAppendingString:host]; 
+      domain = [@"." stringByAppendingString:host];
     }
   }
-  
+
   NSUInteger numberOfCookies = [cookieStorageArray count];
   for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
-    
+
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
-    
+
     NSString *cookieDomain = [storedCookie domain];
     NSString *cookiePath = [storedCookie path];
     BOOL cookieIsSecure = [storedCookie isSecure];
-    
-    BOOL domainIsOK = [domain hasSuffix:cookieDomain];
+
+    BOOL domainIsOK;
+
+    if (isLocalhostRetrieval) {
+      // prior to 10.5.6, the domain stored into NSHTTPCookies for localhost
+      // is "localhost.local"
+      domainIsOK = [cookieDomain isEqual:@"localhost"]
+        || [cookieDomain isEqual:@"localhost.local"];
+    } else {
+      domainIsOK = [domain hasSuffix:cookieDomain];
+    }
+
     BOOL pathIsOK = [cookiePath isEqual:@"/"] || [path hasPrefix:cookiePath];
     BOOL secureIsOK = (!cookieIsSecure) || [scheme isEqual:@"https"];
-    
+
     if (domainIsOK && pathIsOK && secureIsOK) {
       [foundCookies addObject:storedCookie];
     }
