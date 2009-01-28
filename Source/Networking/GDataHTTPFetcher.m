@@ -30,14 +30,14 @@
 @end
 #endif
 
-NSString* const kGDataLastModifiedHeader = @"Last-Modified";
-NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
+static NSString* const kGDataLastModifiedHeader = @"Last-Modified";
+static NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
 SEL const kUnifiedFailureCallback = (SEL) (void *) -1;
 
-NSMutableArray* gGDataFetcherStaticCookies = nil;
-Class gGDataFetcherConnectionClass = nil;
-NSArray *gGDataFetcherDefaultRunLoopModes = nil;
+static NSMutableArray* gGDataFetcherStaticCookies = nil;
+static Class gGDataFetcherConnectionClass = nil;
+static NSArray *gGDataFetcherDefaultRunLoopModes = nil;
 
 const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
                    
@@ -1162,7 +1162,7 @@ CannotBeginFetch:
   // we'll prepend "." to the desired domain, since we want the
   // actual domain "nytimes.com" to still match the cookie domain ".nytimes.com"
   // when we check it below with hasSuffix
-  NSString *host = [theURL host];
+  NSString *host = [[theURL host] lowercaseString];
   NSString *path = [theURL path];
   NSString *scheme = [theURL scheme];
 
@@ -1182,7 +1182,7 @@ CannotBeginFetch:
 
     NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
 
-    NSString *cookieDomain = [storedCookie domain];
+    NSString *cookieDomain = [[storedCookie domain] lowercaseString];
     NSString *cookiePath = [storedCookie path];
     BOOL cookieIsSecure = [storedCookie isSecure];
 

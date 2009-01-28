@@ -28,7 +28,7 @@ static NSString *const kThumbsizeParamName = @"thumbsize";
 static NSString *const kImageSizeParamName = @"imgmax";
 static NSString *const kTagParamName = @"tag";
 
-NSString *const kImageSizeOriginalPhoto = @"d";
+static NSString *const kImageSizeOriginalPhoto = @"d";
 
 @implementation GDataQueryGooglePhotos
 
