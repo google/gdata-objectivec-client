@@ -30,7 +30,7 @@
 }
 
 + (NSString *)defaultServiceVersion {
-  return @"1.0";
+  return @"1";
 }
 
 @end
@@ -86,7 +86,7 @@
 }
 
 + (NSString *)defaultServiceVersion {
-  return @"2.0";
+  return @"2";
 }
 
 @end

@@ -31,7 +31,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataPhotosDefaultServiceVersion _INITIALIZE_AS(@"1.0");
+_EXTERN NSString* const kGDataPhotosDefaultServiceVersion _INITIALIZE_AS(@"1");
 
 _EXTERN NSString* const kGDataNamespacePhotos       _INITIALIZE_AS(@"http://schemas.google.com/photos/2007");
 _EXTERN NSString* const kGDataNamespacePhotosPrefix _INITIALIZE_AS(@"gphoto");
