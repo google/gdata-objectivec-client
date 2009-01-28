@@ -37,7 +37,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataContactDefaultServiceVersion _INITIALIZE_AS(@"2.0");
+_EXTERN NSString* const kGDataContactDefaultServiceVersion _INITIALIZE_AS(@"2");
 
 _EXTERN NSString* const kGDataNamespaceContact _INITIALIZE_AS(@"http://schemas.google.com/contact/2008");
 _EXTERN NSString* const kGDataNamespaceContactPrefix _INITIALIZE_AS(@"gContact");
