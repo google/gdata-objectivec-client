@@ -16,7 +16,7 @@
 
 #import "GDataNormalPlayTime.h"
 
-NSString* const kNowString = @"now";
+static NSString* const kNowString = @"now";
 
 @implementation GDataNormalPlayTime
 
