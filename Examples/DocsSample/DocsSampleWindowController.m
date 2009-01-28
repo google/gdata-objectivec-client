@@ -32,6 +32,7 @@
 - (void)fetchDocList;
 
 - (void)uploadFileAtPath:(NSString *)path;
+- (void)saveSelectedDocumentToPath:(NSString *)path;
 
 - (GDataServiceGoogleDocs *)docsService;
 - (GDataEntryDocBase *)selectedDoc;
@@ -265,47 +266,53 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   
   if (returnCode == NSOKButton) {
     // user clicked OK
-    
-    NSString *sourceURI = [[[self selectedDoc] content] sourceURI];
-    NSURL *url = [NSURL URLWithString:sourceURI];
-    if (url) {
-      
-      // read the document's contents synchronously from the network
-      //
-      // since the user has already signed in, the service object
-      // has the proper authentication token.  We'll use the service object
-      // to generate an NSURLRequest with the auth token in the header, and
-      // then fetch that synchronously.  Without the auth token, the sourceURI
-      // would only give us the document if we were already signed into the 
-      // user's account with Safari, or if the document was published with
-      // public access.
+    NSString *savePath = [panel filename];
+    [self saveSelectedDocumentToPath:savePath];
+  }
+}
 
-      GDataServiceGoogleDocs *service = [self docsService];
-      NSURLRequest *request = [service requestForURL:url
-                                                ETag:nil
-                                          httpMethod:nil];
+- (void)saveSelectedDocumentToPath:(NSString *)savePath {
 
-      NSURLResponse *response = nil;
-      NSError *error = nil;
-      NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                           returningResponse:&response 
-                                                       error:&error];
+  NSString *sourceURI = [[[self selectedDoc] content] sourceURI];
+  NSURL *url = [NSURL URLWithString:sourceURI];
+  if (url) {
 
-      if (error != nil) {
-        NSLog(@"Error retrieving file: %@", error);
+    // read the document's contents synchronously from the network
+    //
+    // since the user has already signed in, the service object
+    // has the proper authentication token.  We'll use the service object
+    // to generate an NSURLRequest with the auth token in the header, and
+    // then fetch that synchronously.  Without the auth token, the sourceURI
+    // would only give us the document if we were already signed into the
+    // user's account with Safari, or if the document was published with
+    // public access.
+    //
+    // A convenient way to retrieve the document asynchronously would be to
+    // use GDataHTTPFetcher
+
+    GDataServiceGoogleDocs *service = [self docsService];
+    NSURLRequest *request = [service requestForURL:url
+                                              ETag:nil
+                                        httpMethod:nil];
+
+    NSURLResponse *response = nil;
+    NSError *error = nil;
+    NSData *data = [NSURLConnection sendSynchronousRequest:request
+                                         returningResponse:&response
+                                                     error:&error];
+
+    if (error != nil) {
+      NSLog(@"Error retrieving file: %@", error);
+      NSBeep();
+
+    } else {
+      // save the file to the local path specified by the user
+      BOOL didWrite = [data writeToFile:savePath
+                                options:NSAtomicWrite
+                                  error:&error];
+      if (!didWrite) {
+        NSLog(@"Error saving file: %@", error);
         NSBeep();
-        
-      } else {
-        // save the file to the local path specified by the user
-        NSString *savePath = [panel filename];
-        
-        BOOL didWrite = [data writeToFile:savePath
-                                  options:NSAtomicWrite 
-                                    error:&error];
-        if (!didWrite) {
-          NSLog(@"Error saving file: %@", error);
-          NSBeep();
-        }
       }
     }
   }
