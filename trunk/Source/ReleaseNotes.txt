@@ -3,6 +3,8 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.6.0
+28-January-2009
 Changes since 1.5.0
 
 Additions
@@ -17,6 +19,9 @@ Additions
   will be available from the NSError object's userInfo dictionary
   with the key kGDataStructuredErrorsKey.
   
+- Added explanatory server error text as NSLocalizedFailureReasonErrorKey to
+  server-generated NSErrors so that logged errors are more useful.
+  
 - Added Optional group to project common sources to more easily identify
   non-service specific sources which may be omitted. ACL classes are now
   optional.  Media classes are now required only for YouTube and Photos classes.
@@ -29,7 +34,8 @@ Additions
 - Updated YouTube, DocList, and Spreadsheet APIs for GData v2, and Spreadsheet
   and Contacts samples for v2 API changes
 
-- Added support for using GDataHTTPFetcher with a single failure selector.
+- Added support for using GDataHTTPFetcher with a single failure selector rather
+  than separate status and network error selectors.
 
 - Added GDataTargetNamespace.h (and a tool to generate it) to allow plug-ins
   to use the library with less risk of class name collision
