@@ -30,7 +30,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataSpreadsheetDefaultServiceVersion _INITIALIZE_AS(@"2");
+_EXTERN NSString* const kGDataSpreadsheetDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceGSpread _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006");
 _EXTERN NSString* const kGDataNamespaceGSpreadPrefix _INITIALIZE_AS(@"gs");
