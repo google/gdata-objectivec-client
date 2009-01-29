@@ -4,7 +4,7 @@ Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 Release 1.6.0
-28-January-2009
+30-January-2009
 Changes since 1.5.0
 
 Additions
@@ -94,6 +94,8 @@ Bugs Fixed
 - Removed some header files for unit test sources
 
 - Added a log message to indicate when an explicit user-agent is not provided
+
+- Fixed localhost cookie handling under 10.5.6
 
 
 Release 1.5.0
