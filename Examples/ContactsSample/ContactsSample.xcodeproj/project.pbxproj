@@ -13,6 +13,7 @@
 		4F3585F70C0F8DAB0027B642 /* EditEntryWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F3585F10C0F8DAB0027B642 /* EditEntryWindow.nib */; };
 		4F35863A0C0F97BB0027B642 /* EditEntryWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35840D0C0F54B20027B642 /* EditEntryWindowController.m */; };
 		4F606D7C0D77699600DA1A87 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
+		4FA5F9250F326EA7006106F7 /* GData.framework in Copy GData framework */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
 		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -57,6 +58,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				4FA5F9250F326EA7006106F7 /* GData.framework in Copy GData framework */,
 			);
 			name = "Copy GData framework";
 			runOnlyForDeploymentPostprocessing = 0;
