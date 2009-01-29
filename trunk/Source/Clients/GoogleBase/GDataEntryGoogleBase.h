@@ -34,7 +34,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataGoogleBaseDefaultServiceVersion _INITIALIZE_AS(@"2");
+_EXTERN NSString* const kGDataGoogleBaseDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceGoogleBase _INITIALIZE_AS(@"http://base.google.com/ns/1.0");
 _EXTERN NSString* const kGDataNamespaceGoogleBasePrefix _INITIALIZE_AS(@"g");

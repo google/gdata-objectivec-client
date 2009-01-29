@@ -32,7 +32,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataWebmasterToolsDefaultServiceVersion _INITIALIZE_AS(@"2");
+_EXTERN NSString* const kGDataWebmasterToolsDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceWebmasterTools       _INITIALIZE_AS(@"http://schemas.google.com/webmasters/tools/2007");
 _EXTERN NSString* const kGDataNamespaceWebmasterToolsPrefix _INITIALIZE_AS(@"wt");

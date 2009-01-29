@@ -36,7 +36,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataYouTubeDefaultServiceVersion _INITIALIZE_AS(@"2");
+_EXTERN NSString* const kGDataYouTubeDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceYouTube       _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007");
 _EXTERN NSString* const kGDataNamespaceYouTubePrefix _INITIALIZE_AS(@"yt");
