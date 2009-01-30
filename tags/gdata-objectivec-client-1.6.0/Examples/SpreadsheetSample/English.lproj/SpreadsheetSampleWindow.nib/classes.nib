@@ -1,0 +1,27 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = NSSegmentedControl; LANGUAGE = ObjC; SUPERCLASS = NSControl; }, 
+        {
+            ACTIONS = {feedSegmentClicked = id; getSpreadsheetClicked = id; }; 
+            CLASS = SpreadsheetSampleWindowController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mEntryProgressIndicator = NSProgressIndicator; 
+                mEntryResultTextField = NSTextView; 
+                mEntryTable = NSTableView; 
+                mFeedSelectorSegments = NSSegmentedControl; 
+                mPasswordField = NSSecureTextField; 
+                mSpreadsheetProgressIndicator = NSProgressIndicator; 
+                mSpreadsheetResultTextField = NSTextView; 
+                mSpreadsheetTable = NSTableView; 
+                mUsernameField = NSTextField; 
+                mWorksheetProgressIndicator = NSProgressIndicator; 
+                mWorksheetResultTextField = NSTextView; 
+                mWorksheetTable = NSTableView; 
+            }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}
