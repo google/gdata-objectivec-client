@@ -29,16 +29,15 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataRatingPrice  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#price");
-_EXTERN NSString* kGDataRatingQuality  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#quality");
+_EXTERN NSString* const kGDataRatingPrice   _INITIALIZE_AS(@"http://schemas.google.com/g/2005#price");
+_EXTERN NSString* const kGDataRatingQuality _INITIALIZE_AS(@"http://schemas.google.com/g/2005#quality");
 
 // rating, as in
 //  <gd:rating rel="http://schemas.google.com/g/2005#price" value="5" min="1" max="5"/>
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdRating
 
-@interface GDataRating : GDataObject <GDataExtension> {
-}
+@interface GDataRating : GDataObject <GDataExtension>
 
 + (GDataRating *)ratingWithValue:(int)value
                              max:(int)max

@@ -31,7 +31,7 @@
 
 
 // doclist feed URL
-_EXTERN NSString* kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/full");
+_EXTERN NSString* const kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/full");
 
 
 @class GDataEntryDocBase;

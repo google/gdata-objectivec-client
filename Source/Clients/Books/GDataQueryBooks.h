@@ -29,9 +29,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataGoogleBooksMinViewabilityFull    _INITIALIZE_AS(@"full");
-_EXTERN NSString* kGDataGoogleBooksMinViewabilityNone    _INITIALIZE_AS(@"none");
-_EXTERN NSString* kGDataGoogleBooksMinViewabilityPartial _INITIALIZE_AS(@"partial");
+_EXTERN NSString* const kGDataGoogleBooksMinViewabilityFull    _INITIALIZE_AS(@"full");
+_EXTERN NSString* const kGDataGoogleBooksMinViewabilityNone    _INITIALIZE_AS(@"none");
+_EXTERN NSString* const kGDataGoogleBooksMinViewabilityPartial _INITIALIZE_AS(@"partial");
 
 @interface GDataQueryBooks : GDataQuery 
   

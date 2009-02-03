@@ -30,7 +30,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategorySpreadsheetList _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#list");
+_EXTERN NSString* const kGDataCategorySpreadsheetList _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#list");
 
 @class GDataSpreadsheetCustomElement;
 

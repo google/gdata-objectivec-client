@@ -30,19 +30,19 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataYouTubeOrderByUpdated   _INITIALIZE_AS(@"updated");
-_EXTERN NSString* kGDataYouTubeOrderByViewCount _INITIALIZE_AS(@"viewCount");
-_EXTERN NSString* kGDataYouTubeOrderByRating    _INITIALIZE_AS(@"rating");
-_EXTERN NSString* kGDataYouTubeOrderByRelevance _INITIALIZE_AS(@"relevance");
+_EXTERN NSString* const kGDataYouTubeOrderByUpdated   _INITIALIZE_AS(@"updated");
+_EXTERN NSString* const kGDataYouTubeOrderByViewCount _INITIALIZE_AS(@"viewCount");
+_EXTERN NSString* const kGDataYouTubeOrderByRating    _INITIALIZE_AS(@"rating");
+_EXTERN NSString* const kGDataYouTubeOrderByRelevance _INITIALIZE_AS(@"relevance");
 
-_EXTERN NSString* kGDataYouTubePeriodToday     _INITIALIZE_AS(@"today");
-_EXTERN NSString* kGDataYouTubePeriodThisWeek  _INITIALIZE_AS(@"this_week");
-_EXTERN NSString* kGDataYouTubePeriodThisMonth _INITIALIZE_AS(@"this_month");
-_EXTERN NSString* kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
+_EXTERN NSString* const kGDataYouTubePeriodToday     _INITIALIZE_AS(@"today");
+_EXTERN NSString* const kGDataYouTubePeriodThisWeek  _INITIALIZE_AS(@"this_week");
+_EXTERN NSString* const kGDataYouTubePeriodThisMonth _INITIALIZE_AS(@"this_month");
+_EXTERN NSString* const kGDataYouTubePeriodAllTime   _INITIALIZE_AS(@"all_time");
 
-_EXTERN NSString* kGDataYouTubeSafeSearchNone     _INITIALIZE_AS(@"none");
-_EXTERN NSString* kGDataYouTubeSafeSearchStrict   _INITIALIZE_AS(@"strict");
-_EXTERN NSString* kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderate");
+_EXTERN NSString* const kGDataYouTubeSafeSearchNone     _INITIALIZE_AS(@"none");
+_EXTERN NSString* const kGDataYouTubeSafeSearchStrict   _INITIALIZE_AS(@"strict");
+_EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderate");
 
 
 // http://code.google.com/apis/youtube/reference.html#Parameters

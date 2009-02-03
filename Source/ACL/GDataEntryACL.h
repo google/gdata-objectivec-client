@@ -29,13 +29,13 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#accessRule");
+_EXTERN NSString* const kGDataCategoryACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#accessRule");
 
-_EXTERN NSString* kGDataNamespaceACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007");
-_EXTERN NSString* kGDataNamespaceACLPrefix _INITIALIZE_AS(@"gAcl");
+_EXTERN NSString* const kGDataNamespaceACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007");
+_EXTERN NSString* const kGDataNamespaceACLPrefix _INITIALIZE_AS(@"gAcl");
 
-_EXTERN NSString* kGDataLinkRelACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#accessControlList");
-_EXTERN NSString* kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#controlledObject");
+_EXTERN NSString* const kGDataLinkRelACL _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#accessControlList");
+_EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://schemas.google.com/acl/2007#controlledObject");
 
 @class GDataACLRole;
 @class GDataACLScope;

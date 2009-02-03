@@ -30,7 +30,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005/webContent");
+_EXTERN NSString* const kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005/webContent");
 
 
 // Calendar Web Content element, inside a <link>, as in

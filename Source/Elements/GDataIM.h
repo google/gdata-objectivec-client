@@ -29,14 +29,14 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataIMProtocolAIM        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#AIM");
-_EXTERN NSString* kGDataIMProtocolGoogleTalk _INITIALIZE_AS(@"http://schemas.google.com/g/2005#GOOGLE_TALK");
-_EXTERN NSString* kGDataIMProtocolICQ        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#ICQ");
-_EXTERN NSString* kGDataIMProtocolJabber     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#JABBER");
-_EXTERN NSString* kGDataIMProtocolMSN        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#MSN");
-_EXTERN NSString* kGDataIMProtocolQQ         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#QQ");
-_EXTERN NSString* kGDataIMProtocolSkype      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#SKYPE");
-_EXTERN NSString* kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#YAHOO");
+_EXTERN NSString* const kGDataIMProtocolAIM        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#AIM");
+_EXTERN NSString* const kGDataIMProtocolGoogleTalk _INITIALIZE_AS(@"http://schemas.google.com/g/2005#GOOGLE_TALK");
+_EXTERN NSString* const kGDataIMProtocolICQ        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#ICQ");
+_EXTERN NSString* const kGDataIMProtocolJabber     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#JABBER");
+_EXTERN NSString* const kGDataIMProtocolMSN        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#MSN");
+_EXTERN NSString* const kGDataIMProtocolQQ         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#QQ");
+_EXTERN NSString* const kGDataIMProtocolSkype      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#SKYPE");
+_EXTERN NSString* const kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#YAHOO");
 
 // IM element, as in
 //   <gd:im protocol="http://schemas.google.com/g/2005#MSN" 

@@ -31,16 +31,16 @@
 #endif
 
 // values for GDataPhotoAccess
-_EXTERN NSString* kGDataPhotoAccessPrivate _INITIALIZE_AS(@"private");
-_EXTERN NSString* kGDataPhotoAccessProtected _INITIALIZE_AS(@"protected"); // "sign-in required"
-_EXTERN NSString* kGDataPhotoAccessPublic _INITIALIZE_AS(@"public");
-_EXTERN NSString* kGDataPhotoAccessAll _INITIALIZE_AS(@"all");
+_EXTERN NSString* const kGDataPhotoAccessPrivate _INITIALIZE_AS(@"private");
+_EXTERN NSString* const kGDataPhotoAccessProtected _INITIALIZE_AS(@"protected"); // "sign-in required"
+_EXTERN NSString* const kGDataPhotoAccessPublic _INITIALIZE_AS(@"public");
+_EXTERN NSString* const kGDataPhotoAccessAll _INITIALIZE_AS(@"all");
 
 // values for GDataPhotoVideoStatus
-_EXTERN NSString* kGDataPhotoStatusPending _INITIALIZE_AS(@"pending");
-_EXTERN NSString* kGDataPhotoStatusReady   _INITIALIZE_AS(@"ready");
-_EXTERN NSString* kGDataPhotoStatusFinal   _INITIALIZE_AS(@"final");
-_EXTERN NSString* kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
+_EXTERN NSString* const kGDataPhotoStatusPending _INITIALIZE_AS(@"pending");
+_EXTERN NSString* const kGDataPhotoStatusReady   _INITIALIZE_AS(@"ready");
+_EXTERN NSString* const kGDataPhotoStatusFinal   _INITIALIZE_AS(@"final");
+_EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 
 
 // http://code.google.com/apis/picasaweb/reference.html#gphoto_reference

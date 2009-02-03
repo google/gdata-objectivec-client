@@ -43,7 +43,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005#kind");
+_EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005#kind");
 
 
 @interface GDataEntryBase : GDataObject <NSCopying> {

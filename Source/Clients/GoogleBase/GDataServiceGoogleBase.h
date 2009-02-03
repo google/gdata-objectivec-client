@@ -29,10 +29,10 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataGoogleBaseSnippetsFeed   _INITIALIZE_AS(@"http://base.google.com/base/feeds/snippets");
-_EXTERN NSString* kGDataGoogleBaseItemTypesFeed  _INITIALIZE_AS(@"http://base.google.com/base/feeds/itemtypes");
-_EXTERN NSString* kGDataGoogleBaseAttributesFeed _INITIALIZE_AS(@"http://base.google.com/base/feeds/attributes");
-_EXTERN NSString* kGDataGoogleBaseUserItemsFeed  _INITIALIZE_AS(@"http://www.google.com/base/feeds/items");
+_EXTERN NSString* const kGDataGoogleBaseSnippetsFeed   _INITIALIZE_AS(@"http://base.google.com/base/feeds/snippets");
+_EXTERN NSString* const kGDataGoogleBaseItemTypesFeed  _INITIALIZE_AS(@"http://base.google.com/base/feeds/itemtypes");
+_EXTERN NSString* const kGDataGoogleBaseAttributesFeed _INITIALIZE_AS(@"http://base.google.com/base/feeds/attributes");
+_EXTERN NSString* const kGDataGoogleBaseUserItemsFeed  _INITIALIZE_AS(@"http://www.google.com/base/feeds/items");
 
 @class GDataEntryGoogleBase;
 @class GDataQueryGoogleBase;

@@ -112,25 +112,25 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceAtom _INITIALIZE_AS(@"http://www.w3.org/2005/Atom");
-_EXTERN NSString* kGDataNamespaceAtomPrefix _INITIALIZE_AS(@"atom");
+_EXTERN NSString* const kGDataNamespaceAtom _INITIALIZE_AS(@"http://www.w3.org/2005/Atom");
+_EXTERN NSString* const kGDataNamespaceAtomPrefix _INITIALIZE_AS(@"atom");
 
-_EXTERN NSString* kGDataNamespaceAtomPubStd _INITIALIZE_AS(@"http://www.w3.org/2007/app");
-_EXTERN NSString* kGDataNamespaceAtomPub1_0 _INITIALIZE_AS(@"http://purl.org/atom/app#");
-_EXTERN NSString* kGDataNamespaceAtomPubPrefix _INITIALIZE_AS(@"app");
+_EXTERN NSString* const kGDataNamespaceAtomPubStd _INITIALIZE_AS(@"http://www.w3.org/2007/app");
+_EXTERN NSString* const kGDataNamespaceAtomPub1_0 _INITIALIZE_AS(@"http://purl.org/atom/app#");
+_EXTERN NSString* const kGDataNamespaceAtomPubPrefix _INITIALIZE_AS(@"app");
 
-_EXTERN NSString* kGDataNamespaceOpenSearch    _INITIALIZE_AS(@"http://a9.com/-/spec/opensearchrss/1.0/");
-_EXTERN NSString* kGDataNamespaceOpenSearch1_1 _INITIALIZE_AS(@"http://a9.com/-/spec/opensearch/1.1/");
-_EXTERN NSString* kGDataNamespaceOpenSearchPrefix _INITIALIZE_AS(@"openSearch");
+_EXTERN NSString* const kGDataNamespaceOpenSearch    _INITIALIZE_AS(@"http://a9.com/-/spec/opensearchrss/1.0/");
+_EXTERN NSString* const kGDataNamespaceOpenSearch1_1 _INITIALIZE_AS(@"http://a9.com/-/spec/opensearch/1.1/");
+_EXTERN NSString* const kGDataNamespaceOpenSearchPrefix _INITIALIZE_AS(@"openSearch");
 
-_EXTERN NSString* kGDataNamespaceXHTML _INITIALIZE_AS(@"http://www.w3.org/1999/xhtml");
-_EXTERN NSString* kGDataNamespaceXHTMLPrefix _INITIALIZE_AS(@"xh");
+_EXTERN NSString* const kGDataNamespaceXHTML _INITIALIZE_AS(@"http://www.w3.org/1999/xhtml");
+_EXTERN NSString* const kGDataNamespaceXHTMLPrefix _INITIALIZE_AS(@"xh");
 
-_EXTERN NSString* kGDataNamespaceGData _INITIALIZE_AS(@"http://schemas.google.com/g/2005");
-_EXTERN NSString* kGDataNamespaceGDataPrefix _INITIALIZE_AS(@"gd");
+_EXTERN NSString* const kGDataNamespaceGData _INITIALIZE_AS(@"http://schemas.google.com/g/2005");
+_EXTERN NSString* const kGDataNamespaceGDataPrefix _INITIALIZE_AS(@"gd");
 
-_EXTERN NSString* kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.com/gdata/batch");
-_EXTERN NSString* kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
+_EXTERN NSString* const kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.com/gdata/batch");
+_EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 #define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
   GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"%s requires newer version", \

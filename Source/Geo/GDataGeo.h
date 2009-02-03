@@ -38,14 +38,14 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceGeoW3C       _INITIALIZE_AS(@"http://www.w3.org/2003/01/geo/wgs84_pos#");
-_EXTERN NSString* kGDataNamespaceGeoW3CPrefix _INITIALIZE_AS(@"geo");
+_EXTERN NSString* const kGDataNamespaceGeoW3C       _INITIALIZE_AS(@"http://www.w3.org/2003/01/geo/wgs84_pos#");
+_EXTERN NSString* const kGDataNamespaceGeoW3CPrefix _INITIALIZE_AS(@"geo");
 
-_EXTERN NSString* kGDataNamespaceGeoRSS       _INITIALIZE_AS(@"http://www.georss.org/georss");
-_EXTERN NSString* kGDataNamespaceGeoRSSPrefix _INITIALIZE_AS(@"georss");
+_EXTERN NSString* const kGDataNamespaceGeoRSS       _INITIALIZE_AS(@"http://www.georss.org/georss");
+_EXTERN NSString* const kGDataNamespaceGeoRSSPrefix _INITIALIZE_AS(@"georss");
 
-_EXTERN NSString* kGDataNamespaceGeoGML       _INITIALIZE_AS(@"http://www.opengis.net/gml");
-_EXTERN NSString* kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
+_EXTERN NSString* const kGDataNamespaceGeoGML       _INITIALIZE_AS(@"http://www.opengis.net/gml");
+_EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
 
 @interface GDataGeo : GDataObject <NSCopying> {
   NSArray *values_; // One or more pairs of doubles (NSNumbers)

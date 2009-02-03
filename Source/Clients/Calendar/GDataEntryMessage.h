@@ -34,14 +34,14 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString *kGDataMessage _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message");
+_EXTERN NSString* const kGDataMessage _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message");
 
-_EXTERN NSString *kGDataMessageStarred _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.starred");
-_EXTERN NSString *kGDataMessageUnread _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.unread");
-_EXTERN NSString *kGDataMessageChat _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.chat");
-_EXTERN NSString *kGDataMessageSpam _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.spam");
-_EXTERN NSString *kGDataMessageSent _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.sent");
-_EXTERN NSString *kGDataMessageInbox _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.inbox");
+_EXTERN NSString* const kGDataMessageStarred _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.starred");
+_EXTERN NSString* const kGDataMessageUnread _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.unread");
+_EXTERN NSString* const kGDataMessageChat _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.chat");
+_EXTERN NSString* const kGDataMessageSpam _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.spam");
+_EXTERN NSString* const kGDataMessageSent _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.sent");
+_EXTERN NSString* const kGDataMessageInbox _INITIALIZE_AS(@"http://schemas.google.com/g/2005#message.inbox");
 
 
 @interface GDataEntryMessage : GDataEntryBase {

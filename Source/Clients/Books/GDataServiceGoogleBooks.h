@@ -30,11 +30,11 @@
 #endif
 
 // feed for querying all volumes
-_EXTERN NSString* kGDataGoogleBooksVolumeFeed _INITIALIZE_AS(@"http://books.google.com/books/feeds/volumes");
+_EXTERN NSString* const kGDataGoogleBooksVolumeFeed _INITIALIZE_AS(@"http://books.google.com/books/feeds/volumes");
 
 // feeds for the authenticated user's annotations and collections
-_EXTERN NSString* kGDataGoogleBooksDefaultVolumeFeed     _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/volumes");
-_EXTERN NSString* kGDataGoogleBooksDefaultCollectionFeed _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/collections/library/volumes");
+_EXTERN NSString* const kGDataGoogleBooksDefaultVolumeFeed     _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/volumes");
+_EXTERN NSString* const kGDataGoogleBooksDefaultCollectionFeed _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/collections/library/volumes");
 
 @class GDataQueryBooks;
 

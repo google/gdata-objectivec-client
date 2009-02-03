@@ -30,11 +30,11 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataLinkRelFeed _INITIALIZE_AS(@"http://schemas.google.com/g/2005#feed");
-_EXTERN NSString* kGDataLinkRelPost _INITIALIZE_AS(@"http://schemas.google.com/g/2005#post");
-_EXTERN NSString* kGDataLinkRelBatch _INITIALIZE_AS(@"http://schemas.google.com/g/2005#batch");
+_EXTERN NSString* const kGDataLinkRelFeed _INITIALIZE_AS(@"http://schemas.google.com/g/2005#feed");
+_EXTERN NSString* const kGDataLinkRelPost _INITIALIZE_AS(@"http://schemas.google.com/g/2005#post");
+_EXTERN NSString* const kGDataLinkRelBatch _INITIALIZE_AS(@"http://schemas.google.com/g/2005#batch");
 
-_EXTERN NSString* kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
+_EXTERN NSString* const kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
 // for links, like 
 //

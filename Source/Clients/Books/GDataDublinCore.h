@@ -33,8 +33,8 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceDublinCore       _INITIALIZE_AS(@"http://purl.org/dc/terms");
-_EXTERN NSString* kGDataNamespaceDublinCorePrefix _INITIALIZE_AS(@"dc");
+_EXTERN NSString* const kGDataNamespaceDublinCore       _INITIALIZE_AS(@"http://purl.org/dc/terms");
+_EXTERN NSString* const kGDataNamespaceDublinCorePrefix _INITIALIZE_AS(@"dc");
 
 @interface GDataDCCreator : GDataValueElementConstruct <GDataExtension>
 + (NSString *)extensionElementURI;

@@ -30,8 +30,8 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataNamespaceMedia _INITIALIZE_AS(@"http://search.yahoo.com/mrss/");
-_EXTERN NSString* kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
+_EXTERN NSString* const kGDataNamespaceMedia _INITIALIZE_AS(@"http://search.yahoo.com/mrss/");
+_EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 
 
 @class GDataMediaContent;

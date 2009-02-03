@@ -29,9 +29,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataScopeTypeUser    _INITIALIZE_AS(@"user");
-_EXTERN NSString* kGDataScopeTypeDomain  _INITIALIZE_AS(@"domain");
-_EXTERN NSString* kGDataScopeTypeDefault _INITIALIZE_AS(@"default");
+_EXTERN NSString* const kGDataScopeTypeUser    _INITIALIZE_AS(@"user");
+_EXTERN NSString* const kGDataScopeTypeDomain  _INITIALIZE_AS(@"domain");
+_EXTERN NSString* const kGDataScopeTypeDefault _INITIALIZE_AS(@"default");
 
 
 // an element with type and value attributes, as in

@@ -30,9 +30,9 @@
 #endif
 
 // rel values
-_EXTERN NSString *kGDataEventWhereEventLocation _INITIALIZE_AS(nil); // use the enclosing event's location
-_EXTERN NSString *kGDataEventWhereAlternate _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.alternate");
-_EXTERN NSString *kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.parking");
+_EXTERN NSString* const kGDataEventWhereEventLocation _INITIALIZE_AS(nil); // use the enclosing event's location
+_EXTERN NSString* const kGDataEventWhereAlternate _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.alternate");
+_EXTERN NSString* const kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.google.com/g/2005#event.parking");
 
 @class GDataEntryLink;
 
@@ -43,8 +43,7 @@ _EXTERN NSString *kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.google
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdWhere
 
-@interface GDataWhere : GDataObject <GDataExtension> {
-}
+@interface GDataWhere : GDataObject <GDataExtension>
 
 + (GDataWhere *)whereWithString:(NSString *)str;
 

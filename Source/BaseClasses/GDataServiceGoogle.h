@@ -29,7 +29,10 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataServiceErrorCaptchaRequired _INITIALIZE_AS(@"CaptchaRequired");
+_EXTERN NSString* const kGDataServiceErrorCaptchaRequired _INITIALIZE_AS(@"CaptchaRequired");
+
+// The default user is the authenticated user
+_EXTERN NSString* const kGDataServiceDefaultUser _INITIALIZE_AS(@"default");
 
 enum {
   kGDataBadAuthentication = 403

@@ -36,7 +36,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataErrorDomainCore _INITIALIZE_AS(@"GData");
+_EXTERN NSString* const kGDataErrorDomainCore _INITIALIZE_AS(@"GData");
 
 
 @class GDataServerError;

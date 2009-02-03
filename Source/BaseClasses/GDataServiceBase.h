@@ -32,19 +32,19 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN Class kGDataUseRegisteredClass _INITIALIZE_AS(nil);
+_EXTERN Class const kGDataUseRegisteredClass _INITIALIZE_AS(nil);
 
-_EXTERN NSString* kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
+_EXTERN NSString* const kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
 
 // we'll consistently store the server error string in the userInfo under
 // this key
-_EXTERN NSString* kGDataServerErrorStringKey _INITIALIZE_AS(@"error");
+_EXTERN NSString* const kGDataServerErrorStringKey _INITIALIZE_AS(@"error");
 
 
 // when servers return us structured XML errors, the NSError will
 // contain a GDataErrorGroup in the userInfo dictionary under the key
 // kGDataStructuredErrorsKey
-_EXTERN NSString* kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors");
+_EXTERN NSString* const kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors");
 
 
 enum {
