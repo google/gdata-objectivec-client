@@ -29,7 +29,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryPDFDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#pdf");
+_EXTERN NSString* const kGDataCategoryPDFDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#pdf");
 
 @interface GDataEntryPDFDoc : GDataEntryDocBase
 @end

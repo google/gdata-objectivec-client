@@ -32,11 +32,11 @@
 // When reading reminders from a feed, "none" and "all" do not apply.
 // For an explanation of setting reminder methods when writing an event,
 // see the comments at the top of the Java client library file Reminder.java
-_EXTERN NSString* kGDataReminderMethodSMS _INITIALIZE_AS(@"sms");
-_EXTERN NSString* kGDataReminderMethodEmail _INITIALIZE_AS(@"email");
-_EXTERN NSString* kGDataReminderMethodAlert _INITIALIZE_AS(@"alert");
-_EXTERN NSString* kGDataReminderMethodNone _INITIALIZE_AS(@"none");
-_EXTERN NSString* kGDataReminderMethodAll _INITIALIZE_AS(@"all");
+_EXTERN NSString* const kGDataReminderMethodSMS _INITIALIZE_AS(@"sms");
+_EXTERN NSString* const kGDataReminderMethodEmail _INITIALIZE_AS(@"email");
+_EXTERN NSString* const kGDataReminderMethodAlert _INITIALIZE_AS(@"alert");
+_EXTERN NSString* const kGDataReminderMethodNone _INITIALIZE_AS(@"none");
+_EXTERN NSString* const kGDataReminderMethodAll _INITIALIZE_AS(@"all");
 
 // reminder, as in 
 //   <gd:reminder absoluteTime="2005-06-06T16:55:00-08:00" method="sms" />

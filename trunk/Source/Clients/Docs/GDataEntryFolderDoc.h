@@ -29,7 +29,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryFolderDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#folder");
+_EXTERN NSString* const kGDataCategoryFolderDoc _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#folder");
 
 @interface GDataEntryFolderDoc : GDataEntryDocBase
 @end

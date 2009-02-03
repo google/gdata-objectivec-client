@@ -31,7 +31,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategorySpreadsheetCell _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#cell");
+_EXTERN NSString* const kGDataCategorySpreadsheetCell _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#cell");
 
 // SpreadsheetCellEntry extensions
 

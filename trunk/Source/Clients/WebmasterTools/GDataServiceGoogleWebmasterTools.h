@@ -30,7 +30,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataGoogleWebmasterToolsSitesFeed _INITIALIZE_AS(@"https://www.google.com/webmasters/tools/feeds/sites/");
+_EXTERN NSString* const kGDataGoogleWebmasterToolsSitesFeed _INITIALIZE_AS(@"https://www.google.com/webmasters/tools/feeds/sites/");
 
 
 // These routines are all simple wrappers around GDataServiceGoogle methods.

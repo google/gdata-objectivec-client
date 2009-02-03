@@ -28,9 +28,9 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN int kGDataYouTubeMediaContentFormatRTSPStream _INITIALIZE_AS(1);
-_EXTERN int kGDataYouTubeMediaContentFormatHTTPURL _INITIALIZE_AS(5);
-_EXTERN int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS(6);
+_EXTERN const int kGDataYouTubeMediaContentFormatRTSPStream       _INITIALIZE_AS(1);
+_EXTERN const int kGDataYouTubeMediaContentFormatHTTPURL          _INITIALIZE_AS(5);
+_EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS(6);
 
 #import "GDataObject.h"
 #import "GDataMedia.h"

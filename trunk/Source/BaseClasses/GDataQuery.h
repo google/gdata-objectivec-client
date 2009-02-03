@@ -31,7 +31,7 @@
 #endif
 
 // result formats
-_EXTERN NSString* kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-service"); // service introspection
+_EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-service"); // service introspection
 
 // categories within a filter are ORed; multiple filters in
 // a query are ANDed

@@ -42,7 +42,7 @@
 // specifies that a feed's entry class should be determined by inspecting
 // the XML for a "kind" category and looking at the registered entry classes
 // for an appropriate match 
-_EXTERN Class kUseRegisteredEntryClass _INITIALIZE_AS(nil);
+_EXTERN Class const kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 @interface GDataFeedBase : GDataObject {
 

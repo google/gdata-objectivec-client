@@ -29,15 +29,15 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataCategoryLabelScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005/labels");
+_EXTERN NSString* const kGDataCategoryLabelScheme _INITIALIZE_AS(@"http://schemas.google.com/g/2005/labels");
 
-_EXTERN NSString* kGDataCategoryLabelStarred          _INITIALIZE_AS(@"starred");
-_EXTERN NSString* kGDataCategoryLabelTrashed          _INITIALIZE_AS(@"trashed");
-_EXTERN NSString* kGDataCategoryLabelPublished        _INITIALIZE_AS(@"published");
-_EXTERN NSString* kGDataCategoryLabelPrivate          _INITIALIZE_AS(@"private");
-_EXTERN NSString* kGDataCategoryLabelMine             _INITIALIZE_AS(@"mine");
-_EXTERN NSString* kGDataCategoryLabelSharedWithDomain _INITIALIZE_AS(@"shared-with-domain");
-_EXTERN NSString* kGDataCategoryLabelHidden           _INITIALIZE_AS(@"hidden");
+_EXTERN NSString* const kGDataCategoryLabelStarred          _INITIALIZE_AS(@"starred");
+_EXTERN NSString* const kGDataCategoryLabelTrashed          _INITIALIZE_AS(@"trashed");
+_EXTERN NSString* const kGDataCategoryLabelPublished        _INITIALIZE_AS(@"published");
+_EXTERN NSString* const kGDataCategoryLabelPrivate          _INITIALIZE_AS(@"private");
+_EXTERN NSString* const kGDataCategoryLabelMine             _INITIALIZE_AS(@"mine");
+_EXTERN NSString* const kGDataCategoryLabelSharedWithDomain _INITIALIZE_AS(@"shared-with-domain");
+_EXTERN NSString* const kGDataCategoryLabelHidden           _INITIALIZE_AS(@"hidden");
 
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"

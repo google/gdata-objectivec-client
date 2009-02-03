@@ -27,7 +27,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN int kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
+_EXTERN const int kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
 
 #import "GDataQuery.h"
 

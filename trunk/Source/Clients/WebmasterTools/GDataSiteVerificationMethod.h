@@ -30,8 +30,8 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* kGDataSiteVerificationMethodMetatag _INITIALIZE_AS(@"metatag");
-_EXTERN NSString* kGDataSiteVerificationMethodHTMLPage _INITIALIZE_AS(@"htmlpage");
+_EXTERN NSString* const kGDataSiteVerificationMethodMetatag _INITIALIZE_AS(@"metatag");
+_EXTERN NSString* const kGDataSiteVerificationMethodHTMLPage _INITIALIZE_AS(@"htmlpage");
 
 // Verification method elements, like
 //
