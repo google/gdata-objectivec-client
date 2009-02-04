@@ -33,19 +33,17 @@
 
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubePrivate class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeCountHint class]];
-  
-  // elements present in GData v1 only
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFeedLink class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
+                                 childClasses:
+   [GDataYouTubePrivate class],
+   [GDataYouTubeCountHint class],
 
-  // media extensions
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataMediaThumbnail class]];
+   // elements present in GData v1 only
+   [GDataFeedLink class],
+   [GDataYouTubeDescription class],
+
+   // media extensions
+   [GDataMediaThumbnail class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -62,13 +60,6 @@
   }
 
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-  }
-  return self;
 }
 
 + (NSString *)defaultServiceVersion {

@@ -22,19 +22,12 @@
 
 @implementation GDataEntrySpreadsheetDoc
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategorySpreadsheetDoc];
++ (NSString *)standardEntryKind {
+  return kGDataCategorySpreadsheetDoc;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategorySpreadsheetDoc]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 // convenience accessor

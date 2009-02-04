@@ -22,7 +22,6 @@
 
 #import "GDataBaseElements.h"
 
-
 //   eventually we'll change the opensearch extensio URI, as in...
 //  @implementation GDataOpenSearchTotalResults1_1 
 //  + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
@@ -37,6 +36,22 @@
 @end
 
 @implementation GDataFeedBase
+
++ (NSString *)standardFeedKind {
+
+  // overridden by feed subclasses
+  //
+  // Feeds and entries typically have a "kind" atom:category element
+  // indicating their contents; see
+  //    http://code.google.com/apis/gdata/elements.html#Introduction
+  //
+  // Subclasses may override this method with the "term" attribute string
+  // for their kind category.  This is used in the plain -init method,
+  // and from +registerFeedClass
+  //
+
+  return nil;
+}
 
 - (void)addExtensionDeclarations {
   
@@ -96,6 +111,23 @@
 
 + (id)feedWithXMLData:(NSData *)data {
   return [[[self alloc] initWithData:data] autorelease];
+}
+
+- (id)init {
+  self = [super init];
+  if (self) {
+    // if the subclass declares a kind, then add a category element for the
+    // kind
+    NSString *kind = [[self class] standardFeedKind];
+    if (kind) {
+      GDataCategory *category;
+
+      category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
+                                              term:kind];
+      [self addCategory:category];
+    }
+  }
+  return self;
 }
 
 - (id)initWithXMLElement:(NSXMLElement *)element
@@ -267,6 +299,45 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 
 - (BOOL)canPost {
   return ([self postLink] != nil);  
+}
+
+#pragma mark Dynamic object generation - Entry registration
+
+//
+// feed registration & lookup for dynamic object generation
+//
+
+static NSMutableDictionary *gFeedClassCategoryMap = nil;
+
++ (void)registerFeedClass {
+
+  NSString *kind = [self standardFeedKind];
+
+  GDATA_DEBUG_ASSERT(kind != nil, @"cannot register feed without a kind");
+
+  [self registerClass:self
+                inMap:&gFeedClassCategoryMap
+forCategoryWithScheme:kGDataCategoryScheme
+                 term:kind];
+}
+
++ (void)registerFeedClass:(Class)theClass
+     forCategoryWithScheme:(NSString *)scheme
+                      term:(NSString *)term {
+
+  // temporary bridge method - will be removed when subclasses all call
+  // -registerFeedClass
+  [self registerClass:theClass
+                inMap:&gFeedClassCategoryMap
+forCategoryWithScheme:scheme
+                 term:term];
+}
+
++ (Class)feedClassForCategoryWithScheme:(NSString *)scheme
+                                   term:(NSString *)term {
+  return [self classForCategoryWithScheme:scheme
+                                     term:term
+                                  fromMap:gFeedClassCategoryMap];
 }
 
 #pragma mark Getters and Setters

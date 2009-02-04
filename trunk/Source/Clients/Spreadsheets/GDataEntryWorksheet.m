@@ -39,10 +39,18 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be init'd by GDataEntryBase
+  return nil;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategorySchemeSpreadsheet 
-                             term:kGDataCategoryWorksheet];
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
+  [GDataEntryBase registerEntryClass:[self class]
+               forCategoryWithScheme:kGDataCategorySchemeSpreadsheet 
+                                term:kGDataCategoryWorksheet];
 }
 
 - (void)addExtensionDeclarations {

@@ -33,10 +33,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPhotosPhoto;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryPhotosPhoto];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -84,15 +86,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
   
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosPhoto]];
-  }
-  return self;
 }
 
 #pragma mark -

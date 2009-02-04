@@ -324,7 +324,7 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (void)addExtensionDeclarations; // subclasses may override this to declare extensions
 
 - (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
-  
+
 //
 // Extensions
 //
@@ -361,6 +361,10 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 // Local attributes
 //
 
+// derived classes may override parseAttributesForElement if they need to
+// inspect attributes prior to parsing of element content
+- (void)parseAttributesForElement:(NSXMLElement *)element;
+
 // derived classes should call -addLocalAttributeDeclarations in their
 // -addParseDeclarations method if they want element attributes to 
 // automatically be parsed
@@ -393,6 +397,7 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 // -addParseDeclarations method if they want element content to 
 // automatically be parsed as a string
 - (void)addContentValueDeclaration;
+- (BOOL)hasDeclaredContentValue;
 - (void)setContentStringValue:(NSString *)str;
 - (NSString *)contentStringValue;
 
@@ -419,20 +424,15 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 // The scheme or term in a category may be nil (during
 // registration and lookup) to match any values.
 
-// class registration methods
-+ (void)registerFeedClass:(Class)theClass
-    forCategoryWithScheme:(NSString *)scheme 
-                     term:(NSString *)term;
-
-+ (void)registerEntryClass:(Class)theClass
-     forCategoryWithScheme:(NSString *)scheme 
-                      term:(NSString *)term;
-
-// class lookup methods
-+ (Class)feedClassForCategoryWithScheme:(NSString *)scheme 
-                                   term:(NSString *)term;
-+ (Class)entryClassForCategoryWithScheme:(NSString *)scheme 
-                                    term:(NSString *)term;
+// class registration method
++ (void)registerClass:(Class)theClass
+                inMap:(NSMutableDictionary **)map
+forCategoryWithScheme:(NSString *)scheme 
+                 term:(NSString *)term;
+  
++ (Class)classForCategoryWithScheme:(NSString *)scheme
+                               term:(NSString *)term
+                            fromMap:(NSDictionary *)map;
 
 // objectClassForXMLElement: returns a found registered feed
 // or entry class for the XML according to its contained category

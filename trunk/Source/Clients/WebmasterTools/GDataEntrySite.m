@@ -67,10 +67,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategorySiteInfo;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategorySiteInfo];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -80,28 +82,15 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSiteCrawledDate class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSiteVerified class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataSiteIndexed class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataEntryLink class]];
+                                 childClasses:
+   [GDataSiteCrawledDate class],
+   [GDataSiteVerified class],
+   [GDataSiteIndexed class],
+   [GDataEntryLink class],
+   nil];
 
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataSiteVerificationMethod class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategorySiteInfo];
-    [self addCategory:category];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

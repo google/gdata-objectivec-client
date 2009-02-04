@@ -32,7 +32,6 @@
 // Text type can be text, text/plain, html, text/html, xhtml, text/xhtml
 
 @interface GDataEntryContent : GDataObject {
-  NSString *textValue_;
   GDataObject *childObject_;
 }
 
@@ -57,5 +56,9 @@
 
 - (GDataObject *)childObject;
 - (void)setChildObject:(GDataObject *)obj;
+
+- (NSArray *)XMLValues;
+- (void)setXMLValues:(NSArray *)arr;
+- (void)addXMLValue:(NSXMLNode *)node;
 
 @end

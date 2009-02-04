@@ -53,10 +53,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryContactGroup;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryContactGroup];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -68,19 +70,10 @@
   // ContactEntry extensions
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataExtendedProperty class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataContactSystemGroup class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataCategoryContactGroup];
-    [self addCategory:category];
-  }
-  return self;
+                                 childClasses:
+   [GDataExtendedProperty class],
+   [GDataContactSystemGroup class],
+   nil];  
 }
 
 - (NSMutableArray *)itemsForDescription {

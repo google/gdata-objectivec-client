@@ -31,24 +31,13 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryBooksVolume;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryBooksVolume];
+  [self registerFeedClass];
 }
-
-// needs no custom -addExtensionDeclarations method
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryBooksVolume]];
-  }
-  return self;
-}
-
-// needs no custom -itemsForDescription method
 
 - (Class)classForEntries {
   return [GDataEntryVolume class]; 

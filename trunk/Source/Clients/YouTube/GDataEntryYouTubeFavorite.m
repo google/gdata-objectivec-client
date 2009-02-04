@@ -33,16 +33,12 @@
 
 #pragma mark -
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil
-                             term:kGDataCategoryYouTubeFavorite];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeFavorite;
 }
 
-+ (NSString *)videoEntryCategoryTerm {
-  // declare the term for the category that each entry gets in the superclass's
-  // init method
-  return kGDataCategoryYouTubeFavorite;
++ (void)load {
+  [self registerEntryClass];
 }
 
 @end

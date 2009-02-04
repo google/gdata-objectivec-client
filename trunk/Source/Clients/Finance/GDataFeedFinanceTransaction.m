@@ -33,24 +33,13 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryFinanceTransaction;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryFinanceTransaction];
+  [self registerFeedClass];
 }
-
-// needs no custom -addExtensionDeclarations method
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryFinanceTransaction]];
-  }
-  return self;
-}
-
-// needs no custom -itemsForDescription method
 
 - (Class)classForEntries {
   return [GDataEntryFinanceTransaction class]; 

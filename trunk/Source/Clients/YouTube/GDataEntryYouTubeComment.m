@@ -33,19 +33,12 @@
 
 #pragma mark -
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil
-                             term:kGDataCategoryYouTubeComment];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeComment;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeComment]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {

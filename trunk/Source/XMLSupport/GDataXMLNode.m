@@ -720,7 +720,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   xmlNodePtr nodeCopy = [self XMLNodeCopy];
   
   if (nodeCopy != NULL) {
-    return [[GDataXMLNode alloc] initConsumingXMLNode:nodeCopy];
+    return [[[self class] alloc] initConsumingXMLNode:nodeCopy];
   }
   return nil;
 }
@@ -953,7 +953,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
         NSString *qName = [[self class] qualifiedNameForXMLNode:currNode];
         if ([qName isEqual:name]) {
         
-          GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currNode]; 
+          GDataXMLElement *node = [GDataXMLElement nodeBorrowingXMLNode:currNode]; 
           [array addObject:node];
         }
       }
@@ -1025,7 +1025,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
             && currChild->name != NULL
             && xmlStrEqual(currChild->name, childDesiredLocalName)) {
 
-          GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currChild];
+          GDataXMLElement *node = [GDataXMLElement nodeBorrowingXMLNode:currChild];
           [array addObject:node];
         }
       }

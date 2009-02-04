@@ -34,10 +34,12 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategorySitemapsFeed;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategorySitemapsFeed];
+  [self registerFeedClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -47,18 +49,10 @@
   Class feedClass = [self class];
   
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataSitemapMobile class]];  
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataSitemapNews class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategorySitemapsFeed]];
-  }
-  return self;
+                                 childClasses:
+   [GDataSitemapMobile class],
+   [GDataSitemapNews class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

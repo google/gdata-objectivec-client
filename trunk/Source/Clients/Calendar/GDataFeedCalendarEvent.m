@@ -38,10 +38,12 @@
 
 #pragma mark -
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryEvent;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:kGDataCategoryScheme 
-                            term:kGDataCategoryEvent];
+  [self registerFeedClass];
 }
 
 - (void)addExtensionDeclarations {

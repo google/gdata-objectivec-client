@@ -23,10 +23,18 @@
 
 @implementation GDataFeedSpreadsheet
 
++ (NSString *)standardFeedKind {
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be init'd by GDataFeedBase
+  return nil;
+}
+
 + (void)load {
- [GDataObject registerFeedClass:[self class]
-          forCategoryWithScheme:nil 
-                           term:kGDataCategorySpreadsheet];
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
+  [GDataFeedBase registerFeedClass:[self class]
+             forCategoryWithScheme:nil 
+                              term:kGDataCategorySpreadsheet];
 }
 
 + (GDataFeedSpreadsheet *)spreadsheetFeedWithXMLData:(NSData *)data {

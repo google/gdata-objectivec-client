@@ -173,6 +173,29 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (GDataLink *)HTMLLink;
 
 - (BOOL)canEdit;
-  
-@end
 
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Protected methods
+//
+//  All remaining methods are intended for use only by subclasses
+//  of GDataEntryBase.
+//
+
+// subclasses call registerEntryClass to register their standardEntryKind
++ (void)registerEntryClass;
+
++ (Class)entryClassForCategoryWithScheme:(NSString *)scheme
+                                    term:(NSString *)term;
+
+// temporary bridge method
++ (void)registerEntryClass:(Class)theClass
+     forCategoryWithScheme:(NSString *)scheme 
+                      term:(NSString *)term;
+
+
+// subclasses override standardEntryKind to provide the term string for the
+// kind attribute of their kind category element, if any
++ (NSString *)standardEntryKind;
+
+@end

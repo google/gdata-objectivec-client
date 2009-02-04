@@ -148,22 +148,12 @@
 
 @implementation GDataEntrySitemapRegular
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategorySitemapRegular];
++ (NSString *)standardEntryKind {
+  return kGDataCategorySitemapRegular;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategorySitemapRegular];
-    [self addCategory:category];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -205,22 +195,12 @@
 
 @implementation GDataEntrySitemapMobile
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategorySitemapMobile];
++ (NSString *)standardEntryKind {
+  return kGDataCategorySitemapMobile;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategorySitemapMobile];
-    [self addCategory:category];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -262,22 +242,12 @@
 
 @implementation GDataEntrySitemapNews
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategorySitemapNews];
++ (NSString *)standardEntryKind {
+  return kGDataCategorySitemapNews;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategorySitemapNews];
-    [self addCategory:category];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {

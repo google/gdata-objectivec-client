@@ -639,6 +639,16 @@
     { @"type", @"text" },
     { @"", @"" },
 
+    { @"GDataEntryContent", @"<content type='application/vnd.google-earth.kml+xml'>"
+      "<Placemark xmlns=\"http://earth.google.com/kml/2.2\">" // inline KML
+      "<name>Grandma's House</name></Placemark></content>" },
+    { @"type", @"application/vnd.google-earth.kml+xml" },
+    { @"stringValue", nil },
+    { @"XMLValues.@count", @"1" },
+    { @"XMLValues.0.localName", @"Placemark" },
+    { @"XMLValues.0.namespaces.0", @"http://earth.google.com/kml/2.2" },
+    { @"", @"" },
+
     { @"GDataEntryContent", inlinedFeedContentStr },
     { @"type", @"application/atom+xml;feed" },
     { @"childObject.className", @"GDataFeedSpreadsheetCell" },

@@ -32,10 +32,12 @@
   return entry;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryPhotosAlbum;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryPhotosAlbum];
+  [self registerFeedClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -57,15 +59,6 @@
   
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:feedClass];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosAlbum]];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

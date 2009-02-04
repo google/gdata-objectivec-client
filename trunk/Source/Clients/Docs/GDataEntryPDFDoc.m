@@ -22,19 +22,12 @@
 
 @implementation GDataEntryPDFDoc
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategoryPDFDoc];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPDFDoc;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPDFDoc]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 @end

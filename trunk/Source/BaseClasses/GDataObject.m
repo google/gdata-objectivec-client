@@ -1897,6 +1897,10 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
   shouldParseContentValue_ = YES;
 }
 
+- (BOOL)hasDeclaredContentValue {
+  return shouldParseContentValue_;
+}
+
 - (void)setContentStringValue:(NSString *)str {
   
   GDATA_ASSERT(shouldParseContentValue_, @"%@ setting undeclared content value",
@@ -2036,14 +2040,11 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 // They specify category elements which identify the class of feed or entry
 // to be created for a blob of XML.
 
-static NSMutableDictionary *gFeedClassCategoryMap = nil;
-static NSMutableDictionary *gEntryClassCategoryMap = nil;
-
 static NSString *const kCategoryTemplate = @"{\"%@\":\"%@\"}";
 
 
 // registerClass:inMap:forCategoryWithScheme:term: does the work for
-// registerFeedClass: and registerEntryClass: below
+// registerFeedClass: and registerEntryClass:
 //
 // This adds the class to the {"scheme":"term"} map, ensuring
 // that it won't conflict with a previous class or category
@@ -2062,7 +2063,7 @@ forCategoryWithScheme:(NSString *)scheme
   }
   
   // ensure this is a unique registration
-  GDATA_ASSERT(nil == [gFeedClassCategoryMap objectForKey:theClass],
+  GDATA_DEBUG_ASSERT(nil == [*map objectForKey:theClass],
                @"%@ already registered", theClass);
   Class prevClass = [self classForCategoryWithScheme:scheme 
                                                 term:term
@@ -2089,26 +2090,9 @@ forCategoryWithScheme:(NSString *)scheme
   [pool release];
 }
 
-+ (void)registerFeedClass:(Class)theClass
-    forCategoryWithScheme:(NSString *)scheme 
-                term:(NSString *)term {
-  [self registerClass:theClass
-                inMap:&gFeedClassCategoryMap
-forCategoryWithScheme:scheme
-                 term:term];
-}
-
-+ (void)registerEntryClass:(Class)theClass
-    forCategoryWithScheme:(NSString *)scheme 
-                     term:(NSString *)term {
-  [self registerClass:theClass
-                inMap:&gEntryClassCategoryMap
-forCategoryWithScheme:scheme
-                 term:term];
-}
 
 // classForCategoryWithScheme does the work for feedClassForCategory
-// and entryClassForCategory below.  This method searches the entry 
+// and entryClassForCategory.  This method searches the entry 
 // or feed map for a class with a matching category.  
 //
 // If the registration of the class specified a value, then the corresponding
@@ -2137,20 +2121,6 @@ forCategoryWithScheme:scheme
   if (class) return class;
   
   return nil;
-}
-
-+ (Class)feedClassForCategoryWithScheme:(NSString *)scheme
-                                   term:(NSString *)term {
-  return [self classForCategoryWithScheme:scheme
-                                     term:term
-                                  fromMap:gFeedClassCategoryMap];
-}
-
-+ (Class)entryClassForCategoryWithScheme:(NSString *)scheme
-                                    term:(NSString *)term {
-  return [self classForCategoryWithScheme:scheme
-                                     term:term
-                                  fromMap:gEntryClassCategoryMap];
 }
 
 // objectClassForXMLElement: returns a found registered feed
@@ -2241,11 +2211,11 @@ forCategoryWithScheme:scheme
         // we have a scheme or a term, so look for a registered class
         Class foundClass = nil;
         if (isFeed) {
-          foundClass = [GDataObject feedClassForCategoryWithScheme:scheme
-                                                              term:term];
+          foundClass = [GDataFeedBase feedClassForCategoryWithScheme:scheme
+                                                                term:term];
         } else {
-          foundClass = [GDataObject entryClassForCategoryWithScheme:scheme
-                                                               term:term];
+          foundClass = [GDataEntryBase entryClassForCategoryWithScheme:scheme
+                                                                  term:term];
         }
         if (foundClass) {
           result = foundClass;
