@@ -34,10 +34,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeVideoMessage;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeVideoMessage];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -58,12 +60,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"];
 
   return items;
-}
-
-+ (NSString *)videoEntryCategoryTerm {
-  // declare the term for the category that each entry gets in the superclass's
-  // init method
-  return kGDataCategoryYouTubeVideoMessage;
 }
 
 #pragma mark -

@@ -46,10 +46,12 @@
   return obj;
 }
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryACL;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategoryACL];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -61,19 +63,10 @@
   // ACLEntry extensions
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataACLRole class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataACLScope class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataCategoryACL];
-    [self addCategory:category];
-  }
-  return self;
+                                 childClasses:
+   [GDataACLRole class],
+   [GDataACLScope class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

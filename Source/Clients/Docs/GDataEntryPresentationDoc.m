@@ -22,19 +22,12 @@
 
 @implementation GDataEntryPresentationDoc
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategoryPresentationDoc];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPresentationDoc;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPresentationDoc]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 @end

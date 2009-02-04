@@ -37,10 +37,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPhotosUser;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryPhotosUser];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -51,26 +53,14 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoMaxPhotosPerAlbum class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoNickname class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoQuotaLimit class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoQuotaUsed class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoThumbnail class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoUser class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosUser]];
-  }
-  return self;
+                                 childClasses:
+   [GDataPhotoMaxPhotosPerAlbum class],
+   [GDataPhotoNickname class],
+   [GDataPhotoQuotaLimit class],
+   [GDataPhotoQuotaUsed class],
+   [GDataPhotoThumbnail class],
+   [GDataPhotoUser class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

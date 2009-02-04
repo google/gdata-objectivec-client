@@ -31,34 +31,12 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryYouTubeVideoMessage;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryYouTubeVideoMessage];
-}
-
-
-- (void)addExtensionDeclarations {
-  
-  [super addExtensionDeclarations];
-  
-  // no additional extensions needed for YouTube video feed
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeVideoMessage]];
-  }
-  return self;
-}
-
-
-- (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  return items;
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

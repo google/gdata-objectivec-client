@@ -83,34 +83,37 @@ static BOOL IsTypeEqualToText(NSString *str) {
   return [NSArray arrayWithObject:kTypeAttr];
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    
-    NSString *type = [self type];
-    if (IsTypeEqualToText(type)) {
-      
-      // contents is plain text
-      NSString *str = [self stringValueFromElement:element];
-      [self setStringValue:str];
-      
-    } else if ([type hasPrefix:@"application/atom+xml;"]) {
-      
-      // content is a feed or entry stored in unknownChildren
-      GDataObject *obj = [self objectForChildOfElement:element
-                                         qualifiedName:@"*"
-                                          namespaceURI:@"*"
-                                           objectClass:nil];
-      [self setChildObject:obj];
-    }
+- (void)parseAttributesForElement:(NSXMLElement *)element {
+
+  // override the attribute parsing method
+  //
+  // once we have parsed the attributes, we can decide
+  // how to parse the contents or children
+  [super parseAttributesForElement:element];
+
+  NSString *type = [self type];
+  if (IsTypeEqualToText(type)) {
+
+    // content is plain text
+    [self addContentValueDeclaration];
+
+  } else if ([type hasPrefix:@"application/atom+xml;"]) {
+
+    // content is a feed or entry stored in unknownChildren
+    GDataObject *obj = [self objectForChildOfElement:element
+                                       qualifiedName:@"*"
+                                        namespaceURI:@"*"
+                                         objectClass:nil];
+    [self setChildObject:obj];
+
+  } else if ([type hasPrefix:@"application/vnd.google-earth.kml+xml"]) {
+
+    // content is KML
+    [self addChildXMLElementsDeclaration];
   }
-  return self;
 }
 
 - (void)dealloc {
-  [textValue_ release];
   [childObject_ release];
   [super dealloc];
 }
@@ -118,11 +121,6 @@ static BOOL IsTypeEqualToText(NSString *str) {
 - (NSXMLElement *)XMLElement {
   
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
-  NSString *str = [self stringValue];
-  if ([str length] > 0) {
-    [element addStringValue:str]; 
-  }
   
   GDataObject *obj = [self childObject];
   if (obj) {
@@ -135,10 +133,9 @@ static BOOL IsTypeEqualToText(NSString *str) {
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryContent* newObj = [super copyWithZone:zone];
-  
-  [newObj setStringValue:[self stringValue]];
+
   [newObj setChildObject:[[[self childObject] copy] autorelease]];
-  
+
   return newObj;
 }
 
@@ -152,7 +149,6 @@ static BOOL IsTypeEqualToText(NSString *str) {
     // consider them equal if both are some flavor of "text"
     && (AreEqualOrBothNil([self type], [other type])
         || (IsTypeEqualToText([self type]) && IsTypeEqualToText([other type])))
-    && AreEqualOrBothNil([self stringValue], [other stringValue])
     && AreEqualOrBothNil([self childObject], [other childObject]);
 }
 
@@ -160,6 +156,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
   
   NSMutableArray *items = [super itemsForDescription];
   [self addToArray:items objectDescriptionIfNonNil:[self stringValue] withName:@"content"];
+  [self addToArray:items objectDescriptionIfNonNil:[self XMLValues] withName:@"xml"];
   
   GDataObject *obj = [self childObject];
   if (obj != nil) {
@@ -206,12 +203,19 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 - (NSString *)stringValue {
-  return textValue_;
+  if ([self hasDeclaredContentValue]) {
+    return [self contentStringValue];
+  }
+  return nil;
 }
 
 - (void)setStringValue:(NSString *)str {
-  [textValue_ autorelease];
-  textValue_ = [str copy];
+  if (![self hasDeclaredContentValue]) {
+    // if we emit XML later on, we'll want to emit this string
+    [self addContentValueDeclaration];
+  }
+
+  [self setContentStringValue:str];
 }
 
 - (GDataObject *)childObject {
@@ -221,6 +225,18 @@ static BOOL IsTypeEqualToText(NSString *str) {
 - (void)setChildObject:(GDataObject *)obj {
   [childObject_ autorelease];
   childObject_ = [obj retain];
+}
+
+- (NSArray *)XMLValues {
+  return [super childXMLElements];
+}
+
+- (void)setXMLValues:(NSArray *)arr {
+  [self setChildXMLElements:arr]; 
+}
+
+- (void)addXMLValue:(NSXMLNode *)node {
+  [self addChildXMLElement:node]; 
 }
 
 @end

@@ -76,10 +76,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryBooksVolume;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryBooksVolume];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -103,18 +105,6 @@
    [GDataDCPublisher class], [GDataDCSubject class], [GDataDCTitle class],
    nil];
 
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategoryBooksVolume];
-    [self addCategory:category];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

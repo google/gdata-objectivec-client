@@ -50,10 +50,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeVideo;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeVideo];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -111,23 +113,6 @@
   if (![self isEmbeddable]) [items addObject:@"notEmbeddable"];
 
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    NSString *categoryTerm = [[self class] videoEntryCategoryTerm];
-    
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:categoryTerm]];
-  }
-  return self;
-}
-
-// subclasses implement this to declare the proper category term for their
-// entries
-+ (NSString *)videoEntryCategoryTerm {
-  return kGDataCategoryYouTubeVideo;
 }
 
 + (NSString *)defaultServiceVersion {

@@ -132,9 +132,6 @@ _EXTERN NSString* const kGDataLinkYouTubeVlog          _INITIALIZE_AS(@"http://g
 - (GDataLink *)ratingsLink;
 - (GDataLink *)complaintsLink;
 
-// protected methods (for subclasses only)
-+ (NSString *)videoEntryCategoryTerm;
-
 @end
 
 @interface GDataLink (GDataYouTubeVideoEntryAdditions)

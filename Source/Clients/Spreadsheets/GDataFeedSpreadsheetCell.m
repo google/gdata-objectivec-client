@@ -37,10 +37,18 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be init'd by GDataEntryBase
+  return nil;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil
-                            term:kGDataCategorySpreadsheetCell];
+  // spreadsheet categories do not use the standard Kind scheme
+  // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
+  [GDataFeedBase registerFeedClass:[self class]
+             forCategoryWithScheme:nil
+                              term:kGDataCategorySpreadsheetCell];
 }
 
 - (void)addExtensionDeclarations {
@@ -52,9 +60,10 @@
   
   // Worksheet extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataColumnCount class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRowCount class]];  
+                                   childClasses:
+   [GDataColumnCount class],
+   [GDataRowCount class],
+   nil];  
 }
 
 - (id)init {

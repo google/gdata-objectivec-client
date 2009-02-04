@@ -36,19 +36,12 @@
   return [[[self alloc] initWithData:data] autorelease];
 }
 
-+ (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:kGDataCategoryScheme
-                            term:kGDataCategoryACL];
++ (NSString *)standardFeedKind {
+  return kGDataCategoryACL;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-      [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                     term:kGDataCategoryACL]];
-  }
-  return self;
++ (void)load {
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

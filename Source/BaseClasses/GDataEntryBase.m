@@ -25,6 +25,22 @@
 
 @implementation GDataEntryBase
 
++ (NSString *)standardEntryKind {
+
+  // overridden by entry subclasses
+  //
+  // Feeds and entries typically have a "kind" atom:category element
+  // indicating their contents; see
+  //    http://code.google.com/apis/gdata/elements.html#Introduction
+  //
+  // Subclasses may override this method with the "term" attribute string
+  // for their kind category.  This is used in the plain -init method,
+  // and from +registerEntryClass
+  //
+
+  return nil;
+}
+
 + (NSDictionary *)baseGDataNamespaces {
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
@@ -84,6 +100,23 @@
 
   [self addAttributeExtensionDeclarationForParentClass:entryClass
                                             childClass:[GDataETagAttribute class]];
+}
+
+- (id)init {
+  self = [super init];
+  if (self) {
+    // if the subclass declares a kind, then add a category element for the
+    // kind
+    NSString *kind = [[self class] standardEntryKind];
+    if (kind) {
+      GDataCategory *category;
+
+      category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
+                                              term:kind];
+      [self addCategory:category];
+    }
+  }
+  return self;
 }
 
 - (void)dealloc {
@@ -241,7 +274,46 @@
   return YES;
 }
 
-#pragma mark -
+#pragma mark Dynamic object generation - Entry registration
+
+//
+// entry registration & lookup for dynamic object generation
+//
+
+static NSMutableDictionary *gEntryClassCategoryMap = nil;
+
++ (void)registerEntryClass {
+
+  NSString *kind = [self standardEntryKind];
+
+  GDATA_DEBUG_ASSERT(kind != nil, @"cannot register entry without a kind");
+
+  [self registerClass:self
+                inMap:&gEntryClassCategoryMap
+forCategoryWithScheme:kGDataCategoryScheme
+                 term:kind];
+}
+
++ (void)registerEntryClass:(Class)theClass
+     forCategoryWithScheme:(NSString *)scheme
+                      term:(NSString *)term {
+
+  // temporary bridge method - will be removed when subclasses all call
+  // -registerEntryClass
+  [self registerClass:theClass
+                inMap:&gEntryClassCategoryMap
+forCategoryWithScheme:scheme
+                 term:term];
+}
+
++ (Class)entryClassForCategoryWithScheme:(NSString *)scheme
+                                    term:(NSString *)term {
+  return [self classForCategoryWithScheme:scheme
+                                     term:term
+                                  fromMap:gEntryClassCategoryMap];
+}
+
+#pragma mark Getters and Setters
 
 - (NSString *)ETag {
   NSString *str = [self attributeValueForExtensionClass:[GDataETagAttribute class]];

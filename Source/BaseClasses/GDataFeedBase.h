@@ -167,4 +167,28 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 // this is useful for feeds which contain various kinds of entries with
 // distinct entry kind categories
 - (NSArray *)entriesWithCategoryKind:(NSString *)term;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Protected methods
+//
+//  All remaining methods are intended for use only by subclasses
+//  of GDataFeedBase.
+//
+
+// subclasses call registerEntryClass to register their standardFeedKind
++ (void)registerFeedClass;
+
++ (Class)feedClassForCategoryWithScheme:(NSString *)scheme
+                                   term:(NSString *)term;
+
+// temporary bridge method
++ (void)registerFeedClass:(Class)theClass
+    forCategoryWithScheme:(NSString *)scheme 
+                     term:(NSString *)term;  
+
+// subclasses override standardFeedKind to provide the term string for the
+// term attribute of their "kind" category element, if any
++ (NSString *)standardFeedKind;
+
 @end

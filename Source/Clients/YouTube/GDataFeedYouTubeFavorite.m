@@ -31,19 +31,12 @@
   return feed;
 }
 
-+ (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil
-                            term:kGDataCategoryYouTubeFavorite];
++ (NSString *)standardFeedKind {
+  return kGDataCategoryYouTubeFavorite;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeFavorite]];
-  }
-  return self;
++ (void)load {
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

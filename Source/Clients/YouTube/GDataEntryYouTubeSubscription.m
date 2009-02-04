@@ -34,10 +34,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeSubscription;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeSubscription];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -67,15 +69,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self playlistTitle] withName:@"playlistTitle"];
 
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeSubscription]];
-  }
-  return self;
 }
 
 #pragma mark -

@@ -37,10 +37,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPhotosComment;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryPhotosComment];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -51,18 +53,10 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoAlbumID class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhotoPhotoID class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosComment]];
-  }
-  return self;
+                                 childClasses:
+   [GDataPhotoAlbumID class],
+   [GDataPhotoPhotoID class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

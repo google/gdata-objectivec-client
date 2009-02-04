@@ -31,10 +31,12 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryPhotosUser;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryPhotosUser];
+  [self registerFeedClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -45,26 +47,14 @@
   Class feedClass = [self class];
 
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoMaxPhotosPerAlbum class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoNickname class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoQuotaLimit class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoQuotaUsed class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoThumbnail class]];
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataPhotoUser class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosUser]];
-  }
-  return self;
+                                 childClasses:
+   [GDataPhotoMaxPhotosPerAlbum class],
+   [GDataPhotoNickname class],
+   [GDataPhotoQuotaLimit class],
+   [GDataPhotoQuotaUsed class],
+   [GDataPhotoThumbnail class],
+   [GDataPhotoUser class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

@@ -45,72 +45,45 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryContact;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryContact];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
   
   [super addExtensionDeclarations];
-  
-  Class entryClass = [self class];
-  
-  // ContactEntry extensions
-  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataOrganization class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataEmail class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataIM class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPhoneNumber class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPostalAddress class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGroupMembershipInfo class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataExtendedProperty class]];  
-}
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataCategoryContact];
-    [self addCategory:category];
-  }
-  return self;
+  // ContactEntry extensions
+
+  Class entryClass = [self class];
+  [self addExtensionDeclarationForParentClass:entryClass
+                                 childClasses:
+   [GDataOrganization class],
+   [GDataEmail class],
+   [GDataIM class],
+   [GDataPhoneNumber class],
+   [GDataPostalAddress class],
+   [GDataGroupMembershipInfo class],
+   [GDataExtendedProperty class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
-  
-  if ([[self organizations] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self organizations] withName:@"organization"];
-  }
-  if ([[self emailAddresses] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self emailAddresses] withName:@"email"];
-  }
-  if ([[self phoneNumbers] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self phoneNumbers] withName:@"phone"];
-  }
-  if ([[self IMAddresses] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self IMAddresses] withName:@"IM"];
-  }
-  if ([[self postalAddresses] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self postalAddresses] withName:@"postal"];
-  }  
-  if ([[self groupMembershipInfos] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self groupMembershipInfos] withName:@"group"];
-  }  
-  if ([[self extendedProperties] count] > 0) {
-    [self addToArray:items objectDescriptionIfNonNil:[self extendedProperties] withName:@"extProps"];
-  }  
-  
+
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self organizations] withName:@"organization"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self emailAddresses] withName:@"email"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self phoneNumbers] withName:@"phone"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self IMAddresses] withName:@"IM"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self postalAddresses] withName:@"postal"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self groupMembershipInfos] withName:@"group"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self extendedProperties] withName:@"extProps"];
+
   return items;
 }
 

@@ -40,10 +40,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryFinancePosition;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryFinancePosition];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -53,23 +55,11 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPositionData class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFinanceSymbol class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFeedLink class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategoryFinancePosition];
-    [self addCategory:category];
-  }
-  return self;
+                                 childClasses:
+   [GDataPositionData class],
+   [GDataFinanceSymbol class],
+   [GDataFeedLink class],
+   nil];  
 }
 
 - (NSMutableArray *)itemsForDescription {

@@ -31,25 +31,13 @@
   return feed;
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategorySitesFeed;
+}
+
 + (void)load {
-  
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategorySitesFeed];
+  [self registerFeedClass];
 }
-
-// needs no custom -addExtensionDeclarations method
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategorySitesFeed]];
-  }
-  return self;
-}
-
-// needs no custom -itemsForDescription method
 
 - (Class)classForEntries {
   return kUseRegisteredEntryClass;

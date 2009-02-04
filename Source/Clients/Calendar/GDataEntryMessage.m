@@ -32,12 +32,13 @@
 
 #pragma mark -
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataMessage];
++ (NSString *)standardEntryKind {
+  return kGDataMessage;
 }
 
++ (void)load {
+  [self registerEntryClass];
+}
 
 - (void)addExtensionDeclarations {
   
@@ -47,27 +48,13 @@
   
   // EntryMessage extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWhen class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRating class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGeoPt class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataWho class]];  
-  
+                                 childClasses:
+   [GDataWhen class],
+   [GDataRating class],
+   [GDataGeoPt class],
+   [GDataWho class],
+   nil];  
 }
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    // use the standard message category
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataMessage];
-    [self addCategory:category];
-  }
-  return self;
-}
-
 
 - (NSMutableArray *)itemsForDescription {
   

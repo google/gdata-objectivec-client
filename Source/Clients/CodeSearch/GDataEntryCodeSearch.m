@@ -47,37 +47,28 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryCodeSearch;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryCodeSearch];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
-  
-  [super addExtensionDeclarations];
-  
-  Class entryClass = [self class];
-  
-  // CodeSearchEntry extensions
-  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataCodeSearchPackage class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataCodeSearchFile class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataCodeSearchMatch class]];  
-}
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    // since we're creating this without XML, be sure it has a category
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataCategoryCodeSearch];
-    [self addCategory:category];
-  }
-  return self;
+  [super addExtensionDeclarations];
+
+  Class entryClass = [self class];
+
+  // CodeSearchEntry extensions
+
+  [self addExtensionDeclarationForParentClass:entryClass
+                                 childClasses:
+   [GDataCodeSearchPackage class],
+   [GDataCodeSearchFile class],
+   [GDataCodeSearchMatch class],
+   nil];  
 }
 
 - (NSMutableArray *)itemsForDescription {

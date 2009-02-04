@@ -25,12 +25,6 @@
 
 @implementation GDataFeedContactGroup
 
-+ (void)load {
-  [GDataObject registerFeedClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategoryContactGroup];
-}
-
 + (GDataFeedContactGroup *)contactGroupFeed {
   GDataFeedContactGroup *obj = [[[[self class] alloc] init] autorelease];
 
@@ -39,18 +33,12 @@
   return obj;
 }
 
-- (void)addExtensionDeclarations {
-  
-  [super addExtensionDeclarations]; 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryContactGroup;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-      [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                     term:kGDataCategoryContactGroup]];
-  }
-  return self;
++ (void)load {
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

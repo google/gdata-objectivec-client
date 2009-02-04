@@ -31,33 +31,26 @@
   return feed;
 }
 
-+ (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:nil 
-                            term:kGDataCategoryYouTubePlaylist];
++ (NSString *)standardFeedKind {
+  return kGDataCategoryYouTubePlaylist;
 }
 
++ (void)load {
+  [self registerFeedClass];
+}
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class feedClass = [self class];
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataYouTubePrivate class]];  
+                                 childClasses:
+   [GDataYouTubePrivate class],
 
-  // YouTubeMediaGroup encapsulates YouTubeMediaContent
-  [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataYouTubeMediaGroup class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubePlaylist]];
-  }
-  return self;
+   // YouTubeMediaGroup encapsulates YouTubeMediaContent
+   [GDataYouTubeMediaGroup class],
+   nil];
 }
 
 

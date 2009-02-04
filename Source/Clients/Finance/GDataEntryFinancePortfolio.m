@@ -49,10 +49,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryFinancePortfolio;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme 
-                             term:kGDataCategoryFinancePortfolio];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -62,21 +64,10 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataPortfolioData class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataFeedLink class]];  
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    GDataCategory *category;
-    
-    category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                            term:kGDataCategoryFinancePortfolio];
-    [self addCategory:category];
-  }
-  return self;
+                                 childClasses:
+   [GDataPortfolioData class],
+   [GDataFeedLink class],
+   nil];  
 }
 
 - (NSMutableArray *)itemsForDescription {

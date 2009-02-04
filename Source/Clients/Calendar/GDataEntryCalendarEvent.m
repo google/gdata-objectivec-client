@@ -119,10 +119,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryEvent;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-           forCategoryWithScheme:kGDataCategoryScheme 
-                            term:kGDataCategoryEvent];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -147,17 +149,6 @@
                                    childClass:[GDataResourceProperty class]];
   [self addExtensionDeclarationForParentClass:[GDataLink class]
                                    childClass:[GDataWebContent class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    // use the standard calendar category
-    GDataCategory *category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                           term:kGDataCategoryEvent];
-    [self addCategory:category];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

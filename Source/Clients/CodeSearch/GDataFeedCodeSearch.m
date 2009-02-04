@@ -34,17 +34,12 @@
   return [[[self alloc] initWithData:data] autorelease];
 }
 
-- (void)addExtensionDeclarations {
-  [super addExtensionDeclarations];
++ (NSString *)standardFeedKind {
+  return kGDataCategoryCodeSearch;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-      [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                     term:kGDataCategoryCodeSearch]];
-  }
-  return self;
++ (void)load {
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

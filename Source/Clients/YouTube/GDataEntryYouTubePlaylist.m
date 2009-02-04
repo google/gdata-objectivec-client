@@ -33,10 +33,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubePlaylist;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubePlaylist];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -46,11 +48,12 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubePosition class]];
+                                 childClasses:
+   [GDataYouTubePosition class],
 
-  // elements for GData v1 only
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
+   // elements for GData v1 only
+   [GDataYouTubeDescription class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {

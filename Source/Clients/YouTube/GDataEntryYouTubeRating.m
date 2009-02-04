@@ -34,10 +34,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeRating;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeRating];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -58,15 +60,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
 
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeRating]];
-  }
-  return self;
 }
 
 + (NSString *)defaultServiceVersion {

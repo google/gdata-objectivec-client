@@ -33,19 +33,12 @@
 
 #pragma mark -
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeComplaint];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeComplaint;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeComplaint]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 + (NSString *)defaultServiceVersion {

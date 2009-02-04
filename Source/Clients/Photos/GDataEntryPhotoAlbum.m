@@ -33,10 +33,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPhotosAlbum;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryPhotosAlbum];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -58,15 +60,6 @@
   
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosAlbum]];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

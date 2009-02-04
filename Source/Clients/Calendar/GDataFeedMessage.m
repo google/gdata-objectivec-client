@@ -32,17 +32,16 @@
   return feed;
 }
 
-#pragma mark -
++ (NSString *)standardFeedKind {
+  return kGDataMessage;
+}
 
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:kGDataCategoryScheme 
-                            term:kGDataMessage];
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {
   return [GDataEntryMessage class];
 }
-
 
 @end

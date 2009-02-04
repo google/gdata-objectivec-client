@@ -63,44 +63,25 @@
   // GoogleBaseEntry extensions
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGoogleBaseAttribute class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGoogleBaseMetadataAttribute class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGoogleBaseMetadataAttributeList class]];  
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataGoogleBaseMetadataItemType class]];  
-  
+                                 childClasses:
+   [GDataGoogleBaseAttribute class],
+   [GDataGoogleBaseMetadataAttribute class],
+   [GDataGoogleBaseMetadataAttributeList class],
+   [GDataGoogleBaseMetadataItemType class],
+   nil];
 }
 
 
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
-  if ([self title]) {
-    [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"]; 
-  }
-  
-  if ([self content]) {
-    [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"]; 
-  }
-  
-  if ([[self entryAttributes] count]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self entryAttributes] withName:@"attributes"]; 
-  }
-  
-  if ([self metadataItemType]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self metadataItemType] withName:@"item_type"]; 
-  }
-  
-  if ([[self metadataAttributes] count]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributes] withName:@"metadataAttributes"]; 
-  }
-  
-  if ([self metadataAttributeList]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributeList] withName:@"metadataAttributeList"]; 
-  }
-  
+
+  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
+  [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self entryAttributes] withName:@"attributes"];
+  [self addToArray:items objectDescriptionIfNonNil:[self metadataItemType] withName:@"item_type"];
+  [self addToArray:items arrayDescriptionIfNonEmpty:[self metadataAttributes] withName:@"metadataAttributes"];
+  [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributeList] withName:@"metadataAttributeList"];
+
   return items;
 }
 

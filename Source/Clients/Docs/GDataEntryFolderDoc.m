@@ -22,19 +22,12 @@
 
 @implementation GDataEntryFolderDoc
 
-+ (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:kGDataCategoryScheme
-                             term:kGDataCategoryFolderDoc];
++ (NSString *)standardEntryKind {
+  return kGDataCategoryFolderDoc;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryFolderDoc]];
-  }
-  return self;
++ (void)load {
+  [self registerEntryClass];
 }
 
 @end

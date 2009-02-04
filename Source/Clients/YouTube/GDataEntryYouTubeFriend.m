@@ -34,10 +34,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeFriend;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubeFriend];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -48,9 +50,10 @@
 
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeUsername class]];
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeStatus class]];
+                                 childClasses:
+   [GDataYouTubeUsername class],
+   [GDataYouTubeStatus class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
@@ -61,15 +64,6 @@
   [self addToArray:items objectDescriptionIfNonNil:[self status] withName:@"status"];
 
   return items;
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubeFriend]];
-  }
-  return self;
 }
 
 + (NSString *)defaultServiceVersion {

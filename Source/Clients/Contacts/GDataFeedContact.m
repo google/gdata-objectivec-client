@@ -26,14 +26,16 @@
 
 @implementation GDataFeedContact
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryContact;
+}
+
 + (void)load {
-  [GDataObject registerFeedClass:[self class]
-           forCategoryWithScheme:kGDataCategoryScheme
-                            term:kGDataCategoryContact];
+  [self registerFeedClass];
 }
 
 + (GDataFeedContact *)contactFeed {
-  GDataFeedContact *obj = [[[[self class] alloc] init] autorelease];
+  GDataFeedContact *obj = [[[self alloc] init] autorelease];
 
   [obj setNamespaces:[GDataEntryContact contactNamespaces]];
 
@@ -49,15 +51,6 @@
                                    childClass:[GDataWhere class]];  
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-      [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                     term:kGDataCategoryContact]];
-  }
-  return self;
-}
-
 - (Class)classForEntries {
   return [GDataEntryContact class];
 }
@@ -65,7 +58,5 @@
 + (NSString *)defaultServiceVersion {
   return kGDataContactDefaultServiceVersion;
 }
-
-#pragma mark -
 
 @end

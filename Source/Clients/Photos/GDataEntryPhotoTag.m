@@ -39,10 +39,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryPhotosTag;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryPhotosTag];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -54,15 +56,6 @@
   
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataPhotoWeight class]];
-}
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryPhotosTag]];
-  }
-  return self;
 }
 
 - (NSMutableArray *)itemsForDescription {

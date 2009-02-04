@@ -34,10 +34,12 @@
 
 #pragma mark -
 
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubePlaylistLink;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:kGDataCategoryYouTubePlaylistLink];
+  [self registerEntryClass];
 }
 
 - (void)addExtensionDeclarations {
@@ -59,16 +61,6 @@
 
   return items;
 }
-
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryYouTubePlaylistLink]];
-  }
-  return self;
-}
-
 
 #pragma mark -
 
