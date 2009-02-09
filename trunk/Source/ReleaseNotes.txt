@@ -3,6 +3,30 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.4.0
+
+Additions
+
+- Added Google Health classes
+
+Changes
+
+- Calendar now defaults to service version 2.1, which slightly changes
+  responses and response codes from 2.0.
+  http://code.google.com/apis/calendar/changelog.html
+- Release builds on iPhone now compile out the elaborate descriptions
+  for each GDataObject.  Developers can set GDATA_SIMPLE_DESCRIPTIONS
+  in their projects to control this behavior.
+- Release builds on iPhone now compile out the http logging code.
+  Developers can set STRIP_GDATA_FETCH_LOGGING in their projects to control
+  this behavior.
+- Various internal refactoring for improved code readability and
+  maintainability.
+
+Bugs Fixed
+
+
+
 Release 1.6.0
 30-January-2009
 Changes since 1.5.0

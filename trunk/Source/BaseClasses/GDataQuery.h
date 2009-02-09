@@ -135,8 +135,13 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (NSString *)valueForParameterWithName:(NSString *)name;
 
 // convenience methods for int parameters
+
+// if val==invalidVal, the parameter is removed
 - (void)addCustomParameterWithName:(NSString *)name
-                          intValue:(int)val;
+                          intValue:(int)val
+                    removeForValue:(int)invalidVal;
+
+// if the named parameter is not found, missingVal is returned
 - (int)intValueForParameterWithName:(NSString *)name
               missingParameterValue:(int)missingVal;
 
