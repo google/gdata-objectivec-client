@@ -742,6 +742,14 @@ forCategoryWithScheme:scheme
   return desiredEntry;
 }
 
+- (id)firstEntry {
+  NSArray *entries = [self entries];
+  if ([entries count] > 0) {
+    return [entries objectAtIndex:0];
+  }
+  return nil;
+}
+
 - (NSArray *)entriesWithCategoryKind:(NSString *)term {
 
   NSArray *kindEntries = [GDataUtilities objectsFromArray:[self entries]

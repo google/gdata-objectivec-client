@@ -159,6 +159,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 - (GDataLink *)nextLink;
 - (GDataLink *)previousLink;
 
+// return the first entry, or nil if none
+- (id)firstEntry;
+
 // find the entry with the given identifier, or nil if none found
 - (id)entryForIdentifier:(NSString *)str;
 

@@ -188,12 +188,9 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 - (void)setStartIndex:(int)startIndex {
-  if (startIndex != -1) {
-    [self addCustomParameterWithName:kStartIndexParamName
-                            intValue:startIndex];
-  } else {
-    [self removeCustomParameterWithName:kStartIndexParamName];
-  }
+  [self addCustomParameterWithName:kStartIndexParamName
+                          intValue:startIndex
+                    removeForValue:-1];
 }
 
 - (int)maxResults {
@@ -202,12 +199,9 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 - (void)setMaxResults:(int)maxResults {
-  if (maxResults != -1) {
-    [self addCustomParameterWithName:kMaxResultsParamName
-                            intValue:maxResults];
-  } else {
-    [self removeCustomParameterWithName:kMaxResultsParamName];
-  }
+  [self addCustomParameterWithName:kMaxResultsParamName
+                          intValue:maxResults
+                    removeForValue:-1];
 }
 
 - (NSString *)fullTextQueryString {
@@ -424,15 +418,23 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 // convenience methods for int parameters
+//
+// if val==invalidVal, the parameter is removed
 - (void)addCustomParameterWithName:(NSString *)name
-                          intValue:(int)val {
+                          intValue:(int)val
+                    removeForValue:(int)invalidVal {
 
-  NSString *str = [[NSNumber numberWithInt:val] stringValue];
+  NSString *str = nil;
+
+  if (val != invalidVal) {
+    str = [[NSNumber numberWithInt:val] stringValue];
+  }
 
   [self addCustomParameterWithName:name
                              value:str];
 }
 
+// if the named parameter is not found, missingVal is returned
 - (int)intValueForParameterWithName:(NSString *)name
               missingParameterValue:(int)missingVal {
 
