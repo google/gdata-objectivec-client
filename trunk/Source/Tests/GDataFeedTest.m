@@ -108,6 +108,11 @@
 
     STAssertTrue([feed2 isEqual:feed1copy], @"Failed for %@ using XML \n  %@\n\nto convert\n  %@ \nto\n  %@",  
                  feedPath, outputXML, feed1copy, feed2);
+
+    // generate a description; this can fire an exception for an invalid keyPath
+    // in the description record list
+    STAssertNotNil([feed2 description], @"Could not generate description for %@",
+                   feedPath);
     
     // step through all the key-value path tests
     while (1) {

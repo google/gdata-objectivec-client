@@ -27,14 +27,14 @@
 
 static NSString *const kXMLErrorContentType = @"application/vnd.google.gdata.error+xml";
 
-static NSString* const kCallbackDelegateKey = @"delegate";
-static NSString* const kCallbackObjectClassKey = @"objectClass";
-static NSString* const kCallbackFinishedSelectorKey = @"finishedSelector";
-static NSString* const kCallbackFailedSelectorKey = @"failedSelector";
-static NSString* const kCallbackTicketKey = @"ticket";
-static NSString* const kCallbackStreamDataKey = @"streamData";
+static NSString* const kFetcherDelegateKey = @"_delegate";
+static NSString* const kFetcherObjectClassKey = @"_objectClass";
+static NSString* const kFetcherFinishedSelectorKey = @"_finishedSelector";
+static NSString* const kFetcherFailedSelectorKey = @"_failedSelector";
+static NSString* const kFetcherTicketKey = @"_ticket";
+static NSString* const kFetcherStreamDataKey = @"_streamData";
 
-NSString* const kCallbackRetryInvocationKey = @"retryInvocation";
+NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
 const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
 
@@ -55,13 +55,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 
 @interface GDataServiceBase (PrivateMethods)
-- (NSMutableDictionary *)callbackDictionaryForObjectClass:(Class)objectClass
-                                                 delegate:(id)delegate
-                                         finishedSelector:(SEL)finishedSelector
-                                           failedSelector:(SEL)failedSelector
-                                          retryInvocation:(NSInvocation *)retryInvocation
-                                                   ticket:(GDataServiceTicketBase *)ticket
-                                               streamData:(NSData *)data;
 
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
@@ -456,18 +449,28 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   //
   // we want to add the invocation itself, not the value wrapper of it,
   // to ensure the invocation is retained until the callback completes
-  
+
+  [fetcher setProperty:objectClass forKey:kFetcherObjectClassKey];
+
+  [fetcher setProperty:delegate forKey:kFetcherDelegateKey];
+
+  [fetcher setProperty:NSStringFromSelector(finishedSelector)
+                forKey:kFetcherFinishedSelectorKey];
+
+  [fetcher setProperty:NSStringFromSelector(failedSelector)
+                forKey:kFetcherFailedSelectorKey];
+
   NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
-  
-  NSMutableDictionary *callbackDict = [self callbackDictionaryForObjectClass:objectClass
-                                                                    delegate:delegate
-                                                            finishedSelector:finishedSelector
-                                                              failedSelector:failedSelector
-                                                             retryInvocation:retryInvocation
-                                                                      ticket:ticket
-                                                                  streamData:dataToRetain];
-  [fetcher setUserData:callbackDict];
-  
+  [fetcher setProperty:retryInvocation
+                forKey:kFetcherRetryInvocationKey];
+
+  [fetcher setProperty:ticket
+                forKey:kFetcherTicketKey];
+
+  // the stream data is retained only because of an NSInputStream bug in 
+  // 10.4, as described above
+  [fetcher setProperty:dataToRetain forKey:kFetcherStreamDataKey];
+
   // add username/password
   [self addAuthenticationToFetcher:fetcher];
   
@@ -491,19 +494,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
   
-  // we'll be nilling the userdata, so be sure to retain the callback dictionary
-  NSDictionary *callbackDict = [[[fetcher userData] retain] autorelease];
-  
   // unpack the callback parameters
-  id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
-  Class objectClass = [callbackDict objectForKey:kCallbackObjectClassKey];
-  SEL finishedSelector = NSSelectorFromString([callbackDict objectForKey:kCallbackFinishedSelectorKey]);
-  SEL failedSelector = NSSelectorFromString([callbackDict objectForKey:kCallbackFailedSelectorKey]);
+  id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
+  Class objectClass = [fetcher propertyForKey:kFetcherObjectClassKey];
+  SEL finishedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFinishedSelectorKey]);
+  SEL failedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFailedSelectorKey]);
   
-  GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
-  
-  // hide our parameters from any future inspection of the fetcher's userdata
-  [fetcher setUserData:nil];
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
   
   NSError *error = nil;
   
@@ -646,6 +643,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [ticket setFetchError:error];
   }  
   
+  [fetcher setProperties:nil];
+
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
 }
@@ -661,16 +660,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 #endif
 
-  NSDictionary *callbackDict = [[[fetcher userData] retain] autorelease];
+  id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
 
-  // hide our parameters from any future inspection of the fetcher's userdata
-  [fetcher setUserData:nil];
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
-  id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
-
-  GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
-
-  NSString *failedSelectorStr = [callbackDict objectForKey:kCallbackFailedSelectorKey];
+  NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
   SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
 
   // determine the type of server response, since we will need to know if it
@@ -690,6 +684,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                    withObject:error];
   }
 
+  [fetcher setProperties:nil];
+
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
@@ -697,14 +693,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithNetworkError:(NSError *)error {
   
-  NSDictionary *callbackDict = [[[fetcher userData] retain] autorelease];
-  [fetcher setUserData:nil];
-  
-  id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
+  id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
 
-  GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
-  NSString *failedSelectorStr = [callbackDict objectForKey:kCallbackFailedSelectorKey];
+  NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
   SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
 
   if (failedSelector) {
@@ -712,7 +705,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [delegate performSelector:failedSelector
                    withObject:ticket
                    withObject:error]; 
-  }  
+  }
+  
+  [fetcher setProperties:nil];
+
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
@@ -778,10 +774,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 // selector provided by the user.
 - (BOOL)objectFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
   
-  NSDictionary *callbackDict = [fetcher userData];
-  
-  id delegate = [callbackDict objectForKey:kCallbackDelegateKey];
-  GDataServiceTicketBase *ticket = [callbackDict objectForKey:kCallbackTicketKey];
+  id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
   
   SEL retrySelector = [ticket retrySelector];
   if (retrySelector) {
@@ -817,39 +811,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [retryInvocation getReturnValue:&willRetry];
   }
   return willRetry;  
-}
-
-- (NSMutableDictionary *)callbackDictionaryForObjectClass:(Class)objectClass
-                                                 delegate:(id)delegate
-                                         finishedSelector:(SEL)finishedSelector
-                                           failedSelector:(SEL)failedSelector
-                                          retryInvocation:(NSInvocation *)retryInvocation
-                                                   ticket:(GDataServiceTicketBase *)ticket
-                                               streamData:(NSData *)data {
-  
-  NSMutableDictionary *callbackDict = [NSMutableDictionary dictionary];
-  
-  if (objectClass) [callbackDict setValue:objectClass forKey:kCallbackObjectClassKey];
-  
-  if (delegate) [callbackDict setValue:delegate forKey:kCallbackDelegateKey];
-  
-  if (finishedSelector) [callbackDict setValue:NSStringFromSelector(finishedSelector)
-                                        forKey:kCallbackFinishedSelectorKey];
-  
-  if (failedSelector) [callbackDict setValue:NSStringFromSelector(failedSelector)
-                                      forKey:kCallbackFailedSelectorKey];
-  
-  if (retryInvocation) [callbackDict setValue:retryInvocation
-                                       forKey:kCallbackRetryInvocationKey];
-  
-  if (ticket) [callbackDict setValue:ticket
-                              forKey:kCallbackTicketKey];
-  
-  // the stream data is retained only because of an NSInputStream bug in 
-  // 10.4, as described below
-  if (data) [callbackDict setValue:data forKey:kCallbackStreamDataKey];
-  
-  return callbackDict;
 }
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher {
@@ -1452,7 +1413,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)cancelTicket {
   [objectFetcher_ stopFetching];
-  [objectFetcher_ setUserData:nil];
+  [objectFetcher_ setProperties:nil];
   
   [self setObjectFetcher:nil];
   [self setCurrentFetcher:nil];

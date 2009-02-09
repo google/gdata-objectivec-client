@@ -152,6 +152,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
     && AreEqualOrBothNil([self childObject], [other childObject]);
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -165,6 +166,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
   }
   return items;
 }
+#endif
 
 #pragma mark -
 

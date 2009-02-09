@@ -68,29 +68,36 @@
      [GDataMediaThumbnail class], nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
-  NSMutableArray *items = [super itemsForDescription];
-
-  NSString *selNames[] = {
-    @"statistics", @"age", @"thumbnail", @"company", @"gender", @"hobbies", 
-    @"hometown", @"location", @"movies", @"music", @"occupation",
-    @"relationship", @"school", @"username", @"firstName", @"lastName", 
-    @"youTubeDescription", nil
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"statistics",   @"statistics",          kGDataDescValueLabeled },
+    { @"age",          @"age",                 kGDataDescValueLabeled },
+    { @"thumbnail",    @"thumbnail",           kGDataDescValueLabeled },
+    { @"company",      @"company",             kGDataDescValueLabeled },
+    { @"gender",       @"gender",              kGDataDescValueLabeled },
+    { @"hobbies",      @"hobbies",             kGDataDescValueLabeled },
+    { @"hometown",     @"hometown",            kGDataDescValueLabeled },
+    { @"location",     @"location",            kGDataDescValueLabeled },
+    { @"movies",       @"movies",              kGDataDescValueLabeled },
+    { @"music",        @"music",               kGDataDescValueLabeled },
+    { @"occupation",   @"occupation",          kGDataDescValueLabeled },
+    { @"relationship", @"relationship",        kGDataDescValueLabeled },
+    { @"school",       @"school",              kGDataDescValueLabeled },
+    { @"username",     @"username",            kGDataDescValueLabeled },
+    { @"firstName",    @"firstName",           kGDataDescValueLabeled },
+    { @"lastName",     @"lastName",            kGDataDescValueLabeled },
+    { @"summary",      @"summary.stringValue", kGDataDescValueLabeled },
+    { @"feedLinks",    @"feedLinks",           kGDataDescArrayCount },
+    { nil, nil, 0 }
   };
   
-  for (int idx = 0; selNames[idx] != nil; idx++) {
-    
-    NSString *name = selNames[idx];
-    SEL sel = NSSelectorFromString(name);
-    id val = [self performSelector:sel];
-    
-    [self addToArray:items objectDescriptionIfNonNil:val withName:name]; 
-  }
-  [self addToArray:items arrayCountIfNonEmpty:[self feedLinks] withName:@"feedLinks"];
-
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataYouTubeDefaultServiceVersion;

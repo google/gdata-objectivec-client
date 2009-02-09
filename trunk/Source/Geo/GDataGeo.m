@@ -283,6 +283,7 @@
     && AreEqualOrBothNil([self values], [other values]);
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
@@ -290,6 +291,7 @@
   
   return items;
 }
+#endif
 
 //
 // getters and setters

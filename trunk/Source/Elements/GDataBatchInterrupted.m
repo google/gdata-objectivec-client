@@ -50,8 +50,7 @@ static NSString* const kContentTypeAttr = @"content-type";
   [self addContentValueDeclaration];
 }
 
-
-
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
@@ -60,6 +59,7 @@ static NSString* const kContentTypeAttr = @"content-type";
   
   return items;
 }
+#endif
 
 - (NSString *)reason {
   return [self stringValueForAttribute:kReasonAttr];

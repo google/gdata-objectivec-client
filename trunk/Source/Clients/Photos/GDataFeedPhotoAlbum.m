@@ -61,25 +61,31 @@
                                  forParentClass:feedClass];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
-  NSMutableArray *items = [super itemsForDescription];
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"access",          @"access",          kGDataDescValueLabeled },
+    { @"bytesUsed",       @"bytesUsed",       kGDataDescValueLabeled },
+    { @"commentCount",    @"commentCount",    kGDataDescValueLabeled },
+    { @"commentsEnabled", @"commentsEnabled", kGDataDescValueLabeled },
+    { @"date",            @"timestamp",       kGDataDescValueLabeled },
+    { @"location",        @"location",        kGDataDescValueLabeled },
+    { @"name",            @"name",            kGDataDescValueLabeled },
+    { @"nickname",        @"nickname",        kGDataDescValueLabeled },
+    { @"photosLeft",      @"photosLeft",      kGDataDescValueLabeled },
+    { @"photosUsed",      @"photosUsed",      kGDataDescValueLabeled },
+    { @"username",        @"username",        kGDataDescValueLabeled },
+    { @"mediaGroup",      @"mediaGroup",      kGDataDescValueLabeled },
+    { @"geoLocation",     @"geoLocation",     kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
   
-  [self addToArray:items objectDescriptionIfNonNil:[self access] withName:@"access"];
-  [self addToArray:items objectDescriptionIfNonNil:[self bytesUsed] withName:@"bytesUsed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self commentCount] withName:@"commentCount"];
-  [self addToArray:items objectDescriptionIfNonNil:[self commentsEnabled] withName:@"commentsEnabled"];
-  [self addToArray:items objectDescriptionIfNonNil:[self timestamp] withName:@"date"];
-  [self addToArray:items objectDescriptionIfNonNil:[self location] withName:@"location"];
-  [self addToArray:items objectDescriptionIfNonNil:[self name] withName:@"name"];
-  [self addToArray:items objectDescriptionIfNonNil:[self nickname] withName:@"nickname"];
-  [self addToArray:items objectDescriptionIfNonNil:[self photosLeft] withName:@"photosLeft"];
-  [self addToArray:items objectDescriptionIfNonNil:[self photosUsed] withName:@"photosUsed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
-  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

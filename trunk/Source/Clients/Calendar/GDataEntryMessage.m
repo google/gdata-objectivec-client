@@ -56,23 +56,22 @@
    nil];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"rating",       @"rating",       kGDataDescValueLabeled },
+    { @"time",         @"time",         kGDataDescValueLabeled },
+    { @"geoPt",        @"geoPt",        kGDataDescValueLabeled },
+    { @"participants", @"participants", kGDataDescArrayCount },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
-  [self addToArray:items objectDescriptionIfNonNil:[self time] withName:@"time"];
-  [self addToArray:items objectDescriptionIfNonNil:[self geoPt] withName:@"geoPt"];
-  
-  NSArray *participants = participants;
-  if ([participants count] == 1) {
-    [self addToArray:items objectDescriptionIfNonNil:[participants objectAtIndex:0] withName:@"participants"];
-  } else {
-    [self addToArray:items arrayCountIfNonEmpty:participants withName:@"participants"];
-  }
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

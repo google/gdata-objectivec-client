@@ -59,6 +59,7 @@ static NSString* const kLabelAttr = @"label";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -67,6 +68,7 @@ static NSString* const kLabelAttr = @"label";
   
   return items;
 }
+#endif
 
 - (NSString *)rel {
   return [self stringValueForAttribute:kRelAttr];

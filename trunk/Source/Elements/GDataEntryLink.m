@@ -83,6 +83,7 @@ static NSString* const kRelAttr = @"rel";
     && (AreEqualOrBothNil([self entry], [other entry]));
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
       
@@ -90,6 +91,7 @@ static NSString* const kRelAttr = @"rel";
 
   return items;
 }
+#endif
 
 - (NSXMLElement *)XMLElement {
   

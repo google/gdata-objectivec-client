@@ -21,6 +21,14 @@
 
 #import "GDataBaseElements.h"
 
+#pragma mark gd
+
+@implementation GDataResourceID
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"resourceId"; }
+@end
+
 #pragma mark Atom
 
 @implementation GDataAtomID

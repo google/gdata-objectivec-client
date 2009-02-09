@@ -72,18 +72,23 @@
 }
 
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self entryAttributes] withName:@"attributes"];
-  [self addToArray:items objectDescriptionIfNonNil:[self metadataItemType] withName:@"item_type"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self metadataAttributes] withName:@"metadataAttributes"];
-  [self addToArray:items objectDescriptionIfNonNil:[self metadataAttributeList] withName:@"metadataAttributeList"];
-
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"title",                 @"title.stringValue",     kGDataDescValueLabeled },
+    { @"content",               @"content.stringValue",   kGDataDescValueLabeled },
+    { @"attributes",            @"entryAttributes",       kGDataDescArrayDescs },
+    { @"itemType",              @"metadataItemType",      kGDataDescValueLabeled },
+    { @"metadataAttributes",    @"metadataAttributes",    kGDataDescArrayDescs },
+    { @"metadataAttributeList", @"metadataAttributeList", kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+  
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataGoogleBaseDefaultServiceVersion;

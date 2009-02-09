@@ -96,24 +96,33 @@
                                    childClass:[GDataYouTubeToken class]];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
+  // report notEmbeddable since it's the unusual case
+  NSString *nonEmbeddableValue = [self isEmbeddable] ? nil : @"YES";
+
+  // racy applies to v1 only
+  BOOL isRacy = [self isServiceVersion1] && [self isRacy];
+  NSString *racyValue = isRacy ? @"YES" : nil;
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"state",         @"publicationState",   kGDataDescValueLabeled },
+    { @"rating",        @"rating",             kGDataDescValueLabeled },
+    { @"comment",       @"comment",            kGDataDescValueLabeled },
+    { @"stats",         @"statistics",         kGDataDescValueLabeled },
+    { @"mediaGroup",    @"mediaGroup",         kGDataDescValueLabeled },
+    { @"geoLocation",   @"geoLocation",        kGDataDescValueLabeled },
+    { @"notEmbeddable", nonEmbeddableValue,    kGDataDescValueIsKeyPath },
+    { @"racy",          racyValue,             kGDataDescValueIsKeyPath },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self publicationState] withName:@"state"];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
-  [self addToArray:items objectDescriptionIfNonNil:[self comment] withName:@"comment"];
-  [self addToArray:items objectDescriptionIfNonNil:[self statistics] withName:@"stats"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
-  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
-
-  if ([self isServiceVersion1] && [self isRacy]) [items addObject:@"racy"];
-  if (![self isEmbeddable]) [items addObject:@"notEmbeddable"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataYouTubeDefaultServiceVersion;

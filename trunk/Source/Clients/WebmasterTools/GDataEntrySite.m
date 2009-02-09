@@ -93,21 +93,23 @@
                                    childClass:[GDataSiteVerificationMethod class]];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
-  NSMutableArray *items = [super itemsForDescription];
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"entryLinks",   @"entryLinks",          kGDataDescArrayCount },
+    { @"indexed",      @"isIndexed",           kGDataDescBooleanLabeled },
+    { @"crawled",      @"crawledDate",         kGDataDescValueLabeled },
+    { @"verified",     @"isVerified",          kGDataDescBooleanLabeled },
+    { @"methods",      @"verificationMethods", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
   
-  [self addToArray:items arrayCountIfNonEmpty:[self entryLinks] withName:@"entryLinks"];
-  [self addToArray:items objectDescriptionIfNonNil:([self isIndexed] ? @"true" : @"false")
-          withName:@"indexed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self crawledDate] withName:@"indexed"];
-  [self addToArray:items objectDescriptionIfNonNil:([self isVerified] ? @"true" : @"false")
-          withName:@"verified"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self verificationMethods] withName:@"methods"];
-
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataWebmasterToolsDefaultServiceVersion;

@@ -58,8 +58,6 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 + (GDataEntryBase *)entry;
 
-- (NSMutableArray *)itemsForDescription; // subclasses may implement this
-
 // basic entry fields
 - (NSString *)identifier;
 - (void)setIdentifier:(NSString *)theIdString;
@@ -75,6 +73,9 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
+
+- (NSString *)resourceID;
+- (void)setResourceID:(NSString *)str;
 
 - (GDataTextConstruct *)title;
 - (void)setTitle:(GDataTextConstruct *)theTitle;

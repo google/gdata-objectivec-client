@@ -76,17 +76,20 @@
    nil];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"systemGroup", @"systemGroup.identifier", kGDataDescValueLabeled },
+    { @"extProps",    @"extendedProperties",     kGDataDescArrayCount },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-  
-  NSString *systemGroupID = [[self systemGroup] identifier];
-  
-  [self addToArray:items objectDescriptionIfNonNil:systemGroupID withName:@"systemGroup"];
-  [self addToArray:items arrayCountIfNonEmpty:[self extendedProperties] withName:@"extProps"];
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataContactDefaultServiceVersion;

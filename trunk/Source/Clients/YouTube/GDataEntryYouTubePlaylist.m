@@ -56,6 +56,7 @@
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -67,6 +68,7 @@
     
   return items;
 }
+#endif
 
 + (NSString *)videoEntryCategoryTerm {
   // declare the term for the category that each entry gets in the superclass's

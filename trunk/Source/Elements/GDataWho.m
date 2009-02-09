@@ -82,6 +82,7 @@ static NSString* const kEmailAttr = @"email";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -92,6 +93,7 @@ static NSString* const kEmailAttr = @"email";
 
   return items;
 }
+#endif
 
 #pragma mark -
 

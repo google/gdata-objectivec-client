@@ -72,6 +72,7 @@ static NSString* const kPrimaryAttr = @"primary";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -81,6 +82,7 @@ static NSString* const kPrimaryAttr = @"primary";
     
   return items;
 }
+#endif
 
 #pragma mark -
 

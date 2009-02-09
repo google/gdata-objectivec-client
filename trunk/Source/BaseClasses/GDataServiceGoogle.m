@@ -20,7 +20,7 @@
 #define GDATASERVICEGOOGLE_DEFINE_GLOBALS 1
 #import "GDataServiceGoogle.h"
 
-extern NSString* const kCallbackRetryInvocationKey;
+extern NSString* const kFetcherRetryInvocationKey;
 
 static NSString* const kCaptchaFullURLKey = @"CaptchaFullUrl";
 
@@ -378,9 +378,7 @@ enum {
   
   if (status == kTokenExpired) {
     
-    NSDictionary *callbackDict = [fetcher userData];
-    
-    NSInvocation *retryInvocation = [callbackDict objectForKey:kCallbackRetryInvocationKey];
+    NSInvocation *retryInvocation = [fetcher propertyForKey:kFetcherRetryInvocationKey];
     if (retryInvocation) {
       
       // avoid an infinite loop: remove the retry invocation before re-invoking

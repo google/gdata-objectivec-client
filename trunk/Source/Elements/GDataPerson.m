@@ -86,6 +86,7 @@ static NSString *const kLangAttr = @"xml:lang";
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
 
@@ -95,6 +96,7 @@ static NSString *const kLangAttr = @"xml:lang";
 
   return items;
 }
+#endif
 
 - (NSString *)name {
   GDataPersonName *obj = [self objectForExtensionClass:[GDataPersonName class]];

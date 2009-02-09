@@ -75,6 +75,7 @@
   return self;
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -87,6 +88,7 @@
   
   return items;
 }
+#endif
 
 - (Class)classForEntries {
   return [GDataEntrySpreadsheetCell class];

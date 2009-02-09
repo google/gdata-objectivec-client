@@ -85,6 +85,7 @@
     && AreEqualOrBothNil([self stringValue], [other stringValue]);
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
@@ -93,6 +94,7 @@
   
   return items;
 }
+#endif
 
 - (NSXMLElement *)XMLElement {
 
