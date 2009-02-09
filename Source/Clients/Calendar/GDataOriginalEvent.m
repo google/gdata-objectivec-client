@@ -62,6 +62,7 @@ static NSString* const kHrefAttr = @"href";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -70,6 +71,7 @@ static NSString* const kHrefAttr = @"href";
   
   return items;
 }
+#endif
 
 #pragma mark -
 

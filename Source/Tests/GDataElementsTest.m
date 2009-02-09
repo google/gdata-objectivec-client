@@ -250,6 +250,11 @@
                  @"Failed using XML to convert\n  %@\nas XML:\n  %@\nto\n  %@\nfor class %@ and original XML string:\n  %@",
                  obj1copy, outputXML, obj2, className, testXMLString);
 
+    // generate a description; this can fire an exception for an invalid keyPath
+    // in the description record list
+    STAssertNotNil([obj2 description], @"Could not generate description for %@",
+                   className);
+
     // step through each test for this element, evaluate the key-value path,
     // and compare the result to the expected value string
     //
@@ -1354,8 +1359,9 @@
   // this is conditional to avoid a dependency on NSXMLElement's 
   // namespaceForPrefix method in libxml builds
   
-  // Allocating entries with convenience methods should
-  // the appropriate namespaces
+  // Allocating entries with convenience methods should add the default
+  // namespaces; allocating them with alloc/init doesn't add namespaces
+  // to the new entry
   GDataEntryContact *entry = [[[GDataEntryContact alloc] initWithServiceVersion:@"1.0"] autorelease];
   
   [entry setNamespaces:[GDataEntryContact contactNamespaces]];
@@ -1397,6 +1403,37 @@
   GDataEntryContact *entry3 = [[entry copy] autorelease];
   STAssertNil([[entry3 XMLElement] namespaces], @"unexpected namespaces");
 #endif
+}
+
+- (void)testDescriptionGeneration {
+
+  // testing various GDataDescRecTypes:
+  //
+  //   title          is type kGDataDescValueLabeled
+  //   categories     is type kGDataDescArrayCount
+  //   links          is type kGDataDescValueIsKeyPath
+  //   uploadDataOnly is type kGDataDescBooleanPresent
+  //   uploadData     is type kGDataDescNonZeroLength
+
+  GDataEntryContact *entry = [GDataEntryContact contactEntryWithTitle:@"Fred Flintstone"];
+  [entry addLink:[GDataLink linkWithRel:@"rel" type:nil href:@"href"]];
+  [entry setShouldUploadDataOnly:YES];
+  [entry setUploadData:[NSData dataWithBytes:"  " length:2]];
+
+  NSString *desc = [entry description];
+  NSString *expectedBody = @": {v:2.0 title:Fred Flintstone categories:1"
+                            " links:rel uploadDataOnly:YES UploadData:#2}";
+
+  NSScanner *scanner = [NSScanner scannerWithString:desc];
+  NSString *className = nil;
+  NSString *body = nil;
+
+  [scanner scanUpToString:@" " intoString:&className];
+  [scanner scanHexInt:nil];
+  [scanner scanUpToString:@"\n" intoString:&body];
+
+  STAssertEqualObjects(className, @"GDataEntryContact", @"classname description");
+  STAssertEqualObjects(body, expectedBody, @"body description");
 }
 
 - (void)testControlCharacterRemoval {

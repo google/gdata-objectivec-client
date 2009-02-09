@@ -62,6 +62,9 @@
   [self addExtensionDeclarationForParentClass:feedClass
                                  childClasses:
    
+   // GData extensions
+   [GDataResourceID class],
+
    // Atom extensions
    [GDataAtomID class], 
    [GDataAtomTitle class], 
@@ -235,40 +238,39 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
     // excluding generator 
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription { // subclasses may implement this
 
-  NSMutableArray *items = [NSMutableArray array];
+  NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
+  NSString *linksStr = [linkNames componentsJoinedByString:@","];
 
-  [self addToArray:items objectDescriptionIfNonNil:[self serviceVersion] withName:@"v"];
-
-  [self addToArray:items integerValue:[entries_ count] withName:@"entries"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self ETag] withName:@"etag"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self subtitle] stringValue] withName:@"subtitle"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self rights] stringValue] withName:@"rights"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self updatedDate] stringValue] withName:@"updated"];
-  
-  [self addToArray:items arrayCountIfNonEmpty:[self authors] withName:@"authors"];
-  [self addToArray:items arrayCountIfNonEmpty:[self contributors] withName:@"contributors"];
-  [self addToArray:items arrayCountIfNonEmpty:[self categories] withName:@"categories"];
-  
-  if ([[self links] count]) {
-    NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
-    NSString *linksStr = [linkNames componentsJoinedByString:@","];
-    [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
-  }  
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"v",                @"serviceVersion",          kGDataDescValueLabeled },
+    { @"entries",          @"entries",                 kGDataDescArrayCount },
+    { @"etag",             @"ETag",                    kGDataDescValueLabeled },
+    { @"resourceID",       @"resourceID",              kGDataDescValueLabeled },
+    { @"title",            @"title.stringValue",       kGDataDescValueLabeled },
+    { @"subtitle",         @"subtitle.stringValue",    kGDataDescValueLabeled },
+    { @"rights",           @"rights.stringValue",      kGDataDescValueLabeled },
+    { @"updated",          @"updatedDate.stringValue", kGDataDescValueLabeled },
+    { @"authors",          @"authors",                 kGDataDescArrayCount },
+    { @"contributors",     @"contributors",            kGDataDescArrayCount },
+    { @"categories",       @"categories",              kGDataDescArrayCount },
+    { @"links",            linksStr,                   kGDataDescValueIsKeyPath },
+    { @"id",               @"identifier",              kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
   
   // these are present but not very useful most of the time...
-  // [self addToArray:items objectDescriptionIfNonNil:totalResults_ withName:@"totalResults"];
-  // [self addToArray:items objectDescriptionIfNonNil:startIndex_ withName:@"startIndex"];
-  // [self addToArray:items objectDescriptionIfNonNil:itemsPerPage_ withName:@"itemsPerPage"];
+  // @"totalResults"
+  // @"startIndex"
+  // @"itemsPerPage"
 
-  [self addToArray:items objectDescriptionIfNonNil:[self identifier] withName:@"id"];
-  
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 - (NSXMLElement *)XMLElement {
 
@@ -592,6 +594,16 @@ forCategoryWithScheme:scheme
 
 - (void)setETag:(NSString *)str {
   [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
+}
+
+- (NSString *)resourceID {
+  GDataResourceID *obj = [self objectForExtensionClass:[GDataResourceID class]];
+  return [obj stringValue];
+}
+
+- (void)setResourceID:(NSString *)str {
+  GDataResourceID *obj = [GDataResourceID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataResourceID class]];
 }
 
 - (NSArray *)entries {

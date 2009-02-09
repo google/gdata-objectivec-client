@@ -77,14 +77,19 @@ static NSString *const kTitleAttr = @"title";
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"title",       @"title.stringValue", kGDataDescValueLabeled },
+    { @"collections", @"collections",       kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self collections] withName:@"collections"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

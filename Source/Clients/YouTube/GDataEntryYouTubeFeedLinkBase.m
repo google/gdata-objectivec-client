@@ -46,6 +46,7 @@
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
   NSMutableArray *items = [super itemsForDescription];
@@ -61,6 +62,7 @@
 
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataYouTubeDefaultServiceVersion;

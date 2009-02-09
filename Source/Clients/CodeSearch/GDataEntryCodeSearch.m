@@ -71,16 +71,21 @@
    nil];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
-  NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self file] name] withName:@"file"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self package] name] withName:@"package"];
-  [self addToArray:items arrayCountIfNonEmpty:[self matches] withName:@"matches"];
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"file",    @"file.name",     kGDataDescValueLabeled },
+    { @"package", @"package.name",  kGDataDescValueLabeled },
+    { @"matches", @"matches",       kGDataDescArrayCount },
+    { nil, nil, 0 }
+  };
   
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataCodeSearchDefaultServiceVersion;

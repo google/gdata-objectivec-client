@@ -74,6 +74,9 @@
   
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
+   // GData extensions
+   [GDataResourceID class],
+
    // Atom extensions
    [GDataAtomID class], 
    [GDataAtomPublishedDate class],
@@ -149,54 +152,44 @@
   return newEntry;
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
+
 - (NSMutableArray *)itemsForDescription {
   
-  NSMutableArray *items = [NSMutableArray array];
+  // make a list of the interesting parts of links
+  NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
+  NSString *linksStr = [linkNames componentsJoinedByString:@","];
   
-  [self addToArray:items objectDescriptionIfNonNil:[self serviceVersion] withName:@"v"];
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"v",                @"serviceVersion",           kGDataDescValueLabeled },
+    { @"title",            @"title.stringValue",        kGDataDescValueLabeled },
+    { @"summary",          @"summary.stringValue",      kGDataDescValueLabeled },
+    { @"content",          @"content.stringValue",      kGDataDescValueLabeled },
+    { @"etag",             @"ETag",                     kGDataDescValueLabeled },
+    { @"resourceID",       @"resourceID",               kGDataDescValueLabeled },
+    { @"authors",          @"authors",                  kGDataDescArrayCount },
+    { @"categories",       @"categories",               kGDataDescArrayCount },
+    { @"links",            linksStr,                    kGDataDescValueIsKeyPath },
+    { @"edited",           @"editedDate.RFC3339String", kGDataDescValueLabeled },
+    { @"id",               @"identifier",               kGDataDescValueLabeled },
+    { @"app:control",      @"atomPubControl",           kGDataDescValueLabeled },
+    { @"batchOp",          @"batchOperation.type",      kGDataDescValueLabeled },
+    { @"batchID",          @"batchID.stringValue",      kGDataDescValueLabeled },
+    { @"batchStatus",      @"batchStatus.code",         kGDataDescValueLabeled },
+    { @"batchInterrupted", @"batchInterrupted",         kGDataDescValueLabeled },
+    { @"MIMEType",         @"uploadMIMEType",           kGDataDescValueLabeled },
+    { @"slug",             @"uploadSlug",               kGDataDescValueLabeled },
+    { @"uploadDataOnly",   @"shouldUploadDataOnly",     kGDataDescBooleanPresent },
+    { @"UploadData",       @"uploadData",               kGDataDescNonZeroLength },
+    { @"deleted",          @"isDeleted",                kGDataDescBooleanPresent },
+    { nil, nil, 0 }
+  };
   
-  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self summary] stringValue] withName:@"summary"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self content] stringValue] withName:@"content"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self ETag] withName:@"etag"];
-
-  [self addToArray:items arrayCountIfNonEmpty:[self authors] withName:@"authors"];
-  [self addToArray:items arrayCountIfNonEmpty:[self categories] withName:@"categories"];
-  
-  if ([[self links] count]) {
-    NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
-    NSString *linksStr = [linkNames componentsJoinedByString:@","];
-    [self addToArray:items objectDescriptionIfNonNil:linksStr withName:@"links"];
-  }
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self editedDate] RFC3339String] withName:@"edited"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self identifier] withName:@"id"];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self atomPubControl] withName:@"app:control"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self batchOperation] type] withName:@"batchOp"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self batchID] stringValue] withName:@"batchID"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self batchStatus] code] withName:@"batchStatus"];
-  [self addToArray:items objectDescriptionIfNonNil:[self batchInterrupted] withName:@"batchInterrupted"];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self uploadMIMEType] withName:@"MIMEType"];
-  [self addToArray:items objectDescriptionIfNonNil:[self uploadSlug] withName:@"slug"];
-  if ([self shouldUploadDataOnly]) {
-    [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:@"uploadDataOnly"];
-  }
-  if ([self uploadData]) {
-    NSString *str = [NSString stringWithFormat:@"%u_bytes", [[self uploadData] length]];
-    [self addToArray:items objectDescriptionIfNonNil:str withName:@"UploadData"];
-  }
-  
-  if ([self isDeleted]) {
-    [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:@"deleted"]; 
-  }
-
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 - (NSXMLElement *)XMLElement {
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"entry"];
@@ -322,6 +315,16 @@ forCategoryWithScheme:scheme
 
 - (void)setETag:(NSString *)str {
   [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
+}
+
+- (NSString *)resourceID {
+  GDataResourceID *obj = [self objectForExtensionClass:[GDataResourceID class]];
+  return [obj stringValue];
+}
+
+- (void)setResourceID:(NSString *)str {
+  GDataResourceID *obj = [GDataResourceID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataResourceID class]];
 }
 
 - (NSString *)identifier {

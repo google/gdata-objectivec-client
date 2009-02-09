@@ -32,12 +32,14 @@
                                    childClass:[GDataPhotoGPhotoID class]];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
   [self addToArray:items objectDescriptionIfNonNil:[self GPhotoID] withName:@"gphotoID"];
   return items;
 }
+#endif
 
 - (Class)classForEntries {
   return kUseRegisteredEntryClass;

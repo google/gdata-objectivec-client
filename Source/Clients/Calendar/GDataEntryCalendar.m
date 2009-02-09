@@ -109,28 +109,26 @@
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"timezone",     @"timeZoneName.stringValue",  kGDataDescValueLabeled },
+    { @"timesCleaned", @"timesCleaned.stringValue",  kGDataDescValueLabeled },
+    { @"override",     @"overrideName.stringValue",  kGDataDescValueLabeled },
+    { @"accessLevel",  @"accessLevel.stringValue",   kGDataDescValueLabeled },
+    { @"hidden",       @"isHidden",                  kGDataDescBooleanPresent },
+    { @"selected",     @"isSelected",                kGDataDescBooleanPresent },
+    { @"whens",        @"whens",                     kGDataDescArrayCount },
+    { @"hidden",       @"locations",                 kGDataDescArrayCount },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[[self timeZoneName] stringValue] withName:@"timezone"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self timesCleaned] stringValue] withName:@"timesCleaned"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self overrideName] stringValue] withName:@"override"];
-  [self addToArray:items objectDescriptionIfNonNil:[[self accessLevel] stringValue] withName:@"accessLevel"];
-  
-  if ([self isHidden]) {
-    [items addObject:@"hidden:YES"];
-  }
-  
-  if ([self isSelected]) {
-    [items addObject:@"selected:YES"];
-  }
-  
-  [self addToArray:items arrayCountIfNonEmpty:[self whens] withName:@"whens"];
-  [self addToArray:items arrayCountIfNonEmpty:[self locations] withName:@"locations"];
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 - (NSString *)description {
   return [super description];

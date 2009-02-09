@@ -63,17 +63,21 @@ static NSString* const kFixedAttr = @"fixed";
                                    childClass:[GDataCategory class]];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"fixed",      @"isFixed",    kGDataDescBooleanPresent },
+    { @"href",       @"href",       kGDataDescValueLabeled },
+    { @"scheme",     @"scheme",     kGDataDescValueLabeled },
+    { @"categories", @"categories", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-
-  NSString *fixedStr = ([self isFixed] ? @"yes" : nil);
-  [self addToArray:items objectDescriptionIfNonNil:fixedStr withName:@"fixed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self href] withName:@"href"];
-  [self addToArray:items objectDescriptionIfNonNil:[self scheme] withName:@"scheme"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self categories] withName:@"categories"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

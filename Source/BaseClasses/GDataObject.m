@@ -808,6 +808,75 @@ childWithStringValueIfNonEmpty:(NSString *)str
 
 #pragma mark description method helpers
 
+- (void)addDescriptionRecords:(GDataDescriptionRecord *)descRecordList
+                      toItems:(NSMutableArray *)items {
+#if !GDATA_SIMPLE_DESCRIPTIONS
+  // the final descRecord in the list should be { nil, nil, 0 }
+
+  for (NSUInteger idx = 0; descRecordList[idx].label != nil; idx++) {
+
+    enum GDataDescRecTypes reportType = descRecordList[idx].reportType;
+    NSString *label = descRecordList[idx].label;
+    NSString *keyPath = descRecordList[idx].keyPath;
+
+    id value;
+    NSString *str;
+
+    if (reportType == kGDataDescValueIsKeyPath) {
+      value = keyPath;
+    } else {
+      value = [self valueForKeyPath:keyPath];
+    }
+
+    switch (reportType) {
+
+      case kGDataDescValueLabeled:
+      case kGDataDescValueIsKeyPath:
+        [self addToArray:items objectDescriptionIfNonNil:value withName:label];
+        break;
+
+      case kGDataDescLabelIfNonNil:
+        if (value != nil) [items addObject:label];
+        break;
+
+      case kGDataDescArrayCount:
+        if ([value count] > 0) {
+          str = [NSString stringWithFormat:@"%lu", (unsigned long) [value count]];
+          [self addToArray:items objectDescriptionIfNonNil:str withName:label];
+        }
+        break;
+
+      case kGDataDescArrayDescs:
+        if ([value count] > 0) {
+          [self addToArray:items objectDescriptionIfNonNil:value withName:label];
+        }
+        break;
+
+      case kGDataDescBooleanLabeled:
+        // display the label with YES or NO
+        str = ([value boolValue] ? @"YES" : @"NO");
+        [self addToArray:items objectDescriptionIfNonNil:str withName:label];
+        break;
+
+      case kGDataDescBooleanPresent:
+        // display the label:YES only if present
+        if ([value boolValue]) {
+          [self addToArray:items objectDescriptionIfNonNil:@"YES" withName:label];
+        }
+        break;
+
+      case kGDataDescNonZeroLength:
+        // display the length if non-zero
+        if ([value length] > 0) {
+          str = [NSString stringWithFormat:@"#%lu", (unsigned long) [value length]];
+          [self addToArray:items objectDescriptionIfNonNil:str withName:label];
+        }
+        break;
+    }
+  }
+#endif
+}
+
 - (void)addToArray:(NSMutableArray *)stringItems
 objectDescriptionIfNonNil:(id)obj
           withName:(NSString *)name {
@@ -818,28 +887,6 @@ objectDescriptionIfNonNil:(id)obj
     } else {
       [stringItems addObject:[obj description]];
     }
-  }
-}
-
-- (void)addToArray:(NSMutableArray *)stringItems
-      integerValue:(NSInteger)val
-          withName:(NSString *)name {
-  [stringItems addObject:[NSString stringWithFormat:@"%@:%ld", name, (long)val]];
-}
-
-- (void)addToArray:(NSMutableArray *)stringItems
-      arrayCountIfNonEmpty:(NSArray *)array
-          withName:(NSString *)name {
-  if ([array count] > 0) {
-    [self addToArray:stringItems integerValue:[array count] withName:name];
-  }
-}
-
-- (void)addToArray:(NSMutableArray *)stringItems
-arrayDescriptionIfNonEmpty:(NSArray *)array
-          withName:(NSString *)name {
-  if ([array count] > 0) {
-    [self addToArray:stringItems objectDescriptionIfNonNil:array withName:name];
   }
 }
 
@@ -877,12 +924,16 @@ arrayDescriptionIfNonEmpty:(NSArray *)array
 }
 
 - (NSMutableArray *)itemsForDescription {
-  
+#if GDATA_SIMPLE_DESCRIPTIONS
+  NSMutableArray *items = [NSMutableArray array];
+  return items;
+#else
   NSMutableArray *items = [NSMutableArray array];
   [self addAttributeDescriptionsToArray:items];
   [self addContentDescriptionToArray:items withName:@"content"];
   [self addChildXMLElementsDescriptionToArray:items];
   return items;
+#endif
 }
 
 - (NSString *)descriptionWithItems:(NSArray *)items {

@@ -25,6 +25,11 @@
 #import "GDataValueConstruct.h"
 #import "GDataEntryContent.h"
 
+// GData
+
+@interface GDataResourceID : GDataValueElementConstruct <GDataExtension>
+@end
+
 // Atom
 
 @interface GDataAtomID : GDataValueElementConstruct <GDataExtension>

@@ -51,14 +51,19 @@
                                    childClass:workspaceClass];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-
+  
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"workspaces", @"workspaces", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self workspaces] withName:@"workspaces"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

@@ -69,6 +69,7 @@ static NSString *const kLengthAttr = @"length";
                                             childClass:[GDataETagAttribute class]];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
   NSMutableArray *items = [super itemsForDescription];
@@ -78,6 +79,7 @@ static NSString *const kLengthAttr = @"length";
 
   return items;
 }
+#endif
 
 #pragma mark -
 

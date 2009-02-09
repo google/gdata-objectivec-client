@@ -92,49 +92,39 @@
 }
 
 - (NSString *)suffixAfterPoundSign:(NSString *)str {
-  NSRange range = [str rangeOfString:@"#" options:NSBackwardsSearch];
-  if (range.location != NSNotFound) {
-    return [str substringFromIndex:(1 + range.location)];
+  if (str != nil) {
+    NSRange range = [str rangeOfString:@"#" options:NSBackwardsSearch];
+    if (range.location != NSNotFound) {
+      return [str substringFromIndex:(1 + range.location)];
+    }
   }
   return nil;
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
+  NSString *visibility = [self suffixAfterPoundSign:[[self visibility] stringValue]];
+  NSString *transparency = [self suffixAfterPoundSign:[[self transparency] stringValue]];
+  NSString *eventStatus = [self suffixAfterPoundSign:[[self eventStatus] stringValue]];
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"recurrence",     @"recurrence.stringValue", kGDataDescValueLabeled },
+    { @"visibility",     visibility,                kGDataDescValueIsKeyPath },
+    { @"transparency",   transparency,              kGDataDescValueIsKeyPath },
+    { @"eventStatus",    eventStatus,               kGDataDescValueIsKeyPath },
+    { @"times",          @"times",                  kGDataDescArrayCount },
+    { @"recExc",         @"recurrenceExceptions",   kGDataDescArrayCount },
+    { @"reminders",      @"reminders",              kGDataDescArrayCount },
+    { @"comment",        @"comment",                kGDataDescLabelIfNonNil },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[[self recurrence] stringValue] withName:@"recurrence"];
-  
-  if ([self visibility]) {
-    NSString *visibility = [self suffixAfterPoundSign:[[self visibility] stringValue]];
-    [self addToArray:items objectDescriptionIfNonNil:visibility withName:@"visibility"];
-  }
-
-  if ([self transparency]) {
-    NSString *transparency = [self suffixAfterPoundSign:[[self transparency] stringValue]];
-    [self addToArray:items objectDescriptionIfNonNil:transparency withName:@"transparency"];
-  }
-
-  if ([self eventStatus]) {
-    NSString *eventStatus = [self suffixAfterPoundSign:[[self eventStatus] stringValue]];
-    [self addToArray:items objectDescriptionIfNonNil:eventStatus withName:@"eventStatus"];
-  }
-    
-  [self addToArray:items arrayCountIfNonEmpty:[self times] withName:@"times"];
-  [self addToArray:items arrayCountIfNonEmpty:[self recurrenceExceptions] withName:@"recurrenceExceptions"];
-  [self addToArray:items arrayCountIfNonEmpty:[self reminders] withName:@"reminders"];
-  
-
-  if ([self comment]) {
-    [items addObject:@"hasComment"];
-  }
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
-
-- (NSString *)description {
-  return [super description];
-}
+#endif
 
 #pragma mark Actual iVars
 

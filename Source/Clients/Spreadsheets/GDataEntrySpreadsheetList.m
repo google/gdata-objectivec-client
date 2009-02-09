@@ -60,6 +60,7 @@
                                    childClass:[GDataSpreadsheetCustomElement class]];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -81,6 +82,7 @@
   
   return items;
 }
+#endif
 
 - (id)init {
   self = [super init];

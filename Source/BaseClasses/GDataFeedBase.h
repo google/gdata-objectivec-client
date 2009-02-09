@@ -62,9 +62,6 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 // subclasses override initFeed to set up their ivars
 - (void)initFeedWithXMLElement:(NSXMLElement *)element;
 
-// subclasses may implement this
-- (NSMutableArray *)itemsForDescription; 
-
 // subclass may override this to specify an entry class or
 // to return kUseRegisteredEntryClass
 - (Class)classForEntries;
@@ -119,6 +116,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
+
+- (NSString *)resourceID;
+- (void)setResourceID:(NSString *)str;
 
 - (NSArray *)entries;
 

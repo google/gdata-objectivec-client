@@ -62,6 +62,7 @@
                                  forParentClass:entryClass];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -81,6 +82,7 @@
   [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
   return items;
 }
+#endif
 
 #pragma mark -
 

@@ -19,9 +19,14 @@
 
 //
 // The developer may choose to define these in the project:
-//   #define GDATA_FOUNDATION_ONLY 1     // builds without AppKit or Carbon
-//   #define GDATA_TARGET_NAMESPACE Xxx  // preface all GData class names with Xxx
-//   #define STRIP_GDATA_FETCH_LOGGING 1 // omit http logging code
+//
+//   #define GDATA_TARGET_NAMESPACE Xxx  // preface all GData class names with Xxx (recommended for building plug-ins)
+//   #define GDATA_FOUNDATION_ONLY 1     // builds without AppKit or Carbon (default for iPhone builds)
+//   #define GDATA_SIMPLE_DESCRIPTIONS 1 // remove elaborate -description methods, reducing code size (default for iPhone release builds)
+//   #define STRIP_GDATA_FETCH_LOGGING 1 // omit http logging code (default for iPhone release builds)
+//
+// Mac developers may find GDATA_SIMPLE_DESCRIPTIONS and STRIP_GDATA_FETCH_LOGGING useful for
+// reducing code size.
 //
 
 // Define later OS versions when building on earlier versions
@@ -139,21 +144,42 @@
 #endif
 
 
+//
+// To reduce code size on iPhone release builds, we compile out the helpful
+// description methods for GData objects
+//
+#ifndef GDATA_SIMPLE_DESCRIPTIONS
+  #if GDATA_IPHONE && !DEBUG
+    #define GDATA_SIMPLE_DESCRIPTIONS 1
+  #else
+    #define GDATA_SIMPLE_DESCRIPTIONS 0
+  #endif
+#endif
+
+#ifndef STRIP_GDATA_FETCH_LOGGING
+  #if GDATA_IPHONE && !DEBUG
+    #define STRIP_GDATA_FETCH_LOGGING 1
+  #else
+    #define STRIP_GDATA_FETCH_LOGGING 0
+  #endif
+#endif
+
+
 // To simplify support for 64bit (and Leopard in general), we provide the type
 // defines for non Leopard SDKs
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
- // NSInteger/NSUInteger and Max/Mins
- #ifndef NSINTEGER_DEFINED
-  #if __LP64__ || NS_BUILD_32_LIKE_64
-   typedef long NSInteger;
-   typedef unsigned long NSUInteger;
-  #else
-   typedef int NSInteger;
-   typedef unsigned int NSUInteger;
-  #endif
-  #define NSIntegerMax    LONG_MAX
-  #define NSIntegerMin    LONG_MIN
-  #define NSUIntegerMax   ULONG_MAX
-  #define NSINTEGER_DEFINED 1
- #endif  // NSINTEGER_DEFINED
+  // NSInteger/NSUInteger and Max/Mins
+  #ifndef NSINTEGER_DEFINED
+    #if __LP64__ || NS_BUILD_32_LIKE_64
+      typedef long NSInteger;
+      typedef unsigned long NSUInteger;
+    #else
+      typedef int NSInteger;
+      typedef unsigned int NSUInteger;
+    #endif
+    #define NSIntegerMax    LONG_MAX
+    #define NSIntegerMin    LONG_MIN
+    #define NSUIntegerMax   ULONG_MAX
+    #define NSINTEGER_DEFINED 1
+  #endif  // NSINTEGER_DEFINED
 #endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4

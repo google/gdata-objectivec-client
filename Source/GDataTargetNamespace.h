@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.5 (356 classes) 2009-01-15 15:37:06 -0800
+// com.google.GDataFramework v. 1.6 (357 classes) 2009-02-09 13:32:12 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -285,6 +285,7 @@
   #define GDataRecurrence                      _GDATA_NS_SYMBOL(GDataRecurrence)
   #define GDataRecurrenceException             _GDATA_NS_SYMBOL(GDataRecurrenceException)
   #define GDataReminder                        _GDATA_NS_SYMBOL(GDataReminder)
+  #define GDataResourceID                      _GDATA_NS_SYMBOL(GDataResourceID)
   #define GDataResourceProperty                _GDATA_NS_SYMBOL(GDataResourceProperty)
   #define GDataRowColumnCount                  _GDATA_NS_SYMBOL(GDataRowColumnCount)
   #define GDataRowCount                        _GDATA_NS_SYMBOL(GDataRowCount)

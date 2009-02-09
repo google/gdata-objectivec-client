@@ -119,16 +119,21 @@ static NSString *const kTitleAttr = @"title";
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"title",         @"title.stringValue",    kGDataDescValueLabeled },
+    { @"href",          @"href",                 kGDataDescValueLabeled },
+    { @"categoryGroup", @"categoryGroup",        kGDataDescValueLabeled },
+    { @"accepts",       @"serviceAcceptStrings", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items objectDescriptionIfNonNil:[[self title] stringValue] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[self href] withName:@"href"];
-  [self addToArray:items objectDescriptionIfNonNil:[self categoryGroup] withName:@"categoryGroup"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self serviceAcceptStrings] withName:@"accepts"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

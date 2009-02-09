@@ -72,6 +72,7 @@ static NSString* const kURLAttr = @"url";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -95,6 +96,7 @@ static NSString* const kURLAttr = @"url";
   
   return items;
 }
+#endif
 
 - (NSNumber *)height {
   return [self intNumberForAttribute:kHeightAttr]; 

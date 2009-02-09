@@ -72,20 +72,25 @@
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"organizations", @"organizations",        kGDataDescArrayDescs },
+    { @"email",         @"emailAddresses",       kGDataDescArrayDescs },
+    { @"phone",         @"phoneNumbers",         kGDataDescArrayDescs },
+    { @"IM",            @"IMAddresses",          kGDataDescArrayDescs },
+    { @"postal",        @"postalAddresses",      kGDataDescArrayDescs },
+    { @"group",         @"groupMembershipInfos", kGDataDescArrayDescs },
+    { @"extProps",      @"extendedProperties",   kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self organizations] withName:@"organization"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self emailAddresses] withName:@"email"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self phoneNumbers] withName:@"phone"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self IMAddresses] withName:@"IM"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self postalAddresses] withName:@"postal"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self groupMembershipInfos] withName:@"group"];
-  [self addToArray:items arrayDescriptionIfNonEmpty:[self extendedProperties] withName:@"extProps"];
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataContactDefaultServiceVersion;

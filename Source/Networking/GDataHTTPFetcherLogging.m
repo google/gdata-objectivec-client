@@ -47,7 +47,7 @@
 // if STRIP_GDATA_FETCH_LOGGING is defined by the user's project then 
 // logging code will not be compiled into the framework
 
-#ifdef STRIP_GDATA_FETCH_LOGGING
+#if STRIP_GDATA_FETCH_LOGGING
 - (void)logFetchWithError:(NSError *)error {}
 
 + (void)setLoggingDirectory:(NSString *)path {}

@@ -55,6 +55,7 @@ static NSString* const kRelAttr = @"rel";
   [self addLocalAttributeDeclarations:attrs];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
   
@@ -62,6 +63,7 @@ static NSString* const kRelAttr = @"rel";
   
   return items;
 }
+#endif
 
 #pragma mark -
 

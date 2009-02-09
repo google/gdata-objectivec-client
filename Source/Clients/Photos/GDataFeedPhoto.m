@@ -63,29 +63,34 @@
                                  forParentClass:feedClass];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"albumID",          @"albumID",           kGDataDescValueLabeled },
+    { @"checksum",         @"checksum",          kGDataDescValueLabeled },
+    { @"client",           @"client",            kGDataDescValueLabeled },
+    { @"commentCount",     @"commentCount",      kGDataDescValueLabeled },
+    { @"commentsEnabled",  @"commentsEnabled",   kGDataDescValueLabeled },
+    { @"height",           @"height",            kGDataDescValueLabeled },
+    { @"width",            @"width",             kGDataDescValueLabeled },
+    { @"status",           @"videoStatus",       kGDataDescValueLabeled },
+    { @"position",         @"position",          kGDataDescValueLabeled },
+    { @"rotation",         @"rotation",          kGDataDescValueLabeled },
+    { @"size",             @"size",              kGDataDescValueLabeled },
+    { @"timestamp",        @"timestamp",         kGDataDescValueLabeled },
+    { @"version",          @"version",           kGDataDescValueLabeled },
+    { @"mediaGroup",       @"mediaGroup",        kGDataDescValueLabeled },
+    { @"exifTags",         @"EXIFTags",          kGDataDescValueLabeled },
+    { @"geoLocation",      @"geoLocation",       kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-  [self addToArray:items objectDescriptionIfNonNil:[self albumID] withName:@"albumID"];
-  [self addToArray:items objectDescriptionIfNonNil:[self checksum] withName:@"checksum"];
-  [self addToArray:items objectDescriptionIfNonNil:[self client] withName:@"client"];
-  [self addToArray:items objectDescriptionIfNonNil:[self commentCount] withName:@"commentCount"];
-  [self addToArray:items objectDescriptionIfNonNil:[self commentsEnabled] withName:@"commentsEnabled"];
-  [self addToArray:items objectDescriptionIfNonNil:[self height] withName:@"height"];
-  [self addToArray:items objectDescriptionIfNonNil:[self width] withName:@"width"];
-  [self addToArray:items objectDescriptionIfNonNil:[self videoStatus] withName:@"status"];
-  [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"];
-  [self addToArray:items objectDescriptionIfNonNil:[self rotation] withName:@"rotation"];
-  [self addToArray:items objectDescriptionIfNonNil:[self size] withName:@"size"];
-  [self addToArray:items objectDescriptionIfNonNil:[self timestamp] withName:@"timestamp"];
-  [self addToArray:items objectDescriptionIfNonNil:[self version] withName:@"version"];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
-  [self addToArray:items objectDescriptionIfNonNil:[self EXIFTags] withName:@"exifTags"];
-  [self addToArray:items objectDescriptionIfNonNil:[self geoLocation] withName:@"geoLocation"];
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
+#endif
 
 #pragma mark -
 

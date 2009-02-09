@@ -169,6 +169,28 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 - (NSString *)stringValue;
 @end
 
+// GDataDescriptionRecords are used for describing how the elements
+// and attributes of a GDataObject should be reported when -description
+// is called.
+
+enum GDataDescRecTypes {
+  kGDataDescValueLabeled = 1,
+  kGDataDescLabelIfNonNil,
+  kGDataDescArrayCount,
+  kGDataDescArrayDescs,
+  kGDataDescBooleanLabeled,
+  kGDataDescBooleanPresent,
+  kGDataDescNonZeroLength,
+  kGDataDescValueIsKeyPath
+};
+
+typedef struct GDataDescriptionRecord {
+  NSString *label;
+  NSString *keyPath;
+  enum GDataDescRecTypes reportType;
+} GDataDescriptionRecord;
+
+
 @interface GDataObject : NSObject <NSCopying> {
   
   @private
@@ -548,20 +570,12 @@ childWithStringValueIfNonEmpty:(NSString *)str
 // decription method helpers
 //
 
+// the final descRecord in the list should be { nil, nil, 0 }
+- (void)addDescriptionRecords:(GDataDescriptionRecord *)descRecordList
+                      toItems:(NSMutableArray *)items;
+
 - (void)addToArray:(NSMutableArray *)stringItems
 objectDescriptionIfNonNil:(id)obj
-          withName:(NSString *)name;
-
-- (void)addToArray:(NSMutableArray *)stringItems
-      integerValue:(NSInteger)val
-          withName:(NSString *)name;
-
-- (void)addToArray:(NSMutableArray *)stringItems
-arrayCountIfNonEmpty:(NSArray *)array
-          withName:(NSString *)name;
-
-- (void)addToArray:(NSMutableArray *)stringItems
-arrayDescriptionIfNonEmpty:(NSArray *)array
           withName:(NSString *)name;
 
 - (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems;

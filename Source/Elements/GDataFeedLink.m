@@ -85,7 +85,8 @@ static NSString *const kCountHintAttr = @"countHint";
     && AreEqualOrBothNil([self feed], [other feed]);
 }
 
-- (NSArray *)itemsForDescription {
+#if !GDATA_SIMPLE_DESCRIPTIONS
+- (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
   // add items in most useful order, with rel last
@@ -101,6 +102,7 @@ static NSString *const kCountHintAttr = @"countHint";
 
   return items;
 }
+#endif
 
 - (NSXMLElement *)XMLElement {
   

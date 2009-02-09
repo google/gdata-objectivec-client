@@ -85,6 +85,7 @@
                                    childClass:[GDataSitemapURLCount class]];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -95,6 +96,7 @@
 
   return items;
 }
+#endif
 
 + (NSString *)defaultServiceVersion {
   return kGDataWebmasterToolsDefaultServiceVersion;
@@ -156,6 +158,7 @@
   [self registerEntryClass];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -164,6 +167,7 @@
   
   return items;
 }
+#endif
 
 - (void)addExtensionDeclarations {
   
@@ -211,6 +215,7 @@
                                    childClass:[GDataSitemapMobileMarkupLanguage class]];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -219,6 +224,7 @@
 
   return items;
 }
+#endif
 
 #pragma mark -
 
@@ -258,6 +264,7 @@
                                    childClass:[GDataSitemapNewsPublicationLabel class]];  
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
   NSMutableArray *items = [super itemsForDescription];
@@ -266,7 +273,7 @@
   
   return items;
 }
-
+#endif
 
 #pragma mark -
 
