@@ -27,3 +27,4 @@
 #import "GDataFeedHealthProfile.h"
 #import "GDataFeedHealthRegister.h"
 #import "GDataServiceGoogleHealth.h"
+#import "GDataQueryGoogleHealth.h"
