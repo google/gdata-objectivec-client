@@ -107,6 +107,9 @@ static int kServerPortNumber = 54579;
   // from our own python http server
   service_ = [[GDataServiceGoogleSpreadsheet alloc] init];
   
+  // Set the UA to avoid logs during tests.
+  [service_ setUserAgent:@"GData-UnitTests-99.99"];
+  
   NSString *authDomain = [NSString stringWithFormat:@"localhost:%d", kServerPortNumber];  
   [service_ setSignInDomain:authDomain];
 }
