@@ -924,16 +924,47 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSMutableArray *)itemsForDescription {
-#if GDATA_SIMPLE_DESCRIPTIONS
-  NSMutableArray *items = [NSMutableArray array];
-  return items;
-#else
   NSMutableArray *items = [NSMutableArray array];
   [self addAttributeDescriptionsToArray:items];
   [self addContentDescriptionToArray:items withName:@"content"];
+
+#if GDATA_SIMPLE_DESCRIPTIONS
+  // with GDATA_SIMPLE_DESCRIPTIONS set, subclasses aren't adding their
+  // own description items for extensions, so we'll just list the extension
+  // elements that are present, by their qualified xml names
+  //
+  // The description string will look like
+  //   {extensions:(gCal:color,link(3),gd:etag,id,updated)}
+  NSMutableArray *extnsItems = [NSMutableArray array];
+
+  Class extClass;
+  GDATA_FOREACH_KEY(extClass, extensions_) {
+
+    // add the qualified XML name for each extension, followed by (n) when
+    // there is more than one instance
+    NSString *qname = [self qualifiedNameForExtensionClass:extClass];
+    NSArray *instances = [extensions_ objectForKey:extClass];
+    NSUInteger numberOfInstances = [instances count];
+
+    if (numberOfInstances == 1) {
+      [extnsItems addObject:qname];
+    } else {
+      // append number of occurrences to the xml name
+      NSString *str = [NSString stringWithFormat:@"%@(%lu)", qname,
+                       (unsigned long) numberOfInstances];
+      [extnsItems addObject:str];
+    }
+  }
+
+  if ([extnsItems count] > 0) {
+    NSString *extnsStr = [NSString stringWithFormat:@"extensions:(%@)",
+                          [extnsItems componentsJoinedByString:@","]];
+    [items addObject:extnsStr];
+  }
+#endif
+
   [self addChildXMLElementsDescriptionToArray:items];
   return items;
-#endif
 }
 
 - (NSString *)descriptionWithItems:(NSArray *)items {
