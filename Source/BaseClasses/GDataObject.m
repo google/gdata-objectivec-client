@@ -2080,7 +2080,8 @@ objectDescriptionIfNonNil:(id)obj
           if (childXMLElements_ == nil) {
             childXMLElements_ = [[NSMutableArray alloc] init];
           }
-          [childXMLElements_ addObject:[childNode copy]];
+          NSXMLNode *childCopy = [[childNode copy] autorelease];
+          [childXMLElements_ addObject:childCopy];
 
           [self handleParsedElement:childNode];
         }
