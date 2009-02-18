@@ -17,6 +17,9 @@
 // GDataDefines.h
 //
 
+// Ensure Apple's conditionals we depend on are defined.
+#import <TargetConditionals.h>
+
 //
 // The developer may choose to define these in the project:
 //

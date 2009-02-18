@@ -21,7 +21,14 @@
 //   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
 //        ofTotalByteCount:(unsigned long long)dataLength;
 
-@interface GDataProgressMonitorInputStream : NSInputStream {
+#undef GDATA_NSSTREAM_DELEGATE
+#if TARGET_OS_MAC && (MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5)
+#define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate> 
+#else
+#define GDATA_NSSTREAM_DELEGATE
+#endif
+
+@interface GDataProgressMonitorInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
   
   NSInputStream *inputStream_; // encapsulated stream that does the work
   

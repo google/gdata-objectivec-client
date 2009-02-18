@@ -26,7 +26,14 @@
 #import <Foundation/Foundation.h>
 #import "GDataDefines.h"
 
-@interface GDataGatherInputStream : NSInputStream {
+#undef GDATA_NSSTREAM_DELEGATE
+#if TARGET_OS_MAC && (MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5)
+ #define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate> 
+#else
+ #define GDATA_NSSTREAM_DELEGATE
+#endif
+
+@interface GDataGatherInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
   
   NSArray* dataArray_;   // NSDatas that should be "gathered" and streamed.
   NSUInteger arrayIndex_;       // Index in the array of the current NSData.

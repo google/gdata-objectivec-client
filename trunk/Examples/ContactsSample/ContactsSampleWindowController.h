@@ -28,6 +28,7 @@
   IBOutlet NSSecureTextField *mPasswordField;
   
   IBOutlet NSButton *mShowDeletedCheckbox;
+  IBOutlet NSButton *mMyContactsCheckbox;
   IBOutlet NSComboBox *mPropertyNameField;
   IBOutlet NSButton *mGetContactsButton;
   

@@ -26,9 +26,9 @@
 @implementation GDataServiceGoogleContact
 
 // feed is contacts or groups; projection is thin, default, or property-<key>
-+ (NSURL *)feedURLForFeed:(NSString *)feedName
-                   userID:(NSString *)userID 
-               projection:(NSString *)projection {
++ (NSURL *)contactURLForFeedName:(NSString *)feedName
+                          userID:(NSString *)userID 
+                      projection:(NSString *)projection {
   
   NSString *baseURLString = [self serviceRootURLString];
   
@@ -48,35 +48,43 @@
 + (NSURL *)contactFeedURLForPropertyName:(NSString *)property {
   
   NSString *projection = [NSString stringWithFormat:@"property-%@", property];
-  NSURL *url = [self feedURLForFeed:@"contacts"
-                             userID:@"default"
-                         projection:projection];
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName
+                                    userID:kGDataServiceDefaultUser
+                                projection:projection];
   return url;
 }
 
 + (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property {
   
   NSString *projection = [NSString stringWithFormat:@"property-%@", property];
-  NSURL *url = [self feedURLForFeed:@"groups" 
-                             userID:@"default" 
-                         projection:projection];
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactGroupsFeedName
+                                    userID:kGDataServiceDefaultUser 
+                                projection:projection];
   return url;
 }
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID {
   
-  NSURL *url = [self feedURLForFeed:@"contacts" 
-                             userID:userID
-                         projection:@"full"];
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName 
+                                    userID:userID
+                                projection:kGDataGoogleContactFullProjection];
+  return url;
+}
+
++ (NSURL *)groupFeedURLForUserID:(NSString *)userID {
+  
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactGroupsFeedName
+                                    userID:userID
+                                projection:kGDataGoogleContactFullProjection];
   return url;
 }
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID 
                         projection:(NSString *)projection {
   
-  NSURL *url = [self feedURLForFeed:@"contacts" 
-                             userID:userID
-                         projection:projection];
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName 
+                                    userID:userID
+                                projection:projection];
   return url;
 }
 
