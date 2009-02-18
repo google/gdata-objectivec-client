@@ -17,7 +17,9 @@
 //  GDataEntryContactGroup.m
 //
 
+#define GDATAENTRYCONTACTGROUP_DEFINE_GLOBALS 1
 #import "GDataEntryContactGroup.h"
+
 #import "GDataEntryContact.h"      // for namespace
 
 // system group identifier, like <gContact:systemGroup id="Contacts"/>

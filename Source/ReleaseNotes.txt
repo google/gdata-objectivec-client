@@ -25,6 +25,7 @@ Changes
 
 Bugs Fixed
 
+- Fixed leak in -keepChildXMLElementsForElement (thanks alexkac)
 
 
 Release 1.6.0

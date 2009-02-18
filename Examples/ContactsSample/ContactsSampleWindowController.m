@@ -39,8 +39,8 @@ static const int kBallotX = 0x2717; // fancy X mark to indicate deleted items
 - (void)updateUI;
 - (void)updateImageForContact:(GDataEntryContact *)contact;
 
+- (void)fetchAllGroupsAndContacts;
 - (void)fetchAllContacts;
-- (void)fetchAllGroups;
 
 - (void)addAnItem;
 - (void)editSelectedItem;
@@ -230,10 +230,12 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   if (isDisplayingContacts) {
     
-    // show contact fetch result error or the selected contact 
+    // show contact fetch or group fetch result error or the selected contact 
     NSString *resultStr = @"";
     if (mContactFetchError) {
       resultStr = [mContactFetchError description];
+    } else if (mGroupFetchError) {
+      resultStr = [mGroupFetchError description];
     } else {
       if (selectedContact) {
         resultStr = [selectedContact description];
@@ -415,7 +417,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   [mUsernameField setStringValue:username];
   
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
 }
 
 - (IBAction)feedSegmentClicked:(id)sender {
@@ -664,93 +666,6 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   return nil;
 }
 
-#pragma mark Fetch all contacts
-
-- (NSURL *)contactFeedURL {
-  
-  NSString *propName = [mPropertyNameField stringValue];
-  
-  NSURL *feedURL;
-  if ([propName caseInsensitiveCompare:@"full"] == NSOrderedSame
-      || [propName length] == 0) {
-    
-    // full feed includes all clients' extended properties
-    feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultFullFeed];
-    
-  } else if ([propName caseInsensitiveCompare:@"thin"] == NSOrderedSame) {
-    
-    // thin feed excludes all extended properties
-    feedURL = [NSURL URLWithString:kGDataGoogleContactDefaultThinFeed];
-    
-  } else {
-    
-    feedURL = [GDataServiceGoogleContact contactFeedURLForPropertyName:propName];
-  }
-  return feedURL;
-}
-
-// begin retrieving the list of the user's contacts
-- (void)fetchAllContacts {
-  
-  [self setContactFeed:nil];
-  [self setContactFetchError:nil];
-  [self setContactFetchTicket:nil];
-  
-  // reset the group feed too
-  [self setGroupFeed:nil];
-  
-  GDataServiceGoogleContact *service = [self contactService];
-  GDataServiceTicket *ticket;
-  
-  BOOL showDeleted = ([mShowDeletedCheckbox state] == NSOnState);
-  
-  // request a whole buncha contacts; our service object is set to
-  // follow next links as well in case there are more than 2000
-  const int kBuncha = 2000;
-  
-  NSURL *feedURL = [self contactFeedURL];
-  
-  GDataQueryContact *query = [GDataQueryContact contactQueryWithFeedURL:feedURL];
-  [query setShouldShowDeleted:showDeleted];
-  [query setMaxResults:kBuncha];
-  
-  ticket = [service fetchContactQuery:query
-                             delegate:self
-                    didFinishSelector:@selector(contactsFetchTicket:finishedWithFeed:)
-                      didFailSelector:@selector(contactsFetchTicket:failedWithError:)];
-  
-  [self setContactFetchTicket:ticket];
-  
-  [self updateUI];
-}
-
-//
-// contact list fetch callbacks
-//
-
-// finished contact list successfully
-- (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedContact *)object {
-  
-  [self setContactFeed:object];
-  [self setContactFetchError:nil];    
-  [self setContactFetchTicket:nil];
-  
-  // we have the contacts; now get the groups
-  [self fetchAllGroups];
-} 
-
-// failed
-- (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-            failedWithError:(NSError *)error {
-  
-  [self setContactFeed:nil];
-  [self setContactFetchError:error];    
-  [self setContactFetchTicket:nil];
-  
-  [self updateUI];
-}
-
 #pragma mark Fetch all groups
 
 - (NSURL *)groupFeedURL {
@@ -762,12 +677,14 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       || [propName length] == 0) {
     
     // full feed includes all clients' extended properties
-    feedURL = [NSURL URLWithString:kGDataGoogleContactGroupDefaultFullFeed];
+    feedURL = [GDataServiceGoogleContact groupFeedURLForUserID:kGDataServiceDefaultUser];
     
   } else if ([propName caseInsensitiveCompare:@"thin"] == NSOrderedSame) {
     
-    // thin feed includes all clients' extended properties
-    feedURL = [NSURL URLWithString:kGDataGoogleContactGroupDefaultThinFeed];
+    // thin feed excludes extended properties
+    feedURL = [GDataServiceGoogleContact contactURLForFeedName:kGDataGoogleContactGroupsFeedName
+                                                        userID:kGDataServiceDefaultUser
+                                                    projection:kGDataGoogleContactThinProjection];
     
   } else {
     
@@ -777,12 +694,15 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 }
 
 // begin retrieving the list of the user's contacts
-- (void)fetchAllGroups {
+- (void)fetchAllGroupsAndContacts {
   
   [self setGroupFeed:nil];
   [self setGroupFetchError:nil];
   [self setGroupFetchTicket:nil];
   
+  // we will fetch contacts next
+  [self setContactFeed:nil];
+
   GDataServiceGoogleContact *service = [self contactService];
   GDataServiceTicket *ticket;
   
@@ -815,12 +735,12 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 // finished group list successfully
 - (void)groupsFetchTicket:(GDataServiceTicket *)ticket
          finishedWithFeed:(GDataFeedContactGroup *)object {
-  
   [self setGroupFeed:object];
   [self setGroupFetchError:nil];    
   [self setGroupFetchTicket:nil];
-  
-  [self updateUI];
+    
+  // we have the groups; now get the contacts
+  [self fetchAllContacts];
 } 
 
 // failed
@@ -830,6 +750,101 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [self setGroupFeed:nil];
   [self setGroupFetchError:error];    
   [self setGroupFetchTicket:nil];
+  
+  [self updateUI];
+}
+
+#pragma mark Fetch all contacts
+
+- (NSURL *)contactFeedURL {
+  
+  NSString *propName = [mPropertyNameField stringValue];
+  
+  NSURL *feedURL;
+  if ([propName caseInsensitiveCompare:@"full"] == NSOrderedSame
+      || [propName length] == 0) {
+    
+    // full feed includes all clients' extended properties
+    feedURL = [GDataServiceGoogleContact contactFeedURLForUserID:kGDataServiceDefaultUser];
+    
+  } else if ([propName caseInsensitiveCompare:@"thin"] == NSOrderedSame) {
+    
+    // thin feed excludes all extended properties
+    feedURL = [GDataServiceGoogleContact contactFeedURLForUserID:kGDataServiceDefaultUser
+                                                      projection:kGDataGoogleContactThinProjection];
+  } else {
+    
+    feedURL = [GDataServiceGoogleContact contactFeedURLForPropertyName:propName];
+  }
+  return feedURL;
+}
+
+// begin retrieving the list of the user's contacts
+- (void)fetchAllContacts {
+
+  [self setContactFeed:nil];
+  [self setContactFetchError:nil];
+  [self setContactFetchTicket:nil];
+
+  GDataServiceGoogleContact *service = [self contactService];
+  GDataServiceTicket *ticket;
+
+  BOOL shouldShowDeleted = ([mShowDeletedCheckbox state] == NSOnState);
+  BOOL shouldQueryMyContacts = ([mMyContactsCheckbox state] == NSOnState);
+
+  // request a whole buncha contacts; our service object is set to
+  // follow next links as well in case there are more than 2000
+  const int kBuncha = 2000;
+
+  NSURL *feedURL = [self contactFeedURL];
+
+  GDataQueryContact *query = [GDataQueryContact contactQueryWithFeedURL:feedURL];
+  [query setShouldShowDeleted:shouldShowDeleted];
+  [query setMaxResults:kBuncha];
+
+  if (shouldQueryMyContacts) {
+
+    GDataFeedContactGroup *groupFeed = [self groupFeed];
+    GDataEntryContactGroup *myContactsGroup
+      = [groupFeed entryForSystemGroupID:kGDataSystemGroupIDMyContacts];
+
+    NSString *myContactsGroupID = [myContactsGroup identifier];
+
+    [query setGroupIdentifier:myContactsGroupID];
+  }
+
+  ticket = [service fetchContactQuery:query
+                             delegate:self
+                    didFinishSelector:@selector(contactsFetchTicket:finishedWithFeed:)
+                      didFailSelector:@selector(contactsFetchTicket:failedWithError:)];
+
+  [self setContactFetchTicket:ticket];
+
+  [self updateUI];
+}
+
+//
+// contact list fetch callbacks
+//
+
+// finished contact list successfully
+- (void)contactsFetchTicket:(GDataServiceTicket *)ticket
+           finishedWithFeed:(GDataFeedContact *)object {
+  
+  [self setContactFeed:object];
+  [self setContactFetchError:nil];    
+  [self setContactFetchTicket:nil];
+  
+  [self updateUI];
+} 
+
+// failed
+- (void)contactsFetchTicket:(GDataServiceTicket *)ticket
+            failedWithError:(NSError *)error {
+  
+  [self setContactFeed:nil];
+  [self setContactFetchError:error];    
+  [self setContactFetchTicket:nil];
   
   [self updateUI];
 }
@@ -940,7 +955,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [mSetContactImageProgressIndicator setDoubleValue:0.0];
   
   // refetch the current contact list
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
   
   // tell the user that the add worked
@@ -1009,7 +1024,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                     nil, nil, @"Photo deleted");
   
   // refetch the current contact list
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];  
 } 
 
@@ -1040,12 +1055,26 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                                                 address:email];
       [emailObj setRel:kGDataContactOther];
       [emailObj setIsPrimary:YES];
-      
+
       [newContact addEmailAddress:emailObj];
     }
-    
+
+    if ([mMyContactsCheckbox state] == NSOnState) {
+      // add this to the MyContacts group too
+      GDataFeedContactGroup *groupFeed = [self groupFeed];
+      GDataEntryContactGroup *myContactsGroup
+        = [groupFeed entryForSystemGroupID:kGDataSystemGroupIDMyContacts];
+
+      NSString *myContactsGroupID = [myContactsGroup identifier];
+
+      GDataGroupMembershipInfo *groupInfo
+        = [GDataGroupMembershipInfo groupMembershipInfoWithHref:myContactsGroupID];
+
+      [newContact addGroupMembershipInfo:groupInfo];
+    }
+
     GDataServiceGoogleContact *service = [self contactService];
-    
+   
     NSURL *postURL = [[mContactFeed postLink] URL];
     
     [service fetchContactEntryByInsertingEntry:newContact
@@ -1070,7 +1099,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [mAddEmailField setStringValue:@""];
   
   // refetch the current contacts
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1120,7 +1149,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [mAddEmailField setStringValue:@""];
   
   // refetch the current groups
-  [self fetchAllGroups];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1176,7 +1205,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                     [self window], nil, nil,
                     nil, nil, @"Entry deleted");
   
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1355,7 +1384,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                     [self window], nil, nil,
                     nil, nil, @"Delete All completed.\n%@", reportStr);
   
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1441,7 +1470,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                     nil, nil, @"Item added");
   
   // refetch the current contact's items
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1517,7 +1546,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                     nil, nil, @"Entry updated");
   
   // re-fetch the selected contact's items
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1590,7 +1619,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                     nil, nil, @"Item deleted");
   
   // re-fetch the selected contact's items
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 
@@ -1637,7 +1666,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                     [self displayNameForItem:[ticket userData]]);  
   
   // re-fetch the selected contact's items
-  [self fetchAllContacts];
+  [self fetchAllGroupsAndContacts];
   [self updateUI];
 } 
 

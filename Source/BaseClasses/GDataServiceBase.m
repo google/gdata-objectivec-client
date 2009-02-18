@@ -17,7 +17,10 @@
 //  GDataServiceBase.m
 //
 
+#import <TargetConditionals.h>
+#if TARGET_OS_MAC
 #include <sys/utsname.h>
+#endif
 
 #define GDATASERVICEBASE_DEFINE_GLOBALS 1
 #import "GDataServiceBase.h"

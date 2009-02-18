@@ -43,6 +43,16 @@
 // name.  Requesting a feed for a specific property name avoids the need
 // to preserve other applications' property names when updating entries.
 
+// AllContacts includes actual and suggested contacts
+// Groups is for group feeds
+_EXTERN NSString* const kGDataGoogleContactAllContactsFeedName _INITIALIZE_AS(@"contacts");
+_EXTERN NSString* const kGDataGoogleContactGroupsFeedName      _INITIALIZE_AS(@"groups");
+
+// Projections - full (include all extended properties) or thin (exclude
+//               extended properties)
+_EXTERN NSString* const kGDataGoogleContactFullProjection _INITIALIZE_AS(@"full");
+_EXTERN NSString* const kGDataGoogleContactThinProjection _INITIALIZE_AS(@"thin");
+
 _EXTERN NSString* kGDataGoogleContactDefaultThinFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/thin");
 _EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/full");
 
@@ -55,12 +65,20 @@ _EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http:
 
 @interface GDataServiceGoogleContact : GDataServiceGoogle 
 
-// Note: rather than call -contactFeedURLForUserID you can get the
-// feed URL for the authenticated user by using one of the feed
-// constants above and calling -fetchContactFeedWithURL
++ (NSURL *)contactURLForFeedName:(NSString *)feedName
+                          userID:(NSString *)userID
+                      projection:(NSString *)projection;
+
+// convenience URL generators for contacts feed
+//
+// Use kGDataServiceDefaultUser as the username to specify the authenticated
+// user
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID;
-+ (NSURL *)contactFeedURLForUserID:(NSString *)userID projection:(NSString *)projection;
++ (NSURL *)groupFeedURLForUserID:(NSString *)userID;
+
++ (NSURL *)contactFeedURLForUserID:(NSString *)userID
+                        projection:(NSString *)projection;
 
 + (NSURL *)contactFeedURLForPropertyName:(NSString *)property;
 + (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property;

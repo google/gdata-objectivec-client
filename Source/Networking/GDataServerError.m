@@ -137,10 +137,9 @@
     NSArray *errorElems = [errorsElem elementsForLocalName:@"error"
                                                        URI:kGDataNamespaceGData];
 
-    NSEnumerator *errorEnum = [errorElems objectEnumerator];
     NSXMLElement *errorElem;
+    GDATA_FOREACH(errorElem, errorElems) {
 
-    while ((errorElem = [errorEnum nextObject]) != nil) {
       GDataServerError *serverError;
 
       serverError = [[[GDataServerError alloc] initWithXMLElement:errorElem] autorelease];

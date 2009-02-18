@@ -43,7 +43,7 @@
   return self;
 }
 
-- (void) dealloc {
+- (void)dealloc {
   [dataArray_ release];
   [dummyStream_ release];
   [dummyData_ release];
@@ -89,7 +89,7 @@
   return bytesRead;
 }
 
-- (BOOL)getBuffer:(uint8_t **)buffer length:(unsigned int *)len {
+- (BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)len {
   return NO;  // We don't support this style of reading.
 }
 

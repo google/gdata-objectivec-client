@@ -46,6 +46,10 @@ _EXTERN NSString* const kGDataServerErrorStringKey _INITIALIZE_AS(@"error");
 // kGDataStructuredErrorsKey
 _EXTERN NSString* const kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors");
 
+// when specifying an ETag for updating or deleting a single entry, use
+// kGDataETagWildcard to tell the server to replace the current value
+// unconditionally.  Do not use this in entries in a batch feed.
+_EXTERN NSString* const kGDataETagWildcard _INITIALIZE_AS(@"*");
 
 enum {
  kGDataCouldNotConstructObjectError = -100 

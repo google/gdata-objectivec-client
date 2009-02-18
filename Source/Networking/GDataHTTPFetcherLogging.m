@@ -18,6 +18,12 @@
 
 #import "GDataProgressMonitorInputStream.h"
 
+// If logging isn't being stripped, make sure we have all the defines from
+// GDataDefines.h
+#if !STRIP_GDATA_FETCH_LOGGING
+  #import "GDataDefines.h"
+#endif
+
 @interface GDataInputStreamLogger : GDataProgressMonitorInputStream
 // GDataInputStreamLogger is wraps any NSInputStream used for
 // uploading so we can capture a copy of the data for the log
@@ -26,18 +32,18 @@
 // We don't invoke Leopard methods on 10.4, because we check if the methods are
 // implemented before invoking it, but we need to be able to compile without
 // warnings.
-// This declaration means if you target <=10.4, this method will compile
+// These declarations mean if you target <=10.4, the methods will compile
 // without complaint in this source, so you must test with
 // -respondsToSelector:, too.
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 @interface NSFileManager (LeopardMethodsOnTigerBuilds)
 - (BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error;
-@end
-#endif
-// The iPhone Foundation removes the deprecated removeFileAtPath:handler:
-#if GDATA_IPHONE
-@interface NSFileManager (TigerMethodsOniPhoneBuilds)
-- (BOOL)removeFileAtPath:(NSString *)path handler:(id)handler;
+- (BOOL)createSymbolicLinkAtPath:(NSString *)path
+             withDestinationPath:(NSString *)destPath error:(NSError **)error;
+- (BOOL)createDirectoryAtPath:(NSString *)path
+  withIntermediateDirectories:(BOOL)createIntermediates
+                   attributes:(NSDictionary *)attributes
+                        error:(NSError **)error;
 @end
 #endif
 
@@ -105,8 +111,25 @@ static NSString* gLoggingProcessName = nil;
       
       if (!doesFolderExist) {
         // make the directory
-        doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath 
-                                                  attributes:nil];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+        // Compiling for 10.5 or later, just use the new api
+        doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath
+                                 withIntermediateDirectories:YES
+                                                  attributes:nil
+                                                       error:NULL];
+#else
+        // Check at runtime if we have the newer api and use that, otherwise, just
+        // use the older api (we avoid it to avoid console messages).
+        if ([fileManager respondsToSelector:@selector(createDirectoryAtPath:withIntermediateDirectories:attributes:error:)]) {
+          doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath
+                                   withIntermediateDirectories:YES
+                                                    attributes:nil
+                                                         error:NULL];
+        } else {
+          doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath 
+                                                    attributes:nil];
+        }
+#endif
       }
       
       if (doesFolderExist) {
@@ -174,7 +197,7 @@ static NSString* gLoggingProcessName = nil;
 // and a plain string for other input data
 - (NSString *)formattedStringFromData:(NSData *)inputData {
 
-#if (!GDATA_IPHONE || TARGET_IPHONE_SIMULATOR) && !GDATA_SKIP_LOG_XMLFORMAT
+#if (!GDATA_FOUNDATION_ONLY || TARGET_IPHONE_SIMULATOR) && !GDATA_SKIP_LOG_XMLFORMAT
   // verify that this data starts with the bytes indicating XML
 
   NSString *const kXMLLintPath = @"/usr/bin/xmllint";
@@ -502,7 +525,7 @@ static NSString* gLoggingProcessName = nil;
     NSString *scriptFormat = @"<script type=\"text/javascript\"> "
       "function toggleLayer(whichLayer){ var style2 = document.getElementById(whichLayer).style; "
       "style2.display = style2.display ? \"\":\"block\";}</script>\n";
-    [outputHTML appendFormat:scriptFormat];
+    [outputHTML appendString:scriptFormat];
 
     // the second function is passed the src file; if it's what's shown, it 
     // toggles the iframe's visibility. If some other src is shown, it shows 
@@ -515,7 +538,7 @@ static NSString* gLoggingProcessName = nil;
       "if (iFrameElem.src.indexOf(newsrc) != -1) { toggleLayer(whichLayer); } "
       "else { document.getElementById(whichLayer).style.display=\"block\"; } "
       "iFrameElem.src=newsrc; }</script>\n</head>\n<body>\n";
-    [outputHTML appendFormat:toggleIFScriptFormat];
+    [outputHTML appendString:toggleIFScriptFormat];
   }
   
   // now write the visible html elements
@@ -705,18 +728,29 @@ static NSString* gLoggingProcessName = nil;
   NSString *symlinkName = [NSString stringWithFormat:@"%@_http_log_newest.html", 
     processName];
   NSString *symlinkPath = [logDirectory stringByAppendingPathComponent:symlinkName];
-  
-  // removeFileAtPath might be going away, but removeItemAtPath does not exist
-  // in 10.4
-  if ([fileManager respondsToSelector:@selector(removeFileAtPath:handler:)]) {
-    [fileManager removeFileAtPath:symlinkPath handler:nil];
-  } else if ([fileManager respondsToSelector:@selector(removeItemAtPath:error:)]) {
-    // To make the next line compile when targeting 10.4, we declare
-    // removeItemAtPath:error: in an @interface above
-    [fileManager removeItemAtPath:symlinkPath error:NULL];
-  }
 
-  [fileManager createSymbolicLinkAtPath:symlinkPath pathContent:htmlPath];
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  // Compiling for 10.5 or later, just use the new apis
+  [fileManager removeItemAtPath:symlinkPath error:NULL];
+  [fileManager createSymbolicLinkAtPath:symlinkPath
+                    withDestinationPath:htmlPath
+                                  error:NULL];
+#else
+  // Check at runtime if we have the newer api and use that, otherwise, just
+  // use the older api (we avoid it to avoid console messages).
+  if ([fileManager respondsToSelector:@selector(removeItemAtPath:error:)]) {
+    [fileManager removeItemAtPath:symlinkPath error:NULL];
+  } else {
+    [fileManager removeFileAtPath:symlinkPath handler:nil];
+  }
+  if ([fileManager respondsToSelector:@selector(createSymbolicLinkAtPath:withDestinationPath:error:)]) {
+    [fileManager createSymbolicLinkAtPath:symlinkPath
+                      withDestinationPath:htmlPath
+                                    error:NULL];
+  } else {
+    [fileManager createSymbolicLinkAtPath:symlinkPath pathContent:htmlPath];
+  }
+#endif
 }
 
 - (void)logCapturePostStream {

@@ -195,18 +195,18 @@
         sign = @"-";
         offset = -offset;
       }
-      timeOffsetString = [NSString stringWithFormat:@"%@%02d:%02d",
-        sign, (offset/(60*60)) % 24, (offset / 60) % 60];
+      timeOffsetString = [NSString stringWithFormat:@"%@%02ld:%02ld",
+        sign, (long)(offset/(60*60)) % 24, (long)(offset / 60) % 60];
     } 
-    timeString = [NSString stringWithFormat:@"T%02d:%02d:%02d%@",
-      [dateComponents hour], [dateComponents minute], [dateComponents second],
-      timeOffsetString];
+    timeString = [NSString stringWithFormat:@"T%02ld:%02ld:%0l2d%@",
+      (long)[dateComponents hour], (long)[dateComponents minute],
+      (long)[dateComponents second], timeOffsetString];
   }
   
   // full dateString like "2006-11-17T15:10:46-08:00"
-  NSString *dateString = [NSString stringWithFormat:@"%04d-%02d-%02d%@",
-    [dateComponents year], [dateComponents month], [dateComponents day],
-    timeString];
+  NSString *dateString = [NSString stringWithFormat:@"%04ld-%02ld-%02ld%@",
+    (long)[dateComponents year], (long)[dateComponents month],
+    (long)[dateComponents day], timeString];
   
   return dateString;
 }
