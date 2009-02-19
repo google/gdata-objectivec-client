@@ -23,6 +23,16 @@ static NSString* const kRelAttr = @"rel";
 static NSString* const kLabelAttr = @"label";
 static NSString* const kPrimaryAttr = @"primary";
 
+static NSString* StringOrNilIfBlank(NSString *str) {
+  // return nil if the string only has whitespace
+  NSCharacterSet *wsSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+  NSString *trimmed = [str stringByTrimmingCharactersInSet:wsSet];
+  if ([trimmed length] == 0) return nil;
+
+  return str;
+}
+
+
 @implementation GDataOrgTitle 
 + (NSString *)extensionElementPrefix { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementURI    { return kGDataNamespaceGData; }
@@ -116,8 +126,8 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (void)setOrgName:(NSString *)str {
-  
-  GDataOrgName *obj = [GDataOrgName valueWithString:str];
+
+  GDataOrgName *obj = [GDataOrgName valueWithString:StringOrNilIfBlank(str)];
   [self setObject:obj forExtensionClass:[GDataOrgName class]]; 
 }
 
@@ -128,7 +138,7 @@ static NSString* const kPrimaryAttr = @"primary";
 
 - (void)setOrgTitle:(NSString *)str {
   
-  GDataOrgTitle *obj = [GDataOrgTitle valueWithString:str];
+  GDataOrgTitle *obj = [GDataOrgTitle valueWithString:StringOrNilIfBlank(str)];
   [self setObject:obj forExtensionClass:[GDataOrgTitle class]]; 
 }
 
