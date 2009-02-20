@@ -153,32 +153,21 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
+  
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"sendEventNotifications", @"shouldSendEventNotifications", kGDataDescBooleanPresent },
+    { @"privateCopy",            @"isPrivateCopy",                kGDataDescBooleanPresent },
+    { @"quickAdd",               @"isQuickAdd",                   kGDataDescBooleanPresent },
+    { @"syncEvent",              @"isSyncEvent",                  kGDataDescBooleanPresent },
+    { @"iCalUID",                @"iCalUID",                      kGDataDescValueLabeled   },
+    { @"sequenceNumber",         @"sequenceNumber",               kGDataDescValueLabeled   },
+    { @"webContent",             @"webContent.URLString",         kGDataDescValueLabeled   },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-  
-  if ([self shouldSendEventNotifications]) {
-    [items addObject:@"sendsEventNotification"];
-  }
-
-  if ([self isPrivateCopy]) {
-    [items addObject:@"privateCopy"];
-  }
-  
-  if ([self isQuickAdd]) {
-    [items addObject:@"quickAdd"];
-  }
-  
-  if ([self isSyncEvent]) {
-    [items addObject:@"isSyncEvent"];
-  }
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self iCalUID] withName:@"iCalUID"];
-  [self addToArray:items objectDescriptionIfNonNil:[self sequenceNumber] withName:@"sequenceNumber"];
-  
-  if ([self webContent]) {
-    [self addToArray:items objectDescriptionIfNonNil:[[self webContent] URLString] withName:@"webContent"];
-  }
-    
-  return items;  
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;
 }
 #endif
 

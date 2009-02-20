@@ -66,16 +66,19 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"maxPhotosPerAlbum", @"maxPhotosPerAlbum", kGDataDescValueLabeled },
+    { @"nickname",          @"nickname",          kGDataDescValueLabeled },
+    { @"quotaLimit",        @"quotaLimit",        kGDataDescValueLabeled },
+    { @"quotaUsed",         @"quotaUsed",         kGDataDescValueLabeled },
+    { @"thumbnail",         @"thumbnail",         kGDataDescValueLabeled },
+    { @"username",          @"username",          kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+  
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self maxPhotosPerAlbum] withName:@"maxPhotosPerAlbum"];
-  [self addToArray:items objectDescriptionIfNonNil:[self nickname] withName:@"nickname"];
-  [self addToArray:items objectDescriptionIfNonNil:[self quotaLimit] withName:@"quotaLimit"];
-  [self addToArray:items objectDescriptionIfNonNil:[self quotaUsed] withName:@"quotaUsed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self thumbnail] withName:@"thumbnail"];
-  [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
-  
-  return items;
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;  
 }
 #endif
 

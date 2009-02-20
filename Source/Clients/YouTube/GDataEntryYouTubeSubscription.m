@@ -61,14 +61,17 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
-  [self addToArray:items objectDescriptionIfNonNil:[self youTubeQueryString] withName:@"query"];
-  [self addToArray:items objectDescriptionIfNonNil:[self playlistID] withName:@"playlistID"];
-  [self addToArray:items objectDescriptionIfNonNil:[self playlistTitle] withName:@"playlistTitle"];
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"username",      @"username",           kGDataDescValueLabeled },
+    { @"query",         @"youTubeQueryString", kGDataDescValueLabeled },
+    { @"playlistID",    @"playlistID",         kGDataDescValueLabeled },
+    { @"playlistTitle", @"playlistTitle",      kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif

@@ -140,15 +140,17 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"duration", @"duration",     kGDataDescValueLabeled   },
+    { @"videoID",  @"videoID",      kGDataDescValueLabeled   },
+    { @"uploaded", @"uploadedDate", kGDataDescValueLabeled   },
+    { @"private",  @"isPrivate",    kGDataDescBooleanPresent },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self duration] withName:@"duration"];
-  [self addToArray:items objectDescriptionIfNonNil:[self videoID] withName:@"videoID"];
-  [self addToArray:items objectDescriptionIfNonNil:[self uploadedDate] withName:@"uploaded"];
-  
-  if ([self isPrivate]) [items addObject:@"private"];
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
