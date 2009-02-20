@@ -92,6 +92,8 @@
 				<string>NSButton</string>
 				<key>mMakePrimaryEntryButton</key>
 				<string>NSButton</string>
+				<key>mMyContactsCheckbox</key>
+				<string>NSButton</string>
 				<key>mPasswordField</key>
 				<string>NSSecureTextField</string>
 				<key>mPropertyNameField</key>

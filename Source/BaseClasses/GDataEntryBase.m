@@ -87,6 +87,7 @@
    [GDataAtomRights class],
    [GDataLink class],
    [GDataAtomAuthor class],
+   [GDataAtomContributor class],
    [GDataCategory class],
    
    // deletion marking support
@@ -168,6 +169,7 @@
     { @"etag",             @"ETag",                     kGDataDescValueLabeled },
     { @"resourceID",       @"resourceID",               kGDataDescValueLabeled },
     { @"authors",          @"authors",                  kGDataDescArrayCount },
+    { @"contributors",     @"contributors",             kGDataDescArrayCount },
     { @"categories",       @"categories",               kGDataDescArrayCount },
     { @"links",            linksStr,                    kGDataDescValueIsKeyPath },
     { @"edited",           @"editedDate.RFC3339String", kGDataDescValueLabeled },
@@ -465,6 +467,19 @@ forCategoryWithScheme:scheme
 
 - (void)addAuthor:(GDataPerson *)obj {
   [self addObject:obj forExtensionClass:[GDataAtomAuthor class]];
+}
+
+- (NSArray *)contributors {
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomContributor class]];
+  return array;
+}
+
+- (void)setContributors:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAtomContributor class]];
+}
+
+- (void)addContributor:(GDataPerson *)obj {
+  [self addObject:obj forExtensionClass:[GDataAtomContributor class]];
 }
 
 - (NSArray *)categories {

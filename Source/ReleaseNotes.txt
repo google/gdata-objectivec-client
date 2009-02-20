@@ -14,14 +14,24 @@ Changes
 - Calendar now defaults to service version 2.1, which slightly changes
   responses and response codes from 2.0.
   http://code.google.com/apis/calendar/changelog.html
+
 - Release builds on iPhone now compile out the elaborate descriptions
   for each GDataObject.  Developers can set GDATA_SIMPLE_DESCRIPTIONS
   in their projects to control this behavior.
+
 - Release builds on iPhone now compile out the http logging code.
   Developers can set STRIP_GDATA_FETCH_LOGGING in their projects to control
   this behavior.
+
 - Various internal refactoring for improved code readability and
   maintainability.
+
+- For performance, unknown elements and attributes are now removed from
+  GDataObjects by comparing only object pointers, not the underlying XML.
+
+- GDataOrganization setters now filter out empty string org names and titles.
+
+- Contacts sample updated to optionally fetch only the MyContacts group.
 
 Bugs Fixed
 
