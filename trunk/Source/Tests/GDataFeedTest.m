@@ -20,9 +20,11 @@
 #import "GData.h"
 
 #import "GDataFeedTest.h"
-#import "GDataEntryCalendarEvent.h"
 #import "GDataElementsTest.h"
+
+#import "GDataEntryCalendarEvent.h"
 #import "GDataEntryYouTubeVideo.h"
+#import "GDataEntryHealthProfile.h"
 
 @implementation GDataFeedTest
 
@@ -1515,6 +1517,49 @@
   };
   [self runTests:tests];
 };
+
+- (void)testHealthFeed {
+
+  TestKeyPathValues tests[] =
+  {
+    //
+    // Health Profile Feed
+    //
+
+    { @"GDataFeedHealthProfile", @"Tests/FeedHealthProfile1.xml" },
+
+    // feed elements
+    { @"ETag", @"W/\"AkMFSXs6fip7ImA9WxVXEk0.\"" },
+    { @"identifier", @"https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q" },
+    { @"categories.0.term", kGDataCategoryH9Profile },
+    { @"categories.0.scheme", kGDataCategoryScheme },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // GDataEntryHealthProfile paths
+    //
+    // unique elements are continuityOfCareRecord and profileMetaData
+
+    { @"entries.0.contributors.0.name", @"Fred Flintstone" },
+    { @"entries.0.categories.0.term", @"MEDICATION" },
+    { @"entries.0.categories.1.scheme", kGDataHealthSchemeItem },
+    { @"entries.0.categories.1.term", @"A-200 Lice Treatment" },
+    { @"entries.0.categories.2.term", kGDataCategoryH9Profile },
+    { @"entries.0.identifier", @"https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/wXQ4TZbjHAE" },
+    { @"entries.0.continuityOfCareRecord.childXMLElements.0.XMLString", @"<CCRDocumentObjectID>wXQ4TZbjHAE</CCRDocumentObjectID>" },
+    { @"entries.0.profileMetaData.childXMLElements.0.XMLString", @"<UserComment src=\"IRI\" type=\"text\"></UserComment>" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    { nil, nil } // end of test array
+  };
+
+  [self runTests:tests];
+}
 
 - (void)testACLFeed {
   
