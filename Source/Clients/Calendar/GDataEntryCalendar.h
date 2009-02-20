@@ -31,7 +31,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataCalendarDefaultServiceVersion _INITIALIZE_AS(@"2.0");
+_EXTERN NSString* const kGDataCalendarDefaultServiceVersion _INITIALIZE_AS(@"2.1");
 
 _EXTERN NSString* const kGDataExtendedPropertyRealmCalendar _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#calendar");
 

@@ -108,12 +108,24 @@
   NSString *transparency = [self suffixAfterPoundSign:[[self transparency] stringValue]];
   NSString *eventStatus = [self suffixAfterPoundSign:[[self eventStatus] stringValue]];
 
+  NSArray *times = [self times];
+  NSUInteger numberOfTimes = [times count];
+  NSString *timesStr;
+  if (numberOfTimes == 1) {
+    GDataWhen *when = [times objectAtIndex:0];
+    timesStr = [NSString stringWithFormat:@"(%@..%@)",
+                [[when startTime] stringValue], [[when endTime] stringValue]];
+  } else {
+    // just show the number of times, pretty rare
+    timesStr = [NSString stringWithFormat:@"%lu", (unsigned long) numberOfTimes];
+  }
+
   struct GDataDescriptionRecord descRecs[] = {
     { @"recurrence",     @"recurrence.stringValue", kGDataDescValueLabeled },
     { @"visibility",     visibility,                kGDataDescValueIsKeyPath },
     { @"transparency",   transparency,              kGDataDescValueIsKeyPath },
     { @"eventStatus",    eventStatus,               kGDataDescValueIsKeyPath },
-    { @"times",          @"times",                  kGDataDescArrayCount },
+    { @"times",          timesStr,                  kGDataDescValueIsKeyPath },
     { @"recExc",         @"recurrenceExceptions",   kGDataDescArrayCount },
     { @"reminders",      @"reminders",              kGDataDescArrayCount },
     { @"comment",        @"comment",                kGDataDescLabelIfNonNil },
