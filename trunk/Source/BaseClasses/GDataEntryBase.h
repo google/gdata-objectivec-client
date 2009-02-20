@@ -101,6 +101,10 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (void)setAuthors:(NSArray *)authors;
 - (void)addAuthor:(GDataPerson *)authorElement;
 
+- (NSArray *)contributors;
+- (void)setContributors:(NSArray *)array;
+- (void)addContributor:(GDataPerson *)obj;
+
 - (NSArray *)categories;
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
