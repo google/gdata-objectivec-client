@@ -1147,6 +1147,7 @@
 		4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPDFDoc.m; path = Clients/Docs/GDataEntryPDFDoc.m; sourceTree = "<group>"; };
 		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
+		4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedHealthProfile1.xml; path = Tests/FeedHealthProfile1.xml; sourceTree = "<group>"; };
 		4FA1C5BF0C037446006D556A /* GDataEntryContent.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryContent.h; path = Elements/GDataEntryContent.h; sourceTree = "<group>"; };
 		4FA1C5C10C03744A006D556A /* GDataEntryContent.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryContent.m; path = Elements/GDataEntryContent.m; sourceTree = "<group>"; };
 		4FA1C67D0C0389D4006D556A /* FeedPhotosAlbumPhoto1.xml */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; name = FeedPhotosAlbumPhoto1.xml; path = Tests/FeedPhotosAlbumPhoto1.xml; sourceTree = "<group>"; };
@@ -1932,6 +1933,46 @@
 			name = YouTube;
 			sourceTree = "<group>";
 		};
+		4F986F820F4F3B7C00C349F0 /* Spreadsheet */ = {
+			isa = PBXGroup;
+			children = (
+				4FEBA6F10BB36350005710DA /* FeedSpreadsheetTest1.xml */,
+				4FEBA6F30BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml */,
+				4FEBA6F00BB36350005710DA /* FeedSpreadsheetCellsTest1.xml */,
+				4FEBA6F20BB36350005710DA /* FeedSpreadsheetListTest1.xml */,
+			);
+			name = Spreadsheet;
+			sourceTree = "<group>";
+		};
+		4F986F850F4F3B8E00C349F0 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */,
+				4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */,
+			);
+			name = Calendar;
+			sourceTree = "<group>";
+		};
+		4F986F860F4F3B9D00C349F0 /* Finance */ = {
+			isa = PBXGroup;
+			children = (
+				4FB414680E12F6890037D894 /* FeedFinancePositionTest1.xml */,
+				4FB414690E12F6890037D894 /* FeedFinancePortfolioTest1.xml */,
+				4FB4146A0E12F6890037D894 /* FeedFinanceTransactionTest1.xml */,
+			);
+			name = Finance;
+			sourceTree = "<group>";
+		};
+		4F986F870F4F3BAD00C349F0 /* GoogleBase */ = {
+			isa = PBXGroup;
+			children = (
+				4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */,
+				4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */,
+				4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */,
+			);
+			name = GoogleBase;
+			sourceTree = "<group>";
+		};
 		4FA9C7410B72AB1600DA5920 /* Test Tool */ = {
 			isa = PBXGroup;
 			children = (
@@ -2018,22 +2059,15 @@
 		4FD23A390B8FDB17007C0AD4 /* XML Files */ = {
 			isa = PBXGroup;
 			children = (
+				4F986F850F4F3B8E00C349F0 /* Calendar */,
+				4F986F870F4F3BAD00C349F0 /* GoogleBase */,
+				4F986F860F4F3B9D00C349F0 /* Finance */,
 				4F022FD30D58FF4F00EE6862 /* Photos */,
+				4F986F820F4F3B7C00C349F0 /* Spreadsheet */,
 				4F45B0AD0D510A3100004F37 /* YouTube */,
-				4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */,
-				4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */,
-				4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */,
 				4FD66F700EA80689001D365E /* FeedDocListTest1.xml */,
-				4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */,
-				4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */,
-				4FB414680E12F6890037D894 /* FeedFinancePositionTest1.xml */,
-				4FB414690E12F6890037D894 /* FeedFinancePortfolioTest1.xml */,
-				4FB4146A0E12F6890037D894 /* FeedFinanceTransactionTest1.xml */,
-				4FEBA6F10BB36350005710DA /* FeedSpreadsheetTest1.xml */,
-				4FEBA6F30BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml */,
-				4FEBA6F00BB36350005710DA /* FeedSpreadsheetCellsTest1.xml */,
-				4FEBA6F20BB36350005710DA /* FeedSpreadsheetListTest1.xml */,
 				4F346E500D7508AC006033E0 /* FeedContactTest1.xml */,
+				4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
 			);
 			name = "XML Files";

@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;AkMFSXs6fip7ImA9WxVXEk0.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:ccr="urn:astm-org:CCR"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:h9m="http://schemas.google.com/health/metadata" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q</id>
+    <updated>2009-02-09T19:40:18.516Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/health/kinds#profile"/>
+    <title>Profile Feed</title>
+    <link href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/batch"
+        rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+    <link href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q"
+        rel="self" type="application/atom+xml"/>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry gd:etag="W/&quot;AkQNQHg4eip7ImA9WxVXEk0.&quot;">
+        <id>https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/wXQ4TZbjHAE</id>
+        <published>2009-02-09T19:39:51.630Z</published>
+        <updated>2009-02-09T19:39:51.632Z</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-02-09T19:39:51.632Z</app:edited>
+        <category term="MEDICATION"/>
+        <category scheme="http://schemas.google.com/health/item" term="A-200 Lice Treatment"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/health/kinds#profile"/>
+        <title/>
+        <content type="html"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/-/MEDICATION/%7Bhttp%3A%2F%2Fschemas.google.com%2Fhealth%2Fitem%7DA-200+Lice+Treatment/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp%3A%2F%2Fschemas.google.com%2Fhealth%2Fkinds%23profile"
+            rel="http://schemas.google.com/health/data#complete" type="application/atom+xml"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/wXQ4TZbjHAE"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/wXQ4TZbjHAE"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Fred Flintstone</name>
+            <email>fredflintstone@gmail.com</email>
+        </author>
+        <contributor>
+            <name>Fred Flintstone</name>
+            <email>fredflintstone@gmail.com</email>
+        </contributor>
+        <ContinuityOfCareRecord xmlns="urn:astm-org:CCR">
+            <CCRDocumentObjectID>wXQ4TZbjHAE</CCRDocumentObjectID>
+            <Language>
+                <Text>English</Text>
+                <Code>
+                    <Value>en</Value>
+                    <CodingSystem>ISO-639-1</CodingSystem>
+                </Code>
+            </Language>
+            <Version>V1.0</Version>
+            <DateTime>
+                <ExactDateTime>2009-02-09T19:39:51.630Z</ExactDateTime>
+            </DateTime>
+            <Patient>
+                <ActorID>Google Health Profile</ActorID>
+            </Patient>
+            <From>
+                <ActorLink>
+                    <ActorID>Google Health</ActorID>
+                    <ActorRole>
+                        <Text>PHR</Text>
+                    </ActorRole>
+                </ActorLink>
+            </From>
+            <Body>
+                <Medications>
+                    <Medication>
+                        <CCRDataObjectID>wXQ4TZbjHAE-0</CCRDataObjectID>
+                        <Status>
+                            <Text>ACTIVE</Text>
+                        </Status>
+                        <Source>
+                            <Actor>
+                                <ActorID>fredflintstone@gmail.com</ActorID>
+                                <ActorRole>
+                                    <Text>Patient</Text>
+                                </ActorRole>
+                            </Actor>
+                            <Actor>
+                                <ActorID>fredflintstone@gmail.com</ActorID>
+                                <ActorRole>
+                                    <Text>Patient</Text>
+                                </ActorRole>
+                            </Actor>
+                        </Source>
+                        <Product>
+                            <ProductName>
+                                <Text>A-200 Lice Treatment</Text>
+                                <Code>
+                                    <Value>86386</Value>
+                                    <CodingSystem>FDB_routed</CodingSystem>
+                                </Code>
+                                <Code>
+                                    <Value>20.75532</Value>
+                                    <CodingSystem>Google</CodingSystem>
+                                </Code>
+                                <Code>
+                                    <Value>19.42883</Value>
+                                    <CodingSystem>Google</CodingSystem>
+                                </Code>
+                                <Code>
+                                    <Value>72772</Value>
+                                    <CodingSystem>FDB</CodingSystem>
+                                </Code>
+                            </ProductName>
+                        </Product>
+                        <Directions>
+                            <Direction>
+                                <Route>
+                                    <Text>To skin</Text>
+                                    <Code>
+                                    <Value>22.16444</Value>
+                                    <CodingSystem>Google</CodingSystem>
+                                    </Code>
+                                    <Code>
+                                    <Value>30</Value>
+                                    <CodingSystem>FDB</CodingSystem>
+                                    </Code>
+                                    <Code>
+                                    <Value>C38305</Value>
+                                    <CodingSystem>FDA</CodingSystem>
+                                    </Code>
+                                    <RouteSequencePosition>0</RouteSequencePosition>
+                                </Route>
+                            </Direction>
+                        </Directions>
+                    </Medication>
+                </Medications>
+            </Body>
+            <Actors>
+                <Actor>
+                    <ActorObjectID>Google Health Profile</ActorObjectID>
+                    <Source>
+                        <Actor>
+                            <ActorID>fredflintstone@gmail.com</ActorID>
+                            <ActorRole>
+                                <Text>Patient</Text>
+                            </ActorRole>
+                        </Actor>
+                    </Source>
+                </Actor>
+            </Actors>
+        </ContinuityOfCareRecord>
+        <ProfileMetaData xmlns="http://schemas.google.com/health/metadata">
+            <UserComment src="IRI" type="text"/>
+        </ProfileMetaData>
+    </entry>
+    <entry gd:etag="W/&quot;AkQNRnc_fip7ImA9WxVXEk0.&quot;">
+        <id>https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/RtxqTvSq8kY</id>
+        <published>2009-02-09T19:39:57.945Z</published>
+        <updated>2009-02-09T19:39:57.946Z</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-02-09T19:39:57.946Z</app:edited>
+        <category scheme="http://schemas.google.com/health/item" term="Abacavir"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/health/kinds#profile"/>
+        <category term="ALLERGY"/>
+        <title/>
+        <content type="html"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/-/%7Bhttp%3A%2F%2Fschemas.google.com%2Fhealth%2Fitem%7DAbacavir/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp%3A%2F%2Fschemas.google.com%2Fhealth%2Fkinds%23profile/ALLERGY"
+            rel="http://schemas.google.com/health/data#complete" type="application/atom+xml"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/RtxqTvSq8kY"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/RtxqTvSq8kY"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Fred Flintstone</name>
+            <email>fredflintstone@gmail.com</email>
+        </author>
+        <contributor>
+            <name>Fred Flintstone</name>
+            <email>fredflintstone@gmail.com</email>
+        </contributor>
+        <ContinuityOfCareRecord xmlns="urn:astm-org:CCR">
+            <CCRDocumentObjectID>RtxqTvSq8kY</CCRDocumentObjectID>
+            <Language>
+                <Text>English</Text>
+                <Code>
+                    <Value>en</Value>
+                    <CodingSystem>ISO-639-1</CodingSystem>
+                </Code>
+            </Language>
+            <Version>V1.0</Version>
+            <DateTime>
+                <ExactDateTime>2009-02-09T19:39:57.945Z</ExactDateTime>
+            </DateTime>
+            <Patient>
+                <ActorID>Google Health Profile</ActorID>
+            </Patient>
+            <From>
+                <ActorLink>
+                    <ActorID>Google Health</ActorID>
+                    <ActorRole>
+                        <Text>PHR</Text>
+                    </ActorRole>
+                </ActorLink>
+            </From>
+            <Body>
+                <Alerts>
+                    <Alert>
+                        <CCRDataObjectID>RtxqTvSq8kY-0</CCRDataObjectID>
+                        <Type>
+                            <Text>Allergy</Text>
+                        </Type>
+                        <Description>
+                            <Text>Abacavir</Text>
+                            <Code>
+                                <Value>7687-6</Value>
+                                <CodingSystem>FDB</CodingSystem>
+                            </Code>
+                            <Code>
+                                <Value>8.87</Value>
+                                <CodingSystem>Google</CodingSystem>
+                            </Code>
+                        </Description>
+                        <Status>
+                            <Text>ACTIVE</Text>
+                        </Status>
+                        <Source>
+                            <Actor>
+                                <ActorID>fredflintstone@gmail.com</ActorID>
+                                <ActorRole>
+                                    <Text>Patient</Text>
+                                </ActorRole>
+                            </Actor>
+                            <Actor>
+                                <ActorID>fredflintstone@gmail.com</ActorID>
+                                <ActorRole>
+                                    <Text>Patient</Text>
+                                </ActorRole>
+                            </Actor>
+                        </Source>
+                        <Reaction>
+                            <Severity>
+                                <Text>Severe</Text>
+                            </Severity>
+                        </Reaction>
+                    </Alert>
+                </Alerts>
+            </Body>
+            <Actors>
+                <Actor>
+                    <ActorObjectID>Google Health Profile</ActorObjectID>
+                    <Source>
+                        <Actor>
+                            <ActorID>fredflintstone@gmail.com</ActorID>
+                            <ActorRole>
+                                <Text>Patient</Text>
+                            </ActorRole>
+                        </Actor>
+                    </Source>
+                </Actor>
+            </Actors>
+        </ContinuityOfCareRecord>
+        <ProfileMetaData xmlns="http://schemas.google.com/health/metadata">
+            <UserComment src="IRI" type="text"/>
+            <AllergyType value="6"/>
+        </ProfileMetaData>
+    </entry>
+</feed>
