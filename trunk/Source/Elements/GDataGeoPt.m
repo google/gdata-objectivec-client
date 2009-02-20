@@ -100,14 +100,17 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:label_ withName:@"label"];
-  [self addToArray:items objectDescriptionIfNonNil:lat_ withName:@"lat"];
-  [self addToArray:items objectDescriptionIfNonNil:lon_ withName:@"lon"];
-  [self addToArray:items objectDescriptionIfNonNil:elev_ withName:@"elev"];
-  [self addToArray:items objectDescriptionIfNonNil:time_ withName:@"time"];
-  
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"label", @"label",            kGDataDescValueLabeled },
+    { @"lat",   @"lat",              kGDataDescValueLabeled },
+    { @"lon",   @"lon",              kGDataDescValueLabeled },
+    { @"elev",  @"elev",             kGDataDescValueLabeled },
+    { @"time",  @"time.stringValue", kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif

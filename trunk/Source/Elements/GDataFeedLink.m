@@ -87,19 +87,18 @@ static NSString *const kCountHintAttr = @"countHint";
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
-  
-  // add items in most useful order, with rel last
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self href] withName:@"href"];
-  
-  NSString *roString = ([self isReadOnly] ? @"true" : nil);
-  [self addToArray:items objectDescriptionIfNonNil:roString withName:@"readOnly"];
 
-  [self addToArray:items objectDescriptionIfNonNil:[[self countHint] stringValue] withName:@"countHint"];
-  [self addToArray:items objectDescriptionIfNonNil:[self feed] withName:@"feed"];
-  [self addToArray:items objectDescriptionIfNonNil:[self rel] withName:@"rel"];
-
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"href",      @"href",                  kGDataDescValueLabeled   },
+    { @"readOnly",  @"isReadOnly",            kGDataDescBooleanPresent },
+    { @"countHint", @"countHint.stringValue", kGDataDescValueLabeled   },
+    { @"feed",      @"feed",                  kGDataDescValueLabeled   },
+    { @"rel",       @"rel",                   kGDataDescValueLabeled   },
+    { nil, nil, 0 }
+  };
+  
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
