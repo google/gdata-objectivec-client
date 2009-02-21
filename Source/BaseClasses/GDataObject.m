@@ -1229,17 +1229,13 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)handleParsedElement:(NSXMLNode *)element {
   if (element) {
-    [unknownChildren_ removeObjectIdenticalTo:element];
+    [unknownChildren_ removeObject:element];
   }
 }
 
 - (void)handleParsedElements:(NSArray *)array {
-  // rather than use NSMutableArray's removeObjects:, it's faster to iterate and
-  // and use removeObjectIdenticalTo: since it avoids comparing the underlying
-  // XML for equality
-  NSXMLNode *element;
-  GDATA_FOREACH(element, array) {
-    [unknownChildren_ removeObjectIdenticalTo:element];
+  if (array) {
+    [unknownChildren_ removeObjectsInArray:array];
   }
 }
 
@@ -1297,7 +1293,7 @@ objectDescriptionIfNonNil:(id)obj
 - (void)handleParsedAttribute:(NSXMLNode *)attribute {
   
   if (attribute) {
-    [unknownAttributes_ removeObjectIdenticalTo:attribute];
+    [unknownAttributes_ removeObject:attribute];
   }
 }
 
