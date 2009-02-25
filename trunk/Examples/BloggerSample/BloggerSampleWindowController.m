@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  BloggerSampleWindowController.m
@@ -272,8 +272,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
   [service fetchAuthenticatedFeedWithURL:url
                                feedClass:kGDataUseRegisteredClass
                                 delegate:self
-                       didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                         didFailSelector:@selector(feedTicket:failedWithError:)];
+                       didFinishSelector:@selector(blogListTicket:finishedWithFeed:)
+                         didFailSelector:@selector(blogListTicket:failedWithError:)];
   
   [self updateUI];
 
@@ -284,10 +284,10 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 //
 
 // finished blog list successfully
-- (void)feedTicket:(GDataServiceTicket *)ticket
- finishedWithFeed:(GDataFeedBase *)object {
+- (void)blogListTicket:(GDataServiceTicket *)ticket
+      finishedWithFeed:(GDataFeedBase *)feed {
   
-  [self setBlogsFeed:object];
+  [self setBlogsFeed:feed];
   [self setBlogsFetchError:nil];    
   
   mIsBloggerFetchPending = NO;
@@ -295,8 +295,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 } 
 
 // failed
-- (void)feedTicket:(GDataServiceTicket *)ticket
-   failedWithError:(NSError *)error {
+- (void)blogListTicket:(GDataServiceTicket *)ticket
+       failedWithError:(NSError *)error {
   
   [self setBlogsFeed:nil];
   [self setBlogsFetchError:error];    
@@ -327,8 +327,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
       [service fetchAuthenticatedFeedWithURL:[NSURL URLWithString:href]
                                    feedClass:kGDataUseRegisteredClass
                                     delegate:self
-                           didFinishSelector:@selector(fetchEntriesTicket:finishedWithEntries:)
-                             didFailSelector:@selector(fetchEntriesTicket:failedWithError:)];
+                           didFinishSelector:@selector(blogEntriesTicket:finishedWithFeed:)
+                             didFailSelector:@selector(blogEntriesTicket:failedWithError:)];
       [self updateUI];  
     }
   }
@@ -340,10 +340,10 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 //
 
 // fetched entry list successfully
-- (void)fetchEntriesTicket:(GDataServiceTicket *)ticket
- finishedWithEntries:(GDataFeedBase *)object {
+- (void)blogEntriesTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(GDataFeedBase *)feed {
   
-  [self setEntriesFeed:object];
+  [self setEntriesFeed:feed];
   [self setEntriesFetchError:nil];
   
   mIsEntriesFetchPending = NO;
@@ -352,8 +352,8 @@ static BloggerSampleWindowController* gBloggerSampleWindowController = nil;
 } 
 
 // failed
-- (void)fetchEntriesTicket:(GDataServiceTicket *)ticket
-failedWithError:(NSError *)error {
+- (void)blogEntriesTicket:(GDataServiceTicket *)ticket
+          failedWithError:(NSError *)error {
   
   [self setEntriesFeed:nil];
   [self setEntriesFetchError:error];
@@ -369,7 +369,7 @@ failedWithError:(NSError *)error {
 - (void)addEntry {
   GDataEntryBase *newEntry = [GDataEntryBase entry];
   
-  NSString *title = @"New Post";
+  NSString *title = [NSString stringWithFormat:@"Post Created %@", [NSDate date]];
   NSString *content = [mEntryEditField stringValue];
   
   [newEntry setTitleWithString:title];
