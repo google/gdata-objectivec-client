@@ -132,6 +132,9 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (xmlNodePtr)XMLNode;
 - (xmlNodePtr)XMLNodeCopy;
 
+// search for an underlying attribute
+- (GDataXMLNode *)attributeForXMLNode:(xmlAttrPtr)theXMLNode;
+
 // setter/getter of the dealloc flag for the underlying node
 - (BOOL)shoudFreeXMLNode;
 - (void)setShouldFreeXMLNode:(BOOL)flag;
@@ -916,48 +919,49 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSArray *)elementsForName:(NSString *)name {
-  
+
   NSString *desiredName = name;
-  
+
   if (xmlNode_ != NULL) {
-        
+
     NSString *prefix = [[self class] prefixForName:desiredName];
     if (prefix) {
-      
+
       xmlChar* desiredPrefix = GDataGetXMLString(prefix);
-      
+
       xmlNsPtr foundNS = xmlSearchNs(xmlNode_->doc, xmlNode_, desiredPrefix);
       if (foundNS) {
-        
+
         // we found a namespace; fall back on elementsForLocalName:URI:
         // to get the elements
         NSString *desiredURI = GDataStringFromXMLString(foundNS->href);
         NSString *localName = [[self class] localNameForName:desiredName];
-        
+
         NSArray *array = [self elementsForLocalName:localName URI:desiredURI];
         return array;
       }
-    } 
-    
+    }
+
     // no namespace found for the node's prefix; try an exact match
     // for the name argument, including any prefix
     NSMutableArray *array = [NSMutableArray array];
-    
-    xmlNodePtr currNode = xmlNode_->children;
-    
-    while (currNode != NULL) {
-      
+
+    // walk our list of cached child nodes
+    NSArray *children = [self children];
+
+    for (GDataXMLNode *child in children) {
+
+      xmlNodePtr currNode = [child XMLNode];
+
       // find all children which are elements with the desired name
       if (currNode->type == XML_ELEMENT_NODE) {
-        
-        NSString *qName = [[self class] qualifiedNameForXMLNode:currNode];
+
+        NSString *qName = [child name];
         if ([qName isEqual:name]) {
-        
-          GDataXMLElement *node = [GDataXMLElement nodeBorrowingXMLNode:currNode]; 
-          [array addObject:node];
+
+          [array addObject:child];
         }
       }
-      currNode = currNode->next;
     }
     return array;
   }
@@ -969,8 +973,6 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   if (xmlNode_ != NULL && xmlNode_->children != NULL) {
 
     NSMutableArray *array = [NSMutableArray array];
-
-    xmlNodePtr currChild = xmlNode_->children;
 
     xmlChar* desiredNSHref = GDataGetXMLString(URI);
     xmlChar* requestedLocalName = GDataGetXMLString(localName);
@@ -985,24 +987,28 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       expectedLocalName = GDataGetXMLString(fakeQName);
     }
 
-    while (currChild != NULL) {
+    NSArray *children = [self children];
+
+    for (GDataXMLNode *child in children) {
+
+      xmlNodePtr currChildPtr = [child XMLNode];
 
       // find all children which are elements with the desired name and
       // namespace, or with the prefixed name and a null namespace
-      if (currChild->type == XML_ELEMENT_NODE) {
+      if (currChildPtr->type == XML_ELEMENT_NODE) {
 
         // normally, we can assume the resolution done for the parent will apply
         // to the child, as most children do not define their own namespaces
         xmlNsPtr childLocalNS = foundParentNS;
         xmlChar* childDesiredLocalName = expectedLocalName;
 
-        if (currChild->nsDef != NULL) {
+        if (currChildPtr->nsDef != NULL) {
           // this child has its own namespace definitons; do a fresh resolve
           // of the namespace starting from the child, and see if it differs
           // from the resolve done starting from the parent.  If the resolve
           // finds a different namespace, then override the desired local
           // name just for this child.
-          childLocalNS = xmlSearchNsByHref(xmlNode_->doc, currChild, desiredNSHref);
+          childLocalNS = xmlSearchNsByHref(xmlNode_->doc, currChildPtr, desiredNSHref);
           if (childLocalNS != foundParentNS) {
 
             // this child does indeed have a different namespace resolution
@@ -1021,15 +1027,13 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
         // check if this child's namespace and local name are what we're
         // seeking
-        if (currChild->ns == childLocalNS
-            && currChild->name != NULL
-            && xmlStrEqual(currChild->name, childDesiredLocalName)) {
+        if (currChildPtr->ns == childLocalNS
+            && currChildPtr->name != NULL
+            && xmlStrEqual(currChildPtr->name, childDesiredLocalName)) {
 
-          GDataXMLElement *node = [GDataXMLElement nodeBorrowingXMLNode:currChild];
-          [array addObject:node];
+          [array addObject:child];
         }
       }
-      currChild = currChild->next;
     }
 
     // we return nil, not an empty array, according to docs
@@ -1119,12 +1123,27 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   }
 }
 
+- (GDataXMLNode *)attributeForXMLNode:(xmlAttrPtr)theXMLNode {
+  // search the cached attributes list for the GDataXMLNode with
+  // the underlying xmlAttrPtr
+  NSArray *attributes = [self attributes];
+
+  for (GDataXMLNode *attr in attributes) {
+
+    if (theXMLNode == (xmlAttrPtr) [attr XMLNode]) {
+      return attr;
+    }
+  }
+
+  return nil;
+}
+
 - (GDataXMLNode *)attributeForName:(NSString *)name {
   
   if (xmlNode_ != NULL) {
     
-    xmlAttrPtr attr = xmlHasProp(xmlNode_, GDataGetXMLString(name));
-    if (attr == NULL) {
+    xmlAttrPtr attrPtr = xmlHasProp(xmlNode_, GDataGetXMLString(name));
+    if (attrPtr == NULL) {
       
       // can we guarantee that xmlAttrPtrs always have the ns ptr and never
       // a namespace as part of the actual attribute name?
@@ -1141,11 +1160,12 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       }
       
       const xmlChar* nsURI = ((ns != NULL) ? ns->href : NULL);
-      attr = xmlHasNsProp(xmlNode_, GDataGetXMLString(name), nsURI);
+      attrPtr = xmlHasNsProp(xmlNode_, GDataGetXMLString(name), nsURI);
     }
     
-    if (attr) {
-      return [GDataXMLNode nodeBorrowingXMLNode:(xmlNodePtr) attr];
+    if (attrPtr) {
+      GDataXMLNode *attr = [self attributeForXMLNode:attrPtr];
+      return attr;
     }
   }
   return nil;
@@ -1153,25 +1173,26 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 - (GDataXMLNode *)attributeForLocalName:(NSString *)localName
                                     URI:(NSString *)attributeURI {
-  
+
   if (xmlNode_ != NULL) {
-    
+
     const xmlChar* name = GDataGetXMLString(localName);
     const xmlChar* nsURI = GDataGetXMLString(attributeURI);
-    
-    xmlAttrPtr attr = xmlHasNsProp(xmlNode_, name, nsURI);
 
-    if (attr == NULL) {
+    xmlAttrPtr attrPtr = xmlHasNsProp(xmlNode_, name, nsURI);
+
+    if (attrPtr == NULL) {
       // if the attribute is in a tree lacking the proper namespace,
       // the local name may include the full URI as a prefix
       NSString *fakeQName = GDataFakeQNameForURIAndName(attributeURI, localName);
       const xmlChar* xmlFakeQName = GDataGetXMLString(fakeQName);
 
-      attr = xmlHasProp(xmlNode_, xmlFakeQName);
+      attrPtr = xmlHasProp(xmlNode_, xmlFakeQName);
     }
 
-    if (attr) {
-      return [GDataXMLNode nodeBorrowingXMLNode:(xmlNodePtr) attr];
+    if (attrPtr) {
+      GDataXMLNode *attr = [self attributeForXMLNode:attrPtr];
+      return attr;
     }
   }
   return nil;
