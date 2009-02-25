@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GooglePhotosSampleWindowController.m
@@ -190,8 +190,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(imageFetcher:finishedWithData:)
-        didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
-         didFailWithErrorSelector:@selector(imageFetcher:failedWithError:)];
+                  didFailSelector:@selector(imageFetcher:failedWithError:)];
 }
 
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -202,15 +201,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [view setImage:image];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
-  // failed with server status
-  NSString *dataStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-  NSLog(@"imageFetcher:%@ failedWithStatus:%d data:%@",
-        fetcher, status, dataStr);       
-}
-
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  // failed with network error
   NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
 }
 
@@ -495,9 +486,9 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // finished album list successfully
 - (void)albumListFetchTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedPhotoUser *)object {
+            finishedWithFeed:(GDataFeedPhotoUser *)feed {
   
-  [self setAlbumFeed:object];
+  [self setAlbumFeed:feed];
   [self setAlbumFetchError:nil];    
   [self setAlbumFetchTicket:nil];
   
@@ -540,7 +531,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
       GDataServiceTicket *ticket;
       ticket = [service fetchPhotoFeedWithURL:feedURL
                                      delegate:self
-                            didFinishSelector:@selector(photosTicket:finishedWithEntries:)
+                            didFinishSelector:@selector(photosTicket:finishedWithFeed:)
                               didFailSelector:@selector(photosTicket:failedWithError:)];
       [self setPhotoFetchTicket:ticket];
 
@@ -555,9 +546,9 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // fetched photo list successfully
 - (void)photosTicket:(GDataServiceTicket *)ticket
- finishedWithEntries:(GDataFeedPhotoAlbum *)object {
+    finishedWithFeed:(GDataFeedPhotoAlbum *)feed {
   
-  [self setPhotoFeed:object];
+  [self setPhotoFeed:feed];
   [self setPhotoFetchError:nil];
   [self setPhotoFetchTicket:nil];
   
@@ -818,7 +809,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 
 // photo moved successfully
 - (void)moveTicket:(GDataServiceTicket *)ticket
- finishedWithEntry:(GDataFeedPhoto *)object {
+ finishedWithEntry:(GDataEntryPhoto *)entry {
   
   NSBeginAlertSheet(@"Moved Photo", nil, nil, nil,
                     [self window], nil, nil,
@@ -888,11 +879,11 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 
 // tag or comment posted successfully
 - (void)postToPhotoTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryPhotoBase *)object {
+        finishedWithEntry:(GDataEntryPhotoBase *)entry {
   
   NSString *label;
   
-  if ([object isKindOfClass:[GDataEntryPhotoComment class]]) {
+  if ([entry isKindOfClass:[GDataEntryPhotoComment class]]) {
     label = @"comment"; 
   } else {
     label = @"tag"; 

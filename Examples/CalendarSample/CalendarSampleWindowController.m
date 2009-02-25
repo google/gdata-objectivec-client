@@ -729,8 +729,8 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   
   ticket = [service fetchCalendarFeedWithURL:[NSURL URLWithString:feedURLString]
                                     delegate:self
-                           didFinishSelector:@selector(calendarListFetchTicket:finishedWithFeed:)
-                             didFailSelector:@selector(calendarListFetchTicket:failedWithError:)];
+                           didFinishSelector:@selector(calendarListTicket:finishedWithFeed:)
+                             didFailSelector:@selector(calendarListTicket:failedWithError:)];
   
   [self setCalendarFetchTicket:ticket];
   
@@ -742,9 +742,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 //
 
 // finished calendar list successfully
-- (void)calendarListFetchTicket:(GDataServiceTicket *)ticket
-               finishedWithFeed:(GDataFeedCalendar *)object {
-  [self setCalendarFeed:object];
+- (void)calendarListTicket:(GDataServiceTicket *)ticket
+          finishedWithFeed:(GDataFeedCalendar *)feed {
+  [self setCalendarFeed:feed];
   [self setCalendarFetchError:nil];    
   [self setCalendarFetchTicket:nil];
 
@@ -753,8 +753,8 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 } 
 
 // failed
-- (void)calendarListFetchTicket:(GDataServiceTicket *)ticket
-                failedWithError:(NSError *)error {
+- (void)calendarListTicket:(GDataServiceTicket *)ticket
+           failedWithError:(NSError *)error {
   
   [self setCalendarFeed:nil];
   [self setCalendarFetchError:error];    
@@ -802,7 +802,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       GDataServiceTicket *ticket;
       ticket = [service fetchCalendarEventFeedWithURL:feedURL
                                              delegate:self
-                                    didFinishSelector:@selector(calendarEventsTicket:finishedWithEntries:)
+                                    didFinishSelector:@selector(calendarEventsTicket:finishedWithFeed:)
                                       didFailSelector:@selector(calendarEventsTicket:failedWithError:)];
       [self setEventFetchTicket:ticket];
 
@@ -817,9 +817,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // fetched event list successfully
 - (void)calendarEventsTicket:(GDataServiceTicket *)ticket
-         finishedWithEntries:(GDataFeedCalendarEvent *)object {
+            finishedWithFeed:(GDataFeedCalendarEvent *)feed {
   
-  [self setEventFeed:object];
+  [self setEventFeed:feed];
   [self setEventFetchError:nil];
   [self setEventFetchTicket:nil];
   
@@ -1111,7 +1111,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-   finishedWithFeed:(GDataFeedCalendarEvent *)feed {
+         finishedWithFeed:(GDataFeedCalendarEvent *)feed {
   
   // step through all the entries in the response feed, 
   // and build a string reporting each
@@ -1207,15 +1207,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
   [service fetchCalendarEventFeedWithURL:[queryCal URL]
                                 delegate:self
-                       didFinishSelector:@selector(queryTicket:finishedWithEntries:)
+                       didFinishSelector:@selector(queryTicket:finishedWithFeed:)
                          didFailSelector:@selector(queryTicket:failedWithError:)];
 }
 
 // today's events successfully retrieved
 - (void)queryTicket:(GDataServiceTicket *)ticket
-finishedWithEntries:(GDataFeedCalendarEvent *)object {
+   finishedWithFeed:(GDataFeedCalendarEvent *)feed {
   
-  NSArray *entries = [object entries];
+  NSArray *entries = [feed entries];
   
   // make a comma-separate list of the event titles to display
   NSMutableArray *titles = [NSMutableArray array];
@@ -1266,7 +1266,7 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
       GDataServiceTicket *ticket;
       ticket = [service fetchACLFeedWithURL:aclFeedURL
                                    delegate:self
-                          didFinishSelector:@selector(calendarACLTicket:finishedWithEntries:)
+                          didFinishSelector:@selector(calendarACLTicket:finishedWithFeed:)
                             didFailSelector:@selector(calendarACLTicket:failedWithError:)];
       
       [self setACLFetchTicket:ticket];
@@ -1279,9 +1279,9 @@ finishedWithEntries:(GDataFeedCalendarEvent *)object {
 
 // fetched acl list successfully
 - (void)calendarACLTicket:(GDataServiceTicket *)ticket
-      finishedWithEntries:(GDataFeedACL *)object {
+         finishedWithFeed:(GDataFeedACL *)feed {
   
-  [self setACLFeed:object];
+  [self setACLFeed:feed];
   [self setACLFetchError:nil];
   [self setACLFetchTicket:nil];
   

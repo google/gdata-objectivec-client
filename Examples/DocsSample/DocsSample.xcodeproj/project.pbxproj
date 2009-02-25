@@ -238,7 +238,6 @@
 					ProjectRef = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 				},
 			);
-			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* DocsSample */,
 			);
@@ -412,6 +411,7 @@
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				WARNING_CFLAGS = "-Wall";

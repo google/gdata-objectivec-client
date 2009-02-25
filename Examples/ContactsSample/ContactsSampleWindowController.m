@@ -372,8 +372,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 
         [fetcher beginFetchWithDelegate:self
                       didFinishSelector:@selector(imageFetcher:finishedWithData:)
-              didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
-               didFailWithErrorSelector:@selector(imageFetcher:failedWithError:)];
+                        didFailSelector:@selector(imageFetcher:failedWithError:)];
       }
     }
   }
@@ -388,15 +387,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [mContactImageView setImage:image];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
-  // failed with server status
-  NSString *dataStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-  NSLog(@"imageFetcher:%@ failedWithStatus:%d data:%@",
-        fetcher, status, dataStr);       
-}
-
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  // failed with network error
   NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
 }
 
@@ -734,8 +725,8 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 
 // finished group list successfully
 - (void)groupsFetchTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedContactGroup *)object {
-  [self setGroupFeed:object];
+         finishedWithFeed:(GDataFeedContactGroup *)feed {
+  [self setGroupFeed:feed];
   [self setGroupFetchError:nil];    
   [self setGroupFetchTicket:nil];
     
@@ -829,9 +820,9 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 
 // finished contact list successfully
 - (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedContact *)object {
+           finishedWithFeed:(GDataFeedContact *)feed {
   
-  [self setContactFeed:object];
+  [self setContactFeed:feed];
   [self setContactFetchError:nil];    
   [self setContactFetchTicket:nil];
   
@@ -1192,14 +1183,14 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     [service deleteContactEntry:entry
                        delegate:self
-              didFinishSelector:@selector(deleteEntryTicket:finishedWithObject:)
+              didFinishSelector:@selector(deleteEntryTicket:finishedWithNil:)
                 didFailSelector:@selector(deleteEntryTicket:failedWithError:)];
   }
 }
 
 // entry deleted successfully
 - (void)deleteEntryTicket:(GDataServiceTicket *)ticket
-       finishedWithObject:(id)object {
+          finishedWithNil:(id)object {
   
   NSBeginAlertSheet(@"Deleted", nil, nil, nil,
                     [self window], nil, nil,
@@ -1338,7 +1329,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
 
 // batch delete completed
 - (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(id)feed {
+         finishedWithFeed:(GDataFeedBase *)feed {
   
   NSMutableArray *batchTickets = [ticket propertyForKey:kBatchTicketsProperty];
   NSMutableArray *batchResults = [ticket propertyForKey:kBatchResultsProperty];
@@ -1658,7 +1649,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
 
 // item edited successfully
 - (void)makePrimaryTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryContact *)object {
+        finishedWithEntry:(GDataEntryContact *)entry {
   
   NSBeginAlertSheet(@"Made primary", nil, nil, nil,
                     [self window], nil, nil,

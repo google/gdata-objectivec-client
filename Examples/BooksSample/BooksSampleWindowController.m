@@ -478,8 +478,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(imageFetcher:finishedWithData:)
-        didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
-         didFailWithErrorSelector:@selector(imageFetcher:failedWithError:)];
+                  didFailSelector:@selector(imageFetcher:failedWithError:)];
 }
 
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -491,15 +490,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
   [view setImage:image];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
-  // failed with server status
-  NSString *dataStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-  NSLog(@"imageFetcher:%@ failedWithStatus:%d data:%@",
-        fetcher, status, dataStr);
-}
-
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  // failed with network error
   NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);
 }
 

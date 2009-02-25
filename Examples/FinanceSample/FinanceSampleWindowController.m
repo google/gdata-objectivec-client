@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  FinanceSampleWindowController.m
@@ -294,9 +294,9 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 //
 
 - (void)portfolioFeedTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedFinancePortfolio *)object {
+           finishedWithFeed:(GDataFeedFinancePortfolio *)feed {
   
-  [self setPortfolioFeed:object];
+  [self setPortfolioFeed:feed];
   [self setPortfolioFetchError:nil];    
   
   mIsPortfolioFetchPending = NO;
@@ -336,7 +336,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
       GDataServiceGoogleFinance *service = [self financeService];
       [service fetchFinanceFeedWithURL:feedURL
                               delegate:self
-                     didFinishSelector:@selector(positionFeedTicket:finishedWithEntries:)
+                     didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:)
                        didFailSelector:@selector(positionFeedTicket:failedWithError:)];
       [self updateUI];  
     }
@@ -349,9 +349,9 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 
 // fetched position list successfully
 - (void)positionFeedTicket:(GDataServiceTicket *)ticket
-       finishedWithEntries:(GDataFeedFinancePosition *)object {
+          finishedWithFeed:(GDataFeedFinancePosition *)feed {
   
-  [self setPositionFeed:object];
+  [self setPositionFeed:feed];
   [self setPositionFetchError:nil];
   
   mIsPositionFetchPending = NO;
@@ -393,7 +393,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
       GDataServiceGoogleFinance *service = [self financeService];
       [service fetchFinanceFeedWithURL:feedURL
                               delegate:self
-                     didFinishSelector:@selector(transactionFeedTicket:finishedWithEntries:)
+                     didFinishSelector:@selector(transactionFeedTicket:finishedWithFeed:)
                        didFailSelector:@selector(transactionFeedTicket:failedWithError:)];
       [self updateUI];  
     }
@@ -406,9 +406,9 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 
 // fetched entry list successfully
 - (void)transactionFeedTicket:(GDataServiceTicket *)ticket
-          finishedWithEntries:(GDataFeedFinanceTransaction *)object {
+             finishedWithFeed:(GDataFeedFinanceTransaction *)feed {
   
-  [self setTransactionFeed:object];
+  [self setTransactionFeed:feed];
   [self setTransactionFetchError:nil];
   
   mIsTransactionFetchPending = NO;

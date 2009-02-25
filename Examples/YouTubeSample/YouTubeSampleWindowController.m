@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  YouTubeSampleWindowController.m
@@ -154,8 +154,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(imageFetcher:finishedWithData:)
-        didFailWithStatusSelector:@selector(imageFetcher:failedWithStatus:data:)
-         didFailWithErrorSelector:@selector(imageFetcher:failedWithError:)];
+                  didFailSelector:@selector(imageFetcher:failedWithError:)];
 }
 
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -165,15 +164,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [mEntryImageView setImage:image];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
-  // failed with server status
-  NSString *dataStr = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
-  NSLog(@"imageFetcher:%@ failedWithStatus:%d data:%@",
-        fetcher, status, dataStr);       
-}
-
 - (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  // failed with network error
   NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
 }
 
@@ -372,9 +363,9 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 
 // fetched the feed
 - (void)entryListFetchTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedBase *)object {
+            finishedWithFeed:(GDataFeedBase *)feed {
   
-  [self setEntriesFeed:object];
+  [self setEntriesFeed:feed];
   [self setEntriesFetchError:nil];    
   [self setEntriesFetchTicket:nil];
   
@@ -539,8 +530,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(categoryFetcher:finishedWithData:)
-        didFailWithStatusSelector:@selector(categoryFetcher:failedWithStatus:data:)
-         didFailWithErrorSelector:@selector(categoryFetcher:failedWithError:)];
+                  didFailSelector:@selector(categoryFetcher:failedWithError:)];
 }
 
 
@@ -596,16 +586,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   }
 }
 
-- (void)categoryFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
-  // failed with server status
-  NSString *dataStr = [[[NSString alloc] initWithData:data
-                                             encoding:NSUTF8StringEncoding] autorelease];
-  NSLog(@"categoryFetcher:%@ failedWithStatus:%d data:%@",
-        fetcher, status, dataStr);       
-}
-
 - (void)categoryFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  // failed with network error
   NSLog(@"categoryFetcher:%@ failedWithError:%@", fetcher, error);       
 }
 

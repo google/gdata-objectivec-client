@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  SpreadsheetSampleWindowController.m
@@ -297,9 +297,9 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // finished spreadsheet list successfully
 - (void)feedTicket:(GDataServiceTicket *)ticket
-  finishedWithFeed:(GDataFeedSpreadsheet *)object {
+  finishedWithFeed:(GDataFeedSpreadsheet *)feed {
   
-  [self setSpreadsheetFeed:object];
+  [self setSpreadsheetFeed:feed];
   [self setSpreadsheetFetchError:nil];    
   
   mIsSpreadsheetFetchPending = NO;
@@ -339,7 +339,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
       [service fetchSpreadsheetFeedWithURL:feedURL
                                   delegate:self
-                         didFinishSelector:@selector(worksheetsTicket:finishedWithEntries:)
+                         didFinishSelector:@selector(worksheetsTicket:finishedWithFeed:)
                            didFailSelector:@selector(worksheetsTicket:failedWithError:)];
       [self updateUI];  
     }
@@ -352,9 +352,9 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // fetched Worksheet list successfully
 - (void)worksheetsTicket:(GDataServiceTicket *)ticket
-     finishedWithEntries:(GDataFeedWorksheet *)object {
+        finishedWithFeed:(GDataFeedWorksheet *)feed {
   
-  [self setWorksheetFeed:object];
+  [self setWorksheetFeed:feed];
   [self setWorksheetFetchError:nil];
   
   mIsWorksheetFetchPending = NO;
@@ -406,7 +406,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
       [service fetchSpreadsheetFeedWithURL:feedURL
                                   delegate:self
-                         didFinishSelector:@selector(entriesTicket:finishedWithEntries:)
+                         didFinishSelector:@selector(entriesTicket:finishedWithFeed:)
                            didFailSelector:@selector(entriesTicket:failedWithError:)];
       [self updateUI];  
     }
@@ -419,9 +419,9 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // fetched entry list successfully
 - (void)entriesTicket:(GDataServiceTicket *)ticket
-  finishedWithEntries:(GDataFeedBase *)object {
+     finishedWithFeed:(GDataFeedBase *)feed {
   
-  [self setEntryFeed:object];
+  [self setEntryFeed:feed];
   [self setEntryFetchError:nil];
   
   mIsEntryFetchPending = NO;
