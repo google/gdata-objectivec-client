@@ -70,7 +70,7 @@
     { @"bytesUsed",       @"bytesUsed",       kGDataDescValueLabeled },
     { @"commentCount",    @"commentCount",    kGDataDescValueLabeled },
     { @"commentsEnabled", @"commentsEnabled", kGDataDescValueLabeled },
-    { @"timestamp",       @"date",            kGDataDescValueLabeled },
+    { @"date",            @"timestamp",       kGDataDescValueLabeled },
     { @"location",        @"location",        kGDataDescValueLabeled },
     { @"name",            @"name",            kGDataDescValueLabeled },
     { @"nickname",        @"nickname",        kGDataDescValueLabeled },
