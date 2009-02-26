@@ -170,16 +170,24 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   finishedSEL_ = finishedSEL;
   networkFailedSEL_ = networkFailedSEL;
   statusFailedSEL_ = statusFailedSEL;
-  
+
+  NSString *effectiveHTTPMethod = [request_ valueForHTTPHeaderField:@"X-HTTP-Method-Override"];
+  if (effectiveHTTPMethod == nil) {
+    effectiveHTTPMethod = [request_ HTTPMethod];
+  }
+  BOOL isEffectiveHTTPGet = (effectiveHTTPMethod == nil
+                             || [effectiveHTTPMethod isEqual:@"GET"]);
+
   if (postData_ || postStream_) {
-    if ([request_ HTTPMethod] == nil || [[request_ HTTPMethod] isEqual:@"GET"]) {
+    if (isEffectiveHTTPGet) {
       [request_ setHTTPMethod:@"POST"];
+      isEffectiveHTTPGet = NO;
     }
-    
+
     if (postData_) {
       [request_ setHTTPBody:postData_];
     } else {
-      
+
       // if logging is enabled, it needs a buffer to accumulate data from any
       // NSInputStream used for uploading.  Logging will wrap the input
       // stream with a stream that lets us keep a copy the data being read.
@@ -187,29 +195,28 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
         loggedStreamData_ = [[NSMutableData alloc] init];
         [self logCapturePostStream];
       }
-      
-      [request_ setHTTPBodyStream:postStream_]; 
+
+      [request_ setHTTPBodyStream:postStream_];
     }
   }
-  
+
   if (fetchHistory_) {
-    
+
     // If this URL is in the history, set the Last-Modified header field
-    
+
     // if we have a history, we're tracking across fetches, so we don't
     // want to pull results from a cache
     [request_ setCachePolicy:NSURLRequestReloadIgnoringCacheData];
-    
-    NSDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-    NSString* urlString = [[request_ URL] absoluteString];
-    NSString* lastModifiedStr = [lastModifiedDict objectForKey:urlString];
-    
-    // servers don't want last-modified-ifs on POSTs, so check for a body
-    if (lastModifiedStr 
-        && [request_ HTTPBody] == nil
-        && [request_ HTTPBodyStream] == nil) {
-      
-      [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
+
+    if (isEffectiveHTTPGet) {
+      NSDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
+      NSString* urlString = [[request_ URL] absoluteString];
+      NSString* lastModifiedStr = [lastModifiedDict objectForKey:urlString];
+
+      // servers don't want if-modified-since on anything but GETs
+      if (lastModifiedStr != nil) {
+        [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
+      }
     }
   }
   
