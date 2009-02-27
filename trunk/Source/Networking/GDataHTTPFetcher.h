@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataHTTPFetcher.h
@@ -45,42 +45,38 @@
 //  NSURLRequest *request = [NSURLRequest requestWithURL:myURL];
 //  GDataHTTPFetcher* myFetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
 //
-//  [myFetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]]; // for POSTs
+//  // optional post data
+//  [myFetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
 //
-//  [myFetcher setCredential:[NSURLCredential authCredentialWithUsername:@"foo" 
-//                                                               password:@"bar"]]; // optional http credential
-//
-//  [myFetcher setFetchHistory:myMutableDictionary]; // optional, for persisting modified-dates
+//  // optional dictionary, for persisting modified-dates and local cookie storage
+//  [myFetcher setFetchHistory:myMutableDictionary];
 //
 //  [myFetcher beginFetchWithDelegate:self
 //                  didFinishSelector:@selector(myFetcher:finishedWithData:)
-//          didFailWithStatusSelector:@selector(myFetcher:failedWithStatus:data:)
-//           didFailWithErrorSelector:@selector(myFetcher:failedWithError:)];
+//                    didFailSelector:@selector(myFetcher:failedWithError:)];
 //
 //  Upon fetch completion, the callback selectors are invoked; they should have
 //  these signatures (you can use any callback method names you want so long as
 //  the signatures match these):
 //
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData;
-//  - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data;
-//  - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithNetworkError:(NSError *)error;
+//  - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 //
 // NOTE:  Fetches may retrieve data from the server even though the server 
-//        returned an error.  The failWithStatus selector is called when the server
-//        status is >= 300 (along with any server-supplied data, usually
-//        some html explaining the error), but if the failWithStatus selector is nil,
-//        then the didFinish selector is called with the server-supplied data.
+//        returned an error.  The failure selector is called when the server
+//        status is >= 300, with an NSError having domain
+//        kGDataHTTPFetcherStatusDomain and code set to the server status.
+//
 //        Status codes are at <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
 //
 // 
 // Proxies:
 //
-// Proxy handling is invisible so long as the system has a valid credential
-// in the keychain, which is normally true (else most NSURL-based apps would
-// have difficulty.)  But when there is a proxy authetication error, the 
-// the fetcher will call the failedWithNetworkError: method with the
-// NSURLChallenge in the error's userInfo. The error method can get the 
-// challenge info like this:
+// Proxy handling is invisible so long as the system has a valid credential in
+// the keychain, which is normally true (else most NSURL-based apps would have
+// difficulty.)  But when there is a proxy authetication error, the the fetcher
+// will call the failedWithError: method with the NSURLChallenge in the error's
+// userInfo. The error method can get the challenge info like this:
 //
 //  NSURLAuthenticationChallenge *challenge 
 //     = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
@@ -95,16 +91,16 @@
 //
 // There are three supported mechanisms for remembering cookies between fetches.
 //
-// By default, GDataHTTPFetcher uses a mutable array held statically to
-// track cookies for all instantiated fetchers. This avoids server cookies being
-// set by servers for the application from interfering with Safari cookie
-// settings, and vice versa.  The fetcher cookies are lost when the application quits.
+// By default, GDataHTTPFetcher uses a mutable array held statically to track
+// cookies for all instantiated fetchers. This avoids server cookies being set
+// by servers for the application from interfering with Safari cookie settings,
+// and vice versa.  The fetcher cookies are lost when the application quits.
 //
 // To rely instead on WebKit's global NSHTTPCookieStorage, call 
 // setCookieStorageMethod: with kGDataHTTPFetcherCookieStorageMethodSystemDefault.
 //
-// If you provide a fetch history (such as for periodic checks, described
-// below) then the cookie storage mechanism is set to use the fetch
+// If you provide a fetch history dictionary (such as for periodic checks,
+// described below) then the cookie storage mechanism is set to use the fetch
 // history rather than the static storage.
 //
 //
@@ -115,8 +111,8 @@
 // bandwidth by providing a "Nothing changed" status message instead of response
 // data.
 //
-// To get this behavior, provide a persistent mutable dictionary to setFetchHistory:, 
-// and look for the failedWithStatus: callback with code 304
+// To get this behavior, provide a persistent mutable dictionary to
+// setFetchHistory:, and look for the failedWithStatus: callback with code 304
 // (kGDataHTTPFetcherStatusNotModified) like this:
 //
 // - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
@@ -134,12 +130,14 @@
 //
 // Monitoring received data
 //
-// The optional received data selector should have the signature
+// The optional received data selector can be set with setReceivedDataSelector:
+// and should have the signature
 //
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
 //
-// The bytes received so far are [dataReceivedSoFar length]. This number may go down
-//    if a redirect causes the download to begin again from a new server.
+// The bytes received so far are [dataReceivedSoFar length]. This number may go
+// down if a redirect causes the download to begin again from a new server.
+//
 // If supplied by the server, the anticipated total download size is available as
 //    [[myFetcher response] expectedContentLength] (may be -1 for unknown 
 //    download sizes.)
