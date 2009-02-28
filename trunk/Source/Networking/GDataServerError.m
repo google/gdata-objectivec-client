@@ -67,8 +67,8 @@
 - (id)copyWithZone:(NSZone *)zone {
   GDataServerErrorGroup* newObj = [[[self class] allocWithZone:zone] init];
 
-  NSArray *errorsCopy = [[NSArray alloc] initWithArray:[self errors]
-                                            copyItems:YES];
+  NSArray *errorsCopy = [[[NSArray alloc] initWithArray:[self errors]
+                                              copyItems:YES] autorelease];
   [newObj setErrors:errorsCopy];
 
   return newObj;
