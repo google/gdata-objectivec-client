@@ -94,6 +94,7 @@
 // convenience accessors
 
 - (GDataLink *)videoLogLink;
+- (GDataLink *)featuredVideoLink;
 
 - (GDataFeedLink *)favoritesFeedLink;
 - (GDataFeedLink *)contactsFeedLink;
@@ -101,5 +102,7 @@
 - (GDataFeedLink *)playlistsFeedLink;
 - (GDataFeedLink *)subscriptionsFeedLink;
 - (GDataFeedLink *)uploadsFeedLink;
-
+- (GDataFeedLink *)newSubscriptionVideosFeedLink;
+- (GDataFeedLink *)friendsActivityFeedLink;
+- (GDataFeedLink *)recentActivityFeedLink;
 @end

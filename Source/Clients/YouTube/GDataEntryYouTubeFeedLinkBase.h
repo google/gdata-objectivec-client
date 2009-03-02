@@ -42,4 +42,7 @@
 - (GDataFeedLink *)feedLink;
 - (void)setFeedLink:(GDataFeedLink *)feedLink;
 
+- (NSString *)playlistID;
+- (void)setPlaylistID:(NSString *)str;
+
 @end

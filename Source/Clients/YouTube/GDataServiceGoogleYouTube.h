@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceGoogleYouTube.h
@@ -30,24 +30,29 @@
 #endif
 
 // standard feed IDs
-_EXTERN NSString* const kGDataYouTubeFeedIDFull                _INITIALIZE_AS(nil);
-_EXTERN NSString* const kGDataYouTubeFeedIDMostDiscussed       _INITIALIZE_AS(@"most_discussed");
-_EXTERN NSString* const kGDataYouTubeFeedIDMostLinked          _INITIALIZE_AS(@"most_linked");
-_EXTERN NSString* const kGDataYouTubeFeedIDMostPopular         _INITIALIZE_AS(@"most_popular");
-_EXTERN NSString* const kGDataYouTubeFeedIDMostResponded       _INITIALIZE_AS(@"most_responded");
-_EXTERN NSString* const kGDataYouTubeFeedIDMostViewed          _INITIALIZE_AS(@"most_viewed");
-_EXTERN NSString* const kGDataYouTubeFeedIDTopFavorites        _INITIALIZE_AS(@"top_favorites");
-_EXTERN NSString* const kGDataYouTubeFeedIDTopRecentlyFeatured _INITIALIZE_AS(@"recently_featured");
-_EXTERN NSString* const kGDataYouTubeFeedIDWatchOnMobile       _INITIALIZE_AS(@"watch_on_mobile");
+_EXTERN NSString* const kGDataYouTubeFeedIDFull                      _INITIALIZE_AS(nil);
+_EXTERN NSString* const kGDataYouTubeFeedIDTopRated                  _INITIALIZE_AS(@"top_rated");
+_EXTERN NSString* const kGDataYouTubeFeedIDTopFavorites              _INITIALIZE_AS(@"top_favorites");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostViewed                _INITIALIZE_AS(@"most_viewed");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostPopular               _INITIALIZE_AS(@"most_popular");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostRecent                _INITIALIZE_AS(@"most_recent");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostDiscussed             _INITIALIZE_AS(@"most_discussed");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostLinked                _INITIALIZE_AS(@"most_linked");
+_EXTERN NSString* const kGDataYouTubeFeedIDMostResponded             _INITIALIZE_AS(@"most_responded");
+_EXTERN NSString* const kGDataYouTubeFeedIDRecentlyFeatured          _INITIALIZE_AS(@"recently_featured");
+_EXTERN NSString* const kGDataYouTubeFeedIDWatchOnMobile             _INITIALIZE_AS(@"watch_on_mobile");
 
 // user feed IDs
-_EXTERN NSString* const kGDataYouTubeUserFeedIDProfile         _INITIALIZE_AS(nil);
-_EXTERN NSString* const kGDataYouTubeUserFeedIDContacts        _INITIALIZE_AS(@"contacts");
-_EXTERN NSString* const kGDataYouTubeUserFeedIDFavorites       _INITIALIZE_AS(@"favorites");
-_EXTERN NSString* const kGDataYouTubeUserFeedIDInbox           _INITIALIZE_AS(@"inbox");
-_EXTERN NSString* const kGDataYouTubeUserFeedIDPlaylists       _INITIALIZE_AS(@"playlists");
-_EXTERN NSString* const kGDataYouTubeUserFeedIDSubscriptions   _INITIALIZE_AS(@"subscriptions");
-_EXTERN NSString* const kGDataYouTubeUserFeedIDUploads         _INITIALIZE_AS(@"uploads");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDProfile               _INITIALIZE_AS(nil);
+_EXTERN NSString* const kGDataYouTubeUserFeedIDContacts              _INITIALIZE_AS(@"contacts");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDFavorites             _INITIALIZE_AS(@"favorites");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDInbox                 _INITIALIZE_AS(@"inbox");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDPlaylists             _INITIALIZE_AS(@"playlists");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDSubscriptions         _INITIALIZE_AS(@"subscriptions");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDUploads               _INITIALIZE_AS(@"uploads");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDNewSubscriptionVideos _INITIALIZE_AS(@"newsubscriptionvideos");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDFriendsActivity       _INITIALIZE_AS(@"friendsactivity");
+
 
 @class GDataQueryYouTube;
 @class GDataEntryYouTubeVideo;
@@ -68,7 +73,9 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDUploads         _INITIALIZE_AS(@"
 // Utilities for making feed URLs.  To set query parameters, use the
 // methods in GDataQueryYouTube.
 //
-// feedID may be nil (or equivalently kGDataYouTubeFeedIDFull) 
+// feedID may be nil (or equivalently kGDataYouTubeFeedIDFull)
+//
+// userID may be kGDataServiceDefaultUser
 
 + (NSURL *)youTubeURLForFeedID:(NSString *)feedID;
 
@@ -77,6 +84,8 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDUploads         _INITIALIZE_AS(@"
 
 + (NSURL *)youTubeUploadURLForUserID:(NSString *)userID
                             clientID:(NSString *)clientID;
+
++ (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID;
 
 // a developer key is required for uploading, and for updating or deleting
 // videos.  Entries in feeds retrieved without a developer key will 
