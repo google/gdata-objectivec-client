@@ -192,53 +192,55 @@ typedef struct GDataDescriptionRecord {
 
 
 @interface GDataObject : NSObject <NSCopying> {
-  
-  @private
-  
-  // element name from original XML, used for later XML generation
-  NSString *elementName_; 
-  
-  GDataObject *parent_;  // WEAK, parent in tree of GData objects
-  
-  // GDataObjects keep namespaces as {key:prefix value:URI} dictionary entries
-  NSMutableDictionary *namespaces_; 
 
-  // list of potential GDataExtensionDeclarations for this element and its
-  // children, keyed by the declaration's parent class
-  NSMutableDictionary *extensionDeclarations_; 
-  
-  // list of attributes to be parsed for this element
-  NSMutableArray *attributeDeclarations_;
-  
+  @private
+
+  // element name from original XML, used for later XML generation
+  NSString *elementName_;
+
+  GDataObject *parent_;  // WEAK, parent in tree of GData objects
+
+  // GDataObjects keep namespaces as {key:prefix value:URI} dictionary entries
+  NSMutableDictionary *namespaces_;
+
+  // extension declaration cache, retained by the topmost parent
+  //
+  // keys are classes that have declared their extensions
+  //
+  // the values are dictionaries mapping declared parent classes to
+  // GDataExtensionDeclarations objects
+  NSMutableDictionary *extensionDeclarationsCache_;
+
+  // list of attributes to be parsed for each class
+  NSMutableDictionary *attributeDeclarationsCache_;
+
   // arrays of actual extension elements found for this element, keyed by extension class
-  NSMutableDictionary *extensions_;  
-  
+  NSMutableDictionary *extensions_;
+
   // dictionary of attributes set for this element, keyed by attribute name
   NSMutableDictionary *attributes_;
-  
+
   // string for element body, if declared as parseable
-  BOOL shouldParseContentValue_;
   NSString *contentValue_;
 
   // XMLElements saved from element body but not parsed, if declared by the subclass
-  BOOL shouldKeepChildXMLElements_;
   NSMutableArray *childXMLElements_;
 
   // arrays of XMLNodes of attributes and child elements not yet parsed
-  NSMutableArray *unknownChildren_;    
+  NSMutableArray *unknownChildren_;
   NSMutableArray *unknownAttributes_;
   BOOL shouldIgnoreUnknowns_;
-  
+
   // mapping of standard classes to user's surrogate subclasses, used when
   // creating objects from XML
   NSDictionary *surrogates_;
-  
+
   // service version, set for feeds and entries
   NSString *serviceVersion_;
-  
-  // anything defined by the client; retained but not used internally; not 
+
+  // anything defined by the client; retained but not used internally; not
   // copied by copyWithZone:
-  id userData_; 
+  id userData_;
   NSMutableDictionary *userProperties_;
 }
 
@@ -347,6 +349,8 @@ typedef struct GDataDescriptionRecord {
 
 - (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
 
+- (void)clearExtensionDeclarationsCache; // used by GDataServiceBase and by subclasses
+
 //
 // Extensions
 //
@@ -431,6 +435,7 @@ typedef struct GDataDescriptionRecord {
 // -addParseDeclarations method if they want all child elements to
 // be held as an array of NSXMLElements
 - (void)addChildXMLElementsDeclaration;
+- (BOOL)hasDeclaredChildXMLElements;
 - (NSArray *)childXMLElements;
 - (void)setChildXMLElements:(NSArray *)array;
 - (void)addChildXMLElement:(NSXMLNode *)node;

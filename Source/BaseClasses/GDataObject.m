@@ -38,6 +38,14 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   return (NSMutableDictionary *)dict;
 }
 
+// in a cache of attribute declarations, this marker indicates that the class
+// also declared that it wants child text parsed as the content value or child
+// xml held as xml element objects
+//
+// these start with a space to avoid colliding with any real attribute name
+static NSString* const kContentValueDeclarationMarker = @" __content";
+static NSString* const kChildXMLDeclarationMarker = @" __childXML";
+
 // Elements may call -addExtensionDeclarationForParentClass:childClass: and
 // addAttributeExtensionDeclarationForParentClass: to declare extensions to be
 // parsed; the declaration applies in the element and all children of the element.
@@ -56,8 +64,11 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 
 // array of local attribute names to be automatically parsed and
 // generated
-- (void)setAttributeDeclarations:(NSArray *)decls;
-- (NSArray *)attributeDeclarations;
+- (void)setAttributeDeclarationsCache:(NSDictionary *)decls;
+- (NSMutableDictionary *)attributeDeclarationsCache;
+
+// array of attribute declarations for the current class, from the cache
+- (NSMutableArray *)attributeDeclarations;
 
 - (void)parseAttributesForElement:(NSXMLElement *)element;
 - (void)addAttributesToElement:(NSXMLElement *)element;
@@ -82,10 +93,12 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
 - (void)setExtensions:(NSDictionary *)extensions;
 - (NSDictionary *)extensions;
 
-// array of extensions that may be found in this class and in 
-// subclasses of this class
-- (void)setExtensionDeclarations:(NSDictionary *)decls;
-- (NSDictionary *)extensionDeclarations;
+// cache of arrays of extensions that may be found in this class and in 
+// subclasses of this class.
+- (void)setExtensionDeclarationsCache:(NSDictionary *)decls;
+- (NSMutableDictionary *)extensionDeclarationsCache;
+
+- (NSMutableArray *)extensionDeclarationsForParentClass:(Class)parentClass;
 
 - (void)addExtensionDeclarationForParentClass:(Class)parentClass
                                    childClass:(Class)childClass
@@ -122,6 +135,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (id)init {
   self = [super init];
   if (self) {
+    // there is no parent
+    extensionDeclarationsCache_ = [[NSMutableDictionary alloc] init];
+
+    attributeDeclarationsCache_ = [[NSMutableDictionary alloc] init];
+
     [self addParseDeclarations];
   }
   return self;
@@ -150,8 +168,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   
   [self setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
 
-  return [self initWithXMLElement:element
-                           parent:parent];
+  id obj = [self initWithXMLElement:element
+                             parent:parent];
+  return obj;
 }
 
 // subclasses will typically override initWithXMLElement:parent:
@@ -164,7 +183,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
     if (parent != nil) {
       // top-level objects (feeds and entries) have nil parents, and
-      // have their service version set previously in 
+      // have their service version set previously in
       // initWithXMLElement:parent:serviceVersion:surrogates:; child
       // objects have their service version set here
       [self setServiceVersion:[parent serviceVersion]];
@@ -172,31 +191,68 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       // feeds may specify that contained entries and their child elements
       // should ignore any unparsed XML
       [self setShouldIgnoreUnknowns:[parent shouldIgnoreUnknowns]];
+
+      // get the parent's declaration caches, and temporarily hang on to them
+      // in our ivar to avoid the need to get them recursively from the topmost
+      // parent
+      //
+      // We'll release these below, so that only the topmost parent retains
+      // them. The topmost parent retains them in case some subclass code still
+      // wants to do parsing after we return.
+      extensionDeclarationsCache_ = [[parent extensionDeclarationsCache] retain];
+      GDATA_DEBUG_ASSERT(extensionDeclarationsCache_ != nil, @"missing extn decl");
+
+      attributeDeclarationsCache_ = [[parent attributeDeclarationsCache] retain];
+      GDATA_DEBUG_ASSERT(extensionDeclarationsCache_ != nil, @"missing attr decl");
+
+    } else {
+      // parent is nil, so this is the topmost parent
+      extensionDeclarationsCache_ = [[NSMutableDictionary alloc] init];
+
+      attributeDeclarationsCache_ = [[NSMutableDictionary alloc] init];
     }
 
     [self setNamespaces:[self dictionaryForElementNamespaces:element]];
     [self addUnknownChildNodesForElement:element];
-    [self addExtensionDeclarations];
-    [self addParseDeclarations];
+
+    // if we've not previously cached declarations for this class,
+    // add the declarations now
+    Class currClass = [self class];
+    NSDictionary *prevExtnDecls = [extensionDeclarationsCache_ objectForKey:currClass];
+    if (prevExtnDecls == nil) {
+      [self addExtensionDeclarations];
+    }
+
+    NSArray *prevAttrDecls = [attributeDeclarationsCache_ objectForKey:currClass];
+    if (prevAttrDecls == nil) {
+      [self addParseDeclarations];
+    }
+
     [self parseExtensionsForElement:element];
     [self parseAttributesForElement:element];
     [self parseContentValueForElement:element];
     [self keepChildXMLElementsForElement:element];
     [self setElementName:[element name]];
-    
-    // We are done parsing extensions and no longer need the extension
-    // declarations. (But we keep local attribute declarations since they're
-    // used for determining the order of the attributes in the description
-    // method.)
-    [extensionDeclarations_ release];
-    extensionDeclarations_ = nil;
+
+    if (parent != nil) {
+      // rather than keep a reference to the cache of declarations in the
+      // parent, set our pointer to nil; if a subclass continues to parse, the
+      // getter will obtain them by calling into the parent.  This lets callers
+      // free up the extensionDeclarations_ when parsing is done by just
+      // freeing them in the topmost parent with clearExtensionDeclarationsCache
+      [extensionDeclarationsCache_ release];
+      extensionDeclarationsCache_ = nil;
+
+      [attributeDeclarationsCache_ release];
+      attributeDeclarationsCache_ = nil;
+    }
 
 #if GDATA_USES_LIBXML
     if (!shouldIgnoreUnknowns_) {
       // retain the element so that pointers to internal nodes remain valid
       [self setProperty:element forKey:kGDataXMLElementPropertyKey];
     }
-#endif    
+#endif
   }
   return self;
 }
@@ -261,24 +317,23 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self attributes]];
   [newObject setAttributes:attributes];
   
-  if (shouldParseContentValue_) {
-    [newObject addContentValueDeclaration];
+  // extension and attribute declarations are immutable, so the declarations
+  // themselves don't need to be deep copied
+  [newObject setExtensionDeclarationsCache:[self extensionDeclarationsCache]];
+  [newObject setAttributeDeclarationsCache:[self attributeDeclarationsCache]];
+
+  // a marker in the attributes cache indicates the content value and
+  // and child XML declaration settings
+  if ([self hasDeclaredContentValue]) {
     [newObject setContentStringValue:[self contentStringValue]];
   }
-
-  if (shouldKeepChildXMLElements_) {
-    [newObject addChildXMLElementsDeclaration];
-
+  
+  if ([self hasDeclaredChildXMLElements]) {
     NSArray *childElements = [self childXMLElements];
     NSArray *arr = [GDataUtilities arrayWithCopiesOfObjectsInArray:childElements];
     [newObject setChildXMLElements:arr];
   }
   
-  // extension and attribute declarations are immutable, so don't need to be 
-  // deep copied
-  [newObject setExtensionDeclarations:[self extensionDeclarations]];
-  [newObject setAttributeDeclarations:[self attributeDeclarations]];
-
   BOOL shouldIgnoreUnknowns = [self shouldIgnoreUnknowns];
   [newObject setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
 
@@ -304,8 +359,8 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (void)dealloc {
   [elementName_ release];
   [namespaces_ release];
-  [extensionDeclarations_ release];
-  [attributeDeclarations_ release];
+  [extensionDeclarationsCache_ release];
+  [attributeDeclarationsCache_ release];
   [extensions_ release];
   [attributes_ release];
   [contentValue_ release];
@@ -420,13 +475,16 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return parent_; 
 }
 
-- (void)setAttributeDeclarations:(NSArray *)attrs {
-  [attributeDeclarations_ release];
-  attributeDeclarations_ = [attrs mutableCopy];
+- (void)setAttributeDeclarationsCache:(NSDictionary *)cache {
+  [attributeDeclarationsCache_ autorelease];
+  attributeDeclarationsCache_ = [cache mutableCopy];
 }
 
-- (NSArray *)attributeDeclarations {
-  return attributeDeclarations_; 
+- (NSMutableDictionary *)attributeDeclarationsCache {
+  if (attributeDeclarationsCache_) {
+    return attributeDeclarationsCache_;
+  }
+  return [[self parent] attributeDeclarationsCache];
 }
 
 - (void)setAttributes:(NSDictionary *)dict {
@@ -447,13 +505,22 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return extensions_; 
 }
 
-- (void)setExtensionDeclarations:(NSDictionary *)decls {
-  [extensionDeclarations_ autorelease];
-  extensionDeclarations_ = [decls mutableCopy];
+- (void)setExtensionDeclarationsCache:(NSDictionary *)decls {
+  [extensionDeclarationsCache_ autorelease];
+  extensionDeclarationsCache_ = [decls mutableCopy];
 }
 
-- (NSDictionary *)extensionDeclarations {
-  return extensionDeclarations_; 
+- (NSMutableDictionary *)extensionDeclarationsCache {
+  if (extensionDeclarationsCache_) {
+    return extensionDeclarationsCache_;
+  }
+
+  return [[self parent] extensionDeclarationsCache];
+}
+
+- (void)clearExtensionDeclarationsCache {
+  // allows external classes to free up the declarations
+  [self setExtensionDeclarationsCache:nil];
 }
 
 - (void)setUnknownChildren:(NSArray *)arr {
@@ -893,8 +960,9 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems {
   
   // add attribute descriptions in the order the attributes were declared
+  NSArray *attributeDeclarations = [self attributeDeclarations];
   NSString *name;
-  GDATA_FOREACH(name, attributeDeclarations_) {
+  GDATA_FOREACH(name, attributeDeclarations) {
     
     NSString *value = [attributes_ valueForKey:name];
     [self addToArray:stringItems objectDescriptionIfNonNil:value withName:name];
@@ -903,14 +971,14 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)addContentDescriptionToArray:(NSMutableArray *)stringItems
                             withName:(NSString *)name {
-  if (shouldParseContentValue_) {
+  if ([self hasDeclaredContentValue]) {
     NSString *value = [self contentStringValue];
     [self addToArray:stringItems objectDescriptionIfNonNil:value withName:name];
   }
 }
 
 - (void)addChildXMLElementsDescriptionToArray:(NSMutableArray *)stringItems {
-  if (shouldKeepChildXMLElements_) {
+  if ([self hasDeclaredChildXMLElements]) {
 
     NSArray *childXMLElements = [self childXMLElements];
     if ([childXMLElements count] > 0) {
@@ -1458,24 +1526,33 @@ objectDescriptionIfNonNil:(id)obj
                                    childClass:(Class)childClass
                                   isAttribute:(BOOL)isAttribute {
 
-  if (extensionDeclarations_ == nil) {
-    extensionDeclarations_ = [[NSMutableDictionary alloc] init]; 
+  // get or make the dictionary which caches the extension declarations for
+  // this class
+  Class currClass = [self class];
+  NSMutableDictionary *extensionDeclarationsCache = [self extensionDeclarationsCache];
+  GDATA_DEBUG_ASSERT(extensionDeclarationsCache != nil, @"missing extnDecls");
+
+  NSMutableDictionary *extensionDecls = [extensionDeclarationsCache objectForKey:currClass];
+
+  if (extensionDecls == nil) {
+    extensionDecls = [NSMutableDictionary dictionary];
+    [extensionDeclarationsCache setObject:extensionDecls forKey:currClass];
   }
-  
-  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+
+  // get this class's extensions for the specified parent class
+  NSMutableArray *array = [extensionDecls objectForKey:parentClass];
   if (array == nil) {
     array = [NSMutableArray array];
-    [extensionDeclarations_ setObject:array forKey:parentClass];
+    [extensionDecls setObject:array forKey:parentClass];
   }
-  
-  GDATA_DEBUG_ASSERT([childClass conformsToProtocol:@protocol(GDataExtension)], 
+
+  GDATA_DEBUG_ASSERT([childClass conformsToProtocol:@protocol(GDataExtension)],
                 @"%@ does not conform to GDataExtension protocol", childClass);
-  
-  GDataExtensionDeclaration *decl = 
+
+  GDataExtensionDeclaration *decl =
     [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
                                                  childClass:childClass
                                                 isAttribute:isAttribute] autorelease];
-
   [array addObject:decl];
 }
 
@@ -1486,7 +1563,7 @@ objectDescriptionIfNonNil:(id)obj
                                                  childClass:childClass
                                                 isAttribute:NO] autorelease];
   
-  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  NSMutableArray *array = [self extensionDeclarationsForParentClass:parentClass];
   [array removeObject:decl];
 }
 
@@ -1497,13 +1574,20 @@ objectDescriptionIfNonNil:(id)obj
                                                  childClass:childClass
                                                 isAttribute:YES] autorelease];
   
-  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+  NSMutableArray *array = [self extensionDeclarationsForParentClass:parentClass];
   [array removeObject:decl];
 }
 
 // utility routine for getting declared extensions to the specified class
-- (NSArray *)extensionDeclarationsForClass:(Class)parentClass {
-  NSMutableArray *array = [extensionDeclarations_ objectForKey:parentClass];
+- (NSMutableArray *)extensionDeclarationsForParentClass:(Class)parentClass {
+
+  // get the declarations for this class
+  Class currClass = [self class];
+  NSMutableDictionary *cache = [self extensionDeclarationsCache];
+  NSMutableDictionary *classMap = [cache objectForKey:currClass];
+
+  // get the extensions for the specified parent class
+  NSMutableArray *array = [classMap objectForKey:parentClass];
   return array;
 }
 
@@ -1685,7 +1769,7 @@ objectDescriptionIfNonNil:(id)obj
        currentExtensionSupplier = [currentExtensionSupplier parent]) {
     
     // find all extensions in this supplier with the current class as the parent
-    NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForClass:classBeingParsed];
+    NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForParentClass:classBeingParsed];
     
     if (extnDecls) {
       GDataExtensionDeclaration *decl;
@@ -1740,15 +1824,30 @@ objectDescriptionIfNonNil:(id)obj
 
 #pragma mark Local Attributes 
 
+// utility routine for getting declared attributes for this class
+- (NSMutableArray *)attributeDeclarations {
+
+  // get the declarations for this class
+  Class currClass = [self class];
+  NSMutableDictionary *cache = [self attributeDeclarationsCache];
+  NSMutableArray *decls = [cache objectForKey:currClass];
+  return decls;
+}
+
 - (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames {
+  
+  // get or make the array which caches the attribute declarations for
+  // this class
+  Class currClass = [self class];
+  NSMutableDictionary *cache = [self attributeDeclarationsCache];
+  GDATA_DEBUG_ASSERT(cache != nil, @"missing attrDeclsCache");
 
-  if (attributeDeclarations_ == nil) {
-
-    // we'll use an array rather than a set because ordering in arrays
-    // is deterministic
-    attributeDeclarations_ = [[NSMutableArray alloc] init];
+  NSMutableArray *attributeDeclarations = [cache objectForKey:currClass];
+  if (attributeDeclarations == nil) {
+    attributeDeclarations = [NSMutableArray array];
+    [cache setObject:attributeDeclarations forKey:currClass];
   }
-
+  
 #if DEBUG
   // check that no local attributes being declared have a prefix, except for
   // the hardcoded xml: prefix. Namespaced attributes must be parsed and
@@ -1762,14 +1861,31 @@ objectDescriptionIfNonNil:(id)obj
                  @"invalid namespaced local attribute: %@", attr);
   }
 #endif
+  
+  [attributeDeclarations addObjectsFromArray:attributeLocalNames];
+}
 
-  [attributeDeclarations_ addObjectsFromArray:attributeLocalNames];
+- (void)addAttributeDeclarationMarker:(NSString *)marker {
+
+  NSMutableArray *attributeDeclarations = [self attributeDeclarations];
+
+  if (![attributeDeclarations containsObject:marker]) {
+    // add the marker
+    if (attributeDeclarations != nil) {
+      // no need to create the cache
+      [attributeDeclarations addObject:marker];
+    } else {
+      // create the cache by calling addLocalAttributeDeclarations:
+      NSArray *array = [NSArray arrayWithObject:marker];
+      [self addLocalAttributeDeclarations:array];
+    }
+  }
 }
 
 // attribute value getters
 - (NSString *)stringValueForAttribute:(NSString *)name {
   
-  GDATA_DEBUG_ASSERT([attributeDeclarations_ containsObject:name],
+  GDATA_DEBUG_ASSERT([[self attributeDeclarations] containsObject:name],
             @"%@ getting undeclared attribute: %@", [self class], name);
 
   return [attributes_ valueForKey:name];
@@ -1856,7 +1972,7 @@ objectDescriptionIfNonNil:(id)obj
 // attribute value setters
 - (void)setStringValue:(NSString *)str forAttribute:(NSString *)name {
   
-  GDATA_DEBUG_ASSERT([attributeDeclarations_ containsObject:name],
+  GDATA_DEBUG_ASSERT([[self attributeDeclarations] containsObject:name],
             @"%@ setting undeclared attribute: %@", [self class], name);
   
   if (attributes_ == nil) {
@@ -1906,11 +2022,12 @@ objectDescriptionIfNonNil:(id)obj
   // if they are really present in the node
   NSArray *attributes = [element attributes];
   NSXMLNode *attribute;
+  NSArray *attributeDeclarations = [self attributeDeclarations];
 
   GDATA_FOREACH(attribute, attributes) {
     
     NSString *attrName = [attribute name];
-    if ([attributeDeclarations_ containsObject:attrName]) {
+    if ([attributeDeclarations containsObject:attrName]) {
       
       NSString *str = [attribute stringValue];
       if (str != nil) {
@@ -1953,8 +2070,9 @@ objectDescriptionIfNonNil:(id)obj
 
   // step through attributes, comparing each non-ignored attribute
   // to look for a mismatch
+  NSArray *attributeDeclarations = [self attributeDeclarations];
   NSString *attrKey;
-  GDATA_FOREACH(attrKey, attributeDeclarations_) {
+  GDATA_FOREACH(attrKey, attributeDeclarations) {
 
     if (![attributesToIgnore containsObject:attrKey]) {
       
@@ -1980,16 +2098,18 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addContentValueDeclaration {
   // derived classes should call this if they want the element's content
   // to be automatically parsed as a string
-  shouldParseContentValue_ = YES;
+  [self addAttributeDeclarationMarker:kContentValueDeclarationMarker];
 }
 
 - (BOOL)hasDeclaredContentValue {
-  return shouldParseContentValue_;
+  NSMutableArray *attrDecls = [self attributeDeclarations];
+  BOOL flag = [attrDecls containsObject:kContentValueDeclarationMarker];
+  return flag;
 }
 
 - (void)setContentStringValue:(NSString *)str {
-  
-  GDATA_ASSERT(shouldParseContentValue_, @"%@ setting undeclared content value",
+
+  GDATA_ASSERT([self hasDeclaredContentValue], @"%@ setting undeclared content value",
                [self class]);
 
   [contentValue_ autorelease];
@@ -1997,18 +2117,19 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSString *)contentStringValue {
-  
-  GDATA_ASSERT(shouldParseContentValue_, @"%@ getting undeclared content value",
+
+  GDATA_ASSERT([self hasDeclaredContentValue], @"%@ getting undeclared content value",
                [self class]);
 
   return contentValue_;
+
 }
 
 // parseContentForElement: is called by initWithXMLElement. 
 // This stores the content value parsed from the element.
 - (void)parseContentValueForElement:(NSXMLElement *)element {
   
-  if (shouldParseContentValue_) {
+  if ([self hasDeclaredContentValue]) {
     [self setContentStringValue:[self stringValueFromElement:element]];
   }
 }
@@ -2016,7 +2137,7 @@ objectDescriptionIfNonNil:(id)obj
 // XML generator for content
 - (void)addContentValueToElement:(NSXMLElement *)element {
   
-  if (shouldParseContentValue_) {
+  if ([self hasDeclaredContentValue]) {
     NSString *str = [self contentStringValue];
     if ([str length] > 0) {
       [element addStringValue:str]; 
@@ -2026,7 +2147,7 @@ objectDescriptionIfNonNil:(id)obj
 
 - (BOOL)hasContentValueEqualToContentValueOf:(GDataObject *)other {
   
-  if (!shouldParseContentValue_) {
+  if (![self hasDeclaredContentValue]) {
     // no content being stored
     return YES;
   }
@@ -2039,7 +2160,13 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addChildXMLElementsDeclaration {
   // derived classes should call this if they want the element's unparsed
   // XML children to be accessible later
-  shouldKeepChildXMLElements_ = YES;
+  [self addAttributeDeclarationMarker:kChildXMLDeclarationMarker];
+}
+
+- (BOOL)hasDeclaredChildXMLElements {
+  NSMutableArray *attrDecls = [self attributeDeclarations];
+  BOOL flag = [attrDecls containsObject:kChildXMLDeclarationMarker];
+  return flag;
 }
 
 - (NSArray *)childXMLElements {
@@ -2050,7 +2177,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (void)setChildXMLElements:(NSArray *)array {
-  GDATA_DEBUG_ASSERT(shouldKeepChildXMLElements_,
+  GDATA_DEBUG_ASSERT([self hasDeclaredChildXMLElements],
                      @"%@ setting undeclared XML values", [self class]);
 
   [childXMLElements_ release];
@@ -2058,7 +2185,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (void)addChildXMLElement:(NSXMLNode *)node {
-  GDATA_DEBUG_ASSERT(shouldKeepChildXMLElements_,
+  GDATA_DEBUG_ASSERT([self hasDeclaredChildXMLElements],
                      @"%@ adding undeclared XML values", [self class]);
 
   if (childXMLElements_ == nil) {
@@ -2071,7 +2198,7 @@ objectDescriptionIfNonNil:(id)obj
 // This stores a copy of the element's child XMLElements.
 - (void)keepChildXMLElementsForElement:(NSXMLElement *)element {
 
-  if (shouldKeepChildXMLElements_) {
+  if ([self hasDeclaredChildXMLElements]) {
 
     NSArray *children = [element children];
     if (children != nil) {
@@ -2097,7 +2224,7 @@ objectDescriptionIfNonNil:(id)obj
 // XML generator for kept child XML elements
 - (void)addChildXMLElementsToElement:(NSXMLElement *)element {
 
-  if (shouldKeepChildXMLElements_) {
+  if ([self hasDeclaredChildXMLElements]) {
 
     NSArray *childXMLElements = [self childXMLElements];
     if (childXMLElements != nil) {
@@ -2112,7 +2239,7 @@ objectDescriptionIfNonNil:(id)obj
 
 - (BOOL)hasChildXMLElementsEqualToChildXMLElementsOf:(GDataObject *)other {
 
-  if (!shouldKeepChildXMLElements_) {
+  if (![self hasDeclaredChildXMLElements]) {
     // no values being stored
     return YES;
   }
