@@ -357,7 +357,13 @@
   
   // To test an inline feed, we'll read in the cells feed test file,
   // strip the <?xml...> prefix, and wrap it in a gd:feedLink
-  NSString *inlineFeed = [NSString stringWithContentsOfFile:@"Tests/FeedSpreadsheetCellsTest1.xml"];
+  NSError *error = nil;
+  NSStringEncoding encoding = 0;
+  NSString *inlineFeed = [NSString stringWithContentsOfFile:@"Tests/FeedSpreadsheetCellsTest1.xml"
+                                               usedEncoding:&encoding
+                                                      error:&error];
+  STAssertNotNil(inlineFeed, @"cannot load xml for inline feed, %@", error);
+
   inlineFeed = [inlineFeed substringFromIndex:[@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" length]];
   NSString *inlinedFeedLinkStr = [NSString stringWithFormat:@"<gd:feedLink>%@</gd:feedLink>", inlineFeed];
 

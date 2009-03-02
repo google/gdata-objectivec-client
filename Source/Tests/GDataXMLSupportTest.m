@@ -172,10 +172,14 @@
 
 - (void)testXPath {
   // read in a big feed
-  NSString *contactFeedXML = [NSString stringWithContentsOfFile:@"Tests/FeedContactTest1.xml"];
+  NSError *error = nil;
+  NSStringEncoding encoding = 0;
+  
+  NSString *contactFeedXML = [NSString stringWithContentsOfFile:@"Tests/FeedContactTest1.xml"
+                                                   usedEncoding:&encoding
+                                                          error:&error];
   NSData *data = [contactFeedXML dataUsingEncoding:NSUTF8StringEncoding];
   
-  NSError *error = nil;
   NSXMLDocument *xmlDocument;
   
   xmlDocument = [[[NSXMLDocument alloc] initWithData:data
