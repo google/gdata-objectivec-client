@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceGoogleYouTube.m
@@ -41,7 +41,7 @@
   //
   //   http://gdata.youtube.com/feeds/api/standardfeeds/feedid
   //
-  // See http://code.google.com/apis/youtube/reference.html#Feeds for feed IDs
+  // See http://code.google.com/apis/youtube/2.0/reference.html#Standard_feeds for feed IDs
   
   NSString *endPart;
   
@@ -64,7 +64,9 @@
                     userFeedID:(NSString *)feedID {
   // Make a URL like
   //   http://gdata.youtube.com/feeds/api/users/username/favorites
-  
+  //
+  // userID may be kGDataServiceDefaultUser
+
   NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
   NSString *endPart;
   
@@ -82,6 +84,27 @@
     encodedUserID, endPart];
   
   return [NSURL URLWithString:urlString];  
+}
+
++ (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID {
+
+  // Make a URL like
+  //   http://gdata.youtube.com/feeds/api/events?author=usernames
+  // (usernames can be a comma-separated list)
+  //
+  // For a friends activity feed, call youTubeURLForUserID:userFeedID:
+  // with kGDataServiceDefaultUser and kGDataYouTubeUserFeedIDFriendsActivity
+
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingStringParameter:userID];
+
+  NSString *root = [self serviceRootURLString];
+
+  NSString *template = @"%@api/events?author=%@";
+
+  NSString *urlString = [NSString stringWithFormat:template,
+                         root, encodedUserID];
+
+  return [NSURL URLWithString:urlString];
 }
 
 + (NSURL *)youTubeUploadURLForUserID:(NSString *)userID

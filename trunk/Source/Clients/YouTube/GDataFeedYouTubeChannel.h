@@ -14,21 +14,11 @@
 */
 
 //
-//  GDataFeedYouTubePlaylist.h
+//  GDataFeedYouTubeChannel.h
 //
 
 #import "GDataFeedBase.h"
-#import "GDataYouTubeMediaElements.h"
 
-@interface GDataFeedYouTubePlaylist : GDataFeedBase 
-+ (GDataFeedYouTubePlaylist *)playlistFeed;
-
-- (BOOL)isPrivate;
-- (void)setIsPrivate:(BOOL)flag;
-
-- (GDataYouTubeMediaGroup *)mediaGroup;
-- (void)setMediaGroup:(GDataYouTubeMediaGroup *)obj;
-
-- (NSString *)playlistID;
-- (void)setPlaylistID:(NSString *)str;
+@interface GDataFeedYouTubeChannel : GDataFeedBase
++ (GDataFeedYouTubeChannel *)channelFeed;
 @end

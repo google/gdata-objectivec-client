@@ -9,6 +9,8 @@ Additions
 
 - Added Google Health classes
 
+- Added YouTube user event activity classes
+
 Changes
 
 - Calendar now defaults to service version 2.1, which slightly changes
@@ -36,6 +38,11 @@ Changes
 Bugs Fixed
 
 - Fixed leak in -keepChildXMLElementsForElement (thanks alexkac)
+
+- GDataXMLNode now consistently returns cached copies of child elements
+  and attributes rather than duplicate copies.
+  
+- Fixed possibiilty of If-modified-since header being added to http deletes
 
 
 Release 1.6.0

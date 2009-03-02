@@ -47,6 +47,7 @@
   [self addExtensionDeclarationForParentClass:feedClass
                                  childClasses:
    [GDataYouTubePrivate class],
+   [GDataYouTubePlaylistID class],
 
    // YouTubeMediaGroup encapsulates YouTubeMediaContent
    [GDataYouTubeMediaGroup class],
@@ -92,6 +93,16 @@
 
 - (void)setMediaGroup:(GDataYouTubeMediaGroup *)obj {
   [self setObject:obj forExtensionClass:[GDataYouTubeMediaGroup class]];
+}
+
+- (NSString *)playlistID {
+  GDataYouTubePlaylistID *obj = [self objectForExtensionClass:[GDataYouTubePlaylistID class]];
+  return [obj stringValue];
+}
+
+- (void)setPlaylistID:(NSString *)str {
+  GDataYouTubePlaylistID *obj = [GDataYouTubePlaylistID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubePlaylistID class]];
 }
 
 + (NSString *)defaultServiceVersion {

@@ -24,6 +24,8 @@
 #import "GData/GDataFeedPhoto.h"
 #import "GData/GDataEntryYouTubeUpload.h"
 
+static NSString* const kActivityFeed = @"activity";
+
 @interface YouTubeSampleWindowController (PrivateMethods)
 - (void)updateUI;
 
@@ -66,9 +68,6 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   return [self initWithWindowNibName:@"YouTubeSampleWindow"];
 }
 
-- (void)windowDidLoad {
-}
-
 - (void)awakeFromNib {
   // Set the result text fields to have a distinctive color and mono-spaced font
   // to aid in understanding of each album and photo query operation.
@@ -80,17 +79,19 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   // load the user feed types into the pop-up menu, and default to showing
   // the feed of the user's uploads, as it's generally most interesting
   NSArray *userFeedTypes = [NSArray arrayWithObjects:
-    @"contacts",
-    @"favorites", 
-    @"inbox",
-    @"playlists",
-    @"subscriptions",
-    @"uploads", 
+    kGDataYouTubeUserFeedIDContacts,
+    kGDataYouTubeUserFeedIDFavorites,
+    kGDataYouTubeUserFeedIDInbox,
+    kGDataYouTubeUserFeedIDPlaylists,
+    kGDataYouTubeUserFeedIDSubscriptions,
+    kActivityFeed,
+    kGDataYouTubeUserFeedIDFriendsActivity,
+    kGDataYouTubeUserFeedIDUploads,
     nil];
-  
+
   [mUserFeedPopup removeAllItems];
   [mUserFeedPopup addItemsWithTitles:userFeedTypes];
-  [mUserFeedPopup selectItemWithTitle:@"uploads"];
+  [mUserFeedPopup selectItemWithTitle:kGDataYouTubeUserFeedIDUploads];
   
   // reset the upload file path
   [mFilePathField setStringValue:@""];
@@ -348,9 +349,22 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   // feedID is uploads, favorites, etc
   NSString *feedID = [[mUserFeedPopup selectedItem] title];
   
-  NSURL *feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:username
-                                                       userFeedID:feedID];
-    
+  NSURL *feedURL;
+  if ([feedID isEqual:kActivityFeed]) {
+    // the activity feed uses a unique URL
+    feedURL = [GDataServiceGoogleYouTube youTubeActivityFeedURLForUserID:username];
+  } else {
+    feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:username
+                                                  userFeedID:feedID];
+  }
+
+  if ([feedID isEqual:kGDataYouTubeUserFeedIDFriendsActivity]
+      || [feedID isEqual:kActivityFeed]) {
+    // activity feeds require a developer key
+    NSString *devKey = [mDeveloperKeyField stringValue];
+    [service setYouTubeDeveloperKey:devKey];
+  }
+  
   ticket = [service fetchYouTubeFeedWithURL:feedURL
                                    delegate:self
                           didFinishSelector:@selector(entryListFetchTicket:finishedWithFeed:)

@@ -1513,6 +1513,33 @@
 
     { @"", @"" }, // end of feed
 
+    //
+    // user events feed
+    //
+    { @"GDataFeedYouTubeUserEvent/2.0", @"Tests/FeedYouTubeUserEventTest1.xml" },
+
+    // feed elements
+    { @"ETag", @"W/\"AkUBRH47eCp7ImA9WxVWFkU.\"" },
+    { @"identifier", @"tag:youtube.com,2008:events" },
+
+    // entry elements
+    { @"entries.0.className", @"GDataEntryYouTubeUserEvent" },
+    { @"entries.0.kindCategory.term", kGDataCategoryYouTubeUserEvent },
+    { @"entries.0.ETag", @"W/\"AkUBRH47eCp7ImA9WxVWFkU.\"" },
+    { @"entries.0.identifier", @"tag:youtube.com,2008:event:Z3JlZ3JvYmJpbnM3MTIzNTY4ODI1NUJlbGFuYXI%3D" },
+    { @"entries.0.username", @"wilmaflintstone" },
+    { @"entries.0.userEventType", kGDataYouTubeUserEventFriendAdded },
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"entries.1.userEventType", kGDataYouTubeUserEventVideoFavorited },
+    { @"entries.1.videoLink.href", @"http://gdata.youtube.com/feeds/api/videos/cxFfUsDgnaU" },
+    { @"entries.1.videoID", @"cxFfUsDgnaU" },
+    { @"entries.1.unknownAttributes.@count", @"0" },
+    { @"entries.1.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+    
     { nil, nil } // end of test array
   };
   [self runTests:tests];

@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.6 (357 classes) 2009-02-09 13:32:12 -0800
+// com.google.GDataFramework v. 1.6 (370 classes) 2009-03-02 13:53:32 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -71,6 +71,7 @@
   #define GDataComment                         _GDATA_NS_SYMBOL(GDataComment)
   #define GDataCommission                      _GDATA_NS_SYMBOL(GDataCommission)
   #define GDataContactSystemGroup              _GDATA_NS_SYMBOL(GDataContactSystemGroup)
+  #define GDataContinuityOfCareRecord          _GDATA_NS_SYMBOL(GDataContinuityOfCareRecord)
   #define GDataCostBasis                       _GDATA_NS_SYMBOL(GDataCostBasis)
   #define GDataDateTime                        _GDATA_NS_SYMBOL(GDataDateTime)
   #define GDataDaysGain                        _GDATA_NS_SYMBOL(GDataDaysGain)
@@ -100,6 +101,8 @@
   #define GDataEntryFinanceTransaction         _GDATA_NS_SYMBOL(GDataEntryFinanceTransaction)
   #define GDataEntryFolderDoc                  _GDATA_NS_SYMBOL(GDataEntryFolderDoc)
   #define GDataEntryGoogleBase                 _GDATA_NS_SYMBOL(GDataEntryGoogleBase)
+  #define GDataEntryHealthProfile              _GDATA_NS_SYMBOL(GDataEntryHealthProfile)
+  #define GDataEntryHealthRegister             _GDATA_NS_SYMBOL(GDataEntryHealthRegister)
   #define GDataEntryLink                       _GDATA_NS_SYMBOL(GDataEntryLink)
   #define GDataEntryMessage                    _GDATA_NS_SYMBOL(GDataEntryMessage)
   #define GDataEntryPDFDoc                     _GDATA_NS_SYMBOL(GDataEntryPDFDoc)
@@ -122,6 +125,7 @@
   #define GDataEntryStandardDoc                _GDATA_NS_SYMBOL(GDataEntryStandardDoc)
   #define GDataEntryVolume                     _GDATA_NS_SYMBOL(GDataEntryVolume)
   #define GDataEntryWorksheet                  _GDATA_NS_SYMBOL(GDataEntryWorksheet)
+  #define GDataEntryYouTubeChannel             _GDATA_NS_SYMBOL(GDataEntryYouTubeChannel)
   #define GDataEntryYouTubeComment             _GDATA_NS_SYMBOL(GDataEntryYouTubeComment)
   #define GDataEntryYouTubeComplaint           _GDATA_NS_SYMBOL(GDataEntryYouTubeComplaint)
   #define GDataEntryYouTubeFavorite            _GDATA_NS_SYMBOL(GDataEntryYouTubeFavorite)
@@ -132,6 +136,7 @@
   #define GDataEntryYouTubeRating              _GDATA_NS_SYMBOL(GDataEntryYouTubeRating)
   #define GDataEntryYouTubeSubscription        _GDATA_NS_SYMBOL(GDataEntryYouTubeSubscription)
   #define GDataEntryYouTubeUpload              _GDATA_NS_SYMBOL(GDataEntryYouTubeUpload)
+  #define GDataEntryYouTubeUserEvent           _GDATA_NS_SYMBOL(GDataEntryYouTubeUserEvent)
   #define GDataEntryYouTubeUserProfile         _GDATA_NS_SYMBOL(GDataEntryYouTubeUserProfile)
   #define GDataEntryYouTubeVideo               _GDATA_NS_SYMBOL(GDataEntryYouTubeVideo)
   #define GDataEntryYouTubeVideoMessage        _GDATA_NS_SYMBOL(GDataEntryYouTubeVideoMessage)
@@ -154,6 +159,8 @@
   #define GDataFeedFinancePosition             _GDATA_NS_SYMBOL(GDataFeedFinancePosition)
   #define GDataFeedFinanceTransaction          _GDATA_NS_SYMBOL(GDataFeedFinanceTransaction)
   #define GDataFeedGoogleBase                  _GDATA_NS_SYMBOL(GDataFeedGoogleBase)
+  #define GDataFeedHealthProfile               _GDATA_NS_SYMBOL(GDataFeedHealthProfile)
+  #define GDataFeedHealthRegister              _GDATA_NS_SYMBOL(GDataFeedHealthRegister)
   #define GDataFeedLink                        _GDATA_NS_SYMBOL(GDataFeedLink)
   #define GDataFeedMessage                     _GDATA_NS_SYMBOL(GDataFeedMessage)
   #define GDataFeedPhoto                       _GDATA_NS_SYMBOL(GDataFeedPhoto)
@@ -167,6 +174,7 @@
   #define GDataFeedSpreadsheetList             _GDATA_NS_SYMBOL(GDataFeedSpreadsheetList)
   #define GDataFeedVolume                      _GDATA_NS_SYMBOL(GDataFeedVolume)
   #define GDataFeedWorksheet                   _GDATA_NS_SYMBOL(GDataFeedWorksheet)
+  #define GDataFeedYouTubeChannel              _GDATA_NS_SYMBOL(GDataFeedYouTubeChannel)
   #define GDataFeedYouTubeComment              _GDATA_NS_SYMBOL(GDataFeedYouTubeComment)
   #define GDataFeedYouTubeComplaint            _GDATA_NS_SYMBOL(GDataFeedYouTubeComplaint)
   #define GDataFeedYouTubeFavorite             _GDATA_NS_SYMBOL(GDataFeedYouTubeFavorite)
@@ -175,6 +183,7 @@
   #define GDataFeedYouTubePlaylistLink         _GDATA_NS_SYMBOL(GDataFeedYouTubePlaylistLink)
   #define GDataFeedYouTubeRating               _GDATA_NS_SYMBOL(GDataFeedYouTubeRating)
   #define GDataFeedYouTubeSubscription         _GDATA_NS_SYMBOL(GDataFeedYouTubeSubscription)
+  #define GDataFeedYouTubeUserEvent            _GDATA_NS_SYMBOL(GDataFeedYouTubeUserEvent)
   #define GDataFeedYouTubeUserProfile          _GDATA_NS_SYMBOL(GDataFeedYouTubeUserProfile)
   #define GDataFeedYouTubeVideo                _GDATA_NS_SYMBOL(GDataFeedYouTubeVideo)
   #define GDataFeedYouTubeVideoMessage         _GDATA_NS_SYMBOL(GDataFeedYouTubeVideoMessage)
@@ -269,6 +278,7 @@
   #define GDataPostalAddress                   _GDATA_NS_SYMBOL(GDataPostalAddress)
   #define GDataPrice                           _GDATA_NS_SYMBOL(GDataPrice)
   #define GDataPrivateCopyProperty             _GDATA_NS_SYMBOL(GDataPrivateCopyProperty)
+  #define GDataProfileMetaData                 _GDATA_NS_SYMBOL(GDataProfileMetaData)
   #define GDataProgressMonitorInputStream      _GDATA_NS_SYMBOL(GDataProgressMonitorInputStream)
   #define GDataQuery                           _GDATA_NS_SYMBOL(GDataQuery)
   #define GDataQueryBooks                      _GDATA_NS_SYMBOL(GDataQueryBooks)
@@ -277,6 +287,7 @@
   #define GDataQueryDocs                       _GDATA_NS_SYMBOL(GDataQueryDocs)
   #define GDataQueryFinance                    _GDATA_NS_SYMBOL(GDataQueryFinance)
   #define GDataQueryGoogleBase                 _GDATA_NS_SYMBOL(GDataQueryGoogleBase)
+  #define GDataQueryGoogleHealth               _GDATA_NS_SYMBOL(GDataQueryGoogleHealth)
   #define GDataQueryGooglePhotos               _GDATA_NS_SYMBOL(GDataQueryGooglePhotos)
   #define GDataQuerySpreadsheet                _GDATA_NS_SYMBOL(GDataQuerySpreadsheet)
   #define GDataQueryYouTube                    _GDATA_NS_SYMBOL(GDataQueryYouTube)
@@ -302,6 +313,8 @@
   #define GDataServiceGoogleContact            _GDATA_NS_SYMBOL(GDataServiceGoogleContact)
   #define GDataServiceGoogleDocs               _GDATA_NS_SYMBOL(GDataServiceGoogleDocs)
   #define GDataServiceGoogleFinance            _GDATA_NS_SYMBOL(GDataServiceGoogleFinance)
+  #define GDataServiceGoogleHealth             _GDATA_NS_SYMBOL(GDataServiceGoogleHealth)
+  #define GDataServiceGoogleHealthSandbox      _GDATA_NS_SYMBOL(GDataServiceGoogleHealthSandbox)
   #define GDataServiceGooglePhotos             _GDATA_NS_SYMBOL(GDataServiceGooglePhotos)
   #define GDataServiceGoogleSpreadsheet        _GDATA_NS_SYMBOL(GDataServiceGoogleSpreadsheet)
   #define GDataServiceGoogleWebmasterTools     _GDATA_NS_SYMBOL(GDataServiceGoogleWebmasterTools)

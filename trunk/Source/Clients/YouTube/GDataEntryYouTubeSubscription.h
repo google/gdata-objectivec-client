@@ -34,9 +34,6 @@
 - (NSString *)youTubeQueryString;
 - (void)setYouTubeQueryString:(NSString *)str;
 
-- (NSString *)playlistID;
-- (void)setPlaylistID:(NSString *)str;
-
 - (NSString *)playlistTitle;
 - (void)setPlaylistTitle:(NSString *)str;
 

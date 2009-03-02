@@ -36,6 +36,7 @@
                                  childClasses:
    [GDataYouTubePrivate class],
    [GDataYouTubeCountHint class],
+   [GDataYouTubePlaylistID class],
 
    // elements present in GData v1 only
    [GDataFeedLink class],
@@ -120,5 +121,14 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 
+- (NSString *)playlistID {
+  GDataYouTubePlaylistID *obj = [self objectForExtensionClass:[GDataYouTubePlaylistID class]];
+  return [obj stringValue];
+}
+
+- (void)setPlaylistID:(NSString *)str {
+  GDataYouTubePlaylistID *obj = [GDataYouTubePlaylistID valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubePlaylistID class]];
+}
 
 @end

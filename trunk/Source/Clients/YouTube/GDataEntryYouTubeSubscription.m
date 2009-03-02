@@ -53,7 +53,6 @@
                                  childClasses:
    [GDataYouTubeUsername class],
    [GDataYouTubeQueryString class],
-   [GDataYouTubePlaylistID class],
    [GDataYouTubePlaylistTitle class],
    nil];
   
@@ -112,16 +111,6 @@
 - (void)setYouTubeQueryString:(NSString *)str {
   GDataYouTubeQueryString *obj = [GDataYouTubeQueryString valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeQueryString class]];
-}
-
-- (NSString *)playlistID {
-  GDataYouTubePlaylistID *obj = [self objectForExtensionClass:[GDataYouTubePlaylistID class]];
-  return [obj stringValue];
-}
-
-- (void)setPlaylistID:(NSString *)str {
-  GDataYouTubePlaylistID *obj = [GDataYouTubePlaylistID valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataYouTubePlaylistID class]];
 }
 
 - (NSString *)playlistTitle {

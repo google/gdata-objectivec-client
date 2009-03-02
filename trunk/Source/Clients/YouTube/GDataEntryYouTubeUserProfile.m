@@ -327,6 +327,10 @@
   return [self linkWithRelAttributeValue:kGDataLinkYouTubeVlog];
 }
 
+- (GDataLink *)featuredVideoLink {
+  return [self linkWithRelAttributeValue:kGDataLinkYouTubeFeatured];
+}
+
 - (GDataFeedLink *)feedLinkForRel:(NSString *)rel {
   return [GDataUtilities firstObjectFromArray:[self feedLinks]
                                     withValue:rel
@@ -355,6 +359,18 @@
 
 - (GDataFeedLink *)uploadsFeedLink {
   return [self feedLinkForRel:kGDataLinkYouTubeUploads];
+}
+
+- (GDataFeedLink *)newSubscriptionVideosFeedLink {
+  return [self feedLinkForRel:kGDataLinkYouTubeNewSubscriptionVideos];
+}
+
+- (GDataFeedLink *)friendsActivityFeedLink {
+  return [self feedLinkForRel:kGDataLinkYouTubeFriendsActivity];
+}
+
+- (GDataFeedLink *)recentActivityFeedLink {
+  return [self feedLinkForRel:kGDataLinkYouTubeRecentActivity];
 }
 
 @end
