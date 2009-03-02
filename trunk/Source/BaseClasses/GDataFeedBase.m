@@ -170,6 +170,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
                 shouldIgnoreUnknowns:NO];
     if (self) {
       [self setupFromXMLElement:root];
+      
+      // we're done parsing; the extension declarations won't be needed again
+      [self clearExtensionDeclarationsCache];
 
 #if GDATA_USES_LIBXML
       // retain the document so that pointers to internal nodes remain valid

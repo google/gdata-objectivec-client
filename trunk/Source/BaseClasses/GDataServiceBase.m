@@ -553,6 +553,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                          serviceVersion:serviceVersion
                                              surrogates:surrogates
                                    shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
+
+      // we're done parsing; the extension declarations won't be needed again
+      [object clearExtensionDeclarationsCache];
+
 #if GDATA_USES_LIBXML
       // retain the document so that pointers to internal nodes remain valid
       [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];

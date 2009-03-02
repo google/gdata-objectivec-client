@@ -109,9 +109,9 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 // The delegate must provide and implement the finished and failed selectors.
 //
 // finishedSEL has a signature like:
-//   - (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data
 // failedSEL has a signature like:
-//   - (void)fetcher:(GTMHTTPFetcher *)fetcher failedWithError:(NSError *)error
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error
 //
 // Server errors (status >= 300) are reported as the code of the error object.
 
