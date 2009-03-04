@@ -17,7 +17,6 @@
 //  GDataMediaKeywords.m
 //
 
-
 #import "GDataMediaKeywords.h"
 #import "GDataMediaGroup.h"
 
@@ -48,94 +47,51 @@
   return obj;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    NSString *itemListStr = [self stringValueFromElement:element];
-    NSArray *array = [GDataMediaKeywords keywordsFromString:itemListStr];
-    
-    // keywordsFromString returns nil of there are no non-empty keywords
-    [self setKeywords:array]; 
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [keywords_ release];
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaKeywords* newObj = [super copyWithZone:zone];
-  [newObj setKeywords:[GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self keywords]]];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaKeywords *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaKeywords class]]) return NO;
-  
-  return [super isEqual:other]
-    && AreEqualOrBothNil([self keywords], [other keywords]);
-}
-
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  NSMutableArray *items = [NSMutableArray array];
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"keywords", @"stringValue", kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
   
-  NSString *keywordsStr = [GDataMediaKeywords stringFromKeywords:keywords_];
-  // stringFromKeywords returns nil if keywords is nil or empty
-
-  [self addToArray:items objectDescriptionIfNonNil:keywordsStr withName:@"keywords"];
-
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:keywords"];
-  
-  NSString *keywordsStr = [GDataMediaKeywords stringFromKeywords:keywords_];
-  // stringFromKeywords returns nil if keywords is nil or empty
-  if (keywordsStr) {
-    [element addStringValue:keywordsStr];
-  }
-  
-  return element;
-}
-
 #pragma mark -
 
 - (NSArray *)keywords {
-  return keywords_; 
+  NSString *str = [self stringValue];
+  NSArray *array = [GDataMediaKeywords keywordsFromString:str];
+  return array;
 }
 
 - (void)setKeywords:(NSArray *)array {
-  [keywords_ autorelease];
-  keywords_ = [array mutableCopy];
+  NSString *str = [GDataMediaKeywords stringFromKeywords:array];
+  [self setStringValue:str];
 }
 
 - (void)addKeyword:(NSString *)str {
-  if (!keywords_) {
-    keywords_ = [[NSMutableArray alloc] init];
-  }
-  
   str = [GDataMediaKeywords trimString:str];
-  
   if ([str length] > 0) {
-    if (! [keywords_ containsObject:str]) {
-      [keywords_ addObject:str]; 
+
+    NSArray *array = [self keywords];
+
+    if ([array count] == 0) {
+      // this is the first keyword
+      [self setStringValue:str];
+    } else {
+      // check that this is not already in the array
+      if (! [array containsObject:str]) {
+        NSMutableArray *mutable = [[array mutableCopy] autorelease];
+        [mutable addObject:str];
+        [self setKeywords:mutable];
+      }
     }
   }
-}
-
-- (NSString *)stringValue {
-  // convenient for unit testing
-  NSString *keywordsStr = [GDataMediaKeywords stringFromKeywords:keywords_];
-  return keywordsStr;
 }
 
 #pragma mark Utilities
@@ -149,25 +105,24 @@
 + (NSArray *)keywordsFromString:(NSString *)commaSeparatedString {
   // split the words into strings at the commas
   NSArray *rawWordArray = [commaSeparatedString componentsSeparatedByString:@","];
-  
-  NSEnumerator *wordEnum = [rawWordArray objectEnumerator];
+
+  NSMutableArray *keywordArray = nil;
   NSString *word;
-  NSMutableArray *keywordArray = [NSMutableArray array];
-  
-  // trim each word in the array, and if a trimmed word is non-empty,
-  // add it to the array
-  while ((word = [wordEnum nextObject]) != nil) {
+  GDATA_FOREACH(word, rawWordArray) {
+
+    // trim each word in the array, and if a trimmed word is non-empty,
+    // add it to the array
     NSString *trimmedWord = [GDataMediaKeywords trimString:word];
     if ([trimmedWord length] > 0) {
-      [keywordArray addObject:trimmedWord]; 
+
+      if (keywordArray == nil) {
+        keywordArray = [NSMutableArray array];
+      }
+      [keywordArray addObject:trimmedWord];
     }
   }
-  
-  // return only non-empty arrays
-  if ([keywordArray count] > 0) {
-    return keywordArray; 
-  }
-  return nil;
+
+  return keywordArray;
 }
 
 + (NSString *)stringFromKeywords:(NSArray *)keywords {

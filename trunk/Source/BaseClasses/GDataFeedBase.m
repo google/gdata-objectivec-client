@@ -666,7 +666,7 @@ forCategoryWithScheme:scheme
   entries_ = nil;
 
   if (entries != nil) {
-    entries_ = [[NSMutableArray alloc] init];
+    entries_ = [[NSMutableArray alloc] initWithCapacity:[entries count]];
 
     GDataObject* entry;
 
