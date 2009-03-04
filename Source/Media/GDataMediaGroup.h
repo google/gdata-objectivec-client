@@ -73,11 +73,6 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 
 + (id)mediaGroup;
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
-
 // extension setters/getters
 
 - (NSArray *)mediaCategories;

@@ -18,30 +18,21 @@
 //
 
 #import "GDataObject.h"
-
+#import "GDataValueConstruct.h"
 // like <media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaKeywords : GDataObject <NSCopying, GDataExtension> {
-  NSMutableArray *keywords_;
-}
+@interface GDataMediaKeywords : GDataValueElementConstruct <NSCopying, GDataExtension>
 
+// array of strings
 + (GDataMediaKeywords *)keywordsWithStrings:(NSArray *)array;
 
-// convenience function taking keywords as a comma-separated list in a
-// single string
+// comma-separated list in a single string
 + (GDataMediaKeywords *)keywordsWithString:(NSString *)str;
-
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent;
-
-- (NSXMLElement *)XMLElement;
 
 - (NSArray *)keywords;
 - (void)setKeywords:(NSArray *)array;
 - (void)addKeyword:(NSString *)keyword;
-
-- (NSString *)stringValue; // comma-separated, for convenience of unit testing
 
 // convenience utilities
 

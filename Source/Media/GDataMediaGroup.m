@@ -67,66 +67,43 @@
   
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
-   [GDataMediaContent class], [GDataMediaCategory class],
-   [GDataMediaCredit class], [GDataMediaDescription class],
-   [GDataMediaPlayer class], [GDataMediaRating class],
-   [GDataMediaRestriction class], [GDataMediaThumbnail class],
-   [GDataMediaKeywords class], [GDataMediaTitle class], 
+   [GDataMediaContent class],
+   [GDataMediaCategory class],
+   [GDataMediaCredit class],
+   [GDataMediaDescription class],
+   [GDataMediaPlayer class],
+   [GDataMediaRating class],
+   [GDataMediaRestriction class],
+   [GDataMediaThumbnail class],
+   [GDataMediaKeywords class],
+   [GDataMediaTitle class],
    nil];  
   
   // still unsupported:
   // MediaCopyright, MediaHash, MediaText
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-  }
-  return self;
-}
-
-- (void)dealloc {
-  [super dealloc];
-}
-
-- (id)copyWithZone:(NSZone *)zone {
-  GDataMediaGroup* newObj = [super copyWithZone:zone];
-  return newObj;
-}
-
-- (BOOL)isEqual:(GDataMediaGroup *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataMediaGroup class]]) return NO;
-  
-  return [super isEqual:other];
-}
-
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [NSMutableArray array];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaCategories] withName:@"categories"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaContents] withName:@"contents"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaCredits] withName:@"credits"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaThumbnails] withName:@"thumbnails"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaKeywords] withName:@"keywords"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaDescription] withName:@"description"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaPlayers] withName:@"players"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaRatings] withName:@"ratings"];
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaTitle] withName:@"title"];
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"categories",  @"mediaCategories",  kGDataDescArrayDescs   },
+    { @"contents",    @"mediaContents",    kGDataDescArrayDescs   },
+    { @"credits",     @"mediaCredits",     kGDataDescArrayDescs   },
+    { @"thumbnails",  @"mediaThumbnails",  kGDataDescArrayDescs   },
+    { @"keywords",    @"mediaKeywords",    kGDataDescValueLabeled },
+    { @"description", @"mediaDescription", kGDataDescValueLabeled },
+    { @"players",     @"mediaPlayers",     kGDataDescArrayDescs   },
+    { @"ratings",     @"mediaRatings",     kGDataDescArrayDescs   },
+    { @"title",       @"mediaTitle",       kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
-
-- (NSXMLElement *)XMLElement {
-
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"media:group"];
-  return element;
-}
 
 #pragma mark -
 
