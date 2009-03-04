@@ -967,6 +967,7 @@
 		4F1AD90C0B71607400DC0485 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Tests/main.m; sourceTree = "<group>"; };
 		4F1AD9830B71659E00DC0485 /* GDataFeedGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedGoogleBase.m; path = Clients/GoogleBase/GDataFeedGoogleBase.m; sourceTree = "<group>"; };
 		4F1AD9870B7165A700DC0485 /* GDataFeedGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedGoogleBase.h; path = Clients/GoogleBase/GDataFeedGoogleBase.h; sourceTree = "<group>"; };
+		4F1C06D90F5F225D002597A6 /* FeedCalendarEventTest0.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedCalendarEventTest0.xml; path = Tests/FeedCalendarEventTest0.xml; sourceTree = "<group>"; };
 		4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryACL.h; path = ACL/GDataEntryACL.h; sourceTree = "<group>"; };
 		4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryACL.m; path = ACL/GDataEntryACL.m; sourceTree = "<group>"; };
 		4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedACL.h; path = ACL/GDataFeedACL.h; sourceTree = "<group>"; };
@@ -1982,6 +1983,7 @@
 			isa = PBXGroup;
 			children = (
 				4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */,
+				4F1C06D90F5F225D002597A6 /* FeedCalendarEventTest0.xml */,
 				4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */,
 			);
 			name = Calendar;

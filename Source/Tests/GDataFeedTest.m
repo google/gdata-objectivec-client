@@ -270,7 +270,7 @@
     
     
     //
-    // CalendarEntries Feed
+    // CalendarEvent Feed
     //
     { @"GDataFeedCalendarEvent", @"Tests/FeedCalendarEventTest1.xml" },
     
@@ -333,6 +333,37 @@
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
     
+    { @"", @"" }, // end of feed
+
+    //
+    // CalendarEvent Feed with no entries
+    //
+    { @"GDataFeedCalendarEvent", @"Tests/FeedCalendarEventTest0.xml" },
+
+    // GDataFeedCalendarEvent paths
+    { @"title", @"Fred Flintstone" },
+    { @"subtitle", @"Fred Flintstone" },
+    { @"links.0.rel", kGDataLinkRelFeed },
+    { @"links.2.rel", @"self" },
+    { @"authors.0.name", @"Fred Flintstone" },
+    { @"authors.0.email", @"fred@gmail.com" },
+    { @"identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
+    { @"namespaces.gCal", kGDataNamespaceGCal },
+
+    { @"generator.URI", @"http://www.google.com/calendar" },
+    { @"generator.name", @"Google Calendar" },
+    { @"generator.version", @"1.0" },
+    { @"startIndex", @"1" },
+    { @"itemsPerPage", @"100000" },
+    { @"timeZoneName", @"America/Los_Angeles" },
+    { @"timesCleaned", @"7" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // GDataEntryCalendarEvent paths
+    { @"entries.@count", @"0" },
+
     { @"", @"" }, // end of feed
 
     { nil, nil } // end of test array
@@ -1702,6 +1733,33 @@
   };
 
   [self runTests:tests];
+}
+
+- (void)testDetachedEntries {
+
+  // get a feed, retain the entries, release the feed, then verify that the
+  // entries are usable with the feed itself gone
+
+  NSData *data = [NSData dataWithContentsOfFile:@"Tests/FeedCalendarEventTest1.xml"];
+  STAssertNotNil(data, @"Cannot read feed for detach test");
+
+  // create the feed object
+  GDataFeedBase *feed = [[GDataFeedCalendarEvent alloc] initWithData:data
+                                                      serviceVersion:@"2.1"
+                                                shouldIgnoreUnknowns:NO];
+  STAssertNotNil(feed, @"Cannot make detaching feed");
+
+  NSArray *entries = [[[feed entries] retain] autorelease];
+  STAssertTrue([entries count] > 0, @"Feed lacks entries to detach");
+
+  [feed release];
+
+  GDataEntryBase *firstEntry = [entries objectAtIndex:0];
+  NSString *title = [[firstEntry title] stringValue];
+  STAssertEqualObjects(title, @"3 days", @"testing an element in a detached entry");
+
+  NSString *titleType = [[firstEntry title] type];
+  STAssertEqualObjects(titleType, @"text", @"testing an attribute in a detached entry");
 }
 
 @end

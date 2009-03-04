@@ -189,7 +189,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 }
 
 - (void)setupFromXMLElement:(NSXMLElement *)root {
-  
+
+  // we'll parse the generator manually rather than declare it to be an
+  // extension so that it won't be compared in isEquals: for the feed
   [self setGenerator:[self objectForChildOfElement:root
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
@@ -205,16 +207,24 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
             @"initing a feed from a non-feed element (%@)", [root name]);
   
   // create entries of the proper class from each "entry" element
-  NSArray *entries = [self objectsForChildrenOfElement:root
-                                         qualifiedName:@"entry"
-                                          namespaceURI:kGDataNamespaceAtom
-                                           objectClass:entryClass];
-  [self setEntries:entries];
+  id entryObj = [self objectOrArrayForChildrenOfElement:root
+                                          qualifiedName:@"entry"
+                                           namespaceURI:kGDataNamespaceAtom
+                                            objectClass:entryClass];
+  if ([entryObj isKindOfClass:[NSArray class]]) {
+
+    // save the array
+    [self setEntries:entryObj];
+
+  } else if (entryObj != nil) {
+
+    // save the object into an array
+    [self addEntry:entryObj];
+  }
 }
 
 
 - (void)dealloc {
-  
   [generator_ release];
   [entries_ release];
 
@@ -649,18 +659,22 @@ forCategoryWithScheme:scheme
 }
 
 - (void)setEntriesWithEntries:(NSArray *)entries {
-  
+
   // make an array containing copies of the entries with this feed
   // as the parent of each entry copy
   [entries_ autorelease];
-  entries_ = [[NSMutableArray alloc] init];
+  entries_ = nil;
 
-  GDataObject* entry;
-  
-  GDATA_FOREACH(entry, entries) {
-    GDataEntryBase *entryCopy = [[entry copy] autorelease]; // clears parent in copy
-    [entryCopy setParent:self];
-    [entries_ addObject:entryCopy];
+  if (entries != nil) {
+    entries_ = [[NSMutableArray alloc] init];
+
+    GDataObject* entry;
+
+    GDATA_FOREACH(entry, entries) {
+      GDataEntryBase *entryCopy = [[entry copy] autorelease]; // clears parent in copy
+      [entryCopy setParent:self];
+      [entries_ addObject:entryCopy];
+    }
   }
 }
 

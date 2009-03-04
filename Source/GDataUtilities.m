@@ -187,23 +187,31 @@
 
 + (NSMutableDictionary *)mutableDictionaryWithCopiesOfArraysInDictionary:(NSDictionary *)source {
 
-  // The extensions dictionary maps classes to arrays of extension objects.
+  // Copy a dictionary that has arrays as its values
   //
-  // We want to copy each extension object in each array.
+  // We want to copy each object in each array.
 
   if (source == nil) return nil;
 
+  Class arrayClass = [NSArray class];
+  
   // Using CFPropertyListCreateDeepCopy would be nice, but it fails on non-plist
   // classes of objects
 
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  NSEnumerator *keyEnum = [source keyEnumerator];
-  NSArray *key;
-  while ((key = [keyEnum nextObject]) != nil) {
-    NSMutableArray *origArray = [source objectForKey:key];
-    NSMutableArray *copyArray = [self mutableArrayWithCopiesOfObjectsInArray:origArray];
+  id key;
+  GDATA_FOREACH_KEY(key, source) {
 
-    [dict setObject:copyArray forKey:key];
+    id origObj = [source objectForKey:key];
+    id copyObj;
+
+    if ([origObj isKindOfClass:arrayClass]) {
+
+      copyObj = [self mutableArrayWithCopiesOfObjectsInArray:origObj];
+    } else {
+      copyObj = [[origObj copy] autorelease];
+    }
+    [dict setObject:copyObj forKey:key];
   }
 
   return dict;
