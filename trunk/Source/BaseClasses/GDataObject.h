@@ -213,6 +213,10 @@ typedef struct GDataDescriptionRecord {
 
   // list of attributes to be parsed for each class
   NSMutableDictionary *attributeDeclarationsCache_;
+  
+  // list of attributes to be parsed for this class (points strongly into the
+  // attribute declarations cache)
+  NSMutableArray *attributeDeclarations_;
 
   // arrays of actual extension elements found for this element, keyed by extension class
   NSMutableDictionary *extensions_;
@@ -487,10 +491,10 @@ forCategoryWithScheme:(NSString *)scheme
   
 // this creates an array of objects of the specified class for each XML child 
 // element with the specified name
-- (NSMutableArray *)objectsForChildrenOfElement:(NSXMLElement *)parentElement
-                                  qualifiedName:(NSString *)qualifiedName
-                                   namespaceURI:(NSString *)namespaceURI
-                                    objectClass:(Class)objectClass;
+- (id)objectOrArrayForChildrenOfElement:(NSXMLElement *)parentElement
+                          qualifiedName:(NSString *)qualifiedName
+                           namespaceURI:(NSString *)namespaceURI
+                            objectClass:(Class)objectClass;
 
 // childOfElement:withName returns the element with the name, or nil of there 
 // are not exactly one of the element
@@ -567,6 +571,9 @@ childWithStringValueIfNonEmpty:(NSString *)str
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
      childWithValuePropertyIfNonNil:(id)value
                    withName:(NSString *)name;
+
+- (void)addToElement:(NSXMLElement *)element
+ XMLElementForObject:(id)object;
 
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects;

@@ -31,6 +31,12 @@ Changes
 - For performance, unknown elements and attributes are now removed from
   GDataObjects by comparing only object pointers, not the underlying XML.
 
+- To improve parsing performance, GDataObject extension declarations are cached
+  rather than duplicated in each object.
+
+- To reduce memory usage, GDataObject extensions are stored in arrays only
+  when there is more than one instance of an extension class.
+
 - GDataOrganization setters now filter out empty string org names and titles.
 
 - Contacts sample updated to optionally fetch only the MyContacts group.

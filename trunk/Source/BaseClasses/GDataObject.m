@@ -68,6 +68,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 - (NSMutableDictionary *)attributeDeclarationsCache;
 
 // array of attribute declarations for the current class, from the cache
+- (void)setAttributeDeclarations:(NSArray *)array;
 - (NSMutableArray *)attributeDeclarations;
 
 - (void)parseAttributesForElement:(NSXMLElement *)element;
@@ -226,6 +227,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     NSArray *prevAttrDecls = [attributeDeclarationsCache_ objectForKey:currClass];
     if (prevAttrDecls == nil) {
       [self addParseDeclarations];
+      // if any parse declarations are added, attributeDeclarations_ will be set
+      // to the cached copy of this object's attribute decls
+    } else {
+      GDATA_DEBUG_ASSERT(attributeDeclarations_ == nil, @"attrDecls previously set");
+      attributeDeclarations_ = [prevAttrDecls retain];
     }
 
     [self parseExtensionsForElement:element];
@@ -317,10 +323,10 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self attributes]];
   [newObject setAttributes:attributes];
   
-  // extension and attribute declarations are immutable, so the declarations
-  // themselves don't need to be deep copied
-  [newObject setExtensionDeclarationsCache:[self extensionDeclarationsCache]];
-  [newObject setAttributeDeclarationsCache:[self attributeDeclarationsCache]];
+  [newObject setAttributeDeclarations:[self attributeDeclarations]];
+  // we copy the attribute declarations, which are retained by this object,
+  // but we do not copy not the caches of extension or attribute declarations,
+  // as those will be invalid once the top parent is released
 
   // a marker in the attributes cache indicates the content value and
   // and child XML declaration settings
@@ -361,6 +367,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [namespaces_ release];
   [extensionDeclarationsCache_ release];
   [attributeDeclarationsCache_ release];
+  [attributeDeclarations_ release];
   [extensions_ release];
   [attributes_ release];
   [contentValue_ release];
@@ -481,10 +488,21 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSMutableDictionary *)attributeDeclarationsCache {
+  // warning: rely on this only during parsing; it will not be safe if the
+  //          top parent is no longer allocated
   if (attributeDeclarationsCache_) {
     return attributeDeclarationsCache_;
   }
   return [[self parent] attributeDeclarationsCache];
+}
+
+- (void)setAttributeDeclarations:(NSArray *)array {
+  [attributeDeclarations_ autorelease];
+  attributeDeclarations_ = [array mutableCopy];
+}
+
+- (NSMutableArray *)attributeDeclarations {
+  return attributeDeclarations_;
 }
 
 - (void)setAttributes:(NSDictionary *)dict {
@@ -511,6 +529,8 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSMutableDictionary *)extensionDeclarationsCache {
+  // warning: rely on this only during parsing; it will not be safe if the
+  //          top parent is no longer allocated
   if (extensionDeclarationsCache_) {
     return extensionDeclarationsCache_;
   }
@@ -670,19 +690,21 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (void)addExtensionsToElement:(NSXMLElement *)element {
   // extensions are in a dictionary of arrays, keyed by the class
   // of each kind of element
-  
+
   // note: this adds actual extensions, not declarations
-  
   NSDictionary *extensions = [self extensions];
-  NSArray *classKeys = [extensions allKeys];
-  if (classKeys) {
-    
-    // step through each extension, by class, and add those
-    // objects to the XML element
-    Class oneClass;
-    GDATA_FOREACH(oneClass, classKeys) {
-      NSArray *objects = [self objectsForExtensionClass:oneClass];
-      [self addToElement:element XMLElementsForArray:objects];
+
+  // step through each extension, by class, and add those
+  // objects to the XML element
+  Class oneClass;
+  GDATA_FOREACH_KEY(oneClass, extensions) {
+
+    id objectOrArray = [extensions_ objectForKey:oneClass];
+
+    if ([objectOrArray isKindOfClass:[NSArray class]]) {
+      [self addToElement:element XMLElementsForArray:objectOrArray];
+    } else {
+      [self addToElement:element XMLElementForObject:objectOrArray];
     }
   }
 }
@@ -843,33 +865,40 @@ childWithStringValueIfNonEmpty:(NSString *)str
   return nil;
 }
 
-// call the XMLElement method of each GData object in the array 
+// call the object's XMLElement method, and add the result as a new XML child
+// element
+- (void)addToElement:(NSXMLElement *)element
+ XMLElementForObject:(id)object {
+
+  if ([object isKindOfClass:[GDataAttribute class]]) {
+
+    // attribute extensions are not GDataObjects and don't implement
+    // XMLElement; we just get the attribute value from them
+    NSString *str = [object stringValue];
+    NSString *qName = [self qualifiedNameForExtensionClass:[object class]];
+    NSString *theURI = [[object class] extensionElementURI];
+
+    [self addToElement:element
+attributeValueIfNonNil:str
+     withQualifiedName:qName
+                   URI:theURI];
+
+  } else {
+    // element extension
+    NSXMLElement *child = [object XMLElement];
+    if (child) {
+      [element addChild:child];
+    }
+  }
+}
+
+// call the XMLElement method for each object in the array
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects {
-  
+
   id item;
   GDATA_FOREACH(item, arrayOfGDataObjects) {
-    
-    if ([item isKindOfClass:[GDataAttribute class]]) {
-      
-      // attribute extensions are not GDataObjects and don't implement 
-      // XMLElement; we just get the attribute value from them
-      NSString *str = [item stringValue];
-      NSString *qName = [self qualifiedNameForExtensionClass:[item class]];
-      NSString *theURI = [[item class] extensionElementURI];
-      
-      [self addToElement:element 
-  attributeValueIfNonNil:str
-       withQualifiedName:qName
-                     URI:theURI];
-      
-    } else {
-      // element extension
-      NSXMLElement *child = [item XMLElement];
-      if (child) {
-        [element addChild:child];
-      }
-    }
+    [self addToElement:element XMLElementForObject:item];
   }
 }
 
@@ -1011,9 +1040,14 @@ objectDescriptionIfNonNil:(id)obj
     // add the qualified XML name for each extension, followed by (n) when
     // there is more than one instance
     NSString *qname = [self qualifiedNameForExtensionClass:extClass];
-    NSArray *instances = [extensions_ objectForKey:extClass];
-    NSUInteger numberOfInstances = [instances count];
 
+    // there's one instance of this extension, unless the value is an array
+    NSUInteger numberOfInstances = 1;
+    id extnObj = [extensions_ objectForKey:extClass];
+    if ([extnObj isKindOfClass:[NSArray class]]) {
+      numberOfInstances = [extnObj count];
+    }
+    
     if (numberOfInstances == 1) {
       [extnsItems addObject:qname];
     } else {
@@ -1181,29 +1215,30 @@ objectDescriptionIfNonNil:(id)obj
   return matchingChildren;
 }
 
-// creates an array of GDataObjects of the specified class for each XML
+// returns a GDataObject or an array of them of the specified class for each XML
 // child element with the specified name
 //
 // If objectClass is nil, the class is looked up from the registrations
 // of entry and feed classes.
 
-- (NSMutableArray *)objectsForChildrenOfElement:(NSXMLElement *)parentElement
-                                  qualifiedName:(NSString *)qualifiedName
-                                   namespaceURI:(NSString *)namespaceURI
-                                    objectClass:(Class)objectClass {
-  NSMutableArray *objects = [NSMutableArray array];
-  
+- (id)objectOrArrayForChildrenOfElement:(NSXMLElement *)parentElement
+                          qualifiedName:(NSString *)qualifiedName
+                           namespaceURI:(NSString *)namespaceURI
+                            objectClass:(Class)objectClass {
+  id result = nil;
+  BOOL isResultAnArray = NO;
+
   NSArray *objElements = nil;
-  
+
   NSString *localName = [NSXMLNode localNameForName:qualifiedName];
   if (![localName isEqual:@"*"]) {
-    
+
     // searching for an actual element name (not a wildcard)
     objElements = [self elementsForName:qualifiedName
                            namespaceURI:namespaceURI
                           parentElement:parentElement];
   }
-  
+
   else {
     // we weren't given a local name, so get all objects for this namespace
     // URI's prefix
@@ -1211,48 +1246,81 @@ objectDescriptionIfNonNil:(id)obj
     if ([prefixSought length] == 0) {
       prefixSought = [parentElement resolvePrefixForNamespaceURI:namespaceURI];
     }
-    
+
     if (prefixSought) {
       objElements = [self childrenOfElement:parentElement
                                  withPrefix:prefixSought];
     }
   }
-  
+
+  // if we're creating entries, we'll use an autorelease pool around each
+  // allocation, just to bound overall pool size.  We'll check the class
+  // of the first created object to determine if we want pools.
+  BOOL hasCheckedObjectClass = NO;
+  BOOL useLocalAutoreleasePool = NO;
+  Class entryBaseClass = [GDataEntryBase class];
+
   // step through all child elements and create an appropriate GData object
   NSXMLElement *objElement;
   GDATA_FOREACH(objElement, objElements) {
-    
+
     Class elementClass = objectClass;
     if (elementClass == nil) {
       // if the object is a feed or an entry, we might be able to determine the
       // type for this element from the XML
       elementClass = [GDataObject objectClassForXMLElement:objElement];
-      
+
       // if a base feed class doesn't specify entry class, and the entry object
-      // class can't be determined by examining its XML, fall back on 
+      // class can't be determined by examining its XML, fall back on
       // instantiating the base entry class
-      if (elementClass == nil 
-        && [qualifiedName isEqual:@"entry"] 
+      if (elementClass == nil
+        && [qualifiedName isEqual:@"entry"]
         && [namespaceURI isEqual:kGDataNamespaceAtom]) {
-        
-        elementClass = [GDataEntryBase class];
+
+        elementClass = entryBaseClass;
       }
     }
-    
+
     elementClass = [self classOrSurrogateForClass:elementClass];
 
-    id obj = [[[elementClass alloc] initWithXMLElement:objElement
-                                                parent:self] autorelease];
+    NSAutoreleasePool *pool = nil;
+
+    if (!hasCheckedObjectClass) {
+      useLocalAutoreleasePool = [elementClass isSubclassOfClass:entryBaseClass];
+      hasCheckedObjectClass = YES;
+    }
+
+    if (useLocalAutoreleasePool) {
+      pool = [[NSAutoreleasePool alloc] init];
+    }
+
+    id obj = [[elementClass alloc] initWithXMLElement:objElement
+                                               parent:self];
+    [pool release];
+    pool = nil;
+
+    [obj autorelease];
+
     if (obj) {
-      [objects addObject:obj];
+      if (result == nil) {
+        // first result
+        result = obj;
+      } else if (!isResultAnArray) {
+        // second result; create an array with the previous and the new result
+        result = [NSMutableArray arrayWithObjects:result, obj, nil];
+        isResultAnArray = YES;
+      } else {
+        // third or later result
+        [result addObject:obj];
+      }
     }
   }
-  
+
   // remove these elements from the unknown list
   [self handleParsedElements:objElements];
-  return objects;
-}
 
+  return result;
+}
 
 // childOfElement:withName returns the element with the name, or nil if there 
 // are not exactly one of the element.  Pass "*" wildcards for name and URI
@@ -1296,18 +1364,30 @@ objectDescriptionIfNonNil:(id)obj
 #pragma mark element parsing
 
 - (void)handleParsedElement:(NSXMLNode *)element {
-  if (element) {
+  if (unknownChildren_ != nil && element != nil) {
     [unknownChildren_ removeObjectIdenticalTo:element];
+
+    if ([unknownChildren_ count] == 0) {
+      [unknownChildren_ release];
+      unknownChildren_ = nil;
+    }
   }
 }
 
 - (void)handleParsedElements:(NSArray *)array {
-  // rather than use NSMutableArray's removeObjects:, it's faster to iterate and
-  // and use removeObjectIdenticalTo: since it avoids comparing the underlying
-  // XML for equality
-  NSXMLNode* element;
-  GDATA_FOREACH(element, array) {
-    [unknownChildren_ removeObjectIdenticalTo:element]; 
+  if (unknownChildren_ != nil) {
+    // rather than use NSMutableArray's removeObjects:, it's faster to iterate and
+    // and use removeObjectIdenticalTo: since it avoids comparing the underlying
+    // XML for equality
+    NSXMLNode* element;
+    GDATA_FOREACH(element, array) {
+      [unknownChildren_ removeObjectIdenticalTo:element]; 
+    }
+
+    if ([unknownChildren_ count] == 0) {
+      [unknownChildren_ release];
+      unknownChildren_ = nil;
+    }
   }
 }
 
@@ -1316,25 +1396,35 @@ objectDescriptionIfNonNil:(id)obj
   //    NSString *result = [element stringValue];
   // but that recursively descends children to build the string
   // so we'll just walk the remaining nodes and build the string ourselves
-  
-  if (element == nil) {
-    return nil; 
-  }
-  
-  NSMutableString *result = [NSMutableString string];
 
-  // consider all text child nodes used to make this string value to now be known
+  if (element == nil) {
+    return nil;
+  }
+
+  NSString *result = nil;
+
+  // consider all text child nodes used to make this string value to now be
+  // known
+  //
+  // in most cases, there is only one text node, so we'll optimize for that
   NSArray *children = [element children];
   NSXMLNode *childNode;
 
   GDATA_FOREACH(childNode, children) {
     if ([childNode kind] == NSXMLTextKind) {
-      [result appendString:[childNode stringValue]];
+
+      NSString *newNodeString = [childNode stringValue];
+
+      if (result == nil) {
+        result = newNodeString;
+      } else {
+        result = [result stringByAppendingString:newNodeString];
+      }
       [self handleParsedElement:childNode];
     }
   }
-  
-  return result;
+
+  return (result != nil ? result : @"");
 }
 
 - (GDataDateTime *)dateTimeFromElement:(NSXMLElement *)element {
@@ -1364,8 +1454,13 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)handleParsedAttribute:(NSXMLNode *)attribute {
   
-  if (attribute) {
+  if (unknownAttributes_ != nil && attribute != nil) {
     [unknownAttributes_ removeObjectIdenticalTo:attribute];
+
+    if ([unknownAttributes_ count] == 0) {
+      [unknownAttributes_ release];
+      unknownAttributes_ = nil;
+    }
   }
 }
 
@@ -1593,18 +1688,37 @@ objectDescriptionIfNonNil:(id)obj
 
 // objectsForExtensionClass: returns the array of all
 // extension objects of the specified class, or nil
+//
+// this is typically called by the getter methods of subclasses
+
 - (NSArray *)objectsForExtensionClass:(Class)theClass {
-  return [extensions_ objectForKey:theClass];
+  id obj = [extensions_ objectForKey:theClass];
+  if (obj == nil) return nil;
+
+  if ([obj isKindOfClass:[NSArray class]]) {
+    return obj;
+  }
+
+  return [NSArray arrayWithObject:obj];
 }
 
-// objectForExtensionClass: returns the first element of the array
-// of extension objects of the specified class, or nil
+// objectForExtensionClass: returns the first element of
+// any extension objects of the specified class, or nil
+//
+// this is typically called by the getter methods of subclasses
+
 - (id)objectForExtensionClass:(Class)theClass {
-  NSArray *array = [extensions_ objectForKey:theClass];
-  if ([array count] > 0) {    
-    return [array objectAtIndex:0]; 
+  id obj = [extensions_ objectForKey:theClass];
+
+  if ([obj isKindOfClass:[NSArray class]]) {
+    if ([obj count] > 0) {
+      return [obj objectAtIndex:0];
+    }
+    // an empty array
+    return nil;
   }
-  return nil;
+
+  return obj;
 }
 
 // attributeValueForExtensionClass: returns the value of the first object of 
@@ -1646,56 +1760,107 @@ objectDescriptionIfNonNil:(id)obj
   return name;
 }
 
-// replace all actual extensions of the specified class
-- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class {
-  if (extensions_ == nil) {
-    extensions_ = [[NSMutableDictionary alloc] init]; 
-  }
-  
-  if (objects) {
-    // be sure each object has an element name so we can generate XML for it
-    for (unsigned int idx = 0; idx < [objects count]; idx++) {
-      GDataObject *obj = [objects objectAtIndex:idx];
-      if ([obj isKindOfClass:[GDataObject class]]
-          && [[obj elementName] length] == 0) {
+- (void)ensureObject:(GDataObject *)obj hasXMLNameForExtensionClass:(Class)class {
+  // utility routine for setObjects:forExtensionClass:
+  if ([obj isKindOfClass:[GDataObject class]]
+      && [[obj elementName] length] == 0) {
 
-        NSString *name = [self qualifiedNameForExtensionClass:class];
-        [obj setElementName:name]; 
-      }
-    }
-    
-    [extensions_ setObject:objects
-                    forKey:class];  
-  } else {
-    [extensions_ removeObjectForKey:class]; 
+    NSString *name = [self qualifiedNameForExtensionClass:class];
+    [obj setElementName:name];
   }
 }
 
-// replace all actual extensions of the specified class 
-- (void)setObject:(id)object forExtensionClass:(Class)class {
-  if (object) {
-    [self setObjects:[NSMutableArray arrayWithObject:object]
-   forExtensionClass:class];
+// replace all actual extensions of the specified class with an array
+//
+// this is typically called by the setter methods of subclasses
+
+- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class {
+
+  GDATA_DEBUG_ASSERT([objects isKindOfClass:[NSArray class]], @"array expected");
+
+  if (extensions_ == nil && objects != nil) {
+    extensions_ = [[NSMutableDictionary alloc] init];
+  }
+
+  if (objects) {
+    // be sure each object has an element name so we can generate XML for it
+    GDataObject *obj;
+    GDATA_FOREACH(obj, objects) {
+      [self ensureObject:obj hasXMLNameForExtensionClass:class];
+    }
+    [extensions_ setObject:objects forKey:class];
   } else {
-    [self setObjects:nil 
-   forExtensionClass:class];
+    [extensions_ removeObjectForKey:class];
+  }
+}
+
+// replace all actual extensions of the specified class with a single object
+//
+// this is typically called by the setter methods of subclasses
+
+- (void)setObject:(id)object forExtensionClass:(Class)class {
+
+  GDATA_DEBUG_ASSERT(![object isKindOfClass:[NSArray class]], @"array unexpected");
+
+  if (extensions_ == nil && object != nil) {
+    extensions_ = [[NSMutableDictionary alloc] init];
+  }
+
+  if (object) {
+    [self ensureObject:object hasXMLNameForExtensionClass:class];
+    [extensions_ setObject:object forKey:class];
+  } else {
+    [extensions_ removeObjectForKey:class];
   }
 }
 
 // add an extension of the specified class
-- (void)addObject:(id)object forExtensionClass:(Class)class {
-  NSMutableArray *array = [extensions_ objectForKey:class];
-  if (array) {
-    [array addObject:object]; 
+//
+// this is typically called by addObject methods of subclasses
+
+- (void)addObject:(id)newObj forExtensionClass:(Class)class {
+
+  if (newObj == nil) return;
+
+  id previousObjOrArray = [extensions_ objectForKey:class];
+  if (previousObjOrArray) {
+
+    if ([previousObjOrArray isKindOfClass:[NSArray class]]) {
+
+      // add to the existing array
+      [self ensureObject:newObj hasXMLNameForExtensionClass:class];
+      [previousObjOrArray addObject:newObj];
+
+    } else {
+
+      // create an array with the previous object and the new object
+      NSMutableArray *array = [NSMutableArray arrayWithObjects:
+                               previousObjOrArray, newObj, nil];
+      [extensions_ setObject:array forKey:class];
+    }
   } else {
-    [self setObject:object forExtensionClass:class]; 
+
+    // no previous object
+    [self setObject:newObj forExtensionClass:class];
   }
 }
 
 // remove a known extension of the specified class
+//
+// this is typically called by removeObject methods of subclasses
+
 - (void)removeObject:(id)object forExtensionClass:(Class)class {
-  NSMutableArray *array = [extensions_ objectForKey:class];
-  [array removeObject:object]; 
+  id previousObjOrArray = [extensions_ objectForKey:class];
+  if ([previousObjOrArray isKindOfClass:[NSArray class]]) {
+
+    // remove from the array
+    [previousObjOrArray removeObject:object];
+
+  } else if ([object isEqual:previousObjOrArray]) {
+
+    // no array, so remove if it matches the sole object
+    [extensions_ removeObjectForKey:class];
+  }
 }
 
 // addUnknownChildNodesForElement: is called by initWithXMLElement.  It builds
@@ -1703,26 +1868,19 @@ objectDescriptionIfNonNil:(id)obj
 // parseExtensionsForElement and objectForChildOfElement.
 - (void)addUnknownChildNodesForElement:(NSXMLElement *)element {
 
-  [unknownChildren_ release];
-  unknownChildren_ = nil;
-
-  [unknownAttributes_ release];
-  unknownAttributes_ = nil;
+  GDATA_DEBUG_ASSERT(unknownChildren_ == nil, @"unknChildren added twice");
+  GDATA_DEBUG_ASSERT(unknownAttributes_ == nil, @"unknAttr added twice");
 
   if (!shouldIgnoreUnknowns_) {
 
     NSArray *children = [element children];
-    if (children != nil) {
+    if ([children count] > 0) {
       unknownChildren_ = [[NSMutableArray alloc] initWithArray:children];
-    } else {
-      unknownChildren_ = [[NSMutableArray alloc] init];
     }
 
     NSArray *attributes = [element attributes];
-    if (attributes != nil) {
+    if ([attributes count] > 0) {
       unknownAttributes_ = [[NSMutableArray alloc] initWithArray:attributes];
-    } else {
-      unknownAttributes_ = [[NSMutableArray alloc] init];
     }
   }
 }
@@ -1763,6 +1921,7 @@ objectDescriptionIfNonNil:(id)obj
   // allow wildcard lookups
   [childLocalNames addObject:@"*"];
 #endif
+  Class arrayClass = [NSArray class];
 
   for (GDataObject * currentExtensionSupplier = self;
        currentExtensionSupplier != nil;
@@ -1792,7 +1951,7 @@ objectDescriptionIfNonNil:(id)obj
             NSString *namespaceURI = [extensionClass extensionElementURI];
             NSString *qualifiedName = [self qualifiedNameForExtensionClass:extensionClass];
             
-            NSArray *objects = nil;
+            id objectOrArray = nil;
             
             if ([decl isAttribute]) {
               // parse for an attribute extension
@@ -1801,19 +1960,27 @@ objectDescriptionIfNonNil:(id)obj
               if (str) {
                 id attr = [[[extensionClass alloc] init] autorelease];
                 [attr setStringValue:str];
-                objects = [NSArray arrayWithObject:attr];
+                objectOrArray = attr;
               }
               
             } else {
               // parse for an element extension
-              objects = [self objectsForChildrenOfElement:element
-                                            qualifiedName:qualifiedName
-                                             namespaceURI:namespaceURI
-                                              objectClass:extensionClass];
+              objectOrArray = [self objectOrArrayForChildrenOfElement:element
+                                                        qualifiedName:qualifiedName
+                                                         namespaceURI:namespaceURI
+                                                          objectClass:extensionClass];
             }
-            
-            if ([objects count] > 0) {
-              [self setObjects:objects forExtensionClass:extensionClass];
+
+            if ([objectOrArray isKindOfClass:arrayClass]) {
+              if ([objectOrArray count] > 0) {
+
+                // save the non-empty array of extensions
+                [self setObjects:objectOrArray forExtensionClass:extensionClass];
+              }
+            } else if (objectOrArray != nil) {
+
+              // save the single extension
+              [self setObject:objectOrArray forExtensionClass:extensionClass];
             }
           }
         }
@@ -1824,28 +1991,23 @@ objectDescriptionIfNonNil:(id)obj
 
 #pragma mark Local Attributes 
 
-// utility routine for getting declared attributes for this class
-- (NSMutableArray *)attributeDeclarations {
-
-  // get the declarations for this class
-  Class currClass = [self class];
-  NSMutableDictionary *cache = [self attributeDeclarationsCache];
-  NSMutableArray *decls = [cache objectForKey:currClass];
-  return decls;
-}
-
 - (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames {
   
   // get or make the array which caches the attribute declarations for
   // this class
-  Class currClass = [self class];
-  NSMutableDictionary *cache = [self attributeDeclarationsCache];
-  GDATA_DEBUG_ASSERT(cache != nil, @"missing attrDeclsCache");
+  if (attributeDeclarations_ == nil) {
 
-  NSMutableArray *attributeDeclarations = [cache objectForKey:currClass];
-  if (attributeDeclarations == nil) {
-    attributeDeclarations = [NSMutableArray array];
-    [cache setObject:attributeDeclarations forKey:currClass];
+    Class currClass = [self class];
+    NSMutableDictionary *cache = [self attributeDeclarationsCache];
+    GDATA_DEBUG_ASSERT(cache != nil, @"missing attrDeclsCache");
+
+    // we keep a strong pointer to the array in the cache since the cache
+    // belongs to the feed or the topmost parent, and that may go away
+    attributeDeclarations_ = [[cache objectForKey:currClass] retain];
+    if (attributeDeclarations_ == nil) {
+      attributeDeclarations_ = [[NSMutableArray alloc] init];
+      [cache setObject:attributeDeclarations_ forKey:currClass];
+    }
   }
   
 #if DEBUG
@@ -1862,19 +2024,20 @@ objectDescriptionIfNonNil:(id)obj
   }
 #endif
   
-  [attributeDeclarations addObjectsFromArray:attributeLocalNames];
+  [attributeDeclarations_ addObjectsFromArray:attributeLocalNames];
 }
 
 - (void)addAttributeDeclarationMarker:(NSString *)marker {
 
-  NSMutableArray *attributeDeclarations = [self attributeDeclarations];
+  if (![attributeDeclarations_ containsObject:marker]) {
 
-  if (![attributeDeclarations containsObject:marker]) {
     // add the marker
-    if (attributeDeclarations != nil) {
+    if (attributeDeclarations_ != nil) {
+
       // no need to create the cache
-      [attributeDeclarations addObject:marker];
+      [attributeDeclarations_ addObject:marker];
     } else {
+
       // create the cache by calling addLocalAttributeDeclarations:
       NSArray *array = [NSArray arrayWithObject:marker];
       [self addLocalAttributeDeclarations:array];
