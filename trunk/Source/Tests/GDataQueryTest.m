@@ -122,6 +122,7 @@
   [queryCal setMaxResults:20];
   [queryCal setMinimumStartTime:dateTime1];
   [queryCal setMaximumStartTime:dateTime2];
+  [queryCal setShouldShowInlineComments:YES];
   
   NSURL* resultURLC1 = [queryCal URL];
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
@@ -135,12 +136,14 @@
   [queryCal2 setShouldQueryAllFutureEvents:YES];
   [queryCal2 setShouldExpandRecurrentEvents:YES];
   [queryCal2 setCurrentTimeZoneName:@"America/Los Angeles"];
-  
+  [queryCal2 setShouldShowInlineComments:NO];
+
   NSURL* resultURLC2 = [queryCal2 URL];
   NSString *expectedC2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
     "ctz=America%2FLos_Angeles&futureevents=true&"
     "recurrence-expansion-end=2006-03-29T07%3A35%3A59Z&"
-    "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&singleevents=true";
+    "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&"
+    "showinlinecomments=false&singleevents=true";
   STAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
   
 }

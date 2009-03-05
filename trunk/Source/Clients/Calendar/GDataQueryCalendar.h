@@ -46,6 +46,9 @@
 - (BOOL)shouldExpandRecurrentEvents;
 - (void)setShouldExpandRecurrentEvents:(BOOL)dateTime;
 
+- (BOOL)shouldShowInlineComments;
+- (void)setShouldShowInlineComments:(BOOL)flag;
+
 - (NSString *)currentTimeZoneName;
 - (void)setCurrentTimeZoneName:(NSString *)str;
   

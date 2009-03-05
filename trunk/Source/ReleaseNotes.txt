@@ -11,6 +11,8 @@ Additions
 
 - Added YouTube user event activity classes
 
+- Added Calendar guest elements and inlinecomments query parameter
+
 Changes
 
 - Calendar now defaults to service version 2.1, which slightly changes

@@ -89,6 +89,30 @@ _EXTERN NSString* const kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 + (NSString *)extensionElementLocalName;
 @end
 
+@interface GDataGuestsCanModifyProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataGuestsCanInviteOthersProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataGuestsCanSeeGuestsProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataAnyoneCanAddSelfProperty : GDataBoolValueConstruct <GDataExtension>
++ (NSString *)extensionElementURI;
++ (NSString *)extensionElementPrefix;
++ (NSString *)extensionElementLocalName;
+@end
+
 // CalendarEventEntry categories for extensions
 @interface GDataWho (GDataCalendarEntryEventExtensions)
 - (NSArray *)resourceProperties;
@@ -125,6 +149,18 @@ _EXTERN NSString* const kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 
 - (NSString *)iCalUID;
 - (void)setICalUID:(NSString *)str;
+
+- (BOOL)canGuestsModify; // default NO
+- (void)setCanGuestsModify:(BOOL)flag;
+
+- (BOOL)canGuestsInviteOthers; // default YES
+- (void)setCanGuestsInviteOthers:(BOOL)flag;
+
+- (BOOL)canGuestsSeeGuests; // default YES
+- (void)setCanGuestsSeeGuests:(BOOL)flag;
+
+- (BOOL)canAnyoneAddSelf; // default NO
+- (void)setCanAnyoneAddSelf:(BOOL)flag;  
 
 - (NSNumber *)sequenceNumber; // int
 - (void)setSequenceNumber:(NSNumber *)num;
