@@ -39,6 +39,10 @@ Changes
 - To reduce memory usage, GDataObject extensions are stored in arrays only
   when there is more than one instance of an extension class.
 
+- To reduce memory usage, GDataXMLNode now caches all generated NSStrings,
+  and returns nil instead of empty arrays on getters. This may deviate from
+  NSXML semantics of returning empty arrays.
+
 - GDataOrganization setters now filter out empty string org names and titles.
 
 - Contacts sample updated to optionally fetch only the MyContacts group.
