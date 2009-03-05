@@ -131,7 +131,7 @@
 // reliance on NSEnumerator for 10.4
 //
 #ifndef GDATA_FOREACH
-  #if defined(TARGET_OS_IPHONE) || MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+  #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
     #define GDATA_FOREACH(element, collection) \
       for (element in collection)
     #define GDATA_FOREACH_KEY(key, dict) \
