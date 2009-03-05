@@ -324,12 +324,20 @@
     { @"entries.0.locations.0.rel", nil },
     { @"entries.0.sequenceNumber", @"2" },
     { @"entries.0.iCalUID", @"4A24A0FF-EA3A-4839-AA09-F4283CB6D345" },
+    { @"entries.0.canGuestsModify", @"0" },
+    { @"entries.0.canGuestsInviteOthers", @"0" },
+    { @"entries.0.canGuestsSeeGuests", @"0" },
+    { @"entries.0.canAnyoneAddSelf", @"0" },
     { @"entries.1.recurrence", @"hasPrefix:DTSTART;VALUE=DATE:20061120" },
     { @"entries.1.reminders.0.minutes", @"10" },
     { @"entries.1.isDeleted", @"0" },
     { @"entries.3.locations.0", @"Seattle" },
     { @"entries.3.isDeleted", @"1" },
-        
+    { @"entries.3.canGuestsModify", @"1" },
+    { @"entries.3.canGuestsInviteOthers", @"1" },
+    { @"entries.3.canGuestsSeeGuests", @"1" },
+    { @"entries.3.canAnyoneAddSelf", @"1" },
+    
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
     

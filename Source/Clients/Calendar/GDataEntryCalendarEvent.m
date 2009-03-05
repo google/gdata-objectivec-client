@@ -70,6 +70,30 @@
 + (NSString *)extensionElementLocalName { return @"uid"; }
 @end
 
+@implementation GDataGuestsCanModifyProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"guestsCanModify"; }
+@end
+
+@implementation GDataGuestsCanInviteOthersProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"guestsCanInviteOthers"; }
+@end
+
+@implementation GDataGuestsCanSeeGuestsProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"guestsCanSeeGuests"; }
+@end
+
+@implementation GDataAnyoneCanAddSelfProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"anyoneCanAddSelf"; }
+@end
+
 // CalendarEventEntry categories for extensions
 @implementation GDataWho (GDataCalendarEntryEventExtensions)
 - (NSArray *)resourceProperties {
@@ -143,8 +167,12 @@
    [GDataSyncEventProperty class],
    [GDataSequenceProperty class],
    [GDataICalUIDProperty class],
+   [GDataGuestsCanModifyProperty class],
+   [GDataGuestsCanInviteOthersProperty class],
+   [GDataGuestsCanSeeGuestsProperty class],
+   [GDataAnyoneCanAddSelfProperty class],
    nil];
-
+  
   [self addExtensionDeclarationForParentClass:[GDataWho class]
                                    childClass:[GDataResourceProperty class]];
   [self addExtensionDeclarationForParentClass:[GDataLink class]
@@ -162,6 +190,10 @@
     { @"iCalUID",                @"iCalUID",                      kGDataDescValueLabeled   },
     { @"sequenceNumber",         @"sequenceNumber",               kGDataDescValueLabeled   },
     { @"webContent",             @"webContent.URLString",         kGDataDescValueLabeled   },
+    { @"guestsCanModify",        @"canGuestsModify",              kGDataDescBooleanPresent },
+    { @"guestsCanInvite",        @"canGuestsInviteOthers",        kGDataDescBooleanPresent },
+    { @"guestsCanSeeGuests",     @"canGuestsSeeGuests",           kGDataDescBooleanPresent },
+    { @"anyoneCanAddSelf",       @"canAnyoneAddSelf",             kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
   
@@ -249,6 +281,78 @@
     obj = nil; 
   }
   [self setObject:obj forExtensionClass:[GDataICalUIDProperty class]];
+}
+
+- (BOOL)canGuestsModify { // default NO
+  GDataBoolValueConstruct *obj;
+
+  obj = [self objectForExtensionClass:[GDataGuestsCanModifyProperty class]];
+  return [obj boolValue];
+}
+
+- (void)setCanGuestsModify:(BOOL)flag {
+  GDataBoolValueConstruct *obj;
+  if (flag) {
+    obj = [GDataGuestsCanModifyProperty boolValueWithBool:YES];
+  } else {
+    obj = nil; // removes the extension
+  }
+  [self setObject:obj forExtensionClass:[GDataGuestsCanModifyProperty class]];
+}
+
+- (BOOL)canGuestsInviteOthers { // default YES
+  GDataBoolValueConstruct *obj;
+
+  obj = [self objectForExtensionClass:[GDataGuestsCanInviteOthersProperty class]];
+  if (obj) return [obj boolValue];
+
+  return YES;
+}
+
+- (void)setCanGuestsInviteOthers:(BOOL)flag {
+  GDataBoolValueConstruct *obj;
+  if (flag) {
+    obj = nil; // removes the extension
+  } else {
+    obj = [GDataGuestsCanInviteOthersProperty boolValueWithBool:NO];
+  }
+  [self setObject:obj forExtensionClass:[GDataGuestsCanInviteOthersProperty class]];
+}
+
+- (BOOL)canGuestsSeeGuests { // default YES
+  GDataBoolValueConstruct *obj;
+
+  obj = [self objectForExtensionClass:[GDataGuestsCanSeeGuestsProperty class]];
+  if (obj) return [obj boolValue];
+
+  return YES;
+}
+
+- (void)setCanGuestsSeeGuests:(BOOL)flag {
+  GDataBoolValueConstruct *obj;
+  if (flag) {
+    obj = nil; // removes the extension
+  } else {
+    obj = [GDataGuestsCanSeeGuestsProperty boolValueWithBool:NO];
+  }
+  [self setObject:obj forExtensionClass:[GDataGuestsCanSeeGuestsProperty class]];
+}
+
+- (BOOL)canAnyoneAddSelf { // default NO
+  GDataBoolValueConstruct *obj;
+
+  obj = [self objectForExtensionClass:[GDataAnyoneCanAddSelfProperty class]];
+  return [obj boolValue];
+}
+
+- (void)setCanAnyoneAddSelf:(BOOL)flag {
+  GDataBoolValueConstruct *obj;
+  if (flag) {
+    obj = [GDataAnyoneCanAddSelfProperty boolValueWithBool:YES];
+  } else {
+    obj = nil; // removes the extension
+  }
+  [self setObject:obj forExtensionClass:[GDataAnyoneCanAddSelfProperty class]];
 }
 
 - (NSNumber *)sequenceNumber {

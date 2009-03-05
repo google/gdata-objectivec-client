@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.6 (370 classes) 2009-03-02 13:53:32 -0800
+// com.google.GDataFramework v. 1.6 (374 classes) 2009-03-05 15:00:47 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -27,6 +27,7 @@
   #define GDataAccessLevelProperty             _GDATA_NS_SYMBOL(GDataAccessLevelProperty)
   #define GDataACLRole                         _GDATA_NS_SYMBOL(GDataACLRole)
   #define GDataACLScope                        _GDATA_NS_SYMBOL(GDataACLScope)
+  #define GDataAnyoneCanAddSelfProperty        _GDATA_NS_SYMBOL(GDataAnyoneCanAddSelfProperty)
   #define GDataAtomAccept                      _GDATA_NS_SYMBOL(GDataAtomAccept)
   #define GDataAtomAccept1_0                   _GDATA_NS_SYMBOL(GDataAtomAccept1_0)
   #define GDataAtomAuthor                      _GDATA_NS_SYMBOL(GDataAtomAuthor)
@@ -203,6 +204,9 @@
   #define GDataGoogleBaseMetadataItemType      _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataItemType)
   #define GDataGoogleBaseMetadataValue         _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataValue)
   #define GDataGroupMembershipInfo             _GDATA_NS_SYMBOL(GDataGroupMembershipInfo)
+  #define GDataGuestsCanInviteOthersProperty   _GDATA_NS_SYMBOL(GDataGuestsCanInviteOthersProperty)
+  #define GDataGuestsCanModifyProperty         _GDATA_NS_SYMBOL(GDataGuestsCanModifyProperty)
+  #define GDataGuestsCanSeeGuestsProperty      _GDATA_NS_SYMBOL(GDataGuestsCanSeeGuestsProperty)
   #define GDataHiddenProperty                  _GDATA_NS_SYMBOL(GDataHiddenProperty)
   #define GDataHTTPFetcher                     _GDATA_NS_SYMBOL(GDataHTTPFetcher)
   #define GDataICalUIDProperty                 _GDATA_NS_SYMBOL(GDataICalUIDProperty)

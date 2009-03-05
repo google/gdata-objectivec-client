@@ -29,6 +29,7 @@ static NSString *const kRecurrenceExpansionEndTimeParamName  = @"recurrence-expa
 static NSString *const kFutureEventsParamName  = @"futureevents";
 static NSString *const kSingleEventsParamName = @"singleevents";
 static NSString *const kCurrentTimeZoneParamName = @"ctz";
+static NSString *const kShowInlineCommentsParamName = @"showinlinecomments";
 
 @implementation GDataQueryCalendar
 
@@ -104,6 +105,17 @@ static NSString *const kCurrentTimeZoneParamName = @"ctz";
   [self addCustomParameterWithName:kSingleEventsParamName
                          boolValue:flag
                       defaultValue:NO];
+}
+
+- (BOOL)shouldShowInlineComments {
+  return [self boolValueForParameterWithName:kShowInlineCommentsParamName
+                                defaultValue:YES];
+}
+
+- (void)setShouldShowInlineComments:(BOOL)flag {
+  [self addCustomParameterWithName:kShowInlineCommentsParamName
+                         boolValue:flag
+                      defaultValue:YES];
 }
 
 - (NSString *)currentTimeZoneName {
