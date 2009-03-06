@@ -1,15 +1,13 @@
 <?xml version="1.0" ?>
-<feed xmlns="http://www.w3.org/2005/Atom" 
-      xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
-      xmlns:gd="http://schemas.google.com/g/2005" >
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:docs="http://schemas.google.com/docs/2007"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     <id>http://docs.google.com/feeds/documents/private/full</id>
     <title type="text">Available Documents - test@domain.net</title>
     <link href="http://docs.google.com" rel="alternate" type="text/html"/>
-    <link
-        href="http://docs.google.com/feeds/documents/private/full"
+    <link href="http://docs.google.com/feeds/documents/private/full"
         rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
-    <link
-        href="http://docs.google.com/feeds/documents/private/full"
+    <link href="http://docs.google.com/feeds/documents/private/full"
         rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
     <link
         href="http://docs.google.com/feeds/documents/private/full?max-results=1000"
@@ -22,8 +20,7 @@
         <id>http://docs.google.com/feeds/documents/private/full/document%3Ad3mjx28_1d9k4sg</id>
         <title type="text">the hi mom doc</title>
         <content
-            src="http://docs.google.com/RawDocContents?action=fetch&amp;justBody=false&amp;revision=_latest&amp;editMode=false&amp;docID=d3mjx28_1d9k4sg" 
-            type="text/html"/>
+            src="http://docs.google.com/RawDocContents?action=fetch&amp;justBody=false&amp;revision=_latest&amp;editMode=false&amp;docID=d3mjx28_1d9k4sg" type="text/html"/>
         <updated>2007-07-27T01:22:43Z</updated>
         <link href="http://docs.google.com/Doc?id=d3mjx28_1d9k4sg"
             rel="alternate" type="text/html"/>
@@ -36,6 +33,16 @@
         </author>
         <category label="document"
             scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#document"/>
+        <gd:resourceId>spreadsheet:pmEMxYRcQzzATwbOb71BmGA</gd:resourceId>
+        <gd:lastModifiedBy>
+            <name>Fred Flintstone</name>
+            <email>test@domain.net</email>
+        </gd:lastModifiedBy>
+        <gd:lastViewed>2008-10-01T23:54:56.557Z</gd:lastViewed>
+        <gd:quotaBytesUsed>12345</gd:quotaBytesUsed>
+        <docs:writersCanInvite value="true"/>
+        <category label="hidden"
+            scheme="http://schemas.google.com/g/2005/labels" term="http://schemas.google.com/g/2005/labels#hidden"/>
     </entry>
     <entry>
         <id>http://docs.google.com/feeds/documents/private/full/spreadsheet%3Ap73g0ZxwICDptJYjDRBPoBg</id>
@@ -109,8 +116,7 @@
             <email>test@domain.net</email>
         </author>
         <gd:feedLink
-            href="http://docs.google.com/feeds/acl/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38" 
-            rel="http://schemas.google.com/acl/2007#accessControlList"/>
+            href="http://docs.google.com/feeds/acl/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38" rel="http://schemas.google.com/acl/2007#accessControlList"/>
     </entry>
     <entry>
         <id>http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e</id>
@@ -135,7 +141,6 @@
             <email>test@domain.net</email>
         </author>
         <gd:feedLink
-            href="http://docs.google.com/feeds/acl/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" 
-            rel="http://schemas.google.com/acl/2007#accessControlList"/>
+            href="http://docs.google.com/feeds/acl/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" rel="http://schemas.google.com/acl/2007#accessControlList"/>
     </entry>
 </feed>

@@ -72,7 +72,13 @@
 
   // ACL feed URL is in a gd:feedLink
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataFeedLink class]];
+                                 childClasses:
+   [GDataFeedLink class],
+   [GDataLastViewed class],
+   [GDataWritersCanInvite class],
+   [GDataLastModifiedBy class],
+   [GDataQuotaBytesUsed class],
+   nil];
 }
 
 - (NSMutableArray *)itemsForDescription {
