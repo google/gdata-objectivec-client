@@ -17,12 +17,19 @@
 //  GDataQueryDocument.m
 //
 
+#define GDATAQUERYDOCS_DEFINE_GLOBALS 1
 #import "GDataQueryDocs.h"
 
-static NSString *const kTitleParamName  = @"title";
-static NSString *const kExactTitleParamName  = @"title-exact";
-static NSString *const kParentFolderParamName  = @"folder";
-static NSString *const kShowFoldersParamName  = @"showfolders";
+static NSString *const kTitleParamName = @"title";
+static NSString *const kExactTitleParamName = @"title-exact";
+static NSString *const kParentFolderParamName = @"folder";
+static NSString *const kShowFoldersParamName = @"showfolders";
+static NSString *const kOwnerParamName = @"owner";
+static NSString *const kReaderParamName = @"reader";
+static NSString *const kWriterParamName = @"writer";
+static NSString *const kOpenedMinParamName = @"opened-min";
+static NSString *const kOpenedMaxParamName = @"opened-max";
+
 
 @implementation GDataQueryDocs
 
@@ -70,4 +77,48 @@ static NSString *const kShowFoldersParamName  = @"showfolders";
                       defaultValue:NO];
 }
 
+- (void)setOwner:(NSString *)str {
+  [self addCustomParameterWithName:kOwnerParamName value:str];
+}
+
+- (NSString *)owner {
+  NSString *str = [self valueForParameterWithName:kOwnerParamName];
+  return str;
+}
+
+- (void)setReader:(NSString *)str {
+  [self addCustomParameterWithName:kReaderParamName value:str];
+}
+
+- (NSString *)reader {
+  NSString *str = [self valueForParameterWithName:kReaderParamName];
+  return str;
+}
+
+- (void)setWriter:(NSString *)str {
+  [self addCustomParameterWithName:kWriterParamName value:str];
+}
+
+- (NSString *)writer {
+  NSString *str = [self valueForParameterWithName:kWriterParamName];
+  return str;
+}
+
+- (void)setOpenedMinDateTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kOpenedMinParamName
+                          dateTime:dateTime];
+}
+
+- (GDataDateTime *)openedMinDateTime {
+  return [self dateTimeForParameterWithName:kOpenedMinParamName];
+}
+
+- (void)setOpenedMaxDateTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kOpenedMaxParamName
+                          dateTime:dateTime];
+}
+
+- (GDataDateTime *)openedMaxDateTime {
+  return [self dateTimeForParameterWithName:kOpenedMaxParamName];
+}
 @end

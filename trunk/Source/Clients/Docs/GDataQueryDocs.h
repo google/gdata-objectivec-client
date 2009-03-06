@@ -20,6 +20,23 @@
 // Document-specific query params, per 
 //   http://code.google.com/apis/document/reference.html#Parameters
 
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAQUERYDOCS_DEFINE_GLOBALS
+#define _EXTERN
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// sort orders
+_EXTERN NSString* const kGDataQueryDocsLastModified _INITIALIZE_AS(@"last-modified");
+_EXTERN NSString* const kGDataQueryDocsLastViewed   _INITIALIZE_AS(@"last-viewed");
+_EXTERN NSString* const kGDataQueryDocsTitle        _INITIALIZE_AS(@"title");
+_EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
+
+
 #import "GDataQuery.h"
 
 @interface GDataQueryDocs : GDataQuery 
@@ -38,5 +55,23 @@
 
 - (BOOL)shouldShowFolders;
 - (void)setShouldShowFolders:(BOOL)flag;
+
+// owner specified as an e-mail address
+- (void)setOwner:(NSString *)str;
+- (NSString *)owner;
+
+// reader and writer specified as an e-mail address or comma-separated list
+// of e-mail addresses
+- (void)setReader:(NSString *)str;
+- (NSString *)reader;
+
+- (void)setWriter:(NSString *)str;
+- (NSString *)writer;
+
+- (void)setOpenedMinDateTime:(GDataDateTime *)dateTime;
+- (GDataDateTime *)openedMinDateTime;
+
+- (void)setOpenedMaxDateTime:(GDataDateTime *)dateTime;
+- (GDataDateTime *)openedMaxDateTime;
 @end
 
