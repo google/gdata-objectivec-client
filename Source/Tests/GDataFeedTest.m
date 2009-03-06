@@ -1196,6 +1196,11 @@
     { @"entries.0.className", @"GDataEntryStandardDoc" },
     { @"entries.0.categories.0.term", @"http://schemas.google.com/docs/2007#document"},
     { @"entries.0.categories.0.label", @"document"},
+    { @"entries.0.lastViewed.date.timeIntervalSince1970", @"1222905296"},
+    { @"entries.0.writersCanInvite", @"1"},
+    { @"entries.0.lastModifiedBy.name", @"Fred Flintstone"},
+    { @"entries.0.quotaBytesUsed", @"12345"},
+    { @"entries.0.isHidden", @"1"},
 
     { @"entries.1.className", @"GDataEntrySpreadsheetDoc" },
     { @"entries.1.categories.0.term", @"http://schemas.google.com/docs/2007#spreadsheet"},
@@ -1210,6 +1215,7 @@
     { @"entries.3.categories.0.term", @"http://schemas.google.com/docs/2007#pdf"},
     { @"entries.3.categories.0.label", @"pdf"},
     { @"entries.3.isStarred", @"1"},
+    { @"entries.3.isHidden", @"0"},
     { @"entries.3.ACLFeedLink.href", @"contains:pdf54595c7b"},
     { @"entries.3.parentLinks.0.href", @"contains:cc5275b740e3" },
 
