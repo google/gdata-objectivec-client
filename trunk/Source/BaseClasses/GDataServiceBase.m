@@ -22,6 +22,10 @@
 #include <sys/utsname.h>
 #endif
 
+#if TARGET_OS_IPHONE
+#import <UIKit/UIKit.h>
+#endif
+
 #define GDATASERVICEBASE_DEFINE_GLOBALS 1
 #import "GDataServiceBase.h"
 #import "GDataProgressMonitorInputStream.h"

@@ -17,6 +17,8 @@
 //  GDataQueryDocument.h
 //
 
+#import "GDataQuery.h"
+
 // Document-specific query params, per 
 //   http://code.google.com/apis/document/reference.html#Parameters
 
@@ -36,8 +38,6 @@ _EXTERN NSString* const kGDataQueryDocsLastViewed   _INITIALIZE_AS(@"last-viewed
 _EXTERN NSString* const kGDataQueryDocsTitle        _INITIALIZE_AS(@"title");
 _EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
 
-
-#import "GDataQuery.h"
 
 @interface GDataQueryDocs : GDataQuery 
 
