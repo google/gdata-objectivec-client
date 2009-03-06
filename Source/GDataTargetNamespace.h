@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.6 (374 classes) 2009-03-05 15:00:47 -0800
+// com.google.GDataFramework v. 1.6 (378 classes) 2009-03-05 17:50:25 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -213,6 +213,8 @@
   #define GDataIM                              _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct          _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
   #define GDataInputStreamLogger               _GDATA_NS_SYMBOL(GDataInputStreamLogger)
+  #define GDataLastModifiedBy                  _GDATA_NS_SYMBOL(GDataLastModifiedBy)
+  #define GDataLastViewed                      _GDATA_NS_SYMBOL(GDataLastViewed)
   #define GDataLink                            _GDATA_NS_SYMBOL(GDataLink)
   #define GDataMarketValue                     _GDATA_NS_SYMBOL(GDataMarketValue)
   #define GDataMediaCategory                   _GDATA_NS_SYMBOL(GDataMediaCategory)
@@ -296,6 +298,7 @@
   #define GDataQuerySpreadsheet                _GDATA_NS_SYMBOL(GDataQuerySpreadsheet)
   #define GDataQueryYouTube                    _GDATA_NS_SYMBOL(GDataQueryYouTube)
   #define GDataQuickAddProperty                _GDATA_NS_SYMBOL(GDataQuickAddProperty)
+  #define GDataQuotaBytesUsed                  _GDATA_NS_SYMBOL(GDataQuotaBytesUsed)
   #define GDataRating                          _GDATA_NS_SYMBOL(GDataRating)
   #define GDataRecurrence                      _GDATA_NS_SYMBOL(GDataRecurrence)
   #define GDataRecurrenceException             _GDATA_NS_SYMBOL(GDataRecurrenceException)
@@ -359,6 +362,7 @@
   #define GDataWhen                            _GDATA_NS_SYMBOL(GDataWhen)
   #define GDataWhere                           _GDATA_NS_SYMBOL(GDataWhere)
   #define GDataWho                             _GDATA_NS_SYMBOL(GDataWho)
+  #define GDataWritersCanInvite                _GDATA_NS_SYMBOL(GDataWritersCanInvite)
   #define GDataYouTubeAboutMe                  _GDATA_NS_SYMBOL(GDataYouTubeAboutMe)
   #define GDataYouTubeAge                      _GDATA_NS_SYMBOL(GDataYouTubeAge)
   #define GDataYouTubeBooks                    _GDATA_NS_SYMBOL(GDataYouTubeBooks)
