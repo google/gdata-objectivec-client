@@ -16,13 +16,13 @@
 
 #import "GDataHTTPFetcherLogging.h"
 
+#if !STRIP_GDATA_FETCH_LOGGING
+
 #import "GDataProgressMonitorInputStream.h"
 
 // If logging isn't being stripped, make sure we have all the defines from
 // GDataDefines.h
-#if !STRIP_GDATA_FETCH_LOGGING
-  #import "GDataDefines.h"
-#endif
+#import "GDataDefines.h"
 
 @interface GDataInputStreamLogger : GDataProgressMonitorInputStream
 // GDataInputStreamLogger is wraps any NSInputStream used for
@@ -45,8 +45,9 @@
                    attributes:(NSDictionary *)attributes
                         error:(NSError **)error;
 @end
-#endif
+#endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 
+#endif  // !STRIP_GDATA_FETCH_LOGGING
 
 @implementation GDataHTTPFetcher (GDataHTTPFetcherLogging)
 
@@ -810,6 +811,7 @@ static NSString* gLoggingProcessName = nil;
 #endif // !STRIP_GDATA_FETCH_LOGGING
 @end
 
+#if !STRIP_GDATA_FETCH_LOGGING
 @implementation GDataInputStreamLogger
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
 
@@ -822,4 +824,4 @@ static NSString* gLoggingProcessName = nil;
   return result;
 }
 @end
-
+#endif // !STRIP_GDATA_FETCH_LOGGING

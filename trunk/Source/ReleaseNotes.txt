@@ -26,6 +26,9 @@ Changes
 - Release builds on iPhone now compile out the http logging code.
   Developers can set STRIP_GDATA_FETCH_LOGGING in their projects to control
   this behavior.
+  
+- The GDataXMLNode xml shim now registers the topmost namespaces for XPath
+  resolution.
 
 - Various internal refactoring for improved code readability and
   maintainability.
