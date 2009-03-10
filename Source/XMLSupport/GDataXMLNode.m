@@ -715,7 +715,34 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       
       // anchor at our current node
       xpathCtx->node = xmlNode_;
-      
+
+      // register the namespaces of this node, if it's an element, or of
+      // this node's root element, if it's a document
+      xmlNodePtr nsNodePtr = xmlNode_;
+      if (xmlNode_->type == XML_DOCUMENT_NODE) {
+        nsNodePtr = xmlDocGetRootElement((xmlDocPtr) xmlNode_);
+      }
+
+      // step through the namespaces, if any, and register each with the
+      // xpath context
+      if (nsNodePtr != NULL) {
+        for (xmlNsPtr nsPtr = nsNodePtr->ns; nsPtr != NULL; nsPtr = nsPtr->next) {
+
+          // default namespace is nil in the tree but an empty string when
+          // registering
+          const xmlChar* prefix = nsPtr->prefix;
+          if (prefix == NULL) prefix = (xmlChar*) "";
+
+          int result = xmlXPathRegisterNs(xpathCtx, prefix, nsPtr->href);
+          if (result != 0) {
+#if DEBUG
+            NSCAssert(result == 0, @"GDataXMLNode XPath namespace problem");
+#endif
+          }
+        }
+      }
+
+      // now evaluate the path
       xmlXPathObjectPtr xpathObj;
       xpathObj = xmlXPathEval(GDataGetXMLString(xpath), xpathCtx);
       if (xpathObj) {
@@ -1677,6 +1704,15 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       xmlDoc_->encoding = xmlStrdup(GDataGetXMLString(encoding));
     }
   }
+}
+
+- (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
+  if (xmlDoc_ != NULL) {
+    NSXMLNode *docNode = [GDataXMLElement nodeBorrowingXMLNode:(xmlNodePtr)xmlDoc_];
+    NSArray *array = [docNode nodesForXPath:xpath error:error];
+    return array;
+  }
+  return nil;
 }
 
 @end

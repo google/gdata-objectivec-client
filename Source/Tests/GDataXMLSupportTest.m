@@ -190,15 +190,7 @@
   
   // I'd like to test namespace-uri here, too, but that fails in NSXML's XPath
   NSXMLElement *root = [xmlDocument rootElement];
-#if GDATA_USES_LIBXML
-  // find category elements with the AtomPub URI or with no namespace
-  NSString *path = 
-  @"*[local-name()='category']"
-  "[namespace-uri()='http://www.w3.org/2005/Atom' or namespace-uri()='']";
-#else
-  // NSXML's XPath doesn't seem to deal with URI's properly
   NSString *path = @"*[local-name()='category']";
-#endif
   
   NSArray *nodes = [root nodesForXPath:path error:&error];
   STAssertEquals((int)[nodes count], 1, @"XPath count");

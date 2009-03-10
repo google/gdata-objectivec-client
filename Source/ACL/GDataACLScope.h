@@ -32,6 +32,7 @@
 _EXTERN NSString* const kGDataScopeTypeUser    _INITIALIZE_AS(@"user");
 _EXTERN NSString* const kGDataScopeTypeDomain  _INITIALIZE_AS(@"domain");
 _EXTERN NSString* const kGDataScopeTypeDefault _INITIALIZE_AS(@"default");
+_EXTERN NSString* const kGDataScopeTypeGroup   _INITIALIZE_AS(@"group");
 
 
 // an element with type and value attributes, as in

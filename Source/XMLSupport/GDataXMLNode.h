@@ -125,6 +125,8 @@ typedef NSUInteger GDataXMLNodeKind;
 + (NSString *)localNameForName:(NSString *)name;
 + (NSString *)prefixForName:(NSString *)name;
 
+// This implementation of nodesForXPath registers namespaces only from the
+// current node
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error;
 
 @end
@@ -168,6 +170,10 @@ typedef NSUInteger GDataXMLNodeKind;
 
 - (void)setVersion:(NSString *)version;
 - (void)setCharacterEncoding:(NSString *)encoding;
+
+// This implementation of nodesForXPath registers namespaces only from the
+// document's root node
+- (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error;
 
 - (NSString *)description;
 @end
