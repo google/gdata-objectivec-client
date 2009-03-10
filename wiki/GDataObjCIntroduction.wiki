@@ -59,7 +59,7 @@ With the source files compiled directly in your project, refer directly to the h
 
 For iPhone application development, follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
 
-Also add the GDataXMLNode.m and GDataXMLNode.h files to your project.
+Be sure to include the files GDataXMLNode.m and GDataXMLNode.h from the Common/Optional/XMLSupport group in your project.
 
 Finally, add these build settings needed by GDataXMLNode to your project or target:
 
