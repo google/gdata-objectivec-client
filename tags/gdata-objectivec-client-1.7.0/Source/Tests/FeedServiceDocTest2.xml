@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<app:service xmlns:app="http://www.w3.org/2007/app">
+    <app:workspace>
+        <atom:title xmlns:atom="http://www.w3.org/2005/Atom">fredflintstone workspace</atom:title>
+        <app:collection href="http://photos.googleapis.com/data/feed/api/user/fredflintstone%40gmail.com?v=2">
+            <atom:title xmlns:atom="http://www.w3.org/2005/Atom">filetypes</atom:title>
+            <app:accept>image/png</app:accept>
+            <app:accept>image/jpeg</app:accept>
+            <app:accept>image/gif</app:accept>
+            <app:accept>video/*</app:accept>
+            <app:accept>image/jpg</app:accept>
+        </app:collection>
+    </app:workspace>
+    <app:workspace>
+        <atom:title xmlns:atom="http://www.w3.org/2005/Atom">Second Workspace</atom:title>
+        <app:collection href="http://example.org/hrefcollection" xmlns:atom="http://www.w3.org/2005/Atom">
+            <atom:title>Remaindered Links</atom:title>
+            <app:accept>entry</app:accept>
+            <app:categories fixed="yes" scheme="bogusscheme" href="bogushref">
+                <atom:category scheme="http://example.org/extra-cats/" term="joke"/>
+                <atom:category scheme="http://example.org/extra-cats/" term="serious"/>
+            </app:categories>
+        </app:collection>
+    </app:workspace>
+</app:service>

@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {CLASS = CalendarSampleAppController; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = CalendarSampleWindowController; 
+            LANGUAGE = ObjC; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = ContactsSampleAppController; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}
