@@ -43,13 +43,23 @@ Rather than link to the GData framework, you can compile the GData library sourc
 
 You can delete the references to the client services (Calendar, Contacts, Spreadsheet, and so on) that are not needed by your application.
 
+
 If you compile the project's source files directly into your own project file, set this build setting:
 
  C Language Dialect: `C99 [-std=c99]`
 
-For just the Debug configuration of your target, add this compiler definition:
+Search the build settings for "c99" to find the setting. If it's not present as a build  option, and if a compile error requires c99, then set the equivalent user-defined setting:
+
+  `GCC_C_LANGUAGE_STANDARD=c99`
+
+For just the Debug configuration of your target, add this compiler definition to ensure that the library's debug-only code is included:
 
  Other C Flags: `-DDEBUG=1`
+
+Or, if the Other C Flags setting is not available in your target's build options, set the equivalent user-defined setting:
+
+  `OTHER_CFLAGS=-DDEBUG=1`
+
 
 With the source files compiled directly in your project, refer directly to the headers by omitting the framework name, like
 
@@ -59,7 +69,7 @@ With the source files compiled directly in your project, refer directly to the h
 
 For iPhone application development, follow the directions above to compile the source files directly into your own project. Do not try to build a separate framework to include in your iPhone application's Frameworks folder.
 
-Be sure to include the files GDataXMLNode.m and GDataXMLNode.h from the Common/Optional/XMLSupport group in your project.
+Be sure that the files GDataXMLNode.m and GDataXMLNode.h in the Common/Optional/XMLSupport group are included in your project.  They are required for iPhone builds.
 
 Finally, add these build settings needed by GDataXMLNode to your project or target:
 
