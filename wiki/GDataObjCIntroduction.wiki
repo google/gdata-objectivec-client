@@ -586,6 +586,8 @@ Debugging GData transactions is often easier when you can browse the XML being s
 
 to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugLogs in the current user's Desktop folder, though the path to another folder can be specified with the `+setLoggingDirectory:` method.
 
+In the iPhone simulator, the default logs location is the user's home directory. On the iPhone device, the default location is the application's documents folder on the device.
+
 To view the most recently saved logs, use a web browser to open the symlink named !My_App_Name_http_log_newest.html (for whatever your application's name is) in the logging directory.  Note that Camino and Firefox display XML in a more useful fashion than does Safari.
 
 == Optimizations for iPhone Applications ==
