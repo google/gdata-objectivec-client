@@ -51,8 +51,12 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataCategoryFilter *newFilter = [[[self class] allocWithZone:zone] init];
-  [newFilter setCategories:categories_];
-  [newFilter setExcludeCategories:excludeCategories_];
+
+  NSArray *catsCopy = [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:categories_];
+  [newFilter setCategories:catsCopy];
+
+  NSArray *excludeCatsCopy = [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:excludeCategories_];
+  [newFilter setExcludeCategories:excludeCatsCopy];
   return newFilter;
 }
 
@@ -65,14 +69,14 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   return categories_;  
 }
 
-- (void)setCategories:(NSArray *)categories {
-  [categories_ autorelease]; 
-  categories_ = [categories_ mutableCopy];
+- (void)setCategories:(NSArray *)array {
+  [categories_ autorelease];
+  categories_ = [array mutableCopy];
 }
 
 - (void)addCategory:(GDataCategory *)category {
   if (!categories_) {
-    categories_ = [[NSMutableArray alloc] init]; 
+    categories_ = [[NSMutableArray alloc] init];
   }
   
   [categories_ addObject:category];
@@ -82,9 +86,9 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   return excludeCategories_;  
 }
 
-- (void)setExcludeCategories:(NSArray *)excludeCategories {
-  [excludeCategories_ autorelease]; 
-  excludeCategories_ = [excludeCategories_ mutableCopy];
+- (void)setExcludeCategories:(NSArray *)array {
+  [excludeCategories_ autorelease];
+  excludeCategories_ = [array mutableCopy];
 }
 
 - (void)addExcludeCategory:(GDataCategory *)excludeCategory {

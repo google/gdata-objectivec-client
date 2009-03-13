@@ -404,6 +404,9 @@
   [categoryFilterA addCategory:cat];
   [categoryFilterA addExcludeCategory:excludeCat];
 
+  // test a copy of the category filter
+  categoryFilterA = [[categoryFilterA copy] autorelease];
+
   GDataCategoryFilter *categoryFilterB = [GDataCategoryFilter categoryFilter];
   [categoryFilterB addCategory:catB];
 
@@ -424,6 +427,9 @@
 
   // new parameter
   [query1 setStartIndex:10];
+  
+  // test a copy of the query
+  query1 = [[query1 copy] autorelease];
 
   NSURL *resultURL1 = [query1 URL];
   NSString *expectedStr1 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y&start-index=10";

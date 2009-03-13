@@ -107,9 +107,6 @@ static int kServerPortNumber = 54579;
   // from our own python http server
   service_ = [[GDataServiceGoogleSpreadsheet alloc] init];
   
-  // Set the UA to avoid logs during tests.
-  [service_ setUserAgent:@"GData-UnitTests-99.99"];
-  
   NSString *authDomain = [NSString stringWithFormat:@"localhost:%d", kServerPortNumber];  
   [service_ setSignInDomain:authDomain];
 }
@@ -125,6 +122,12 @@ static int kServerPortNumber = 54579;
   ticket_ = nil;
   
   retryCounter_ = 0;
+
+  // Set the UA to avoid log warnings during tests, except the first test,
+  // which will use an auto-generated user agent
+  if ([service_ userAgent] == nil) {
+    [service_ setUserAgent:@"GData-UnitTests-99.99"];
+  }
 }
 
 - (void)tearDown {
@@ -650,11 +653,17 @@ static int gFetchCounter = 0;
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   
   //
-  // test:  delete resource, successful auth
+  // test:  delete entry with ETag, successful auth
   //
   [self resetFetchResponse];
   
-  ticket_ = [service_ deleteAuthenticatedResourceURL:authEntryURL
+  GDataEntrySpreadsheetCell *entryToDelete = [GDataEntrySpreadsheetCell entry];
+  [entryToDelete addLink:[GDataLink linkWithRel:@"edit"
+                                           type:nil
+                                           href:[authFeedURL absoluteString]]];
+  [entryToDelete setETag:@"A0MCQHs-fyp7ImA9WxVVF0Q."];
+
+  ticket_ = [service_ deleteAuthenticatedEntry:entryToDelete
                                             delegate:self
                                    didFinishSelector:@selector(ticket:finishedWithObject:)
                                      didFailSelector:@selector(ticket:failedWithError:)];

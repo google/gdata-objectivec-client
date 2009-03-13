@@ -163,12 +163,11 @@ static NSString* const kRealmAttr = @"realm";
 
 - (void)setXMLValuesDictionary:(NSDictionary *)dict {
   
-  NSEnumerator *enumerator = [dict keyEnumerator];
-  NSString *key;
   NSMutableArray *nodes = [NSMutableArray array];
-  
+
   // replace the XML child elements with elements from the dictionary 
-  while ((key = [enumerator nextObject]) != nil) {
+  NSString *key;
+  GDATA_FOREACH_KEY(key, dict) {
     NSString *value = [dict objectForKey:key];
     NSXMLNode *node = [NSXMLNode elementWithName:key
                                      stringValue:value];

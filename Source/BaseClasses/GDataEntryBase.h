@@ -56,7 +56,7 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 + (NSDictionary *)baseGDataNamespaces;
 
-+ (GDataEntryBase *)entry;
++ (id)entry;
 
 // basic entry fields
 - (NSString *)identifier;

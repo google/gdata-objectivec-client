@@ -568,10 +568,6 @@ forCategoryWithScheme:(NSString *)scheme
 childWithStringValueIfNonEmpty:(NSString *)str
                    withName:(NSString *)name;
 
-- (NSXMLNode *)addToElement:(NSXMLElement *)element
-     childWithValuePropertyIfNonNil:(id)value
-                   withName:(NSString *)name;
-
 - (void)addToElement:(NSXMLElement *)element
  XMLElementForObject:(id)object;
 
