@@ -366,9 +366,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       // there is a stream
       
       // add the content-specific headers, if any
-      NSEnumerator *keyEnum = [contentHeaders keyEnumerator];
       NSString *key;
-      while ((key = [keyEnum nextObject]) != nil) {
+      GDATA_FOREACH_KEY(key, contentHeaders) {
         NSString *value = [contentHeaders objectForKey:key];
         [request setValue:value forHTTPHeaderField:key];
       }

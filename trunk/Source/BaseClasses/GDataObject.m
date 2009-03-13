@@ -458,10 +458,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     = [NSMutableDictionary dictionaryWithDictionary:namespaces_];
 
   NSDictionary *parentNamespaces = [parent_ completeNamespaces];
-  NSEnumerator *nsEnum = [namespaces_ keyEnumerator];
+
   NSString *prefix;
-  
-  while ((prefix = [nsEnum nextObject]) != nil) {
+  GDATA_FOREACH_KEY(prefix, namespaces_) {
     
     NSString *ownURI = [namespaces_ objectForKey:prefix]; 
     NSString *parentURI = [parentNamespaces objectForKey:prefix]; 
@@ -850,21 +849,6 @@ childWithStringValueIfNonEmpty:(NSString *)str
   return nil;
 }
 
-// adding a child containing a value= property
-- (NSXMLNode *)addToElement:(NSXMLElement *)element
-     childWithValuePropertyIfNonNil:(id)value
-                   withName:(NSString *)name {
-  
-  if (value) {
-    NSXMLElement *child = [NSXMLElement elementWithName:name];
-    [self addToElement:child attributeValueIfNonNil:value withName:@"value"];
-    
-    [element addChild:child];
-    return child;
-  }
-  return nil;
-}
-
 // call the object's XMLElement method, and add the result as a new XML child
 // element
 - (void)addToElement:(NSXMLElement *)element
@@ -963,8 +947,9 @@ attributeValueIfNonNil:str
 
       case kGDataDescNonZeroLength:
         // display the length if non-zero
-        if ([value length] > 0) {
-          str = [NSString stringWithFormat:@"#%lu", (unsigned long) [value length]];
+        if ([(NSData *)value length] > 0) {
+          str = [NSString stringWithFormat:@"#%lu",
+                 (unsigned long) [(NSData *)value length]];
           [self addToArray:items objectDescriptionIfNonNil:str withName:label];
         }
         break;
@@ -2206,8 +2191,7 @@ objectDescriptionIfNonNil:(id)obj
 - (void)addAttributesToElement:(NSXMLElement *)element {
   
   NSString *name;
-  NSEnumerator *enumerator = [attributes_ keyEnumerator];
-  while ((name = [enumerator nextObject]) != nil) {
+  GDATA_FOREACH_KEY(name, attributes_) {
     
     NSString *value = [attributes_ valueForKey:name];
     if (value != nil) {
