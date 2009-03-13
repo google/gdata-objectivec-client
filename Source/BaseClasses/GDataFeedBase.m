@@ -710,44 +710,42 @@ forCategoryWithScheme:scheme
 
 // convenience routines
 
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
+  
+  return [GDataLink linkWithRelAttributeValue:rel
+                                    fromLinks:[self links]];
+}
+
 - (GDataLink *)feedLink {
-  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelFeed
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelFeed];
 }
 
 - (GDataLink *)alternateLink {
-  return [GDataLink linkWithRelAttributeValue:@"alternate"
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:@"alternate"];
 }
 
 - (GDataLink *)relatedLink {
-  return [GDataLink linkWithRelAttributeValue:@"related"
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:@"related"];
 }
 
 - (GDataLink *)postLink {
-  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelPost
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelPost];
 }
 
 - (GDataLink *)batchLink {
-  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelBatch
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelBatch];
 }
 
 - (GDataLink *)selfLink {
-  return [GDataLink linkWithRelAttributeValue:@"self"
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:@"self"];
 }
 
 - (GDataLink *)nextLink {
-  return [GDataLink linkWithRelAttributeValue:@"next"
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:@"next"];
 }
 
 - (GDataLink *)previousLink {
-  return [GDataLink linkWithRelAttributeValue:@"previous"
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:@"previous"];
 }
 
 - (id)entryForIdentifier:(NSString *)str {

@@ -919,6 +919,16 @@
     { @"photoDescription", @"Album description" },
     { @"rights", @"public" },
     { @"categories.0.term", kGDataCategoryPhotosAlbum },
+    { @"feedLink.href", @"contains:albumid/5067143575034336993" },
+    { @"feedLink.rel", kGDataLinkRelFeed },
+    { @"postLink.href", @"contains:albumid/5067143575034336993" },
+    { @"postLink.rel", kGDataLinkRelPost },
+    { @"alternateLink.href", @"contains:/TestAlbM" },
+    { @"alternateLink.rel", @"alternate" },
+    { @"selfLink.href", @"contains:test%40testdomain.net/albumid/5067143575034336993?start-index=1" },
+    { @"selfLink.rel", @"self" },
+
+    { @"firstEntry.GPhotoID", @"5067143579329304306" },
 
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
@@ -957,6 +967,16 @@
 
     { @"entries.0.EXIFTags.tagDictionary.exposure", @"0.0080" },
     { @"entries.0.EXIFTags.tagDictionary.imageUniqueID", @"d8a9e8fd57a384d216f4b2a853d654fc" },
+
+    { @"entries.0.editMediaLink.href", @"contains:5067143579329304306" },
+    { @"entries.0.editMediaLink.type", @"image/jpeg" },
+    { @"entries.0.alternateLink.href", @"contains:photo#5067143579329304306" },
+    { @"entries.0.alternateLink.type", @"text/html" },
+    { @"entries.0.HTMLLink.href", @"contains:photo#5067143579329304306" },
+    { @"entries.0.selfLink.href", @"contains:photoid/5067143579329304306" },
+    { @"entries.0.selfLink.type", @"application/atom+xml" },
+    { @"entries.0.feedLink.href", @"contains:photoid/5067143579329304306" },
+    { @"entries.0.feedLink.type", @"application/atom+xml" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
@@ -1510,6 +1530,7 @@
     { @"entries.0.username", @"googletechtalks" },
     { @"entries.0.content.sourceURI", @"http://gdata.youtube.com/feeds/api/users/googletechtalks/uploads" },
     { @"entries.0.countHint", @"2" },
+    { @"entries.0.relatedLink.href", @"http://gdata.youtube.com/feeds/api/users/TestAccount" },
     
     { @"entries.1.youTubeQueryString", @"cute dogs" },
     { @"entries.1.playlistID", @"1sbd45" },

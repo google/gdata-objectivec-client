@@ -150,6 +150,8 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
 // convenience routines
 
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)rel;
+
 - (GDataLink *)feedLink;
 - (GDataLink *)alternateLink;
 - (GDataLink *)relatedLink;

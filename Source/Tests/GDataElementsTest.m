@@ -1308,6 +1308,87 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 #endif
 }
 
+- (void)testEntryInputStreams {
+
+  GDataEntryPhoto *entry = [GDataEntryPhoto photoEntry];
+
+  //
+  // test multi-part MIME stream with entry data and XML, and headers
+  //
+
+  const char *dataChars = "abcdefg";
+
+  NSData *data = [NSData dataWithBytes:dataChars length:strlen(dataChars)];
+  [entry setPhotoData:data];
+  [entry setPhotoMIMEType:@"image/jpeg"];
+  [entry setPhotoDescriptionWithString:@"cloud burst"];
+  [entry setUploadSlug:@"testfile.jpg"];
+
+  NSInputStream *inputStream = nil;
+  unsigned long long streamLength = 0;
+  NSDictionary *streamHeaders = nil;
+  BOOL gotStream = [entry generateContentInputStream:&inputStream
+                                              length:&streamLength
+                                             headers:&streamHeaders];
+  STAssertTrue(gotStream, @"generating multipart stream");
+
+  NSMutableData *streamData = [NSMutableData dataWithLength:streamLength];
+  [inputStream open];
+  [inputStream read:[streamData mutableBytes] maxLength:streamLength];
+  [inputStream close];
+
+  NSString *streamDataStr = [[[NSString alloc] initWithData:streamData
+                                                   encoding:NSUTF8StringEncoding] autorelease];
+
+  NSString *expectedXmlStr = [[entry XMLElement] XMLString];
+  NSString *expectedStr = [NSString stringWithFormat:
+       @"\r\n--END_OF_PART\r\nContent-Type: application/atom+xml; charset=UTF-8"
+       "\r\n\r\n%@\r\n"
+       "--END_OF_PART\r\nContent-Transfer-Encoding: binary\r\n"
+       "Content-Type: image/jpeg\r\n\r\n%s\r\n--END_OF_PART--\r\n",
+       expectedXmlStr, dataChars];
+
+  STAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data");
+
+  NSDictionary *expectedHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+               @"multipart/related; boundary=\"END_OF_PART\"", @"Content-Type",
+               @"1.0", @"MIME-Version",
+               @"testfile.jpg", @"Slug", nil];
+  STAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers");
+
+  //
+  // try again emitting only the data and headers, not the XML
+  //
+  [entry setShouldUploadDataOnly:YES];
+
+  inputStream = nil;
+  streamLength = 0;
+  streamHeaders = nil;
+  gotStream = [entry generateContentInputStream:&inputStream
+                                         length:&streamLength
+                                        headers:&streamHeaders];
+  STAssertTrue(gotStream, @"generating multipart stream");
+
+  streamData = [NSMutableData dataWithLength:streamLength];
+  [inputStream open];
+  [inputStream read:[streamData mutableBytes] maxLength:streamLength];
+  [inputStream close];
+
+  streamDataStr = [[[NSString alloc] initWithData:streamData
+                                         encoding:NSUTF8StringEncoding] autorelease];
+
+  expectedStr = [NSString stringWithUTF8String:dataChars];
+
+  STAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data 2");
+
+  expectedHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
+                     @"image/jpeg", @"Content-Type",
+                     @"1.0", @"MIME-Version",
+                     @"testfile.jpg", @"Slug", nil];
+
+  STAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers 2");
+}
+
 - (void)testChangedNamespace {
   
   // We'll allocate three objects which are equivalent except for 

@@ -675,8 +675,7 @@ forCategoryWithScheme:scheme
 }
 
 - (GDataLink *)postLink {
-  return [GDataLink linkWithRelAttributeValue:kGDataLinkRelPost
-                                    fromLinks:[self links]]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelPost];
 }
 
 - (GDataLink *)selfLink {
