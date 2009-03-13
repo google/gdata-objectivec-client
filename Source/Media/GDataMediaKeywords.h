@@ -22,7 +22,7 @@
 // like <media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>
 // http://search.yahoo.com/mrss
 
-@interface GDataMediaKeywords : GDataValueElementConstruct <NSCopying, GDataExtension>
+@interface GDataMediaKeywords : GDataValueElementConstruct <GDataExtension>
 
 // array of strings
 + (GDataMediaKeywords *)keywordsWithStrings:(NSArray *)array;

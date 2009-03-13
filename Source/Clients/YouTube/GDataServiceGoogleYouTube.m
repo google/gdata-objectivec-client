@@ -21,6 +21,7 @@
 #import "GDataServiceGoogleYouTube.h"
 
 #import "GDataEntryYouTubeVideo.h"
+#import "GDataQueryYouTube.h"
 
 // These routines are all simple wrappers around GDataServiceGoogle methods
 

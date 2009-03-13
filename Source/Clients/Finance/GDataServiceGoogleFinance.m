@@ -22,7 +22,7 @@
 #import "GDataServiceGoogleFinance.h"
 
 #import "GDataEntryFinancePortfolio.h"
-
+#import "GDataQueryFinance.h"
 
 @implementation GDataServiceGoogleFinance
 

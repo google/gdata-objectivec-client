@@ -68,8 +68,7 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 //   MediaText
 //   
 
-@interface GDataMediaGroup : GDataObject <NSCopying, GDataExtension> {
-}
+@interface GDataMediaGroup : GDataObject <GDataExtension>
 
 + (id)mediaGroup;
 

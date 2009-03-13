@@ -131,7 +131,7 @@
                                         didFinishSelector:(SEL)finishedSelector
                                           didFailSelector:(SEL)failedSelector {
   
-  if ([entryToInsert namespaces] == nil) {
+  if ([(GDataObject *) entryToInsert namespaces] == nil) {
     [(GDataObject *) entryToInsert setNamespaces:[GDataEntryContact contactNamespaces]]; 
   }
   
@@ -149,7 +149,7 @@
                                        didFinishSelector:(SEL)finishedSelector
                                          didFailSelector:(SEL)failedSelector {
   
-  if ([entryToUpdate namespaces] == nil) {
+  if ([(GDataObject *) entryToUpdate namespaces] == nil) {
     [(GDataObject *) entryToUpdate setNamespaces:[GDataEntryContact contactNamespaces]]; 
   }
   
