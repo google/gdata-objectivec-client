@@ -131,7 +131,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (NSString *)stringFromXMLString:(const xmlChar *)chars;
 
 // setter/getter of the dealloc flag for the underlying node
-- (BOOL)shoudFreeXMLNode;
+- (BOOL)shouldFreeXMLNode;
 - (void)setShouldFreeXMLNode:(BOOL)flag;
 
 @end
@@ -849,7 +849,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   return xmlNode_;
 }
 
-- (BOOL)shoudFreeXMLNode {
+- (BOOL)shouldFreeXMLNode {
   return shouldFreeXMLNode_; 
 }
 
@@ -999,6 +999,25 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
         [[self class] fixUpNamespacesForNode:childNodeCopy 
                           graftingToTreeNode:xmlNode_];
       }
+    }
+  }
+}
+
+- (void)removeChild:(GDataXMLNode *)child {
+  // this is safe for attributes too
+  if (xmlNode_ != NULL) {
+
+    [self releaseCachedValues];
+
+    xmlNodePtr node = [child XMLNode];
+
+    xmlUnlinkNode(node);
+
+    // if the child node was borrowing its xmlNodePtr, then we need to
+    // explicitly free it, since there is probably no owning object that will
+    // free it on dealloc
+    if (![child shouldFreeXMLNode]) {
+      xmlFreeNode(node);
     }
   }
 }
@@ -1552,30 +1571,32 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (id)initWithData:(NSData *)data options:(unsigned int)mask error:(NSError **)error {
-  
+
   self = [super init];
-  if (self) {   
-    
+  if (self) {
+
     const char *baseURL = NULL;
     const char *encoding = NULL;
-    
+
     // NOTE: We are assuming [data length] fits into an int.
     xmlDoc_ = xmlReadMemory([data bytes], (int)[data length], baseURL, encoding,
                             kGDataXMLParseOptions); // TODO(grobbins) map option values
     if (xmlDoc_ == NULL) {
       if (error) {
        *error = [NSError errorWithDomain:@"com.google.GDataXML"
-                                    code:-1 
+                                    code:-1
                                 userInfo:nil];
         // TODO(grobbins) use xmlSetGenericErrorFunc to capture error
         [self release];
       }
       return nil;
     } else {
+      if (error) *error = NULL;
+
       [self addStringsCacheToDoc];
     }
   }
-  
+
   return self;
 }
 

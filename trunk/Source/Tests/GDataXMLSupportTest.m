@@ -48,6 +48,12 @@
   NSXMLElement *child3 = [NSXMLElement elementWithName:@"chyld"];
   [child3 setStringValue:@"fuzz3"];
   
+#if GDATA_USES_LIBXML
+  // create a child we'll later remove (GDataXMLElement API only)
+  NSXMLElement *child3temp = [NSXMLElement elementWithName:@"childTemp"];
+  [child3temp setStringValue:@"scorch"];
+#endif
+
   // create with a missing namespace URI that we'll never actually add,
   // so we can test searches based on our faked use of {uri}: as
   // a prefix for the local name
@@ -88,10 +94,26 @@
   [parent addChild:child2];
   [parent addAttribute:attr2];
   [parent addChild:child3];
+#if GDATA_USES_LIBXML
+  [parent addChild:child3temp];
+#endif
   [parent addChild:child4];
   [parent addAttribute:attr4];
   [parent addChild:child5];
-  
+
+#if GDATA_USES_LIBXML
+  // remove the temp child; we must obtain it from the tree, not use
+  // the copy we added above
+  NSArray *childrenToRemove = [parent elementsForName:@"childTemp"];
+  STAssertEquals((int)[childrenToRemove count], 1, @"childTemp not found");
+
+  GDataXMLNode *childToRemove = [childrenToRemove objectAtIndex:0];
+  [parent removeChild:childToRemove];
+
+  childrenToRemove = [parent elementsForName:@"childTemp"];
+  STAssertEquals((int)[childrenToRemove count], 0, @"childTemp still found");
+#endif
+
   // search for attr1 and child1 by qualified name, since they were
   // created by URI
   NSXMLNode *attr1Found = [parent attributeForName:@"gd:foo"];
