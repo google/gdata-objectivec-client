@@ -20,6 +20,7 @@
 #define GDATASERVICEGOOGLEBOOKS_DEFINE_GLOBALS 1
 
 #import "GDataServiceGoogleBooks.h"
+#import "GDataQueryBooks.h"
 
 #import "GDataEntryVolume.h" // for namespaces
 
