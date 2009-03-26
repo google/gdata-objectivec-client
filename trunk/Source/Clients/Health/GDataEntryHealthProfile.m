@@ -102,9 +102,14 @@
   [self setObject:obj forExtensionClass:[GDataProfileMetaData class]];
 }
 
-// convenience accessor method
+// convenience accessor methods
+
 - (GDataLink *)completeLink {
   return [self linkWithRelAttributeValue:kGDataHealthRelComplete];
+}
+
+- (GDataLink *)nextLink {
+  return [self linkWithRelAttributeValue:@"next"];
 }
 
 @end

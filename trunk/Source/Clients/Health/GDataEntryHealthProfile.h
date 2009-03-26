@@ -66,4 +66,8 @@ _EXTERN NSString* const kGDataHealthRelComplete _INITIALIZE_AS(@"http://schemas.
 // convenience method
 - (GDataLink *)completeLink;
 
+// a "next" link may be present in profile entries requested for
+// feeds with a "grouped=true" query
+- (GDataLink *)nextLink;
+
 @end
