@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.6 (378 classes) 2009-03-05 17:50:25 -0800
+// com.google.GDataFramework v. 1.7 (380 classes) 2009-03-25 19:18:07 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -42,6 +42,8 @@
   #define GDataAtomLogo                        _GDATA_NS_SYMBOL(GDataAtomLogo)
   #define GDataAtomPubControl                  _GDATA_NS_SYMBOL(GDataAtomPubControl)
   #define GDataAtomPubControl1_0               _GDATA_NS_SYMBOL(GDataAtomPubControl1_0)
+  #define GDataAtomPubDraft                    _GDATA_NS_SYMBOL(GDataAtomPubDraft)
+  #define GDataAtomPubDraft1_0                 _GDATA_NS_SYMBOL(GDataAtomPubDraft1_0)
   #define GDataAtomPubEditedDate1_0            _GDATA_NS_SYMBOL(GDataAtomPubEditedDate1_0)
   #define GDataAtomPubEditedDateStd            _GDATA_NS_SYMBOL(GDataAtomPubEditedDateStd)
   #define GDataAtomPublishedDate               _GDATA_NS_SYMBOL(GDataAtomPublishedDate)
