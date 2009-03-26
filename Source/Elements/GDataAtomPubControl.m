@@ -1,27 +1,51 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataAtomPubControl.m
 //
 
 #import "GDataAtomPubControl.h"
+#import "GDataValueConstruct.h"
+
+// app:draft, like
+//   <app:draft>yes<app:draft>
+
+// In version 1 of GData, a pre-standard URI was used for app elements
+@interface GDataAtomPubDraft : GDataValueElementConstruct <GDataExtension>
+@end
+
+@interface GDataAtomPubDraft1_0 : GDataAtomPubDraft <GDataExtension>
+@end
+
+@implementation GDataAtomPubDraft
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
++ (NSString *)extensionElementLocalName { return @"draft"; }
+@end
+
+@implementation GDataAtomPubDraft1_0
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
++ (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
+@end
+
 
 @implementation GDataAtomPubControl1_0
 + (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return [super extensionElementPrefix]; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
 @end
 
@@ -35,11 +59,11 @@
 + (NSString *)extensionElementLocalName { return @"control"; }
 
 + (GDataAtomPubControl *)atomPubControl {
-  GDataAtomPubControl *obj = [[[GDataAtomPubControl alloc] init] autorelease];
-  
+  GDataAtomPubControl *obj = [[[self alloc] init] autorelease];
+
   // add the "app" namespace
   NSString *nsURI = [[self class] extensionElementURI];
-  NSDictionary *namespace = [NSDictionary dictionaryWithObject:nsURI 
+  NSDictionary *namespace = [NSDictionary dictionaryWithObject:nsURI
                                                         forKey:kGDataNamespaceAtomPubPrefix];
   [obj setNamespaces:namespace];
 
@@ -52,88 +76,61 @@
   return obj;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
+- (Class)draftExtensionClass {
+  if ([self isKindOfClass:[GDataAtomPubControl1_0 class]]) {
+    return [GDataAtomPubDraft1_0 class];
+  } else {
+    return [GDataAtomPubDraft class];
   }
-  return self;
 }
 
-- (id)initWithXMLElement:(NSXMLElement *)element
-                  parent:(GDataObject *)parent {
-  self = [super initWithXMLElement:element
-                            parent:parent];
-  if (self) {
-    // get the <app:draft>yes</app:draft> from inside the <app:control>
-    NSString *namespaceURI = [[self class] extensionElementURI];
-    
-    NSXMLElement *draftElement = [self childWithQualifiedName:@"app:draft"
-                                                 namespaceURI:namespaceURI
-                                                  fromElement:element];
-    if (draftElement) {
-      NSString *draftStr = [self stringValueFromElement:draftElement];
-      BOOL isDraft = (NSOrderedSame == [draftStr caseInsensitiveCompare:@"yes"]);
-      [self setIsDraft:isDraft];
-    }
-  }
-  return self;
-}
+- (void)addExtensionDeclarations {
 
-- (id)copyWithZone:(NSZone *)zone {
-  GDataAtomPubControl* newObj = [super copyWithZone:zone];
-  [newObj setIsDraft:[self isDraft]];
-  return newObj;
-}
+  [super addExtensionDeclarations];
 
-- (BOOL)isEqual:(GDataAtomPubControl *)other {
-  if (self == other) return YES;
-  if (![other isKindOfClass:[GDataAtomPubControl class]]) return NO;
-  
-  return [super isEqual:other]
-    && ([self isDraft] == [other isDraft]);
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[self draftExtensionClass]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   NSString *str = ([self isDraft] ? @"yes" : @"no");
-  [self addToArray:items objectDescriptionIfNonNil:str 
+  [self addToArray:items objectDescriptionIfNonNil:str
           withName:@"isDraft"];
-  
+
   return items;
 }
 #endif
 
-- (NSXMLElement *)XMLElement {
-  
-  NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-
-  if ([self isDraft]) {
-    
-    NSString *name = [NSString stringWithFormat:@"%@:draft", 
-      kGDataNamespaceAtomPubPrefix];
-      
-    [self addToElement:element
- childWithStringValueIfNonEmpty:@"yes"
-              withName:name];
-  }
-  
-  return element;
-}
-
 - (BOOL)isDraft {
-  return isDraft_;
+  GDataValueElementConstruct *obj;
+
+  obj = [self objectForExtensionClass:[self draftExtensionClass]];
+
+  NSString *str = [obj stringValue];
+  BOOL isDraft = (str != nil
+                  && [str caseInsensitiveCompare:@"yes"] == NSOrderedSame);
+  return isDraft;
 }
 
 - (void)setIsDraft:(BOOL)isDraft {
-  isDraft_ = isDraft;
+
+  Class draftClass = [self draftExtensionClass];
+
+  id obj = nil;
+  if (isDraft) {
+    obj = [draftClass valueWithString:@"yes"];
+  }
+
+  [self setObject:obj forExtensionClass:draftClass];
 }
 
 #pragma mark -
 
 + (Class)atomPubControlClassForObject:(GDataObject *)obj {
-  // version 1 of GData used a preliminary namespace URI for the atom pub 
+  // version 1 of GData used a preliminary namespace URI for the atom pub
   // element; the standard version of the class uses the proper URI
   if ([obj isServiceVersion1]) {
     return [GDataAtomPubControl1_0 class];
@@ -143,4 +140,5 @@
 }
 
 @end
+
 

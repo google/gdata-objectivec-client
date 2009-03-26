@@ -719,6 +719,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"GDataAtomPubControl", @"<app:control><app:draft>Yes</app:draft></app:control>" },
     { @"isDraft", @"1" },
     { @"", @"" },
+
+    { @"GDataAtomPubControl", @"<app:control></app:control>" },
+    { @"isDraft", @"0" },
+    { @"", @"" },
+
+    { @"GDataAtomPubControl1_0", @"<app:control><app:draft>Yes</app:draft></app:control>" },
+    { @"isDraft", @"1" },
+    { @"", @"" },
     
     // Batch elements
     { @"GDataBatchOperation", @"<batch:operation type='insert'/>" },
