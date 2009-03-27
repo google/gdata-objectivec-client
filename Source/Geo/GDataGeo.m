@@ -105,7 +105,7 @@
     NSString *valueListStr = [self stringValueFromElement:element];
     if ([valueListStr length] > 0) {
       
-      NSArray *values = [self valuesWithCoordinateString:valueListStr];
+      NSArray *values = [GDataGeo valuesWithCoordinateString:valueListStr];
       if ([values count] > 0) {
         
         [self setValues:values]; 
@@ -161,7 +161,7 @@
         NSString *valueListStr = [self stringValueFromElement:gmlPosElem];
         if ([valueListStr length] > 0) {
           
-          NSArray *values = [self valuesWithCoordinateString:valueListStr];
+          NSArray *values = [GDataGeo valuesWithCoordinateString:valueListStr];
           if ([values count] > 0) {
             
             [self setValues:values]; 
@@ -182,11 +182,10 @@
   // </gml:pos> </gml:Point> </georss:where>
   
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"georss:where"];
-  NSArray *values = [self values];
   
   if ([self isPoint]) {
         
-    NSString *valueListStr = [self coordinateStringWithValues:values];
+    NSString *valueListStr = [self coordinateString];
     
     NSXMLElement *gmlPointElem = [NSXMLElement elementWithName:@"gml:Point"];
     
@@ -253,15 +252,13 @@
   // generate a georss:point
   
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"georss:point"];
-  NSArray *values = [self values];
   
   if ([self isPoint]) {
-    NSString *str = [self coordinateStringWithValues:values];
+    NSString *str = [self coordinateString];
     [element addStringValue:str];
   }
   return element;
 }
-
 
 - (void)dealloc {
   [values_ release];
@@ -311,6 +308,12 @@
   return ([values_ count] == 2); 
 }
 
+- (NSString *)coordinateString {
+  NSArray *values = [self values];
+  NSString *str = [GDataGeo coordinateStringWithValues:values];
+  return str;
+}
+
 - (double)latitude {
   if ([self isPoint]) {
     return [[values_ objectAtIndex:0] doubleValue]; 
@@ -331,7 +334,7 @@
 
 // valuesWithCoordinateString returns an array of doubles
 // scanned from |str|.  The values must be in pairs
-- (NSArray *)valuesWithCoordinateString:(NSString *)str {
++ (NSArray *)valuesWithCoordinateString:(NSString *)str {
   
   NSMutableArray *array = [NSMutableArray array];
   NSScanner *scanner = [NSScanner scannerWithString:str];
@@ -346,7 +349,7 @@
   return array;
 }
 
-- (NSString *)coordinateStringWithValues:(NSArray *)values {
++ (NSString *)coordinateStringWithValues:(NSArray *)values {
   return [values componentsJoinedByString:@" "];
 }
 

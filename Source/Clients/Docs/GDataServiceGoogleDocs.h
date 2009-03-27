@@ -36,6 +36,7 @@ _EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"
 
 
 @class GDataEntryDocBase;
+@class GDataFeedDocList;
 @class GDataQueryDocs;
 
 // These routines are all simple wrappers around GDataServiceGoogle methods.
@@ -91,4 +92,14 @@ _EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"
                                     delegate:(id)delegate
                            didFinishSelector:(SEL)finishedSelector
                              didFailSelector:(SEL)failedSelector;
+
+// finished callback (see above) is passed a batch result feed
+//
+// status may also be present inside the individual entries
+// as GDataBatchStatus and GDataBatchInterrupted elements
+- (GDataServiceTicket *)fetchDocsBatchFeedWithBatchFeed:(GDataFeedDocList *)batchFeed
+                                        forBatchFeedURL:(NSURL *)feedURL
+                                               delegate:(id)delegate
+                                      didFinishSelector:(SEL)finishedSelector
+                                        didFailSelector:(SEL)failedSelector;
 @end
