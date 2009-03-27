@@ -177,6 +177,9 @@
                                    childClass:[GDataResourceProperty class]];
   [self addExtensionDeclarationForParentClass:[GDataLink class]
                                    childClass:[GDataWebContent class]];
+
+  [GDataGeo addGeoExtensionDeclarationsToObject:self
+                                 forParentClass:entryClass];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -194,6 +197,7 @@
     { @"guestsCanInvite",        @"canGuestsInviteOthers",        kGDataDescBooleanPresent },
     { @"guestsCanSeeGuests",     @"canGuestsSeeGuests",           kGDataDescBooleanPresent },
     { @"anyoneCanAddSelf",       @"canAnyoneAddSelf",             kGDataDescBooleanPresent },
+    { @"geo",                    @"geoLocation.coordinateString", kGDataDescValueLabeled   },
     { nil, nil, 0 }
   };
   
@@ -353,6 +357,14 @@
     obj = nil; // removes the extension
   }
   [self setObject:obj forExtensionClass:[GDataAnyoneCanAddSelfProperty class]];
+}
+
+- (GDataGeo *)geoLocation {
+  return [GDataGeo geoLocationForObject:self];
+}
+
+- (void)setGeoLocation:(GDataGeo *)geo {
+  [GDataGeo setGeoLocation:geo forObject:self];
 }
 
 - (NSNumber *)sequenceNumber {

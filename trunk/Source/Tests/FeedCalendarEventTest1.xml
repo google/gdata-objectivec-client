@@ -2,6 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom" 
     xmlns:gCal="http://schemas.google.com/gCal/2005" 
     xmlns:gd="http://schemas.google.com/g/2005" 
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:georss="http://www.georss.org/georss" 
     xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
     
 	<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full</id>
@@ -45,6 +47,11 @@
 		<gCal:sendEventNotifications value="false"/>
 		<gCal:sequence value="2"></gCal:sequence>
 		<gCal:uid value="4A24A0FF-EA3A-4839-AA09-F4283CB6D345"></gCal:uid>
+		<georss:where>
+				<gml:Point>
+						<gml:pos>47.620973 -122.347276</gml:pos>
+				</gml:Point>
+		</georss:where>
 		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
 		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
 		<gd:who email="FredFlintstone@gmail.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">

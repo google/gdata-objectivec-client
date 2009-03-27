@@ -3,6 +3,25 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.7.0
+
+Additions
+
+- Added Geo accessor to Calendar API event entries
+
+- Added batch call to Docs API
+
+- Added "next" link accessor to Health profile entries
+
+- Added removeChild method to GDataXMLElement
+
+Changes
+
+Bugs Fixed
+
+- Fixed compile on gcc 3.3.
+
+
 Release 1.7.0
 12-March-2009
 Changes since 1.6.0

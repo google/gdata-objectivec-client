@@ -64,13 +64,15 @@ _EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
 - (NSArray *)values;
 - (void)setValues:(NSArray *)array;
 
-- (NSArray *)valuesWithCoordinateString:(NSString *)str;
-- (NSString *)coordinateStringWithValues:(NSArray *)values;
+- (NSString *)coordinateString; // values joined by spaces
 
 - (double)latitude;
 - (double)longitude;
 
 - (BOOL)isPoint;
+
++ (NSArray *)valuesWithCoordinateString:(NSString *)str;
++ (NSString *)coordinateStringWithValues:(NSArray *)values;
 
 //
 // helpers for other GData classes which have a Geo as an element

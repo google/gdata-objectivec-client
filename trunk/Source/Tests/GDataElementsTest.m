@@ -1217,6 +1217,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
         "<geo:long>12.552</geo:long></geo:Point>" },
     { @"latitude", @"55.701" },
     { @"longitude", @"12.552" },
+    { @"coordinateString", @"55.701 12.552" },
     { @"isPoint", @"1" },
     { @"", @"" },
       
