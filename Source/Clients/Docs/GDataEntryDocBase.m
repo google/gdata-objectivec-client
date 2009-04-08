@@ -54,6 +54,9 @@
   namespaces = [NSMutableDictionary dictionaryWithDictionary:
     [GDataEntryBase baseGDataNamespaces]];
 
+  [namespaces setObject:kGDataNamespaceDocuments
+                 forKey:kGDataNamespaceDocumentsPrefix];
+
   return namespaces;
 }
 
