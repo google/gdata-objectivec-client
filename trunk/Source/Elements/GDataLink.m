@@ -173,20 +173,27 @@ static NSString *const kLengthAttr = @"length";
   // we'll make a list of short, readable link names
   // by grabbing the rel values, and removing anything before
   // the last pound sign if there is one
-  
-  NSMutableArray *names = [NSMutableArray array];
-  
+
+  NSMutableArray *names = nil;
+
   GDataLink *dataLink;
   GDATA_FOREACH(dataLink, links) {
-    
+
     NSString *rel = [dataLink rel];
+    NSString *displayName;
+
     NSRange range = [rel rangeOfString:@"#" options:NSBackwardsSearch];
     if (range.location != NSNotFound) {
-      NSString *suffix = [rel substringFromIndex:(1 + range.location)];
-      [names addObject:suffix];
+      // the display name is the suffix of the link's rel string
+      displayName = [rel substringFromIndex:(1 + range.location)];
     } else {
-      [names addObject:rel];
+      displayName = rel;
     }
+
+    if (names == nil) {
+      names = [NSMutableArray array];
+    }
+    [names addObject:displayName];
   }
   return names;
 }
