@@ -57,8 +57,18 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 //
 
 // URL encoding, different for parts of URLs and parts of URL parameters
-// (URL parameters get + in place of spaces)
+//
+// +stringByURLEncodingString just makes a string legal for a URL
+//
+// +stringByURLEncodingForURI also encodes some characters that are legal in
+// URLs but should not be used in URIs, 
+// per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
+//
+// +stringByURLEncodingStringParameter is like +stringByURLEncodingForURI but
+// replaces space characters with + characters rather than percent-escaping them
+//
 + (NSString *)stringByURLEncodingString:(NSString *)str;
++ (NSString *)stringByURLEncodingForURI:(NSString *)str;
 + (NSString *)stringByURLEncodingStringParameter:(NSString *)str;
 
 // percent-encoded UTF-8

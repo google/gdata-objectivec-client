@@ -90,6 +90,16 @@
   return entry;
 }
 
+#pragma mark -
+
++ (NSString *)standardEntryKind {
+  return kGDataCategoryCalendar;
+}
+
++ (void)load {
+  [self registerEntryClass];
+}
+
 - (void)addExtensionDeclarations {
   
   [super addExtensionDeclarations];

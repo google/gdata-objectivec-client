@@ -82,6 +82,11 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   [categories_ addObject:category];
 }
 
+- (void)addCategoryWithScheme:(NSString *)scheme term:(NSString *)term {
+  GDataCategory *cat = [GDataCategory categoryWithScheme:scheme term:term];
+  [self addCategory:cat];
+}
+
 - (NSArray *)excludeCategories {
   return excludeCategories_;  
 }
@@ -97,6 +102,11 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   }
   
   [excludeCategories_ addObject:excludeCategory];
+}
+
+- (void)addExcludeCategoryWithScheme:(NSString *)scheme term:(NSString *)term {
+  GDataCategory *cat = [GDataCategory categoryWithScheme:scheme term:term];
+  [self addExcludeCategory:cat];
 }
 
 - (NSString *)queryStringForCategory:(GDataCategory *)category {
@@ -367,6 +377,14 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   }
   
   [categoryFilters_ addObject:filter];
+}
+
+- (void)addCategoryFilterWithScheme:(NSString *)scheme term:(NSString *)term {
+
+  GDataCategoryFilter *filter = [GDataCategoryFilter categoryFilter];
+  [filter addCategoryWithScheme:scheme term:term];
+
+  [self addCategoryFilter:filter];
 }
 
 #pragma mark -

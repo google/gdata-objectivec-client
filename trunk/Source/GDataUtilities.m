@@ -226,33 +226,54 @@
   return result;
 }
 
-+ (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
-  
-  // NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
-  // some characters that should be escaped in URL parameters, like / and ?; 
-  // we'll use CFURL to force the encoding of those
-  //
-  // We'll explicitly leave spaces unescaped now, and replace them with +'s
-  //
-  // Reference: http://www.ietf.org/rfc/rfc3986.txt
-  
+// NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
+// some characters that should be escaped in URL parameters, like / and ?; 
+// we'll use CFURL to force the encoding of those
+//
+// Reference: http://www.ietf.org/rfc/rfc3986.txt
+
+const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+
++ (NSString *)stringByURLEncodingForURI:(NSString *)str {
+
   NSString *resultStr = str;
-  
+
   CFStringRef originalString = (CFStringRef) str;
-  CFStringRef leaveUnescaped = CFSTR(" ");
-  CFStringRef forceEscaped = CFSTR("!*'();:@&=+$,/?%#[]");
-  
+  CFStringRef leaveUnescaped = NULL;
+
   CFStringRef escapedStr;
   escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                        originalString,
-                                                       leaveUnescaped, 
-                                                       forceEscaped,
+                                                       leaveUnescaped,
+                                                       kCharsToForceEscape,
                                                        kCFStringEncodingUTF8);
-  
+  if (escapedStr) {
+    resultStr = [(id)CFMakeCollectable(escapedStr) autorelease];
+  }
+  return resultStr;
+}
+
++ (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
+
+  // For parameters, we'll explicitly leave spaces unescaped now, and replace
+  // them with +'s
+
+  NSString *resultStr = str;
+
+  CFStringRef originalString = (CFStringRef) str;
+  CFStringRef leaveUnescaped = CFSTR(" ");
+
+  CFStringRef escapedStr;
+  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                       originalString,
+                                                       leaveUnescaped,
+                                                       kCharsToForceEscape,
+                                                       kCFStringEncodingUTF8);
+
   if (escapedStr) {
     NSMutableString *mutableStr = [NSMutableString stringWithString:(NSString *)escapedStr];
     CFRelease(escapedStr);
-    
+
     // replace spaces with plusses
     [mutableStr replaceOccurrencesOfString:@" "
                                 withString:@"+"

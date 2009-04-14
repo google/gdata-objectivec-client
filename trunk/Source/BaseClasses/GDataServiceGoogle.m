@@ -112,17 +112,17 @@ enum {
     
     NSString *postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=%@";
     NSString *postString = [NSString stringWithFormat:postTemplate, 
-      [self stringByURLEncoding:[self username]],
-      [self stringByURLEncoding:password],
-      [self stringByURLEncoding:userAgent],
+      [GDataUtilities stringByURLEncodingForURI:[self username]],
+      [GDataUtilities stringByURLEncodingForURI:password],
+      [GDataUtilities stringByURLEncodingForURI:userAgent],
       [self serviceID],
       [self accountType]];
     
     if ([captchaToken_ length] > 0 && [captchaAnswer_ length] > 0) {
       NSString *captchaTemplate = @"&logintoken=%@&logincaptcha=%@";
       postString = [postString stringByAppendingFormat:captchaTemplate,
-        [self stringByURLEncoding:captchaToken_],
-        [self stringByURLEncoding:captchaAnswer_]];
+        [GDataUtilities stringByURLEncodingForURI:captchaToken_],
+        [GDataUtilities stringByURLEncodingForURI:captchaAnswer_]];
     }
     
     GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];

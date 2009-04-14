@@ -78,10 +78,8 @@
   GDataCategoryFilter *categoryFilter = [GDataCategoryFilter categoryFilter];
   [categoryFilter addCategory:[GDataCategory categoryWithScheme:@"http://schemas.google.com/g/2005#kind" 
                                                            term:@"http://schemas.google.com/g/2005#event"]];
-  [categoryFilter addCategory:[GDataCategory categoryWithScheme:@"MyScheme2" 
-                                                           term:@"MyTerm2"]];
-  [categoryFilter addExcludeCategory:[GDataCategory categoryWithScheme:nil
-                                                                  term:@"MyTerm3"]];
+  [categoryFilter addCategoryWithScheme:@"MyScheme2" term:@"MyTerm2"];
+  [categoryFilter addExcludeCategoryWithScheme:nil term:@"MyTerm3"];
 
   // test a query with categories but no params
   GDataQuery* query3 = [GDataQuery queryWithFeedURL:feedURL];
@@ -95,11 +93,8 @@
   
   // finally, add the previous category filter and another category filter
   // to the second query's parameters
-  GDataCategoryFilter *categoryFilter2 = [GDataCategoryFilter categoryFilter];
-  [categoryFilter2 addCategory:[GDataCategory categoryWithScheme:nil term:@"Zonk4"]];
-
   [query2 addCategoryFilter:categoryFilter];
-  [query2 addCategoryFilter:categoryFilter2];
+  [query2 addCategoryFilterWithScheme:nil term:@"Zonk4"];
   
   NSURL* resultURL2a = [query2 URL];
 

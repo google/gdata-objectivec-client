@@ -106,6 +106,64 @@
   STAssertEqualObjects(output, @"photo%E5%8F%83.jpg", @"cjk failure");
 }
 
+- (void)testURLEncodingForURI {
+  NSString *input;
+  NSString *output;
+  NSString *expected;
+
+  input = nil;
+  output = [GDataUtilities stringByURLEncodingForURI:input];
+  STAssertNil(output, @"nil test");
+
+  input = @"";
+  output = [GDataUtilities stringByURLEncodingForURI:input];
+  STAssertEqualObjects(output, input, @"empty string");
+
+  input = @"abcdef";
+  output = [GDataUtilities stringByURLEncodingForURI:input];
+  expected = @"abcdef";
+  STAssertEqualObjects(output, expected, @"plain string");
+
+  input = @"abc def";
+  output = [GDataUtilities stringByURLEncodingForURI:input];
+  expected = @"abc%20def";
+  STAssertEqualObjects(output, expected, @"plain string with space");
+
+  input = @"abc!*'();:@&=+$,/?%#[]def";
+  output = [GDataUtilities stringByURLEncodingForURI:input];
+  expected = @"abc%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%25%23%5B%5Ddef";
+  STAssertEqualObjects(output, expected, @"all chars to escape");
+}
+
+- (void)testURLEncodingForStringParameter {
+  NSString *input;
+  NSString *output;
+  NSString *expected;
+
+  input = nil;
+  output = [GDataUtilities stringByURLEncodingStringParameter:input];
+  STAssertNil(output, @"nil test");
+
+  input = @"";
+  output = [GDataUtilities stringByURLEncodingStringParameter:input];
+  STAssertEqualObjects(output, input, @"empty string");
+
+  input = @"abcdef";
+  output = [GDataUtilities stringByURLEncodingStringParameter:input];
+  expected = @"abcdef";
+  STAssertEqualObjects(output, expected, @"plain string");
+
+  input = @"abc def";
+  output = [GDataUtilities stringByURLEncodingStringParameter:input];
+  expected = @"abc+def";
+  STAssertEqualObjects(output, expected, @"plain string with space");
+
+  input = @"abc!*'();:@&=+$,/?%#[]def";
+  output = [GDataUtilities stringByURLEncodingStringParameter:input];
+  expected = @"abc%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%25%23%5B%5Ddef";
+  STAssertEqualObjects(output, expected, @"all chars to escape");
+}
+
 #pragma mark -
 
 - (void)doTestEqualAndDistinctElementsInArray:(NSArray *)testArray

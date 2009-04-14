@@ -576,6 +576,18 @@
 		4F7A116C0E5E137700883F90 /* GDataEntryPDFDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F7A11690E5E137700883F90 /* GDataEntryPDFDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F7A116D0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */; };
 		4F7A116E0E5E137700883F90 /* GDataEntryPDFDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */; };
+		4F80E82E0F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E82C0F9542CA00CFB06D /* GDataFeedCalendarSettings.m */; };
+		4F80E82F0F9542CA00CFB06D /* GDataFeedCalendarSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F80E82D0F9542CA00CFB06D /* GDataFeedCalendarSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F80E8300F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E82C0F9542CA00CFB06D /* GDataFeedCalendarSettings.m */; };
+		4F80E8310F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E82C0F9542CA00CFB06D /* GDataFeedCalendarSettings.m */; };
+		4F80E8360F9542E600CFB06D /* GDataEntryCalendarSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F80E8340F9542E600CFB06D /* GDataEntryCalendarSettings.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F80E8370F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */; };
+		4F80E8380F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */; };
+		4F80E8390F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */; };
+		4F80E83C0F9542F100CFB06D /* GDataCalendarSettingsProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F80E83A0F9542F100CFB06D /* GDataCalendarSettingsProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F80E83D0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
+		4F80E83E0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
+		4F80E83F0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
 		4F848C6E0D887A2A007ECFCD /* GDataDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F848C6D0D887A2A007ECFCD /* GDataDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */; };
 		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1171,6 +1183,12 @@
 		4F777E050C03DA4E00058FA1 /* GDataNormalPlayTimeTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTimeTest.m; path = Tests/GDataNormalPlayTimeTest.m; sourceTree = "<group>"; };
 		4F7A11690E5E137700883F90 /* GDataEntryPDFDoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryPDFDoc.h; path = Clients/Docs/GDataEntryPDFDoc.h; sourceTree = "<group>"; };
 		4F7A116A0E5E137700883F90 /* GDataEntryPDFDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPDFDoc.m; path = Clients/Docs/GDataEntryPDFDoc.m; sourceTree = "<group>"; };
+		4F80E82C0F9542CA00CFB06D /* GDataFeedCalendarSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedCalendarSettings.m; path = Clients/Calendar/GDataFeedCalendarSettings.m; sourceTree = "<group>"; };
+		4F80E82D0F9542CA00CFB06D /* GDataFeedCalendarSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedCalendarSettings.h; path = Clients/Calendar/GDataFeedCalendarSettings.h; sourceTree = "<group>"; };
+		4F80E8340F9542E600CFB06D /* GDataEntryCalendarSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryCalendarSettings.h; path = Clients/Calendar/GDataEntryCalendarSettings.h; sourceTree = "<group>"; };
+		4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryCalendarSettings.m; path = Clients/Calendar/GDataEntryCalendarSettings.m; sourceTree = "<group>"; };
+		4F80E83A0F9542F100CFB06D /* GDataCalendarSettingsProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataCalendarSettingsProperty.h; path = Clients/Calendar/GDataCalendarSettingsProperty.h; sourceTree = "<group>"; };
+		4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataCalendarSettingsProperty.m; path = Clients/Calendar/GDataCalendarSettingsProperty.m; sourceTree = "<group>"; };
 		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
 		4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedHealthProfile1.xml; path = Tests/FeedHealthProfile1.xml; sourceTree = "<group>"; };
@@ -1535,6 +1553,8 @@
 				4FA3B3F20F15543C00740CB1 /* GDataFeedEvent.m */,
 				4FA3B3F80F15543C00740CB1 /* GDataFeedMessage.h */,
 				4FA3B3FE0F15543C00740CB1 /* GDataFeedMessage.m */,
+				4F80E82D0F9542CA00CFB06D /* GDataFeedCalendarSettings.h */,
+				4F80E82C0F9542CA00CFB06D /* GDataFeedCalendarSettings.m */,
 				4F14ABF90B12899D0072EBB8 /* GDataEntryCalendar.h */,
 				4F14ABF60B12899D0072EBB8 /* GDataEntryCalendar.m */,
 				4F14ABF70B12899D0072EBB8 /* GDataEntryCalendarEvent.h */,
@@ -1543,10 +1563,14 @@
 				4FA3B3FC0F15543C00740CB1 /* GDataEntryEvent.m */,
 				4FA3B3FB0F15543C00740CB1 /* GDataEntryMessage.h */,
 				4FA3B3FA0F15543C00740CB1 /* GDataEntryMessage.m */,
+				4F80E8340F9542E600CFB06D /* GDataEntryCalendarSettings.h */,
+				4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */,
 				4F14B1090B13A4340072EBB8 /* GDataWebContent.h */,
 				4F14B10A0B13A4340072EBB8 /* GDataWebContent.m */,
 				4FA3B3F70F15543C00740CB1 /* GDataReminder.h */,
 				4FA3B3F30F15543C00740CB1 /* GDataReminder.m */,
+				4F80E83A0F9542F100CFB06D /* GDataCalendarSettingsProperty.h */,
+				4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */,
 				4FA3B3F60F15543C00740CB1 /* GDataRecurrence.h */,
 				4FA3B3FD0F15543C00740CB1 /* GDataRecurrence.m */,
 				4FA3B3F90F15543C00740CB1 /* GDataRecurrenceException.h */,
@@ -2390,6 +2414,9 @@
 				4F76E7550F5C89B200C2085F /* GDataFeedYouTubeChannel.h in Headers */,
 				4F76E7650F5C89CA00C2085F /* GDataFeedYouTubeUserEvent.h in Headers */,
 				4F76E76E0F5C89E000C2085F /* GDataEntryYouTubeUserEvent.h in Headers */,
+				4F80E82F0F9542CA00CFB06D /* GDataFeedCalendarSettings.h in Headers */,
+				4F80E8360F9542E600CFB06D /* GDataEntryCalendarSettings.h in Headers */,
+				4F80E83C0F9542F100CFB06D /* GDataCalendarSettingsProperty.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2734,6 +2761,9 @@
 				4F76E7560F5C89B200C2085F /* GDataFeedYouTubeChannel.m in Sources */,
 				4F76E7660F5C89CA00C2085F /* GDataFeedYouTubeUserEvent.m in Sources */,
 				4F76E7700F5C89E000C2085F /* GDataEntryYouTubeUserEvent.m in Sources */,
+				4F80E8300F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
+				4F80E8380F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
+				4F80E83E0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2945,6 +2975,9 @@
 				4F76E7570F5C89B200C2085F /* GDataFeedYouTubeChannel.m in Sources */,
 				4F76E7670F5C89CA00C2085F /* GDataFeedYouTubeUserEvent.m in Sources */,
 				4F76E7710F5C89E000C2085F /* GDataEntryYouTubeUserEvent.m in Sources */,
+				4F80E8310F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
+				4F80E8390F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
+				4F80E83F0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3154,6 +3187,9 @@
 				4F76E7540F5C89B200C2085F /* GDataFeedYouTubeChannel.m in Sources */,
 				4F76E7640F5C89CA00C2085F /* GDataFeedYouTubeUserEvent.m in Sources */,
 				4F76E76F0F5C89E000C2085F /* GDataEntryYouTubeUserEvent.m in Sources */,
+				4F80E82E0F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
+				4F80E8370F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
+				4F80E83D0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

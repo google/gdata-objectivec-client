@@ -46,10 +46,12 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (NSArray *)categories;
 - (void)setCategories:(NSArray *)categories;
 - (void)addCategory:(GDataCategory *)category;
+- (void)addCategoryWithScheme:(NSString *)scheme term:(NSString *)term;
 
 - (NSArray *)excludeCategories;
 - (void)setExcludeCategories:(NSArray *)excludeCategories;  
 - (void)addExcludeCategory:(GDataCategory *)excludeCategory;
+- (void)addExcludeCategoryWithScheme:(NSString *)scheme term:(NSString *)term;
 
 - (NSString *)stringValue;
 @end
@@ -122,6 +124,7 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (NSArray *)categoryFilters;
 - (void)setCategoryFilters:(NSArray *)filters;
 - (void)addCategoryFilter:(GDataCategoryFilter *)filter;
+- (void)addCategoryFilterWithScheme:(NSString *)scheme term:(NSString *)term;
 
 - (NSDictionary *)customParameters;
 - (void)setCustomParameters:(NSDictionary *)dict;

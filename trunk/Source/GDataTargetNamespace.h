@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (380 classes) 2009-03-25 19:18:07 -0700
+// com.google.GDataFramework v. 1.7 (383 classes) 2009-04-14 15:36:19 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -64,6 +64,7 @@
   #define GDataBatchOperation                  _GDATA_NS_SYMBOL(GDataBatchOperation)
   #define GDataBatchStatus                     _GDATA_NS_SYMBOL(GDataBatchStatus)
   #define GDataBoolValueConstruct              _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
+  #define GDataCalendarSettingsProperty        _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
   #define GDataCategory                        _GDATA_NS_SYMBOL(GDataCategory)
   #define GDataCategoryFilter                  _GDATA_NS_SYMBOL(GDataCategoryFilter)
   #define GDataCodeSearchFile                  _GDATA_NS_SYMBOL(GDataCodeSearchFile)
@@ -93,6 +94,7 @@
   #define GDataEntryBase                       _GDATA_NS_SYMBOL(GDataEntryBase)
   #define GDataEntryCalendar                   _GDATA_NS_SYMBOL(GDataEntryCalendar)
   #define GDataEntryCalendarEvent              _GDATA_NS_SYMBOL(GDataEntryCalendarEvent)
+  #define GDataEntryCalendarSettings           _GDATA_NS_SYMBOL(GDataEntryCalendarSettings)
   #define GDataEntryCodeSearch                 _GDATA_NS_SYMBOL(GDataEntryCodeSearch)
   #define GDataEntryContact                    _GDATA_NS_SYMBOL(GDataEntryContact)
   #define GDataEntryContactGroup               _GDATA_NS_SYMBOL(GDataEntryContactGroup)
@@ -153,6 +155,7 @@
   #define GDataFeedBase                        _GDATA_NS_SYMBOL(GDataFeedBase)
   #define GDataFeedCalendar                    _GDATA_NS_SYMBOL(GDataFeedCalendar)
   #define GDataFeedCalendarEvent               _GDATA_NS_SYMBOL(GDataFeedCalendarEvent)
+  #define GDataFeedCalendarSettings            _GDATA_NS_SYMBOL(GDataFeedCalendarSettings)
   #define GDataFeedCodeSearch                  _GDATA_NS_SYMBOL(GDataFeedCodeSearch)
   #define GDataFeedContact                     _GDATA_NS_SYMBOL(GDataFeedContact)
   #define GDataFeedContactGroup                _GDATA_NS_SYMBOL(GDataFeedContactGroup)

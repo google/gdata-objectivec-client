@@ -1305,36 +1305,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 #pragma mark -
 
-// we want to percent-escape some of the characters that are otherwise
-// considered legal in URLs when we pass them as parameters
-//
-// Unlike [GDataQuery stringByURLEncodingStringParameter] this does not
-// replace spaces with + characters
-//
-// Reference: http://www.ietf.org/rfc/rfc3986.txt
-
-- (NSString *)stringByURLEncoding:(NSString *)param {
-  
-  NSString *resultStr = param;
-  
-  CFStringRef originalString = (CFStringRef) param;
-  CFStringRef leaveUnescaped = NULL;
-  CFStringRef forceEscaped = CFSTR("!*'();:@&=+$,/?%#[]");
-  
-  CFStringRef escapedStr;
-  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                       originalString,
-                                                       leaveUnescaped, 
-                                                       forceEscaped,
-                                                       kCFStringEncodingUTF8);
-  
-  if (escapedStr) {
-    resultStr = [NSString stringWithString:(NSString *)escapedStr];
-    CFRelease(escapedStr);
-  }
-  return resultStr;
-}
-
 // return a generic name and version for the current application; this avoids
 // anonymous server transactions.  Applications should call setUserAgent
 // to avoid the need for this method to be used.
@@ -1564,7 +1534,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   postedObject_ = [obj retain];
 }
 
-- (GDataObject *)postedObject {
+- (id)postedObject {
   return postedObject_;
 }
 

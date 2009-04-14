@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceTest.m
@@ -34,6 +34,8 @@
   GDataServiceTicket *ticket_;
   GDataObject *fetchedObject_;
   NSError *fetcherError_;
+  unsigned long long lastProgressDeliveredCount_;
+  unsigned long long lastProgressTotalCount_;
   int retryCounter_;
 }
 @end
@@ -122,6 +124,9 @@ static int kServerPortNumber = 54579;
   ticket_ = nil;
   
   retryCounter_ = 0;
+
+  lastProgressDeliveredCount_ = 0;
+  lastProgressTotalCount_ = 0;
 
   // Set the UA to avoid log warnings during tests, except the first test,
   // which will use an auto-generated user agent
@@ -653,6 +658,60 @@ static int gFetchCounter = 0;
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   
   //
+  // test:  update/download streamed entry data with progress monitoring
+  //        and logging, successful auth, logging on
+  //
+  [self resetFetchResponse];
+
+  [GDataHTTPFetcher setIsLoggingEnabled:YES];
+  [GDataHTTPFetcher setLoggingDirectory:NSTemporaryDirectory()];
+
+  // report the logging directory (the log file names depend on the process
+  // launch time, but this at least lets us manually inspect the logs)
+  NSLog(@"GDataServiceTest http logging set to %@",
+        [GDataHTTPFetcher loggingDirectory]);
+
+  GDataEntryPhoto *photoEntry = [GDataEntryPhoto photoEntry];
+  NSImage *image = [NSImage imageNamed:@"NSApplicationIcon"];
+  NSData *tiffData = [image TIFFRepresentation];
+  STAssertTrue([tiffData length] > 0, @"failed to make tiff image");
+
+  [photoEntry setPhotoData:tiffData];
+  [photoEntry setPhotoMIMEType:@"image/tiff"];
+  [photoEntry setUploadSlug:@"unit test photo.tif"];
+  [photoEntry setTitleWithString:@"Unit Test Photo"];
+
+  SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+  [service_ setServiceUploadProgressSelector:progressSel];
+
+  // note that the authEntryURL still points to a spreadsheet entry, so
+  // spreadsheet XML is what will be returned, but we don't really care
+
+  ticket_ = [service_ fetchAuthenticatedEntryByUpdatingEntry:photoEntry
+                                                 forEntryURL:authEntryURL
+                                                    delegate:self
+                                           didFinishSelector:@selector(ticket:finishedWithObject:)
+                                             didFailSelector:@selector(ticket:failedWithError:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"fetching %@", authFeedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+
+  STAssertTrue(lastProgressDeliveredCount_ > 0, @"no byte delivery reported");
+  STAssertEquals(lastProgressDeliveredCount_, lastProgressTotalCount_,
+                 @"unexpected byte delivery count");
+
+  [GDataHTTPFetcher setIsLoggingEnabled:NO];
+  [GDataHTTPFetcher setLoggingDirectory:nil];
+
+  [service_ setServiceUploadProgressSelector:nil];
+
+
+  //
   // test:  delete entry with ETag, successful auth
   //
   [self resetFetchResponse];
@@ -762,6 +821,15 @@ static int gFetchCounter = 0;
   
   ++gFetchCounter;
 }
+
+- (void)inputStream:(GDataProgressMonitorInputStream *)stream
+hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
+     ofTotalByteCount:(unsigned long long)dataLength {
+
+  lastProgressDeliveredCount_ = numberOfBytesRead;
+  lastProgressTotalCount_ = dataLength;
+}
+
 
 - (void)testRetryFetches {
   

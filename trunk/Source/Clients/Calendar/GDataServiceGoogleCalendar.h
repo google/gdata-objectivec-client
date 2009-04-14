@@ -67,9 +67,11 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 //
 
 
-@interface GDataServiceGoogleCalendar : GDataServiceGoogle 
+@interface GDataServiceGoogleCalendar : GDataServiceGoogle
 
-- (NSString *)serviceRootURLString;
++ (NSURL *)calendarFeedURLForUsername:(NSString *)username;
+
++ (NSURL *)settingsFeedURLForUsername:(NSString *)username;
 
 // finished callback (see above) is passed a GDataFeedCalendar
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
@@ -169,5 +171,7 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
                                                         delegate:(id)delegate
                                                didFinishSelector:(SEL)finishedSelector
                                                  didFailSelector:(SEL)failedSelector;
-  
+
++ (NSString *)serviceRootURLString;
+
 @end

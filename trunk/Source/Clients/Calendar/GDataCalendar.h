@@ -25,6 +25,7 @@
 #import "GDataRecurrence.h"
 #import "GDataRecurrenceException.h"
 #import "GDataReminder.h"
+#import "GDataCalendarSettingsProperty.h"
 
 #import "GDataEntryCalendar.h"
 #import "GDataFeedCalendar.h"
@@ -34,5 +35,8 @@
 #import "GDataFeedCalendarEvent.h"
 #import "GDataEntryMessage.h"
 #import "GDataFeedMessage.h"
+#import "GDataEntryCalendarSettings.h"
+#import "GDataFeedCalendarSettings.h"
+
 #import "GDataServiceGoogleCalendar.h"
 #import "GDataQueryCalendar.h"
