@@ -60,6 +60,10 @@
   GDataFeedACL *mACLFeed;
   GDataServiceTicket *mACLFetchTicket;
   NSError *mACLFetchError;
+
+  GDataFeedCalendarSettings *mSettingsFeed;
+  GDataServiceTicket *mSettingsFetchTicket;
+  NSError *mSettingsFetchError;
 }
 
 + (CalendarSampleWindowController *)sharedCalendarSampleWindowController;

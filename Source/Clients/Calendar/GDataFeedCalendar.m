@@ -34,13 +34,14 @@
   return feed;
 }
 
-- (id)init {
-  self = [super init];
-  if (self) {
-    [self addCategory:[GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                                   term:kGDataCategoryEvent]];
-  }
-  return self;
+#pragma mark -
+
++ (NSString *)standardFeedKind {
+  return kGDataCategoryCalendar;
+}
+
++ (void)load {
+  [self registerFeedClass];
 }
 
 - (Class)classForEntries {

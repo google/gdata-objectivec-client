@@ -30,19 +30,40 @@
 
 @implementation GDataServiceGoogleCalendar
 
++ (NSURL *)calendarFeedURLForUsername:(NSString *)username {
+
+  // the calendar feed is the base feed plus the username
+  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingString:username];
+
+  NSString *rootURLString = [self serviceRootURLString];
+
+  NSString *feedURLString = [rootURLString stringByAppendingString:usernameEscaped];
+
+  NSURL *url = [NSURL URLWithString:feedURLString];
+  return url;
+}
+
++ (NSURL *)settingsFeedURLForUsername:(NSString *)username {
+
+  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingString:username];
+
+  NSString *rootURLString = [self serviceRootURLString];
+
+  NSString *template = @"%@%@/settings";
+
+  NSString *feedURLString = [NSString stringWithFormat:template,
+                             rootURLString, usernameEscaped];
+
+  NSURL *url = [NSURL URLWithString:feedURLString];
+  return url;
+}
+
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector
                                      didFailSelector:(SEL)failedSelector {
-  
-  // the calendar feed is the base feed plus the username
-  NSString *usernameEscaped = [self stringByURLEncoding:username];
-  
-  NSString *rootURLString = [self serviceRootURLString];
-  NSString *feedURLString = [rootURLString stringByAppendingString:usernameEscaped];
-  
-  NSURL *url = [NSURL URLWithString:feedURLString];
-  
+  NSURL *url = [[self class] calendarFeedURLForUsername:username];
+
   return [self fetchCalendarFeedWithURL:url
                                delegate:delegate
                       didFinishSelector:finishedSelector
@@ -246,7 +267,7 @@
   return @"cl";
 }
 
-- (NSString *)serviceRootURLString {
++ (NSString *)serviceRootURLString {
   return @"http://www.google.com/calendar/feeds/"; 
 }
 

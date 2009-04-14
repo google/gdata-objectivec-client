@@ -15,6 +15,10 @@ Additions
 
 - Added removeChild method to GDataXMLElement
 
+- Added query convenience method addCategoryFilterWithScheme:term: and
+  filter methods addCategoryWithScheme:term: and
+  addExcludeCategoryWithScheme:term:
+
 Changes
 
 Bugs Fixed

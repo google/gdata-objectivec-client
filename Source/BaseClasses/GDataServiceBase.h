@@ -134,7 +134,7 @@ enum {
 - (void)setHasCalledCallback:(BOOL)flag;
 
 - (void)setPostedObject:(GDataObject *)obj;
-- (GDataObject *)postedObject;
+- (id)postedObject;
 
 - (void)setFetchedObject:(GDataObject *)obj;
 - (GDataObject *)fetchedObject;
@@ -432,7 +432,6 @@ enum {
                 error:(NSError **)outErrorOrNil;  
 
 // internal utilities
-- (NSString *)stringByURLEncoding:(NSString *)param;
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher;
 

@@ -44,15 +44,20 @@
 - (void)editSelectedACLEntry;
 - (void)deleteSelectedACLEntry;
 
+- (void)fetchSelectedCalendarSettingsEntries;
+
 - (GDataServiceGoogleCalendar *)calendarService;
 - (GDataEntryCalendar *)selectedCalendar;
 - (GDataEntryCalendarEvent *)singleSelectedEvent;
 - (NSArray *)selectedEvents;
 - (GDataEntryACL *)selectedACLEntry;
+- (GDataEntryCalendarSettings *)selectedSettingsEntry;
 
 - (BOOL)isACLSegmentSelected;
 - (BOOL)isEventsSegmentSelected;
-  
+- (BOOL)isSettingsSegmentSelected;
+- (GDataFeedBase *)feedForSelectedSegment;
+
 - (GDataFeedCalendar *)calendarFeed;
 - (void)setCalendarFeed:(GDataFeedCalendar *)feed;
 - (NSError *)calendarFetchError;
@@ -74,6 +79,13 @@
 - (GDataServiceTicket *)ACLFetchTicket;
 - (void)setACLFetchTicket:(GDataServiceTicket *)ticket;
 
+- (GDataFeedCalendarSettings *)settingsFeed;
+- (void)setSettingsFeed:(GDataFeedCalendarSettings *)feed;
+- (NSError *)settingsFetchError;
+- (void)setSettingsFetchError:(NSError *)error;
+- (GDataServiceTicket *)settingsFetchTicket;
+- (void)setSettingsFetchTicket:(GDataServiceTicket *)ticket;
+
 @end
 
 enum {
@@ -83,9 +95,10 @@ enum {
 };
 
 enum {
-  // event/ACL segmented control segment index values
+  // event/ACL/settings segmented control segment index values
   kEventsSegment = 0,
-  kACLSegment = 1
+  kACLSegment = 1,
+  kSettingsSegment = 2
 };
 
 @implementation CalendarSampleWindowController
@@ -137,6 +150,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [mACLFeed release];
   [mACLFetchError release];
   [mACLFetchTicket release];
+
+  [mSettingsFeed release];
+  [mSettingsFetchError release];
+  [mSettingsFetchTicket release];
   
   [super dealloc];
 }
@@ -144,16 +161,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 #pragma mark -
 
 - (void)updateUI {
-  
+
   // calendar list display
-  [mCalendarTable reloadData]; 
-  
+  [mCalendarTable reloadData];
+
   if (mCalendarFetchTicket != nil) {
-    [mCalendarProgressIndicator startAnimation:self];  
+    [mCalendarProgressIndicator startAnimation:self];
   } else {
-    [mCalendarProgressIndicator stopAnimation:self];  
+    [mCalendarProgressIndicator stopAnimation:self];
   }
-  
+
   // calendar fetch result or selected item
   NSString *calendarResultStr = @"";
   if (mCalendarFetchError) {
@@ -162,86 +179,97 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     GDataEntryCalendar *calendar = [self selectedCalendar];
     if (calendar) {
       calendarResultStr = [calendar description];
-    } else {
-      
     }
   }
   [mCalendarResultTextField setString:calendarResultStr];
-  
+
   // add/delete calendar controls
   BOOL canAddCalendar = ([mCalendarFeed postLink] != nil);
   BOOL hasNewCalendarName = ([[mCalendarNameField stringValue] length] > 0);
   [mAddCalendarButton setEnabled:(canAddCalendar && hasNewCalendarName)];
-  
+
   BOOL canEditSelectedCalendar = ([[self selectedCalendar] editLink] != nil);
   [mDeleteCalendarButton setEnabled:canEditSelectedCalendar];
   [mRenameCalendarButton setEnabled:(hasNewCalendarName && canEditSelectedCalendar)];
-  
+
   int calendarsSegment = [mCalendarSegmentedControl selectedSegment];
   BOOL canEditNewCalendarName = (calendarsSegment == kOwnedCalendarsSegment);
   [mCalendarNameField setEnabled:canEditNewCalendarName];
-  
-  // event/ACL list display
-  [mEventTable reloadData]; 
-  
-  // the bottom table displays either event entries or ACL entries
+
+  // event/ACL/settings list display
+  [mEventTable reloadData];
+
+  // the bottom table displays event, ACL, or settings entries
   BOOL isEventDisplay = [self isEventsSegmentSelected];
-  
-  GDataServiceTicket *entryTicket = isEventDisplay ? mEventFetchTicket : mACLFetchTicket;
-  NSError *error = isEventDisplay ? mEventFetchError : mACLFetchError;
-    
-  if (entryTicket != nil) {
-    [mEventProgressIndicator startAnimation:self];  
+  BOOL isACLDisplay = [self isACLSegmentSelected];
+
+  GDataServiceTicket *entryTicket;
+  NSError *error;
+
+  if (isEventDisplay) {
+    entryTicket = mEventFetchTicket;
+    error = mEventFetchError;
+  } else if (isACLDisplay) {
+    entryTicket = mACLFetchTicket;
+    error = mACLFetchError;
   } else {
-    [mEventProgressIndicator stopAnimation:self];  
+    entryTicket = mSettingsFetchTicket;
+    error = mSettingsFetchError;
   }
-  
-  // display event or ACL entry fetch result or selected item
+
+  if (entryTicket != nil) {
+    [mEventProgressIndicator startAnimation:self];
+  } else {
+    [mEventProgressIndicator stopAnimation:self];
+  }
+
+  // display event, ACL, or settings fetch result or selected item
   NSString *eventResultStr = @"";
   if (error) {
     eventResultStr = [error description];
   } else {
+    GDataEntryBase *entry = nil;
     if (isEventDisplay) {
-      GDataEntryCalendarEvent *event = [self singleSelectedEvent];
-      if (event) {
-        eventResultStr = [event description];
-      }
+      entry = [self singleSelectedEvent];
+    } else if (isACLDisplay) {
+      entry = [self selectedACLEntry];
     } else {
-      GDataEntryACL *entry = [self selectedACLEntry];
-      if (entry) {
-        eventResultStr = [entry description];
-      }
+      entry = [self selectedSettingsEntry];
+    }
+
+    if (entry != nil) {
+      eventResultStr = [entry description];
     }
   }
   [mEventResultTextField setString:eventResultStr];
-  
+
   // enable/disable cancel buttons
   [mCalendarCancelButton setEnabled:(mCalendarFetchTicket != nil)];
   [mEventCancelButton setEnabled:(entryTicket != nil)];
-  
+
   // enable/disable other buttons
   BOOL isCalendarSelected = ([self selectedCalendar] != nil);
-  
-  BOOL doesSelectedCalendarHaveACLFeed = 
+
+  BOOL doesSelectedCalendarHaveACLFeed =
     ([[self selectedCalendar] ACLLink] != nil);
-    
+
   [mMapEventButton setEnabled:NO];
 
   if (isEventDisplay) {
-    
+
     [mAddEventButton setEnabled:isCalendarSelected];
     [mQueryTodayEventButton setEnabled:isCalendarSelected];
 
-    // Events segment is selected 
+    // Events segment is selected
     NSArray *selectedEvents = [self selectedEvents];
     unsigned int numberOfSelectedEvents = [selectedEvents count];
-    
+
     NSString *deleteTitle = (numberOfSelectedEvents <= 1) ?
-      @"Delete Entry" : @"Delete Entries"; 
+      @"Delete Entry" : @"Delete Entries";
     [mDeleteEventButton setTitle:deleteTitle];
 
     if (numberOfSelectedEvents == 1) {
-      
+
       // 1 selected event
       GDataEntryCalendarEvent *event = [selectedEvents objectAtIndex:0];
       BOOL isSelectedEntryEditable = ([event editLink] != nil);
@@ -256,26 +284,34 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       // zero or many selected events
       BOOL canBatchEdit = ([mEventFeed batchLink] != nil);
       BOOL canDeleteAll = (canBatchEdit && numberOfSelectedEvents > 1);
-      
+
       [mDeleteEventButton setEnabled:canDeleteAll];
       [mEditEventButton setEnabled:NO];
     }
-  } else {
+  } else if (isACLDisplay) {
     // ACL segment is selected
-    BOOL isEditableACLEntrySelected = 
+    BOOL isEditableACLEntrySelected =
       ([[self selectedACLEntry] editLink] != nil);
 
     [mDeleteEventButton setEnabled:isEditableACLEntrySelected];
     [mEditEventButton setEnabled:isEditableACLEntrySelected];
-    
+
     [mAddEventButton setEnabled:doesSelectedCalendarHaveACLFeed];
     [mQueryTodayEventButton setEnabled:NO];
+  } else {
+    // settings segment is selected
+    [mDeleteEventButton setEnabled:NO];
+    [mEditEventButton setEnabled:NO];
+    [mAddEventButton setEnabled:NO];
+    [mQueryTodayEventButton setEnabled:NO];
   }
-  
+
   // enable or disable the Events/ACL segment buttons
-  [mEntrySegmentedControl setEnabled:isCalendarSelected 
+  [mEntrySegmentedControl setEnabled:isCalendarSelected
                           forSegment:kEventsSegment];
-  [mEntrySegmentedControl setEnabled:doesSelectedCalendarHaveACLFeed 
+  [mEntrySegmentedControl setEnabled:isCalendarSelected
+                          forSegment:kSettingsSegment];
+  [mEntrySegmentedControl setEnabled:doesSelectedCalendarHaveACLFeed
                           forSegment:kACLSegment];
 }
 
@@ -314,6 +350,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [resultStr appendFormat:@"role: %@", value];
   }
   return resultStr;  
+}
+
+- (NSString *)displayStringForSettingsEntry:(GDataEntryCalendarSettings *)settingsEntry  {
+
+  GDataCalendarSettingsProperty *prop = [settingsEntry settingsProperty];
+
+  NSString *str = [NSString stringWithFormat:@"%@: %@",
+                   [prop name], [prop value]];
+  return str;
 }
 
 #pragma mark IBActions
@@ -435,19 +480,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     NSLog(@"%@", [calendar XMLElement]);
     
   } else if (sender == mEventTable) {
-    
-    if ([self isEventsSegmentSelected]) {
-      // get the event entry's title
-      GDataEntryCalendarEvent *eventEntry = [[mEventFeed entries] objectAtIndex:row];
-      NSLog(@"%@", [eventEntry XMLElement]);
-      
-    } else {
-      // get the ACL entry 
-      if (mACLFeed) {
-        GDataEntryACL *aclEntry = [[mACLFeed entries] objectAtIndex:row];
-        NSLog(@"%@", [aclEntry XMLElement]);
-      } 
-    }
+    // get the selected entry
+    GDataFeedBase *feed = [self feedForSelectedSegment];
+    GDataEntryBase *entry = [[feed entries] objectAtIndex:row];
+    NSLog(@"%@", [entry XMLElement]);
   }
 }
 
@@ -521,7 +557,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 
-// get the event selected in the bottom list, or nil if none
+// get the ACL selected in the bottom list, or nil if none
 - (GDataEntryACL *)selectedACLEntry {
   
   if ([self isACLSegmentSelected]) {
@@ -537,12 +573,39 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   return nil;
 }
 
+- (GDataEntryCalendarSettings *)selectedSettingsEntry {
+
+  if ([self isSettingsSegmentSelected]) {
+
+    NSArray *entries = [mSettingsFeed entries];
+    int rowIndex = [mEventTable selectedRow];
+    if ([entries count] > 0 && rowIndex > -1) {
+
+      GDataEntryCalendarSettings *entry = [entries objectAtIndex:rowIndex];
+      return entry;
+    }
+  }
+  return nil;
+}
+
 - (BOOL)isACLSegmentSelected {
   return ([mEntrySegmentedControl selectedSegment] == kACLSegment);
 }
 
 - (BOOL)isEventsSegmentSelected {
   return ([mEntrySegmentedControl selectedSegment] == kEventsSegment);
+}
+
+- (BOOL)isSettingsSegmentSelected {
+  return ([mEntrySegmentedControl selectedSegment] == kSettingsSegment);
+}
+
+- (GDataFeedBase *)feedForSelectedSegment {
+  int segmentNum = [mEntrySegmentedControl selectedSegment];
+  
+  if (segmentNum == kEventsSegment) return mEventFeed;
+  if (segmentNum == kACLSegment) return mACLFeed;
+  return mSettingsFeed;
 }
 
 #pragma mark Add/delete calendars
@@ -736,6 +799,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [self setACLFetchError:nil];
   [self setACLFetchTicket:nil];
   
+  [self setSettingsFeed:nil];
+  [self setSettingsFetchError:nil];
+  [self setSettingsFetchTicket:nil];
+  
   GDataServiceGoogleCalendar *service = [self calendarService];
   GDataServiceTicket *ticket;
   
@@ -800,11 +867,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     
     BOOL hasACL = ([[self selectedCalendar] ACLLink] != nil);
     BOOL isDisplayingEvents = [self isEventsSegmentSelected];
+    BOOL isDisplayingACL = [self isACLSegmentSelected];
     
-    if (isDisplayingEvents || !hasACL) {
+    if (isDisplayingEvents || (isDisplayingACL && !hasACL)) {
       [self fetchSelectedCalendarEvents];
-    } else {
+    } else if (isDisplayingACL) {
       [self fetchSelectedCalendarACLEntries]; 
+    } else {
+      [self fetchSelectedCalendarSettingsEntries]; 
     }
   }
 }
@@ -1516,31 +1586,88 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                     nil, nil, @"ACL Entry delete failed: %@", error);
 }
 
+////////////////////////////////////////////////////////
+#pragma mark Settings feed
+
+- (void)fetchSelectedCalendarSettingsEntries {
+
+  GDataEntryCalendar *calendar = [self selectedCalendar];
+  if (calendar) {
+
+    NSString *username = [mUsernameField stringValue];
+
+    NSURL *settingsFeedURL = [GDataServiceGoogleCalendar settingsFeedURLForUsername:username];
+    if (settingsFeedURL) {
+
+      // fetch the settings feed
+      [self setSettingsFeed:nil];
+      [self setSettingsFetchError:nil];
+      [self setSettingsFetchTicket:nil];
+
+      GDataServiceGoogleCalendar *service = [self calendarService];
+      GDataServiceTicket *ticket;
+
+      // temporary fetch call, waiting until settings feed has kind categories, http://b/1694419
+      ticket = [service fetchAuthenticatedFeedWithURL:settingsFeedURL
+                                            feedClass:[GDataFeedCalendarSettings class]
+                                             delegate:self
+                                    didFinishSelector:@selector(calendarSettingsTicket:finishedWithFeed:)
+                                      didFailSelector:@selector(calendarSettingsTicket:failedWithError:)];
+
+      [self setSettingsFetchTicket:ticket];
+
+      [self updateUI];
+    }
+  }
+}
+
+// fetched settings list successfully
+- (void)calendarSettingsTicket:(GDataServiceTicket *)ticket
+              finishedWithFeed:(GDataFeedCalendarSettings *)feed {
+
+  [self setSettingsFeed:feed];
+  [self setSettingsFetchError:nil];
+  [self setSettingsFetchTicket:nil];
+
+  [self updateUI];
+}
+
+// failed
+- (void)calendarSettingsTicket:(GDataServiceTicket *)ticket
+               failedWithError:(NSError *)error {
+
+  [self setSettingsFeed:nil];
+  [self setSettingsFetchError:error];
+  [self setSettingsFetchTicket:nil];
+
+  [self updateUI];
+}
+
 #pragma mark TableView delegate methods
 //
 // table view delegate methods
 //
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-  
+
   if ([notification object] == mCalendarTable) {
     // the user clicked on a calendar, so fetch its events
-    
+
     // if the calendar lacks an ACL feed, select the events segment;
     // the updateUI routine will disable the ACL segment for us
-    BOOL doesSelectedCalendarHaveACLFeed = 
+    BOOL doesSelectedCalendarHaveACLFeed =
       ([[self selectedCalendar] ACLLink] != nil);
-    
-    if (!doesSelectedCalendarHaveACLFeed) {
-      [mEntrySegmentedControl setSelectedSegment:kEventsSegment]; 
+
+    if (!doesSelectedCalendarHaveACLFeed && [self isACLSegmentSelected]) {
+      [mEntrySegmentedControl setSelectedSegment:kEventsSegment];
     }
-    
+
     [self fetchSelectedCalendar];
   } else {
-    // the user clicked on an event or an ACL entry; 
+    // the user clicked on an event or an ACL entry;
     // just display it below the entry table
-    
-    [self updateUI]; 
+
+    [self updateUI];
   }
 }
 
@@ -1550,36 +1677,38 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     return [[mCalendarFeed entries] count];
   } else {
     // entry table
-    if ([self isEventsSegmentSelected]) {
-      return [[mEventFeed entries] count];
-    } else {
-      return [[mACLFeed entries] count]; 
-    }
+    GDataFeedBase *feed = [self feedForSelectedSegment];
+    return [[feed entries] count];
   }
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
+
+  // calendar list table
   if (tableView == mCalendarTable) {
     // get the calendar entry's title
     GDataEntryCalendar *calendar = [[mCalendarFeed entries] objectAtIndex:row];
     return [[calendar title] stringValue];
-  } else {
-    
-    if ([self isEventsSegmentSelected]) {
-      // get the event entry's title
-      GDataEntryCalendarEvent *eventEntry = [[mEventFeed entries] objectAtIndex:row];
-      return [[eventEntry title] stringValue];
-      
-    } else {
-      // get the ACL entry 
-      if (mACLFeed) {
-        GDataEntryACL *aclEntry = [[mACLFeed entries] objectAtIndex:row];
-        return [self displayStringForACLEntry:aclEntry];
-        
-      } 
-    }
   }
-  return nil;
+
+  // entries table
+
+  // event entry
+  if ([self isEventsSegmentSelected]) {
+    // get the event entry's title
+    GDataEntryCalendarEvent *eventEntry = [[mEventFeed entries] objectAtIndex:row];
+    return [[eventEntry title] stringValue];
+  }
+
+  // ACL entry
+  if ([self isACLSegmentSelected]) {
+    GDataEntryACL *aclEntry = [[mACLFeed entries] objectAtIndex:row];
+    return [self displayStringForACLEntry:aclEntry];
+  }
+
+  // settings entry
+  GDataEntryCalendarSettings *settingsEntry = [[mSettingsFeed entries] objectAtIndex:row];
+  return [self displayStringForSettingsEntry:settingsEntry];
 }
 
 #pragma mark Control delegate methods
@@ -1671,4 +1800,32 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [mACLFetchTicket release];
   mACLFetchTicket = [ticket retain];
 }
+
+- (GDataFeedCalendarSettings *)settingsFeed {
+  return mSettingsFeed;
+}
+
+- (void)setSettingsFeed:(GDataFeedCalendarSettings *)feed {
+  [mSettingsFeed autorelease];
+  mSettingsFeed = [feed retain];
+}
+
+- (NSError *)settingsFetchError {
+  return mSettingsFetchError;
+}
+
+- (void)setSettingsFetchError:(NSError *)error {
+  [mSettingsFetchError release];
+  mSettingsFetchError = [error retain];
+}
+
+- (GDataServiceTicket *)settingsFetchTicket {
+  return mSettingsFetchTicket;
+}
+
+- (void)setSettingsFetchTicket:(GDataServiceTicket *)ticket {
+  [mACLFetchTicket release];
+  mACLFetchTicket = [ticket retain];
+}
+
 @end

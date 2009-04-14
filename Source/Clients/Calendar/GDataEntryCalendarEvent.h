@@ -33,9 +33,11 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataNamespaceGCal _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005");
+_EXTERN NSString* const kGDataNamespaceGCal       _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005");
 _EXTERN NSString* const kGDataNamespaceGCalPrefix _INITIALIZE_AS(@"gCal");
 
+_EXTERN NSString* const kGDataCategoryCalendar         _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#calendarmeta");
+_EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#settings");
 
 // CalendarEventEntry extensions
 @interface GDataPrivateCopyProperty : GDataBoolValueConstruct <GDataExtension>
