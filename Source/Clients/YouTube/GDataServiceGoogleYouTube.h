@@ -64,6 +64,10 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDFriendsActivity       _INITIALIZE
 // failedSelector has signature like:
 //   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
+// Note that setUserCredentialsWithUsername:password: may require either the
+// Google account e-mail address or the YouTube account name, depending on
+// how the account was created.
+
 @interface GDataServiceGoogleYouTube : GDataServiceGoogle {
   NSString *developerKey_; // required for uploading 
 }
