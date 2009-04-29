@@ -203,7 +203,7 @@ static NSString* gLoggingProcessName = nil;
 // and a plain string for other input data
 - (NSString *)formattedStringFromData:(NSData *)inputData {
 
-#if (!GDATA_FOUNDATION_ONLY || TARGET_IPHONE_SIMULATOR) && !GDATA_SKIP_LOG_XMLFORMAT
+#if !GDATA_FOUNDATION_ONLY && !GDATA_SKIP_LOG_XMLFORMAT
   // verify that this data starts with the bytes indicating XML
 
   NSString *const kXMLLintPath = @"/usr/bin/xmllint";

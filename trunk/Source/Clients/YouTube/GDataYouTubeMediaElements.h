@@ -38,6 +38,9 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 
 // media content with YouTube's addition of an integer format attribute, 
 // like yt:format="1"
+//
+// Note: iPhone seems to support playback of RTSP streams (formats 1 and 6)
+
 @interface GDataMediaContent (YouTubeExtensions)
 - (NSNumber *)youTubeFormatNumber;
 - (void)setYouTubeFormatNumber:(NSNumber *)num;
