@@ -1761,7 +1761,8 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class {
 
-  GDATA_DEBUG_ASSERT([objects isKindOfClass:[NSArray class]], @"array expected");
+  GDATA_DEBUG_ASSERT(objects == nil || [objects isKindOfClass:[NSArray class]],
+                     @"array expected");
 
   if (extensions_ == nil && objects != nil) {
     extensions_ = [[NSMutableDictionary alloc] init];
