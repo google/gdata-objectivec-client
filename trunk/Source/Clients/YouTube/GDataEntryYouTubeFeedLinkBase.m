@@ -50,17 +50,16 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"thumbnail",                @"thumbnail",          kGDataDescArrayDescs },
+    { @"countHint",                @"countHint",          kGDataDescArrayDescs },
+    { @"version<=1.0:feedLink",    @"feedLink",           kGDataDescArrayDescs },
+    { @"version<=1.0:description", @"youTubeDescription", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-
-  [self addToArray:items objectDescriptionIfNonNil:[self thumbnail] withName:@"thumbnail"];
-  [self addToArray:items objectDescriptionIfNonNil:[self countHint] withName:@"countHint"];
-
-  // elements present in GData v1 only
-  if ([self isServiceVersion1]) {
-    [self addToArray:items objectDescriptionIfNonNil:[self feedLink] withName:@"feedLink"];
-    [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"];
-  }
-
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif

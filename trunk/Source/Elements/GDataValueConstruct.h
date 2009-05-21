@@ -29,8 +29,7 @@
 // an element with a value="" attribute, as in
 // <gCal:timezone value="America/Los_Angeles"/>
 // (subclasses may override the attribute name)
-@interface GDataValueConstruct : GDataObject {
-}
+@interface GDataValueConstruct : GDataObject
 
 // convenience functions: subclasses may call into these and
 // return the result, cast to the appropriate type
@@ -89,3 +88,15 @@
 @interface GDataBoolValueConstruct : GDataValueConstruct
 + (id)boolValueWithBool:(BOOL)flag;
 @end
+
+// GDataNameValueConstruct is for subclasses that have "name" and "value"
+// attributes
+@interface GDataNameValueConstruct : GDataValueConstruct
++ (id)valueWithName:(NSString *)name stringValue:(NSString *)value;
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
+
+- (NSString *)nameAttributeName; // the default implementation returns @"name"
+@end
+

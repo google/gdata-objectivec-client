@@ -166,10 +166,12 @@ enum {
     NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
                                          code:-1
                                      userInfo:userInfo];
-    
-    [delegate performSelector:failedSelector
-                   withObject:ticket
-                   withObject:error];
+
+    if (failedSelector) {
+      [delegate performSelector:failedSelector
+                     withObject:ticket
+                     withObject:error];
+    }
 
     return nil;
   }
@@ -269,11 +271,13 @@ enum {
   [invocation getArgument:&ticket         atIndex:kInvocationTicketIndex];
   
   [fetcher setUserData:nil];  
-  
-  [delegate performSelector:failedSelector
-                 withObject:ticket
-                 withObject:error];  
-  
+
+  if (failedSelector) {
+    [delegate performSelector:failedSelector
+                   withObject:ticket
+                   withObject:error];
+  }
+
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
@@ -631,8 +635,8 @@ enum {
                                            httpMethod:httpMethod];
 
   // if appropriate set the method override header
-  if ([httpMethod length] > 0) {
-    if (shouldUseMethodOverrideHeader_) {
+  if (shouldUseMethodOverrideHeader_) {
+    if ([httpMethod length] > 0 && ![httpMethod isEqualToString:@"POST"]) {
       // superclass set the http method; we'll change it to POST and 
       // set the header
       [request setValue:httpMethod forHTTPHeaderField:@"X-HTTP-Method-Override"];

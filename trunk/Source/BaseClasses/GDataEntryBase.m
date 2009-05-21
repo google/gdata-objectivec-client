@@ -59,7 +59,7 @@
 
 - (Class)atomPubEditedObjectClass {
   // version 1 of GData used a preliminary namespace URI
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     return [GDataAtomPubEditedDate1_0 class];
   } else {
     return [GDataAtomPubEditedDateStd class];

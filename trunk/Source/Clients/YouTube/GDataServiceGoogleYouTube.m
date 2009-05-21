@@ -68,7 +68,7 @@
   //
   // userID may be kGDataServiceDefaultUser
 
-  NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
   NSString *endPart;
   
   if (feedID == nil) {
@@ -116,7 +116,7 @@
   //
   // userID may be "default" to indicate the currently authenticated user
 
-  NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
   NSString *encodedClientID = [GDataUtilities stringByURLEncodingString:clientID];
 
   NSString *root = [self serviceUploadRootURLString];

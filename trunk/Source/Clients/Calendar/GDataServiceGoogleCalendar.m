@@ -33,7 +33,7 @@
 + (NSURL *)calendarFeedURLForUsername:(NSString *)username {
 
   // the calendar feed is the base feed plus the username
-  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingString:username];
+  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingForURI:username];
 
   NSString *rootURLString = [self serviceRootURLString];
 
@@ -45,7 +45,7 @@
 
 + (NSURL *)settingsFeedURLForUsername:(NSString *)username {
 
-  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingString:username];
+  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingForURI:username];
 
   NSString *rootURLString = [self serviceRootURLString];
 

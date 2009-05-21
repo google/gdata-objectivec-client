@@ -132,7 +132,7 @@
 + (Class)atomPubControlClassForObject:(GDataObject *)obj {
   // version 1 of GData used a preliminary namespace URI for the atom pub
   // element; the standard version of the class uses the proper URI
-  if ([obj isServiceVersion1]) {
+  if ([obj isCoreProtocolVersion1]) {
     return [GDataAtomPubControl1_0 class];
   } else {
     return [GDataAtomPubControl class];

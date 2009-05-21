@@ -958,7 +958,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                       objectClass:[entryToInsert class]
                      objectToPost:entryToInsert
                              ETag:nil
-                       httpMethod:nil
+                       httpMethod:@"POST"
                          delegate:delegate
                 didFinishSelector:finishedSelector
                   didFailSelector:failedSelector

@@ -35,19 +35,19 @@
   
   NSString *albumID = @"";
   if (albumIDorNil) {
-    albumID = [NSString stringWithFormat:@"/albumid/%@", 
-               [GDataUtilities stringByURLEncodingString:albumIDorNil]]; 
+    albumID = [NSString stringWithFormat:@"/albumid/%@",
+               [GDataUtilities stringByURLEncodingForURI:albumIDorNil]];
   }
-  
+
   NSString *albumName = @"";
   if (albumNameOrNil && !albumIDorNil) {
-    albumName = [NSString stringWithFormat:@"/album/%@", 
-                 [GDataUtilities stringByURLEncodingString:albumNameOrNil]];
+    albumName = [NSString stringWithFormat:@"/album/%@",
+                 [GDataUtilities stringByURLEncodingForURI:albumNameOrNil]];
   }
-  
+
   NSString *photo = @"";
   if (photoIDorNil) {
-    photo = [NSString stringWithFormat:@"/photoid/%@", photoIDorNil]; 
+    photo = [NSString stringWithFormat:@"/photoid/%@", photoIDorNil];
   }
   
   // make an array for the kind and access query params, and join the arra items
@@ -78,21 +78,21 @@
   
   NSString *template = @"%@feed/api/user/%@%@%@%@%@";
   NSString *urlString = [NSString stringWithFormat:template,
-                         root, [GDataUtilities stringByURLEncodingString:userID], 
+                         root, [GDataUtilities stringByURLEncodingForURI:userID],
                          albumID, albumName, photo, query];
   
   return [NSURL URLWithString:urlString];
 }
 
 + (NSURL *)photoContactsFeedURLForUserID:(NSString *)userID {
-  
+
   NSString *root = [self serviceRootURLString];
-  
+
   NSString *template = @"%@feed/api/user/%@/contacts?kind=user";
-  
+
   NSString *urlString = [NSString stringWithFormat:template,
-                         root, [GDataUtilities stringByURLEncodingString:userID]];
-  
+                       root, [GDataUtilities stringByURLEncodingForURI:userID]];
+
   return [NSURL URLWithString:urlString];
 }
 

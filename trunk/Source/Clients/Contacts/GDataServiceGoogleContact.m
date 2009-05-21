@@ -34,11 +34,11 @@
   
   NSString *template = @"%@%@/%@/%@";
   
-  NSString *feedURLString = [NSString stringWithFormat:template, 
-                             baseURLString, 
-                             [GDataUtilities stringByURLEncodingString:feedName], 
-                             [GDataUtilities stringByURLEncodingString:userID], 
-                             [GDataUtilities stringByURLEncodingString:projection]];
+  NSString *feedURLString = [NSString stringWithFormat:template,
+                             baseURLString,
+                             [GDataUtilities stringByURLEncodingForURI:feedName],
+                             [GDataUtilities stringByURLEncodingForURI:userID],
+                             [GDataUtilities stringByURLEncodingForURI:projection]];
   
   NSURL *url = [NSURL URLWithString:feedURLString];
   

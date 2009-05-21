@@ -372,6 +372,43 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
   return nil;
 }
 
+#pragma mark Version helpers
+
+// compareVersion compares two strings in 1.2.3.4 format
+// missing fields are interpreted as zeros, so 1.2 = 1.2.0.0
++ (NSComparisonResult)compareVersion:(NSString *)ver1 toVersion:(NSString *)ver2 {
+
+  static NSCharacterSet* dotSet = nil;
+  if (dotSet == nil) {
+    dotSet = [[NSCharacterSet characterSetWithCharactersInString:@"."] retain];
+  }
+
+  if (ver1 == nil) ver1 = @"";
+  if (ver2 == nil) ver2 = @"";
+
+  NSScanner* scanner1 = [NSScanner scannerWithString:ver1];
+  NSScanner* scanner2 = [NSScanner scannerWithString:ver2];
+
+  [scanner1 setCharactersToBeSkipped:dotSet];
+  [scanner2 setCharactersToBeSkipped:dotSet];
+
+  int partA1 = 0, partA2 = 0, partB1 = 0, partB2 = 0;
+  int partC1 = 0, partC2 = 0, partD1 = 0, partD2 = 0;
+
+  if ([scanner1 scanInt:&partA1] && [scanner1 scanInt:&partB1]
+      && [scanner1 scanInt:&partC1] && [scanner1 scanInt:&partD1]) {
+  }
+  if ([scanner2 scanInt:&partA2] && [scanner2 scanInt:&partB2]
+      && [scanner2 scanInt:&partC2] && [scanner2 scanInt:&partD2]) {
+  }
+
+  if (partA1 != partA2) return ((partA1 < partA2) ? NSOrderedAscending : NSOrderedDescending);
+  if (partB1 != partB2) return ((partB1 < partB2) ? NSOrderedAscending : NSOrderedDescending);
+  if (partC1 != partC2) return ((partC1 < partC2) ? NSOrderedAscending : NSOrderedDescending);
+  if (partD1 != partD2) return ((partD1 < partD2) ? NSOrderedAscending : NSOrderedDescending);
+  return NSOrderedSame;
+}
+
 #pragma mark File type helpers
 
 // utility routine to convert a file path to the file's MIME type using

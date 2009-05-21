@@ -86,15 +86,12 @@
 - (void)addParseDeclarations {
 
   NSString *attrName = [self attributeName];
-  
   if (attrName) {
-    
-    // there's a named attribute
-    NSArray *attr = [NSArray arrayWithObject:[self attributeName]];
+    // there's a value attribute
+    NSArray *attr = [NSArray arrayWithObject:attrName];
     [self addLocalAttributeDeclarations:attr];
-    
+
   } else {
-    
     // no named attribute; use the element's child text as the value
     [self addContentValueDeclaration];
   }
@@ -102,28 +99,27 @@
 
 - (NSString *)stringValue {
   NSString *attrName = [self attributeName];
-  
   if (attrName != nil) {
-    return [self stringValueForAttribute:attrName]; 
+    return [self stringValueForAttribute:attrName];
   } else {
-    return [self contentStringValue]; 
+    return [self contentStringValue];
   }
 }
 
 - (void)setStringValue:(NSString *)str {
   NSString *attrName = [self attributeName];
-  
   if (attrName != nil) {
-    [self setStringValue:str forAttribute:attrName]; 
+    [self setStringValue:str forAttribute:attrName];
   } else {
-    [self setContentStringValue:str]; 
+    [self setContentStringValue:str];
   }
 }
 
 - (NSString *)attributeName {
   // subclasses can override if they store their value under a different
   // attribute name, or can return nil to indicate the value is in the child
-  // node text
+  // node text (or just use GDataValueElementConstruct which returns nil
+  // for this method)
   return @"value";
 }
 
@@ -220,6 +216,44 @@
   [self setStringValue:str];
 }
 
+@end
+
+@implementation GDataNameValueConstruct // derives from GDataValueConstruct
++ (id)valueWithName:(NSString *)name stringValue:(NSString *)value {
+  GDataNameValueConstruct *obj = [self valueWithString:value];
+  [obj setName:name];
+  return obj;
+}
+
+- (void)addParseDeclarations {
+  [super addParseDeclarations];
+
+  // add the name attribute
+  NSString *nameAttrName = [self nameAttributeName];
+  if (nameAttrName) {
+    NSArray *attr = [NSArray arrayWithObject:nameAttrName];
+    [self addLocalAttributeDeclarations:attr];
+  }
+}
+
+- (NSString *)name {
+  NSString *nameAttrName = [self nameAttributeName];
+  if (nameAttrName) {
+    return [self stringValueForAttribute:nameAttrName];
+  }
+  return nil;
+}
+
+- (void)setName:(NSString *)str {
+  NSString *nameAttrName = [self nameAttributeName];
+  if (nameAttrName) {
+    [self setStringValue:str forAttribute:nameAttrName];
+  }
+}
+
+- (NSString *)nameAttributeName {
+  return @"name";
+}
 @end
 
 @implementation GDataValueElementConstruct // derives from GDataValueConstruct

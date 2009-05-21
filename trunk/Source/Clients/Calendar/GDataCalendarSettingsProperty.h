@@ -22,9 +22,9 @@
 // calendar settings property, like
 //  <gCal:settingsProperty name="country" value="EH"/>
 
-@interface GDataCalendarSettingsProperty : GDataObject <GDataExtension>
-- (NSString *)name;
-- (void)setName:(NSString *)str;
+@interface GDataCalendarSettingsProperty : GDataNameValueConstruct <GDataExtension>
+
+// supports -name and -setName from the superclass
 
 - (NSString *)value;
 - (void)setValue:(NSString *)str;

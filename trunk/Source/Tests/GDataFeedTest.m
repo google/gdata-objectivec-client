@@ -389,7 +389,7 @@
     //
     // Contact Feed
     //
-    { @"GDataFeedContact", @"Tests/FeedContactTest1.xml" },
+    { @"GDataFeedContact/2.0", @"Tests/FeedContactTest1.xml" },
       
     // GDataFeedContact paths 
     { @"title", @"Contacts" },
