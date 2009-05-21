@@ -19,6 +19,8 @@
 
 #import "GDataSpreadsheetCell.h"
 
+#import "GDataEntrySpreadsheet.h" // for namespaces
+
 @implementation GDataSpreadsheetCell
 
 // For spreadsheet cells like:
@@ -27,8 +29,8 @@
 //
 // http://code.google.com/apis/spreadsheets/reference.html#gs_reference
 
-+ (NSString *)extensionElementURI       { return @"http://schemas.google.com/spreadsheets/2006"; }
-+ (NSString *)extensionElementPrefix    { return @"gs"; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceGSpread; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGSpreadPrefix; }
 + (NSString *)extensionElementLocalName { return @"cell"; }
 
 + (GDataSpreadsheetCell *)cellWithRow:(int)row

@@ -21,58 +21,23 @@
 //  <gCal:settingsProperty name="country" value="EH"/>
 
 #import "GDataCalendarSettingsProperty.h"
-
 #import "GDataEntryCalendarEvent.h" // for calendar namespace
-
 #import "GDataObject.h"
-
-static NSString* const kNameAttr = @"name";
-static NSString* const kValueAttr = @"value";
 
 @implementation GDataCalendarSettingsProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"settingsProperty"; }
 
-- (void)addParseDeclarations {
-
-  NSArray *attrs = [NSArray arrayWithObjects:
-                    kNameAttr, kValueAttr, nil];
-
-  [self addLocalAttributeDeclarations:attrs];
-}
-
-#if !GDATA_SIMPLE_DESCRIPTIONS
-- (NSMutableArray *)itemsForDescription {
-
-  static struct GDataDescriptionRecord descRecs[] = {
-    { @"name",  @"name",  kGDataDescValueLabeled },
-    { @"value", @"value", kGDataDescValueLabeled },
-    { nil, nil, 0 }
-  };
-
-  NSMutableArray *items = [super itemsForDescription];
-  [self addDescriptionRecords:descRecs toItems:items];
-  return items;
-}
-#endif
 
 #pragma mark -
 
-- (NSString *)name {
-  return [self stringValueForAttribute:kNameAttr];
-}
-
-- (void)setName:(NSString *)str {
-  [self setStringValue:str forAttribute:kNameAttr];
-}
-
 - (NSString *)value {
-  return [self stringValueForAttribute:kValueAttr];
+  return [self stringValue];
 }
 
 - (void)setValue:(NSString *)str {
-  [self setStringValue:str forAttribute:kValueAttr];
+  [self setStringValue:str];
 }
 
 @end

@@ -26,7 +26,7 @@
 + (NSURL *)sitemapsFeedURLForSiteID:(NSString *)siteID {
   
   NSString *encodedSiteID;
-  encodedSiteID = [GDataUtilities stringByURLEncodingStringParameter:siteID];
+  encodedSiteID = [GDataUtilities stringByURLEncodingForURI:siteID];
   
   NSString *const template = @"%@%@/sitemaps";
   

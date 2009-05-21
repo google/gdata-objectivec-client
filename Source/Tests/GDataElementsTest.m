@@ -639,6 +639,11 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"boolValue", @"1" },
     { @"", @"" },
     
+    { @"GDataNameValueConstruct", @"<namevalue name='fred' value='flintstone' />" },
+    { @"stringValue", @"flintstone" },
+    { @"name", @"fred" },
+    { @"", @"" },
+
     { @"GDataEntryContent", @"<content src='http://lh.google.com/image/Car.jpg' type='image/jpeg'/>" },
     { @"sourceURI", @"http://lh.google.com/image/Car.jpg" },
     { @"type", @"image/jpeg" },

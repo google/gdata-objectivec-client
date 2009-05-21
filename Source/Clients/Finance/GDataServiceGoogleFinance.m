@@ -30,7 +30,7 @@
     
   NSString *const template = @"%@%@/portfolios";
   
-  NSString *encodedUserID = [GDataUtilities stringByURLEncodingString:userID];
+  NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
   
   NSString *rootURLStr = [self serviceRootURLString];
 

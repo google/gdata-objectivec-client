@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataIM.h
@@ -34,6 +34,7 @@ _EXTERN NSString* const kGDataIMProtocolGoogleTalk _INITIALIZE_AS(@"http://schem
 _EXTERN NSString* const kGDataIMProtocolICQ        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#ICQ");
 _EXTERN NSString* const kGDataIMProtocolJabber     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#JABBER");
 _EXTERN NSString* const kGDataIMProtocolMSN        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#MSN");
+_EXTERN NSString* const kGDataIMProtocolNetMeeting _INITIALIZE_AS(@"http://schemas.google.com/g/2005#NETMEETING");
 _EXTERN NSString* const kGDataIMProtocolQQ         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#QQ");
 _EXTERN NSString* const kGDataIMProtocolSkype      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#SKYPE");
 _EXTERN NSString* const kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#YAHOO");

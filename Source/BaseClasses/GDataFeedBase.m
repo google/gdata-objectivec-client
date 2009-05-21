@@ -85,7 +85,7 @@
    [GDataBatchOperation class],
    nil];
 
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     
     // GData version 1 classes 
     [self addExtensionDeclarationForParentClass:feedClass
@@ -520,7 +520,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
   
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchTotalResults1_0 class];
   } else {
     objClass = [GDataOpenSearchTotalResults1_1 class];
@@ -534,7 +534,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
 
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchTotalResults1_0 class];
   } else {
     objClass = [GDataOpenSearchTotalResults1_1 class];
@@ -548,7 +548,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
   
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchStartIndex1_0 class];
   } else {
     objClass = [GDataOpenSearchStartIndex1_1 class];
@@ -562,7 +562,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
   
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchStartIndex1_0 class];
   } else {
     objClass = [GDataOpenSearchStartIndex1_1 class];
@@ -576,7 +576,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
   
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchItemsPerPage1_0 class];
   } else {
     objClass = [GDataOpenSearchItemsPerPage1_1 class];
@@ -590,7 +590,7 @@ forCategoryWithScheme:scheme
   GDataValueElementConstruct *obj;
   Class objClass;
 
-  if ([self isServiceVersion1]) {
+  if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchItemsPerPage1_0 class];
   } else {
     objClass = [GDataOpenSearchItemsPerPage1_1 class];

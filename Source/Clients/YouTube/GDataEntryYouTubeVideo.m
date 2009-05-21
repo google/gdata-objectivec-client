@@ -102,19 +102,15 @@
   // report notEmbeddable since it's the unusual case
   NSString *nonEmbeddableValue = [self isEmbeddable] ? nil : @"YES";
 
-  // racy applies to v1 only
-  BOOL isRacy = [self isServiceVersion1] && [self isRacy];
-  NSString *racyValue = isRacy ? @"YES" : nil;
-
   struct GDataDescriptionRecord descRecs[] = {
-    { @"state",         @"publicationState",   kGDataDescValueLabeled },
-    { @"rating",        @"rating",             kGDataDescValueLabeled },
-    { @"comment",       @"comment",            kGDataDescValueLabeled },
-    { @"stats",         @"statistics",         kGDataDescValueLabeled },
-    { @"mediaGroup",    @"mediaGroup",         kGDataDescValueLabeled },
-    { @"geoLocation",   @"geoLocation",        kGDataDescValueLabeled },
-    { @"notEmbeddable", nonEmbeddableValue,    kGDataDescValueIsKeyPath },
-    { @"racy",          racyValue,             kGDataDescValueIsKeyPath },
+    { @"state",             @"publicationState", kGDataDescValueLabeled   },
+    { @"rating",            @"rating",           kGDataDescValueLabeled   },
+    { @"comment",           @"comment",          kGDataDescValueLabeled   },
+    { @"stats",             @"statistics",       kGDataDescValueLabeled   },
+    { @"mediaGroup",        @"mediaGroup",       kGDataDescValueLabeled   },
+    { @"geoLocation",       @"geoLocation",      kGDataDescValueLabeled   },
+    { @"notEmbeddable",     nonEmbeddableValue,  kGDataDescValueIsKeyPath },
+    { @"version<=1.0:racy", @"isRacy",             kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
 

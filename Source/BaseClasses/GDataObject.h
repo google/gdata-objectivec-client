@@ -132,13 +132,20 @@ _EXTERN NSString* const kGDataNamespaceGDataPrefix _INITIALIZE_AS(@"gd");
 _EXTERN NSString* const kGDataNamespaceBatch _INITIALIZE_AS(@"http://schemas.google.com/gdata/batch");
 _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
-#define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
-  GDATA_DEBUG_ASSERT(![self isServiceVersion1], @"%s requires newer version", \
-    _cmd)
+#define GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(versionString) \
+  GDATA_DEBUG_ASSERT([self isServiceVersionAtLeast:versionString], \
+    @"%s requires newer version", _cmd)
 
+#define GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(versionString) \
+  GDATA_DEBUG_ASSERT([self isServiceVersionAtMost:versionString], \
+    @"%s deprecated under v%@", _cmd, [self serviceVersion])
+
+// no services had versions 1.x for (x > 0) so we can safely test against 1.0
 #define GDATA_DEBUG_ASSERT_MAX_SERVICE_V1() \
-  GDATA_DEBUG_ASSERT([self isServiceVersion1], @"%s deprecated under v%@", \
-    _cmd, [self serviceVersion])
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(@"1.0")
+
+#define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(@"2.0")
 
 @class GDataDateTime;
 @class GDataCategory;
@@ -299,7 +306,11 @@ typedef struct GDataDescriptionRecord {
 - (void)setServiceVersion:(NSString *)str;
 - (NSString *)serviceVersion;
 
-- (BOOL)isServiceVersion1;
+- (BOOL)isServiceVersionAtLeast:(NSString *)otherVersion;
+- (BOOL)isServiceVersionAtMost:(NSString *)otherVersion;
+
+- (NSString *)coreProtocolVersion;
+- (BOOL)isCoreProtocolVersion1;
 
 // userData is available for client use; retained by GDataObject, but not 
 // copied by the copyWithZone
@@ -601,6 +612,15 @@ objectDescriptionIfNonNil:(id)obj
 - (NSMutableArray *)itemsForDescription;
 - (NSString *)descriptionWithItems:(NSArray *)items;
 - (NSString *)description;
+
+// coreProtocolVersionForServiceVersion maps the service version to the
+// underlying core protocol version.  The default implementation returns
+// the service version as the core protocol version.
+//
+// Entry and feed subclasses will need to implement this if their service
+// version numbers deviate from the core protocol version numbers.
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)str;
+
 @end
 
 @interface NSXMLElement (GDataObjectExtensions)

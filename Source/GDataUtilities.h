@@ -89,6 +89,12 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
                 forKeyPath:(NSString *)keyPath;
 
 //
+// version helpers
+//
+
++ (NSComparisonResult)compareVersion:(NSString *)ver1 toVersion:(NSString *)ver2;
+
+//
 // file type helpers
 //
 

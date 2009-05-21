@@ -595,10 +595,39 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return str;
 }
 
-- (BOOL)isServiceVersion1 {
-  NSString *str = [self serviceVersion];
-  BOOL isV1 = ([str intValue] <= 1);
-  return isV1;
+- (BOOL)isServiceVersionAtLeast:(NSString *)otherVersion {
+  NSString *serviceVersion = [self serviceVersion];
+  NSComparisonResult result = [GDataUtilities compareVersion:serviceVersion
+                                                   toVersion:otherVersion];
+  return (result != NSOrderedAscending);
+}
+
+- (BOOL)isServiceVersionAtMost:(NSString *)otherVersion {
+  NSString *serviceVersion = [self serviceVersion];;
+  NSComparisonResult result = [GDataUtilities compareVersion:serviceVersion
+                                                   toVersion:otherVersion];
+  return (result != NSOrderedDescending);
+}
+
+- (NSString *)coreProtocolVersion {
+  NSString *serviceVersion = [self serviceVersion];
+  NSString *coreVersion = [[self class] coreProtocolVersionForServiceVersion:serviceVersion];
+  return coreVersion;
+}
+
+- (BOOL)isCoreProtocolVersion1 {
+  NSString *coreVersion = [self coreProtocolVersion];
+
+  // technically the version number is <integer>.<integer> rather than a float,
+  // but intValue is a simple way to test just the major portion
+  unsigned int majorVer = [coreVersion intValue];
+  return (majorVer <= 1);
+}
+
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)str {
+  // subclasses may override this when their service versions
+  // do not match the core protocol version
+  return str;
 }
 
 #pragma mark userData and properties
@@ -658,7 +687,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   
   if ([prefix isEqual:kGDataNamespaceAtomPubPrefix]) {
     
-    if ([self isServiceVersion1]) {
+    if ([self isCoreProtocolVersion1]) {
       uri = kGDataNamespaceAtomPub1_0;
     } else {
       uri = kGDataNamespaceAtomPubStd;
@@ -888,6 +917,53 @@ attributeValueIfNonNil:str
 
 #pragma mark description method helpers
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
+// if the description label begins with version<= or version>= then do a service
+// version check
+//
+// returns the label with any version prefix removed, or returns nil if the
+// description fails the version check and should not be evaluated
+
+- (NSString *)labelAdjustedForVersion:(NSString *)origLabel {
+
+  BOOL checkMinVersion = NO;
+  BOOL checkMaxVersion = NO;
+  NSString *prefix = nil;
+
+  static NSString *const kMinVersionPrefix = @"version>=";
+  static NSString *const kMaxVersionPrefix = @"version<=";
+
+  if ([origLabel hasPrefix:kMinVersionPrefix]) {
+    checkMinVersion = YES;
+    prefix = kMinVersionPrefix;
+  } else if ([origLabel hasPrefix:kMaxVersionPrefix]) {
+    checkMaxVersion = YES;
+    prefix = kMaxVersionPrefix;
+  }
+
+  if (!checkMaxVersion && !checkMinVersion) return origLabel;
+
+  // there is a version prefix; scan and test the version string,
+  // and if the test succeeds, return the label without the prefix
+  NSString *newLabel = origLabel;
+  NSString *versionStr = nil;
+  NSScanner *scanner = [NSScanner scannerWithString:origLabel];
+
+  if ([scanner scanString:prefix intoString:nil]
+      && [scanner scanUpToString:@":" intoString:&versionStr]
+      && [scanner scanString:@":" intoString:nil]
+      && [scanner scanUpToString:@"\n" intoString:&newLabel]) {
+
+    if ((checkMinVersion && ![self isServiceVersionAtLeast:versionStr])
+        || (checkMaxVersion && ![self isServiceVersionAtMost:versionStr])) {
+      // version test failed
+      return nil;
+    }
+  }
+  return newLabel;
+}
+#endif
+
 - (void)addDescriptionRecords:(GDataDescriptionRecord *)descRecordList
                       toItems:(NSMutableArray *)items {
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -898,6 +974,9 @@ attributeValueIfNonNil:str
     enum GDataDescRecTypes reportType = descRecordList[idx].reportType;
     NSString *label = descRecordList[idx].label;
     NSString *keyPath = descRecordList[idx].keyPath;
+
+    label = [self labelAdjustedForVersion:label];
+    if (label == nil) continue;
 
     id value;
     NSString *str;
