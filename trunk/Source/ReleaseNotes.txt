@@ -7,6 +7,8 @@ Changes since 1.7.0
 
 Additions
 
+- Added support for Google Analytics API
+
 - Added Geo accessor to Calendar API event entries
 
 - Added batch call to Docs API
@@ -21,9 +23,19 @@ Additions
 
 Changes
 
+- Tightened URL encoding rules so portions of feed URLs are more strictly
+  percent-encoded.
+
 Bugs Fixed
 
 - Fixed compile on gcc 3.3.
+
+- Removed NSTask invocation for prettyprinting logs in the iPhone simulator
+  (thanks antitheos)
+  
+- Avoid a crash on authentication errors when the failure callback is nil.
+
+- Removed inappropriate override header on POSTs (thanks riggle)
 
 
 Release 1.7.0

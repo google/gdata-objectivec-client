@@ -487,6 +487,51 @@
 		4F4B94C50C514DE00064B6F6 /* GDataQueryDocs.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B94C30C514DE00064B6F6 /* GDataQueryDocs.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B94C60C514DE00064B6F6 /* GDataQueryDocs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */; };
 		4F4B94C70C514DE00064B6F6 /* GDataQueryDocs.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */; };
+		4F4C26720FC628B800022F31 /* GDataFeedAnalyticsData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C265B0FC628B800022F31 /* GDataFeedAnalyticsData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26730FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265C0FC628B800022F31 /* GDataFeedAnalyticsAccount.m */; };
+		4F4C26740FC628B800022F31 /* GDataFeedAnalyticsAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C265D0FC628B800022F31 /* GDataFeedAnalyticsAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26750FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265E0FC628B800022F31 /* GDataEntryAnalyticsData.m */; };
+		4F4C26760FC628B800022F31 /* GDataEntryAnalyticsData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C265F0FC628B800022F31 /* GDataEntryAnalyticsData.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26770FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26600FC628B800022F31 /* GDataServiceGoogleAnalytics.m */; };
+		4F4C26780FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26610FC628B800022F31 /* GDataAnalyticsConstants.m */; };
+		4F4C26790FC628B800022F31 /* GDataAnalyticsConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26620FC628B800022F31 /* GDataAnalyticsConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C267A0FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26630FC628B800022F31 /* GDataAnalyticsDataSource.m */; };
+		4F4C267B0FC628B800022F31 /* GDataAnalyticsDataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26640FC628B800022F31 /* GDataAnalyticsDataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C267C0FC628B800022F31 /* GDataAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26650FC628B800022F31 /* GDataAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C267D0FC628B800022F31 /* GDataAnalyticsAggregateGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26660FC628B800022F31 /* GDataAnalyticsAggregateGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C267E0FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26670FC628B800022F31 /* GDataAnalyticsAggregateGroup.m */; };
+		4F4C267F0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26680FC628B800022F31 /* GDataAnalyticsMetric.m */; };
+		4F4C26800FC628B800022F31 /* GDataAnalyticsMetric.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26690FC628B800022F31 /* GDataAnalyticsMetric.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26810FC628B800022F31 /* GDataAnalyticsElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266A0FC628B800022F31 /* GDataAnalyticsElements.m */; };
+		4F4C26820FC628B800022F31 /* GDataAnalyticsElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C266B0FC628B800022F31 /* GDataAnalyticsElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26830FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m */; };
+		4F4C26840FC628B800022F31 /* GDataEntryAnalyticsAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C266D0FC628B800022F31 /* GDataEntryAnalyticsAccount.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26850FC628B800022F31 /* GDataServiceGoogleAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C266E0FC628B800022F31 /* GDataServiceGoogleAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26860FC628B800022F31 /* GDataQueryAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266F0FC628B800022F31 /* GDataQueryAnalytics.m */; };
+		4F4C26870FC628B800022F31 /* GDataQueryAnalytics.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4C26700FC628B800022F31 /* GDataQueryAnalytics.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F4C26880FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26710FC628B800022F31 /* GDataFeedAnalyticsData.m */; };
+		4F4C26890FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265C0FC628B800022F31 /* GDataFeedAnalyticsAccount.m */; };
+		4F4C268A0FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265E0FC628B800022F31 /* GDataEntryAnalyticsData.m */; };
+		4F4C268B0FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26600FC628B800022F31 /* GDataServiceGoogleAnalytics.m */; };
+		4F4C268C0FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26610FC628B800022F31 /* GDataAnalyticsConstants.m */; };
+		4F4C268D0FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26630FC628B800022F31 /* GDataAnalyticsDataSource.m */; };
+		4F4C268E0FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26670FC628B800022F31 /* GDataAnalyticsAggregateGroup.m */; };
+		4F4C268F0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26680FC628B800022F31 /* GDataAnalyticsMetric.m */; };
+		4F4C26900FC628B800022F31 /* GDataAnalyticsElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266A0FC628B800022F31 /* GDataAnalyticsElements.m */; };
+		4F4C26910FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m */; };
+		4F4C26920FC628B800022F31 /* GDataQueryAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266F0FC628B800022F31 /* GDataQueryAnalytics.m */; };
+		4F4C26930FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26710FC628B800022F31 /* GDataFeedAnalyticsData.m */; };
+		4F4C26940FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265C0FC628B800022F31 /* GDataFeedAnalyticsAccount.m */; };
+		4F4C26950FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C265E0FC628B800022F31 /* GDataEntryAnalyticsData.m */; };
+		4F4C26960FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26600FC628B800022F31 /* GDataServiceGoogleAnalytics.m */; };
+		4F4C26970FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26610FC628B800022F31 /* GDataAnalyticsConstants.m */; };
+		4F4C26980FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26630FC628B800022F31 /* GDataAnalyticsDataSource.m */; };
+		4F4C26990FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26670FC628B800022F31 /* GDataAnalyticsAggregateGroup.m */; };
+		4F4C269A0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26680FC628B800022F31 /* GDataAnalyticsMetric.m */; };
+		4F4C269B0FC628B800022F31 /* GDataAnalyticsElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266A0FC628B800022F31 /* GDataAnalyticsElements.m */; };
+		4F4C269C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m */; };
+		4F4C269D0FC628B800022F31 /* GDataQueryAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C266F0FC628B800022F31 /* GDataQueryAnalytics.m */; };
+		4F4C269E0FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4C26710FC628B800022F31 /* GDataFeedAnalyticsData.m */; };
 		4F4E92370EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */; };
 		4F4E92380EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4E92390EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */; };
@@ -1136,6 +1181,31 @@
 		4F4B946A0C504A870064B6F6 /* GDataServiceGoogleDocs.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogleDocs.m; path = Clients/Docs/GDataServiceGoogleDocs.m; sourceTree = "<group>"; };
 		4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryDocs.m; path = Clients/Docs/GDataQueryDocs.m; sourceTree = "<group>"; };
 		4F4B94C30C514DE00064B6F6 /* GDataQueryDocs.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryDocs.h; path = Clients/Docs/GDataQueryDocs.h; sourceTree = "<group>"; };
+		4F4C265B0FC628B800022F31 /* GDataFeedAnalyticsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedAnalyticsData.h; path = Clients/Analytics/GDataFeedAnalyticsData.h; sourceTree = "<group>"; };
+		4F4C265C0FC628B800022F31 /* GDataFeedAnalyticsAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedAnalyticsAccount.m; path = Clients/Analytics/GDataFeedAnalyticsAccount.m; sourceTree = "<group>"; };
+		4F4C265D0FC628B800022F31 /* GDataFeedAnalyticsAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedAnalyticsAccount.h; path = Clients/Analytics/GDataFeedAnalyticsAccount.h; sourceTree = "<group>"; };
+		4F4C265E0FC628B800022F31 /* GDataEntryAnalyticsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryAnalyticsData.m; path = Clients/Analytics/GDataEntryAnalyticsData.m; sourceTree = "<group>"; };
+		4F4C265F0FC628B800022F31 /* GDataEntryAnalyticsData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryAnalyticsData.h; path = Clients/Analytics/GDataEntryAnalyticsData.h; sourceTree = "<group>"; };
+		4F4C26600FC628B800022F31 /* GDataServiceGoogleAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogleAnalytics.m; path = Clients/Analytics/GDataServiceGoogleAnalytics.m; sourceTree = "<group>"; };
+		4F4C26610FC628B800022F31 /* GDataAnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsConstants.m; path = Clients/Analytics/GDataAnalyticsConstants.m; sourceTree = "<group>"; };
+		4F4C26620FC628B800022F31 /* GDataAnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsConstants.h; path = Clients/Analytics/GDataAnalyticsConstants.h; sourceTree = "<group>"; };
+		4F4C26630FC628B800022F31 /* GDataAnalyticsDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsDataSource.m; path = Clients/Analytics/GDataAnalyticsDataSource.m; sourceTree = "<group>"; };
+		4F4C26640FC628B800022F31 /* GDataAnalyticsDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsDataSource.h; path = Clients/Analytics/GDataAnalyticsDataSource.h; sourceTree = "<group>"; };
+		4F4C26650FC628B800022F31 /* GDataAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalytics.h; path = Clients/Analytics/GDataAnalytics.h; sourceTree = "<group>"; };
+		4F4C26660FC628B800022F31 /* GDataAnalyticsAggregateGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsAggregateGroup.h; path = Clients/Analytics/GDataAnalyticsAggregateGroup.h; sourceTree = "<group>"; };
+		4F4C26670FC628B800022F31 /* GDataAnalyticsAggregateGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsAggregateGroup.m; path = Clients/Analytics/GDataAnalyticsAggregateGroup.m; sourceTree = "<group>"; };
+		4F4C26680FC628B800022F31 /* GDataAnalyticsMetric.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsMetric.m; path = Clients/Analytics/GDataAnalyticsMetric.m; sourceTree = "<group>"; };
+		4F4C26690FC628B800022F31 /* GDataAnalyticsMetric.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsMetric.h; path = Clients/Analytics/GDataAnalyticsMetric.h; sourceTree = "<group>"; };
+		4F4C266A0FC628B800022F31 /* GDataAnalyticsElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsElements.m; path = Clients/Analytics/GDataAnalyticsElements.m; sourceTree = "<group>"; };
+		4F4C266B0FC628B800022F31 /* GDataAnalyticsElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsElements.h; path = Clients/Analytics/GDataAnalyticsElements.h; sourceTree = "<group>"; };
+		4F4C266C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryAnalyticsAccount.m; path = Clients/Analytics/GDataEntryAnalyticsAccount.m; sourceTree = "<group>"; };
+		4F4C266D0FC628B800022F31 /* GDataEntryAnalyticsAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryAnalyticsAccount.h; path = Clients/Analytics/GDataEntryAnalyticsAccount.h; sourceTree = "<group>"; };
+		4F4C266E0FC628B800022F31 /* GDataServiceGoogleAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceGoogleAnalytics.h; path = Clients/Analytics/GDataServiceGoogleAnalytics.h; sourceTree = "<group>"; };
+		4F4C266F0FC628B800022F31 /* GDataQueryAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryAnalytics.m; path = Clients/Analytics/GDataQueryAnalytics.m; sourceTree = "<group>"; };
+		4F4C26700FC628B800022F31 /* GDataQueryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryAnalytics.h; path = Clients/Analytics/GDataQueryAnalytics.h; sourceTree = "<group>"; };
+		4F4C26710FC628B800022F31 /* GDataFeedAnalyticsData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedAnalyticsData.m; path = Clients/Analytics/GDataFeedAnalyticsData.m; sourceTree = "<group>"; };
+		4F4C26B50FC629B700022F31 /* FeedAnalyticsAccountTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedAnalyticsAccountTest1.xml; path = Tests/FeedAnalyticsAccountTest1.xml; sourceTree = "<group>"; };
+		4F4C26B60FC629B700022F31 /* FeedAnalyticsDataTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedAnalyticsDataTest1.xml; path = Tests/FeedAnalyticsDataTest1.xml; sourceTree = "<group>"; };
 		4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedYouTubeFavorite.m; path = Clients/YouTube/GDataFeedYouTubeFavorite.m; sourceTree = "<group>"; };
 		4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeFavorite.h; path = Clients/YouTube/GDataFeedYouTubeFavorite.h; sourceTree = "<group>"; };
 		4F4E923B0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeFavorite.h; path = Clients/YouTube/GDataEntryYouTubeFavorite.h; sourceTree = "<group>"; };
@@ -1454,6 +1524,7 @@
 			isa = PBXGroup;
 			children = (
 				4F346DD20D7500C9006033E0 /* Common */,
+				4F4C265A0FC628A200022F31 /* Analytics */,
 				4FD66F420EA7FFE9001D365E /* Books */,
 				4F14AA7C0B1282E60072EBB8 /* Calendar */,
 				4F346DE50D75015C006033E0 /* Contacts */,
@@ -1872,6 +1943,45 @@
 			name = YouTube;
 			sourceTree = "<group>";
 		};
+		4F4C265A0FC628A200022F31 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				4F4C26650FC628B800022F31 /* GDataAnalytics.h */,
+				4F4C265D0FC628B800022F31 /* GDataFeedAnalyticsAccount.h */,
+				4F4C265C0FC628B800022F31 /* GDataFeedAnalyticsAccount.m */,
+				4F4C265B0FC628B800022F31 /* GDataFeedAnalyticsData.h */,
+				4F4C26710FC628B800022F31 /* GDataFeedAnalyticsData.m */,
+				4F4C266D0FC628B800022F31 /* GDataEntryAnalyticsAccount.h */,
+				4F4C266C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m */,
+				4F4C265F0FC628B800022F31 /* GDataEntryAnalyticsData.h */,
+				4F4C265E0FC628B800022F31 /* GDataEntryAnalyticsData.m */,
+				4F4C26620FC628B800022F31 /* GDataAnalyticsConstants.h */,
+				4F4C26610FC628B800022F31 /* GDataAnalyticsConstants.m */,
+				4F4C266B0FC628B800022F31 /* GDataAnalyticsElements.h */,
+				4F4C266A0FC628B800022F31 /* GDataAnalyticsElements.m */,
+				4F4C26640FC628B800022F31 /* GDataAnalyticsDataSource.h */,
+				4F4C26630FC628B800022F31 /* GDataAnalyticsDataSource.m */,
+				4F4C26660FC628B800022F31 /* GDataAnalyticsAggregateGroup.h */,
+				4F4C26670FC628B800022F31 /* GDataAnalyticsAggregateGroup.m */,
+				4F4C26690FC628B800022F31 /* GDataAnalyticsMetric.h */,
+				4F4C26680FC628B800022F31 /* GDataAnalyticsMetric.m */,
+				4F4C26700FC628B800022F31 /* GDataQueryAnalytics.h */,
+				4F4C266F0FC628B800022F31 /* GDataQueryAnalytics.m */,
+				4F4C266E0FC628B800022F31 /* GDataServiceGoogleAnalytics.h */,
+				4F4C26600FC628B800022F31 /* GDataServiceGoogleAnalytics.m */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
+		4F4C26A40FC629A700022F31 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				4F4C26B50FC629B700022F31 /* FeedAnalyticsAccountTest1.xml */,
+				4F4C26B60FC629B700022F31 /* FeedAnalyticsDataTest1.xml */,
+			);
+			name = Analytics;
+			sourceTree = "<group>";
+		};
 		4F5764E10C50289B0093B563 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2119,6 +2229,7 @@
 		4FD23A390B8FDB17007C0AD4 /* XML Files */ = {
 			isa = PBXGroup;
 			children = (
+				4F4C26A40FC629A700022F31 /* Analytics */,
 				4F986F850F4F3B8E00C349F0 /* Calendar */,
 				4F986F870F4F3BAD00C349F0 /* GoogleBase */,
 				4F986F860F4F3B9D00C349F0 /* Finance */,
@@ -2417,6 +2528,18 @@
 				4F80E82F0F9542CA00CFB06D /* GDataFeedCalendarSettings.h in Headers */,
 				4F80E8360F9542E600CFB06D /* GDataEntryCalendarSettings.h in Headers */,
 				4F80E83C0F9542F100CFB06D /* GDataCalendarSettingsProperty.h in Headers */,
+				4F4C26720FC628B800022F31 /* GDataFeedAnalyticsData.h in Headers */,
+				4F4C26740FC628B800022F31 /* GDataFeedAnalyticsAccount.h in Headers */,
+				4F4C26760FC628B800022F31 /* GDataEntryAnalyticsData.h in Headers */,
+				4F4C26790FC628B800022F31 /* GDataAnalyticsConstants.h in Headers */,
+				4F4C267B0FC628B800022F31 /* GDataAnalyticsDataSource.h in Headers */,
+				4F4C267C0FC628B800022F31 /* GDataAnalytics.h in Headers */,
+				4F4C267D0FC628B800022F31 /* GDataAnalyticsAggregateGroup.h in Headers */,
+				4F4C26800FC628B800022F31 /* GDataAnalyticsMetric.h in Headers */,
+				4F4C26820FC628B800022F31 /* GDataAnalyticsElements.h in Headers */,
+				4F4C26840FC628B800022F31 /* GDataEntryAnalyticsAccount.h in Headers */,
+				4F4C26850FC628B800022F31 /* GDataServiceGoogleAnalytics.h in Headers */,
+				4F4C26870FC628B800022F31 /* GDataQueryAnalytics.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2764,6 +2887,17 @@
 				4F80E8300F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
 				4F80E8380F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
 				4F80E83E0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
+				4F4C26890FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */,
+				4F4C268A0FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */,
+				4F4C268B0FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */,
+				4F4C268C0FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */,
+				4F4C268D0FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */,
+				4F4C268E0FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */,
+				4F4C268F0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */,
+				4F4C26900FC628B800022F31 /* GDataAnalyticsElements.m in Sources */,
+				4F4C26910FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
+				4F4C26920FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
+				4F4C26930FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2978,6 +3112,17 @@
 				4F80E8310F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
 				4F80E8390F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
 				4F80E83F0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
+				4F4C26940FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */,
+				4F4C26950FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */,
+				4F4C26960FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */,
+				4F4C26970FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */,
+				4F4C26980FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */,
+				4F4C26990FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */,
+				4F4C269A0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */,
+				4F4C269B0FC628B800022F31 /* GDataAnalyticsElements.m in Sources */,
+				4F4C269C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
+				4F4C269D0FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
+				4F4C269E0FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3190,6 +3335,17 @@
 				4F80E82E0F9542CA00CFB06D /* GDataFeedCalendarSettings.m in Sources */,
 				4F80E8370F9542E600CFB06D /* GDataEntryCalendarSettings.m in Sources */,
 				4F80E83D0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */,
+				4F4C26730FC628B800022F31 /* GDataFeedAnalyticsAccount.m in Sources */,
+				4F4C26750FC628B800022F31 /* GDataEntryAnalyticsData.m in Sources */,
+				4F4C26770FC628B800022F31 /* GDataServiceGoogleAnalytics.m in Sources */,
+				4F4C26780FC628B800022F31 /* GDataAnalyticsConstants.m in Sources */,
+				4F4C267A0FC628B800022F31 /* GDataAnalyticsDataSource.m in Sources */,
+				4F4C267E0FC628B800022F31 /* GDataAnalyticsAggregateGroup.m in Sources */,
+				4F4C267F0FC628B800022F31 /* GDataAnalyticsMetric.m in Sources */,
+				4F4C26810FC628B800022F31 /* GDataAnalyticsElements.m in Sources */,
+				4F4C26830FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
+				4F4C26860FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
+				4F4C26880FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
