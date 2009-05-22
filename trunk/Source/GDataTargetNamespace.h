@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (383 classes) 2009-04-14 15:36:19 -0700
+// com.google.GDataFramework v. 1.7 (400 classes) 2009-05-22 12:23:59 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -27,6 +27,16 @@
   #define GDataAccessLevelProperty             _GDATA_NS_SYMBOL(GDataAccessLevelProperty)
   #define GDataACLRole                         _GDATA_NS_SYMBOL(GDataACLRole)
   #define GDataACLScope                        _GDATA_NS_SYMBOL(GDataACLScope)
+  #define GDataAnalyticsAggregateGroup         _GDATA_NS_SYMBOL(GDataAnalyticsAggregateGroup)
+  #define GDataAnalyticsConstants              _GDATA_NS_SYMBOL(GDataAnalyticsConstants)
+  #define GDataAnalyticsDataSource             _GDATA_NS_SYMBOL(GDataAnalyticsDataSource)
+  #define GDataAnalyticsDimension              _GDATA_NS_SYMBOL(GDataAnalyticsDimension)
+  #define GDataAnalyticsEndDate                _GDATA_NS_SYMBOL(GDataAnalyticsEndDate)
+  #define GDataAnalyticsMetric                 _GDATA_NS_SYMBOL(GDataAnalyticsMetric)
+  #define GDataAnalyticsProperty               _GDATA_NS_SYMBOL(GDataAnalyticsProperty)
+  #define GDataAnalyticsStartDate              _GDATA_NS_SYMBOL(GDataAnalyticsStartDate)
+  #define GDataAnalyticsTableID                _GDATA_NS_SYMBOL(GDataAnalyticsTableID)
+  #define GDataAnalyticsTableName              _GDATA_NS_SYMBOL(GDataAnalyticsTableName)
   #define GDataAnyoneCanAddSelfProperty        _GDATA_NS_SYMBOL(GDataAnyoneCanAddSelfProperty)
   #define GDataAtomAccept                      _GDATA_NS_SYMBOL(GDataAtomAccept)
   #define GDataAtomAccept1_0                   _GDATA_NS_SYMBOL(GDataAtomAccept1_0)
@@ -91,6 +101,8 @@
   #define GDataDeleted                         _GDATA_NS_SYMBOL(GDataDeleted)
   #define GDataEmail                           _GDATA_NS_SYMBOL(GDataEmail)
   #define GDataEntryACL                        _GDATA_NS_SYMBOL(GDataEntryACL)
+  #define GDataEntryAnalyticsAccount           _GDATA_NS_SYMBOL(GDataEntryAnalyticsAccount)
+  #define GDataEntryAnalyticsData              _GDATA_NS_SYMBOL(GDataEntryAnalyticsData)
   #define GDataEntryBase                       _GDATA_NS_SYMBOL(GDataEntryBase)
   #define GDataEntryCalendar                   _GDATA_NS_SYMBOL(GDataEntryCalendar)
   #define GDataEntryCalendarEvent              _GDATA_NS_SYMBOL(GDataEntryCalendarEvent)
@@ -152,6 +164,8 @@
   #define GDataExtendedProperty                _GDATA_NS_SYMBOL(GDataExtendedProperty)
   #define GDataExtensionDeclaration            _GDATA_NS_SYMBOL(GDataExtensionDeclaration)
   #define GDataFeedACL                         _GDATA_NS_SYMBOL(GDataFeedACL)
+  #define GDataFeedAnalyticsAccount            _GDATA_NS_SYMBOL(GDataFeedAnalyticsAccount)
+  #define GDataFeedAnalyticsData               _GDATA_NS_SYMBOL(GDataFeedAnalyticsData)
   #define GDataFeedBase                        _GDATA_NS_SYMBOL(GDataFeedBase)
   #define GDataFeedCalendar                    _GDATA_NS_SYMBOL(GDataFeedCalendar)
   #define GDataFeedCalendarEvent               _GDATA_NS_SYMBOL(GDataFeedCalendarEvent)
@@ -237,6 +251,7 @@
   #define GDataMIMEPart                        _GDATA_NS_SYMBOL(GDataMIMEPart)
   #define GDataMoney                           _GDATA_NS_SYMBOL(GDataMoney)
   #define GDataMoneyElementBase                _GDATA_NS_SYMBOL(GDataMoneyElementBase)
+  #define GDataNameValueConstruct              _GDATA_NS_SYMBOL(GDataNameValueConstruct)
   #define GDataNormalPlayTime                  _GDATA_NS_SYMBOL(GDataNormalPlayTime)
   #define GDataObject                          _GDATA_NS_SYMBOL(GDataObject)
   #define GDataOpenSearchItemsPerPage1_0       _GDATA_NS_SYMBOL(GDataOpenSearchItemsPerPage1_0)
@@ -292,6 +307,7 @@
   #define GDataProfileMetaData                 _GDATA_NS_SYMBOL(GDataProfileMetaData)
   #define GDataProgressMonitorInputStream      _GDATA_NS_SYMBOL(GDataProgressMonitorInputStream)
   #define GDataQuery                           _GDATA_NS_SYMBOL(GDataQuery)
+  #define GDataQueryAnalytics                  _GDATA_NS_SYMBOL(GDataQueryAnalytics)
   #define GDataQueryBooks                      _GDATA_NS_SYMBOL(GDataQueryBooks)
   #define GDataQueryCalendar                   _GDATA_NS_SYMBOL(GDataQueryCalendar)
   #define GDataQueryContact                    _GDATA_NS_SYMBOL(GDataQueryContact)
@@ -319,6 +335,7 @@
   #define GDataServerErrorGroup                _GDATA_NS_SYMBOL(GDataServerErrorGroup)
   #define GDataServiceBase                     _GDATA_NS_SYMBOL(GDataServiceBase)
   #define GDataServiceGoogle                   _GDATA_NS_SYMBOL(GDataServiceGoogle)
+  #define GDataServiceGoogleAnalytics          _GDATA_NS_SYMBOL(GDataServiceGoogleAnalytics)
   #define GDataServiceGoogleBase               _GDATA_NS_SYMBOL(GDataServiceGoogleBase)
   #define GDataServiceGoogleBooks              _GDATA_NS_SYMBOL(GDataServiceGoogleBooks)
   #define GDataServiceGoogleCalendar           _GDATA_NS_SYMBOL(GDataServiceGoogleCalendar)
