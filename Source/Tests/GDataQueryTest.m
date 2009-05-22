@@ -385,6 +385,28 @@
                        @"Docs query 3 generation error");
 }
 
+- (void)testAnalyticsQuery {
+  GDataQueryAnalytics *query1;
+
+  query1 = [GDataQueryAnalytics analyticsDataQueryWithTableID:@"9876"
+                                              startDateString:@"2001-01-01"
+                                                endDateString:@"2001-12-01"];
+
+  [query1 setDimensions:@"ga:browser,ga:country"];
+  [query1 setMetrics:@"ga:pageviews"];
+  [query1 setFilters:@"ga:country==United States,ga:country==Canada"];
+  [query1 setSort:@"ga:browser,ga:pageviews"];
+
+  NSURL *resultURL1 = [query1 URL];
+  NSString *expected1 = @"https://www.google.com/analytics/feeds/data?"
+    "dimensions=ga%3Abrowser%2Cga%3Acountry&end-date=2001-12-01&"
+    "filters=ga%3Acountry%3D%3DUnited+States%2Cga%3Acountry%3D%3DCanada&"
+    "ids=9876&metrics=ga%3Apageviews&sort=ga%3Abrowser%2Cga%3Apageviews&"
+    "start-date=2001-01-01";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+                       @"Analytics query 1 generation error");
+}
+
 - (void)testMixedCategoryParamQueries {
 
   GDataCategory *cat = [GDataCategory categoryWithScheme:nil

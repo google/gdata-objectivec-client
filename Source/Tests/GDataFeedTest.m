@@ -26,6 +26,7 @@
 #import "GDataEntryYouTubeVideo.h"
 #import "GDataEntryHealthProfile.h"
 
+
 @implementation GDataFeedTest
 
 - (void)runTests:(TestKeyPathValues *)tests {
@@ -791,6 +792,69 @@
     { nil, nil } // end of test array
   };
   
+  [self runTests:tests];
+}
+
+- (void)testAnalyticsFeeds {
+
+  TestKeyPathValues tests[] =
+  {
+    //
+    // Account feed
+    //
+    { @"GDataFeedAnalyticsAccount/2.0", @"Tests/FeedAnalyticsAccountTest1.xml" },
+
+    // GDataFeedAnalyticsAccount paths
+    { @"authors.0.name", @"Google Analytics" },
+    { @"title", @"Profile list for fredflintstone@example.com" },
+
+    // GDataEntryAnalyticsAccount paths
+    { @"entries.0.tableID", @"ga:7966084" },
+    { @"entries.0.properties.0.name", @"ga:accountId" },
+    { @"entries.0.properties.0.stringValue", @"8925159" },
+    { @"entries.0.properties.1.name", @"ga:accountName" },
+    { @"entries.0.properties.1.stringValue", @"example" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Data feed
+    //
+    { @"GDataFeedAnalyticsData/2.0", @"Tests/FeedAnalyticsDataTest1.xml" },
+
+    // GDataFeedAnalyticsData paths
+    { @"authors.0.name", @"Google Analytics" },
+    { @"title", @"Google Analytics Data for Profile 7966084" },
+    { @"startDateString", @"2009-05-18" },
+    { @"endDateString", @"2009-05-20" },
+    { @"aggregateGroup.metrics.0.confidenceInterval", @"0" },
+    { @"aggregateGroup.metrics.0.name", @"ga:pageviews" },
+    { @"aggregateGroup.metrics.0.type", kGDataMetricTypeInteger },
+    { @"aggregateGroup.metrics.0.stringValue", @"12" },
+    { @"aggregateGroup.metrics.0.doubleValue", @"12" },
+    { @"dataSources.0.tableID", @"ga:7966084" },
+    { @"dataSources.0.tableName", @"www.example.net" },
+    { @"dataSources.0.properties.0.name", @"ga:profileId" },
+    { @"dataSources.0.properties.0.stringValue", @"7966084" },
+    { @"dataSources.0.propertyWithNameAccountName.stringValue", @"example" },
+
+    // GDataEntryAnalyticsData paths
+    { @"entries.0.title", @"ga:country=United States" },
+    { @"entries.0.dimensions.0.name", @"ga:country" },
+    { @"entries.0.dimensions.0.stringValue", @"United States" },
+    { @"entries.0.dimensionWithNameCountry.stringValue", @"United States" },
+    { @"entries.0.metrics.0.confidenceInterval", @"5.1" },
+    { @"entries.0.metrics.0.name", @"ga:pageviews" },
+    { @"entries.0.metrics.0.type", kGDataMetricTypeInteger },
+    { @"entries.0.metrics.0.stringValue", @"37" },
+    { @"entries.0.metrics.0.doubleValue", @"37" },
+    { @"entries.0.metricWithNamePageviews.stringValue", @"37" },
+
+    { @"", @"" }, // end of feed
+
+    { nil, nil } // end of test array
+  };
+
   [self runTests:tests];
 }
 
@@ -1766,7 +1830,6 @@
     { @"", @"" }, // end of feed
 
     { nil, nil } // end of test array
-
   };
 
   [self runTests:tests];
@@ -1799,4 +1862,36 @@
   STAssertEqualObjects(titleType, @"text", @"testing an attribute in a detached entry");
 }
 
+@end
+
+// categories to test helper methods that require arguments
+
+//
+// analytics
+//
+
+@interface GDataAnalyticsDataSource (TestHelperMethods)
+- (GDataAnalyticsProperty *)propertyWithNameAccountName;
+@end
+
+@implementation GDataAnalyticsDataSource (TestHelperMethods)
+- (GDataAnalyticsProperty *)propertyWithNameAccountName {
+  return [self propertyWithName:@"ga:accountName"];
+}
+@end
+
+
+@interface GDataEntryAnalyticsData (TestHelperMethods)
+- (GDataAnalyticsDimension *)dimensionWithNameCountry;
+- (GDataAnalyticsMetric *)metricWithNamePageviews;
+@end
+
+@implementation GDataEntryAnalyticsData (TestHelperMethods)
+- (GDataAnalyticsDimension *)dimensionWithNameCountry {
+  return [self dimensionWithName:@"ga:country"];
+}
+
+- (GDataAnalyticsMetric *)metricWithNamePageviews {
+  return [self metricWithName:@"ga:pageviews"];
+}
 @end
