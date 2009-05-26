@@ -633,6 +633,51 @@
 		4F80E83D0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
 		4F80E83E0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
 		4F80E83F0F9542F100CFB06D /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */; };
+		4F82A12F0FCC82E800C477D4 /* GDataFeedMapFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A11C0FCC82E800C477D4 /* GDataFeedMapFeature.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1300FCC82E800C477D4 /* GDataFeedMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11D0FCC82E800C477D4 /* GDataFeedMap.m */; };
+		4F82A1310FCC82E800C477D4 /* GDataFeedMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A11E0FCC82E800C477D4 /* GDataFeedMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1320FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11F0FCC82E800C477D4 /* GDataEntryMapVersion.m */; };
+		4F82A1330FCC82E800C477D4 /* GDataEntryMapVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1200FCC82E800C477D4 /* GDataEntryMapVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1340FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1210FCC82E800C477D4 /* GDataEntryMapFeature.m */; };
+		4F82A1350FCC82E800C477D4 /* GDataEntryMapFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1220FCC82E800C477D4 /* GDataEntryMapFeature.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1360FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1230FCC82E800C477D4 /* GDataServiceGoogleMaps.m */; };
+		4F82A1370FCC82E800C477D4 /* GDataServiceGoogleMaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1240FCC82E800C477D4 /* GDataServiceGoogleMaps.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1380FCC82E800C477D4 /* GDataQueryMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1250FCC82E800C477D4 /* GDataQueryMaps.m */; };
+		4F82A1390FCC82E800C477D4 /* GDataQueryMaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1260FCC82E800C477D4 /* GDataQueryMaps.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A13A0FCC82E800C477D4 /* GDataMaps.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1270FCC82E800C477D4 /* GDataMaps.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A13B0FCC82E800C477D4 /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1280FCC82E800C477D4 /* GDataMapConstants.m */; };
+		4F82A13C0FCC82E800C477D4 /* GDataMapConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1290FCC82E800C477D4 /* GDataMapConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A13D0FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12A0FCC82E800C477D4 /* GDataFeedMapVersion.m */; };
+		4F82A13E0FCC82E800C477D4 /* GDataFeedMapVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A12B0FCC82E800C477D4 /* GDataFeedMapVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A13F0FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12C0FCC82E800C477D4 /* GDataFeedMapFeature.m */; };
+		4F82A1400FCC82E800C477D4 /* GDataEntryMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12D0FCC82E800C477D4 /* GDataEntryMap.m */; };
+		4F82A1410FCC82E800C477D4 /* GDataEntryMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A12E0FCC82E800C477D4 /* GDataEntryMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1420FCC82E800C477D4 /* GDataFeedMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11D0FCC82E800C477D4 /* GDataFeedMap.m */; };
+		4F82A1430FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11F0FCC82E800C477D4 /* GDataEntryMapVersion.m */; };
+		4F82A1440FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1210FCC82E800C477D4 /* GDataEntryMapFeature.m */; };
+		4F82A1450FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1230FCC82E800C477D4 /* GDataServiceGoogleMaps.m */; };
+		4F82A1460FCC82E800C477D4 /* GDataQueryMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1250FCC82E800C477D4 /* GDataQueryMaps.m */; };
+		4F82A1470FCC82E800C477D4 /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1280FCC82E800C477D4 /* GDataMapConstants.m */; };
+		4F82A1480FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12A0FCC82E800C477D4 /* GDataFeedMapVersion.m */; };
+		4F82A1490FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12C0FCC82E800C477D4 /* GDataFeedMapFeature.m */; };
+		4F82A14A0FCC82E800C477D4 /* GDataEntryMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12D0FCC82E800C477D4 /* GDataEntryMap.m */; };
+		4F82A14B0FCC82E800C477D4 /* GDataFeedMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11D0FCC82E800C477D4 /* GDataFeedMap.m */; };
+		4F82A14C0FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A11F0FCC82E800C477D4 /* GDataEntryMapVersion.m */; };
+		4F82A14D0FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1210FCC82E800C477D4 /* GDataEntryMapFeature.m */; };
+		4F82A14E0FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1230FCC82E800C477D4 /* GDataServiceGoogleMaps.m */; };
+		4F82A14F0FCC82E800C477D4 /* GDataQueryMaps.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1250FCC82E800C477D4 /* GDataQueryMaps.m */; };
+		4F82A1500FCC82E800C477D4 /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1280FCC82E800C477D4 /* GDataMapConstants.m */; };
+		4F82A1510FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12A0FCC82E800C477D4 /* GDataFeedMapVersion.m */; };
+		4F82A1520FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12C0FCC82E800C477D4 /* GDataFeedMapFeature.m */; };
+		4F82A1530FCC82E800C477D4 /* GDataEntryMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A12D0FCC82E800C477D4 /* GDataEntryMap.m */; };
+		4F82A1590FCC834D00C477D4 /* GDataStructuredPostalAddress.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1570FCC834D00C477D4 /* GDataStructuredPostalAddress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A15A0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1580FCC834D00C477D4 /* GDataStructuredPostalAddress.m */; };
+		4F82A15B0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1580FCC834D00C477D4 /* GDataStructuredPostalAddress.m */; };
+		4F82A15C0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1580FCC834D00C477D4 /* GDataStructuredPostalAddress.m */; };
+		4F82A1670FCC84D800C477D4 /* GDataCustomProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1650FCC84D800C477D4 /* GDataCustomProperty.m */; };
+		4F82A1680FCC84D800C477D4 /* GDataCustomProperty.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F82A1660FCC84D800C477D4 /* GDataCustomProperty.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F82A1690FCC84D800C477D4 /* GDataCustomProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1650FCC84D800C477D4 /* GDataCustomProperty.m */; };
+		4F82A16A0FCC84D800C477D4 /* GDataCustomProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A1650FCC84D800C477D4 /* GDataCustomProperty.m */; };
 		4F848C6E0D887A2A007ECFCD /* GDataDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F848C6D0D887A2A007ECFCD /* GDataDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F9708760BC5C35100C5B1C0 /* GDataServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */; };
 		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1259,6 +1304,30 @@
 		4F80E8350F9542E600CFB06D /* GDataEntryCalendarSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryCalendarSettings.m; path = Clients/Calendar/GDataEntryCalendarSettings.m; sourceTree = "<group>"; };
 		4F80E83A0F9542F100CFB06D /* GDataCalendarSettingsProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataCalendarSettingsProperty.h; path = Clients/Calendar/GDataCalendarSettingsProperty.h; sourceTree = "<group>"; };
 		4F80E83B0F9542F100CFB06D /* GDataCalendarSettingsProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataCalendarSettingsProperty.m; path = Clients/Calendar/GDataCalendarSettingsProperty.m; sourceTree = "<group>"; };
+		4F82A11C0FCC82E800C477D4 /* GDataFeedMapFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedMapFeature.h; path = Clients/Maps/GDataFeedMapFeature.h; sourceTree = "<group>"; };
+		4F82A11D0FCC82E800C477D4 /* GDataFeedMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedMap.m; path = Clients/Maps/GDataFeedMap.m; sourceTree = "<group>"; };
+		4F82A11E0FCC82E800C477D4 /* GDataFeedMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedMap.h; path = Clients/Maps/GDataFeedMap.h; sourceTree = "<group>"; };
+		4F82A11F0FCC82E800C477D4 /* GDataEntryMapVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryMapVersion.m; path = Clients/Maps/GDataEntryMapVersion.m; sourceTree = "<group>"; };
+		4F82A1200FCC82E800C477D4 /* GDataEntryMapVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryMapVersion.h; path = Clients/Maps/GDataEntryMapVersion.h; sourceTree = "<group>"; };
+		4F82A1210FCC82E800C477D4 /* GDataEntryMapFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryMapFeature.m; path = Clients/Maps/GDataEntryMapFeature.m; sourceTree = "<group>"; };
+		4F82A1220FCC82E800C477D4 /* GDataEntryMapFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryMapFeature.h; path = Clients/Maps/GDataEntryMapFeature.h; sourceTree = "<group>"; };
+		4F82A1230FCC82E800C477D4 /* GDataServiceGoogleMaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogleMaps.m; path = Clients/Maps/GDataServiceGoogleMaps.m; sourceTree = "<group>"; };
+		4F82A1240FCC82E800C477D4 /* GDataServiceGoogleMaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceGoogleMaps.h; path = Clients/Maps/GDataServiceGoogleMaps.h; sourceTree = "<group>"; };
+		4F82A1250FCC82E800C477D4 /* GDataQueryMaps.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryMaps.m; path = Clients/Maps/GDataQueryMaps.m; sourceTree = "<group>"; };
+		4F82A1260FCC82E800C477D4 /* GDataQueryMaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryMaps.h; path = Clients/Maps/GDataQueryMaps.h; sourceTree = "<group>"; };
+		4F82A1270FCC82E800C477D4 /* GDataMaps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataMaps.h; path = Clients/Maps/GDataMaps.h; sourceTree = "<group>"; };
+		4F82A1280FCC82E800C477D4 /* GDataMapConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataMapConstants.m; path = Clients/Maps/GDataMapConstants.m; sourceTree = "<group>"; };
+		4F82A1290FCC82E800C477D4 /* GDataMapConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataMapConstants.h; path = Clients/Maps/GDataMapConstants.h; sourceTree = "<group>"; };
+		4F82A12A0FCC82E800C477D4 /* GDataFeedMapVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedMapVersion.m; path = Clients/Maps/GDataFeedMapVersion.m; sourceTree = "<group>"; };
+		4F82A12B0FCC82E800C477D4 /* GDataFeedMapVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedMapVersion.h; path = Clients/Maps/GDataFeedMapVersion.h; sourceTree = "<group>"; };
+		4F82A12C0FCC82E800C477D4 /* GDataFeedMapFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedMapFeature.m; path = Clients/Maps/GDataFeedMapFeature.m; sourceTree = "<group>"; };
+		4F82A12D0FCC82E800C477D4 /* GDataEntryMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryMap.m; path = Clients/Maps/GDataEntryMap.m; sourceTree = "<group>"; };
+		4F82A12E0FCC82E800C477D4 /* GDataEntryMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryMap.h; path = Clients/Maps/GDataEntryMap.h; sourceTree = "<group>"; };
+		4F82A1570FCC834D00C477D4 /* GDataStructuredPostalAddress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataStructuredPostalAddress.h; path = Elements/GDataStructuredPostalAddress.h; sourceTree = "<group>"; };
+		4F82A1580FCC834D00C477D4 /* GDataStructuredPostalAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataStructuredPostalAddress.m; path = Elements/GDataStructuredPostalAddress.m; sourceTree = "<group>"; };
+		4F82A1650FCC84D800C477D4 /* GDataCustomProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataCustomProperty.m; path = Elements/GDataCustomProperty.m; sourceTree = "<group>"; };
+		4F82A1660FCC84D800C477D4 /* GDataCustomProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataCustomProperty.h; path = Elements/GDataCustomProperty.h; sourceTree = "<group>"; };
+		4F82A1990FCC869F00C477D4 /* FeedMapFeaturesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedMapFeaturesTest1.xml; path = Tests/FeedMapFeaturesTest1.xml; sourceTree = "<group>"; };
 		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
 		4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedHealthProfile1.xml; path = Tests/FeedHealthProfile1.xml; sourceTree = "<group>"; };
@@ -1527,12 +1596,13 @@
 				4F4C265A0FC628A200022F31 /* Analytics */,
 				4FD66F420EA7FFE9001D365E /* Books */,
 				4F14AA7C0B1282E60072EBB8 /* Calendar */,
+				4F63FFCB0C1F593400C65F18 /* CodeSearch */,
 				4F346DE50D75015C006033E0 /* Contacts */,
 				4F5764E10C50289B0093B563 /* Docs */,
 				4FB4141D0E12F6130037D894 /* Finance */,
 				4F1AD6120B70256300DC0485 /* GoogleBase */,
 				4FBD877B0F40E8F600E47FDF /* Health */,
-				4F63FFCB0C1F593400C65F18 /* CodeSearch */,
+				4F82A1160FCC82C900C477D4 /* Maps */,
 				4F35DE750C023B880038AE68 /* Photos */,
 				4FEBA68E0BB362E5005710DA /* Spreadsheets */,
 				4F2D4B690E4A5A3F008D49F8 /* WebmasterTools */,
@@ -1676,6 +1746,8 @@
 				4F14AE140B12A73A0072EBB8 /* GDataFeedLink.m */,
 				4F14ADB90B12A5C20072EBB8 /* GDataCategory.m */,
 				4F14ADBA0B12A5C20072EBB8 /* GDataCategory.h */,
+				4F82A1650FCC84D800C477D4 /* GDataCustomProperty.m */,
+				4F82A1660FCC84D800C477D4 /* GDataCustomProperty.h */,
 				4FE289350C078E7C00F12BDB /* GDataDeleted.h */,
 				4FE2892F0C078E7200F12BDB /* GDataDeleted.m */,
 				4F6A83950DF0B58C0049BB83 /* GDataMoney.m */,
@@ -1709,6 +1781,8 @@
 				4F14AFEB0B139BF80072EBB8 /* GDataPhoneNumber.m */,
 				4F14AFFE0B139C720072EBB8 /* GDataPostalAddress.h */,
 				4F14AFFF0B139C720072EBB8 /* GDataPostalAddress.m */,
+				4F82A1570FCC834D00C477D4 /* GDataStructuredPostalAddress.h */,
+				4F82A1580FCC834D00C477D4 /* GDataStructuredPostalAddress.m */,
 				4F14B0170B139CD60072EBB8 /* GDataRating.h */,
 				4F14B0180B139CD60072EBB8 /* GDataRating.m */,
 				4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */,
@@ -2102,6 +2176,32 @@
 			name = YouTube;
 			sourceTree = "<group>";
 		};
+		4F82A1160FCC82C900C477D4 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				4F82A1270FCC82E800C477D4 /* GDataMaps.h */,
+				4F82A11E0FCC82E800C477D4 /* GDataFeedMap.h */,
+				4F82A11D0FCC82E800C477D4 /* GDataFeedMap.m */,
+				4F82A11C0FCC82E800C477D4 /* GDataFeedMapFeature.h */,
+				4F82A12C0FCC82E800C477D4 /* GDataFeedMapFeature.m */,
+				4F82A12B0FCC82E800C477D4 /* GDataFeedMapVersion.h */,
+				4F82A12A0FCC82E800C477D4 /* GDataFeedMapVersion.m */,
+				4F82A12E0FCC82E800C477D4 /* GDataEntryMap.h */,
+				4F82A12D0FCC82E800C477D4 /* GDataEntryMap.m */,
+				4F82A1210FCC82E800C477D4 /* GDataEntryMapFeature.m */,
+				4F82A1200FCC82E800C477D4 /* GDataEntryMapVersion.h */,
+				4F82A11F0FCC82E800C477D4 /* GDataEntryMapVersion.m */,
+				4F82A1220FCC82E800C477D4 /* GDataEntryMapFeature.h */,
+				4F82A1290FCC82E800C477D4 /* GDataMapConstants.h */,
+				4F82A1280FCC82E800C477D4 /* GDataMapConstants.m */,
+				4F82A1260FCC82E800C477D4 /* GDataQueryMaps.h */,
+				4F82A1250FCC82E800C477D4 /* GDataQueryMaps.m */,
+				4F82A1240FCC82E800C477D4 /* GDataServiceGoogleMaps.h */,
+				4F82A1230FCC82E800C477D4 /* GDataServiceGoogleMaps.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
 		4F986F820F4F3B7C00C349F0 /* Spreadsheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -2239,6 +2339,7 @@
 				4FD66F700EA80689001D365E /* FeedDocListTest1.xml */,
 				4F346E500D7508AC006033E0 /* FeedContactTest1.xml */,
 				4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */,
+				4F82A1990FCC869F00C477D4 /* FeedMapFeaturesTest1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
 			);
 			name = "XML Files";
@@ -2540,6 +2641,18 @@
 				4F4C26840FC628B800022F31 /* GDataEntryAnalyticsAccount.h in Headers */,
 				4F4C26850FC628B800022F31 /* GDataServiceGoogleAnalytics.h in Headers */,
 				4F4C26870FC628B800022F31 /* GDataQueryAnalytics.h in Headers */,
+				4F82A12F0FCC82E800C477D4 /* GDataFeedMapFeature.h in Headers */,
+				4F82A1310FCC82E800C477D4 /* GDataFeedMap.h in Headers */,
+				4F82A1330FCC82E800C477D4 /* GDataEntryMapVersion.h in Headers */,
+				4F82A1350FCC82E800C477D4 /* GDataEntryMapFeature.h in Headers */,
+				4F82A1370FCC82E800C477D4 /* GDataServiceGoogleMaps.h in Headers */,
+				4F82A1390FCC82E800C477D4 /* GDataQueryMaps.h in Headers */,
+				4F82A13A0FCC82E800C477D4 /* GDataMaps.h in Headers */,
+				4F82A13C0FCC82E800C477D4 /* GDataMapConstants.h in Headers */,
+				4F82A13E0FCC82E800C477D4 /* GDataFeedMapVersion.h in Headers */,
+				4F82A1410FCC82E800C477D4 /* GDataEntryMap.h in Headers */,
+				4F82A1590FCC834D00C477D4 /* GDataStructuredPostalAddress.h in Headers */,
+				4F82A1680FCC84D800C477D4 /* GDataCustomProperty.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2898,6 +3011,17 @@
 				4F4C26910FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
 				4F4C26920FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
 				4F4C26930FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
+				4F82A1420FCC82E800C477D4 /* GDataFeedMap.m in Sources */,
+				4F82A1430FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */,
+				4F82A1440FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */,
+				4F82A1450FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */,
+				4F82A1460FCC82E800C477D4 /* GDataQueryMaps.m in Sources */,
+				4F82A1470FCC82E800C477D4 /* GDataMapConstants.m in Sources */,
+				4F82A1480FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */,
+				4F82A1490FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */,
+				4F82A14A0FCC82E800C477D4 /* GDataEntryMap.m in Sources */,
+				4F82A15B0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */,
+				4F82A1690FCC84D800C477D4 /* GDataCustomProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3123,6 +3247,17 @@
 				4F4C269C0FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
 				4F4C269D0FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
 				4F4C269E0FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
+				4F82A14B0FCC82E800C477D4 /* GDataFeedMap.m in Sources */,
+				4F82A14C0FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */,
+				4F82A14D0FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */,
+				4F82A14E0FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */,
+				4F82A14F0FCC82E800C477D4 /* GDataQueryMaps.m in Sources */,
+				4F82A1500FCC82E800C477D4 /* GDataMapConstants.m in Sources */,
+				4F82A1510FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */,
+				4F82A1520FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */,
+				4F82A1530FCC82E800C477D4 /* GDataEntryMap.m in Sources */,
+				4F82A15C0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */,
+				4F82A16A0FCC84D800C477D4 /* GDataCustomProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3346,6 +3481,17 @@
 				4F4C26830FC628B800022F31 /* GDataEntryAnalyticsAccount.m in Sources */,
 				4F4C26860FC628B800022F31 /* GDataQueryAnalytics.m in Sources */,
 				4F4C26880FC628B800022F31 /* GDataFeedAnalyticsData.m in Sources */,
+				4F82A1300FCC82E800C477D4 /* GDataFeedMap.m in Sources */,
+				4F82A1320FCC82E800C477D4 /* GDataEntryMapVersion.m in Sources */,
+				4F82A1340FCC82E800C477D4 /* GDataEntryMapFeature.m in Sources */,
+				4F82A1360FCC82E800C477D4 /* GDataServiceGoogleMaps.m in Sources */,
+				4F82A1380FCC82E800C477D4 /* GDataQueryMaps.m in Sources */,
+				4F82A13B0FCC82E800C477D4 /* GDataMapConstants.m in Sources */,
+				4F82A13D0FCC82E800C477D4 /* GDataFeedMapVersion.m in Sources */,
+				4F82A13F0FCC82E800C477D4 /* GDataFeedMapFeature.m in Sources */,
+				4F82A1400FCC82E800C477D4 /* GDataEntryMap.m in Sources */,
+				4F82A15A0FCC834D00C477D4 /* GDataStructuredPostalAddress.m in Sources */,
+				4F82A1670FCC84D800C477D4 /* GDataCustomProperty.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

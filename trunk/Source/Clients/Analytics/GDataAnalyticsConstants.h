@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "GDataDefines.h"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAANALYTICSCONSTANTS_DEFINE_GLOBALS
