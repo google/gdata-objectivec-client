@@ -17,6 +17,7 @@
 //  GDataEntryContent.m
 //
 
+#define GDATAENTRYCONTENT_DEFINE_GLOBALS 1
 #import "GDataEntryContent.h"
 
 static NSString* const kLangAttr = @"xml:lang";
@@ -106,7 +107,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
                                          objectClass:nil];
     [self setChildObject:obj];
 
-  } else if ([type hasPrefix:@"application/vnd.google-earth.kml+xml"]) {
+  } else if ([type hasPrefix:kGDataContentTypeKML]) {
 
     // content is KML
     [self addChildXMLElementsDeclaration];

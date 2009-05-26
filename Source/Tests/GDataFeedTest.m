@@ -25,6 +25,7 @@
 #import "GDataEntryCalendarEvent.h"
 #import "GDataEntryYouTubeVideo.h"
 #import "GDataEntryHealthProfile.h"
+#import "GDataMapConstants.h"
 
 
 @implementation GDataFeedTest
@@ -1720,6 +1721,49 @@
   [self runTests:tests];
 }
 
+- (void)testMapsFeed {
+
+  TestKeyPathValues tests[] =
+  {
+    //
+    // Map Feature Feed
+    //
+
+    { @"GDataFeedMapFeature/2.0", @"Tests/FeedMapFeaturesTest1.xml" },
+
+    // feature feed elements
+    { @"title", @"Kirkland Office" },
+    { @"identifier", @"http://maps.google.com/maps/feeds/features/2063624404192119555/0046a899354a8585d4d" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // feature entry elements
+    { @"entries.0.editedDate.RFC3339String", @"2009-05-23T02:10:51Z" },
+    { @"entries.0.categories.0.term", kGDataCategoryMapFeature },
+
+    { @"entries.0.KMLValues.@count", @"1" },
+    { @"entries.0.KMLValues.0.name", @"Placemark" },
+
+    { @"entries.0.postalAddress.city", @"Anytown" },
+
+    { @"entries.0.customProperties.@count", @"2" },
+    { @"entries.0.customProperties.0.name", @"distance" },
+    { @"entries.0.customProperties.0.unit", @"meters" },
+    { @"entries.0.customProperties.0.value", @"36" },
+    { @"entries.0.customPropertyWithHeightName.value", @"10.2" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    { nil, nil } // end of test array
+  };
+
+  [self runTests:tests];
+}
+
 - (void)testACLFeed {
   
   TestKeyPathValues tests[] =
@@ -1893,5 +1937,19 @@
 
 - (GDataAnalyticsMetric *)metricWithNamePageviews {
   return [self metricWithName:@"ga:pageviews"];
+}
+@end
+
+//
+// maps
+//
+
+@interface GDataEntryMapFeature (TestHelperMethods)
+- (GDataCustomProperty *)customPropertyWithHeightName;
+@end
+
+@implementation GDataEntryMapFeature (TestHelperMethods)
+- (GDataCustomProperty *)customPropertyWithHeightName {
+  return [self customPropertyWithName:@"height"];
 }
 @end

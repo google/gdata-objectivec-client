@@ -30,6 +30,7 @@
 #import "GDataElements.h"
 #import "GDataFinance.h"
 #import "GDataGoogleBase.h"
+#import "GDataMaps.h"
 #import "GDataPhotos.h"
 #import "GDataSpreadsheet.h"
 #import "GDataWebmasterTools.h"

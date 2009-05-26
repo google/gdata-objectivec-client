@@ -396,7 +396,15 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"unknownChildren.1.XMLString", @"<unkElement2></unkElement2>" },
     { @"unknownChildren.@count", @"2" },
     { @"", @"" },
-    
+
+    { @"GDataCustomProperty", @"<gd:customProperty name='milk' type='integer' "
+      "unit='gallons' >5</gd:customProperty>" },
+    { @"name", @"milk" },
+    { @"type", @"integer" },
+    { @"unit", @"gallons" },
+    { @"value", @"5" },
+    { @"", @"" },
+
     { @"GDataDeleted", @"<gd:deleted/>" },
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
@@ -565,6 +573,41 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"label", @"work" },
     { @"primary", @"1" },
     { @"stringValue", @"500 West 45th Street\nNew York, NY 10036" },
+    { @"", @"" },
+
+    { @"GDataStructuredPostalAddress", @"<gd:structuredPostalAddress "
+      "mailClass='http://schemas.google.com/g/2005#both' label='Madame Duval' "
+      "rel='http://schemas.google.com/g/2005#other' "
+      "usage='http://schemas.google.com/g/2005#general' primary='true' >"
+      "<gd:agent>c/o Milkville</gd:agent>"
+      "<gd:housename>Big Ville</gd:housename>"
+      "<gd:street>27, rue Pasteur</gd:street>"
+      "<gd:pobox>P.O. Box 7-a</gd:pobox>"
+      "<gd:neighborhood>Uptown</gd:neighborhood>"
+      "<gd:city>CABOURG</gd:city>"
+      "<gd:region>Caen</gd:region>"
+      "<gd:subregion>County Fin</gd:subregion>"
+      "<gd:postcode>14390</gd:postcode>"
+      "<gd:country code='fr'>FRANCE</gd:country>"
+      "<gd:formattedAddress>Madame Duval\n27, rue Pasteur\n14390 CABOURG\n"
+      "FRANCE</gd:formattedAddress></gd:structuredPostalAddress>" },
+    { @"label", @"Madame Duval" },
+    { @"mailClass", kGDataPostalAddressBoth },
+    { @"isPrimary", @"1" },
+    { @"rel", kGDataPostalAddressOther },
+    { @"usage", kGDataPostalAddressGeneral },
+    { @"agent", @"c/o Milkville" },
+    { @"city", @"CABOURG" },
+    { @"countryName", @"FRANCE" },
+    { @"countryCode", @"fr" },
+    { @"formattedAddress", @"Madame Duval\n27, rue Pasteur\n14390 CABOURG\nFRANCE" },
+    { @"houseName", @"Big Ville" },
+    { @"neighborhood", @"Uptown" },
+    { @"POBox", @"P.O. Box 7-a" },
+    { @"postCode", @"14390" },
+    { @"region", @"Caen" },
+    { @"street", @"27, rue Pasteur" },
+    { @"subregion", @"County Fin" },
     { @"", @"" },
     
     { @"GDataRating", @"<gd:rating rel='http://schemas.google.com/g/2005#price' value='5' min='1' max='5' average='2.3' numRaters='132' />" },
