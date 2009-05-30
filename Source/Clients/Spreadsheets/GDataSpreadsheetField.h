@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,30 @@
  */
 
 //
-//  GDataEntrySpreadsheetDoc.h
+//  GDataSpreadsheetField.h
 //
 
-#import "GDataEntryDocBase.h"
+#import "GDataObject.h"
 
+// For table fields, like:
+//    <gs:field name="Name">Noah</gs:field>
 
-@interface GDataEntrySpreadsheetDoc : GDataEntryDocBase
+@interface GDataSpreadsheetField : GDataObject <GDataExtension>
 
-// convenience accessor
-- (GDataLink *)worksheetsLink;
++ (GDataSpreadsheetField *)fieldWithName:(NSString *)name
+                                   value:(NSString *)value;
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
+
+- (NSString *)indexString;
+- (void)setIndexString:(NSString *)str;
+
+- (NSString *)formula;
+- (void)setFormula:(NSString *)str;
+
+- (NSString *)value;
+- (void)setValue:(NSString *)str;
 
 @end
 

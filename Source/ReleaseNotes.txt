@@ -9,6 +9,10 @@ Additions
 
 - Added support for Google Analytics API
 
+- Added support for Google Maps Data API
+
+- Added support for Spreadsheets API version 3 with table and record feeds
+
 - Added Geo accessor to Calendar API event entries
 
 - Added batch call to Docs API

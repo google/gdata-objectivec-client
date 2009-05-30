@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,22 @@
  */
 
 //
-//  GDataFeedDocList.h
+//  GDataSpreadsheetHeader.h
 //
 
-#import "GDataFeedBase.h"
+#import "GDataObject.h"
 
-@interface GDataFeedDocList : GDataFeedBase
+#import "GDataValueConstruct.h"
+
+// For spreadsheet header, like
+//    <gs:header row="1" />
+
+@interface GDataSpreadsheetHeader : GDataValueConstruct <GDataExtension>
+
++ (GDataSpreadsheetHeader *)headerWithRow:(int)row;
+
+- (NSNumber *)row; // int
+- (void)setRow:(NSNumber *)num;
+
 @end
+

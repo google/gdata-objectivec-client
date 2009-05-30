@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;A0AHSXg6fit7ImA9WxJQFk8.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:gs="http://schemas.google.com/spreadsheets/2006" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables</id>
+    <updated>2009-05-29T20:42:18.616Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/spreadsheets/2006#table"/>
+    <title>Table of Doom</title>
+    <link
+        href="http://spreadsheets.google.com/ccc?key=RRHuSwAKiaEGw526z3DVYw"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>fredflintstone</name>
+        <email>fredflintstone@example.com</email>
+    </author>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry gd:etag="&quot;H0daGEpARit7ImBq&quot;">
+        <id>http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables/1</id>
+        <updated>2009-05-29T02:07:55.741Z</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-05-29T02:07:55.741Z</app:edited>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/spreadsheets/2006#table"/>
+        <title>Table Created 2009-05-28 19:07:55 -0700</title>
+        <summary/>
+        <content
+            src="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/records/1" type="application/atom+xml;type=feed"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables/1"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables/1"
+            rel="edit" type="application/atom+xml"/>
+        <gs:worksheet name="Sheet 1"/>
+        <gs:header row="3"/>
+        <gs:data insertionMode="insert" numRows="3" startRow="4">
+            <gs:column index="B" name="Column Beta"/>
+            <gs:column index="A" name="Column Alpha"/>
+        </gs:data>
+    </entry>
+</feed>

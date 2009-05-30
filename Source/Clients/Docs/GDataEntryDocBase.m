@@ -17,7 +17,6 @@
 //  GDataEntryDocBase.m
 //
 
-#define GDATAENTRYDOCBASE_DEFINE_GLOBALS 1
 #import "GDataEntryDocBase.h"
 
 @implementation GDataLastViewed
@@ -47,24 +46,11 @@
 
 @implementation GDataEntryDocBase
 
-+ (NSDictionary *)baseDocumentNamespaces {
-
-  NSMutableDictionary *namespaces;
-
-  namespaces = [NSMutableDictionary dictionaryWithDictionary:
-    [GDataEntryBase baseGDataNamespaces]];
-
-  [namespaces setObject:kGDataNamespaceDocuments
-                 forKey:kGDataNamespaceDocumentsPrefix];
-
-  return namespaces;
-}
-
 + (id)documentEntry {
 
   GDataEntryDocBase *entry = [[[self alloc] init] autorelease];
 
-  [entry setNamespaces:[self baseDocumentNamespaces]];
+  [entry setNamespaces:[GDataDocConstants baseDocumentNamespaces]];
 
   return entry;
 }

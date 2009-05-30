@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,21 @@
  */
 
 //
-//  GDataFeedDocList.h
+//  GDataEntrySpreadsheetRecord.h
 //
 
-#import "GDataFeedBase.h"
 
-@interface GDataFeedDocList : GDataFeedBase
+#import "GDataEntryBase.h"
+
+@class GDataSpreadsheetField;
+
+@interface GDataEntrySpreadsheetRecord : GDataEntryBase
+
++ (GDataEntrySpreadsheetRecord *)recordEntry;
+
+- (NSArray *)fields;
+- (void)setFields:(NSArray *)array;
+- (void)addField:(GDataSpreadsheetField *)obj;
+
 @end
+

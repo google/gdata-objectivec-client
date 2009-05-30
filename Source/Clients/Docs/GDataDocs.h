@@ -21,6 +21,7 @@
 
 
 // Google Doc List
+#import "GDataDocConstants.h"
 #import "GDataEntryDocBase.h"
 #import "GDataEntryStandardDoc.h"
 #import "GDataEntrySpreadsheetDoc.h"

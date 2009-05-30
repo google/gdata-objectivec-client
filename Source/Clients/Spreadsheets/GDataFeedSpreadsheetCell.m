@@ -18,12 +18,16 @@
 //
 
 #import "GDataEntrySpreadsheetCell.h"
-#import "GDataEntrySpreadsheet.h"
+#import "GDataSpreadsheetConstants.h"
 #import "GDataFeedSpreadsheetCell.h"
 #import "GDataCategory.h"
 #import "GDataRowColumnCount.h"
 
 @implementation GDataFeedSpreadsheetCell
+
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
+  return [GDataSpreadsheetConstants coreProtocolVersionForServiceVersion:serviceVersion];
+}
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeedWithXMLData:(NSData *)data {
   return [[[self alloc] initWithData:data] autorelease];
@@ -31,7 +35,7 @@
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeed {
   GDataFeedSpreadsheetCell *feed = [[[self alloc] init] autorelease];
-  [feed setNamespaces:[GDataEntrySpreadsheet spreadsheetNamespaces]];
+  [feed setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return feed;
 }
 

@@ -17,7 +17,6 @@
 //  GDataEntryFolderDoc.m
 //
 
-#define GDATAENTRYFOLDERDOC_DEFINE_GLOBALS 1
 #import "GDataEntryFolderDoc.h"
 
 @implementation GDataEntryFolderDoc

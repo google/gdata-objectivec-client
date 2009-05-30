@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (423 classes) 2009-05-26 13:18:58 -0700
+// com.google.GDataFramework v. 1.7 (434 classes) 2009-05-29 18:09:25 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -100,6 +100,7 @@
   #define GDataDCSubject                       _GDATA_NS_SYMBOL(GDataDCSubject)
   #define GDataDCTitle                         _GDATA_NS_SYMBOL(GDataDCTitle)
   #define GDataDeleted                         _GDATA_NS_SYMBOL(GDataDeleted)
+  #define GDataDocConstants                    _GDATA_NS_SYMBOL(GDataDocConstants)
   #define GDataEmail                           _GDATA_NS_SYMBOL(GDataEmail)
   #define GDataEntryACL                        _GDATA_NS_SYMBOL(GDataEntryACL)
   #define GDataEntryAnalyticsAccount           _GDATA_NS_SYMBOL(GDataEntryAnalyticsAccount)
@@ -143,6 +144,8 @@
   #define GDataEntrySpreadsheetCell            _GDATA_NS_SYMBOL(GDataEntrySpreadsheetCell)
   #define GDataEntrySpreadsheetDoc             _GDATA_NS_SYMBOL(GDataEntrySpreadsheetDoc)
   #define GDataEntrySpreadsheetList            _GDATA_NS_SYMBOL(GDataEntrySpreadsheetList)
+  #define GDataEntrySpreadsheetRecord          _GDATA_NS_SYMBOL(GDataEntrySpreadsheetRecord)
+  #define GDataEntrySpreadsheetTable           _GDATA_NS_SYMBOL(GDataEntrySpreadsheetTable)
   #define GDataEntryStandardDoc                _GDATA_NS_SYMBOL(GDataEntryStandardDoc)
   #define GDataEntryVolume                     _GDATA_NS_SYMBOL(GDataEntryVolume)
   #define GDataEntryWorksheet                  _GDATA_NS_SYMBOL(GDataEntryWorksheet)
@@ -199,6 +202,8 @@
   #define GDataFeedSpreadsheet                 _GDATA_NS_SYMBOL(GDataFeedSpreadsheet)
   #define GDataFeedSpreadsheetCell             _GDATA_NS_SYMBOL(GDataFeedSpreadsheetCell)
   #define GDataFeedSpreadsheetList             _GDATA_NS_SYMBOL(GDataFeedSpreadsheetList)
+  #define GDataFeedSpreadsheetRecord           _GDATA_NS_SYMBOL(GDataFeedSpreadsheetRecord)
+  #define GDataFeedSpreadsheetTable            _GDATA_NS_SYMBOL(GDataFeedSpreadsheetTable)
   #define GDataFeedVolume                      _GDATA_NS_SYMBOL(GDataFeedVolume)
   #define GDataFeedWorksheet                   _GDATA_NS_SYMBOL(GDataFeedWorksheet)
   #define GDataFeedYouTubeChannel              _GDATA_NS_SYMBOL(GDataFeedYouTubeChannel)
@@ -387,7 +392,12 @@
   #define GDataSiteVerificationMethod          _GDATA_NS_SYMBOL(GDataSiteVerificationMethod)
   #define GDataSiteVerified                    _GDATA_NS_SYMBOL(GDataSiteVerified)
   #define GDataSpreadsheetCell                 _GDATA_NS_SYMBOL(GDataSpreadsheetCell)
+  #define GDataSpreadsheetColumn               _GDATA_NS_SYMBOL(GDataSpreadsheetColumn)
+  #define GDataSpreadsheetConstants            _GDATA_NS_SYMBOL(GDataSpreadsheetConstants)
   #define GDataSpreadsheetCustomElement        _GDATA_NS_SYMBOL(GDataSpreadsheetCustomElement)
+  #define GDataSpreadsheetData                 _GDATA_NS_SYMBOL(GDataSpreadsheetData)
+  #define GDataSpreadsheetField                _GDATA_NS_SYMBOL(GDataSpreadsheetField)
+  #define GDataSpreadsheetHeader               _GDATA_NS_SYMBOL(GDataSpreadsheetHeader)
   #define GDataStructuredPostalAddress         _GDATA_NS_SYMBOL(GDataStructuredPostalAddress)
   #define GDataSyncEventProperty               _GDATA_NS_SYMBOL(GDataSyncEventProperty)
   #define GDataTextConstruct                   _GDATA_NS_SYMBOL(GDataTextConstruct)
@@ -407,6 +417,7 @@
   #define GDataWhen                            _GDATA_NS_SYMBOL(GDataWhen)
   #define GDataWhere                           _GDATA_NS_SYMBOL(GDataWhere)
   #define GDataWho                             _GDATA_NS_SYMBOL(GDataWho)
+  #define GDataWorksheetName                   _GDATA_NS_SYMBOL(GDataWorksheetName)
   #define GDataWritersCanInvite                _GDATA_NS_SYMBOL(GDataWritersCanInvite)
   #define GDataYouTubeAboutMe                  _GDATA_NS_SYMBOL(GDataYouTubeAboutMe)
   #define GDataYouTubeAge                      _GDATA_NS_SYMBOL(GDataYouTubeAge)

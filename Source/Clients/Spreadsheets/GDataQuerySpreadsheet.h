@@ -34,6 +34,12 @@
 - (void)setIsReverseSort:(BOOL)isReverse;
 - (BOOL)isReverseSort;
 
+- (NSString *)titleQuery;
+- (void)setTitleQuery:(NSString *)str;
+
+- (BOOL)isTitleQueryExact;
+- (void)setIsTitleQueryExact:(BOOL)flag;
+
 // cell feed parameters
 - (void)setMinimumRow:(int)val;
 - (int)minimumRow;
