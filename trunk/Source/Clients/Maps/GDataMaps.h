@@ -21,6 +21,7 @@
 
 // Maps
 
+#import "GDataMapConstants.h"
 #import "GDataEntryMap.h"
 #import "GDataEntryMapFeature.h"
 #import "GDataEntryMapVersion.h"

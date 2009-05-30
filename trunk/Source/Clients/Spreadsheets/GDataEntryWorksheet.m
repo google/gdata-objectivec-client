@@ -20,7 +20,7 @@
 #define GDATAENTRYWORKSHEET_DEFINE_GLOBALS 1
 
 #import "GDataEntryWorksheet.h"
-#import "GDataEntrySpreadsheet.h"
+#import "GDataSpreadsheetConstants.h"
 #import "GDataRowColumnCount.h"
 
 // extensions
@@ -33,11 +33,15 @@
 + (GDataEntryWorksheet *)worksheetEntry {
   GDataEntryWorksheet *entry = [[[GDataEntryWorksheet alloc] init] autorelease];
 
-  [entry setNamespaces:[GDataEntrySpreadsheet spreadsheetNamespaces]];
+  [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;
 }
 
 #pragma mark -
+
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
+  return [GDataSpreadsheetConstants coreProtocolVersionForServiceVersion:serviceVersion];
+}
 
 + (NSString *)standardEntryKind {
   // spreadsheet categories do not use the standard Kind scheme
@@ -130,7 +134,7 @@
 }
 
 - (GDataLink *)listLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(kGDataSpreadsheetServiceV1);
 
   return [self linkWithRelAttributeValue:kGDataLinkListFeed];
 }

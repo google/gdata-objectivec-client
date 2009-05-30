@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,24 @@
  */
 
 //
-//  GDataFeedDocList.h
+//  GDataSpreadsheetColumn.h
 //
 
-#import "GDataFeedBase.h"
+#import "GDataObject.h"
 
-@interface GDataFeedDocList : GDataFeedBase
+// For table columns, like:
+//    <gs:column index="b" name="Birthday" />
+
+@interface GDataSpreadsheetColumn : GDataObject <GDataExtension>
+
++ (GDataSpreadsheetColumn *)columnWithIndexString:(NSString *)indexStr
+                                             name:(NSString *)name;
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
+
+- (NSString *)indexString;
+- (void)setIndexString:(NSString *)str;
+
 @end
+

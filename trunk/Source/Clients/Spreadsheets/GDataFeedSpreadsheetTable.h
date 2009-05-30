@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,13 @@
  */
 
 //
-//  GDataFeedDocList.h
+//  GDataFeedSpreadsheetTable.h
 //
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedDocList : GDataFeedBase
+@interface GDataFeedSpreadsheetTable : GDataFeedBase
+
++ (GDataFeedSpreadsheetTable *)spreadsheetTableFeed;
+
 @end

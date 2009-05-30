@@ -21,22 +21,9 @@
 
 @class GDataSpreadsheetCell;
 
-#undef _EXTERN
-#undef _INITIALIZE_AS
-#ifdef GDATASPREADSHEETCELL_DEFINE_GLOBALS
-#define _EXTERN 
-#define _INITIALIZE_AS(x) =x
-#else
-#define _EXTERN extern
-#define _INITIALIZE_AS(x)
-#endif
-
-_EXTERN NSString* const kGDataCategorySpreadsheetCell _INITIALIZE_AS(@"http://schemas.google.com/spreadsheets/2006#cell");
-
 // SpreadsheetCellEntry extensions
 
-@interface GDataEntrySpreadsheetCell : GDataEntryBase {
-}
+@interface GDataEntrySpreadsheetCell : GDataEntryBase
 
 + (GDataEntrySpreadsheetCell *)spreadsheetCellEntryWithCell:(GDataSpreadsheetCell *)cell;
 

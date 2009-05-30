@@ -21,6 +21,8 @@
 
 static NSString *const kSpreadsheetQueryParamName = @"sq";
 static NSString *const kReverseParamName = @"reverse";
+static NSString *const kTitleParamName = @"title";
+static NSString *const kExactTitleParamName = @"title-exact";
 static NSString *const kMinRowParamName = @"min-row";
 static NSString *const kMaxRowParamName = @"max-row";
 static NSString *const kMinColParamName = @"min-col";
@@ -34,6 +36,25 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
   return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
+- (NSString *)titleQuery {
+  NSString *str = [self valueForParameterWithName:kTitleParamName];
+  return str;
+}
+
+- (void)setTitleQuery:(NSString *)str {
+  [self addCustomParameterWithName:kTitleParamName value:str];
+}
+
+- (BOOL)isTitleQueryExact {
+  return [self boolValueForParameterWithName:kExactTitleParamName
+                                defaultValue:NO];
+}
+
+- (void)setIsTitleQueryExact:(BOOL)flag {
+  [self addCustomParameterWithName:kExactTitleParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
 
 // list feed parameters
 - (void)setSpreadsheetQuery:(NSString *)queryStr {

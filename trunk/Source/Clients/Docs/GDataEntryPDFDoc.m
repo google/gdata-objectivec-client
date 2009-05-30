@@ -17,7 +17,6 @@
 //  GDataEntryPDFDoc.m
 //
 
-#define GDATAENTRYPDFDOC_DEFINE_GLOBALS 1
 #import "GDataEntryPDFDoc.h"
 
 @implementation GDataEntryPDFDoc
