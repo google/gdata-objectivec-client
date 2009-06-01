@@ -19,21 +19,21 @@
 @implementation GDataUtilities
 
 + (NSString *)stringWithControlsFilteredForString:(NSString *)str {
-  // Ensure that control characters are not present in the string, since they 
+  // Ensure that control characters are not present in the string, since they
   // would lead to XML that likely will make servers unhappy.  (Are control
   // characters ever legal in XML?)
   //
   // Why not assert on debug builds for the caller when the string has a control
   // character?  The characters may never be present in the data until the
-  // program is deployed to users.  This filtering will make it less likely 
+  // program is deployed to users.  This filtering will make it less likely
   // that bad XML might be generated for users and sent to servers.
   //
   // Since we generate our XML directly from the elements with
   // XMLData, we won't later have a good chance to look for and clean out
   // the control characters.
-  
+
   if (str == nil) return nil;
-  
+
   static NSCharacterSet *filterChars = nil;
 
   @synchronized([GDataUtilities class]) {
@@ -54,27 +54,27 @@
       filterChars = [mutableChars copy];
     }
   }
-  
+
   // look for any invalid characters
-  NSRange range = [str rangeOfCharacterFromSet:filterChars]; 
+  NSRange range = [str rangeOfCharacterFromSet:filterChars];
   if (range.location != NSNotFound) {
-    
-    // copy the string to a mutable, and remove null and non-whitespace 
+
+    // copy the string to a mutable, and remove null and non-whitespace
     // control characters
-    NSMutableString *mutableStr = [NSMutableString stringWithString:str];  
+    NSMutableString *mutableStr = [NSMutableString stringWithString:str];
     while (range.location != NSNotFound) {
-      
-      GDATA_DEBUG_LOG(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"", 
+
+      GDATA_DEBUG_LOG(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"",
             [mutableStr characterAtIndex:range.location], str);
 
       [mutableStr deleteCharactersInRange:range];
-      
-      range = [mutableStr rangeOfCharacterFromSet:filterChars]; 
+
+      range = [mutableStr rangeOfCharacterFromSet:filterChars];
     }
-    
+
     return mutableStr;
   }
-  
+
   return str;
 }
 
@@ -194,7 +194,7 @@
   if (source == nil) return nil;
 
   Class arrayClass = [NSArray class];
-  
+
   // Using CFPropertyListCreateDeepCopy would be nice, but it fails on non-plist
   // classes of objects
 
@@ -217,7 +217,7 @@
   return dict;
 }
 
-#pragma mark String encoding 
+#pragma mark String encoding
 
 // URL Encoding
 
@@ -227,7 +227,7 @@
 }
 
 // NSURL's stringByAddingPercentEscapesUsingEncoding: does not escape
-// some characters that should be escaped in URL parameters, like / and ?; 
+// some characters that should be escaped in URL parameters, like / and ?;
 // we'll use CFURL to force the encoding of those
 //
 // Reference: http://www.ietf.org/rfc/rfc3986.txt
@@ -287,7 +287,7 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 // percent-encoding UTF-8
 
 + (NSString *)stringByPercentEncodingUTF8ForString:(NSString *)inputStr {
-  
+
   // encode per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
   //
   // step through the string as UTF-8, and replace characters outside 20..7E
@@ -295,76 +295,76 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
   //
   // we avoid creating an encoding string unless we encounter some characters
   // that require it
-  
+
   const char* utf8 = [inputStr UTF8String];
   if (utf8 == NULL) {
     return nil;
   }
-  
+
   NSMutableString *encoded = nil;
-  
+
   for (unsigned int idx = 0; utf8[idx] != '\0'; idx++) {
-    
+
     unsigned char currChar = utf8[idx];
     if (currChar < 0x20 || currChar == 0x25 || currChar > 0x7E) {
-      
+
       if (encoded == nil) {
         // start encoding and catch up on the character skipped so far
         encoded = [[[NSMutableString alloc] initWithBytes:utf8
-                                                   length:idx 
+                                                   length:idx
                                                  encoding:NSUTF8StringEncoding] autorelease];
       }
-      
+
       // append this byte as a % and then uppercase hex
       [encoded appendFormat:@"%%%02X", currChar];
-      
+
     } else {
       // this character does not need encoding
       //
-      // encoded is nil here unless we've encountered a previous character 
+      // encoded is nil here unless we've encountered a previous character
       // that needed encoding
       [encoded appendFormat:@"%c", currChar];
     }
   }
-  
+
   if (encoded) {
-    return encoded;  
-  } 
-  
+    return encoded;
+  }
+
   return inputStr;
 }
 
 #pragma mark Key-Value Coding Searches in an Array
 
-+ (NSArray *)objectsFromArray:(NSArray *)sourceArray 
++ (NSArray *)objectsFromArray:(NSArray *)sourceArray
                     withValue:(id)desiredValue
                    forKeyPath:(NSString *)keyPath {
-  // step through all entries, get the value from 
-  // the key path, and see if it's equal to the 
+  // step through all entries, get the value from
+  // the key path, and see if it's equal to the
   // desired value
   NSMutableArray *results = [NSMutableArray array];
   id obj;
-  
+
   GDATA_FOREACH(obj, sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
-      
+
       // found a match; add it to the results array
       [results addObject:obj];
     }
   }
   return results;
-}  
+}
 
-+ (id)firstObjectFromArray:(NSArray *)sourceArray 
++ (id)firstObjectFromArray:(NSArray *)sourceArray
                  withValue:(id)desiredValue
                 forKeyPath:(NSString *)keyPath {
-  
+
   id obj;
   GDATA_FOREACH(obj, sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
-      
+
       // found a match; return it
       return obj;
     }
@@ -463,15 +463,15 @@ BOOL AreEqualOrBothNil(id obj1, id obj2) {
   }
   if (obj1 && obj2) {
     BOOL areEqual = [obj1 isEqual:obj2];
-    
+
     // the following commented-out lines are useful for finding out what
     // comparisons are failing when XML regeneration fails in unit tests
-    
-    //if (!areEqual) NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
-    
-    return areEqual; 
+
+    //if (!areEqual) NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);
+
+    return areEqual;
   } else {
-    //NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);  
+    //NSLog(@">>>\n%@\n  !=\n%@", obj1, obj2);
   }
   return NO;
 }

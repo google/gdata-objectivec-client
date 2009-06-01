@@ -41,17 +41,17 @@ static BOOL IsTypeEqualToText(NSString *str) {
 + (NSString *)extensionElementLocalName { return @"content"; }
 
 + (id)contentWithString:(NSString *)str {
-  
+
   // RFC4287 Sec 4.1.3.1. says that omitted type attributes are assumed to be
   // "text", so we don't need to explicitly set it to text
-  
+
   GDataEntryContent *obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
 }
 
 + (id)contentWithSourceURI:(NSString *)str type:(NSString *)type {
-  
+
   GDataEntryContent *obj = [[[self alloc] init] autorelease];
   [obj setSourceURI:str];
   [obj setType:type];
@@ -59,27 +59,27 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 + (id)textConstructWithString:(NSString *)str {
-  
+
   // deprecated; kept for compatibility with the previous
   // implementation of GDataEntryContent
   GDATA_DEBUG_LOG(@"GDataEntryContent: +textConstructWithString deprecated, use +contentWithString");
-  
+
   return [self contentWithString:str];
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kTypeAttr, kLangAttr, kSourceAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
-  
+
   // we're not calling -addContentValueDeclaration since the content may not
   // be plain text but rather XML for an entry or feed that we will parse
 }
 
 - (NSArray *)attributesIgnoredForEquality {
-  
+
   // ignore the "type" attribute since we test for it uniquely below
   return [NSArray arrayWithObject:kTypeAttr];
 }
@@ -120,15 +120,15 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
+
   GDataObject *obj = [self childObject];
   if (obj) {
     NSXMLElement *elem = [obj XMLElement];
     [element addChild:elem];
   }
-  
+
   return element;
 }
 
@@ -141,10 +141,10 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 - (BOOL)isEqual:(GDataEntryContent *)other {
-  
+
   // override isEqual: to allow nil types to be considered equal to "text"
   return [super isEqual:other]
-  
+
     // a missing type attribute is equal to "text" per RFC 4287 3.1.1
     //
     // consider them equal if both are some flavor of "text"
@@ -155,11 +155,11 @@ static BOOL IsTypeEqualToText(NSString *str) {
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addToArray:items objectDescriptionIfNonNil:[self stringValue] withName:@"content"];
   [self addToArray:items objectDescriptionIfNonNil:[self XMLValues] withName:@"xml"];
-  
+
   GDataObject *obj = [self childObject];
   if (obj != nil) {
     NSString *className = NSStringFromClass([obj class]);
@@ -235,11 +235,11 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 - (void)setXMLValues:(NSArray *)arr {
-  [self setChildXMLElements:arr]; 
+  [self setChildXMLElements:arr];
 }
 
 - (void)addXMLValue:(NSXMLNode *)node {
-  [self addChildXMLElement:node]; 
+  [self addChildXMLElement:node];
 }
 
 @end

@@ -28,7 +28,7 @@
 }
 
 // Note: Nil can be passed for time zone arguments when the time zone is not
-//       known. 
+//       known.
 
 + (GDataDateTime *)dateTimeWithRFC3339String:(NSString *)str;
 + (GDataDateTime *)dateTimeWithDate:(NSDate *)date timeZone:(NSTimeZone *)tz;
@@ -60,5 +60,5 @@
 
 - (NSDateComponents *)dateComponents;
 - (void)setDateComponents:(NSDateComponents *)dateComponents;
-  
+
 @end

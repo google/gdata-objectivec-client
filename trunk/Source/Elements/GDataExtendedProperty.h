@@ -35,14 +35,14 @@ _EXTERN NSString* const kGDataExtendedPropertyRealmShared _INITIALIZE_AS(@"http:
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
 //
-// or an arbitrary XML blob, as in 
+// or an arbitrary XML blob, as in
 //  <gd:extendedProperty name='com.myCompany.myProperties'> <myXMLBlob /> </gd:extendedProperty>
 //
 // Servers may impose additional restrictions on names or on the size
 // or composition of the values.
 
 @interface GDataExtendedProperty : GDataObject <GDataExtension>
-  
+
 + (id)propertyWithName:(NSString *)name
                  value:(NSString *)value;
 
@@ -73,6 +73,6 @@ _EXTERN NSString* const kGDataExtendedPropertyRealmShared _INITIALIZE_AS(@"http:
 
 - (NSDictionary *)XMLValuesDictionary;
 - (void)setXMLValuesDictionary:(NSDictionary *)dict;
-  
+
 @end
 

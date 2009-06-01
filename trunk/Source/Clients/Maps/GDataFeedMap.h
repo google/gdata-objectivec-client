@@ -19,6 +19,6 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedMap : GDataFeedBase 
+@interface GDataFeedMap : GDataFeedBase
 + (GDataFeedMap *)mapFeed;
 @end

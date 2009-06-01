@@ -36,7 +36,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAENTRYBASE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -142,12 +142,12 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 - (GDataBatchOperation *)batchOperation;
 - (void)setBatchOperation:(GDataBatchOperation *)obj;
-  
+
 // the batch ID is an arbitrary string defined by clients, and present in the
 // batch response feed to let the client match each entry's response to
 // the entry
 - (GDataBatchID *)batchID;
-- (void)setBatchID:(GDataBatchID *)obj; 
+- (void)setBatchID:(GDataBatchID *)obj;
 - (void)setBatchIDWithString:(NSString *)str;
 
 - (GDataBatchStatus *)batchStatus;
@@ -160,7 +160,7 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 - (NSArray *)categoriesWithScheme:(NSString *)scheme;
 
-// most entries have a category element with scheme kGDataCategoryScheme 
+// most entries have a category element with scheme kGDataCategoryScheme
 // that indicates the kind of entry
 - (GDataCategory *)kindCategory;
 
@@ -195,7 +195,7 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 // temporary bridge method
 + (void)registerEntryClass:(Class)theClass
-     forCategoryWithScheme:(NSString *)scheme 
+     forCategoryWithScheme:(NSString *)scheme
                       term:(NSString *)term;
 
 

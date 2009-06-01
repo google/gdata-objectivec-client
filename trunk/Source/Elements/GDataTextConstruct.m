@@ -36,17 +36,17 @@ static NSString* const kTypeAttr = @"type";
 // [self setType:@"text"];
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kTypeAttr, kLangAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 
 - (NSArray *)attributesIgnoredForEquality {
-  
+
   // ignore the "type" attribute since we test for it uniquely below
   return [NSArray arrayWithObject:kTypeAttr];
 }
@@ -60,14 +60,14 @@ static NSString* const kTypeAttr = @"type";
 }
 
 - (BOOL)isEqual:(GDataTextConstruct *)other {
-  
+
   // override isEqual: to allow nil types to be considered equal to "text"
   return [super isEqual:other]
-    
+
     // a missing type attribute is equal to "text" per RFC 4287 3.1.1
     //
     // consider them equal if both are some flavor of "text"
-  
+
     && (AreEqualOrBothNil([self type], [other type])
         || ([self isTypeEqualToText:[self type]]
             && [self isTypeEqualToText:[other type]]));

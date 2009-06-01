@@ -26,5 +26,5 @@
 @interface GDataDeleted : GDataImplicitValueConstruct <GDataExtension>
 
 + (GDataDeleted *)deleted;
-  
+
 @end

@@ -14,7 +14,7 @@
 */
 
 
-// This is a simple class to create a MIME document.  To use, allocate 
+// This is a simple class to create a MIME document.  To use, allocate
 // a new GDataMIMEDocument and start adding parts as necessary.  When you are
 // done adding parts, call generateInputStream to get an NSInputStream
 // containing the contents of your MIME document.
@@ -37,12 +37,12 @@
 - (void)addPartWithHeaders:(NSDictionary *)headers
                       body:(NSData *)body;
 
-// An inputstream that can be used to efficiently read the contents of the 
+// An inputstream that can be used to efficiently read the contents of the
 // mime document.
-- (void)generateInputStream:(NSInputStream **)outStream 
-                     length:(unsigned long long*)outLength 
+- (void)generateInputStream:(NSInputStream **)outStream
+                     length:(unsigned long long*)outLength
                    boundary:(NSString **)outBoundary;
-  
+
 // ------ UNIT TESTING ONLY BELOW ------
 
 // For unittesting only, seeds the random number generator

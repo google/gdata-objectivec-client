@@ -19,7 +19,7 @@
 
 // Returns the version of the framework.  Major and minor should
 // match the bundle version in the Info.plist file.
-// 
+//
 // Pass NULL to ignore any of the parameters.
 
 void GDataFrameworkVersion(long* major, long* minor, long* release);

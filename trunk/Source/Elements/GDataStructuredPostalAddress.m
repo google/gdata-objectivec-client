@@ -218,7 +218,7 @@ static NSString* const kUsageAttr = @"usage";
     { @"subregion",    @"subregion",        kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;

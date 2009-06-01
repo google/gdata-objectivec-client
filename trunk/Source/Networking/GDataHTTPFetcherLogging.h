@@ -36,7 +36,7 @@
 // and downloaded data.
 //
 // A symlink is created in the logs folder to simplify finding the html file
-// for the latest run of the application; the symlink is called 
+// for the latest run of the application; the symlink is called
 //
 //   AppName_http_log_newest.html
 //

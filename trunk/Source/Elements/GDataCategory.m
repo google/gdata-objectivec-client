@@ -43,10 +43,10 @@ static NSString* const kLangAttr = @"xml:lang";
 }
 
 + (GDataCategory *)categoryWithLabel:(NSString *)label {
-  
+
   NSString *term = [NSString stringWithFormat:@"%@#%@",
     kGDataCategoryLabelScheme, label];
-  
+
   GDataCategory *obj = [self categoryWithScheme:kGDataCategoryLabelScheme
                                            term:term];
   [obj setLabel:label];
@@ -54,20 +54,20 @@ static NSString* const kLangAttr = @"xml:lang";
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kSchemeAttr, kTermAttr, kLabelAttr, kLangAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];    
+
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSArray *)attributesIgnoredForEquality {
-  
+
   // per Category.java: this should exclude label and labelLang,
   // but the GMail provider is generating categories which
   // have identical terms but unique labels, so we need to compare
   // label values as well, though not xml:lang
-  
+
   return [NSArray arrayWithObject:kLangAttr];
 }
 
@@ -110,7 +110,7 @@ static NSString* const kLangAttr = @"xml:lang";
 // return all categories with the specified scheme
 + (NSArray *)categoriesWithScheme:(NSString *)scheme
                    fromCategories:(NSArray *)array {
-  
+
   NSArray *cats = [GDataUtilities objectsFromArray:array
                                          withValue:scheme
                                         forKeyPath:@"scheme"];
@@ -118,7 +118,7 @@ static NSString* const kLangAttr = @"xml:lang";
 }
 
 // return all categories whose schemes have the specified prefix
-+ (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix 
++ (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix
                          fromCategories:(NSArray *)array {
   NSMutableArray *matches = [NSMutableArray array];
   GDataCategory *category;
@@ -133,7 +133,7 @@ static NSString* const kLangAttr = @"xml:lang";
 }
 
 + (NSArray *)categoryLabelsFromCategories:(NSArray *)array {
-  
+
   NSMutableArray *labels = [NSMutableArray array];
   GDataCategory *category;
 
@@ -148,7 +148,7 @@ static NSString* const kLangAttr = @"xml:lang";
 
 + (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label {
   GDataCategory *category = [GDataCategory categoryWithLabel:label];
-  
+
   BOOL hasLabel = [array containsObject:category];
   return hasLabel;
 }

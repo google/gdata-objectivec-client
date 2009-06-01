@@ -52,8 +52,8 @@ static NSString *const kLengthAttr = @"length";
   NSArray *attrs = [NSArray arrayWithObjects:
                     kRelAttr, kTypeAttr, kHrefAttr, kHrefLangAttr,
                     kTitleAttr, kLangAttr, kLengthAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];    
+
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 - (void)addExtensionDeclarations {
@@ -93,7 +93,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)type {
-  return [self stringValueForAttribute:kTypeAttr]; 
+  return [self stringValueForAttribute:kTypeAttr];
 }
 
 - (void)setType:(NSString *)str {
@@ -101,7 +101,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)href {
-  return [self stringValueForAttribute:kHrefAttr]; 
+  return [self stringValueForAttribute:kHrefAttr];
 }
 
 - (void)setHref:(NSString *)str {
@@ -109,7 +109,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)hrefLang {
-  return [self stringValueForAttribute:kHrefLangAttr]; 
+  return [self stringValueForAttribute:kHrefLangAttr];
 }
 
 - (void)setHrefLang:(NSString *)str {
@@ -117,7 +117,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)title {
-  return [self stringValueForAttribute:kTitleAttr]; 
+  return [self stringValueForAttribute:kTitleAttr];
 }
 
 - (void)setTitle:(NSString *)str {
@@ -125,7 +125,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSString *)titleLang {
-  return [self stringValueForAttribute:kLangAttr]; 
+  return [self stringValueForAttribute:kLangAttr];
 }
 
 - (void)setTitleLang:(NSString *)str {
@@ -133,7 +133,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (NSNumber *)resourceLength {
-  return [self intNumberForAttribute:kLengthAttr]; 
+  return [self intNumberForAttribute:kLengthAttr];
 }
 
 - (void)setResourceLength:(NSNumber *)length {
@@ -154,7 +154,7 @@ static NSString *const kLengthAttr = @"length";
 }
 
 - (void)setContent:(GDataAtomContent *)obj {
-  [self setObject:obj forExtensionClass:[GDataAtomContent class]]; 
+  [self setObject:obj forExtensionClass:[GDataAtomContent class]];
 }
 
 // convenience method
@@ -162,7 +162,7 @@ static NSString *const kLengthAttr = @"length";
 - (NSURL *)URL {
   NSString *href = [self href];
   if ([href length] > 0) {
-    return [NSURL URLWithString:href]; 
+    return [NSURL URLWithString:href];
   }
   return nil;
 }
@@ -202,42 +202,42 @@ static NSString *const kLengthAttr = @"length";
 
 // Find the first link with the given rel and type values. Either argument
 // may be nil, which means "match any value".
-+ (GDataLink *)linkWithRel:(NSString *)relValue 
-                      type:(NSString *)typeValue 
++ (GDataLink *)linkWithRel:(NSString *)relValue
+                      type:(NSString *)typeValue
                  fromLinks:(NSArray *)array {
-  
+
   GDataLink *dataLink;
   GDATA_FOREACH(dataLink, array) {
-    
+
     NSString *foundRelValue = [dataLink rel];
     NSString *foundTypeValue = [dataLink type];
-    
+
     if ((relValue == nil || AreEqualOrBothNil(relValue, foundRelValue))
         && (typeValue == nil || AreEqualOrBothNil(typeValue, foundTypeValue))) {
       return dataLink;
     }
   }
-  return nil;  
+  return nil;
 }
 
 + (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue
                                fromLinks:(NSArray *)array {
-  
+
   return [self linkWithRel:relValue type:nil fromLinks:array];
 }
 
-+ (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix 
++ (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix
                                 fromLinks:(NSArray *)array {
-  
+
   GDataLink *dataLink;
   GDATA_FOREACH(dataLink, array) {
-    
+
     NSString *attrValue = [dataLink rel];
     if (attrValue && [attrValue hasSuffix:relSuffix]) {
       return dataLink;
     }
   }
-  return nil;  
-}  
+  return nil;
+}
 
 @end

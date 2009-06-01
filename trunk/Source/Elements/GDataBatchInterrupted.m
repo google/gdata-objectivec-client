@@ -40,23 +40,23 @@ static NSString* const kContentTypeAttr = @"content-type";
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kReasonAttr, kSuccessAttr, kFailuresAttr, kParsedAttr,
                     kContentTypeAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];  
-  
+
+  [self addLocalAttributeDeclarations:attrs];
+
   [self addContentValueDeclaration];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   [self addAttributeDescriptionsToArray:items];
   [self addContentDescriptionToArray:items withName:@"content"];
-  
+
   return items;
 }
 #endif

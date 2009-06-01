@@ -42,9 +42,9 @@ static NSString* const kRelAttr = @"rel";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kHrefAttr, kReadOnlyAttr, kRelAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
@@ -54,7 +54,7 @@ static NSString* const kRelAttr = @"rel";
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    // GDataEntryBase, the base class for entries, is not an extension, 
+    // GDataEntryBase, the base class for entries, is not an extension,
     // so we parse it manually
     [self setEntry:[self objectForChildOfElement:element
                                    qualifiedName:@"entry"
@@ -78,7 +78,7 @@ static NSString* const kRelAttr = @"rel";
 - (BOOL)isEqual:(GDataEntryLink *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataEntryLink class]]) return NO;
-  
+
   return [super isEqual:other]
     && (AreEqualOrBothNil([self entry], [other entry]));
 }
@@ -86,7 +86,7 @@ static NSString* const kRelAttr = @"rel";
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
-      
+
   [self addToArray:items objectDescriptionIfNonNil:entry_ withName:@"entry"];
 
   return items;
@@ -94,9 +94,9 @@ static NSString* const kRelAttr = @"rel";
 #endif
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
-  
+
   if ([self entry]) {
     [element addChild:[entry_ XMLElement]];
   }
@@ -130,7 +130,7 @@ static NSString* const kRelAttr = @"rel";
 }
 
 - (GDataEntryBase *)entry {
-  return entry_;  
+  return entry_;
 }
 
 - (void)setEntry:(GDataEntryBase *)entry {

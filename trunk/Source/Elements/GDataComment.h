@@ -32,7 +32,7 @@
 }
 
 + (GDataComment *)commentWithFeedLink:(GDataFeedLink *)feedLink;
-                  
+
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;
 

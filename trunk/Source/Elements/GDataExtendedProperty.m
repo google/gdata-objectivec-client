@@ -29,7 +29,7 @@ static NSString* const kRealmAttr = @"realm";
 // an element with a name="" and a value="" attribute, as in
 //  <gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK' value='2006-10-03T19:01:14Z'/>
 //
-// or an arbitrary XML blob, as in 
+// or an arbitrary XML blob, as in
 //  <gd:extendedProperty name='com.myCompany.myProperties'> <myXMLBlob /> </gd:extendedProperty>
 //
 // Servers may impose additional restrictions on names or on the size
@@ -41,10 +41,10 @@ static NSString* const kRealmAttr = @"realm";
 
 - (void)addEmptyDefaultNamespace {
 
-  // We don't want child XML lacking a prefix to be intepreted as being in the 
+  // We don't want child XML lacking a prefix to be intepreted as being in the
   // atom namespace, so we'll specify that no default namespace applies.
   // This will add the attribute xmlns="" to the extendedProperty element.
-  
+
   NSDictionary *defaultNS = [NSDictionary dictionaryWithObject:@""
                                                         forKey:@""];
   [self addNamespaces:defaultNS];
@@ -73,11 +73,11 @@ static NSString* const kRealmAttr = @"realm";
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kNameAttr, kValueAttr, kRealmAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];  
+
+  [self addLocalAttributeDeclarations:attrs];
 
   [self addChildXMLElementsDeclaration];
 }
@@ -111,61 +111,61 @@ static NSString* const kRealmAttr = @"realm";
 }
 
 - (void)setXMLValues:(NSArray *)arr {
-  [self setChildXMLElements:arr]; 
+  [self setChildXMLElements:arr];
 }
 
 - (void)addXMLValue:(NSXMLNode *)node {
-  [self addChildXMLElement:node]; 
+  [self addChildXMLElement:node];
 }
 
 #pragma mark -
 
 - (void)setXMLValue:(NSString *)value forKey:(NSString *)key {
-  
+
   // change or remove an entry in the values dictionary
   //
   // dict may be nil
   NSMutableDictionary *dict = [[[self XMLValuesDictionary] mutableCopy] autorelease];
-  
+
   if (dict == nil && value != nil) {
-    dict = [NSMutableDictionary dictionary]; 
+    dict = [NSMutableDictionary dictionary];
   }
   [dict setValue:value forKey:key];
-  
+
   [self setXMLValuesDictionary:dict];
 }
 
 - (NSString *)XMLValueForKey:(NSString *)key {
-  
+
   NSDictionary *dict = [self XMLValuesDictionary];
   NSString *value = [dict valueForKey:key];
   return value;
 }
 
 - (NSDictionary *)XMLValuesDictionary {
-  
+
   NSArray *xmlNodes = [self XMLValues];
   if (xmlNodes == nil) return nil;
-  
+
   // step through all elements in the XML children and make a dictionary
   // entry for each
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   id xmlNode;
   GDATA_FOREACH(xmlNode, xmlNodes) {
-    
+
     NSString *qualifiedName = [xmlNode name];
     NSString *value = [xmlNode stringValue];
-    
+
     [dict setValue:value forKey:qualifiedName];
   }
   return dict;
 }
 
 - (void)setXMLValuesDictionary:(NSDictionary *)dict {
-  
+
   NSMutableArray *nodes = [NSMutableArray array];
 
-  // replace the XML child elements with elements from the dictionary 
+  // replace the XML child elements with elements from the dictionary
   NSString *key;
   GDATA_FOREACH_KEY(key, dict) {
     NSString *value = [dict objectForKey:key];
@@ -173,10 +173,10 @@ static NSString* const kRealmAttr = @"realm";
                                      stringValue:value];
     [nodes addObject:node];
   }
-  
+
   if ([nodes count] > 0) {
-    [self setXMLValues:nodes]; 
-  } else { 
+    [self setXMLValues:nodes];
+  } else {
     [self setXMLValues:nil];
   }
 }

@@ -51,15 +51,15 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    [self setLabel:[self stringForAttributeName:@"label" 
+    [self setLabel:[self stringForAttributeName:@"label"
                                     fromElement:element]];
-    [self setLat:[self doubleNumberForAttributeName:@"lat" 
+    [self setLat:[self doubleNumberForAttributeName:@"lat"
                                         fromElement:element]];
-    [self setLon:[self doubleNumberForAttributeName:@"lon" 
+    [self setLon:[self doubleNumberForAttributeName:@"lon"
                                         fromElement:element]];
-    [self setElev:[self doubleNumberForAttributeName:@"elev" 
+    [self setElev:[self doubleNumberForAttributeName:@"elev"
                                          fromElement:element]];
-    [self setTime:[self dateTimeForAttributeName:@"time" 
+    [self setTime:[self dateTimeForAttributeName:@"time"
                                      fromElement:element]];
   }
   return self;
@@ -87,7 +87,7 @@
 - (BOOL)isEqual:(GDataGeoPt *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataGeoPt class]]) return NO;
-  
+
   // the stringValue of an NSNumber is a rounded version; compare those
   // rather than non-rounded versions
   return [super isEqual:other]
@@ -118,18 +118,18 @@
 - (NSXMLElement *)XMLElement {
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:geoPt"];
-  
+
   [self addToElement:element attributeValueIfNonNil:[self label] withName:@"label"];
   [self addToElement:element attributeValueIfNonNil:[[self lat] stringValue] withName:@"lat"];
   [self addToElement:element attributeValueIfNonNil:[[self lon] stringValue] withName:@"lon"];
   [self addToElement:element attributeValueIfNonNil:[[self elev] stringValue] withName:@"elev"];
   [self addToElement:element attributeValueIfNonNil:[[self time] RFC3339String] withName:@"time"];
-  
+
   return element;
 }
 
 - (NSString *)label {
-  return label_; 
+  return label_;
 }
 
 - (void)setLabel:(NSString *)str {
@@ -138,7 +138,7 @@
 }
 
 - (NSNumber *)lat {
-  return lat_; 
+  return lat_;
 }
 
 - (void)setLat:(NSNumber *)num {
@@ -147,7 +147,7 @@
 }
 
 - (NSNumber *)lon {
-  return lon_; 
+  return lon_;
 }
 
 - (void)setLon:(NSNumber *)num {
@@ -156,7 +156,7 @@
 }
 
 - (NSNumber *)elev {
-  return elev_; 
+  return elev_;
 }
 
 - (void)setElev:(NSNumber *)num {

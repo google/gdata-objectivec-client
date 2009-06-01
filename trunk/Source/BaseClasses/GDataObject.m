@@ -31,10 +31,10 @@
 // problems with the underlying map global variable becoming invalid across
 // unit tests when garbage collection is enabled
 static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
-  
-  CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,  
+
+  CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,
           0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  
+
   return (NSMutableDictionary *)dict;
 }
 
@@ -60,7 +60,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 - (BOOL)isAttribute;
 @end
 
-@interface GDataObject (PrivateMethods) 
+@interface GDataObject (PrivateMethods)
 
 // array of local attribute names to be automatically parsed and
 // generated
@@ -74,7 +74,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 - (void)parseAttributesForElement:(NSXMLElement *)element;
 - (void)addAttributesToElement:(NSXMLElement *)element;
 
-// routines for comparing attributes 
+// routines for comparing attributes
 - (BOOL)hasAttributesEqualToAttributesOf:(GDataObject *)other;
 - (NSArray *)attributesIgnoredForEquality;
 
@@ -94,7 +94,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 - (void)setExtensions:(NSDictionary *)extensions;
 - (NSDictionary *)extensions;
 
-// cache of arrays of extensions that may be found in this class and in 
+// cache of arrays of extensions that may be found in this class and in
 // subclasses of this class.
 - (void)setExtensionDeclarationsCache:(NSDictionary *)decls;
 - (NSMutableDictionary *)extensionDeclarationsCache;
@@ -118,7 +118,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
-                            fromMap:(NSDictionary *)map;  
+                            fromMap:(NSDictionary *)map;
 @end
 
 @implementation GDataObject
@@ -162,11 +162,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
           serviceVersion:(NSString *)serviceVersion
               surrogates:(NSDictionary *)surrogates
     shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
-  
+
   [self setServiceVersion:serviceVersion];
-  
+
   [self setSurrogates:surrogates];
-  
+
   [self setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
 
   id obj = [self initWithXMLElement:element
@@ -271,7 +271,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // NSXMLNode's localNameForName: on each object's elementName, but that
   // prevents us from comparing the contents of a manually-constructed object
   // (which lacks a specific local name) with one found in an actual XML feed.
-  
+
 #if GDATA_USES_LIBXML
   // libxml adds namespaces when copying elements, so we can't rely
   // on those when comparing nodes
@@ -286,7 +286,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     && [self hasChildXMLElementsEqualToChildXMLElementsOf:other]
     && AreEqualOrBothNil([self namespaces], [other namespaces]);
 #endif
-  
+
   // What we're not comparing here:
   //   parent object pointers
   //   extension declarations
@@ -296,10 +296,10 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   //   userData
 }
 
-// By definition, for two objects to potentially be considered equal, 
-// they must have the same hash value.  The hash is mostly ignored, 
-// but removeObjectsInArray: in Leopard does seem to check the hash, 
-// and NSObject's default hash method just returns the instance pointer.  
+// By definition, for two objects to potentially be considered equal,
+// they must have the same hash value.  The hash is mostly ignored,
+// but removeObjectsInArray: in Leopard does seem to check the hash,
+// and NSObject's default hash method just returns the instance pointer.
 // We'll define hash here for all of our GDataObjects.
 - (NSUInteger)hash {
   return (NSUInteger) (void *) [GDataObject class];
@@ -310,19 +310,19 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [newObject setElementName:[self elementName]];
   [newObject setParent:nil];
   [newObject setServiceVersion:[self serviceVersion]];
-  
-  NSDictionary *namespaces = 
+
+  NSDictionary *namespaces =
     [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self namespaces]];
   [newObject setNamespaces:namespaces];
 
-  NSDictionary *extensions = 
+  NSDictionary *extensions =
     [GDataUtilities mutableDictionaryWithCopiesOfArraysInDictionary:[self extensions]];
   [newObject setExtensions:extensions];
-  
-  NSDictionary *attributes = 
+
+  NSDictionary *attributes =
     [GDataUtilities mutableDictionaryWithCopiesOfObjectsInDictionary:[self attributes]];
   [newObject setAttributes:attributes];
-  
+
   [newObject setAttributeDeclarations:[self attributeDeclarations]];
   // we copy the attribute declarations, which are retained by this object,
   // but we do not copy not the caches of extension or attribute declarations,
@@ -333,13 +333,13 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   if ([self hasDeclaredContentValue]) {
     [newObject setContentStringValue:[self contentStringValue]];
   }
-  
+
   if ([self hasDeclaredChildXMLElements]) {
     NSArray *childElements = [self childXMLElements];
     NSArray *arr = [GDataUtilities arrayWithCopiesOfObjectsInArray:childElements];
     [newObject setChildXMLElements:arr];
   }
-  
+
   BOOL shouldIgnoreUnknowns = [self shouldIgnoreUnknowns];
   [newObject setShouldIgnoreUnknowns:shouldIgnoreUnknowns];
 
@@ -352,9 +352,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       [GDataUtilities mutableArrayWithCopiesOfObjectsInArray:[self unknownAttributes]];
     [newObject setUnknownAttributes:unknownAttributes];
   }
-  
+
   return newObject;
-  
+
   // What we're not copying:
   //   parent object pointer
   //   surrogates
@@ -378,7 +378,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [serviceVersion_ release];
   [userData_ release];
   [userProperties_ release];
-  [super dealloc]; 
+  [super dealloc];
 }
 
 // XMLElement must be implemented by subclasses
@@ -386,7 +386,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // subclass should override if they have custom elements or attributes
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
   return element;
-} 
+}
 
 - (NSXMLDocument *)XMLDocument {
   NSXMLElement *element = [self XMLElement];
@@ -401,7 +401,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
                            headers:(NSDictionary **)outHeaders {
   // subclasses may return a data stream representing this object
   // for uploading
-  return NO; 
+  return NO;
 }
 
 #pragma mark -
@@ -412,7 +412,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSString *)elementName {
-  return elementName_; 
+  return elementName_;
 }
 
 - (void)setNamespaces:(NSDictionary *)dict {
@@ -428,7 +428,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSDictionary *)namespaces {
-  return namespaces_; 
+  return namespaces_;
 }
 
 - (NSDictionary *)completeNamespaces {
@@ -439,19 +439,19 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   if (ownNamespaces == nil) return parentNamespaces;
   if (parentNamespaces == nil) return ownNamespaces;
- 
+
   // combine them, replacing parent-defined prefixes with own ones
   NSMutableDictionary *mutable;
-  
+
   mutable = [NSMutableDictionary dictionaryWithDictionary:parentNamespaces];
   [mutable addEntriesFromDictionary:ownNamespaces];
   return mutable;
 }
 
 - (void)pruneInheritedNamespaces {
-  
+
   if (parent_ == nil || [namespaces_ count] == 0) return;
-  
+
   // if a prefix is explicitly defined the same for the parent as it is locally,
   // remove it, since we can rely on the parent's definition
   NSMutableDictionary *prunedNamespaces
@@ -461,15 +461,15 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   NSString *prefix;
   GDATA_FOREACH_KEY(prefix, namespaces_) {
-    
-    NSString *ownURI = [namespaces_ objectForKey:prefix]; 
-    NSString *parentURI = [parentNamespaces objectForKey:prefix]; 
-    
+
+    NSString *ownURI = [namespaces_ objectForKey:prefix];
+    NSString *parentURI = [parentNamespaces objectForKey:prefix];
+
     if (AreEqualOrBothNil(ownURI, parentURI)) {
       [prunedNamespaces removeObjectForKey:prefix];
     }
   }
-  
+
   [self setNamespaces:prunedNamespaces];
 }
 
@@ -478,7 +478,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (GDataObject *)parent {
-  return parent_; 
+  return parent_;
 }
 
 - (void)setAttributeDeclarationsCache:(NSDictionary *)cache {
@@ -519,7 +519,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSDictionary *)extensions {
-  return extensions_; 
+  return extensions_;
 }
 
 - (void)setExtensionDeclarationsCache:(NSDictionary *)decls {
@@ -548,7 +548,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSArray *)unknownChildren {
-  return unknownChildren_; 
+  return unknownChildren_;
 }
 
 - (void)setUnknownAttributes:(NSArray *)arr {
@@ -557,7 +557,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSArray *)unknownAttributes {
-  return unknownAttributes_; 
+  return unknownAttributes_;
 }
 
 - (void)setShouldIgnoreUnknowns:(BOOL)flag {
@@ -565,7 +565,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (BOOL)shouldIgnoreUnknowns {
-  return shouldIgnoreUnknowns_; 
+  return shouldIgnoreUnknowns_;
 }
 
 - (void)setSurrogates:(NSDictionary *)surrogates {
@@ -574,7 +574,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSDictionary *)surrogates {
-  return surrogates_; 
+  return surrogates_;
 }
 
 + (NSString *)defaultServiceVersion {
@@ -655,7 +655,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (void)setProperty:(id)obj forKey:(NSString *)key {
-  
+
   if (obj == nil) {
     // user passed in nil, so delete the property
     [userProperties_ removeObjectForKey:key];
@@ -670,7 +670,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
 - (id)propertyForKey:(NSString *)key {
   id obj = [userProperties_ objectForKey:key];
-  
+
   // be sure the returned pointer has the life of the autorelease pool,
   // in case self is released immediately
   return [[obj retain] autorelease];
@@ -678,15 +678,15 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
 #pragma mark XML generation helpers
 
-- (NSString *)updatedVersionedNamespaceURIForPrefix:(NSString *)prefix 
+- (NSString *)updatedVersionedNamespaceURIForPrefix:(NSString *)prefix
                                                 URI:(NSString *)uri {
 
   // If there are many more transforms like this needed for future version
   // changes, we can create a global registry of version-specific
   // namespace tuples, rather than rely on this narrow hack.
-  
+
   if ([prefix isEqual:kGDataNamespaceAtomPubPrefix]) {
-    
+
     if ([self isCoreProtocolVersion1]) {
       uri = kGDataNamespaceAtomPub1_0;
     } else {
@@ -738,11 +738,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (void)addUnknownChildNodesToElement:(NSXMLElement *)element {
-  
+
   // we'll add every element and attribute as "unknown", then remove them
   // from this list as we parse them to create the GData object. Anything
   // left remaining in this list is considered unknown.
-  
+
   if (shouldIgnoreUnknowns_) return;
 
   // we have to copy the children so they don't point at the previous parent
@@ -751,7 +751,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   GDATA_FOREACH(child, unknownChildren_) {
     [element addChild:[[child copy] autorelease]];
   }
-  
+
   NSXMLNode *attr;
   GDATA_FOREACH(attr, unknownAttributes_) {
 
@@ -773,7 +773,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 // extensionElementLocalName and extensionElementPrefix
 
 - (NSXMLElement *)XMLElementWithExtensionsAndDefaultName:(NSString *)defaultName {
-  
+
 #if 0
   // code sometimes useful for finding unparsed xml; this can be turned on
   // during testing
@@ -784,31 +784,31 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
     NSLog(@"%@ %lX: unknown children %@\n%@\n", [self class], self, unknownChildren_, self);
   }
 #endif
-  
+
   // use the name from the XML
-  NSString *elementName = [self elementName]; 
+  NSString *elementName = [self elementName];
   if (!elementName) {
-    
+
     // if no name from the XML, use the name our class's XML element
     // routine supplied as a default
     if (defaultName) {
       elementName = defaultName;
     } else {
-      // if no default name from the class, and this class is an extension, 
+      // if no default name from the class, and this class is an extension,
       // use the extension's default element name
       if ([[self class] conformsToProtocol:@protocol(GDataExtension)]) {
-        
+
         elementName = [self qualifiedNameForExtensionClass:[self class]];
       } else {
         // if not an extension, just use the class name
-        elementName = NSStringFromClass([self class]); 
+        elementName = NSStringFromClass([self class]);
 
         GDATA_DEBUG_LOG(@"GDataObject generating XML element with unknown name for class %@",
               elementName);
       }
     }
   }
-  
+
   NSXMLElement *element = [NSXMLNode elementWithName:elementName];
   [self addNamespacesToElement:element];
   [self addAttributesToElement:element];
@@ -836,16 +836,16 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
      attributeValueIfNonNil:(NSString *)val
           withQualifiedName:(NSString *)qName
                         URI:(NSString *)attributeURI {
-  
+
   if (attributeURI == nil) {
     return [self addToElement:element
-       attributeValueIfNonNil:val 
+       attributeValueIfNonNil:val
                      withName:qName];
   }
-  
+
   if (val) {
     NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:val];
-    
+
     NSXMLNode *attr = [NSXMLNode attributeWithName:qName
                                                URI:attributeURI
                                        stringValue:filtered];
@@ -1051,15 +1051,15 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (void)addAttributeDescriptionsToArray:(NSMutableArray *)stringItems {
-  
+
   // add attribute descriptions in the order the attributes were declared
   NSArray *attributeDeclarations = [self attributeDeclarations];
   NSString *name;
   GDATA_FOREACH(name, attributeDeclarations) {
-    
+
     NSString *value = [attributes_ valueForKey:name];
     [self addToArray:stringItems objectDescriptionIfNonNil:value withName:name];
-  }  
+  }
 }
 
 - (void)addContentDescriptionToArray:(NSMutableArray *)stringItems
@@ -1111,7 +1111,7 @@ objectDescriptionIfNonNil:(id)obj
     if ([extnObj isKindOfClass:[NSArray class]]) {
       numberOfInstances = [extnObj count];
     }
-    
+
     if (numberOfInstances == 1) {
       [extnsItems addObject:qname];
     } else {
@@ -1134,13 +1134,13 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSString *)descriptionWithItems:(NSArray *)items {
-  
+
   NSString *str;
-  
+
   if ([items count] > 0) {
     str = [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
       [self class], self, [items componentsJoinedByString:@" "]];
-    
+
   } else {
     str = [NSString stringWithFormat:@"%@ 0x%lX", [self class], self];
   }
@@ -1148,7 +1148,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSString *)description {
-  
+
   NSArray *items = [self itemsForDescription];
   NSString *str = [self descriptionWithItems:items];
   return str;
@@ -1158,22 +1158,22 @@ objectDescriptionIfNonNil:(id)obj
 #pragma mark XML parsing helpers
 
 - (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element {
-  
+
   NSMutableDictionary *dict = nil;
-  
+
   // for each namespace node, add a dictionary entry with the namespace
   // name (prefix) as key and the URI as value
   //
   // note: the prefix may be an empty string
-  
+
   NSArray *namespaceNodes = [element namespaces];
 
   NSUInteger numberOfNamespaces = [namespaceNodes count];
-  
+
   if (numberOfNamespaces > 0) {
-    
+
     dict = [NSMutableDictionary dictionary];
-    
+
     for (unsigned int idx = 0; idx < numberOfNamespaces; idx++) {
       NSXMLNode *node = [namespaceNodes objectAtIndex:idx];
       [dict setObject:[node stringValue]
@@ -1183,18 +1183,18 @@ objectDescriptionIfNonNil:(id)obj
   return dict;
 }
 
-// classOrSurrogateForClass searches this object instance and all parent 
-// instances for a user surrogate for the supplied class, and returns 
+// classOrSurrogateForClass searches this object instance and all parent
+// instances for a user surrogate for the supplied class, and returns
 // the surrogate, or else the supplied class if no surrogate is found for it
 - (Class)classOrSurrogateForClass:(Class)standardClass {
-  
+
   for (GDataObject *currentObject = self;
        currentObject != nil;
        currentObject = [currentObject parent]) {
-    
+
     // look for an object with a surrogates dict containing the standardClass
     NSDictionary *currentSurrogates = [currentObject surrogates];
-    
+
     Class surrogate = [currentSurrogates objectForKey:standardClass];
     if (surrogate) return surrogate;
   }
@@ -1219,15 +1219,15 @@ objectDescriptionIfNonNil:(id)obj
                                           namespaceURI:namespaceURI
                                            fromElement:parentElement];
   if (element) {
-    
+
     if (objectClass == nil) {
       // if the object is a feed or an entry, we might be able to determine the
       // type from the XML
       objectClass = [GDataObject objectClassForXMLElement:element];
     }
-    
+
     objectClass = [self classOrSurrogateForClass:objectClass];
-    
+
     object = [[[objectClass alloc] initWithXMLElement:element
                                                parent:self] autorelease];
   }
@@ -1242,11 +1242,11 @@ objectDescriptionIfNonNil:(id)obj
                parentElement:(NSXMLElement *)parentElement {
 
   NSArray *objElements = nil;
-  
+
   if ([namespaceURI length] > 0) {
-    
+
     NSString *localName = [NSXMLNode localNameForName:qualifiedName];
-    
+
     objElements = [parentElement elementsForLocalName:localName
                                                   URI:namespaceURI];
   }
@@ -1254,14 +1254,14 @@ objectDescriptionIfNonNil:(id)obj
   // if we couldn't find the elements by name, fall back on the fully-qualified
   // name
   if ([objElements count] == 0) {
-    
+
     objElements = [parentElement elementsForName:qualifiedName];
   }
   return objElements;
-  
+
 }
 
-// return all child elements of an element which have the given namespace 
+// return all child elements of an element which have the given namespace
 // prefix
 - (NSMutableArray *)childrenOfElement:(NSXMLElement *)parentElement
                            withPrefix:(NSString *)prefix {
@@ -1269,13 +1269,13 @@ objectDescriptionIfNonNil:(id)obj
   NSMutableArray *matchingChildren = [NSMutableArray array];
   NSXMLNode *childNode;
   GDATA_FOREACH(childNode, allChildren) {
-    if ([childNode kind] == NSXMLElementKind 
+    if ([childNode kind] == NSXMLElementKind
         && [[childNode prefix] isEqual:prefix]) {
-      
+
       [matchingChildren addObject:childNode];
     }
   }
-  
+
   return matchingChildren;
 }
 
@@ -1386,41 +1386,41 @@ objectDescriptionIfNonNil:(id)obj
   return result;
 }
 
-// childOfElement:withName returns the element with the name, or nil if there 
+// childOfElement:withName returns the element with the name, or nil if there
 // are not exactly one of the element.  Pass "*" wildcards for name and URI
 // to retrieve the child element if there is exactly one.
 - (NSXMLElement *)childWithQualifiedName:(NSString *)qualifiedName
                             namespaceURI:(NSString *)namespaceURI
                              fromElement:(NSXMLElement *)parentElement {
-  
+
   NSArray *elementArray;
-  
+
   if ([qualifiedName isEqual:@"*"] && [namespaceURI isEqual:@"*"]) {
     // wilcards
-    elementArray = [parentElement children]; 
+    elementArray = [parentElement children];
   } else {
     // find the element by name and namespace URI
     elementArray = [self elementsForName:qualifiedName
                             namespaceURI:namespaceURI
                            parentElement:parentElement];
   }
-  
+
   NSUInteger numberOfElements = [elementArray count];
-  
+
   if (numberOfElements == 1) {
     NSXMLElement *element = [elementArray objectAtIndex:0];
-    
+
     // remove this element from the unknown list
     [self handleParsedElement:element];
-    
+
     return element;
   }
-  
+
   // We might want to get rid of this assert if there turns out to be
   // legitimate reasons to call this where there are >1 elements available
   GDATA_ASSERT(numberOfElements == 0, @"childWithQualifiedName: could not handle "
                "multiple '%@' elements in list, use elementsForName:\n"
-               "Found elements: %@\nURI: %@", qualifiedName, elementArray, 
+               "Found elements: %@\nURI: %@", qualifiedName, elementArray,
                namespaceURI);
   return nil;
 }
@@ -1445,7 +1445,7 @@ objectDescriptionIfNonNil:(id)obj
     // XML for equality
     NSXMLNode* element;
     GDATA_FOREACH(element, array) {
-      [unknownChildren_ removeObjectIdenticalTo:element]; 
+      [unknownChildren_ removeObjectIdenticalTo:element];
     }
 
     if ([unknownChildren_ count] == 0) {
@@ -1492,7 +1492,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (GDataDateTime *)dateTimeFromElement:(NSXMLElement *)element {
-  NSString *str = [self stringValueFromElement:element];  
+  NSString *str = [self stringValueFromElement:element];
   if ([str length]) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
   }
@@ -1517,7 +1517,7 @@ objectDescriptionIfNonNil:(id)obj
 #pragma mark attribute parsing
 
 - (void)handleParsedAttribute:(NSXMLNode *)attribute {
-  
+
   if (unknownAttributes_ != nil && attribute != nil) {
     [unknownAttributes_ removeObjectIdenticalTo:attribute];
 
@@ -1528,20 +1528,20 @@ objectDescriptionIfNonNil:(id)obj
   }
 }
 
-- (NSXMLNode *)attributeForName:(NSString *)attributeName 
+- (NSXMLNode *)attributeForName:(NSString *)attributeName
                     fromElement:(NSXMLElement *)element {
-  
+
   NSXMLNode* attribute = [element attributeForName:attributeName];
-  
+
   [self handleParsedAttribute:attribute];
-  
+
   return attribute;
 }
 
 - (NSXMLNode *)attributeForLocalName:(NSString *)localName
                                  URI:(NSString *)attributeURI
                          fromElement:(NSXMLElement *)element {
-  
+
   NSXMLNode* attribute = [element attributeForLocalName:localName
                                                     URI:attributeURI];
   [self handleParsedAttribute:attribute];
@@ -1552,7 +1552,7 @@ objectDescriptionIfNonNil:(id)obj
 - (NSString *)stringForAttributeLocalName:(NSString *)localName
                                       URI:(NSString *)attributeURI
                               fromElement:(NSXMLElement *)element {
-  
+
   NSXMLNode* attribute = [self attributeForLocalName:localName
                                                  URI:attributeURI
                                          fromElement:element];
@@ -1567,12 +1567,12 @@ objectDescriptionIfNonNil:(id)obj
   return [attribute stringValue];
 }
 
-- (GDataDateTime *)dateTimeForAttributeName:(NSString *)attributeName 
+- (GDataDateTime *)dateTimeForAttributeName:(NSString *)attributeName
                                 fromElement:(NSXMLElement *)element {
-  
+
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
-    
+
   NSString* str = [attribute stringValue];
   if ([str length]) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
@@ -1580,7 +1580,7 @@ objectDescriptionIfNonNil:(id)obj
   return nil;
 }
 
-- (BOOL)boolForAttributeName:(NSString *)attributeName 
+- (BOOL)boolForAttributeName:(NSString *)attributeName
                  fromElement:(NSXMLElement *)element {
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
@@ -1589,7 +1589,7 @@ objectDescriptionIfNonNil:(id)obj
   return isTrue;
 }
 
-- (NSNumber *)doubleNumberForAttributeName:(NSString *)attributeName 
+- (NSNumber *)doubleNumberForAttributeName:(NSString *)attributeName
                                fromElement:(NSXMLElement *)element {
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
@@ -1597,13 +1597,13 @@ objectDescriptionIfNonNil:(id)obj
   return [GDataUtilities doubleNumberOrInfForString:str];
 }
 
-- (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
+- (NSNumber *)intNumberForAttributeName:(NSString *)attributeName
                             fromElement:(NSXMLElement *)element {
   NSXMLNode* attribute = [self attributeForName:attributeName
                                     fromElement:element];
   NSString* str = [attribute stringValue];
   if (str) {
-    NSNumber *number = [NSNumber numberWithInt:[str intValue]]; 
+    NSNumber *number = [NSNumber numberWithInt:[str intValue]];
     return number;
   }
   return nil;
@@ -1614,20 +1614,20 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)addExtensionDeclarations {
   // overridden by subclasses which have extensions to add, like:
-  // 
+  //
   //  [self addExtensionDeclarationForParentClass:[GDataLink class]
-  //                                   childClass:[GDataWebContent class]];  
+  //                                   childClass:[GDataWebContent class]];
   // and
   //
   //  [self addAttributeExtensionDeclarationForParentClass:[GDataExtendedProperty class]
-  //                                            childClass:[GDataExtPropValueAttribute class]];  
+  //                                            childClass:[GDataExtPropValueAttribute class]];
 
 }
 
 - (void)addParseDeclarations {
-  
+
   // overridden by subclasses which have local attributes, like:
-  // 
+  //
   //  [self addLocalAttributeDeclarations:[NSArray arrayWithObject:@"size"]];
   //
   //  Subclasses should add the attributes in the order they most usefully will
@@ -1636,7 +1636,7 @@ objectDescriptionIfNonNil:(id)obj
   //
   // Note: this is only for namespace-less attributes or attributes with the
   // fixed xml: namespace, not for attributes that are qualified with variable
-  // prefixes.  Those attributes should be parsed explicitly in 
+  // prefixes.  Those attributes should be parsed explicitly in
   // initWithXMLElement: methods, and generated by XMLElement: methods.
 }
 
@@ -1652,19 +1652,19 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)addExtensionDeclarationForParentClass:(Class)parentClass
                                  childClasses:(Class)firstChildClass, ... {
-  
+
   // like the method above, but for a list of child classes
   id nextClass;
   va_list argumentList;
-  
+
   if (firstChildClass != nil) {
     [self addExtensionDeclarationForParentClass:parentClass
                                      childClass:firstChildClass
                                     isAttribute:NO];
-    
+
     va_start(argumentList, firstChildClass);
     while ((nextClass = va_arg(argumentList, Class)) != nil) {
-      
+
       [self addExtensionDeclarationForParentClass:parentClass
                                        childClass:nextClass
                                       isAttribute:NO];
@@ -1717,22 +1717,22 @@ objectDescriptionIfNonNil:(id)obj
 
 - (void)removeExtensionDeclarationForParentClass:(Class)parentClass
                                       childClass:(Class)childClass {
-  GDataExtensionDeclaration *decl = 
+  GDataExtensionDeclaration *decl =
     [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
                                                  childClass:childClass
                                                 isAttribute:NO] autorelease];
-  
+
   NSMutableArray *array = [self extensionDeclarationsForParentClass:parentClass];
   [array removeObject:decl];
 }
 
 - (void)removeAttributeExtensionDeclarationForParentClass:(Class)parentClass
                                                childClass:(Class)childClass {
-  GDataExtensionDeclaration *decl = 
+  GDataExtensionDeclaration *decl =
     [[[GDataExtensionDeclaration alloc] initWithParentClass:parentClass
                                                  childClass:childClass
                                                 isAttribute:YES] autorelease];
-  
+
   NSMutableArray *array = [self extensionDeclarationsForParentClass:parentClass];
   [array removeObject:decl];
 }
@@ -1785,7 +1785,7 @@ objectDescriptionIfNonNil:(id)obj
   return obj;
 }
 
-// attributeValueForExtensionClass: returns the value of the first object of 
+// attributeValueForExtensionClass: returns the value of the first object of
 // the array of attribute extension objects of the specified class, or nil
 - (NSString *)attributeValueForExtensionClass:(Class)theClass {
   GDataAttribute *attr = [self objectForExtensionClass:theClass];
@@ -1800,16 +1800,16 @@ objectDescriptionIfNonNil:(id)obj
 
 // generate the qualified name for this extension's element
 - (NSString *)qualifiedNameForExtensionClass:(Class)class {
-  
+
   NSString *name;
-  
+
   @synchronized(gQualifiedNameMap) {
-    
+
     name = [gQualifiedNameMap objectForKey:class];
     if (name == nil) {
-      
+
       NSString *extensionURI = [class extensionElementURI];
-      
+
       if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
         name = [class extensionElementLocalName];
       } else {
@@ -1817,7 +1817,7 @@ objectDescriptionIfNonNil:(id)obj
                 [class extensionElementPrefix],
                 [class extensionElementLocalName]];
       }
-      
+
       [gQualifiedNameMap setObject:name forKey:class];
     }
   }
@@ -1952,12 +1952,12 @@ objectDescriptionIfNonNil:(id)obj
 
 // parseExtensionsForElement: is called by initWithXMLElement. It starts
 // from the current object and works up the chain of parents, grabbing
-// the declared extensions by each GDataObject in the ancestry and looking 
+// the declared extensions by each GDataObject in the ancestry and looking
 // at the current element to see if any of the declared extensions are present.
 
 - (void)parseExtensionsForElement:(NSXMLElement *)element {
   Class classBeingParsed = [self class];
-  
+
   // For performance, we'll avoid looking up extension elements whose
   // local names aren't present in the element.  We don't bother doing
   // this for attribute extensions since those are so rare (most attributes
@@ -1991,33 +1991,33 @@ objectDescriptionIfNonNil:(id)obj
   for (GDataObject * currentExtensionSupplier = self;
        currentExtensionSupplier != nil;
        currentExtensionSupplier = [currentExtensionSupplier parent]) {
-    
+
     // find all extensions in this supplier with the current class as the parent
     NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForParentClass:classBeingParsed];
-    
+
     if (extnDecls) {
       GDataExtensionDeclaration *decl;
       GDATA_FOREACH(decl, extnDecls) {
         // if we've not already found this class when parsing at an earlier supplier
         Class extensionClass = [decl childClass];
         if ([extensions_ objectForKey:extensionClass] == nil) {
-          
+
           // if this extension's local name really matches some child's local
           // name (or this is an attribute extension)
 
           NSString *declLocalName = [extensionClass extensionElementLocalName];
-          if ([childLocalNames containsObject:declLocalName] 
+          if ([childLocalNames containsObject:declLocalName]
               || [decl isAttribute]) {
 
-            GDATA_DEBUG_ASSERT([extensionClass conformsToProtocol:@protocol(GDataExtension)], 
-                      @"%@ does not conform to GDataExtension protocol", 
+            GDATA_DEBUG_ASSERT([extensionClass conformsToProtocol:@protocol(GDataExtension)],
+                      @"%@ does not conform to GDataExtension protocol",
                       extensionClass);
-            
+
             NSString *namespaceURI = [extensionClass extensionElementURI];
             NSString *qualifiedName = [self qualifiedNameForExtensionClass:extensionClass];
-            
+
             id objectOrArray = nil;
-            
+
             if ([decl isAttribute]) {
               // parse for an attribute extension
               NSString *str = [self stringForAttributeName:qualifiedName
@@ -2027,7 +2027,7 @@ objectDescriptionIfNonNil:(id)obj
                 [attr setStringValue:str];
                 objectOrArray = attr;
               }
-              
+
             } else {
               // parse for an element extension
               objectOrArray = [self objectOrArrayForChildrenOfElement:element
@@ -2054,10 +2054,10 @@ objectDescriptionIfNonNil:(id)obj
   }
 }
 
-#pragma mark Local Attributes 
+#pragma mark Local Attributes
 
 - (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames {
-  
+
   // get or make the array which caches the attribute declarations for
   // this class
   if (attributeDeclarations_ == nil) {
@@ -2074,7 +2074,7 @@ objectDescriptionIfNonNil:(id)obj
       [cache setObject:attributeDeclarations_ forKey:currClass];
     }
   }
-  
+
 #if DEBUG
   // check that no local attributes being declared have a prefix, except for
   // the hardcoded xml: prefix. Namespaced attributes must be parsed and
@@ -2088,7 +2088,7 @@ objectDescriptionIfNonNil:(id)obj
                  @"invalid namespaced local attribute: %@", attr);
   }
 #endif
-  
+
   [attributeDeclarations_ addObjectsFromArray:attributeLocalNames];
 }
 
@@ -2112,7 +2112,7 @@ objectDescriptionIfNonNil:(id)obj
 
 // attribute value getters
 - (NSString *)stringValueForAttribute:(NSString *)name {
-  
+
   GDATA_DEBUG_ASSERT([[self attributeDeclarations] containsObject:name],
             @"%@ getting undeclared attribute: %@", [self class], name);
 
@@ -2120,7 +2120,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSNumber *)intNumberForAttribute:(NSString *)name {
-  
+
   NSString *str = [self stringValueForAttribute:name];
   if ([str length] > 0) {
     NSNumber *number = [NSNumber numberWithInt:[str intValue]];
@@ -2130,39 +2130,39 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (NSNumber *)doubleNumberForAttribute:(NSString *)name {
-  
+
   NSString *str = [self stringValueForAttribute:name];
   return [GDataUtilities doubleNumberOrInfForString:str];
 }
 
 - (NSNumber *)longLongNumberForAttribute:(NSString *)name {
-  
+
   NSString *str = [self stringValueForAttribute:name];
   if (str) {
     // when we can assume 10.5 or later, change this to use
     // NSString's -longLongValue
     long long val;
     NSScanner *scanner = [NSScanner scannerWithString:str];
-    
+
     if ([scanner scanLongLong:&val]) {
       NSNumber *number = [NSNumber numberWithLongLong:val];
       return number;
     }
   }
   return nil;
-  
+
 }
 
-- (NSDecimalNumber *)decimalNumberForAttribute:(NSString *)name { 
-  
+- (NSDecimalNumber *)decimalNumberForAttribute:(NSString *)name {
+
   NSString *str = [self stringValueForAttribute:name];
   if ([str length] > 0) {
-    
+
     // require periods as the separator
     //
-    // Leopard requires that we use an NSLocale object instead of explicitly 
+    // Leopard requires that we use an NSLocale object instead of explicitly
     // setting NSDecimalSeparator in a dictionary.
-    
+
     NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:str
                                     locale:(id)usLocale]; // cast for 10.4
@@ -2172,7 +2172,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (GDataDateTime *)dateTimeForAttribute:(NSString *)name  {
-  
+
   NSString *str = [self stringValueForAttribute:name];
   if ([str length] > 0) {
     GDataDateTime *dateTime = [GDataDateTime dateTimeWithRFC3339String:str];
@@ -2184,29 +2184,29 @@ objectDescriptionIfNonNil:(id)obj
 - (BOOL)boolValueForAttribute:(NSString *)name defaultValue:(BOOL)defaultVal {
   NSString *str = [self stringValueForAttribute:name];
   BOOL isTrue;
-  
+
   if (defaultVal) {
     // default to true, so true if attribute is missing or is not "false"
     isTrue = (str == nil
               || [str caseInsensitiveCompare:@"false"] != NSOrderedSame);
   } else {
     // default to false, so true only if attribute is present and "true"
-    isTrue = (str != nil 
+    isTrue = (str != nil
               && [str caseInsensitiveCompare:@"true"] == NSOrderedSame);
   }
-  return isTrue; 
+  return isTrue;
 }
 
 // attribute value setters
 - (void)setStringValue:(NSString *)str forAttribute:(NSString *)name {
-  
+
   GDATA_DEBUG_ASSERT([[self attributeDeclarations] containsObject:name],
             @"%@ setting undeclared attribute: %@", [self class], name);
-  
+
   if (attributes_ == nil) {
-    attributes_ = [[NSMutableDictionary alloc] init]; 
+    attributes_ = [[NSMutableDictionary alloc] init];
   }
-  
+
   [attributes_ setValue:str forKey:name];
 }
 
@@ -2223,15 +2223,15 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 - (void)setDecimalNumberValue:(NSDecimalNumber *)num forAttribute:(NSString *)name {
-  
+
   // for most NSNumbers, just calling -stringValue is fine, but for decimal
   // numbers we want to specify that a period be the separator
-  // 
-  // Leopard requires that we use an NSLocale object instead of explicitly 
+  //
+  // Leopard requires that we use an NSLocale object instead of explicitly
   // setting NSDecimalSeparator in a dictionary.
-  
+
   NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
-  
+
   NSString *str = [num descriptionWithLocale:(id)usLocale]; // cast for 10.4
   [self setStringValue:str forAttribute:name];
 }
@@ -2242,7 +2242,7 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 
-// parseAttributesForElement: is called by initWithXMLElement. 
+// parseAttributesForElement: is called by initWithXMLElement.
 // It stores the value of all declared & present attributes in the dictionary
 - (void)parseAttributesForElement:(NSXMLElement *)element {
 
@@ -2253,26 +2253,26 @@ objectDescriptionIfNonNil:(id)obj
   NSArray *attributeDeclarations = [self attributeDeclarations];
 
   GDATA_FOREACH(attribute, attributes) {
-    
+
     NSString *attrName = [attribute name];
     if ([attributeDeclarations containsObject:attrName]) {
-      
+
       NSString *str = [attribute stringValue];
       if (str != nil) {
         [self setStringValue:str forAttribute:attrName];
       }
-      
+
       [self handleParsedAttribute:attribute];
-    } 
+    }
   }
 }
 
 // XML generator for local attributes
 - (void)addAttributesToElement:(NSXMLElement *)element {
-  
+
   NSString *name;
   GDATA_FOREACH_KEY(name, attributes_) {
-    
+
     NSString *value = [attributes_ valueForKey:name];
     if (value != nil) {
       [self addToElement:element attributeValueIfNonNil:value withName:name];
@@ -2302,7 +2302,7 @@ objectDescriptionIfNonNil:(id)obj
   GDATA_FOREACH(attrKey, attributeDeclarations) {
 
     if (![attributesToIgnore containsObject:attrKey]) {
-      
+
       NSString *val1 = [selfAttrs objectForKey:attrKey];
       NSString *val2 = [otherAttrs objectForKey:attrKey];
 
@@ -2317,9 +2317,9 @@ objectDescriptionIfNonNil:(id)obj
 - (NSArray *)attributesIgnoredForEquality {
   // subclasses may override this to specify attributes that should
   // not be considered when comparing objects for equality
-  return nil; 
+  return nil;
 }
-  
+
 #pragma mark Content Value
 
 - (void)addContentValueDeclaration {
@@ -2352,10 +2352,10 @@ objectDescriptionIfNonNil:(id)obj
 
 }
 
-// parseContentForElement: is called by initWithXMLElement. 
+// parseContentForElement: is called by initWithXMLElement.
 // This stores the content value parsed from the element.
 - (void)parseContentValueForElement:(NSXMLElement *)element {
-  
+
   if ([self hasDeclaredContentValue]) {
     [self setContentStringValue:[self stringValueFromElement:element]];
   }
@@ -2363,22 +2363,22 @@ objectDescriptionIfNonNil:(id)obj
 
 // XML generator for content
 - (void)addContentValueToElement:(NSXMLElement *)element {
-  
+
   if ([self hasDeclaredContentValue]) {
     NSString *str = [self contentStringValue];
     if ([str length] > 0) {
-      [element addStringValue:str]; 
+      [element addStringValue:str];
     }
   }
 }
 
 - (BOOL)hasContentValueEqualToContentValueOf:(GDataObject *)other {
-  
+
   if (![self hasDeclaredContentValue]) {
     // no content being stored
     return YES;
   }
-  
+
   return AreEqualOrBothNil([self contentStringValue], [other contentStringValue]);
 }
 
@@ -2473,7 +2473,7 @@ objectDescriptionIfNonNil:(id)obj
   return AreEqualOrBothNil([self childXMLElements], [other childXMLElements]);
 }
 
-#pragma mark Dynamic GDataObject 
+#pragma mark Dynamic GDataObject
 
 // Dynamic object generation is used when the class being created is nil.
 //
@@ -2493,55 +2493,55 @@ static NSString *const kCategoryTemplate = @"{\"%@\":\"%@\"}";
 
 + (void)registerClass:(Class)theClass
                 inMap:(NSMutableDictionary **)map
-forCategoryWithScheme:(NSString *)scheme 
+forCategoryWithScheme:(NSString *)scheme
                  term:(NSString *)term {
-  
+
   // there's no autorelease pool in place at +load time, so we'll create our own
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-  
+
   if (*map == nil) {
     *map = GDataCreateStaticDictionary();
   }
-  
+
   // ensure this is a unique registration
   GDATA_DEBUG_ASSERT(nil == [*map objectForKey:theClass],
                @"%@ already registered", theClass);
-  Class prevClass = [self classForCategoryWithScheme:scheme 
+  Class prevClass = [self classForCategoryWithScheme:scheme
                                                 term:term
                                              fromMap:*map];
-  GDATA_ASSERT(prevClass == nil, @"%@ registration conflicts with %@", 
+  GDATA_ASSERT(prevClass == nil, @"%@ registration conflicts with %@",
                theClass, prevClass);
-  
+
   // we have a map from the key "scheme:term" to the class
   //
   // generally, scheme will be nil or kGDataCategoryScheme, so we'll
   // use just the term as the key for those categories, avoiding
   // the need to format a string when looking up
-  
+
   NSString *key;
   if (scheme == nil || [scheme isEqual:kGDataCategoryScheme]) {
     key = term;
   } else {
-    key = [NSString stringWithFormat:kCategoryTemplate, 
-           scheme, term ? term : @""];  
+    key = [NSString stringWithFormat:kCategoryTemplate,
+           scheme, term ? term : @""];
   }
-  
+
   [*map setValue:theClass forKey:key];
-  
+
   [pool release];
 }
 
 
 // classForCategoryWithScheme does the work for feedClassForCategory
-// and entryClassForCategory.  This method searches the entry 
-// or feed map for a class with a matching category.  
+// and entryClassForCategory.  This method searches the entry
+// or feed map for a class with a matching category.
 //
 // If the registration of the class specified a value, then the corresponding
 // parameter values |scheme| or |term| must match and not be nil.
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
                             fromMap:(NSDictionary *)map {
-  
+
   // |scheme| and |term| are from the XML that we're using to look up
   // a registered class.  The parameters should be non-nil,
   // though the values stored in the map may have nil scheme or term.
@@ -2552,15 +2552,15 @@ forCategoryWithScheme:(NSString *)scheme
   NSString *key = term;
   Class class = [map objectForKey:key];
   if (class) return class;
-  
+
   key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
   class = [map objectForKey:key];
   if (class) return class;
-  
+
   key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
   class = [map objectForKey:key];
   if (class) return class;
-  
+
   return nil;
 }
 
@@ -2572,22 +2572,22 @@ forCategoryWithScheme:(NSString *)scheme
 // this returns GDataFeedBase for feed elements, GDataEntryBase
 // for entry elements.
 + (Class)objectClassForXMLElement:(NSXMLElement *)element {
-  
+
   Class result;
   NSString *elementName = [element localName];
   BOOL isFeed = [elementName isEqual:@"feed"];
   BOOL isEntry = [elementName isEqual:@"entry"];
-  
+
   if (isFeed) {
-    
+
     // default to returning a feed base class
     result = [GDataFeedBase class];
-    
+
   } else if (isEntry) {
-    
+
     // default to returning an entry base class
     result = [GDataEntryBase class];
-    
+
   } else if ([elementName isEqual:@"service"]) {
 
     // introspection - return service document
@@ -2616,9 +2616,9 @@ forCategoryWithScheme:(NSString *)scheme
   } else {
     // we look only at feed and entry elements, and this is
     // some other kind of element
-    result = nil; 
+    result = nil;
   }
-  
+
   if (isFeed || isEntry) {
 
     // step through the feed or entry's category elements, looking for one that
@@ -2676,34 +2676,34 @@ forCategoryWithScheme:(NSString *)scheme
 - (void)addStringValue:(NSString *)str {
   // NSXMLNode's setStringValue: wipes out other children, so we'll use this
   // instead
-  
+
   // filter out non-whitespace control characters
   NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:str];
-    
+
   NSXMLNode *strNode = [NSXMLNode textWithStringValue:filtered];
   [self addChild:strNode];
 }
 
 + (id)elementWithName:(NSString *)name attributeName:(NSString *)attrName attributeValue:(NSString *)attrValue {
-  
+
   NSString *filtered = [GDataUtilities stringWithControlsFilteredForString:attrValue];
-  
+
   NSXMLNode *attr = [NSXMLNode attributeWithName:attrName stringValue:filtered];
   NSXMLElement *element = [NSXMLNode elementWithName:name];
   [element addAttribute:attr];
-  return element;  
+  return element;
 }
 
 @end
 
 @implementation GDataExtensionDeclaration
 
-- (id)initWithParentClass:(Class)parentClass 
+- (id)initWithParentClass:(Class)parentClass
                childClass:(Class)childClass
               isAttribute:(BOOL)isAttribute {
   self = [super init];
   if (self) {
-    parentClass_ = parentClass; 
+    parentClass_ = parentClass;
     childClass_ = childClass;
     isAttribute_ = isAttribute;
   }
@@ -2711,31 +2711,31 @@ forCategoryWithScheme:(NSString *)scheme
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@: {%@ can contain %@}%@", 
+  return [NSString stringWithFormat:@"%@: {%@ can contain %@}%@",
     [self class], parentClass_, childClass_,
           isAttribute_ ? @" (attribute)" : @""];
 }
 
 - (Class)parentClass {
-  return parentClass_;  
+  return parentClass_;
 }
 
 - (Class)childClass {
-  return childClass_; 
+  return childClass_;
 }
 
 - (BOOL)isAttribute {
-  return isAttribute_; 
+  return isAttribute_;
 }
 
 - (BOOL)isEqual:(GDataExtensionDeclaration *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataExtensionDeclaration class]]) return NO;
-  
+
   return AreEqualOrBothNil([self parentClass], [other parentClass])
     && AreEqualOrBothNil([self childClass], [other childClass])
     && [self isAttribute] == [other isAttribute];
-}  
+}
 
 - (NSUInteger)hash {
   return (NSUInteger) (void *) [GDataExtensionDeclaration class];
@@ -2743,20 +2743,20 @@ forCategoryWithScheme:(NSString *)scheme
 
 @end
 
-@implementation GDataAttribute 
+@implementation GDataAttribute
 
 // This is the base class for attribute extensions.
 //
 // Functionally, this just stores a string value for the attribute.
 
 + (GDataAttribute *)attributeWithValue:(NSString *)str {
-  return [[[self alloc] initWithValue:str] autorelease]; 
+  return [[[self alloc] initWithValue:str] autorelease];
 }
 
 - (id)initWithValue:(NSString *)value {
   self = [super init];
   if (self) {
-    [self setStringValue:value]; 
+    [self setStringValue:value];
   }
   return self;
 }
@@ -2773,27 +2773,27 @@ forCategoryWithScheme:(NSString *)scheme
 }
 
 - (NSString *)description {
-  
+
   NSString *name;
-  
+
   NSString *localName = [[self class] extensionElementLocalName];
   NSString *prefix = [[self class] extensionElementPrefix];
   if (prefix) {
     name = [NSString stringWithFormat:@"%@:%@", prefix, localName];
-  } else {        
+  } else {
     name = localName;
-  } 
-  
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@=%@}", 
+  }
+
+  return [NSString stringWithFormat:@"%@ 0x%lX: {%@=%@}",
           [self class], self, name, [self stringValue]];
 }
 
 - (BOOL)isEqual:(GDataAttribute *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataAttribute class]]) return NO;
-  
+
   return AreEqualOrBothNil([self stringValue], [other stringValue]);
-}  
+}
 
 - (NSUInteger)hash {
   return (NSUInteger) (void *) [GDataAttribute class];
@@ -2805,7 +2805,7 @@ forCategoryWithScheme:(NSString *)scheme
 }
 
 - (NSString *)stringValue {
-  return value_; 
+  return value_;
 }
 
 @end

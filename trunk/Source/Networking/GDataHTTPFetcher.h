@@ -30,15 +30,15 @@
 // - When you need to set a credential for the http
 // - When you want to avoid changing WebKit's cookies
 //
-// This is assumed to be a one-shot fetch request; don't reuse the object 
+// This is assumed to be a one-shot fetch request; don't reuse the object
 // for a second fetch.
 //
 // The fetcher may be created auto-released, in which case it will release
 // itself after the fetch completion callback.  The fetcher
 // is implicitly retained as long as a connection is pending.
 //
-// But if you may need to cancel the fetcher, allocate it with initWithRequest: 
-// and have the delegate release the fetcher in the callbacks.  
+// But if you may need to cancel the fetcher, allocate it with initWithRequest:
+// and have the delegate release the fetcher in the callbacks.
 //
 // Sample usage:
 //
@@ -62,14 +62,14 @@
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData;
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 //
-// NOTE:  Fetches may retrieve data from the server even though the server 
+// NOTE:  Fetches may retrieve data from the server even though the server
 //        returned an error.  The failure selector is called when the server
 //        status is >= 300, with an NSError having domain
 //        kGDataHTTPFetcherStatusDomain and code set to the server status.
 //
 //        Status codes are at <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
 //
-// 
+//
 // Proxies:
 //
 // Proxy handling is invisible so long as the system has a valid credential in
@@ -78,7 +78,7 @@
 // will call the failedWithError: method with the NSURLChallenge in the error's
 // userInfo. The error method can get the challenge info like this:
 //
-//  NSURLAuthenticationChallenge *challenge 
+//  NSURLAuthenticationChallenge *challenge
 //     = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
 //  BOOL isProxyChallenge = [[challenge protectionSpace] isProxy];
 //
@@ -96,7 +96,7 @@
 // by servers for the application from interfering with Safari cookie settings,
 // and vice versa.  The fetcher cookies are lost when the application quits.
 //
-// To rely instead on WebKit's global NSHTTPCookieStorage, call 
+// To rely instead on WebKit's global NSHTTPCookieStorage, call
 // setCookieStorageMethod: with kGDataHTTPFetcherCookieStorageMethodSystemDefault.
 //
 // If you provide a fetch history dictionary (such as for periodic checks,
@@ -119,11 +119,11 @@
 //    if (status == kGDataHTTPFetcherStatusNotModified) {
 //      // |data| is empty; use the data from the previous finishedWithData: for this URL
 //    } else {
-//      // handle other server status code 
+//      // handle other server status code
 //    }
 // }
 //
-// The fetchHistory mutable dictionary should be maintained by the client between 
+// The fetchHistory mutable dictionary should be maintained by the client between
 // fetches and given to each fetcher intended to have the If-modified-since header
 // or the same cookie storage.
 //
@@ -139,7 +139,7 @@
 // down if a redirect causes the download to begin again from a new server.
 //
 // If supplied by the server, the anticipated total download size is available as
-//    [[myFetcher response] expectedContentLength] (may be -1 for unknown 
+//    [[myFetcher response] expectedContentLength] (may be -1 for unknown
 //    download sizes.)
 //
 //
@@ -147,11 +147,11 @@
 //
 // The fetcher can optionally create a timer and reattempt certain kinds of
 // fetch failures (status codes 408, request timeout; 503, service unavailable;
-// 504, gateway timeout; networking errors NSURLErrorTimedOut and 
+// 504, gateway timeout; networking errors NSURLErrorTimedOut and
 // NSURLErrorNetworkConnectionLost.)  The user may set a retry selector to
 // customize the type of errors which will be retried.
 //
-// Retries are done in an exponential-backoff fashion (that is, after 1 second, 
+// Retries are done in an exponential-backoff fashion (that is, after 1 second,
 // 2, 4, 8, and so on.)
 //
 // Enabling automatic retries looks like this:
@@ -171,12 +171,12 @@
 //
 // If set, the retry selector should have the signature:
 //   -(BOOL)fetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
-// and return YES to set the retry timer or NO to fail without additional 
+// and return YES to set the retry timer or NO to fail without additional
 // fetch attempts.
 //
 // The retry method may return the |suggestedWillRetry| argument to get the
 // default retry behavior.  Server status codes are present in the
-// error argument, and have the domain kGDataHTTPFetcherStatusDomain. The 
+// error argument, and have the domain kGDataHTTPFetcherStatusDomain. The
 // user's method may look something like this:
 //
 //  -(BOOL)myFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
@@ -200,14 +200,14 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAHTTPFETCHER_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
 #define _INITIALIZE_AS(x)
-#endif 
+#endif
 
-// notifications 
+// notifications
 _EXTERN NSString* const kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
 _EXTERN NSString* const kGDataHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.HTTPStatus");
 _EXTERN NSString* const kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
@@ -222,10 +222,10 @@ _EXTERN NSString* const kGDataHTTPFetcherHistoryCookiesKey _INITIALIZE_AS(@"Fetc
 enum {
   kGDataHTTPFetcherErrorDownloadFailed = -1,
   kGDataHTTPFetcherErrorAuthenticationChallengeFailed = -2,
-  
+
   kGDataHTTPFetcherStatusNotModified = 304
 };
-  
+
 enum {
   kGDataHTTPFetcherCookieStorageMethodStatic = 0,
   kGDataHTTPFetcherCookieStorageMethodFetchHistory = 1,
@@ -256,7 +256,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
   int cookieStorageMethod_;         // constant from above
-  
+
   BOOL isRetryEnabled_;             // user wants auto-retry
   SEL retrySEL_;                    // optional; set with setRetrySelector
   NSTimer *retryTimer_;
@@ -286,7 +286,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSURLCredential *)credential;
 - (void)setCredential:(NSURLCredential *)theCredential;
 
-// setting the proxy credential is optional; it is used if the connection 
+// setting the proxy credential is optional; it is used if the connection
 // receives an authentication challenge from a proxy
 - (NSURLCredential *)proxyCredential;
 - (void)setProxyCredential:(NSURLCredential *)theCredential;
@@ -309,7 +309,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 
 // the delegate is not retained except during the connection
 - (id)delegate;
-- (void)setDelegate:(id)theDelegate; 
+- (void)setDelegate:(id)theDelegate;
 
 // the delegate's optional receivedData selector has a signature like:
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
@@ -317,12 +317,12 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (void)setReceivedDataSelector:(SEL)theSelector;
 
 
-// retrying; see comments at the top of the file.  Calling 
+// retrying; see comments at the top of the file.  Calling
 // setIsRetryEnabled(YES) resets the min and max retry intervals.
 - (BOOL)isRetryEnabled;
 - (void)setIsRetryEnabled:(BOOL)flag;
 
-// retry selector is optional for retries. 
+// retry selector is optional for retries.
 //
 // If present, it should have the signature:
 //   -(BOOL)fetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
@@ -392,7 +392,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data
 // failedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error
-// 
+//
 
 - (BOOL)beginFetchWithDelegate:(id)delegate
              didFinishSelector:(SEL)finishedSEL
@@ -447,8 +447,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 
 // using the fetcher while a modal dialog is displayed requires setting the
 // run-loop modes to include NSModalPanelRunLoopMode
-// 
-// setting run loop modes does nothing if they are not supported, 
+//
+// setting run loop modes does nothing if they are not supported,
 // such as on 10.4
 - (NSArray *)runLoopModes;
 - (void)setRunLoopModes:(NSArray *)modes;
@@ -456,8 +456,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 + (BOOL)doesSupportRunLoopModes;
 + (NSArray *)defaultRunLoopModes;
 + (void)setDefaultRunLoopModes:(NSArray *)modes;
-  
-// users who wish to replace GDataHTTPFetcher's use of NSURLConnection 
+
+// users who wish to replace GDataHTTPFetcher's use of NSURLConnection
 // can do so globally here.  The replacement should be a subclass of
 // NSURLConnection.
 + (Class)connectionClass;

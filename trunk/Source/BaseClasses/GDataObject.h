@@ -57,7 +57,7 @@
 // the subclass can add its unique children and attributes, if any.
 //
 //
-// 
+//
 // The extension model
 //
 // Extensions enable elements to contain children about which the element
@@ -74,7 +74,7 @@
 // to the extension by calling into the base class, as in
 //
 //  - (GDataColorProperty *)color {
-//    return (GDataColorProperty *) 
+//    return (GDataColorProperty *)
 //               [self objectForExtensionClass:[GDataColorProperty class]];
 //  }
 //
@@ -88,7 +88,7 @@
 // GDataWebContent elements:
 //
 //  [self addExtensionDeclarationForParentClass:[GDataLink class]
-//                                   childClass:[GDataWebContent class]];  
+//                                   childClass:[GDataWebContent class]];
 //
 // The CalendarEvent has extended GDataLinks without GDataLinks knowing or
 // caring.  Because GDataLink derives from GDataObject, the GDataLink
@@ -105,7 +105,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAOBJECT_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -220,7 +220,7 @@ typedef struct GDataDescriptionRecord {
 
   // list of attributes to be parsed for each class
   NSMutableDictionary *attributeDeclarationsCache_;
-  
+
   // list of attributes to be parsed for this class (points strongly into the
   // attribute declarations cache)
   NSMutableArray *attributeDeclarations_;
@@ -312,9 +312,9 @@ typedef struct GDataDescriptionRecord {
 - (NSString *)coreProtocolVersion;
 - (BOOL)isCoreProtocolVersion1;
 
-// userData is available for client use; retained by GDataObject, but not 
+// userData is available for client use; retained by GDataObject, but not
 // copied by the copyWithZone
-- (void)setUserData:(id)obj; 
+- (void)setUserData:(id)obj;
 - (id)userData;
 
 // properties are supported for client convenience, but are not copied by
@@ -355,7 +355,7 @@ typedef struct GDataDescriptionRecord {
           serviceVersion:(NSString *)serviceVersion
               surrogates:(NSDictionary *)surrogates
     shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
-  
+
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
                             length:(unsigned long long *)outLength
                            headers:(NSDictionary **)outHeaders;
@@ -407,7 +407,7 @@ typedef struct GDataDescriptionRecord {
 - (void)parseAttributesForElement:(NSXMLElement *)element;
 
 // derived classes should call -addLocalAttributeDeclarations in their
-// -addParseDeclarations method if they want element attributes to 
+// -addParseDeclarations method if they want element attributes to
 // automatically be parsed
 - (void)addLocalAttributeDeclarations:(NSArray *)attributeLocalNames;
 
@@ -435,7 +435,7 @@ typedef struct GDataDescriptionRecord {
 //
 
 // derived classes should call -addContentValueDeclaration in their
-// -addParseDeclarations method if they want element content to 
+// -addParseDeclarations method if they want element content to
 // automatically be parsed as a string
 - (void)addContentValueDeclaration;
 - (BOOL)hasDeclaredContentValue;
@@ -469,9 +469,9 @@ typedef struct GDataDescriptionRecord {
 // class registration method
 + (void)registerClass:(Class)theClass
                 inMap:(NSMutableDictionary **)map
-forCategoryWithScheme:(NSString *)scheme 
+forCategoryWithScheme:(NSString *)scheme
                  term:(NSString *)term;
-  
+
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
                             fromMap:(NSDictionary *)map;
@@ -485,11 +485,11 @@ forCategoryWithScheme:(NSString *)scheme
 //
 // If the element is not a <feed> or <entry> then nil is returned
 + (Class)objectClassForXMLElement:(NSXMLElement *)element;
-  
+
 //
 // XML parsing helpers (used in initWithXMLElement:parent:)
 //
-// Use these parsing helpers, since they remove the parsed items from the 
+// Use these parsing helpers, since they remove the parsed items from the
 // "unknown children" list for this object.
 //
 
@@ -499,27 +499,27 @@ forCategoryWithScheme:(NSString *)scheme
                 qualifiedName:(NSString *)qualifiedName
                  namespaceURI:(NSString *)namespaceURI
                   objectClass:(Class)objectClass;
-  
-// this creates an array of objects of the specified class for each XML child 
+
+// this creates an array of objects of the specified class for each XML child
 // element with the specified name
 - (id)objectOrArrayForChildrenOfElement:(NSXMLElement *)parentElement
                           qualifiedName:(NSString *)qualifiedName
                            namespaceURI:(NSString *)namespaceURI
                             objectClass:(Class)objectClass;
 
-// childOfElement:withName returns the element with the name, or nil of there 
+// childOfElement:withName returns the element with the name, or nil of there
 // are not exactly one of the element
 - (NSXMLElement *)childWithQualifiedName:(NSString *)localName
                             namespaceURI:(NSString *)namespaceURI
                              fromElement:(NSXMLElement *)parentElement;
 
-// searches up the parent tree to find a surrogate for the standard class; 
+// searches up the parent tree to find a surrogate for the standard class;
 // if there is  no surrogate, returns the standard class itself
 - (Class)classOrSurrogateForClass:(Class)standardClass;
 
 // element parsing
 
-// this method avoids the "recursive descent" behavior of NSXMLElement's 
+// this method avoids the "recursive descent" behavior of NSXMLElement's
 // stringValue; the element parameter may be nil
 - (NSString *)stringValueFromElement:(NSXMLElement *)element;
 
@@ -535,21 +535,21 @@ forCategoryWithScheme:(NSString *)scheme
 
 - (NSString *)stringForAttributeLocalName:(NSString *)localName
                                       URI:(NSString *)attributeURI
-                              fromElement:(NSXMLElement *)element;  
+                              fromElement:(NSXMLElement *)element;
 
-- (GDataDateTime *)dateTimeForAttributeName:(NSString *)attributeName 
+- (GDataDateTime *)dateTimeForAttributeName:(NSString *)attributeName
                                 fromElement:(NSXMLElement *)element;
 
-- (NSXMLNode *)attributeForName:(NSString *)attributeName 
+- (NSXMLNode *)attributeForName:(NSString *)attributeName
                     fromElement:(NSXMLElement *)element;
 
-- (BOOL)boolForAttributeName:(NSString *)attributeName 
+- (BOOL)boolForAttributeName:(NSString *)attributeName
                  fromElement:(NSXMLElement *)element;
 
-- (NSNumber *)doubleNumberForAttributeName:(NSString *)attributeName 
+- (NSNumber *)doubleNumberForAttributeName:(NSString *)attributeName
                                fromElement:(NSXMLElement *)element;
 
-- (NSNumber *)intNumberForAttributeName:(NSString *)attributeName 
+- (NSNumber *)intNumberForAttributeName:(NSString *)attributeName
                             fromElement:(NSXMLElement *)element;
 
 

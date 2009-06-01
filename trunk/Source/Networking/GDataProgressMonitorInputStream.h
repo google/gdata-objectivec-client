@@ -17,43 +17,43 @@
 // The monitored input stream calls back into the monitor delegate
 // with the number of bytes and total size
 //
-// - (void)inputStream:(GDataProgressMonitorInputStream *)stream 
-//   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+// - (void)inputStream:(GDataProgressMonitorInputStream *)stream
+//   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 //        ofTotalByteCount:(unsigned long long)dataLength;
 
 #undef GDATA_NSSTREAM_DELEGATE
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE && (MAC_OS_X_VERSION_MAX_ALLOWED > 1050)
-#define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate> 
+#define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate>
 #else
 #define GDATA_NSSTREAM_DELEGATE
 #endif
 
 @interface GDataProgressMonitorInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
-  
+
   NSInputStream *inputStream_; // encapsulated stream that does the work
-  
-  unsigned long long dataSize_;     // size of data in the source 
+
+  unsigned long long dataSize_;     // size of data in the source
   unsigned long long numBytesRead_; // bytes read from the input stream so far
-  
+
   id monitorDelegate_;    // WEAK, not retained
-  SEL monitorSelector_;  
-  
+  SEL monitorSelector_;
+
   id monitorSource_;     // WEAK, not retained
 }
 
 // length is passed to the progress callback; it may be zero
 // if the progress callback can handle that
-+ (id)inputStreamWithStream:(NSInputStream *)input 
++ (id)inputStreamWithStream:(NSInputStream *)input
                      length:(unsigned long long)length;
 
-- (id)initWithStream:(NSInputStream *)input 
+- (id)initWithStream:(NSInputStream *)input
               length:(unsigned long long)length;
 
 // the monitor is called when bytes have been read
 //
 // monitorDelegate should respond to a selector with a signature matching:
 //
-// - (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+// - (void)inputStream:(GDataProgressMonitorInputStream *)stream
 //   hasDeliveredBytes:(unsigned long long)numReadSoFar
 //        ofTotalBytes:(unsigned long long)total
 
@@ -63,7 +63,7 @@
 - (void)setMonitorSelector:(SEL)monitorSelector;
 - (SEL)monitorSelector;
 
-// the source lets the delegate know the source of this input stream 
+// the source lets the delegate know the source of this input stream
 - (void)setMonitorSource:(id)source; // not retained
 - (id)monitorSource;
 

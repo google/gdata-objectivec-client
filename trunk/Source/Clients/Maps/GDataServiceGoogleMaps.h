@@ -108,7 +108,7 @@ _EXTERN NSString* const kGDataMapsProjectionUnlisted   _INITIALIZE_AS(@"unlisted
                                         forBatchFeedURL:(NSURL *)feedURL
                                                delegate:(id)delegate
                                       didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector;  
+                                        didFailSelector:(SEL)failedSelector;
 
 + (NSString *)serviceRootURLString;
 

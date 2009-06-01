@@ -23,7 +23,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATALINK_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -36,7 +36,7 @@ _EXTERN NSString* const kGDataLinkRelBatch _INITIALIZE_AS(@"http://schemas.googl
 
 _EXTERN NSString* const kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
 
-// for links, like 
+// for links, like
 //
 //  <link rel="alternate" type="text/html"
 //        href="http://www.google.com/calendar/event?eid=b..." title="alternate">
@@ -77,7 +77,7 @@ _EXTERN NSString* const kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml
 - (void)setETag:(NSString *)str;
 
 - (GDataAtomContent *)content;
-- (void)setContent:(GDataAtomContent *)obj;  
+- (void)setContent:(GDataAtomContent *)obj;
 
 // convenience method
 

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-// 
+//
 // GDataMaps.h
 //
 

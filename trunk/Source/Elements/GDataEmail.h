@@ -41,5 +41,5 @@
 
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
-  
+
 @end

@@ -49,7 +49,7 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (void)addCategoryWithScheme:(NSString *)scheme term:(NSString *)term;
 
 - (NSArray *)excludeCategories;
-- (void)setExcludeCategories:(NSArray *)excludeCategories;  
+- (void)setExcludeCategories:(NSArray *)excludeCategories;
 - (void)addExcludeCategory:(GDataCategory *)excludeCategory;
 - (void)addExcludeCategoryWithScheme:(NSString *)scheme term:(NSString *)term;
 

@@ -40,12 +40,12 @@ static NSString *const kContentTypeAttr = @"content-type";
 + (NSString *)extensionElementLocalName { return @"status"; }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kCodeAttr, kReasonAttr, kContentTypeAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];  
-  
+
+  [self addLocalAttributeDeclarations:attrs];
+
   [self addContentValueDeclaration];
 }
 

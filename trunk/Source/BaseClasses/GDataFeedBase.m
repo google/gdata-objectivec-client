@@ -23,7 +23,7 @@
 #import "GDataBaseElements.h"
 
 //   eventually we'll change the opensearch extensio URI, as in...
-//  @implementation GDataOpenSearchTotalResults1_1 
+//  @implementation GDataOpenSearchTotalResults1_1
 //  + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
 //  @end
 //
@@ -54,56 +54,56 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class feedClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:feedClass
                                  childClasses:
-   
+
    // GData extensions
    [GDataResourceID class],
 
    // Atom extensions
-   [GDataAtomID class], 
-   [GDataAtomTitle class], 
-   [GDataAtomSubtitle class], 
+   [GDataAtomID class],
+   [GDataAtomTitle class],
+   [GDataAtomSubtitle class],
    [GDataAtomRights class],
-   [GDataAtomIcon class], 
-   [GDataAtomLogo class], 
+   [GDataAtomIcon class],
+   [GDataAtomLogo class],
    [GDataLink class],
    [GDataAtomAuthor class],
    [GDataAtomContributor class],
    [GDataCategory class],
-   [GDataAtomUpdatedDate class], 
+   [GDataAtomUpdatedDate class],
 
    // atom publishing control support
    [GDataAtomPubControl atomPubControlClassForObject:self],
-   
+
    // batch support
    [GDataBatchOperation class],
    nil];
 
   if ([self isCoreProtocolVersion1]) {
-    
-    // GData version 1 classes 
+
+    // GData version 1 classes
     [self addExtensionDeclarationForParentClass:feedClass
                                    childClasses:
-     
-     [GDataOpenSearchTotalResults1_0 class], 
-     [GDataOpenSearchStartIndex1_0 class], 
-     [GDataOpenSearchItemsPerPage1_0 class], 
+
+     [GDataOpenSearchTotalResults1_0 class],
+     [GDataOpenSearchStartIndex1_0 class],
+     [GDataOpenSearchItemsPerPage1_0 class],
      nil];
-    
+
   } else {
     // GData version 2 classes
     [self addExtensionDeclarationForParentClass:feedClass
                                    childClasses:
-     
-     [GDataOpenSearchTotalResults1_1 class], 
-     [GDataOpenSearchStartIndex1_1 class], 
-     [GDataOpenSearchItemsPerPage1_1 class], 
+
+     [GDataOpenSearchTotalResults1_1 class],
+     [GDataOpenSearchStartIndex1_1 class],
+     [GDataOpenSearchItemsPerPage1_1 class],
      nil];
   }
 
@@ -135,7 +135,7 @@
 
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
-  
+
   // entry point for creation of feeds inside elements
   self = [super initWithXMLElement:element
                             parent:nil];
@@ -161,7 +161,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
                                                             options:0
                                                               error:&error] autorelease];
   if (xmlDocument) {
-    
+
     NSXMLElement* root = [xmlDocument rootElement];
     self = [super initWithXMLElement:root
                               parent:nil
@@ -170,7 +170,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
                 shouldIgnoreUnknowns:NO];
     if (self) {
       [self setupFromXMLElement:root];
-      
+
       // we're done parsing; the extension declarations won't be needed again
       [self clearExtensionDeclarationsCache];
 
@@ -178,12 +178,12 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
       // retain the document so that pointers to internal nodes remain valid
       [self setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
 #endif
-    } 
+    }
     return self;
-    
+
   } else {
     // could not parse XML into a document
-    [self release]; 
+    [self release];
     return nil;
   }
 }
@@ -196,16 +196,16 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
                                      qualifiedName:@"generator"
                                       namespaceURI:kGDataNamespaceAtom
                                        objectClass:[GDataGenerator class]]];
-    
+
   // call subclasses to set up their feed ivars
   [self initFeedWithXMLElement:root];
-  
+
   // allocate individual entries
   Class entryClass = [self classForEntries];
-  
-  GDATA_DEBUG_ASSERT([[root localName] isEqual:@"feed"], 
+
+  GDATA_DEBUG_ASSERT([[root localName] isEqual:@"feed"],
             @"initing a feed from a non-feed element (%@)", [root name]);
-  
+
   // create entries of the proper class from each "entry" element
   id entryObj = [self objectOrArrayForChildrenOfElement:root
                                           qualifiedName:@"entry"
@@ -233,7 +233,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataFeedBase* newFeed = [super copyWithZone:zone];
-  
+
   [newFeed setGenerator:[self generator]];
 
   [newFeed setEntriesWithEntries:[self entries]];
@@ -242,13 +242,13 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 
 
 - (BOOL)isEqual:(GDataFeedBase *)other {
-  
+
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataFeedBase class]]) return NO;
 
   return [super isEqual:other]
     && AreEqualOrBothNil([self entries], [other entries]);
-    // excluding generator 
+    // excluding generator
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -273,7 +273,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
     { @"id",               @"identifier",              kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
-  
+
   // these are present but not very useful most of the time...
   // @"totalResults"
   // @"startIndex"
@@ -288,10 +288,10 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 - (NSXMLElement *)XMLElement {
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"feed"];
-  
+
   if ([self generator]) {
-    [element addChild:[[self generator] XMLElement]]; 
-  } 
+    [element addChild:[[self generator] XMLElement]];
+  }
 
   [self addToElement:element XMLElementsForArray:[self entries]];
 
@@ -302,18 +302,18 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 #pragma mark -
 
 - (void)initFeedWithXMLElement:(NSXMLElement *)element {
- // subclasses override this to set up their feed ivars from the XML 
+ // subclasses override this to set up their feed ivars from the XML
 }
 
 // subclasses may override this, and may return a specific entry class or
 // kUseRegisteredEntryClass
 - (Class)classForEntries {
-  
-  return kUseRegisteredEntryClass; 
+
+  return kUseRegisteredEntryClass;
 }
 
 - (BOOL)canPost {
-  return ([self postLink] != nil);  
+  return ([self postLink] != nil);
 }
 
 #pragma mark Dynamic object generation - Entry registration
@@ -368,7 +368,7 @@ forCategoryWithScheme:scheme
 }
 
 - (GDataGenerator *)generator {
-  return generator_; 
+  return generator_;
 }
 
 - (void)setGenerator:(GDataGenerator *)gen {
@@ -406,7 +406,7 @@ forCategoryWithScheme:scheme
 
 - (GDataTextConstruct *)rights {
   GDataTextConstruct *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomRights class]];
   return obj;
 }
@@ -417,7 +417,7 @@ forCategoryWithScheme:scheme
 
 - (void)setRightsWithString:(NSString *)str {
   GDataAtomRights *obj;
-  
+
   obj = [GDataAtomRights textConstructWithString:str];
   [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
@@ -504,14 +504,14 @@ forCategoryWithScheme:scheme
 
 - (GDataDateTime *)updatedDate {
   GDataAtomUpdatedDate *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomUpdatedDate class]];
   return [obj dateTimeValue];
 }
 
 - (void)setUpdatedDate:(GDataDateTime *)dateTime {
   GDataAtomUpdatedDate *obj;
-  
+
   obj = [GDataAtomUpdatedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataAtomUpdatedDate class]];
 }
@@ -519,13 +519,13 @@ forCategoryWithScheme:scheme
 - (NSNumber *)totalResults {
   GDataValueElementConstruct *obj;
   Class objClass;
-  
+
   if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchTotalResults1_0 class];
   } else {
     objClass = [GDataOpenSearchTotalResults1_1 class];
   }
-  
+
   obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
@@ -539,7 +539,7 @@ forCategoryWithScheme:scheme
   } else {
     objClass = [GDataOpenSearchTotalResults1_1 class];
   }
-  
+
   obj = [objClass valueWithNumber:num];
   [self setObject:obj forExtensionClass:objClass];
 }
@@ -547,13 +547,13 @@ forCategoryWithScheme:scheme
 - (NSNumber *)startIndex {
   GDataValueElementConstruct *obj;
   Class objClass;
-  
+
   if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchStartIndex1_0 class];
   } else {
     objClass = [GDataOpenSearchStartIndex1_1 class];
   }
-  
+
   obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
@@ -561,13 +561,13 @@ forCategoryWithScheme:scheme
 - (void)setStartIndex:(NSNumber *)num {
   GDataValueElementConstruct *obj;
   Class objClass;
-  
+
   if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchStartIndex1_0 class];
   } else {
     objClass = [GDataOpenSearchStartIndex1_1 class];
   }
-    
+
   obj = [objClass valueWithNumber:num];
   [self setObject:obj forExtensionClass:objClass];
 }
@@ -575,13 +575,13 @@ forCategoryWithScheme:scheme
 - (NSNumber *)itemsPerPage {
   GDataValueElementConstruct *obj;
   Class objClass;
-  
+
   if ([self isCoreProtocolVersion1]) {
     objClass = [GDataOpenSearchItemsPerPage1_0 class];
   } else {
     objClass = [GDataOpenSearchItemsPerPage1_1 class];
   }
-  
+
   obj = [self objectForExtensionClass:objClass];
   return [obj intNumberValue];
 }
@@ -595,7 +595,7 @@ forCategoryWithScheme:scheme
   } else {
     objClass = [GDataOpenSearchItemsPerPage1_1 class];
   }
-  
+
   obj = [objClass valueWithNumber:num];
   [self setObject:obj forExtensionClass:objClass];
 }
@@ -620,7 +620,7 @@ forCategoryWithScheme:scheme
 }
 
 - (NSArray *)entries {
-  return entries_; 
+  return entries_;
 }
 
 // setEntries: and addEntry: expect the entries to have parents that are
@@ -628,10 +628,10 @@ forCategoryWithScheme:scheme
 // make copies of the supplied entries
 
 - (void)setEntries:(NSArray *)entries {
-  
+
   [entries_ autorelease];
   entries_ = [entries mutableCopy];
-  
+
   // step through the entries, ensure that none have other parents,
   // make each have this feed as parent
   GDataObject* entry;
@@ -644,15 +644,15 @@ forCategoryWithScheme:scheme
 }
 
 - (void)addEntry:(GDataEntryBase *)obj {
-    
+
   if (!entries_) {
-    entries_ = [[NSMutableArray alloc] init]; 
+    entries_ = [[NSMutableArray alloc] init];
   }
-  
+
   // ensure the entry doesn't have another parent
   GDataObject *oldParent = [obj parent];
-  GDATA_ASSERT(oldParent == self || oldParent == nil, 
-               @"Trying to replace existing feed parent; use addEntryWithEntry: instead");  
+  GDATA_ASSERT(oldParent == self || oldParent == nil,
+               @"Trying to replace existing feed parent; use addEntryWithEntry: instead");
 
   [obj setParent:self];
   [entries_ addObject:obj];
@@ -688,13 +688,13 @@ forCategoryWithScheme:scheme
 
 - (GDataAtomPubControl *)atomPubControl {
   Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-  
+
   return [self objectForExtensionClass:class];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
   Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-  
+
   [self setObject:obj forExtensionClass:class];
 }
 
@@ -711,7 +711,7 @@ forCategoryWithScheme:scheme
 // convenience routines
 
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
-  
+
   return [GDataLink linkWithRelAttributeValue:rel
                                     fromLinks:[self links]];
 }

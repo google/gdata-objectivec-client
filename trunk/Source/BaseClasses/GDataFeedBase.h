@@ -31,7 +31,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAFEEDBASE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -41,15 +41,15 @@
 // this constant, returned by a subclass implementation of -classForEntries,
 // specifies that a feed's entry class should be determined by inspecting
 // the XML for a "kind" category and looking at the registered entry classes
-// for an appropriate match 
+// for an appropriate match
 _EXTERN Class const kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
 @interface GDataFeedBase : GDataObject {
 
-  // generator is parsed manually to avoid comparison along with other 
+  // generator is parsed manually to avoid comparison along with other
   // extensions
-  GDataGenerator *generator_; 
-  
+  GDataGenerator *generator_;
+
   NSMutableArray *entries_;
 }
 
@@ -189,8 +189,8 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
 // temporary bridge method
 + (void)registerFeedClass:(Class)theClass
-    forCategoryWithScheme:(NSString *)scheme 
-                     term:(NSString *)term;  
+    forCategoryWithScheme:(NSString *)scheme
+                     term:(NSString *)term;
 
 // subclasses override standardFeedKind to provide the term string for the
 // term attribute of their "kind" category element, if any

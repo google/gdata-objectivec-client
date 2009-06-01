@@ -17,7 +17,7 @@
 #import "GDataServerError.h"
 
 #import "GDataObject.h"   // for namespace
-#import "GDataUtilities.h" // for AreEqualOrBothNil 
+#import "GDataUtilities.h" // for AreEqualOrBothNil
 
 //
 // GDataServerErrorGroup
