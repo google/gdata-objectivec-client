@@ -13,7 +13,7 @@
 * limitations under the License.
 */
 
-// 
+//
 // GData.h
 //
 

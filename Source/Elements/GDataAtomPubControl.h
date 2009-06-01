@@ -35,5 +35,5 @@
 @end
 
 // In version 1 of GData, a pre-standard URI was used
-@interface GDataAtomPubControl1_0 : GDataAtomPubControl  <GDataExtension> 
+@interface GDataAtomPubControl1_0 : GDataAtomPubControl  <GDataExtension>
 @end

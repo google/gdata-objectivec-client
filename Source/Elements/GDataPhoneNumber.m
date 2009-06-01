@@ -26,7 +26,7 @@ static NSString* const kURIAttr = @"uri";
 static NSString* const kPrimaryAttr = @"primary";
 
 @implementation GDataPhoneNumber
-// phone number, as in 
+// phone number, as in
 //  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" uri="tel:+1-425-555-8080;ext=52585">
 //    (425) 555-8080 ext. 52585
 //  </gd:phoneNumber>
@@ -44,21 +44,21 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kLabelAttr, kRelAttr, kURIAttr, kPrimaryAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 
 - (NSArray *)attributesIgnoredForEquality {
-  
+
   return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
@@ -66,7 +66,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)label {
-  return [self stringValueForAttribute:kLabelAttr]; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
@@ -74,7 +74,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)URI {
-  return [self stringValueForAttribute:kURIAttr]; 
+  return [self stringValueForAttribute:kURIAttr];
 }
 
 - (void)setURI:(NSString *)str {
@@ -82,7 +82,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)stringValue {
-  return [self contentStringValue]; 
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {

@@ -43,18 +43,18 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kLabelAttr, kAddressAttr, kRelAttr, kPrimaryAttr, nil];
   [self addLocalAttributeDeclarations:attrs];
 }
 
 - (NSArray *)attributesIgnoredForEquality {
-  
+
   return [NSArray arrayWithObject:kPrimaryAttr];
 }
 
 - (NSString *)label {
-  return [self stringValueForAttribute:kLabelAttr]; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
@@ -62,7 +62,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)address {
-  return [self stringValueForAttribute:kAddressAttr]; 
+  return [self stringValueForAttribute:kAddressAttr];
 }
 
 - (void)setAddress:(NSString *)str {
@@ -70,7 +70,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {

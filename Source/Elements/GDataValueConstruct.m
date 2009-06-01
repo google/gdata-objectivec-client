@@ -34,7 +34,7 @@
 
 + (id)valueWithString:(NSString *)str {
   if (str == nil) return nil;
-  
+
   GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
@@ -42,7 +42,7 @@
 
 + (id)valueWithNumber:(NSNumber *)num {
   if (num == nil) return nil;
-  
+
   GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setStringValue:[num stringValue]];
   return obj;
@@ -74,7 +74,7 @@
 
 + (id)valueWithDateTime:(GDataDateTime *)dateTime {
   if (dateTime == nil) return nil;
-  
+
   GDataValueConstruct* obj = [[[self alloc] init] autorelease];
   [obj setDateTimeValue:dateTime];
   return obj;
@@ -131,7 +131,7 @@
     int result;
     NSScanner *scanner = [NSScanner scannerWithString:str];
     if ([scanner scanInt:&result]) {
-      return result; 
+      return result;
     }
   }
   return 0;
@@ -152,7 +152,7 @@
     long long result;
     NSScanner *scanner = [NSScanner scannerWithString:str];
     if ([scanner scanLongLong:&result]) {
-      return result; 
+      return result;
     }
   }
   return 0;
@@ -259,7 +259,7 @@
 @implementation GDataValueElementConstruct // derives from GDataValueConstruct
 - (NSString *)attributeName {
   // return nil to indicate the value is contained in the child text nodes
-  return nil;  
+  return nil;
 }
 @end
 

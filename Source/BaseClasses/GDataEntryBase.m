@@ -44,15 +44,15 @@
 + (NSDictionary *)baseGDataNamespaces {
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
-    kGDataNamespaceGData, kGDataNamespaceGDataPrefix, 
-    kGDataNamespaceAtomPubStd, kGDataNamespaceAtomPubPrefix, 
+    kGDataNamespaceGData, kGDataNamespaceGDataPrefix,
+    kGDataNamespaceAtomPubStd, kGDataNamespaceAtomPubPrefix,
     nil];
   return namespaces;
 }
 
 + (id)entry {
   GDataEntryBase *entry = [[[GDataEntryBase alloc] init] autorelease];
-  
+
   [entry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
   return entry;
 }
@@ -67,36 +67,36 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    // GData extensions
    [GDataResourceID class],
 
    // Atom extensions
-   [GDataAtomID class], 
+   [GDataAtomID class],
    [GDataAtomPublishedDate class],
-   [GDataAtomUpdatedDate class], 
-   [GDataAtomTitle class], 
+   [GDataAtomUpdatedDate class],
+   [GDataAtomTitle class],
    [GDataAtomSummary class],
-   [GDataAtomContent class], 
+   [GDataAtomContent class],
    [GDataAtomRights class],
    [GDataLink class],
    [GDataAtomAuthor class],
    [GDataAtomContributor class],
    [GDataCategory class],
-   
+
    // deletion marking support
    [GDataDeleted class],
-   
+
    // atom publishing control support
    [GDataAtomPubControl atomPubControlClassForObject:self],
    [self atomPubEditedObjectClass],
-   
+
    // batch support
    [GDataBatchOperation class], [GDataBatchID class],
    [GDataBatchStatus class], [GDataBatchInterrupted class],
@@ -127,14 +127,14 @@
   [uploadData_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
-  
+
   [super dealloc];
 }
 
 - (BOOL)isEqual:(GDataEntryBase *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataEntryBase class]]) return NO;
-  
+
   return [super isEqual:other]
     && AreEqualOrBothNil([self uploadData], [other uploadData])
     && AreEqualOrBothNil([self uploadMIMEType], [other uploadMIMEType])
@@ -144,23 +144,23 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataEntryBase* newEntry = [super copyWithZone:zone];
-    
+
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
   [newEntry setShouldUploadDataOnly:[self shouldUploadDataOnly]];
-  
+
   return newEntry;
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 
 - (NSMutableArray *)itemsForDescription {
-  
+
   // make a list of the interesting parts of links
   NSArray *linkNames = [GDataLink linkNamesFromLinks:[self links]];
   NSString *linksStr = [linkNames componentsJoinedByString:@","];
-  
+
   struct GDataDescriptionRecord descRecs[] = {
     { @"v",                @"serviceVersion",           kGDataDescValueLabeled },
     { @"title",            @"title.stringValue",        kGDataDescValueLabeled },
@@ -186,7 +186,7 @@
     { @"deleted",          @"isDeleted",                kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -203,23 +203,23 @@
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
                             length:(unsigned long long *)outLength
                            headers:(NSDictionary **)outHeaders {
-  
+
   // check if a subclass is providing data
   NSData *uploadData = [self uploadData];
   NSString *uploadMIMEType = [self uploadMIMEType];
   NSString *slug = [self uploadSlug];
-  
+
   if ([uploadData length] == 0 || [uploadMIMEType length] == 0) {
-    
+
     GDATA_DEBUG_ASSERT(![self shouldUploadDataOnly], @"missing data");
-    
+
     // if there's no upload data, just fall back on GDataObject's
     // XML stream generation
     return [super generateContentInputStream:outInputStream
                                       length:outLength
                                      headers:outHeaders];
   }
-  
+
   if ([self shouldUploadDataOnly]) {
     // we're not uploading the XML, so we don't need a multipart MIME document
     *outInputStream = [NSInputStream inputStreamWithData:uploadData];
@@ -231,41 +231,41 @@
                    nil];
     return YES;
   }
-  
+
   // make a MIME document with an XML part and a binary part
   NSDictionary* xmlHeader = [NSDictionary dictionaryWithObjectsAndKeys:
     @"application/atom+xml; charset=UTF-8", @"Content-Type", nil];
-  
+
   NSString *xmlString = [[self XMLElement] XMLString];
   NSData *xmlBody = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
-  
+
   NSDictionary *binHeader = [NSDictionary dictionaryWithObjectsAndKeys:
     uploadMIMEType, @"Content-Type",
     @"binary", @"Content-Transfer-Encoding", nil];
-  
+
   GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
-  
+
   [doc addPartWithHeaders:xmlHeader body:xmlBody];
   [doc addPartWithHeaders:binHeader body:uploadData];
-  
+
   // generate the input stream, and make a header which includes the
   // boundary used between parts of the mime document
   NSString *partBoundary = nil; // typically this will be END_OF_PART
-  
+
   [doc generateInputStream:outInputStream
                     length:outLength
                   boundary:&partBoundary];
-  
+
   NSString *streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
   NSString *streamType = [NSString stringWithFormat:streamTypeTemplate,
     partBoundary];
-  
+
   *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
     streamType, @"Content-Type",
-    @"1.0", @"MIME-Version", 
+    @"1.0", @"MIME-Version",
     slug, @"Slug", // slug may be nil
     nil];
-  
+
   return YES;
 }
 
@@ -341,28 +341,28 @@ forCategoryWithScheme:scheme
 
 - (GDataDateTime *)publishedDate {
   GDataAtomPublishedDate *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomPublishedDate class]];
   return [obj dateTimeValue];
 }
 
 - (void)setPublishedDate:(GDataDateTime *)dateTime {
   GDataAtomPublishedDate *obj;
-  
+
   obj = [GDataAtomPublishedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataAtomPublishedDate class]];
 }
 
 - (GDataDateTime *)updatedDate {
   GDataAtomUpdatedDate *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomUpdatedDate class]];
   return [obj dateTimeValue];
 }
 
 - (void)setUpdatedDate:(GDataDateTime *)dateTime {
   GDataAtomUpdatedDate *obj;
-  
+
   obj = [GDataAtomUpdatedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataAtomUpdatedDate class]];
 }
@@ -411,7 +411,7 @@ forCategoryWithScheme:scheme
 
 - (GDataEntryContent *)content {
   GDataAtomContent *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomContent class]];
   return obj;
 }
@@ -427,7 +427,7 @@ forCategoryWithScheme:scheme
 
 - (GDataTextConstruct *)rightsString {
   GDataTextConstruct *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataAtomRights class]];
   return obj;
 }
@@ -438,7 +438,7 @@ forCategoryWithScheme:scheme
 
 - (void)setRightsStringWithString:(NSString *)str {
   GDataAtomRights *obj;
-  
+
   obj = [GDataAtomRights textConstructWithString:str];
   [self setObject:obj forExtensionClass:[GDataAtomRights class]];
 }
@@ -525,7 +525,7 @@ forCategoryWithScheme:scheme
 
 - (void)setUploadSlug:(NSString *)str {
   [uploadSlug_ autorelease];
-  
+
   // encode per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
   NSString *encoded = [GDataUtilities stringByPercentEncodingUTF8ForString:str];
   uploadSlug_ = [encoded copy];
@@ -559,10 +559,10 @@ forCategoryWithScheme:scheme
 - (void)setIsDeleted:(BOOL)isDeleted {
   if (isDeleted) {
     // set the extension
-    [self setObject:[GDataDeleted deleted] forExtensionClass:[GDataDeleted class]]; 
+    [self setObject:[GDataDeleted deleted] forExtensionClass:[GDataDeleted class]];
   } else {
     // remove the extension
-    [self setObject:nil forExtensionClass:[GDataDeleted class]]; 
+    [self setObject:nil forExtensionClass:[GDataDeleted class]];
   }
 }
 
@@ -655,23 +655,23 @@ forCategoryWithScheme:scheme
 }
 
 - (GDataLink *)feedLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelFeed]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelFeed];
 }
 
 - (GDataLink *)editLink {
-  return [self linkWithRelAttributeValue:@"edit"]; 
+  return [self linkWithRelAttributeValue:@"edit"];
 }
 
 - (GDataLink *)editMediaLink {
-  return [self linkWithRelAttributeValue:@"edit-media"]; 
+  return [self linkWithRelAttributeValue:@"edit-media"];
 }
 
 - (GDataLink *)alternateLink {
-  return [self linkWithRelAttributeValue:@"alternate"]; 
+  return [self linkWithRelAttributeValue:@"alternate"];
 }
 
 - (GDataLink *)relatedLink {
-  return [self linkWithRelAttributeValue:@"related"]; 
+  return [self linkWithRelAttributeValue:@"related"];
 }
 
 - (GDataLink *)postLink {
@@ -679,16 +679,16 @@ forCategoryWithScheme:scheme
 }
 
 - (GDataLink *)selfLink {
-  return [self linkWithRelAttributeValue:@"self"]; 
+  return [self linkWithRelAttributeValue:@"self"];
 }
 
 - (GDataLink *)HTMLLink {
   return [GDataLink linkWithRel:@"alternate"
                            type:@"text/html"
-                      fromLinks:[self links]]; 
+                      fromLinks:[self links]];
 }
 
 - (BOOL)canEdit {
-  return ([self editLink] != nil);  
+  return ([self editLink] != nil);
 }
 @end

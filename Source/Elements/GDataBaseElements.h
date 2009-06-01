@@ -84,7 +84,7 @@
 @interface GDataOpenSearchStartIndex1_0 : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataOpenSearchItemsPerPage1_0 : GDataValueElementConstruct <GDataExtension>  
+@interface GDataOpenSearchItemsPerPage1_0 : GDataValueElementConstruct <GDataExtension>
 @end
 
 // OpenSearch 1.1, adopted for GData version 2
@@ -95,7 +95,7 @@
 @interface GDataOpenSearchStartIndex1_1 : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataOpenSearchItemsPerPage1_1 : GDataValueElementConstruct <GDataExtension>  
+@interface GDataOpenSearchItemsPerPage1_1 : GDataValueElementConstruct <GDataExtension>
 @end
 
 // Attributes

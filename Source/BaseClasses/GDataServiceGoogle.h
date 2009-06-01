@@ -22,7 +22,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEGOOGLE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -38,10 +38,10 @@ enum {
   kGDataBadAuthentication = 403
 };
 
-@interface NSDictionary (GDataServiceGoogleAdditions) 
+@interface NSDictionary (GDataServiceGoogleAdditions)
 // category to get auth info from the callback error's userInfo
-- (NSString *)authenticationError;  
-- (NSString *)captchaToken;  
+- (NSString *)authenticationError;
+- (NSString *)captchaToken;
 - (NSURL *)captchaURL;
 @end
 
@@ -50,7 +50,7 @@ enum {
 // GDataServiceTicket is the version of a ticket that supports
 // Google authentication
 @interface GDataServiceTicket : GDataServiceTicketBase {
-  GDataHTTPFetcher *authFetcher_; 
+  GDataHTTPFetcher *authFetcher_;
 }
 
 - (void)cancelTicket; // stops fetches in progress
@@ -62,19 +62,19 @@ enum {
 // GDataServiceGoogle is the version of the service class that supports
 // Google authentication.
 @interface GDataServiceGoogle : GDataServiceBase {
-  
+
   NSString *captchaToken_;
   NSString *captchaAnswer_;
-  
+
   NSString *authToken_;
   NSString *authSubToken_;
-  
+
   NSString *accountType_; // hosted or google
-  
+
   NSString *signInDomain_;
-  
+
   NSString *serviceID_; // typically supplied by the subclass overriding -serviceID
-  
+
   BOOL shouldUseMethodOverrideHeader_;
 }
 
@@ -122,7 +122,7 @@ enum {
                                               feedClass:(Class)feedClass
                                                delegate:(id)delegate
                                       didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector;  
+                                        didFailSelector:(SEL)failedSelector;
 
 - (GDataServiceTicket *)fetchAuthenticatedFeedWithBatchFeed:(GDataFeedBase *)batchFeed
                                             forBatchFeedURL:(NSURL *)feedURL

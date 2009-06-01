@@ -37,11 +37,11 @@ static NSString *const kCountHintAttr = @"countHint";
 + (NSString *)extensionElementLocalName { return @"feedLink"; }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kHrefAttr, kRelAttr, KReadOnlyAttr, kCountHintAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];  
+
+  [self addLocalAttributeDeclarations:attrs];
 }
 
 + (id)feedLinkWithHref:(NSString *)href
@@ -57,7 +57,7 @@ static NSString *const kCountHintAttr = @"countHint";
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-    
+
     [self setFeed:[self objectForChildOfElement:element
                                   qualifiedName:@"feed"
                                    namespaceURI:kGDataNamespaceAtom
@@ -80,7 +80,7 @@ static NSString *const kCountHintAttr = @"countHint";
 - (BOOL)isEqual:(GDataFeedLink *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataFeedLink class]]) return NO;
-  
+
   return [super isEqual:other]
     && AreEqualOrBothNil([self feed], [other feed]);
 }
@@ -96,7 +96,7 @@ static NSString *const kCountHintAttr = @"countHint";
     { @"rel",       @"rel",                   kGDataDescValueLabeled   },
     { nil, nil, 0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -104,7 +104,7 @@ static NSString *const kCountHintAttr = @"countHint";
 #endif
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:nil];
 
   if ([self feed]) {
@@ -146,7 +146,7 @@ static NSString *const kCountHintAttr = @"countHint";
 }
 
 - (GDataFeedBase *)feed {
-  return feed_; 
+  return feed_;
 }
 
 - (void)setFeed:(GDataFeedBase *)feed {
@@ -159,7 +159,7 @@ static NSString *const kCountHintAttr = @"countHint";
 - (NSURL *)URL {
   NSString *href = [self href];
   if ([href length] > 0) {
-    return [NSURL URLWithString:href]; 
+    return [NSURL URLWithString:href];
   }
   return nil;
 }

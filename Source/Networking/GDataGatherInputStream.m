@@ -18,7 +18,7 @@
 @implementation GDataGatherInputStream
 
 + (NSInputStream *)streamWithArray:(NSArray *)dataArray {
-  return [[[self alloc] initWithArray:dataArray] autorelease]; 
+  return [[[self alloc] initWithArray:dataArray] autorelease];
 }
 
 - (id)initWithArray:(NSArray *)dataArray {
@@ -27,18 +27,18 @@
     dataArray_ = [dataArray retain];
     arrayIndex_ = 0;
     dataOffset_ = 0;
-    
+
     [self setDelegate:self];  // An NSStream's default delegate should be self.
-    
+
     // We use a dummy input stream to handle all the various undocumented
     // messages the system sends to an input stream.
     //
     // Contrary to documentation, inputStreamWithData neither copies nor
     // retains the data in Mac OS X 10.4, so we must retain it.
     // (Radar 5167591)
-    
+
     dummyData_ = [[NSData alloc] initWithBytes:"x" length:1];
-    dummyStream_ = [[NSInputStream alloc] initWithData:dummyData_];     
+    dummyStream_ = [[NSInputStream alloc] initWithData:dummyData_];
   }
   return self;
 }
@@ -47,23 +47,23 @@
   [dataArray_ release];
   [dummyStream_ release];
   [dummyData_ release];
-  
+
   [super dealloc];
 }
 
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
-  
+
   NSUInteger bytesRead = 0;
   NSUInteger bytesRemaining = len;
-  
+
   // read bytes from the currently-indexed array
   while ((bytesRemaining > 0) && (arrayIndex_ < [dataArray_ count])) {
-    
+
     NSData* data = [dataArray_ objectAtIndex:arrayIndex_];
-    
+
     NSUInteger dataLen = [data length];
     NSUInteger dataBytesLeft = dataLen - (NSUInteger)dataOffset_;
-    
+
     NSUInteger bytesToCopy = MIN(bytesRemaining, dataBytesLeft);
     NSRange range = NSMakeRange((NSUInteger) dataOffset_, bytesToCopy);
 
@@ -72,13 +72,13 @@
     bytesRead += bytesToCopy;
     dataOffset_ += bytesToCopy;
     bytesRemaining -= bytesToCopy;
-    
+
     if (dataOffset_ == dataLen) {
       dataOffset_ = 0;
       arrayIndex_++;
-    }    
+    }
   }
-  
+
   if (bytesRead == 0) {
     // We are at the end our our stream, so we read all of the data on our
     // dummy input stream to make sure it is in the "fully read" state.
@@ -137,11 +137,11 @@
 }
 
 - (id)propertyForKey:(NSString *)key {
-  return [dummyStream_ propertyForKey:key]; 
+  return [dummyStream_ propertyForKey:key];
 }
 
 - (BOOL)setProperty:(id)property forKey:(NSString *)key {
-  return [dummyStream_ setProperty:property forKey:key]; 
+  return [dummyStream_ setProperty:property forKey:key];
 }
 
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSString *)mode {
@@ -163,7 +163,7 @@
 
 // We'll forward all unexpected messages to our dummy stream
 
-+ (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {  
++ (NSMethodSignature*)methodSignatureForSelector:(SEL)selector {
   return [NSInputStream methodSignatureForSelector:selector];
 }
 
@@ -176,17 +176,17 @@
 }
 
 - (void)forwardInvocation:(NSInvocation*)invocation {
-  
+
 #if 0
   // uncomment this section to see the messages the NSInputStream receives
   SEL selector;
   NSString *selName;
-  
+
   selector=[invocation selector];
   selName=NSStringFromSelector(selector);
   NSLog(@"-forwardInvocation: %@",selName);
 #endif
-  
+
   [invocation invokeWithTarget:dummyStream_];
 }
 

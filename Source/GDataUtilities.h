@@ -21,7 +21,7 @@
 BOOL AreEqualOrBothNil(id obj1, id obj2);
 BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 
-@interface GDataUtilities : NSObject 
+@interface GDataUtilities : NSObject
 
 // utility for removing non-whitespace control characters
 + (NSString *)stringWithControlsFilteredForString:(NSString *)str;
@@ -61,7 +61,7 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // +stringByURLEncodingString just makes a string legal for a URL
 //
 // +stringByURLEncodingForURI also encodes some characters that are legal in
-// URLs but should not be used in URIs, 
+// URLs but should not be used in URIs,
 // per http://bitworking.org/projects/atom/rfc5023.html#rfc.section.9.7
 //
 // +stringByURLEncodingStringParameter is like +stringByURLEncodingForURI but
@@ -78,13 +78,13 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // key-value coding searches in an array
 //
 // utilities to get from an array objects having a known value (or nil)
-// at a keyPath 
+// at a keyPath
 
-+ (NSArray *)objectsFromArray:(NSArray *)sourceArray 
++ (NSArray *)objectsFromArray:(NSArray *)sourceArray
                     withValue:(id)desiredValue
                    forKeyPath:(NSString *)keyPath;
 
-+ (id)firstObjectFromArray:(NSArray *)sourceArray 
++ (id)firstObjectFromArray:(NSArray *)sourceArray
                  withValue:(id)desiredValue
                 forKeyPath:(NSString *)keyPath;
 

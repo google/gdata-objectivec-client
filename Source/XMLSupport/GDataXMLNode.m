@@ -32,15 +32,15 @@ static CFHashCode StringCacheKeyHashCallBack(const void *str);
 // isEqual: has the fatal flaw that it doesn't deal well with the received
 // being nil. We'll use this utility instead.
 
-// Static copy of AreEqualOrBothNil from GDataObject.m, so that using 
+// Static copy of AreEqualOrBothNil from GDataObject.m, so that using
 // GDataXMLNode does not require pulling in all of GData.
 static BOOL AreEqualOrBothNilPrivate(id obj1, id obj2) {
   if (obj1 == obj2) {
     return YES;
   }
   if (obj1 && obj2) {
-    return [obj1 isEqual:obj2]; 
-  } 
+    return [obj1 isEqual:obj2];
+  }
   return NO;
 }
 
@@ -70,38 +70,38 @@ static NSString *GDataFakeQNameForURIAndName(NSString *theURI, NSString *name) {
 
 
 // libxml2 offers xmlSplitQName2, but that searches forwards. Since we may
-// be searching for a whole URI shoved in as a prefix, like 
+// be searching for a whole URI shoved in as a prefix, like
 //   {http://foo}:name
 // we'll search for the prefix in backwards from the end of the qualified name
 //
 // returns a copy of qname as the local name if there's no prefix
 static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
-  
+
   // search backwards for a colon
   int qnameLen = xmlStrlen(qname);
   for (int idx = qnameLen - 1; idx >= 0; idx--) {
-    
+
     if (qname[idx] == ':') {
-      
+
       // found the prefix; copy the prefix, if requested
       if (prefix != NULL) {
         if (idx > 0) {
-          *prefix = xmlStrsub(qname, 0, idx); 
+          *prefix = xmlStrsub(qname, 0, idx);
         } else {
-          *prefix = NULL; 
+          *prefix = NULL;
         }
       }
-      
+
       if (idx < qnameLen - 1) {
         // return a copy of the local name
         xmlChar *localName = xmlStrsub(qname, idx + 1, qnameLen - idx - 1);
         return localName;
       } else {
-        return NULL; 
+        return NULL;
       }
     }
   }
-  
+
   // no colon found, so the qualified name is the local name
   xmlChar *qnameCopy = xmlStrdup(qname);
   return qnameCopy;
@@ -109,7 +109,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 @interface GDataXMLNode (PrivateMethods)
 
-// consuming a node implies it will later be freed when the instance is 
+// consuming a node implies it will later be freed when the instance is
 // dealloc'd; borrowing it implies that ownership and disposal remain the
 // job of the supplier of the node
 
@@ -142,10 +142,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
             graftingToTreeNode:(xmlNodePtr)graftPointNode;
 @end
 
-@implementation GDataXMLNode 
+@implementation GDataXMLNode
 
 + (void)load {
-  xmlInitParser(); 
+  xmlInitParser();
 }
 
 // Note on convenience methods for making stand-alone element and
@@ -159,32 +159,32 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 // pointer.
 
 + (GDataXMLElement *)elementWithName:(NSString *)name {
-  
-  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace 
+
+  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace
                                      GDataGetXMLString(name));
-  if (theNewNode) {  
+  if (theNewNode) {
     // succeeded
     return [self nodeConsumingXMLNode:theNewNode];
-  } 
+  }
   return nil;
 }
 
 + (GDataXMLElement *)elementWithName:(NSString *)name stringValue:(NSString *)value {
-  
-  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace 
+
+  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace
                                      GDataGetXMLString(name));
-  if (theNewNode) {  
-    
+  if (theNewNode) {
+
     xmlNodePtr textNode = xmlNewText(GDataGetXMLString(value));
     if (textNode) {
-      
+
       xmlNodePtr temp = xmlAddChild(theNewNode, textNode);
       if (temp) {
         // succeeded
         return [self nodeConsumingXMLNode:theNewNode];
-      } 
-    } 
-    
+      }
+    }
+
     // failed; free the node and any children
     xmlFreeNode(theNewNode);
   }
@@ -192,77 +192,77 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 + (GDataXMLElement *)elementWithName:(NSString *)name URI:(NSString *)theURI {
-  
+
   // since we don't know a prefix yet, shove in the whole URI; we'll look for
   // a proper namespace ptr later when addChild calls fixUpNamespacesForNode
-  
+
   NSString *fakeQName = GDataFakeQNameForURIAndName(theURI, name);
 
-  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace 
+  xmlNodePtr theNewNode = xmlNewNode(NULL, // namespace
                                      GDataGetXMLString(fakeQName));
-  if (theNewNode) {  
+  if (theNewNode) {
       return [self nodeConsumingXMLNode:theNewNode];
   }
   return nil;
 }
 
 + (id)attributeWithName:(NSString *)name stringValue:(NSString *)value {
-  
+
   xmlChar *xmlName = GDataGetXMLString(name);
   xmlChar *xmlValue = GDataGetXMLString(value);
-  
+
   xmlAttrPtr theNewAttr = xmlNewProp(NULL, // parent node for the attr
                                      xmlName, xmlValue);
   if (theNewAttr) {
     return [self nodeConsumingXMLNode:(xmlNodePtr) theNewAttr];
-  } 
-  
+  }
+
   return nil;
 }
 
 + (id)attributeWithName:(NSString *)name URI:(NSString *)attributeURI stringValue:(NSString *)value {
-  
+
   // since we don't know a prefix yet, shove in the whole URI; we'll look for
   // a proper namespace ptr later when addChild calls fixUpNamespacesForNode
-  
+
   NSString *fakeQName = GDataFakeQNameForURIAndName(attributeURI, name);
-  
+
   xmlChar *xmlName = GDataGetXMLString(fakeQName);
   xmlChar *xmlValue = GDataGetXMLString(value);
-  
+
   xmlAttrPtr theNewAttr = xmlNewProp(NULL, // parent node for the attr
                                      xmlName, xmlValue);
   if (theNewAttr) {
     return [self nodeConsumingXMLNode:(xmlNodePtr) theNewAttr];
   }
-  
+
   return nil;
 }
 
 + (id)textWithStringValue:(NSString *)value {
-  
+
   xmlNodePtr theNewText = xmlNewText(GDataGetXMLString(value));
   if (theNewText) {
     return [self nodeConsumingXMLNode:theNewText];
-  } 
+  }
   return nil;
 }
 
 + (id)namespaceWithName:(NSString *)name stringValue:(NSString *)value {
-  
+
   xmlChar *href = GDataGetXMLString(value);
   xmlChar *prefix;
-  
+
   if ([name length] > 0) {
     prefix = GDataGetXMLString(name);
   } else {
     // default namespace is represented by a nil prefix
-    prefix = nil; 
+    prefix = nil;
   }
 
   xmlNsPtr theNewNs = xmlNewNs(NULL, // parent node
                                href, prefix);
-  if (theNewNs) {  
+  if (theNewNs) {
     return [self nodeConsumingXMLNode:(xmlNodePtr) theNewNs];
   }
   return nil;
@@ -270,13 +270,13 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (id)nodeConsumingXMLNode:(xmlNodePtr)theXMLNode {
   Class theClass;
-  
+
   if (theXMLNode->type == XML_ELEMENT_NODE) {
     theClass = [GDataXMLElement class];
   } else {
     theClass = [GDataXMLNode class];
   }
-  return [[[theClass alloc] initConsumingXMLNode:theXMLNode] autorelease]; 
+  return [[[theClass alloc] initConsumingXMLNode:theXMLNode] autorelease];
 }
 
 - (id)initConsumingXMLNode:(xmlNodePtr)theXMLNode {
@@ -295,8 +295,8 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   } else {
     theClass = [GDataXMLNode class];
   }
-  
-  return [[[theClass alloc] initBorrowingXMLNode:theXMLNode] autorelease]; 
+
+  return [[[theClass alloc] initBorrowingXMLNode:theXMLNode] autorelease];
 }
 
 - (id)initBorrowingXMLNode:(xmlNodePtr)theXMLNode {
@@ -309,13 +309,13 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)releaseCachedValues {
-  
+
   [cachedName_ release];
   cachedName_ = nil;
 
   [cachedChildren_ release];
   cachedChildren_ = nil;
-  
+
   [cachedAttributes_ release];
   cachedAttributes_ = nil;
 }
@@ -335,7 +335,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   CFMutableDictionaryRef cacheDict = NULL;
 
   NSString *result = nil;
-  
+
   if (xmlNode_ != NULL
     && (xmlNode_->type == XML_ELEMENT_NODE
         || xmlNode_->type == XML_ATTRIBUTE_NODE
@@ -377,89 +377,89 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (void)dealloc {
 
   if (xmlNode_ && shouldFreeXMLNode_) {
-    xmlFreeNode(xmlNode_); 
+    xmlFreeNode(xmlNode_);
   }
-  
+
   [self releaseCachedValues];
-  [super dealloc]; 
+  [super dealloc];
 }
 
 #pragma mark -
 
 - (void)setStringValue:(NSString *)str {
   if (xmlNode_ != NULL && str != nil) {
-    
+
     if (xmlNode_->type == XML_NAMESPACE_DECL) {
-      
+
       // for a namespace node, the value is the namespace URI
       xmlNsPtr nsNode = (xmlNsPtr)xmlNode_;
-      
+
       if (nsNode->href != NULL) xmlFree((char *)nsNode->href);
-      
+
       nsNode->href = xmlStrdup(GDataGetXMLString(str));
-      
-    } else {  
-      
+
+    } else {
+
       // attribute or element node
-      
+
       // do we need to call xmlEncodeSpecialChars?
       xmlNodeSetContent(xmlNode_, GDataGetXMLString(str));
-    }    
+    }
   }
 }
 
 - (NSString *)stringValue {
-    
+
   NSString *str = nil;
-  
+
   if (xmlNode_ != NULL) {
-    
+
     if (xmlNode_->type == XML_NAMESPACE_DECL) {
-      
+
       // for a namespace node, the value is the namespace URI
       xmlNsPtr nsNode = (xmlNsPtr)xmlNode_;
-      
+
       str = [self stringFromXMLString:(nsNode->href)];
-      
-    } else {  
-      
+
+    } else {
+
       // attribute or element node
       xmlChar* chars = xmlNodeGetContent(xmlNode_);
       if (chars) {
-        
+
         str = [self stringFromXMLString:chars];
-        
+
         xmlFree(chars);
       }
-    }    
+    }
   }
   return str;
 }
 
 - (NSString *)XMLString {
-  
+
   NSString *str = nil;
-  
+
   if (xmlNode_ != NULL) {
-    
+
     xmlBufferPtr buff = xmlBufferCreate();
     if (buff) {
-      
+
       xmlDocPtr doc = NULL;
       int level = 0;
       int format = 0;
-      
+
       int result = xmlNodeDump(buff, doc, xmlNode_, level, format);
-      
+
       if (result > -1) {
         str = [[[NSString alloc] initWithBytes:(xmlBufferContent(buff))
                                         length:(xmlBufferLength(buff))
                                       encoding:NSUTF8StringEncoding] autorelease];
       }
-      xmlBufferFree(buff); 
+      xmlBufferFree(buff);
     }
   }
-  
+
   // remove leading and trailing whitespace
   NSCharacterSet *ws = [NSCharacterSet whitespaceAndNewlineCharacterSet];
   NSString *trimmed = [str stringByTrimmingCharactersInSet:ws];
@@ -468,11 +468,11 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 - (NSString *)localName {
   NSString *str = nil;
-  
+
   if (xmlNode_ != NULL) {
 
     str = [self stringFromXMLString:(xmlNode_->name)];
-    
+
     // if this is part of a detached subtree, str may have a prefix in it
     str = [[self class] localNameForName:str];
   }
@@ -480,28 +480,28 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSString *)prefix {
-  
+
   NSString *str = nil;
-  
+
   if (xmlNode_ != NULL) {
-    
+
     // the default namespace's prefix is an empty string, though libxml
     // represents it as NULL for ns->prefix
-    str = @""; 
-    
+    str = @"";
+
     if (xmlNode_->ns != NULL && xmlNode_->ns->prefix != NULL) {
       str = [self stringFromXMLString:(xmlNode_->ns->prefix)];
-    } 
+    }
   }
   return str;
 }
 
 - (NSString *)URI {
-  
+
   NSString *str = nil;
-  
+
   if (xmlNode_ != NULL) {
-    
+
     if (xmlNode_->ns != NULL && xmlNode_->ns->href != NULL) {
       str = [self stringFromXMLString:(xmlNode_->ns->href)];
     }
@@ -551,11 +551,11 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (NSString *)name {
 
   if (cachedName_ != nil) {
-    return cachedName_; 
+    return cachedName_;
   }
-  
+
   NSString *str = [self qualifiedName];
-  
+
   cachedName_ = [str retain];
 
   return str;
@@ -563,10 +563,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (NSString *)localNameForName:(NSString *)name {
   if (name != nil) {
-    
+
     NSRange range = [name rangeOfString:@":"];
     if (range.location != NSNotFound) {
-      
+
       // found a colon
       if (range.location + 1 < [name length]) {
         NSString *localName = [name substringFromIndex:(range.location + 1)];
@@ -579,10 +579,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (NSString *)prefixForName:(NSString *)name {
   if (name != nil) {
-    
+
     NSRange range = [name rangeOfString:@":"];
     if (range.location != NSNotFound) {
-      
+
       NSString *prefix = [name substringToIndex:(range.location)];
       return prefix;
     }
@@ -591,17 +591,17 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSUInteger)childCount {
-    
+
   if (cachedChildren_ != nil) {
     return [cachedChildren_ count];
   }
-  
+
   if (xmlNode_ != NULL) {
-    
+
     unsigned int count = 0;
-    
+
     xmlNodePtr currChild = xmlNode_->children;
-    
+
     while (currChild != NULL) {
       ++count;
       currChild = currChild->next;
@@ -641,11 +641,11 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (GDataXMLNode *)childAtIndex:(unsigned)index {
-  
+
   NSArray *children = [self children];
-  
+
   if ([children count] > index) {
-    
+
     return [children objectAtIndex:index];
   }
   return nil;
@@ -676,15 +676,15 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       case XML_XINCLUDE_START:       return GDataXMLProcessingInstructionKind;
       case XML_XINCLUDE_END:         return GDataXMLProcessingInstructionKind;
       case XML_DOCB_DOCUMENT_NODE:   return GDataXMLDocumentKind;
-    }        
+    }
   }
-  return GDataXMLInvalidKind;  
+  return GDataXMLInvalidKind;
 }
 
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
 
   NSMutableArray *array = nil;
-  
+
   // xmlXPathNewContext requires a doc for its context, but if our elements
   // are created from GDataXMLElement's initWithXMLString there may not be
   // a document. (We may later decide that we want to stuff the doc used
@@ -694,7 +694,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
   xmlDocPtr tempDoc = NULL;
   xmlNodePtr topParent = NULL;
-  
+
   if (xmlNode_->doc == NULL) {
     tempDoc = xmlNewDoc(NULL);
     if (tempDoc) {
@@ -707,12 +707,12 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       xmlDocSetRootElement(tempDoc, topParent);
     }
   }
-  
+
   if (xmlNode_ != NULL && xmlNode_->doc != NULL) {
-    
-    xmlXPathContextPtr xpathCtx = xmlXPathNewContext(xmlNode_->doc); 
+
+    xmlXPathContextPtr xpathCtx = xmlXPathNewContext(xmlNode_->doc);
     if (xpathCtx) {
-      
+
       // anchor at our current node
       xpathCtx->node = xmlNode_;
 
@@ -746,19 +746,19 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       xmlXPathObjectPtr xpathObj;
       xpathObj = xmlXPathEval(GDataGetXMLString(xpath), xpathCtx);
       if (xpathObj) {
-        
+
         // we have some result from the search
         array = [NSMutableArray array];
-        
+
         xmlNodeSetPtr nodeSet = xpathObj->nodesetval;
         if (nodeSet) {
-          
+
           // add each node in the result set to our array
           for (int index = 0; index < nodeSet->nodeNr; index++) {
-            
+
             xmlNodePtr currNode = nodeSet->nodeTab[index];
-            
-            GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currNode]; 
+
+            GDataXMLNode *node = [GDataXMLNode nodeBorrowingXMLNode:currNode];
             if (node) {
               [array addObject:node];
             }
@@ -768,16 +768,16 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       }
       xmlXPathFreeContext(xpathCtx);
     }
-    
+
     if (array == nil) {
-      
-      // provide an error  
+
+      // provide an error
       //
       // TODO(grobbins) obtain better xpath and libxml errors
       const char *msg = xpathCtx->lastError.str1;
       NSDictionary *userInfo = nil;
       if (msg) {
-        userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:msg] 
+        userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:msg]
                                                forKey:@"error"];
       }
       *error = [NSError errorWithDomain:@"com.google.GDataXML"
@@ -785,7 +785,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
                                userInfo:userInfo];
     }
   }
-  
+
   if (tempDoc != NULL) {
     xmlUnlinkNode(topParent);
     xmlSetTreeDoc(topParent, NULL);
@@ -796,15 +796,15 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 - (NSString *)description {
   int nodeType = (xmlNode_ ? (int)xmlNode_->type : -1);
-  
+
   return [NSString stringWithFormat:@"%@ 0x%lX: {type:%d name:%@ xml:\"%@\"}",
           [self class], self, nodeType, [self name], [self XMLString]];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
-  
+
   xmlNodePtr nodeCopy = [self XMLNodeCopy];
-  
+
   if (nodeCopy != NULL) {
     return [[[self class] alloc] initConsumingXMLNode:nodeCopy];
   }
@@ -814,13 +814,13 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (BOOL)isEqual:(GDataXMLNode *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataXMLNode class]]) return NO;
-  
+
   return [self XMLNode] == [other XMLNode]
   || ([self kind] == [other kind]
       && AreEqualOrBothNilPrivate([self name], [other name])
       && [[self children] count] == [[other children] count]);
-   
-}  
+
+}
 
 - (NSUInteger)hash {
   return (NSUInteger) (void *) [GDataXMLNode class];
@@ -834,11 +834,11 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 - (xmlNodePtr)XMLNodeCopy {
   if (xmlNode_ != NULL) {
-    
+
     // Note: libxml will create a new copy of namespace nodes (xmlNs records)
     // and attach them to this copy in order to keep namespaces within this
     // node subtree copy value.
-    
+
     xmlNodePtr nodeCopy = xmlCopyNode(xmlNode_, 1); // 1 = recursive
     return nodeCopy;
   }
@@ -850,7 +850,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (BOOL)shouldFreeXMLNode {
-  return shouldFreeXMLNode_; 
+  return shouldFreeXMLNode_;
 }
 
 - (void)setShouldFreeXMLNode:(BOOL)flag {
@@ -861,12 +861,12 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 
 
-@implementation GDataXMLElement 
+@implementation GDataXMLElement
 
 - (id)initWithXMLString:(NSString *)str error:(NSError **)error {
   self = [super init];
-  if (self) {    
-    
+  if (self) {
+
     const char *utf8Str = [str UTF8String];
     // NOTE: We are assuming a string length that fits into an int
     xmlDocPtr doc = xmlReadMemory(utf8Str, (int)strlen(utf8Str), NULL, // URL
@@ -884,20 +884,20 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       }
       xmlFreeDoc(doc);
     }
-    
-    
+
+
     if (xmlNode_ == NULL) {
       // failure
       if (error) {
         *error = [NSError errorWithDomain:@"com.google.GDataXML"
-                                     code:-1 
+                                     code:-1
                                  userInfo:nil];
       }
       [self release];
-      return nil; 
+      return nil;
     }
   }
-  return self;  
+  return self;
 }
 
 - (NSArray *)namespaces {
@@ -957,15 +957,15 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)addNamespace:(GDataXMLNode *)aNamespace {
-  
+
   if (xmlNode_ != NULL) {
-    
+
     [self releaseCachedValues];
-    
+
     xmlNsPtr ns = (xmlNsPtr) [aNamespace XMLNode];
     if (ns) {
       (void)xmlNewNs(xmlNode_, ns->href, ns->prefix);
-      
+
       // we may need to fix this node's own name; the graft point is where
       // the namespace search starts, so that points to this node too
       [[self class] fixUpNamespacesForNode:xmlNode_
@@ -979,24 +979,24 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
     [self addAttribute:child];
     return;
   }
-  
+
   if (xmlNode_ != NULL) {
 
     [self releaseCachedValues];
-    
+
     xmlNodePtr childNodeCopy = [child XMLNodeCopy];
     if (childNodeCopy) {
-      
+
       xmlNodePtr resultNode = xmlAddChild(xmlNode_, childNodeCopy);
       if (resultNode == NULL) {
-        
+
         // failed to add
-        xmlFreeNode(childNodeCopy); 
-        
+        xmlFreeNode(childNodeCopy);
+
       } else {
         // added this child subtree successfully; see if it has
         // previously-unresolved namespace prefixes that can now be fixed up
-        [[self class] fixUpNamespacesForNode:childNodeCopy 
+        [[self class] fixUpNamespacesForNode:childNodeCopy
                           graftingToTreeNode:xmlNode_];
       }
     }
@@ -1181,32 +1181,32 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)addAttribute:(GDataXMLNode *)attribute {
-  
+
   if (xmlNode_ != NULL) {
-    
+
     [self releaseCachedValues];
-    
+
     xmlAttrPtr attrPtr = (xmlAttrPtr) [attribute XMLNode];
     if (attrPtr) {
-      
+
       // ignore this if an attribute with the name is already present,
       // similar to NSXMLNode's addAttribute
       xmlAttrPtr oldAttr;
-      
+
       if (attrPtr->ns == NULL) {
         oldAttr = xmlHasProp(xmlNode_, attrPtr->name);
       } else {
         oldAttr = xmlHasNsProp(xmlNode_, attrPtr->name, attrPtr->ns->href);
       }
-      
+
       if (oldAttr == NULL) {
-        
+
         xmlNsPtr newPropNS = NULL;
 
         // if this attribute has a namespace, search for a matching namespace
         // on the node we're adding to
         if (attrPtr->ns != NULL) {
-          
+
           newPropNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, attrPtr->ns->href);
           if (newPropNS == NULL) {
             // make a new namespace on the parent node, and use that for the
@@ -1214,17 +1214,17 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
             newPropNS = xmlNewNs(xmlNode_, attrPtr->ns->href, attrPtr->ns->prefix);
           }
         }
-        
+
         // copy the attribute onto this node
         xmlChar *value = xmlNodeGetContent((xmlNodePtr) attrPtr);
         xmlAttrPtr newProp = xmlNewNsProp(xmlNode_, newPropNS, attrPtr->name, value);
         if (newProp != NULL) {
           // we made the property, so clean up the property's namespace
-          
+
           [[self class] fixUpNamespacesForNode:(xmlNodePtr)newProp
                             graftingToTreeNode:xmlNode_];
         }
-        
+
         if (value != NULL) {
           xmlFree(value);
         }
@@ -1249,30 +1249,30 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (GDataXMLNode *)attributeForName:(NSString *)name {
-  
+
   if (xmlNode_ != NULL) {
-    
+
     xmlAttrPtr attrPtr = xmlHasProp(xmlNode_, GDataGetXMLString(name));
     if (attrPtr == NULL) {
-      
+
       // can we guarantee that xmlAttrPtrs always have the ns ptr and never
       // a namespace as part of the actual attribute name?
-      
+
       // split the name and its prefix, if any
       xmlNsPtr ns = NULL;
       NSString *prefix = [[self class] prefixForName:name];
       if (prefix) {
-        
+
         // find the namespace for this prefix, and search on its URI to find
         // the xmlNsPtr
         name = [[self class] localNameForName:name];
-        ns = xmlSearchNs(xmlNode_->doc, xmlNode_, GDataGetXMLString(prefix)); 
+        ns = xmlSearchNs(xmlNode_->doc, xmlNode_, GDataGetXMLString(prefix));
       }
-      
+
       const xmlChar* nsURI = ((ns != NULL) ? ns->href : NULL);
       attrPtr = xmlHasNsProp(xmlNode_, GDataGetXMLString(name), nsURI);
     }
-    
+
     if (attrPtr) {
       GDataXMLNode *attr = [self attributeForXMLNode:attrPtr];
       return attr;
@@ -1309,14 +1309,14 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSString *)resolvePrefixForNamespaceURI:(NSString *)namespaceURI {
-  
+
   if (xmlNode_ != NULL) {
-    
+
     xmlChar* desiredNSHref = GDataGetXMLString(namespaceURI);
-    
+
     xmlNsPtr foundNS = xmlSearchNsByHref(xmlNode_->doc, xmlNode_, desiredNSHref);
     if (foundNS) {
-      
+
       // we found the namespace
       if (foundNS->prefix != NULL) {
         NSString *prefix = [self stringFromXMLString:(foundNS->prefix)];
@@ -1326,7 +1326,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
         return @"";
       }
     }
-  } 
+  }
   return nil;
 }
 
@@ -1334,24 +1334,24 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (void)deleteNamespacePtr:(xmlNsPtr)namespaceToDelete
                fromXMLNode:(xmlNodePtr)node {
-  
+
   // utilty routine to remove a namespace pointer from an element's
   // namespace definition list.  This is just removing the nsPtr
   // from the singly-linked list, the node's namespace definitions.
   xmlNsPtr currNS = node->nsDef;
   xmlNsPtr prevNS = NULL;
-  
+
   while (currNS != NULL) {
-    xmlNsPtr nextNS = currNS->next;  
-    
+    xmlNsPtr nextNS = currNS->next;
+
     if (namespaceToDelete == currNS) {
-      
+
       // found it; delete it from the head of the node's ns definition list
       // or from the next field of the previous namespace
-      
+
       if (prevNS != NULL) prevNS->next = nextNS;
       else node->nsDef = nextNS;
-      
+
       xmlFreeNs(currNS);
       return;
     }
@@ -1362,34 +1362,34 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (void)fixQualifiedNamesForNode:(xmlNodePtr)nodeToFix
               graftingToTreeNode:(xmlNodePtr)graftPointNode {
-  
+
   // Replace prefix-in-name with proper namespace pointers
   //
   // This is an inner routine for fixUpNamespacesForNode:
   //
-  // see if this node's name lacks a namespace and is qualified, and if so, 
+  // see if this node's name lacks a namespace and is qualified, and if so,
   // see if we can resolve the prefix against the parent
   //
   // The prefix may either be normal, "gd:foo", or a URI
   // "{http://blah.com/}:foo"
-  
+
   if (nodeToFix->ns == NULL) {
     xmlNsPtr foundNS = NULL;
-    
+
     xmlChar* prefix = NULL;
     xmlChar* localName = SplitQNameReverse(nodeToFix->name, &prefix);
     if (localName != NULL) {
       if (prefix != NULL) {
-        
+
         // if the prefix is wrapped by { and } then it's a URI
         int prefixLen = xmlStrlen(prefix);
         if (prefixLen > 2
-            && prefix[0] == '{' 
+            && prefix[0] == '{'
             && prefix[prefixLen - 1] == '}') {
-          
+
           // search for the namespace by URI
           xmlChar* uri = xmlStrsub(prefix, 1, prefixLen - 2);
-          
+
           if (uri != NULL) {
             foundNS = xmlSearchNsByHref(graftPointNode->doc, graftPointNode, uri);
 
@@ -1397,62 +1397,62 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
           }
         }
       }
-      
+
       if (foundNS == NULL) {
         // search for the namespace by prefix, even if the prefix is nil
         // (nil prefix means to search for the default namespace)
-        foundNS = xmlSearchNs(graftPointNode->doc, graftPointNode, prefix); 
+        foundNS = xmlSearchNs(graftPointNode->doc, graftPointNode, prefix);
       }
-      
+
       if (foundNS != NULL) {
         // we found a namespace, so fix the ns pointer and the local name
         xmlSetNs(nodeToFix, foundNS);
         xmlNodeSetName(nodeToFix, localName);
       }
-      
+
       if (prefix != NULL) {
         xmlFree(prefix);
         prefix = NULL;
       }
-      
+
       xmlFree(localName);
     }
   }
 }
 
 + (void)fixDuplicateNamespacesForNode:(xmlNodePtr)nodeToFix
-                   graftingToTreeNode:(xmlNodePtr)graftPointNode 
+                   graftingToTreeNode:(xmlNodePtr)graftPointNode
              namespaceSubstitutionMap:(NSMutableDictionary *)nsMap {
-  
+
   // Duplicate namespace removal
   //
   // This is an inner routine for fixUpNamespacesForNode:
   //
-  // If any of this node's namespaces are already defined at the graft point 
-  // level, add that namespace to the map of namespace substitutions 
+  // If any of this node's namespaces are already defined at the graft point
+  // level, add that namespace to the map of namespace substitutions
   // so it will be replaced in the children below the nodeToFix, and
   // delete the namespace record
-  
+
   if (nodeToFix->type == XML_ELEMENT_NODE) {
-    
+
     // step through the namespaces defined on this node
     xmlNsPtr definedNS = nodeToFix->nsDef;
     while (definedNS != NULL) {
-      
+
       // see if this namespace is already defined higher in the tree,
       // with both the same URI and the same prefix; if so, add a mapping for
       // it
-      xmlNsPtr foundNS = xmlSearchNsByHref(graftPointNode->doc, graftPointNode, 
+      xmlNsPtr foundNS = xmlSearchNsByHref(graftPointNode->doc, graftPointNode,
                                            definedNS->href);
       if (foundNS != NULL
           && foundNS != definedNS
           && xmlStrEqual(definedNS->prefix, foundNS->prefix)) {
-        
+
         // store a mapping from this defined nsPtr to the one found higher
         // in the tree
         [nsMap setObject:[NSValue valueWithPointer:foundNS]
                   forKey:[NSValue valueWithPointer:definedNS]];
-        
+
         // remove this namespace from the ns definition list of this node;
         // all child elements and attributes referencing this namespace
         // now have a dangling pointer and must be updated (that is done later
@@ -1464,27 +1464,27 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
         definedNS = definedNS->next;
 
         [self deleteNamespacePtr:nsToDelete fromXMLNode:nodeToFix];
-        
+
       } else {
         // this namespace wasn't a duplicate; move to the next
         definedNS = definedNS->next;
       }
     }
   }
-  
+
   // if this node's namespace is one we deleted, update it to point
   // to someplace better
   if (nodeToFix->ns != NULL) {
-    
+
     NSValue *currNS = [NSValue valueWithPointer:nodeToFix->ns];
     NSValue *replacementNS = [nsMap objectForKey:currNS];
-    
+
     if (replacementNS != nil) {
       xmlNsPtr replaceNSPtr = [replacementNS pointerValue];
-      
-      xmlSetNs(nodeToFix, replaceNSPtr); 
+
+      xmlSetNs(nodeToFix, replaceNSPtr);
     }
-  }  
+  }
 }
 
 
@@ -1492,7 +1492,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 + (void)fixUpNamespacesForNode:(xmlNodePtr)nodeToFix
             graftingToTreeNode:(xmlNodePtr)graftPointNode
       namespaceSubstitutionMap:(NSMutableDictionary *)nsMap {
-  
+
   // This is the inner routine for fixUpNamespacesForNode:graftingToTreeNode:
   //
   // This routine fixes two issues:
@@ -1505,36 +1505,36 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
   // we want to remove redundant namespaces after adding them to
   // a tree.
   //
-  // If only the Mac's libxml had xmlDOMWrapReconcileNamespaces, it could do 
+  // If only the Mac's libxml had xmlDOMWrapReconcileNamespaces, it could do
   // namespace cleanup for us
 
   // We only care about fixing names of elements and attributes
   if (nodeToFix->type != XML_ELEMENT_NODE
       && nodeToFix->type != XML_ATTRIBUTE_NODE) return;
-  
+
   // Do the fixes
   [self fixQualifiedNamesForNode:nodeToFix
               graftingToTreeNode:graftPointNode];
-  
+
   [self fixDuplicateNamespacesForNode:nodeToFix
                    graftingToTreeNode:graftPointNode
              namespaceSubstitutionMap:nsMap];
-  
+
   if (nodeToFix->type == XML_ELEMENT_NODE) {
-    
-    // when fixing element nodes, recurse for each child element and 
+
+    // when fixing element nodes, recurse for each child element and
     // for each attribute
     xmlNodePtr currChild = nodeToFix->children;
     while (currChild != NULL) {
-      [self fixUpNamespacesForNode:currChild 
+      [self fixUpNamespacesForNode:currChild
                 graftingToTreeNode:graftPointNode
           namespaceSubstitutionMap:nsMap];
       currChild = currChild->next;
     }
-    
+
     xmlAttrPtr currProp = nodeToFix->properties;
     while (currProp != NULL) {
-      [self fixUpNamespacesForNode:(xmlNodePtr)currProp 
+      [self fixUpNamespacesForNode:(xmlNodePtr)currProp
                 graftingToTreeNode:graftPointNode
           namespaceSubstitutionMap:nsMap];
       currProp = currProp->next;
@@ -1544,11 +1544,11 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 + (void)fixUpNamespacesForNode:(xmlNodePtr)nodeToFix
             graftingToTreeNode:(xmlNodePtr)graftPointNode {
-  
+
   // allocate the namespace map that will be passed
   // down on recursive calls
   NSMutableDictionary *nsMap = [NSMutableDictionary dictionary];
-  
+
   [self fixUpNamespacesForNode:nodeToFix
             graftingToTreeNode:graftPointNode
       namespaceSubstitutionMap:nsMap];
@@ -1561,10 +1561,10 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (void)addStringsCacheToDoc;
 @end
 
-@implementation GDataXMLDocument 
+@implementation GDataXMLDocument
 
 - (id)initWithXMLString:(NSString *)str options:(unsigned int)mask error:(NSError **)error {
-  
+
   NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
   GDataXMLDocument *doc = [self initWithData:data options:mask error:error];
   return doc;
@@ -1669,9 +1669,9 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
 - (GDataXMLElement *)rootElement {
   GDataXMLElement *element = nil;
-  
+
   if (xmlDoc_ != NULL) {
-    xmlNodePtr rootNode = xmlDocGetRootElement(xmlDoc_); 
+    xmlNodePtr rootNode = xmlDocGetRootElement(xmlDoc_);
     if (rootNode) {
       element = [GDataXMLElement nodeBorrowingXMLNode:rootNode];
     }
@@ -1680,13 +1680,13 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSData *)XMLData {
-  
+
   if (xmlDoc_ != NULL) {
     xmlChar *buffer = NULL;
     int bufferSize = 0;
-    
+
     xmlDocDumpMemory(xmlDoc_, &buffer, &bufferSize);
-    
+
     if (buffer) {
       NSData *data = [NSData dataWithBytes:buffer
                                     length:bufferSize];
@@ -1698,14 +1698,14 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)setVersion:(NSString *)version {
-  
+
   if (xmlDoc_ != NULL) {
     if (xmlDoc_->version != NULL) {
       // version is a const char* so we must cast
       xmlFree((char *) xmlDoc_->version);
       xmlDoc_->version = NULL;
     }
-    
+
     if (version != nil) {
       xmlDoc_->version = xmlStrdup(GDataGetXMLString(version));
     }
@@ -1713,14 +1713,14 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (void)setCharacterEncoding:(NSString *)encoding {
-  
+
   if (xmlDoc_ != NULL) {
     if (xmlDoc_->encoding != NULL) {
       // version is a const char* so we must cast
       xmlFree((char *) xmlDoc_->encoding);
       xmlDoc_->encoding = NULL;
     }
-    
+
     if (encoding != nil) {
       xmlDoc_->encoding = xmlStrdup(GDataGetXMLString(encoding));
     }

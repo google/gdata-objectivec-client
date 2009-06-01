@@ -45,27 +45,27 @@ static NSString* const kLabelAttr = @"label";
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataEntryLink class]];
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kRelAttr, kValueStringAttr, kLabelAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
-  
+
   // add the entryLink extension to the description
   [self addToArray:items objectDescriptionIfNonNil:[self entryLink] withName:@"entryLink"];
-  
+
   return items;
 }
 #endif

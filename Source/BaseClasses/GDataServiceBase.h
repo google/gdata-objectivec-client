@@ -25,7 +25,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEBASE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -52,7 +52,7 @@ _EXTERN NSString* const kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors"
 _EXTERN NSString* const kGDataETagWildcard _INITIALIZE_AS(@"*");
 
 enum {
- kGDataCouldNotConstructObjectError = -100 
+ kGDataCouldNotConstructObjectError = -100
 };
 
 @class GDataServiceBase;
@@ -62,11 +62,11 @@ enum {
 //
 @interface GDataServiceTicketBase : NSObject {
   GDataServiceBase *service_;
-  
+
   id userData_;
   NSMutableDictionary *ticketProperties_;
   NSDictionary *surrogates_;
-  
+
   GDataHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
@@ -74,7 +74,7 @@ enum {
   BOOL isRetryEnabled_;
   SEL retrySEL_;
   NSTimeInterval maxRetryInterval_;
-  
+
   GDataObject *postedObject_;
   GDataObject *fetchedObject_;
   GDataFeedBase *accumulatedFeed_;
@@ -165,19 +165,19 @@ enum {
   NSString *userAgent_;
   NSMutableDictionary *fetchHistory_;
   NSArray *runLoopModes_;
-  
+
   NSString *username_;
   NSMutableData *password_;
-  
+
   NSString *serviceUserData_; // initial value for userData in future tickets
   NSMutableDictionary *serviceProperties_; // initial values for properties in future tickets
-  
+
   NSDictionary *serviceSurrogates_; // initial value for surrogates in future tickets
 
   BOOL shouldServiceFeedsIgnoreUnknowns_; // YES when feeds should ignore unknown XML
 
   SEL serviceUploadProgressSelector_; // optional
-  
+
   BOOL isServiceRetryEnabled_;      // user allows auto-retries
   SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
@@ -207,7 +207,7 @@ enum {
 // Users may call requestForURL:httpMethod to get a request with the proper
 // user-agent and authentication token
 //
-// For http method, pass nil (for default GET method), POST, PUT, or DELETE 
+// For http method, pass nil (for default GET method), POST, PUT, or DELETE
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
                             httpMethod:(NSString *)httpMethod;
@@ -217,7 +217,7 @@ enum {
 //
 // the object is the object being sent to the server, or nil;
 // the http method may be nil for get, or POST, PUT, DELETE
-- (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url 
+- (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url
                                       object:(GDataObject *)object
                                         ETag:(NSString *)etag
                                   httpMethod:(NSString *)httpMethod;
@@ -279,7 +279,7 @@ enum {
                                          ETag:(NSString *)etag
                                      delegate:(id)delegate
                             didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;  
+                              didFailSelector:(SEL)failedSelector;
 
 - (GDataServiceTicketBase *)fetchQuery:(GDataQuery *)query
                              feedClass:(Class)feedClass
@@ -296,19 +296,19 @@ enum {
 // reset the last modified dates to avoid getting a Not Modified status
 // based on prior queries
 - (void)clearLastModifiedDates;
-  
+
 // Turn on data caching to receive a copy of previously-retrieved objects.
 // Otherwise, fetches may return status 304 (No Change) rather than actual data
 - (void)setShouldCacheDatedData:(BOOL)flag;
-- (BOOL)shouldCacheDatedData;  
+- (BOOL)shouldCacheDatedData;
 
 // For feed requests, where the feed requires following "next" links to retrieve
 // all entries, the service can optionally do the additional fetches using the
-// original ticket, calling the client's finish selector only when a complete 
+// original ticket, calling the client's finish selector only when a complete
 // feed has been obtained.  During the fetch, the feed accumulated so far is
-// available from the ticket.  
+// available from the ticket.
 //
-// Note that the final feed may be a combination of multiple partial feeds, 
+// Note that the final feed may be a combination of multiple partial feeds,
 // so is not exactly a genuine feed. In particular, it will not have a valid
 // "self" link, as it does not represent an object with a distinct URL.
 //
@@ -319,8 +319,8 @@ enum {
 // The service userData becomes the initial value for each future ticket's
 // userData.
 //
-// Since the network transactions may begin before the client has been 
-// returned the ticket by the fetch call, it's preferable to call 
+// Since the network transactions may begin before the client has been
+// returned the ticket by the fetch call, it's preferable to call
 // setServiceUserData before the ticket is created rather than call the
 // ticket's setUserData:.  Either way, the ticket's userData:
 // method will return the value.
@@ -372,8 +372,8 @@ enum {
 // The optional uploadProgressSelector will be called in the delegate as bytes
 // are uploaded to the server.  It should have a signature matching
 //
-// - (void)inputStream:(GDataProgressMonitorInputStream *)stream 
-//   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+// - (void)inputStream:(GDataProgressMonitorInputStream *)stream
+//   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 //        ofTotalByteCount:(unsigned long long)dataLength;
 //
 // The progress method can obtain the ticket by calling [stream monitorSource];
@@ -385,7 +385,7 @@ enum {
 - (BOOL)isServiceRetryEnabled;
 - (void)setIsServiceRetryEnabled:(BOOL)flag;
 
-// retry selector is optional for retries. 
+// retry selector is optional for retries.
 //
 // If present, it should have the signature:
 //   -(BOOL)ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
@@ -414,7 +414,7 @@ enum {
 - (void)setServiceVersion:(NSString *)str;
 
 // Wait synchronously for fetch to complete (strongly discouraged)
-// 
+//
 // This just runs the current event loop until the fetch completes
 // or the timout limit is reached.  This may discard unexpected events
 // that occur while spinning, so it's really not appropriate for use
@@ -429,7 +429,7 @@ enum {
 - (BOOL)waitForTicket:(GDataServiceTicketBase *)ticket
               timeout:(NSTimeInterval)timeoutInSeconds
         fetchedObject:(GDataObject **)outObjectOrNil
-                error:(NSError **)outErrorOrNil;  
+                error:(NSError **)outErrorOrNil;
 
 // internal utilities
 

@@ -23,7 +23,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAWHO_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -76,7 +76,7 @@ _EXTERN NSString* const kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.
 
 + (GDataWho *)whoWithRel:(NSString *)rel
                     name:(NSString *)valueString
-                   email:(NSString *)email; // name and email may be nil  
+                   email:(NSString *)email; // name and email may be nil
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;

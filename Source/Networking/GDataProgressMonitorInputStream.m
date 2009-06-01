@@ -28,7 +28,7 @@
   return [NSInputStream methodSignatureForSelector:selector];
 }
 
-+ (void)forwardInvocation:(NSInvocation*)invocation {  
++ (void)forwardInvocation:(NSInvocation*)invocation {
   [invocation invokeWithTarget:[NSInputStream class]];
 }
 
@@ -36,24 +36,24 @@
   return [inputStream_ methodSignatureForSelector:selector];
 }
 
-- (void)forwardInvocation:(NSInvocation*)invocation {    
+- (void)forwardInvocation:(NSInvocation*)invocation {
   [invocation invokeWithTarget:inputStream_];
 }
 
 #pragma mark -
 
-+ (id)inputStreamWithStream:(NSInputStream *)input 
++ (id)inputStreamWithStream:(NSInputStream *)input
                      length:(unsigned long long)length {
-  
-  return [[[self alloc] initWithStream:input 
+
+  return [[[self alloc] initWithStream:input
                                         length:length] autorelease];
 }
 
-- (id)initWithStream:(NSInputStream *)input 
+- (id)initWithStream:(NSInputStream *)input
               length:(unsigned long long)length {
-  
+
   if ((self = [super init]) != nil) {
-    
+
     inputStream_ = [input retain];
     dataSize_ = length;
   }
@@ -68,7 +68,7 @@
 
 - (void)dealloc {
   [inputStream_ release];
-  [super dealloc]; 
+  [super dealloc];
 }
 
 #pragma mark -
@@ -77,16 +77,16 @@
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
 
   NSInteger numRead = [inputStream_ read:buffer maxLength:len];
-  
+
   if (numRead > 0) {
-    
+
     numBytesRead_ += numRead;
-    
+
     if (monitorDelegate_ && monitorSelector_) {
-      
+
       // call the monitor delegate with the number of bytes read and the
       // total bytes read
-      
+
       NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:monitorSelector_];
       NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
       [invocation setSelector:monitorSelector_];
@@ -115,37 +115,37 @@
 // We want our encapsulated NSInputStream to handle the standard messages;
 // we don't want the superclass to handle them.
 - (void)open {
-  [inputStream_ open]; 
+  [inputStream_ open];
 }
 
 - (void)close {
-  [inputStream_ close]; 
+  [inputStream_ close];
 }
 
 - (id)delegate {
-  return [inputStream_ delegate]; 
+  return [inputStream_ delegate];
 }
 
 - (void)setDelegate:(id)delegate {
-  [inputStream_ setDelegate:delegate]; 
+  [inputStream_ setDelegate:delegate];
 }
 
 - (id)propertyForKey:(NSString *)key {
-  return [inputStream_ propertyForKey:key]; 
+  return [inputStream_ propertyForKey:key];
 }
 - (BOOL)setProperty:(id)property forKey:(NSString *)key {
-  return [inputStream_ setProperty:property forKey:key]; 
+  return [inputStream_ setProperty:property forKey:key];
 }
 
 - (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSString *)mode {
-  [inputStream_ scheduleInRunLoop:aRunLoop forMode:mode]; 
+  [inputStream_ scheduleInRunLoop:aRunLoop forMode:mode];
 }
 - (void)removeFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSString *)mode {
-  [inputStream_ removeFromRunLoop:aRunLoop forMode:mode]; 
+  [inputStream_ removeFromRunLoop:aRunLoop forMode:mode];
 }
 
 - (NSStreamStatus)streamStatus {
-  return [inputStream_ streamStatus]; 
+  return [inputStream_ streamStatus];
 }
 
 - (NSError *)streamError {
@@ -159,11 +159,11 @@
 }
 
 - (id)monitorDelegate {
-  return monitorDelegate_; 
+  return monitorDelegate_;
 }
 
 - (void)setMonitorSelector:(SEL)monitorSelector {
-  monitorSelector_ = monitorSelector; 
+  monitorSelector_ = monitorSelector;
 }
 
 - (SEL)monitorSelector {
@@ -175,7 +175,7 @@
 }
 
 - (id)monitorSource {
-  return monitorSource_; 
+  return monitorSource_;
 }
 
 @end

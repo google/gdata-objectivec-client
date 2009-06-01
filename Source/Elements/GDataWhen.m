@@ -42,7 +42,7 @@ static NSString* const kEndTimeAttr = @"endTime";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kValueAttr, kStartTimeAttr, kEndTimeAttr, nil];
   [self addLocalAttributeDeclarations:attrs];
 }
@@ -50,7 +50,7 @@ static NSString* const kEndTimeAttr = @"endTime";
 #pragma mark -
 
 - (GDataDateTime *)startTime {
-  return [self dateTimeForAttribute:kStartTimeAttr]; 
+  return [self dateTimeForAttribute:kStartTimeAttr];
 }
 
 - (void)setStartTime:(GDataDateTime *)cdate {
@@ -58,7 +58,7 @@ static NSString* const kEndTimeAttr = @"endTime";
 }
 
 - (GDataDateTime *)endTime {
-  return [self dateTimeForAttribute:kEndTimeAttr]; 
+  return [self dateTimeForAttribute:kEndTimeAttr];
 }
 
 - (void)setEndTime:(GDataDateTime *)cdate {
@@ -66,7 +66,7 @@ static NSString* const kEndTimeAttr = @"endTime";
 }
 
 - (NSString *)value {
-  return [self stringValueForAttribute:kValueAttr]; 
+  return [self stringValueForAttribute:kValueAttr];
 }
 
 - (void)setValue:(NSString *)str {

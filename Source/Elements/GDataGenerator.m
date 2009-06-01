@@ -41,12 +41,12 @@ static NSString* const kURIAttr = @"uri";
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kVersionAttr, kURIAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs];  
-  
+
+  [self addLocalAttributeDeclarations:attrs];
+
   [self addContentValueDeclaration];
 }
 
@@ -63,7 +63,7 @@ static NSString* const kURIAttr = @"uri";
 }
 
 - (void)setVersion:(NSString *)str {
-  [self setStringValue:str forAttribute:kVersionAttr]; 
+  [self setStringValue:str forAttribute:kVersionAttr];
 }
 
 - (NSString *)URI {
@@ -71,7 +71,7 @@ static NSString* const kURIAttr = @"uri";
 }
 
 - (void)setURI:(NSString *)str {
-  [self setStringValue:str forAttribute:kURIAttr]; 
+  [self setStringValue:str forAttribute:kURIAttr];
 }
 
 @end

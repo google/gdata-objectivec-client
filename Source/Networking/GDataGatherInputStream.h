@@ -14,10 +14,10 @@
 */
 
 
-// The GDataGatherInput stream is an input stream implementation that is to be 
+// The GDataGatherInput stream is an input stream implementation that is to be
 // instantiated with an NSArray of NSData objects.  It works in the traditional
 // scatter/gather vector I/O model.  Rather than allocating a big NSData object
-// to hold all of the data and performing a copy into that object, the 
+// to hold all of the data and performing a copy into that object, the
 // GDataGatherInputStream will maintain a reference to the NSArray and read from
 // each NSData in turn as the read method is called.  You should not alter the
 // underlying set of NSData objects until all read operations on this input
@@ -28,19 +28,19 @@
 
 #undef GDATA_NSSTREAM_DELEGATE
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
- #define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate> 
+ #define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate>
 #else
  #define GDATA_NSSTREAM_DELEGATE
 #endif
 
 @interface GDataGatherInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
-  
+
   NSArray* dataArray_;   // NSDatas that should be "gathered" and streamed.
   NSUInteger arrayIndex_;       // Index in the array of the current NSData.
   long long dataOffset_; // Offset in the current NSData we are processing.
-  
+
   id delegate_;          // WEAK, not retained: stream delegate, defaults to self
-  
+
   // Since various undocumented methods get called on a stream, we'll
   // use a 1-byte dummy stream object to handle all unexpected messages.
   // Actual reads from the stream we will perform using the data array, not

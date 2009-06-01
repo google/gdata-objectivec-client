@@ -22,7 +22,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAPHONENUMBER_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern

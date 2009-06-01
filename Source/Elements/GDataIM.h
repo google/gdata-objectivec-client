@@ -22,7 +22,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAIM_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -40,7 +40,7 @@ _EXTERN NSString* const kGDataIMProtocolSkype      _INITIALIZE_AS(@"http://schem
 _EXTERN NSString* const kGDataIMProtocolYahoo      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#YAHOO");
 
 // IM element, as in
-//   <gd:im protocol="http://schemas.google.com/g/2005#MSN" 
+//   <gd:im protocol="http://schemas.google.com/g/2005#MSN"
 //      address="foo@bar.example.com" label="Alternate"
 //      rel="http://schemas.google.com/g/2005#other" >
 //
