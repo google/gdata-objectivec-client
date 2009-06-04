@@ -466,13 +466,16 @@
     }
 
     // fetch the feed of tables
+    NSURL *tablesFeedURL = [[spreadsheet tablesFeedLink] URL];
 
     // TODO - temporary code -
-    // use the link to the tables feed once that finally is available
-    NSString *key = [[spreadsheet identifier] lastPathComponent];
-    NSString *template = @"http://spreadsheets.google.com/feeds/%@/tables";
-    NSString *tableFeedURLString = [NSString stringWithFormat:template, key];
-    NSURL *tablesFeedURL = [NSURL URLWithString:tableFeedURLString];
+    // rely just on the link to the tables feed once that finally is available
+    if (tablesFeedURL == nil) {
+      NSString *key = [[spreadsheet identifier] lastPathComponent];
+      NSString *template = @"http://spreadsheets.google.com/feeds/%@/tables";
+      NSString *tableFeedURLString = [NSString stringWithFormat:template, key];
+      tablesFeedURL = [NSURL URLWithString:tableFeedURLString];
+    }
 
     if (tablesFeedURL) {
 

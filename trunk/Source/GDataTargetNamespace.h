@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (434 classes) 2009-05-29 18:09:25 -0700
+// com.google.GDataFramework v. 1.7 (447 classes) 2009-06-03 17:32:28 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -73,6 +73,7 @@
   #define GDataBatchInterrupted                _GDATA_NS_SYMBOL(GDataBatchInterrupted)
   #define GDataBatchOperation                  _GDATA_NS_SYMBOL(GDataBatchOperation)
   #define GDataBatchStatus                     _GDATA_NS_SYMBOL(GDataBatchStatus)
+  #define GDataBloggerConstants                _GDATA_NS_SYMBOL(GDataBloggerConstants)
   #define GDataBoolValueConstruct              _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
   #define GDataCalendarSettingsProperty        _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
   #define GDataCategory                        _GDATA_NS_SYMBOL(GDataCategory)
@@ -106,6 +107,9 @@
   #define GDataEntryAnalyticsAccount           _GDATA_NS_SYMBOL(GDataEntryAnalyticsAccount)
   #define GDataEntryAnalyticsData              _GDATA_NS_SYMBOL(GDataEntryAnalyticsData)
   #define GDataEntryBase                       _GDATA_NS_SYMBOL(GDataEntryBase)
+  #define GDataEntryBlog                       _GDATA_NS_SYMBOL(GDataEntryBlog)
+  #define GDataEntryBlogComment                _GDATA_NS_SYMBOL(GDataEntryBlogComment)
+  #define GDataEntryBlogPost                   _GDATA_NS_SYMBOL(GDataEntryBlogPost)
   #define GDataEntryCalendar                   _GDATA_NS_SYMBOL(GDataEntryCalendar)
   #define GDataEntryCalendarEvent              _GDATA_NS_SYMBOL(GDataEntryCalendarEvent)
   #define GDataEntryCalendarSettings           _GDATA_NS_SYMBOL(GDataEntryCalendarSettings)
@@ -174,6 +178,9 @@
   #define GDataFeedAnalyticsAccount            _GDATA_NS_SYMBOL(GDataFeedAnalyticsAccount)
   #define GDataFeedAnalyticsData               _GDATA_NS_SYMBOL(GDataFeedAnalyticsData)
   #define GDataFeedBase                        _GDATA_NS_SYMBOL(GDataFeedBase)
+  #define GDataFeedBlog                        _GDATA_NS_SYMBOL(GDataFeedBlog)
+  #define GDataFeedBlogComment                 _GDATA_NS_SYMBOL(GDataFeedBlogComment)
+  #define GDataFeedBlogPost                    _GDATA_NS_SYMBOL(GDataFeedBlogPost)
   #define GDataFeedCalendar                    _GDATA_NS_SYMBOL(GDataFeedCalendar)
   #define GDataFeedCalendarEvent               _GDATA_NS_SYMBOL(GDataFeedCalendarEvent)
   #define GDataFeedCalendarSettings            _GDATA_NS_SYMBOL(GDataFeedCalendarSettings)
@@ -244,6 +251,7 @@
   #define GDataIM                              _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct          _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
   #define GDataInputStreamLogger               _GDATA_NS_SYMBOL(GDataInputStreamLogger)
+  #define GDataInReplyTo                       _GDATA_NS_SYMBOL(GDataInReplyTo)
   #define GDataLastModifiedBy                  _GDATA_NS_SYMBOL(GDataLastModifiedBy)
   #define GDataLastViewed                      _GDATA_NS_SYMBOL(GDataLastViewed)
   #define GDataLink                            _GDATA_NS_SYMBOL(GDataLink)
@@ -363,6 +371,7 @@
   #define GDataServiceGoogle                   _GDATA_NS_SYMBOL(GDataServiceGoogle)
   #define GDataServiceGoogleAnalytics          _GDATA_NS_SYMBOL(GDataServiceGoogleAnalytics)
   #define GDataServiceGoogleBase               _GDATA_NS_SYMBOL(GDataServiceGoogleBase)
+  #define GDataServiceGoogleBlogger            _GDATA_NS_SYMBOL(GDataServiceGoogleBlogger)
   #define GDataServiceGoogleBooks              _GDATA_NS_SYMBOL(GDataServiceGoogleBooks)
   #define GDataServiceGoogleCalendar           _GDATA_NS_SYMBOL(GDataServiceGoogleCalendar)
   #define GDataServiceGoogleContact            _GDATA_NS_SYMBOL(GDataServiceGoogleContact)
@@ -401,6 +410,10 @@
   #define GDataStructuredPostalAddress         _GDATA_NS_SYMBOL(GDataStructuredPostalAddress)
   #define GDataSyncEventProperty               _GDATA_NS_SYMBOL(GDataSyncEventProperty)
   #define GDataTextConstruct                   _GDATA_NS_SYMBOL(GDataTextConstruct)
+  #define GDataThreadingCount                  _GDATA_NS_SYMBOL(GDataThreadingCount)
+  #define GDataThreadingLink                   _GDATA_NS_SYMBOL(GDataThreadingLink)
+  #define GDataThreadingTotal                  _GDATA_NS_SYMBOL(GDataThreadingTotal)
+  #define GDataThreadingUpdated                _GDATA_NS_SYMBOL(GDataThreadingUpdated)
   #define GDataTimesCleanedProperty            _GDATA_NS_SYMBOL(GDataTimesCleanedProperty)
   #define GDataTimeZoneProperty                _GDATA_NS_SYMBOL(GDataTimeZoneProperty)
   #define GDataTransparency                    _GDATA_NS_SYMBOL(GDataTransparency)

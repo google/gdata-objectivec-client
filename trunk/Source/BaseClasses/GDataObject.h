@@ -249,6 +249,10 @@ typedef struct GDataDescriptionRecord {
   // service version, set for feeds and entries
   NSString *serviceVersion_;
 
+  // core protocol version, set from the service version when
+  // -coreProtocolVersion is invoked
+  NSString *coreProtocolVersion_;
+
   // anything defined by the client; retained but not used internally; not
   // copied by copyWithZone:
   id userData_;
@@ -303,13 +307,18 @@ typedef struct GDataDescriptionRecord {
 // service API version
 + (NSString *)defaultServiceVersion;
 
+// a side-effect of setServiceVersion: is that the coreProtocolVersion is
+// reset
 - (void)setServiceVersion:(NSString *)str;
 - (NSString *)serviceVersion;
 
 - (BOOL)isServiceVersionAtLeast:(NSString *)otherVersion;
 - (BOOL)isServiceVersionAtMost:(NSString *)otherVersion;
 
+// calling -coreProtocolVersion sets the initial core protocol version based
+// on the service version
 - (NSString *)coreProtocolVersion;
+- (void)setCoreProtocolVersion:(NSString *)str;
 - (BOOL)isCoreProtocolVersion1;
 
 // userData is available for client use; retained by GDataObject, but not

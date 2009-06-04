@@ -220,12 +220,6 @@ static NSString *const kLengthAttr = @"length";
   return nil;
 }
 
-+ (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue
-                               fromLinks:(NSArray *)array {
-
-  return [self linkWithRel:relValue type:nil fromLinks:array];
-}
-
 + (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix
                                 fromLinks:(NSArray *)array {
 
