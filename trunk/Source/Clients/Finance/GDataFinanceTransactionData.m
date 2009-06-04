@@ -125,7 +125,7 @@ static NSString* const kNotesAttr = @"notes";
 }
 
 - (void)setCommission:(GDataCommission *)obj {
-  [self setObject:obj forExtensionClass:[obj class]];   
+  [self setObject:obj forExtensionClass:[GDataCommission class]];
 }
 
 - (GDataPrice *)price {
@@ -133,7 +133,7 @@ static NSString* const kNotesAttr = @"notes";
 }
 
 - (void)setPrice:(GDataPrice *)obj {
-  [self setObject:obj forExtensionClass:[obj class]];
+  [self setObject:obj forExtensionClass:[GDataPrice class]];
 }
 
 @end
