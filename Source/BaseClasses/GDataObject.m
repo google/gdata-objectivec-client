@@ -376,6 +376,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   [unknownAttributes_ release];
   [surrogates_ release];
   [serviceVersion_ release];
+  [coreProtocolVersion_ release];
   [userData_ release];
   [userProperties_ release];
   [super dealloc];
@@ -582,8 +583,13 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (void)setServiceVersion:(NSString *)str {
-  [serviceVersion_ autorelease];
-  serviceVersion_ = [str copy];
+  if (!AreEqualOrBothNil(str, serviceVersion_)) {
+    // reset the core protocol version, since it's based on the service version
+    [self setCoreProtocolVersion:nil];
+
+    [serviceVersion_ autorelease];
+    serviceVersion_ = [str copy];
+  }
 }
 
 - (NSString *)serviceVersion {
@@ -603,15 +609,26 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (BOOL)isServiceVersionAtMost:(NSString *)otherVersion {
-  NSString *serviceVersion = [self serviceVersion];;
+  NSString *serviceVersion = [self serviceVersion];
   NSComparisonResult result = [GDataUtilities compareVersion:serviceVersion
                                                    toVersion:otherVersion];
   return (result != NSOrderedDescending);
 }
 
+- (void)setCoreProtocolVersion:(NSString *)str {
+  [coreProtocolVersion_ autorelease];
+  coreProtocolVersion_ = [str copy];
+}
+
 - (NSString *)coreProtocolVersion {
+  if (coreProtocolVersion_ != nil) {
+    return coreProtocolVersion_;
+  }
+
   NSString *serviceVersion = [self serviceVersion];
   NSString *coreVersion = [[self class] coreProtocolVersionForServiceVersion:serviceVersion];
+
+  [self setCoreProtocolVersion:coreVersion];
   return coreVersion;
 }
 

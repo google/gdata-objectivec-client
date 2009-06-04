@@ -650,8 +650,16 @@ forCategoryWithScheme:scheme
 
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
 
-  return [GDataLink linkWithRelAttributeValue:rel
-                                    fromLinks:[self links]];
+  return [GDataLink linkWithRel:rel
+                           type:nil
+                      fromLinks:[self links]];
+}
+
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)rel
+                                    type:(NSString *)type {
+  return [GDataLink linkWithRel:rel
+                           type:type
+                      fromLinks:[self links]];
 }
 
 - (GDataLink *)feedLink {
@@ -683,9 +691,8 @@ forCategoryWithScheme:scheme
 }
 
 - (GDataLink *)HTMLLink {
-  return [GDataLink linkWithRel:@"alternate"
-                           type:@"text/html"
-                      fromLinks:[self links]];
+  return [self linkWithRelAttributeValue:@"alternate"
+                                    type:kGDataLinkTypeHTML];
 }
 
 - (BOOL)canEdit {

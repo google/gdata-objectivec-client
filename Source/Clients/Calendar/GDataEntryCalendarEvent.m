@@ -395,13 +395,8 @@
 }
 
 - (GDataLink *)webContentLink {
-  NSArray *links = [self links];
-
-  GDataLink *webContentLink;
-  webContentLink = [GDataLink linkWithRelAttributeValue:kGDataLinkRelWebContent
-                                              fromLinks:links];
-
-  return webContentLink;
+  GDataLink *link = [self linkWithRelAttributeValue:kGDataLinkRelWebContent];
+  return link;
 }
 
 - (GDataWebContent *)webContent {

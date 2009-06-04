@@ -167,6 +167,8 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (NSArray *)linksWithRelAttributeValue:(NSString *)relValue;
 
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)relValue;
+- (GDataLink *)linkWithRelAttributeValue:(NSString *)rel
+                                    type:(NSString *)type;
 
 - (GDataLink *)feedLink;
 - (GDataLink *)editLink;

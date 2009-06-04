@@ -164,6 +164,10 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 // return the first entry, or nil if none
 - (id)firstEntry;
 
+// return the specified entry, or nil if index is out of bounds
+// (does not throw an exception if index exceeds the size of the entry array)
+- (id)entryAtIndex:(NSUInteger)index;
+
 // find the entry with the given identifier, or nil if none found
 - (id)entryForIdentifier:(NSString *)str;
 

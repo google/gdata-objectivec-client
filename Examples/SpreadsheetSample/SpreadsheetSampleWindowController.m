@@ -194,6 +194,10 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   [self fetchSelectedWorksheet];
 }
 
+- (IBAction)loggingCheckboxClicked:(id)sender {
+  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+}
+
 #pragma mark -
 
 // get a spreadsheet service object with the current username/password

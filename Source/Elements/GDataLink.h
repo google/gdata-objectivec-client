@@ -35,6 +35,7 @@ _EXTERN NSString* const kGDataLinkRelPost _INITIALIZE_AS(@"http://schemas.google
 _EXTERN NSString* const kGDataLinkRelBatch _INITIALIZE_AS(@"http://schemas.google.com/g/2005#batch");
 
 _EXTERN NSString* const kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml");
+_EXTERN NSString* const kGDataLinkTypeHTML _INITIALIZE_AS(@"text/html");
 
 // for links, like
 //
@@ -90,9 +91,10 @@ _EXTERN NSString* const kGDataLinkTypeAtom _INITIALIZE_AS(@"application/atom+xml
 + (NSArray *)linkNamesFromLinks:(NSArray *)links;
 
 // utilities for extracting a GDataLink from an array of links
+
+// to search by rel only, use nil type to match any type
 + (GDataLink *)linkWithRel:(NSString *)relValue type:(NSString *)typeValue fromLinks:(NSArray *)array;
 
-+ (GDataLink *)linkWithRelAttributeValue:(NSString *)rel fromLinks:(NSArray *)array;
 + (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix fromLinks:(NSArray *)array;
 
 @end

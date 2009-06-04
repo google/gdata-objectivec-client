@@ -29,21 +29,29 @@
 				<key>mBlogsProgressIndicator</key>
 				<string>NSProgressIndicator</string>
 				<key>mBlogsResultTextField</key>
-				<string>NSTextField</string>
+				<string>NSTextView</string>
 				<key>mBlogsTable</key>
+				<string>NSTableView</string>
+				<key>mCommentsProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mCommentsResultTextField</key>
+				<string>NSTextView</string>
+				<key>mCommentsTable</key>
 				<string>NSTableView</string>
 				<key>mDeletePostButton</key>
 				<string>NSButton</string>
-				<key>mEntriesProgressIndicator</key>
+				<key>mEditProgressIndicator</key>
 				<string>NSProgressIndicator</string>
-				<key>mEntriesResultTextField</key>
-				<string>NSTextField</string>
-				<key>mEntriesTable</key>
-				<string>NSTableView</string>
-				<key>mEntryEditField</key>
-				<string>NSTextField</string>
 				<key>mPasswordField</key>
 				<string>NSSecureTextField</string>
+				<key>mPostEditField</key>
+				<string>NSTextField</string>
+				<key>mPostsProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mPostsResultTextField</key>
+				<string>NSTextView</string>
+				<key>mPostsTable</key>
+				<string>NSTableView</string>
 				<key>mUpdatePostButton</key>
 				<string>NSButton</string>
 				<key>mUpdateProgressIndicator</key>

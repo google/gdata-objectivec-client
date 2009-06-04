@@ -712,8 +712,9 @@ forCategoryWithScheme:scheme
 
 - (GDataLink *)linkWithRelAttributeValue:(NSString *)rel {
 
-  return [GDataLink linkWithRelAttributeValue:rel
-                                    fromLinks:[self links]];
+  return [GDataLink linkWithRel:rel
+                           type:nil
+                      fromLinks:[self links]];
 }
 
 - (GDataLink *)feedLink {
@@ -758,9 +759,13 @@ forCategoryWithScheme:scheme
 }
 
 - (id)firstEntry {
+  return [self entryAtIndex:0];
+}
+
+- (id)entryAtIndex:(NSUInteger)index {
   NSArray *entries = [self entries];
-  if ([entries count] > 0) {
-    return [entries objectAtIndex:0];
+  if ([entries count] > index) {
+    return [entries objectAtIndex:index];
   }
   return nil;
 }
