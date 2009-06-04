@@ -1347,6 +1347,9 @@
 		4F4D70300FD74AD200054454 /* GDataThreadingElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataThreadingElements.h; path = Clients/Blogger/GDataThreadingElements.h; sourceTree = "<group>"; };
 		4F4D70310FD74AD200054454 /* GDataThreadingElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataThreadingElements.m; path = Clients/Blogger/GDataThreadingElements.m; sourceTree = "<group>"; };
 		4F4D70320FD74AD200054454 /* GDataServiceGoogleBlogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceGoogleBlogger.h; path = Clients/Blogger/GDataServiceGoogleBlogger.h; sourceTree = "<group>"; };
+		4F4D70D40FD75B8000054454 /* FeedBlogCommentsTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedBlogCommentsTest1.xml; path = Tests/FeedBlogCommentsTest1.xml; sourceTree = "<group>"; };
+		4F4D70D50FD75B8000054454 /* FeedBlogTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedBlogTest1.xml; path = Tests/FeedBlogTest1.xml; sourceTree = "<group>"; };
+		4F4D70D60FD75B8000054454 /* FeedBlogPostTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedBlogPostTest1.xml; path = Tests/FeedBlogPostTest1.xml; sourceTree = "<group>"; };
 		4F4E92350EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedYouTubeFavorite.m; path = Clients/YouTube/GDataFeedYouTubeFavorite.m; sourceTree = "<group>"; };
 		4F4E92360EBB8F0900C59A7E /* GDataFeedYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeFavorite.h; path = Clients/YouTube/GDataFeedYouTubeFavorite.h; sourceTree = "<group>"; };
 		4F4E923B0EBB8F1F00C59A7E /* GDataEntryYouTubeFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeFavorite.h; path = Clients/YouTube/GDataEntryYouTubeFavorite.h; sourceTree = "<group>"; };
@@ -2201,6 +2204,16 @@
 			name = Blogger;
 			sourceTree = "<group>";
 		};
+		4F4D70CC0FD75B6600054454 /* Blogger */ = {
+			isa = PBXGroup;
+			children = (
+				4F4D70D50FD75B8000054454 /* FeedBlogTest1.xml */,
+				4F4D70D60FD75B8000054454 /* FeedBlogPostTest1.xml */,
+				4F4D70D40FD75B8000054454 /* FeedBlogCommentsTest1.xml */,
+			);
+			name = Blogger;
+			sourceTree = "<group>";
+		};
 		4F5764E10C50289B0093B563 /* Docs */ = {
 			isa = PBXGroup;
 			children = (
@@ -2479,6 +2492,7 @@
 			isa = PBXGroup;
 			children = (
 				4F4C26A40FC629A700022F31 /* Analytics */,
+				4F4D70CC0FD75B6600054454 /* Blogger */,
 				4F986F850F4F3B8E00C349F0 /* Calendar */,
 				4F986F870F4F3BAD00C349F0 /* GoogleBase */,
 				4F986F860F4F3B9D00C349F0 /* Finance */,

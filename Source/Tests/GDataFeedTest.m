@@ -789,10 +789,68 @@
     { @"entries.0.unknownChildren.@count", @"0" },
 
     { @"", @"" }, // end of feed
-    
+
+    //
+    // Table feed
+    //
+
+    // feed paths
+    { @"GDataFeedSpreadsheetTable", @"Tests/FeedSpreadsheetTableTest1.xml" },
+    { @"identifier", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables" },
+    { @"categories.0.scheme", kGDataCategoryScheme },
+    { @"categories.0.term", kGDataCategorySpreadsheetTable },
+    { @"title", @"Table of Doom" },
+    { @"authors.0.email", @"fredflintstone@example.com" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry paths
+    { @"entries.0.content.sourceURI", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/records/1" },
+    { @"entries.0.spreadsheetData.startIndex", @"4" },
+    { @"entries.0.spreadsheetData.numberOfRows", @"3" },
+    { @"entries.0.spreadsheetData.insertionMode", kGDataSpreadsheetModeInsert },
+    { @"entries.0.spreadsheetData.columns.0.name", @"Column Beta" },
+    { @"entries.0.spreadsheetData.columns.0.indexString", @"B" },
+    { @"entries.0.spreadsheetHeader.row", @"3" },
+    { @"entries.0.worksheetName", @"Sheet 1" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Record feed
+    //
+
+    // feed paths
+    { @"GDataFeedSpreadsheetRecord", @"Tests/FeedSpreadsheetRecordTest1.xml" },
+    { @"identifier", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/records/1" },
+    { @"categories.0.scheme", kGDataCategoryScheme },
+    { @"categories.0.term", kGDataCategorySpreadsheetRecord },
+    { @"title", @"Records of Doom" },
+    { @"authors.0.email", @"fredflintstone@example.com" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry paths
+    { @"entries.0.content", @"Column Beta: clouds, Column Alpha: mars" },
+    { @"entries.0.editLink.href", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/records/1/cn6ca" },
+    { @"entries.0.fields.0.name", @"Column Beta" },
+    { @"entries.0.fields.0.indexString", @"B" },
+    { @"entries.0.fields.0.value", @"clouds" },
+    { @"entries.0.fields.0.formula", @"3+something" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
     { nil, nil } // end of test array
   };
-  
+
   [self runTests:tests];
 }
 
@@ -1038,12 +1096,12 @@
     { @"entries.0.editMediaLink.href", @"contains:5067143579329304306" },
     { @"entries.0.editMediaLink.type", @"image/jpeg" },
     { @"entries.0.alternateLink.href", @"contains:photo#5067143579329304306" },
-    { @"entries.0.alternateLink.type", @"text/html" },
+    { @"entries.0.alternateLink.type", kGDataLinkTypeHTML },
     { @"entries.0.HTMLLink.href", @"contains:photo#5067143579329304306" },
     { @"entries.0.selfLink.href", @"contains:photoid/5067143579329304306" },
-    { @"entries.0.selfLink.type", @"application/atom+xml" },
+    { @"entries.0.selfLink.type", kGDataLinkTypeAtom },
     { @"entries.0.feedLink.href", @"contains:photoid/5067143579329304306" },
-    { @"entries.0.feedLink.type", @"application/atom+xml" },
+    { @"entries.0.feedLink.type", kGDataLinkTypeAtom },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
@@ -1752,6 +1810,86 @@
     { @"entries.0.customProperties.0.unit", @"meters" },
     { @"entries.0.customProperties.0.value", @"36" },
     { @"entries.0.customPropertyWithHeightName.value", @"10.2" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    { nil, nil } // end of test array
+  };
+
+  [self runTests:tests];
+}
+
+- (void)testBlogFeeds {
+
+  TestKeyPathValues tests[] =
+  {
+    //
+    // Blog feed
+    //
+
+    { @"GDataFeedBlog/2.0", @"Tests/FeedBlogTest1.xml" },
+
+    // feed elements
+    { @"title", @"TestAccount's Blogs" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry elements - no extensions, so just test convenience accessors
+    { @"entries.0.templateLink.href", @"http://www.blogger.com/feeds/145278007186576769/template" },
+    { @"entries.0.settingsLink.href", @"http://www.blogger.com/feeds/145278007186576769/settings" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Blog post feed
+    //
+
+    { @"GDataFeedBlogPost/2.0", @"Tests/FeedBlogPostTest1.xml" },
+
+    // feed elements
+    { @"title", @"Test Posts" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry elements
+    { @"entries.0.atomPubControl.isDraft", @"1" },
+    { @"entries.0.identifier", @"tag:blogger.com,1999:blog-1452780071865767697.post-6317479243618470383" },
+    { @"entries.0.total", @"3" },
+    { @"entries.0.thumbnail.URLString", @"contains:Hippo.jpg" },
+    { @"entries.0.repliesHTMLLink.href", @"https://www.blogger.com/comment.g?blogID=1452780071865767697&postID=6317479243618470383" },
+    { @"entries.0.repliesAtomLink.href", @"http://testaccount.blogspot.com/feeds/6317479243618470383/comments/default" },
+    { @"entries.0.enclosureLink.href", @"http://example.net/file.txt" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Blog comments feed
+    //
+
+    { @"GDataFeedBlogComment/2.0", @"Tests/FeedBlogCommentsTest1.xml" },
+
+    // feed elements
+    { @"title", @"Comments on Post" },
+
+    { @"unknownAttributes.@count", @"0" },
+    { @"unknownChildren.@count", @"0" },
+
+    // entry elements
+    { @"entries.0.inReplyTo.href", @"http://testaccount.blogspot.com/2009/06/post-created-2009-06-02-161600-0700.html" },
+    { @"entries.0.inReplyTo.ref", @"tag:blogger.com,1999:blog-1452780071865767697.post-1015986829942539734" },
+    { @"entries.0.inReplyTo.source", @"http://testaccount.blogspot.com/feeds/posts/default/1015986829942539734" },
+    { @"entries.0.inReplyTo.type", kGDataLinkTypeHTML },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
