@@ -22,7 +22,7 @@
 
 @interface GDataEntryMap : GDataEntryBase
 
-+ (id)mapEntry;
++ (id)mapEntryWithTitle:(NSString *)str;
 
 // convenience accessor
 - (NSURL *)featuresFeedURL;

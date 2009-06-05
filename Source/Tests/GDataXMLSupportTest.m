@@ -233,9 +233,9 @@
 
   NSXMLDocument *xmlDocument;
 
-  xmlDocument = [[[cXMLDocument alloc] initWithData:data
-                                            options:0
-                                              error:&error] autorelease];
+  xmlDocument = [[(NSXMLDocument *)[cXMLDocument alloc] initWithData:data
+                                                              options:0
+                                                                error:&error] autorelease];
   STAssertNotNil(xmlDocument, @"could not allocate feed from xml");
   STAssertNil(error, @"error allocating feed from xml");
 

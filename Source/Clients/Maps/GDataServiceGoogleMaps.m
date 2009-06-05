@@ -23,6 +23,8 @@
 
 #import "GDataMapConstants.h"
 
+#import "GDataEntryMapFeature.h"
+
 // currently, no service-specific query parameters
 @implementation GDataQueryGoogleMaps
 @end
@@ -93,7 +95,11 @@
                                       didFailSelector:(SEL)failedSelector {
 
   if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataMapConstants mapsNamespaces]];
+    if ([entryToUpdate isKindOfClass:[GDataEntryMapFeature class]]) {
+      [entryToUpdate setNamespaces:[GDataMapConstants mapsServerNamespaces]];
+    } else {
+      [entryToUpdate setNamespaces:[GDataMapConstants mapsNamespaces]];
+    }
   }
 
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate

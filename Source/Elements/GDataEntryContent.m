@@ -58,6 +58,21 @@ static BOOL IsTypeEqualToText(NSString *str) {
   return obj;
 }
 
++ (id)contentWithXMLValue:(NSXMLNode *)node type:(NSString *)type {
+
+  GDataEntryContent *obj = [[[self alloc] init] autorelease];
+
+  // declare that we'll be using child elements as XML values
+  [obj addChildXMLElementsDeclaration];
+
+  [obj setType:type];
+
+  if (node != nil) {
+    [obj addXMLValue:node];
+  }
+  return obj;
+}
+
 + (id)textConstructWithString:(NSString *)str {
 
   // deprecated; kept for compatibility with the previous
@@ -243,4 +258,3 @@ static BOOL IsTypeEqualToText(NSString *str) {
 }
 
 @end
-

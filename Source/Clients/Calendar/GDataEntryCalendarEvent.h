@@ -40,77 +40,7 @@ _EXTERN NSString* const kGDataCategoryCalendar         _INITIALIZE_AS(@"http://s
 _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://schemas.google.com/gCal/2005#settings");
 
 // CalendarEventEntry extensions
-@interface GDataPrivateCopyProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataQuickAddProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataSendEventNotifications : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
 @interface GDataResourceProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataSyncEventProperty : GDataBoolValueConstruct <GDataExtension>
-// sync scenario, where iCal UID and sequence number are honored during
-// insert and update
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataSequenceProperty : GDataValueConstruct <GDataExtension>
-// GData schema extension describing sequence number of an event.
-// The sequence number is a non-negative integer and is described in
-// section 4.8.7.4 of RFC 2445.
-// Currently this is only a read-only entry.
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataICalUIDProperty : GDataValueConstruct <GDataExtension>
-// GData schema extension describing the UID in the ical export of the event.
-// The value can be an arbitrary string and is described in section 4.8.4.7
-// of RFC 2445. This value is different from the value of the event ID.
-// Currently a read-only entry.
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataGuestsCanModifyProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataGuestsCanInviteOthersProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataGuestsCanSeeGuestsProperty : GDataBoolValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
-@end
-
-@interface GDataAnyoneCanAddSelfProperty : GDataBoolValueConstruct <GDataExtension>
 + (NSString *)extensionElementURI;
 + (NSString *)extensionElementPrefix;
 + (NSString *)extensionElementLocalName;
