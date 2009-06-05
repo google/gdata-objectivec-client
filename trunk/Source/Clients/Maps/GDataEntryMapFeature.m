@@ -20,16 +20,16 @@
 
 #import "GDataMapConstants.h"
 #import "GDataEntryMapFeature.h"
-#import "GDataStructuredPostalAddress.h"
-#import "GDataCustomProperty.h"
 
 @implementation GDataEntryMapFeature
 
-+ (id)featureEntry {
++ (id)featureEntryWithTitle:(NSString *)str {
 
   GDataEntryMapFeature *obj = [[[self alloc] init] autorelease];
 
   [obj setNamespaces:[GDataMapConstants mapsNamespaces]];
+
+  [obj setTitleWithString:str];
 
   return obj;
 }
@@ -60,9 +60,18 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  static struct GDataDescriptionRecord descRecs[] = {
-    { @"postal",     @"postalAddress",    kGDataDescValueLabeled },
-    { @"properties", @"customProperties", kGDataDescArrayDescs },
+  NSString *kmlString = nil;
+  NSArray *kmlValues = [self KMLValues];
+
+  if ([kmlValues count] > 0) {
+    NSXMLElement *kmlElem = [kmlValues objectAtIndex:0];
+    kmlString = [kmlElem XMLString];
+  }
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"postal",     @"postalAddress",    kGDataDescValueLabeled   },
+    { @"properties", @"customProperties", kGDataDescArrayDescs     },
+    { @"KML",        kmlString,           kGDataDescValueIsKeyPath },
     { nil, nil, 0 }
   };
 
@@ -107,7 +116,11 @@
 
 - (void)setKMLValues:(NSArray *)arr {
   GDataEntryContent *content = [self content];
-  if ([content type] == nil) {
+  if (content == nil) {
+    content = [GDataEntryContent contentWithXMLValue:nil
+                                                type:kGDataContentTypeKML];
+    [self setContent:content];
+  } else {
     [content setType:kGDataContentTypeKML];
   }
   [content setChildXMLElements:arr];
@@ -115,10 +128,14 @@
 
 - (void)addKMLValue:(NSXMLNode *)node {
   GDataEntryContent *content = [self content];
-  if ([content type] == nil) {
+  if (content == nil) {
+    content = [GDataEntryContent contentWithXMLValue:node
+                                                type:kGDataContentTypeKML];
+    [self setContent:content];
+  } else {
     [content setType:kGDataContentTypeKML];
+    [content addChildXMLElement:node];
   }
-  [content addChildXMLElement:node];
 }
 
 // convenience accessors

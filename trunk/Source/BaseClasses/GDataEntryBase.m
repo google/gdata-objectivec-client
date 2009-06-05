@@ -166,6 +166,7 @@
     { @"title",            @"title.stringValue",        kGDataDescValueLabeled },
     { @"summary",          @"summary.stringValue",      kGDataDescValueLabeled },
     { @"content",          @"content.stringValue",      kGDataDescValueLabeled },
+    { @"contentSrc",       @"content.sourceURI",        kGDataDescValueLabeled },
     { @"etag",             @"ETag",                     kGDataDescValueLabeled },
     { @"resourceID",       @"resourceID",               kGDataDescValueLabeled },
     { @"authors",          @"authors",                  kGDataDescArrayCount },

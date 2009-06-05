@@ -23,7 +23,7 @@
 
 @interface GDataEntryMapFeature : GDataEntryBase
 
-+ (id)featureEntry;
++ (id)featureEntryWithTitle:(NSString *)str;
 
 // extensions
 

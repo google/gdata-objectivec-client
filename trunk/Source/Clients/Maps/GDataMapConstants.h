@@ -43,4 +43,7 @@ _EXTERN NSString* const kGDataCategoryMapVersion _INITIALIZE_AS(@"http://schemas
 
 @interface GDataMapConstants : NSObject
 + (NSDictionary *)mapsNamespaces;
+
+// temporary workaround: this namespace set has a default namespace of kml
++ (NSDictionary *)mapsServerNamespaces;
 @end

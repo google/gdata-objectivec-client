@@ -22,11 +22,12 @@
 
 @implementation GDataEntryMap
 
-+ (id)mapEntry {
++ (id)mapEntryWithTitle:(NSString *)str {
 
   GDataEntryMap *obj = [[[self alloc] init] autorelease];
 
   [obj setNamespaces:[GDataMapConstants mapsNamespaces]];
+  [obj setTitleWithString:str];
 
   return obj;
 }

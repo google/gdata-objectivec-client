@@ -52,6 +52,8 @@ _EXTERN NSString* const kGDataContentTypeKML _INITIALIZE_AS(@"application/vnd.go
 
 + (id)contentWithSourceURI:(NSString *)str type:(NSString *)type;
 
++ (id)contentWithXMLValue:(NSXMLNode *)node type:(NSString *)type;
+
 + (id)textConstructWithString:(NSString *)str; // deprecated
 
 - (NSString *)lang;

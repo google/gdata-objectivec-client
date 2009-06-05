@@ -28,16 +28,25 @@
 // extensions
 
 // CalendarEventEntry extensions
+@interface GDataSendEventNotifications : GDataBoolValueConstruct <GDataExtension>
+@end
+
 @implementation GDataSendEventNotifications 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"sendEventNotifications"; }
 @end
 
+@interface GDataPrivateCopyProperty : GDataBoolValueConstruct <GDataExtension>
+@end
+
 @implementation GDataPrivateCopyProperty 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"privateCopy"; }
+@end
+
+@interface GDataQuickAddProperty : GDataBoolValueConstruct <GDataExtension>
 @end
 
 @implementation GDataQuickAddProperty
@@ -52,10 +61,22 @@
 + (NSString *)extensionElementLocalName { return @"resource"; }
 @end
 
+@interface GDataSyncEventProperty : GDataBoolValueConstruct <GDataExtension>
+// sync scenario, where iCal UID and sequence number are honored during
+// insert and update
+@end
+
 @implementation GDataSyncEventProperty 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"syncEvent"; }
+@end
+
+@interface GDataSequenceProperty : GDataValueConstruct <GDataExtension>
+// GData schema extension describing sequence number of an event.
+// The sequence number is a non-negative integer and is described in
+// section 4.8.7.4 of RFC 2445.
+// Currently this is only a read-only entry.
 @end
 
 @implementation GDataSequenceProperty 
@@ -64,10 +85,20 @@
 + (NSString *)extensionElementLocalName { return @"sequence"; }
 @end
 
+@interface GDataICalUIDProperty : GDataValueConstruct <GDataExtension>
+// GData schema extension describing the UID in the ical export of the event.
+// The value can be an arbitrary string and is described in section 4.8.4.7
+// of RFC 2445. This value is different from the value of the event ID.
+// Currently a read-only entry.
+@end
+
 @implementation GDataICalUIDProperty 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"uid"; }
+@end
+
+@interface GDataGuestsCanModifyProperty : GDataBoolValueConstruct <GDataExtension>
 @end
 
 @implementation GDataGuestsCanModifyProperty
@@ -76,16 +107,25 @@
 + (NSString *)extensionElementLocalName { return @"guestsCanModify"; }
 @end
 
+@interface GDataGuestsCanInviteOthersProperty : GDataBoolValueConstruct <GDataExtension>
+@end
+
 @implementation GDataGuestsCanInviteOthersProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"guestsCanInviteOthers"; }
 @end
 
+@interface GDataGuestsCanSeeGuestsProperty : GDataBoolValueConstruct <GDataExtension>
+@end
+
 @implementation GDataGuestsCanSeeGuestsProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"guestsCanSeeGuests"; }
+@end
+
+@interface GDataAnyoneCanAddSelfProperty : GDataBoolValueConstruct <GDataExtension>
 @end
 
 @implementation GDataAnyoneCanAddSelfProperty

@@ -25,6 +25,28 @@
 @implementation GDataMapConstants
 
 + (NSDictionary *)mapsNamespaces {
+  // default namespace "atom"
+  NSDictionary *baseNS = [GDataEntryBase baseGDataNamespaces];
+
+  NSMutableDictionary *namespaces;
+  namespaces = [NSMutableDictionary dictionaryWithDictionary:baseNS];
+
+  [namespaces setObject:kGDataNamespaceKML
+                 forKey:@"kml"];
+
+  return namespaces;
+}
+
++ (NSDictionary *)mapsServerNamespaces {
+  // temporary workaround until the library can create from scratch
+  // elements with a non-atom default namespace
+  // (or until the Maps server can send XML with a non-kml namespace)
+  //
+  // For creating entries and feeds from scratch, we'll use the namespace
+  // set above, with the default namespace "atom"
+  //
+  // For updating entries, which presumably came from the server, we'll use
+  // this namespace set, with the default namespace "kml"
 
   NSDictionary *baseNS = [GDataEntryBase baseGDataNamespaces];
 
