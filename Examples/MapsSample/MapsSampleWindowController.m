@@ -429,6 +429,10 @@
   if (postURL != nil && [title length] > 0) {
     GDataEntryMap *newEntry = [GDataEntryMap mapEntryWithTitle:title];
 
+    NSString *summaryStr = [NSString stringWithFormat:@"Map created %@",
+                            [NSDate date]];
+    [newEntry setSummaryWithString:summaryStr];
+
     GDataServiceGoogleMaps *service = [self mapService];
 
     GDataServiceTicket *ticket;
@@ -480,11 +484,10 @@
 
     GDataServiceGoogleMaps *service = [self mapService];
 
-    GDataEntryMap *mapCopy = [selectedMap copy];
-    [mapCopy setTitleWithString:newName];
+    [selectedMap setTitleWithString:newName];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchMapsEntryByUpdatingEntry:mapCopy
+    ticket = [service fetchMapsEntryByUpdatingEntry:selectedMap
                                         forEntryURL:editURL
                                            delegate:self
                                   didFinishSelector:@selector(renameMapTicket:finishedWithEntry:)
@@ -581,6 +584,10 @@
 
     GDataEntryMapFeature *newEntry = [GDataEntryMapFeature featureEntryWithTitle:title];
 
+    NSString *summaryStr = [NSString stringWithFormat:@"Feature created %@",
+                            [NSDate date]];
+    [newEntry setSummaryWithString:summaryStr];
+
     NSString *kmlStr = @"<Placemark xmlns='http://earth.google.com/kml/2.2'>"
     "<name>Faulkner's Birthplace</name><Point><coordinates>"
     "-89.520753,34.360902,0.0</coordinates></Point></Placemark>";
@@ -647,7 +654,14 @@
 
     GDataServiceGoogleMaps *service = [self mapService];
 
-    [selectedFeature setTitleWithString:newName];
+    // reuse the title object in the feature entry, since it has the proper
+    // namespaces needed for editing features, as those are returned from
+    // the server with a default namespace of kml
+    //
+    // if we called [selectedFeature setTitleWithString:] that would create
+    // a new title object, without the namespacing expected when updating
+    // feature entries
+    [[selectedFeature title] setStringValue:newName];
 
     GDataServiceTicket *ticket;
     ticket = [service fetchMapsEntryByUpdatingEntry:selectedFeature
