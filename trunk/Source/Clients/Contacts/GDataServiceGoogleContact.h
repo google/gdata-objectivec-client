@@ -18,7 +18,6 @@
 //
 
 #import "GDataServiceGoogle.h"
-#import "GDataEntryContact.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS

@@ -192,7 +192,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [mEntrySegmentedControl setLabel:phoneLabel forSegment:kPhoneSegment];
   [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kPhoneSegment];
   
-  int numPostal = [[[self selectedContact] postalAddresses] count];
+  int numPostal = [[[self selectedContact] structuredPostalAddresses] count];
   NSString *postalLabel = [NSString stringWithFormat:@"Postal - %d", numPostal];
   [mEntrySegmentedControl setLabel:postalLabel forSegment:kPostalSegment];
   [mEntrySegmentedControl setEnabled:isDisplayingContacts forSegment:kPostalSegment];
@@ -603,7 +603,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     case kOrganizationSegment:  return @"organizations";
     case kEmailSegment:         return @"emailAddresses";
     case kPhoneSegment:         return @"phoneNumbers";
-    case kPostalSegment:        return @"postalAddresses";
+    case kPostalSegment:        return @"structuredPostalAddresses";
     case kIMSegment:            return @"IMAddresses";
     case kGroupSegment:         return @"groupMembershipInfos";
     case kExtendedPropsSegment: return @"extendedProperties";
@@ -619,7 +619,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     case kEmailSegment:        return @selector(setPrimaryEmailAddress:);
     case kIMSegment:           return @selector(setPrimaryIMAddress:);
     case kPhoneSegment:        return @selector(setPrimaryPhoneNumber:);
-    case kPostalSegment:       return @selector(setPrimaryPostalAddress:);
+    case kPostalSegment:       return @selector(setPrimaryStructuredPostalAddress:);
   }  
   return nil;
 }
@@ -649,7 +649,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     case kOrganizationSegment:  return [GDataOrganization class];
     case kEmailSegment:         return [GDataEmail class];
     case kPhoneSegment:         return [GDataPhoneNumber class];
-    case kPostalSegment:        return [GDataPostalAddress class];
+    case kPostalSegment:        return [GDataStructuredPostalAddress class];
     case kIMSegment:            return [GDataIM class];
     case kGroupSegment:         return [GDataGroupMembershipInfo class];
     case kExtendedPropsSegment: return [GDataExtendedProperty class];
@@ -1038,7 +1038,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   if ([title length] > 0) {
     
     GDataEntryContact *newContact;
-    newContact = [GDataEntryContact contactEntryWithTitle:title];
+    newContact = [GDataEntryContact contactEntryWithFullNameString:title];
     
     if ([email length] > 0) {
       // all items must have a rel or a label, but not both
@@ -1784,9 +1784,9 @@ NSString* const kBatchResultsProperty = @"BatchResults";
     }
   }
   
-  // postal and phone have stringValue methods
-  else {
-    NSMutableString *mutable = [NSMutableString stringWithString:[item stringValue]];
+  // structuredPostAddress responds to formattedAddress
+  else if ([item respondsToSelector:@selector(formattedAddress)]) {
+    NSMutableString *mutable = [NSMutableString stringWithString:[item formattedAddress]];
     
     // make the return character visible 
     NSString *returnChar = [NSString stringWithUTF8String:"\n"];
@@ -1796,6 +1796,11 @@ NSString* const kBatchResultsProperty = @"BatchResults";
                                 options:0
                                   range:NSMakeRange(0, [mutable length])];
     result = mutable;
+  }
+  
+  // phone has a stringValue method
+  else {
+    result = [item stringValue];
   }
   return result;
 }

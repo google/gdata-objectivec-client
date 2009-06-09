@@ -22,13 +22,18 @@
 #import "GDataEntryContact.h"
 #import "GDataEntryContactGroup.h"
 #import "GDataCategory.h"
+#import "GDataContactConstants.h"
 
 @implementation GDataFeedContactGroup
+
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
+  return [GDataContactConstants coreProtocolVersionForServiceVersion:serviceVersion];
+}
 
 + (GDataFeedContactGroup *)contactGroupFeed {
   GDataFeedContactGroup *obj = [[[[self class] alloc] init] autorelease];
 
-  [obj setNamespaces:[GDataEntryContact contactNamespaces]];
+  [obj setNamespaces:[GDataContactConstants contactNamespaces]];
 
   return obj;
 }

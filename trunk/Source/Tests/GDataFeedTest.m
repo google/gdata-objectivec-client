@@ -498,13 +498,151 @@
       
     { @"", @"" }, // end of feed
     
+    //
+    // Contact Feed with V3 elements
+    //
+    { @"GDataFeedContact/3.0", @"Tests/FeedContactTest2.xml" },
+
+    // GDataFeedContact paths
+    { @"title", @"Fred Flintstone's Contacts" },
+    { @"categories.0.term", kGDataCategoryContact },
+    { @"ETag", @"W/\"DkYHQHgzfCt7ImA9WxJREEU.\"" },
+
+    { @"unknownAttributes.@count.stringValue", @"0" },
+    { @"unknownChildren.@count.stringValue", @"0" },
+
+    // GDataEntryContact paths
+    { @"entries.0.identifier", @"contains:754fdf0c0db53ab3" },
+    { @"entries.0.categories.0.term", kGDataCategoryContact },
+    { @"entries.0.isDeleted", @"0" },
+    { @"entries.0.ETag", @"\"Rno_eTVSLyt7ImA9WxJREEUORwc.\"" },
+    { @"entries.0.editedDate.RFC3339String", @"2009-05-11T23:20:37Z" },
+
+    { @"entries.0.primaryOrganization.orgName", @"Acme Corp." },
+
+    { @"entries.0.organizations.0.orgName", @"Acme Corp." },
+    { @"entries.0.organizations.0.orgTitle", nil },
+    { @"entries.0.organizations.0.label", nil },
+    { @"entries.0.organizations.0.rel", kGDataContactWork },
+    { @"entries.0.organizations.0.isPrimary", @"1" },
+
+    { @"entries.0.primaryIMAddress.address", nil },
+
+    { @"entries.0.IMAddresses.0.protocol", kGDataIMProtocolGoogleTalk },
+    { @"entries.0.IMAddresses.0.address", @"fredsim@example.com" },
+    { @"entries.0.IMAddresses.0.label", @"main messaging addr" },
+    { @"entries.0.IMAddresses.0.rel", nil },
+    { @"entries.0.IMAddresses.0.isPrimary", @"0" },
+
+    { @"entries.0.primaryPhoneNumber.stringValue", @"425-555-1234" },
+
+    { @"entries.0.phoneNumbers.0.stringValue", @"425-555-1234" },
+    { @"entries.0.phoneNumbers.0.label", @"Grand Central" },
+    { @"entries.0.phoneNumbers.0.rel", nil },
+    { @"entries.0.phoneNumbers.0.isPrimary", @"1" },
+
+    { @"entries.0.phoneNumbers.1.stringValue", @"425-555-0000" },
+    { @"entries.0.phoneNumbers.1.label", nil },
+    { @"entries.0.phoneNumbers.1.rel", kGDataPhoneNumberCar },
+    { @"entries.0.phoneNumbers.1.isPrimary", @"0" },
+
+    { @"entries.0.primaryStructuredPostalAddress.street", @"301 Cobblestone Way" },
+
+    { @"entries.0.structuredPostalAddresses.0.street", @"301 Cobblestone Way" },
+    { @"entries.0.structuredPostalAddresses.0.postCode", @"12345" },
+    { @"entries.0.structuredPostalAddresses.0.formattedAddress", @"301 Cobblestone Way\nBedrock, CA 12345\nUnited States" },
+    { @"entries.0.structuredPostalAddresses.0.region", @"CA" },
+    { @"entries.0.structuredPostalAddresses.0.countryName", @"United States" },
+    { @"entries.0.structuredPostalAddresses.0.label", nil },
+    { @"entries.0.structuredPostalAddresses.0.rel", kGDataContactHome },
+    { @"entries.0.structuredPostalAddresses.0.isPrimary", @"1" },
+
+    { @"entries.0.primaryEmailAddress.address", @"fred@example.com" },
+
+    { @"entries.0.emailAddresses.0.address", @"fred@example.com" },
+    { @"entries.0.emailAddresses.0.label", nil },
+    { @"entries.0.emailAddresses.0.rel", kGDataContactHome },
+    { @"entries.0.emailAddresses.0.isPrimary", @"1" },
+
+    { @"entries.0.groupMembershipInfos.0.href", @"http://www.google.com/m8/feeds/groups/fredflintstone%40example.com/base/6" },
+    { @"entries.0.groupMembershipInfos.0.isDeleted", @"0" },
+
+    { @"entries.0.extendedProperties.0.name", @"fredprop" },
+    { @"entries.0.extendedProperties.0.value", @"12345" },
+    { @"entries.0.extendedProperties.0.XMLValues", nil },
+
+    { @"entries.0.billingInformation", @"account overdue" },
+
+    { @"entries.0.birthday", @"1990-12-01" },
+
+    { @"entries.0.calendarLinks.0.rel", nil },
+    { @"entries.0.calendarLinks.0.label", @"full calendar" },
+    { @"entries.0.calendarLinks.0.href", @"http://www.google.com/calendar/render" },
+    { @"entries.0.primaryCalendarLink.label", @"full calendar" },
+
+    { @"entries.0.directoryServer", @"dir server" },
+
+    // { @"entries.0.events.0", @"" },
+
+    { @"entries.0.externalIDs.0.label", @"ext id" },
+    { @"entries.0.externalIDs.0.rel", nil },
+    { @"entries.0.externalIDs.0.stringValue", @"54321" },
+
+    { @"entries.0.gender", @"male" },
+
+    { @"entries.0.hobbies.0.stringValue", @"gurgling" },
+
+    { @"entries.0.initials", @"F.F." },
+
+    { @"entries.0.jots.0.rel", kGDataContactJotHome },
+    { @"entries.0.jots.0.stringValue", @"1248" },
+
+    // { @"entries.0.languages.0", @"" },
+
+    { @"entries.0.maidenName", @"Marshovitzky" },
+
+    { @"entries.0.mileage", @"42 miles" },
+
+    { @"entries.0.name.fullName", @"Fred Flintstone" },
+    { @"entries.0.name.givenName", @"Fred" },
+    { @"entries.0.name.familyName", @"Flintstone" },
+
+    { @"entries.0.nickname", @"Rocks" },
+
+    { @"entries.0.occupation", @"TV Personality" },
+
+    { @"entries.0.priority", kGDataContactPriorityLow },
+
+    { @"entries.0.relations.0.rel", kGDataContactRelationPartner },
+    { @"entries.0.relations.0.label", nil },
+    { @"entries.0.relations.0.stringValue", @"Wilma" },
+
+    { @"entries.0.sensitivity", kGDataContactSensitivityNormal },
+
+    { @"entries.0.shortName", @"Freddy" },
+
+    { @"entries.0.subject", @"subject val" },
+
+    { @"entries.0.userDefinedFields.0.key", @"Cat" },
+    { @"entries.0.userDefinedFields.0.stringValue", @"Cheezeburger" },
+
+    { @"entries.0.websiteLinks.0.href", @"http://example.com/site.html" },
+    { @"entries.0.websiteLinks.0.rel", kGDataContactWebsiteLinkHomePage },
+    { @"entries.0.websiteLinks.0.label", nil },
+    { @"entries.0.websiteLinks.0.isPrimary", @"0" },
+
+    { @"entries.0.where", @"The Quarry" },
+
+    { @"entries.0.unknownAttributes.@count.stringValue", @"0" },
+    { @"entries.0.unknownChildren.@count.stringValue", @"0" },
+
+    { @"", @"" }, // end of feed
+
     { nil, nil } // end of test array
   };
-  
+
   [self runTests:tests];
 }
-
-
 
 - (void)testGoogleBaseFeed {
   

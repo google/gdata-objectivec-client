@@ -533,6 +533,20 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"currencyCode", @"USD" },
     { @"", @"" },
     
+    { @"GDataName", @"<gd:name><gd:givenName>Fred</gd:givenName>"
+      "<gd:additionalName>Old</gd:additionalName>"
+      "<gd:familyName>Flintstone</gd:familyName>"
+      "<gd:namePrefix>Mr</gd:namePrefix>"
+      "<gd:nameSuffix>Jr</gd:nameSuffix>"
+      "<gd:fullName>Mr Fred Old Flintstone Jr</gd:fullName></gd:name>" },
+    { @"fullName", @"Mr Fred Old Flintstone Jr" },
+    { @"namePrefix", @"Mr" },
+    { @"nameSuffix", @"Jr" },
+    { @"familyName", @"Flintstone" },
+    { @"additionalName", @"Old" },
+    { @"givenName", @"Fred" },
+    { @"", @"" },
+
     { @"GDataOriginalEvent", @"<gd:originalEvent id=\"i8fl1nrv2bl57c1qgr3f0onmgg\" "
       "href=\"http://www.google.com/calendar/feeds/userID/private-magicCookie/full/eventID\" >"
       "<gd:when startTime=\"2006-03-17T22:00:00.000Z\"/>  </gd:originalEvent>" },
@@ -544,13 +558,23 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"", @"" },
     
     { @"GDataOrganization", @"<gd:organization rel='http://schemas.google.com/g/2005#work' "
-      "label='greensleeves' primary='true' ><gd:orgName>Acme Corp</gd:orgName>"
-      "<gd:orgTitle>Prezident</gd:orgTitle></gd:organization>" },
+      "label='greensleeves' primary='true' >"
+      "<gd:orgName yomi='ak me'>Acme Corp</gd:orgName>"
+      "<gd:orgTitle>Prezident</gd:orgTitle>"
+      "<gd:orgDepartment>Cheese Factory</gd:orgDepartment>"
+      "<gd:orgJobDescription>Sniffer</gd:orgJobDescription>"
+      "<gd:orgSymbol>GSLV</gd:orgSymbol>"
+      "<gd:where valueString='Downtown' /></gd:organization>" },
     { @"rel", @"http://schemas.google.com/g/2005#work" },
     { @"label", @"greensleeves" },
     { @"isPrimary", @"1" },
     { @"orgName", @"Acme Corp", },
+    { @"orgNameYomi", @"ak me", },
     { @"orgTitle", @"Prezident" },
+    { @"orgDepartment", @"Cheese Factory" },
+    { @"orgJobDescription", @"Sniffer" },
+    { @"orgSymbol", @"GSLV" },
+    { @"where.stringValue", @"Downtown" },
     { @"", @"" },
 
     { @"GDataPerson", @"<GDataPerson xml:lang='en'> <name>Fred Flintstone</name> <email>test@froo.net</email> "
@@ -1541,7 +1565,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   // to the new entry
   GDataEntryContact *entry = [[[GDataEntryContact alloc] initWithServiceVersion:@"1.0"] autorelease];
   
-  [entry setNamespaces:[GDataEntryContact contactNamespaces]];
+  [entry setNamespaces:[GDataContactConstants contactNamespaces]];
   [entry setTitleWithString:@"Joe Smith"];
   
   NSXMLElement *element = [entry XMLElement];
@@ -1553,7 +1577,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   
   GDataEntryContact *entry2 = [[[GDataEntryContact alloc] initWithServiceVersion:@"2.0"] autorelease];
   
-  [entry2 setNamespaces:[GDataEntryContact contactNamespaces]];
+  [entry2 setNamespaces:[GDataContactConstants contactNamespaces]];
   [entry2 setTitleWithString:@"Joe Smith"];
   
   element = [entry2 XMLElement];
@@ -1592,7 +1616,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   //   uploadDataOnly is type kGDataDescBooleanPresent
   //   uploadData     is type kGDataDescNonZeroLength
 
-  GDataEntryContact *entry = [GDataEntryContact contactEntryWithTitle:@"Fred Flintstone"];
+  GDataEntryContact *entry = [[[GDataEntryContact alloc] initWithServiceVersion:@"2.0"] autorelease];
+  [entry setTitleWithString:@"Fred Flintstone"];
   [entry addLink:[GDataLink linkWithRel:@"rel" type:nil href:@"href"]];
   [entry setShouldUploadDataOnly:YES];
   [entry setUploadData:[NSData dataWithBytes:"  " length:2]];

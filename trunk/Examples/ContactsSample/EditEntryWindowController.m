@@ -40,13 +40,13 @@ typedef struct ItemSelectors {
 } ItemSelectors;
 
 static ItemSelectors sAllItemSelectors[] = {
-  { @"GDataOrganization", @"Organization", @"orgName", @"label", @"rel", @"orgTitle", nil },
-  { @"GDataEmail", @"E-mail", @"address", @"label", @"rel", nil, nil },
-  { @"GDataIM", @"Instant Messaging", @"address", @"label", @"rel", nil, @"protocol" }, 
-  { @"GDataPhoneNumber", @"Phone", @"stringValue", @"label", @"rel", nil, nil },
-  { @"GDataPostalAddress", @"Postal", @"stringValue", @"label", @"rel", nil, nil },
-  { @"GDataGroupMembershipInfo", @"Group", nil, nil, nil, nil, nil },
-  { @"GDataExtendedProperty", @"Extended Property", @"unifiedStringValue", @"name", nil, nil, nil },
+  { @"GDataOrganization",            @"Organization",      @"orgName",            @"label", @"rel", @"orgTitle", nil         },
+  { @"GDataEmail",                   @"E-mail",            @"address",            @"label", @"rel", nil,         nil         },
+  { @"GDataIM",                      @"Instant Messaging", @"address",            @"label", @"rel", nil,         @"protocol" },
+  { @"GDataPhoneNumber",             @"Phone",             @"stringValue",        @"label", @"rel", nil,         nil         },
+  { @"GDataStructuredPostalAddress", @"Postal",            @"formattedAddress",   @"label", @"rel", nil,         nil         },
+  { @"GDataGroupMembershipInfo",     @"Group",             nil,                   nil,      nil,    nil,         nil         },
+  { @"GDataExtendedProperty",        @"Extended Property", @"unifiedStringValue", @"name",  nil,    nil,         nil         },
   { 0, 0, 0, 0, 0, 0 }
 };
 
@@ -109,7 +109,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
     standardRels, @"GDataEmail",
     standardRels, @"GDataIM",
     phoneRels, @"GDataPhoneNumber",
-    standardRels, @"GDataPostalAddress", 
+    standardRels, @"GDataStructuredPostalAddress", 
     noRels, @"GDataGroupMembershipInfo", 
     noRels, @"GDataExtendedProperty", nil];
 }

@@ -32,14 +32,25 @@
 // Note: kGDataContactMobile, kGDataContactHome, and kGDataContactWork are
 // equivalent to kGDataPhoneNumberMobile, kGDataPhoneNumberHome, kGDataPhoneNumberWork
 
-_EXTERN NSString* const kGDataPhoneNumberMobile  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#mobile");
-_EXTERN NSString* const kGDataPhoneNumberHome  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home");
-_EXTERN NSString* const kGDataPhoneNumberWork  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");
-_EXTERN NSString* const kGDataPhoneNumberFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#fax");
-_EXTERN NSString* const kGDataPhoneNumberHomeFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home_fax");
-_EXTERN NSString* const kGDataPhoneNumberWorkFax  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_fax");
-_EXTERN NSString* const kGDataPhoneNumberPager  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#pager");
-_EXTERN NSString* const kGDataPhoneNumberOther  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#other");
+_EXTERN NSString* const kGDataPhoneNumberAssistant   _INITIALIZE_AS(@"http://schemas.google.com/g/2005#assistant");
+_EXTERN NSString* const kGDataPhoneNumberCallback    _INITIALIZE_AS(@"http://schemas.google.com/g/2005#callback");
+_EXTERN NSString* const kGDataPhoneNumberCar         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#car");
+_EXTERN NSString* const kGDataPhoneNumberCompanyMain _INITIALIZE_AS(@"http://schemas.google.com/g/2005#company_main");
+_EXTERN NSString* const kGDataPhoneNumberFax         _INITIALIZE_AS(@"http://schemas.google.com/g/2005#fax");
+_EXTERN NSString* const kGDataPhoneNumberHome        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home");
+_EXTERN NSString* const kGDataPhoneNumberHomeFax     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#home_fax");
+_EXTERN NSString* const kGDataPhoneNumberISDN        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#isdn");
+_EXTERN NSString* const kGDataPhoneNumberMobile      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#mobile");
+_EXTERN NSString* const kGDataPhoneNumberOther       _INITIALIZE_AS(@"http://schemas.google.com/g/2005#other");
+_EXTERN NSString* const kGDataPhoneNumberOtherFax    _INITIALIZE_AS(@"http://schemas.google.com/g/2005#other_fax");
+_EXTERN NSString* const kGDataPhoneNumberPager       _INITIALIZE_AS(@"http://schemas.google.com/g/2005#pager");
+_EXTERN NSString* const kGDataPhoneNumberRadio       _INITIALIZE_AS(@"http://schemas.google.com/g/2005#radio");
+_EXTERN NSString* const kGDataPhoneNumberTelex       _INITIALIZE_AS(@"http://schemas.google.com/g/2005#telex");
+_EXTERN NSString* const kGDataPhoneNumberTTYTDD      _INITIALIZE_AS(@"http://schemas.google.com/g/2005#tty_tdd");
+_EXTERN NSString* const kGDataPhoneNumberWork        _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work");
+_EXTERN NSString* const kGDataPhoneNumberWorkFax     _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_fax");
+_EXTERN NSString* const kGDataPhoneNumberWorkMobile  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_mobile");
+_EXTERN NSString* const kGDataPhoneNumberWorkPager   _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_pager");
 
 // phone number, as in 
 //  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" >
