@@ -13,6 +13,8 @@ Additions
 
 - Added support for Spreadsheets API version 3 with table and record feeds
 
+- Added support for Contacts API version 3
+
 - Added Geo accessor to Calendar API event entries
 
 - Added batch call to Docs API

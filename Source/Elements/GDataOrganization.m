@@ -18,6 +18,8 @@
 //
 
 #import "GDataOrganization.h"
+#import "GDataOrganizationName.h"
+#import "GDataWhere.h"
 
 static NSString* const kRelAttr = @"rel";
 static NSString* const kLabelAttr = @"label";
@@ -33,22 +35,47 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 
-@implementation GDataOrgTitle 
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceGDataPrefix; }
-+ (NSString *)extensionElementURI    { return kGDataNamespaceGData; }
-+ (NSString *)extensionElementLocalName { return @"orgTitle"; }
+@interface GDataOrgDepartment : GDataValueElementConstruct <GDataExtension>
 @end
 
-@implementation GDataOrgName 
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceGDataPrefix; }
-+ (NSString *)extensionElementURI    { return kGDataNamespaceGData; }
-+ (NSString *)extensionElementLocalName { return @"orgName"; }
+@implementation GDataOrgDepartment
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData;       }
++ (NSString *)extensionElementLocalName { return @"orgDepartment";           }
 @end
+
+@interface GDataOrgJobDescription : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataOrgJobDescription
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData;       }
++ (NSString *)extensionElementLocalName { return @"orgJobDescription";       }
+@end
+
+@interface GDataOrgSymbol : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataOrgSymbol
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData;       }
++ (NSString *)extensionElementLocalName { return @"orgSymbol";               }
+@end
+
+@interface GDataOrgTitle : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataOrgTitle 
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData;       }
++ (NSString *)extensionElementLocalName { return @"orgTitle";                }
+@end
+
 
 @implementation GDataOrganization
 // organization, as in 
 //  <gd:organization primary="true" rel="http://schemas.google.com/g/2005#work">
-//    <gd:orgName>Acme Corp</gd:orgName>
+//    <gd:orgName yomi="Ak Me">Acme Corp</gd:orgName>
 //    <gd:orgTitle>Prezident</gd:orgTitle>
 //  </gd:organization>
 
@@ -69,10 +96,14 @@ static NSString* StringOrNilIfBlank(NSString *str) {
   Class elementClass = [self class];
   
   [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataOrgTitle class]];  
-  [self addExtensionDeclarationForParentClass:elementClass
-                                   childClass:[GDataOrgName class]];  
-  
+                                 childClasses:
+   [GDataOrgDepartment class],
+   [GDataOrgJobDescription class],
+   [GDataOrgSymbol class],
+   [GDataOrgTitle class],
+   [GDataOrganizationName class],
+   [GDataWhere class],
+   nil];
 }
 
 - (void)addParseDeclarations {
@@ -84,12 +115,22 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"name",        @"orgName",           kGDataDescValueLabeled   },
+    { @"orgNameYomi", @"orgNameYomi",       kGDataDescValueLabeled   },
+    { @"title",       @"orgTitle",          kGDataDescValueLabeled   },
+    { @"dept",        @"orgDepartment",     kGDataDescValueLabeled   },
+    { @"jobDesc",     @"orgJobDescription", kGDataDescValueLabeled   },
+    { @"symbol",      @"orgSymbol",         kGDataDescValueLabeled   },
+    { @"where",       @"where",             kGDataDescValueLabeled   },
+    { @"rel",         @"rel",               kGDataDescValueLabeled   },
+    { @"label",       @"label",             kGDataDescValueLabeled   },
+    { @"primary",     @"isPrimary",         kGDataDescBooleanPresent },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  // add extensions
-  [self addToArray:items objectDescriptionIfNonNil:[self orgTitle] withName:@"title"];
-  [self addToArray:items objectDescriptionIfNonNil:[self orgName] withName:@"name"];
-    
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
@@ -120,15 +161,86 @@ static NSString* StringOrNilIfBlank(NSString *str) {
   [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 
+// orgName and orgNameYomi are both inside the GDataOrganizationName extension
+// element
 - (NSString *)orgName {
-  GDataOrgName *obj = [self objectForExtensionClass:[GDataOrgName class]];
+  GDataOrganizationName *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrganizationName class]];
   return [obj stringValue];
 }
 
 - (void)setOrgName:(NSString *)str {
+  GDataOrganizationName *obj;
 
-  GDataOrgName *obj = [GDataOrgName valueWithString:StringOrNilIfBlank(str)];
-  [self setObject:obj forExtensionClass:[GDataOrgName class]]; 
+  obj = [self objectForExtensionClass:[GDataOrganizationName class]];
+  if (obj == nil && str != nil) {
+    // lacked the element; create one only if we're really setting a value
+    obj = [GDataOrganizationName organizationNameWithString:nil];
+    [self setObject:obj forExtensionClass:[GDataOrganizationName class]];
+  }
+  [obj setStringValue:StringOrNilIfBlank(str)];
+}
+
+- (NSString *)orgNameYomi {
+  GDataOrganizationName *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrganizationName class]];
+  return [obj yomi];
+}
+
+- (void)setOrgNameYomi:(NSString *)str {
+  GDataOrganizationName *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrganizationName class]];
+  if (obj == nil && str != nil) {
+    // lacked the element; create one only if we're really setting a value
+    obj = [GDataOrganizationName organizationNameWithString:nil];
+    [self setObject:obj forExtensionClass:[GDataOrganizationName class]];
+  }
+  [obj setYomi:str];
+}
+
+- (NSString *)orgDepartment {
+  GDataOrgDepartment *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrgDepartment class]];
+  return [obj stringValue];
+}
+
+- (void)setOrgDepartment:(NSString *)str {
+  GDataOrgDepartment *obj;
+
+  obj = [GDataOrgDepartment valueWithString:StringOrNilIfBlank(str)];
+  [self setObject:obj forExtensionClass:[GDataOrgDepartment class]];
+}
+
+- (NSString *)orgJobDescription {
+  GDataOrgJobDescription *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrgJobDescription class]];
+  return [obj stringValue];
+}
+
+- (void)setOrgJobDescription:(NSString *)str {
+  GDataOrgJobDescription *obj;
+
+  obj = [GDataOrgJobDescription valueWithString:StringOrNilIfBlank(str)];
+  [self setObject:obj forExtensionClass:[GDataOrgJobDescription class]];
+}
+
+- (NSString *)orgSymbol {
+  GDataOrgSymbol *obj;
+
+  obj = [self objectForExtensionClass:[GDataOrgSymbol class]];
+  return [obj stringValue];
+}
+
+- (void)setOrgSymbol:(NSString *)str {
+  GDataOrgSymbol *obj;
+
+  obj = [GDataOrgSymbol valueWithString:StringOrNilIfBlank(str)];
+  [self setObject:obj forExtensionClass:[GDataOrgSymbol class]];
 }
 
 - (NSString *)orgTitle {
@@ -137,9 +249,16 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 - (void)setOrgTitle:(NSString *)str {
-  
   GDataOrgTitle *obj = [GDataOrgTitle valueWithString:StringOrNilIfBlank(str)];
   [self setObject:obj forExtensionClass:[GDataOrgTitle class]]; 
+}
+
+- (GDataWhere *)where {
+  return [self objectForExtensionClass:[GDataWhere class]];
+}
+
+- (void)setWhere:(GDataWhere *)obj {
+  [self setObject:obj forExtensionClass:[GDataWhere class]];
 }
 
 @end

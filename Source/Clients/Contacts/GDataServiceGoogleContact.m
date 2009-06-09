@@ -22,6 +22,7 @@
 #import "GDataServiceGoogleContact.h"
 #import "GDataQueryContact.h"
 #import "GDataFeedContact.h"
+#import "GDataContactConstants.h"
 
 @implementation GDataServiceGoogleContact
 
@@ -119,7 +120,7 @@
                                  didFailSelector:(SEL)failedSelector {
   
   return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:[GDataEntryContact class]
+                                   entryClass:kGDataUseRegisteredClass
                                      delegate:delegate
                             didFinishSelector:finishedSelector
                               didFailSelector:failedSelector];
@@ -132,7 +133,7 @@
                                           didFailSelector:(SEL)failedSelector {
   
   if ([(GDataObject *) entryToInsert namespaces] == nil) {
-    [(GDataObject *) entryToInsert setNamespaces:[GDataEntryContact contactNamespaces]]; 
+    [(GDataObject *) entryToInsert setNamespaces:[GDataContactConstants contactNamespaces]]; 
   }
   
   return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
@@ -150,7 +151,7 @@
                                          didFailSelector:(SEL)failedSelector {
   
   if ([(GDataObject *) entryToUpdate namespaces] == nil) {
-    [(GDataObject *) entryToUpdate setNamespaces:[GDataEntryContact contactNamespaces]]; 
+    [(GDataObject *) entryToUpdate setNamespaces:[GDataContactConstants contactNamespaces]]; 
   }
   
   return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate

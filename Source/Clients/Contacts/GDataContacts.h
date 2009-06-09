@@ -19,9 +19,28 @@
 
 #import "GDataElements.h"
 
+#import "GDataContactConstants.h"
+
+#import "GDataContactElements.h"
+#import "GDataContactEvent.h"
+#import "GDataContactExternalID.h"
+#import "GDataContactJot.h"
+#import "GDataContactLanguage.h"
+#import "GDataContactLink.h"
+#import "GDataContactPriority.h"
+#import "GDataContactRelation.h"
+#import "GDataContacts.h"
+#import "GDataContactSensitivity.h"
+#import "GDataContactUserDefinedField.h"
+#import "GDataContactWebsite.h"
+#import "GDataGroupMembershipInfo.h"
+
+#import "GDataEntryContactBase.h"
 #import "GDataEntryContact.h"
 #import "GDataEntryContactGroup.h"
+#import "GDataEntryContactProfile.h"
 #import "GDataFeedContact.h"
 #import "GDataFeedContactGroup.h"
+#import "GDataFeedContactProfile.h"
 #import "GDataServiceGoogleContact.h"
 #import "GDataQueryContact.h"

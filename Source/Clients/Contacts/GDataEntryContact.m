@@ -17,27 +17,40 @@
 //  GDataEntryContact.m
 //
 
-#define GDATAENTRYCONTACT_DEFINE_GLOBALS 1
 #import "GDataEntryContact.h"
+#import "GDataContactConstants.h"
 
+// phonetic name
+@interface GDataContactYomiName : GDataValueElementConstruct <GDataExtension>
+@end
+ 
+@implementation GDataContactYomiName
++ (NSString *)extensionElementURI       { return kGDataNamespaceContact; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceContactPrefix; }
++ (NSString *)extensionElementLocalName { return @"yomiName"; }
+@end
 
 @implementation GDataEntryContact
 
-+ (NSDictionary *)contactNamespaces {
-  NSMutableDictionary *namespaces;
-  
-  namespaces = [NSMutableDictionary dictionaryWithObject:kGDataNamespaceContact
-                                                  forKey:kGDataNamespaceContactPrefix];
-  
-  [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
-  
-  return namespaces;
++ (GDataEntryContact *)contactEntryWithName:(GDataName *)name {
+
+  GDataEntryContact *obj = [[[GDataEntryContact alloc] init] autorelease];
+  [obj setNamespaces:[GDataContactConstants contactNamespaces]];
+  [obj setName:name];
+  return obj;
+}
+
++ (GDataEntryContact *)contactEntryWithFullNameString:(NSString *)str {
+  GDataName *name = [GDataName nameWithFullNameString:str];
+  GDataEntryContact *obj = [self contactEntryWithName:name];
+  return obj;
 }
 
 + (GDataEntryContact *)contactEntryWithTitle:(NSString *)title {
-  GDataEntryContact *obj = [[[GDataEntryContact alloc] init] autorelease];
-  
-  [obj setNamespaces:[GDataEntryContact contactNamespaces]];
+
+  GDataEntryContact *obj = [[[self alloc] init] autorelease];
+
+  [obj setNamespaces:[GDataContactConstants contactNamespaces]];
   
   [obj setTitleWithString:title];
   return obj;
@@ -62,13 +75,7 @@
   Class entryClass = [self class];
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
-   [GDataOrganization class],
-   [GDataEmail class],
-   [GDataIM class],
-   [GDataPhoneNumber class],
-   [GDataPostalAddress class],
    [GDataGroupMembershipInfo class],
-   [GDataExtendedProperty class],
    nil];
 }
 
@@ -76,13 +83,8 @@
 - (NSMutableArray *)itemsForDescription {
   
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"organizations", @"organizations",        kGDataDescArrayDescs },
-    { @"email",         @"emailAddresses",       kGDataDescArrayDescs },
-    { @"phone",         @"phoneNumbers",         kGDataDescArrayDescs },
-    { @"IM",            @"IMAddresses",          kGDataDescArrayDescs },
-    { @"postal",        @"postalAddresses",      kGDataDescArrayDescs },
-    { @"group",         @"groupMembershipInfos", kGDataDescArrayDescs },
-    { @"extProps",      @"extendedProperties",   kGDataDescArrayDescs },
+    { @"group",           @"groupMembershipInfos", kGDataDescArrayDescs   },
+    { @"version>=3:yomi", @"yomi",                 kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
   
@@ -98,189 +100,18 @@
 
 #pragma mark -
 
-// The Focus UI does not happily handle empty strings, so we'll force those
-// to be nil
-- (void)setTitle:(GDataTextConstruct *)theTitle {
-  if ([[theTitle stringValue] length] == 0) {
-    theTitle = nil; 
-  }
-  [super setTitle:theTitle];
+- (NSString *)yomi {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  GDataContactYomiName *obj = [self objectForExtensionClass:[GDataContactYomiName class]];
+  return [obj stringValue];
 }
 
-- (void)setTitleWithString:(NSString *)str {
-  if ([str length] == 0) {
-    [self setTitle:nil]; 
-  } else {
-    [super setTitleWithString:str]; 
-  }
-}
+- (void)setYomi:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
-#pragma mark -
-
-// routines to do the work for finding or setting the primary elements
-// of the different extension classes
-
-- (GDataObject *)primaryObjectForExtensionClass:(Class)class {
-  
-  NSArray *extns = [self objectsForExtensionClass:class];
-  
-  GDataObject *obj;
-  GDATA_FOREACH(obj, extns) {
-    if ([(id)obj isPrimary]) return obj;
-  }
-  return nil;
-}
-
-- (void)setPrimaryObject:(GDataObject *)newPrimaryObj
-       forExtensionClass:(Class)class {
-  NSArray *extns =  [self objectsForExtensionClass:class];
-  BOOL foundIt = NO;
-
-  GDataObject *obj;
-  GDATA_FOREACH(obj, extns) {
-
-    BOOL isPrimary = [newPrimaryObj isEqual:obj];
-    [(id)obj setIsPrimary:isPrimary];
-    
-    if (isPrimary) foundIt = YES;
-  }
-  
-  // if the object isn't already in the list, add it
-  if (!foundIt && newPrimaryObj != nil) {
-    [(id)newPrimaryObj setIsPrimary:YES];
-    [self addObject:newPrimaryObj forExtensionClass:class];
-  }
-}
-
-#pragma mark -
-
-- (NSArray *)organizations {
-  return [self objectsForExtensionClass:[GDataOrganization class]];
-}
-
-- (void)setOrganizations:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataOrganization class]];
-}
-
-- (void)addOrganization:(GDataOrganization *)obj {
-  [self addObject:obj forExtensionClass:[GDataOrganization class]];
-}
-
-- (void)removeOrganization:(GDataOrganization *)obj {
-  [self removeObject:obj forExtensionClass:[GDataOrganization class]];
-}
-
-- (GDataOrganization *)primaryOrganization {
-  id obj = [self primaryObjectForExtensionClass:[GDataOrganization class]];
-  return obj;
-}
-
-- (void)setPrimaryOrganization:(GDataOrganization *)obj {
-  [self setPrimaryObject:obj forExtensionClass:[GDataOrganization class]];
-}
-
-
-- (NSArray *)emailAddresses {
-  return [self objectsForExtensionClass:[GDataEmail class]];
-}
-
-- (void)setEmailAddresses:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataEmail class]];
-}
-
-- (void)addEmailAddress:(GDataEmail *)obj {
-  [self addObject:obj forExtensionClass:[GDataEmail class]];
-}
-
-- (void)removeEmailAddress:(GDataEmail *)obj {
-  [self removeObject:obj forExtensionClass:[GDataEmail class]];
-}
-
-- (GDataEmail *)primaryEmailAddress {
-  id obj = [self primaryObjectForExtensionClass:[GDataEmail class]];
-  return obj;
-}
-
-- (void)setPrimaryEmailAddress:(GDataEmail *)obj {
-  [self setPrimaryObject:obj forExtensionClass:[GDataEmail class]];
-}
-
-
-- (NSArray *)IMAddresses {
-  return [self objectsForExtensionClass:[GDataIM class]];
-}
-
-- (void)setIMAddresses:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataIM class]];
-}
-
-- (GDataIM *)primaryIMAddress {
-  id obj = [self primaryObjectForExtensionClass:[GDataIM class]];
-  return obj;
-}
-
-- (void)setPrimaryIMAddress:(GDataIM *)obj {
-  [self setPrimaryObject:obj forExtensionClass:[GDataIM class]];
-}
-
-- (void)addIMAddress:(GDataIM *)obj {
-  [self addObject:obj forExtensionClass:[GDataIM class]];
-}
-
-- (void)removeIMAddress:(GDataIM *)obj {
-  [self removeObject:obj forExtensionClass:[GDataIM class]];
-}
-
-
-- (NSArray *)phoneNumbers {
-  return [self objectsForExtensionClass:[GDataPhoneNumber class]];
-}
-
-- (void)setPhoneNumbers:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataPhoneNumber class]];
-}
-
-- (void)addPhoneNumber:(GDataPhoneNumber *)obj {
-  [self addObject:obj forExtensionClass:[GDataPhoneNumber class]];
-}
-
-- (void)removePhoneNumber:(GDataPhoneNumber *)obj {
-  [self removeObject:obj forExtensionClass:[GDataPhoneNumber class]];
-}
-
-- (GDataPhoneNumber *)primaryPhoneNumber {
-  id obj = [self primaryObjectForExtensionClass:[GDataPhoneNumber class]];
-  return obj;
-}
-
-- (void)setPrimaryPhoneNumber:(GDataPhoneNumber *)obj {
-  [self setPrimaryObject:obj forExtensionClass:[GDataPhoneNumber class]];
-}
-
-
-- (NSArray *)postalAddresses {
-  return [self objectsForExtensionClass:[GDataPostalAddress class]];
-}
-
-- (void)setPostalAddresses:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataPostalAddress class]];
-}
-
-- (void)addPostalAddress:(GDataPostalAddress *)obj {
-  [self addObject:obj forExtensionClass:[GDataPostalAddress class]];
-}
-
-- (void)removePostalAddress:(GDataPostalAddress *)obj {
-  [self removeObject:obj forExtensionClass:[GDataPostalAddress class]];
-}
-
-- (GDataPostalAddress *)primaryPostalAddress {
-  id obj = [self primaryObjectForExtensionClass:[GDataPostalAddress class]];
-  return obj;
-}
-
-- (void)setPrimaryPostalAddress:(GDataPostalAddress *)obj {
-  [self setPrimaryObject:obj forExtensionClass:[GDataPostalAddress class]];
+  GDataContactYomiName *obj = [GDataContactYomiName valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataContactYomiName class]]; 
 }
 
 
@@ -299,47 +130,7 @@
 - (void)removeGroupMembershipInfo:(GDataGroupMembershipInfo *)obj {
   [self removeObject:obj forExtensionClass:[GDataGroupMembershipInfo class]];
 }
-
-- (NSArray *)extendedProperties {
-  return [self objectsForExtensionClass:[GDataExtendedProperty class]];
-}
-
-- (void)setExtendedProperties:(NSArray *)arr {
-  [self setObjects:arr forExtensionClass:[GDataExtendedProperty class]];
-}
-
-- (void)addExtendedProperty:(GDataExtendedProperty *)obj {
-  [self addObject:obj forExtensionClass:[GDataExtendedProperty class]];
-}
-
-- (void)removeExtendedProperty:(GDataExtendedProperty *)obj {
-  [self removeObject:obj forExtensionClass:[GDataExtendedProperty class]];
-}
-
-- (GDataExtendedProperty *)extendedPropertyForName:(NSString *)str {
-  
-  GDataExtendedProperty *extProp = nil;
-  
-  NSArray *array = [self extendedProperties];
-  if (array != nil) {
-    extProp = [GDataUtilities firstObjectFromArray:array
-                                         withValue:str
-                                        forKeyPath:@"name"];
-  }
-  return extProp;
-}
-
 #pragma mark -
-
-- (GDataLink *)photoLink {
-  return [self linkWithRelAttributeValue:kGDataContactPhotoRel]; 
-}
-
-- (GDataLink *)editPhotoLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  return [self linkWithRelAttributeValue:kGDataContactEditPhotoRel]; 
-}
 
 - (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)href {
   GDataGroupMembershipInfo *groupInfo;
