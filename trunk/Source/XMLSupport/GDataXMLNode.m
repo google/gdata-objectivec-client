@@ -797,7 +797,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 - (NSString *)description {
   int nodeType = (xmlNode_ ? (int)xmlNode_->type : -1);
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {type:%d name:%@ xml:\"%@\"}",
+  return [NSString stringWithFormat:@"%@ %p: {type:%d name:%@ xml:\"%@\"}",
           [self class], self, nodeType, [self name], [self XMLString]];
 }
 
@@ -1647,7 +1647,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ 0x%lX", [self class], self];
+  return [NSString stringWithFormat:@"%@ %p", [self class], self];
 }
 
 - (void)dealloc {

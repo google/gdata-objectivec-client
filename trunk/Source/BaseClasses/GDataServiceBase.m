@@ -111,7 +111,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   (void) Gestalt(gestaltSystemVersionBugFix, &systemRelease);
 
   systemString = [NSString stringWithFormat:@"MacOSX/%d.%d.%d",
-    systemMajor, systemMinor, systemRelease];
+    (int)systemMajor, (int)systemMinor, (int)systemRelease];
 
 #elif GDATA_IPHONE && TARGET_OS_IPHONE
   // compiling against the iPhone SDK
@@ -175,16 +175,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (libRange.location == NSNotFound) {
     // the user agent doesn't specify the client library, so append that
     // information, and the system version
-    long major, minor, release;
+    NSUInteger major, minor, release;
     NSString *libVersionString;
     GDataFrameworkVersion(&major, &minor, &release);
 
     // most library releases will have a release value of zero
     if (release != 0) {
       libVersionString = [NSString stringWithFormat:@"%d.%d.%d",
-        major, minor, release];
+        (int)major, (int)minor, (int)release];
     } else {
-      libVersionString = [NSString stringWithFormat:@"%d.%d", major, minor];
+      libVersionString = [NSString stringWithFormat:@"%d.%d",
+                          (int)major, (int)minor];
     }
 
     NSString *systemString = [self systemVersionString];
@@ -570,7 +571,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       UInt64 msStart = (UInt64)msecs1.lo + (((UInt64)msecs1.hi) << 32);
       UInt64 msEnd   = (UInt64)msecs2.lo + (((UInt64)msecs2.hi) << 32);
       NSLog(@"allocation of %@ took %qu microseconds",
-            objectClass, msEnd - msStart);
+            objectClass, (msEnd - msStart));
 #endif
 
     } else {
@@ -659,14 +660,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [ticket setCurrentFetcher:nil];
 }
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
 
 #ifdef DEBUG
   NSString *dataString = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
   if (dataString) {
    NSLog(@"serviceBase:%@ objectFetcher:%@ failedWithStatus:%d data:%@",
-         self, fetcher, status, dataString);
+         self, fetcher, (int)status, dataString);
   }
 #endif
 
@@ -1386,7 +1387,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 - (NSString *)description {
-  NSString *template = @"%@ 0x%lX: {service:%@ currentFetcher:%@ userData:%@}";
+  NSString *template = @"%@ %p: {service:%@ currentFetcher:%@ userData:%@}";
   return [NSString stringWithFormat:template,
     [self class], self, service_, currentFetcher_, userData_];
 }

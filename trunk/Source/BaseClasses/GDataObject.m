@@ -637,7 +637,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   // technically the version number is <integer>.<integer> rather than a float,
   // but intValue is a simple way to test just the major portion
-  unsigned int majorVer = [coreVersion intValue];
+  int majorVer = [coreVersion intValue];
   return (majorVer <= 1);
 }
 
@@ -795,10 +795,10 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // code sometimes useful for finding unparsed xml; this can be turned on
   // during testing
   if ([unknownAttributes_ count]) {
-    NSLog(@"%@ %lX: unknown attributes %@\n%@\n", [self class], self, unknownAttributes_, self);
+    NSLog(@"%@ %p: unknown attributes %@\n%@\n", [self class], self, unknownAttributes_, self);
   }
   if ([unknownChildren_ count]) {
-    NSLog(@"%@ %lX: unknown children %@\n%@\n", [self class], self, unknownChildren_, self);
+    NSLog(@"%@ %p: unknown children %@\n%@\n", [self class], self, unknownChildren_, self);
   }
 #endif
 
@@ -875,9 +875,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 }
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
-  attributeValueWithInteger:(int)val
+  attributeValueWithInteger:(NSInteger)val
                    withName:(NSString *)name {
-  NSString* str = [NSString stringWithFormat:@"%d", val];
+  NSString* str = [NSString stringWithFormat:@"%ld", (long)val];
   NSXMLNode* attr = [NSXMLNode attributeWithName:name stringValue:str];
   [element addAttribute:attr];
   return attr;
@@ -1155,11 +1155,11 @@ objectDescriptionIfNonNil:(id)obj
   NSString *str;
 
   if ([items count] > 0) {
-    str = [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+    str = [NSString stringWithFormat:@"%@ %p: {%@}",
       [self class], self, [items componentsJoinedByString:@" "]];
 
   } else {
-    str = [NSString stringWithFormat:@"%@ 0x%lX", [self class], self];
+    str = [NSString stringWithFormat:@"%@ %p", [self class], self];
   }
   return str;
 }
@@ -2801,7 +2801,7 @@ forCategoryWithScheme:(NSString *)scheme
     name = localName;
   }
 
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@=%@}",
+  return [NSString stringWithFormat:@"%@ %p: {%@=%@}",
           [self class], self, name, [self stringValue]];
 }
 

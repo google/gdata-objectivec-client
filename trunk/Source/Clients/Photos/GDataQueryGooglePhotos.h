@@ -17,6 +17,8 @@
 //  GDataQueryGooglePhotos.h
 //
 
+#import "GDataDefines.h"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAQUERYGOOGLEPHOTOS_DEFINE_GLOBALS
@@ -27,7 +29,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN const int kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
+_EXTERN const NSInteger kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
 
 #import "GDataQuery.h"
 
@@ -46,16 +48,16 @@ _EXTERN const int kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
 - (void)setAccess:(NSString *)str;
 - (NSString *)access;
 
-- (void)setThumbsize:(int)val;
-- (int)thumbsize;
+- (void)setThumbsize:(NSInteger)val;
+- (NSInteger)thumbsize;
 
 // imageSize is the imgmax parameter; see documentation for legal values,
 // and explanation of which sizes may be cropped or embedded into web pages
 //
 // Pass kGDataGooglePhotosImageSizeDownloadable to specify that links should be
 // for the native download size for each photo ("imgmax=d")
-- (void)setImageSize:(int)val;
-- (int)imageSize;
+- (void)setImageSize:(NSInteger)val;
+- (NSInteger)imageSize;
 
 - (void)setTag:(NSString *)tag;
 - (NSString *)tag;

@@ -435,7 +435,7 @@ enum {
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher;
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data;
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data;
 
 - (NSString *)defaultApplicationIdentifier;
 

@@ -51,7 +51,7 @@
   GDataEntryContact *obj = [[[self alloc] init] autorelease];
 
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
-  
+
   [obj setTitleWithString:title];
   return obj;
 }
@@ -81,7 +81,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"group",           @"groupMembershipInfos", kGDataDescArrayDescs   },
     { @"version>=3:yomi", @"yomi",                 kGDataDescValueLabeled },

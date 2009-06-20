@@ -22,7 +22,7 @@
 
 @class GDataWhere;
 
-// organization, as in 
+// organization, as in
 //
 // <gd:organization rel="http://schemas.google.com/g/2005#work" label="Work" primary="true"/>
 //   <gd:orgName>Google</gd:orgName>

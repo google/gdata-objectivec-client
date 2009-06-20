@@ -41,17 +41,17 @@
 - (void)setIsTitleQueryExact:(BOOL)flag;
 
 // cell feed parameters
-- (void)setMinimumRow:(int)val;
-- (int)minimumRow;
+- (void)setMinimumRow:(NSInteger)val;
+- (NSInteger)minimumRow;
 
-- (void)setMaximumRow:(int)val;
-- (int)maximumRow;
+- (void)setMaximumRow:(NSInteger)val;
+- (NSInteger)maximumRow;
 
-- (void)setMaximumColumn:(int)val;
-- (int)maximumColumn;
+- (void)setMaximumColumn:(NSInteger)val;
+- (NSInteger)maximumColumn;
 
-- (void)setMinimumColumn:(int)val;
-- (int)minimumColumn;
+- (void)setMinimumColumn:(NSInteger)val;
+- (NSInteger)minimumColumn;
 
 - (void)setRange:(NSString *)str;
 - (NSString *)range;

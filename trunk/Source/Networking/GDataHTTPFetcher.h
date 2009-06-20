@@ -115,7 +115,7 @@
 // setFetchHistory:, and look for the failedWithStatus: callback with code 304
 // (kGDataHTTPFetcherStatusNotModified) like this:
 //
-// - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
+// - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
 //    if (status == kGDataHTTPFetcherStatusNotModified) {
 //      // |data| is empty; use the data from the previous finishedWithData: for this URL
 //    } else {
@@ -255,12 +255,12 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSArray *runLoopModes_;           // optional, for 10.5 and later
   NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
-  int cookieStorageMethod_;         // constant from above
+  NSInteger cookieStorageMethod_;   // constant from above
 
   BOOL isRetryEnabled_;             // user wants auto-retry
   SEL retrySEL_;                    // optional; set with setRetrySelector
   NSTimer *retryTimer_;
-  unsigned int retryCount_;
+  NSUInteger retryCount_;
   NSTimeInterval maxRetryInterval_; // default 600 seconds
   NSTimeInterval minRetryInterval_; // random between 1 and 2 seconds
   NSTimeInterval retryFactor_;      // default interval multiplier is 2
@@ -301,8 +301,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSInputStream *)postStream;
 - (void)setPostStream:(NSInputStream *)theStream;
 
-- (int)cookieStorageMethod;
-- (void)setCookieStorageMethod:(int)method;
+- (NSInteger)cookieStorageMethod;
+- (void)setCookieStorageMethod:(NSInteger)method;
 
 // returns cookies from the currently appropriate cookie storage
 - (NSArray *)cookiesForURL:(NSURL *)theURL;
@@ -349,7 +349,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (void)setRetryFactor:(double)multiplier;
 
 // number of retries attempted
-- (unsigned int)retryCount;
+- (NSUInteger)retryCount;
 
 // interval delay to precede next retry
 - (NSTimeInterval)nextRetryInterval;
@@ -389,7 +389,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // finishedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data
 // statusFailedSEL has a signature like:
-//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data
 // failedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error
 //

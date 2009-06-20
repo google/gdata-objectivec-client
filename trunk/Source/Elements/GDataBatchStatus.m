@@ -49,11 +49,11 @@ static NSString *const kContentTypeAttr = @"content-type";
   [self addContentValueDeclaration];
 }
 
-+ (GDataBatchStatus *)batchStatusWithCode:(int)code
++ (GDataBatchStatus *)batchStatusWithCode:(NSInteger)code
                                    reason:(NSString *)reason {
   GDataBatchStatus* obj = [[[GDataBatchStatus alloc] init] autorelease];
   [obj setReason:reason];
-  [obj setCode:[NSNumber numberWithInt:code]];
+  [obj setCode:[NSNumber numberWithInt:(int)code]];
   return obj;
 }
 

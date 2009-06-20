@@ -39,9 +39,9 @@ _EXTERN NSString* const kGDataRatingQuality _INITIALIZE_AS(@"http://schemas.goog
 
 @interface GDataRating : GDataObject <GDataExtension>
 
-+ (GDataRating *)ratingWithValue:(int)value
-                             max:(int)max
-                             min:(int)min;
++ (GDataRating *)ratingWithValue:(NSInteger)value
+                             max:(NSInteger)max
+                             min:(NSInteger)min;
 
 - (NSString *)rel;
 - (void)setRel:(NSString *)str;

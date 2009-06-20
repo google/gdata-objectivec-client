@@ -61,7 +61,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+  return [NSString stringWithFormat:@"%@ %p: {%@}",
     [self class], self, [self stringValue]];
 }
 
@@ -183,7 +183,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 
 
 - (NSString *)description {
- return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+ return [NSString stringWithFormat:@"%@ %p: {%@}",
    [self class], self, [[self URL] absoluteString]];
 }
 
@@ -196,23 +196,23 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   feedURL_ = [feedURL retain];
 }
 
-- (int)startIndex {
+- (NSInteger)startIndex {
   return [self intValueForParameterWithName:kStartIndexParamName
                       missingParameterValue:-1];
 }
 
-- (void)setStartIndex:(int)startIndex {
+- (void)setStartIndex:(NSInteger)startIndex {
   [self addCustomParameterWithName:kStartIndexParamName
                           intValue:startIndex
                     removeForValue:-1];
 }
 
-- (int)maxResults {
+- (NSInteger)maxResults {
   return [self intValueForParameterWithName:kMaxResultsParamName
                       missingParameterValue:-1];
 }
 
-- (void)setMaxResults:(int)maxResults {
+- (void)setMaxResults:(NSInteger)maxResults {
   [self addCustomParameterWithName:kMaxResultsParamName
                           intValue:maxResults
                     removeForValue:-1];
@@ -443,13 +443,13 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 //
 // if val==invalidVal, the parameter is removed
 - (void)addCustomParameterWithName:(NSString *)name
-                          intValue:(int)val
-                    removeForValue:(int)invalidVal {
+                          intValue:(NSInteger)val
+                    removeForValue:(NSInteger)invalidVal {
 
   NSString *str = nil;
 
   if (val != invalidVal) {
-    str = [[NSNumber numberWithInt:val] stringValue];
+    str = [[NSNumber numberWithInt:(int)val] stringValue];
   }
 
   [self addCustomParameterWithName:name
@@ -457,12 +457,12 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 }
 
 // if the named parameter is not found, missingVal is returned
-- (int)intValueForParameterWithName:(NSString *)name
-              missingParameterValue:(int)missingVal {
+- (NSInteger)intValueForParameterWithName:(NSString *)name
+                    missingParameterValue:(NSInteger)missingVal {
 
   NSString *str = [customParameters_ objectForKey:name];
-  if (str != nil) return [str intValue];
-
+  if (str != nil) return (NSInteger) [str intValue];
+  
   return missingVal;
 }
 

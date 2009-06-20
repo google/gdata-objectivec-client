@@ -169,8 +169,6 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
                           surrogates:nil
                 shouldIgnoreUnknowns:NO];
     if (self) {
-      [self setupFromXMLElement:root];
-
       // we're done parsing; the extension declarations won't be needed again
       [self clearExtensionDeclarationsCache];
 

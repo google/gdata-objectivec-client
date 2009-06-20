@@ -70,8 +70,8 @@ static NSString* const kNowString = @"now";
   if (isNow_) {
     return kNowString;
   }
-  long seconds = (long) (ms_ / 1000LL);
-  long fractional = (long) (ms_ % 1000LL);
+  int seconds = (int) (ms_ / 1000LL);
+  int fractional = (int) (ms_ % 1000LL);
   
   if (fractional == 0) {
     return [NSString stringWithFormat:@"%d", seconds];
@@ -142,7 +142,7 @@ static NSString* const kNowString = @"now";
 }
 
 - (NSString *)description {
-  return [NSString stringWithFormat:@"%@ 0x%lX: {%@}",
+  return [NSString stringWithFormat:@"%@ %p: {%@}",
     [self class], self, [self HHMMSSString]];
 
 }
