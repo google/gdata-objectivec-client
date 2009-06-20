@@ -863,9 +863,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   STAssertNil(fetchedObject_, @"obtained object unexpectedly");
   STAssertEquals([fetcherError_ code], (NSInteger)503, 
                  @"fetcherError_ should be 503, was %@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 3, 
-               @"retry count should be 3, was %d", 
-               [[ticket_ objectFetcher] retryCount]);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 3, 
+               @"retry count should be 3, was %lu", 
+               (unsigned long) [[ticket_ objectFetcher] retryCount]);
   
   //
   // test:  retry twice, then give up
@@ -891,9 +891,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   STAssertNil(fetchedObject_, @"obtained object unexpectedly");
   STAssertEquals([fetcherError_ code], (NSInteger)503, 
                  @"fetcherError_ should be 503, was %@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 2, 
-                 @"retry count should be 2, was %d", 
-                 [[ticket_ objectFetcher] retryCount]);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 2, 
+                 @"retry count should be 2, was %lu", 
+                 (unsigned long) [[ticket_ objectFetcher] retryCount]);
   
   //
   // test:  retry, making the request succeed on the first retry
@@ -916,9 +916,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   
   STAssertNotNil(fetchedObject_, @"should have obtained fetched object");
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (unsigned) 1, 
-                 @"retry count should be 1, was %d", 
-                 [[ticket_ objectFetcher] retryCount]);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 1, 
+                 @"retry count should be 1, was %lu", 
+                 (unsigned long) [[ticket_ objectFetcher] retryCount]);
   
   //
   // test:  download feed only, no auth, surrogate feed class
@@ -931,8 +931,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   GDataHTTPFetcher *fetcher = [ticket currentFetcher];
   [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
   
-  int count = [fetcher retryCount];
-  int allowedRetryCount = [[ticket userData] intValue];
+  NSInteger count = [fetcher retryCount];
+  NSInteger allowedRetryCount = [[ticket userData] intValue];
 
   BOOL shouldRetry = (count < allowedRetryCount);
   

@@ -56,46 +56,46 @@ static NSString *const kStartIndexInGroupParamName = @"start-index-in-group";
                                 defaultValue:NO];
 }
 
-- (void)setMaxResultsGroup:(int)val {
+- (void)setMaxResultsGroup:(NSInteger)val {
   [self addCustomParameterWithName:kMaxResultsGroupParamName
                           intValue:val
                     removeForValue:0];
 }
 
-- (int)maxResultsGroup {
+- (NSInteger)maxResultsGroup {
   return [self intValueForParameterWithName:kMaxResultsGroupParamName
                       missingParameterValue:0];
 }
 
-- (void)setMaxResultsInGroup:(int)val {
+- (void)setMaxResultsInGroup:(NSInteger)val {
   [self addCustomParameterWithName:kMaxResultsInGroupParamName
                           intValue:val
                     removeForValue:0];
 }
 
-- (int)maxResultsInGroup {
+- (NSInteger)maxResultsInGroup {
   return [self intValueForParameterWithName:kMaxResultsInGroupParamName
                       missingParameterValue:0];
 }
 
-- (void)setStartIndexGroup:(int)val {
+- (void)setStartIndexGroup:(NSInteger)val {
   [self addCustomParameterWithName:kStartIndexGroupParamName
                           intValue:val
                     removeForValue:0];
 }
 
-- (int)startIndexGroup {
+- (NSInteger)startIndexGroup {
   return [self intValueForParameterWithName:kStartIndexGroupParamName
                       missingParameterValue:0];
 }
 
-- (void)setStartIndexInGroup:(int)val {
+- (void)setStartIndexInGroup:(NSInteger)val {
   [self addCustomParameterWithName:kStartIndexInGroupParamName
                           intValue:val
                     removeForValue:0];
 }
 
-- (int)startIndexInGroup {
+- (NSInteger)startIndexInGroup {
   return [self intValueForParameterWithName:kStartIndexInGroupParamName
                       missingParameterValue:0];
 }

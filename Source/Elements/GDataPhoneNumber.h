@@ -52,7 +52,7 @@ _EXTERN NSString* const kGDataPhoneNumberWorkFax     _INITIALIZE_AS(@"http://sch
 _EXTERN NSString* const kGDataPhoneNumberWorkMobile  _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_mobile");
 _EXTERN NSString* const kGDataPhoneNumberWorkPager   _INITIALIZE_AS(@"http://schemas.google.com/g/2005#work_pager");
 
-// phone number, as in 
+// phone number, as in
 //  <gd:phoneNumber rel="http://schemas.google.com/g/2005#work" >
 //    (425) 555-8080 ext. 52585
 //  </gd:phoneNumber>

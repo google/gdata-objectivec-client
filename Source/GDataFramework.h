@@ -17,11 +17,13 @@
 #ifndef _GDATAFRAMEWORK_H_
 #define _GDATAFRAMEWORK_H_
 
+#import "GDataDefines.h"
+
 // Returns the version of the framework.  Major and minor should
 // match the bundle version in the Info.plist file.
 //
 // Pass NULL to ignore any of the parameters.
 
-void GDataFrameworkVersion(long* major, long* minor, long* release);
+void GDataFrameworkVersion(NSUInteger* major, NSUInteger* minor, NSUInteger* release);
 
 #endif

@@ -135,7 +135,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 // finishedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data
 // statusFailedSEL has a signature like:
-//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data
+//   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data
 // failedSEL has a signature like:
 //   - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error
 
@@ -150,7 +150,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   AssertSelectorNilOrImplementedWithArguments(delegate, retrySEL_, @encode(GDataHTTPFetcher *), @encode(BOOL), @encode(NSError *), 0);
 
   if (statusFailedSEL != kUnifiedFailureCallback) {
-    AssertSelectorNilOrImplementedWithArguments(delegate, statusFailedSEL, @encode(GDataHTTPFetcher *), @encode(int), @encode(NSData *), 0);
+    AssertSelectorNilOrImplementedWithArguments(delegate, statusFailedSEL, @encode(GDataHTTPFetcher *), @encode(NSInteger), @encode(NSData *), 0);
   }
 
   if (connection_ != nil) {
@@ -837,7 +837,7 @@ CannotBeginFetch:
   retryTimer_ = nil;
 }
 
-- (unsigned int)retryCount {
+- (NSUInteger)retryCount {
   return retryCount_;
 }
 
@@ -964,11 +964,11 @@ CannotBeginFetch:
   postStream_ = [theStream retain];
 }
 
-- (int)cookieStorageMethod {
+- (NSInteger)cookieStorageMethod {
   return cookieStorageMethod_;
 }
 
-- (void)setCookieStorageMethod:(int)method {
+- (void)setCookieStorageMethod:(NSInteger)method {
 
   cookieStorageMethod_ = method;
 

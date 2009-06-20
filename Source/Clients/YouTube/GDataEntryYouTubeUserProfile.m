@@ -361,7 +361,7 @@
   return [self feedLinkForRel:kGDataLinkYouTubeUploads];
 }
 
-- (GDataFeedLink *)newSubscriptionVideosFeedLink {
+- (GDataFeedLink *)recentSubscriptionVideosFeedLink {
   return [self feedLinkForRel:kGDataLinkYouTubeNewSubscriptionVideos];
 }
 

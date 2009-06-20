@@ -50,19 +50,19 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
   return [self photoQueryWithFeedURL:url];
 }
 
-- (NSString *)stringParamOrNilForInt:(int)val {
+- (NSString *)stringParamOrNilForInt:(NSInteger)val {
   if (val > 0) {
-    return [NSString stringWithFormat:@"%d", val]; 
+    return [NSString stringWithFormat:@"%ld", (long)val]; 
   }
   return nil;
 }
 
-- (void)setThumbsize:(int)val {
+- (void)setThumbsize:(NSInteger)val {
   [self addCustomParameterWithName:kThumbsizeParamName
                              value:[self stringParamOrNilForInt:val]];
 }
 
-- (int)thumbsize {
+- (NSInteger)thumbsize {
   return [self intValueForParameterWithName:kThumbsizeParamName
                       missingParameterValue:0];
 }
@@ -85,7 +85,7 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
   return [self valueForParameterWithName:kAccessParamName];
 }
 
-- (void)setImageSize:(int)val {
+- (void)setImageSize:(NSInteger)val {
   NSString *valStr;
   
   if (val == kGDataGooglePhotosImageSizeDownloadable) {
@@ -98,7 +98,7 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
                              value:valStr]; 
 }
 
-- (int)imageSize {
+- (NSInteger)imageSize {
   NSString *valStr = [self valueForParameterWithName:kImageSizeParamName];
   
   if ([valStr isEqual:kImageSizeOriginalPhoto]) {

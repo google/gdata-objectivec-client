@@ -134,6 +134,19 @@
 + (NSString *)extensionElementLocalName { return @"anyoneCanAddSelf"; }
 @end
 
+@interface GDataSuppressReplyNotificationsProperty : GDataValueConstruct <GDataExtension>
+@end
+
+@implementation GDataSuppressReplyNotificationsProperty
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"suppressReplyNotifications"; }
+
+- (NSString *)attributeName {
+  return @"methods";
+}
+@end
+
 // CalendarEventEntry categories for extensions
 @implementation GDataWho (GDataCalendarEntryEventExtensions)
 - (NSArray *)resourceProperties {
@@ -211,6 +224,7 @@
    [GDataGuestsCanInviteOthersProperty class],
    [GDataGuestsCanSeeGuestsProperty class],
    [GDataAnyoneCanAddSelfProperty class],
+   [GDataSuppressReplyNotificationsProperty class],
    nil];
   
   [self addExtensionDeclarationForParentClass:[GDataWho class]
@@ -226,18 +240,19 @@
 - (NSMutableArray *)itemsForDescription {
   
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"sendEventNotifications", @"shouldSendEventNotifications", kGDataDescBooleanPresent },
-    { @"privateCopy",            @"isPrivateCopy",                kGDataDescBooleanPresent },
-    { @"quickAdd",               @"isQuickAdd",                   kGDataDescBooleanPresent },
-    { @"syncEvent",              @"isSyncEvent",                  kGDataDescBooleanPresent },
-    { @"iCalUID",                @"iCalUID",                      kGDataDescValueLabeled   },
-    { @"sequenceNumber",         @"sequenceNumber",               kGDataDescValueLabeled   },
-    { @"webContent",             @"webContent.URLString",         kGDataDescValueLabeled   },
-    { @"guestsCanModify",        @"canGuestsModify",              kGDataDescBooleanPresent },
-    { @"guestsCanInvite",        @"canGuestsInviteOthers",        kGDataDescBooleanPresent },
-    { @"guestsCanSeeGuests",     @"canGuestsSeeGuests",           kGDataDescBooleanPresent },
-    { @"anyoneCanAddSelf",       @"canAnyoneAddSelf",             kGDataDescBooleanPresent },
-    { @"geo",                    @"geoLocation.coordinateString", kGDataDescValueLabeled   },
+    { @"sendEventNotifications", @"shouldSendEventNotifications",   kGDataDescBooleanPresent },
+    { @"privateCopy",            @"isPrivateCopy",                  kGDataDescBooleanPresent },
+    { @"quickAdd",               @"isQuickAdd",                     kGDataDescBooleanPresent },
+    { @"syncEvent",              @"isSyncEvent",                    kGDataDescBooleanPresent },
+    { @"iCalUID",                @"iCalUID",                        kGDataDescValueLabeled   },
+    { @"sequenceNumber",         @"sequenceNumber",                 kGDataDescValueLabeled   },
+    { @"webContent",             @"webContent.URLString",           kGDataDescValueLabeled   },
+    { @"guestsCanModify",        @"canGuestsModify",                kGDataDescBooleanPresent },
+    { @"guestsCanInvite",        @"canGuestsInviteOthers",          kGDataDescBooleanPresent },
+    { @"guestsCanSeeGuests",     @"canGuestsSeeGuests",             kGDataDescBooleanPresent },
+    { @"anyoneCanAddSelf",       @"canAnyoneAddSelf",               kGDataDescBooleanPresent },
+    { @"suppressReplyTypes",     @"suppressReplyNotificationTypes", kGDataDescValueLabeled   },
+    { @"geo",                    @"geoLocation.coordinateString",   kGDataDescValueLabeled   },
     { nil, nil, 0 }
   };
   
@@ -279,6 +294,20 @@
     obj = nil; // removes the extension
   }
   [self setObject:obj forExtensionClass:[GDataPrivateCopyProperty class]];
+}
+
+- (NSString *)suppressReplyNotificationTypes {
+  GDataSuppressReplyNotificationsProperty *obj;
+
+  obj = [self objectForExtensionClass:[GDataSuppressReplyNotificationsProperty class]];
+  return [obj stringValue];
+}
+
+- (void)setSuppressReplyNotificationTypes:(NSString *)str {
+  GDataSuppressReplyNotificationsProperty *obj;
+
+  obj = [GDataSuppressReplyNotificationsProperty valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataSuppressReplyNotificationsProperty class]];
 }
 
 - (BOOL)isQuickAdd {

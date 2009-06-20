@@ -173,7 +173,8 @@
 
   // test that we got an equal copy
   STAssertEqualObjects(copyArray, testArray,
-                       @"Array copy failed (%d items)", numItems);
+                       @"Array copy failed (%lu items)",
+                       (unsigned long) numItems);
 
   // check that the objects in the copy are actual copies, not retains
   // of the original objects
@@ -185,7 +186,8 @@
 
   while (objTest) {
     STAssertTrue(objTest != objCopy,
-                  @"array copy is reusing original object (%d items)", numItems);
+                  @"array copy is reusing original object (%lu items)",
+                 (unsigned long) numItems);
 
     objTest = [enumTest nextObject];
     objCopy = [enumCopy nextObject];
@@ -214,7 +216,8 @@
     [copyArray addObject:@"foo"];
   }
   @catch(NSException *exc) {
-    STFail(@"Array mutableCopy not mutable (%d items)", numItems);
+    STFail(@"Array mutableCopy not mutable (%lu items)",
+           (unsigned long) numItems);
   }
 }
 
@@ -225,7 +228,8 @@
 
   // test that we got an equal copy
   STAssertEqualObjects(copyDict, testDict,
-                       @"Dict copy failed (%d items)", numItems);
+                       @"Dict copy failed (%lu items)",
+                       (unsigned long) numItems);
 
   // check that the objects in the copy are actual copies, not retains
   // of the original objects
@@ -237,7 +241,8 @@
     id objCopy = [copyDict objectForKey:testKey];
 
     STAssertTrue(objTest != objCopy,
-                  @"dict copy is reusing original object (%d items)", numItems);
+                  @"dict copy is reusing original object (%lu items)",
+                 (unsigned long) numItems);
 
     // if the elements are arrays, apply the array comparison too
     if ([objTest isKindOfClass:[NSArray class]]) {
@@ -273,7 +278,7 @@
      [copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
-    STFail(@"Dict mutableCopy not mutable (%d items)", numItems);
+    STFail(@"Dict mutableCopy not mutable (%lu items)", (unsigned long) numItems);
   }
 }
 
@@ -299,7 +304,8 @@
     [copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
-    STFail(@"Dict of arrays mutableCopy not mutable (%d items)", numItems);
+    STFail(@"Dict of arrays mutableCopy not mutable (%lu items)",
+           (unsigned long) numItems);
   }
 }
 

@@ -26,13 +26,15 @@
 
 - (void)testFrameworkVersion {
   
-  long major = -1, minor = -1, release = -1;
+  NSUInteger major = NSUIntegerMax;
+  NSUInteger minor = NSUIntegerMax;
+  NSUInteger release = NSUIntegerMax;
   
   GDataFrameworkVersion(&major, &minor, &release);
 
-  STAssertTrue(major >= 0, @"version unset");
-  STAssertTrue(minor >= 0, @"version unset");
-  STAssertTrue(release >= 0, @"version unset");
+  STAssertTrue(major != NSUIntegerMax, @"version unset");
+  STAssertTrue(minor != NSUIntegerMax, @"version unset");
+  STAssertTrue(release != NSUIntegerMax, @"version unset");
   
   // Check that the Framework bundle's Info.plist has the proper version,
   // matching the GDataFrameworkVersion call
@@ -47,7 +49,7 @@
   if (infoDict) {
     
     NSString *binaryVersionStr = [NSString stringWithFormat:@"%d.%d",
-                                  major, minor];
+                                  (int)major, (int)minor];
     
     NSString *plistVersionStr = [infoDict valueForKey:@"CFBundleVersion"];
 

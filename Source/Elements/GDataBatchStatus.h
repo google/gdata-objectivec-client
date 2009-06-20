@@ -33,7 +33,7 @@
 @interface GDataBatchStatus : GDataObject <GDataExtension> {
 }
 
-+ (GDataBatchStatus *)batchStatusWithCode:(int)code
++ (GDataBatchStatus *)batchStatusWithCode:(NSInteger)code
                                    reason:(NSString *)reason;
 
 - (NSString *)reason;

@@ -102,7 +102,7 @@
 - (GDataFeedLink *)playlistsFeedLink;
 - (GDataFeedLink *)subscriptionsFeedLink;
 - (GDataFeedLink *)uploadsFeedLink;
-- (GDataFeedLink *)newSubscriptionVideosFeedLink;
+- (GDataFeedLink *)recentSubscriptionVideosFeedLink; // previously newSubscriptionVideosFeedLink
 - (GDataFeedLink *)friendsActivityFeedLink;
 - (GDataFeedLink *)recentActivityFeedLink;
 @end

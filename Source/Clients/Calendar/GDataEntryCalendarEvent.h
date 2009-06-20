@@ -76,6 +76,9 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 - (BOOL)isQuickAdd;
 - (void)setIsQuickAdd:(BOOL)flag;
 
+- (NSString *)suppressReplyNotificationTypes;
+- (void)setSuppressReplyNotificationTypes:(NSString *)str;
+
 // for sync events, the iCal UID and sequence number need to be honored
 - (BOOL)isSyncEvent;
 - (void)setIsSyncEvent:(BOOL)flag;  

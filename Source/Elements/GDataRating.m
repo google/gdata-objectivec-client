@@ -37,13 +37,13 @@ static NSString* const kNumRatersAttr = @"numRaters";
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"rating"; }
 
-+ (GDataRating *)ratingWithValue:(int)value
-                             max:(int)max
-                             min:(int)min {
++ (GDataRating *)ratingWithValue:(NSInteger)value
+                             max:(NSInteger)max
+                             min:(NSInteger)min {
   GDataRating *obj = [[[GDataRating alloc] init] autorelease];
-  [obj setValue:[NSNumber numberWithInt:value]];
-  [obj setMax:[NSNumber numberWithInt:max]];
-  [obj setMin:[NSNumber numberWithInt:min]];
+  [obj setValue:[NSNumber numberWithInt:(int)value]];
+  [obj setMax:[NSNumber numberWithInt:(int)max]];
+  [obj setMin:[NSNumber numberWithInt:(int)min]];
   return obj;
 }
 

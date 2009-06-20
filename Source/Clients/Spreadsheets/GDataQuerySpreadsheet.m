@@ -78,50 +78,50 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 }
 
 // cell feed parameters
-- (NSString *)stringParamOrNilForInt:(int)val {
+- (NSString *)stringParamOrNilForInt:(NSInteger)val {
   if (val > 0) {
-    return [NSString stringWithFormat:@"%d", val]; 
+    return [NSString stringWithFormat:@"%ld", (long)val]; 
   }
   return nil;
 }
 
-- (void)setMinimumRow:(int)val {
+- (void)setMinimumRow:(NSInteger)val {
   [self addCustomParameterWithName:kMinRowParamName
                              value:[self stringParamOrNilForInt:val]];
 }
 
-- (int)minimumRow {
+- (NSInteger)minimumRow {
   return [self intValueForParameterWithName:kMinRowParamName
                       missingParameterValue:0];
 }
 
-- (void)setMaximumRow:(int)val {
+- (void)setMaximumRow:(NSInteger)val {
   [self addCustomParameterWithName:kMaxRowParamName
                              value:[self stringParamOrNilForInt:val]];
 }
 
-- (int)maximumRow {
+- (NSInteger)maximumRow {
   return [self intValueForParameterWithName:kMaxRowParamName
                       missingParameterValue:0];
 }
 
 
-- (void)setMinimumColumn:(int)val {
+- (void)setMinimumColumn:(NSInteger)val {
   [self addCustomParameterWithName:kMinColParamName
                              value:[self stringParamOrNilForInt:val]];
 }
 
-- (int)minimumColumn {
+- (NSInteger)minimumColumn {
   return [self intValueForParameterWithName:kMinColParamName
                       missingParameterValue:0];
 }
 
-- (void)setMaximumColumn:(int)val {
+- (void)setMaximumColumn:(NSInteger)val {
   [self addCustomParameterWithName:kMaxColParamName
                              value:[self stringParamOrNilForInt:val]];
 }
 
-- (int)maximumColumn {
+- (NSInteger)maximumColumn {
   return [self intValueForParameterWithName:kMaxColParamName
                       missingParameterValue:0];
 }

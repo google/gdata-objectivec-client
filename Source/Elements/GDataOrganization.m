@@ -65,7 +65,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 @interface GDataOrgTitle : GDataValueElementConstruct <GDataExtension>
 @end
 
-@implementation GDataOrgTitle 
+@implementation GDataOrgTitle
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementURI       { return kGDataNamespaceGData;       }
 + (NSString *)extensionElementLocalName { return @"orgTitle";                }
@@ -73,7 +73,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 
 
 @implementation GDataOrganization
-// organization, as in 
+// organization, as in
 //  <gd:organization primary="true" rel="http://schemas.google.com/g/2005#work">
 //    <gd:orgName yomi="Ak Me">Acme Corp</gd:orgName>
 //    <gd:orgTitle>Prezident</gd:orgTitle>
@@ -90,11 +90,11 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
 
   Class elementClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:elementClass
                                  childClasses:
    [GDataOrgDepartment class],
@@ -107,9 +107,9 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kLabelAttr, kRelAttr, kPrimaryAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
@@ -138,7 +138,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 #pragma mark -
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
@@ -146,7 +146,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 - (NSString *)label {
-  return [self stringValueForAttribute:kLabelAttr]; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
@@ -154,7 +154,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 - (BOOL)isPrimary {
-  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO]; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO];
 }
 
 - (void)setIsPrimary:(BOOL)flag {
@@ -250,7 +250,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 
 - (void)setOrgTitle:(NSString *)str {
   GDataOrgTitle *obj = [GDataOrgTitle valueWithString:StringOrNilIfBlank(str)];
-  [self setObject:obj forExtensionClass:[GDataOrgTitle class]]; 
+  [self setObject:obj forExtensionClass:[GDataOrgTitle class]];
 }
 
 - (GDataWhere *)where {

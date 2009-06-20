@@ -40,7 +40,7 @@ enum {
 
 
 @interface GDataServiceGoogle (PrivateMethods)
-- (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data;
+- (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data;
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 @end
 
@@ -208,7 +208,7 @@ enum {
   [fetcher setUserData:nil];
 }
 
-- (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
+- (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
 
   NSMutableDictionary *userInfo = nil;
   if ([data length]) {
@@ -376,9 +376,9 @@ enum {
 }
 
 // override the base class's failure handler to look for a session expired error
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(int)status data:(NSData *)data {
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
 
-  const int kTokenExpired = 401;
+  const NSInteger kTokenExpired = 401;
 
   if (status == kTokenExpired) {
 
@@ -745,7 +745,7 @@ enum {
 }
 
 - (NSString *)description {
-  NSString *template = @"%@ 0x%lX: {service:%@ objectFetcher:%@ authFetcher:%@ userData:%@}";
+  NSString *template = @"%@ %p: {service:%@ objectFetcher:%@ authFetcher:%@ userData:%@}";
   return [NSString stringWithFormat:template,
     [self class], self, service_, objectFetcher_, authFetcher_, userData_];
 }

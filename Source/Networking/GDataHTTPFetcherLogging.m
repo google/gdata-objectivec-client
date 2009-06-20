@@ -382,7 +382,8 @@ static NSString* gLoggingProcessName = nil;
 
   if (!streamDataStr) {
     // give up; just make a string showing the uploaded bytes
-    streamDataStr = [NSString stringWithFormat:@"<<%u bytes>>", [data length]];
+    streamDataStr = [NSString stringWithFormat:@"<<%u bytes>>",
+                     (unsigned int)[data length]];
   }
   return streamDataStr;
 }
@@ -584,7 +585,7 @@ static NSString* gLoggingProcessName = nil;
       "request headers (%d)</a><div id=\"%@\"><pre>%@</pre></div><br>\n";
     [outputHTML appendFormat:requestHeadersFormat,
       requestHeadersName, // layer name
-      [requestHeaders count],
+      (int)[requestHeaders count],
       requestHeadersName,
       [requestHeaders description]]; // description gives a human-readable dump
   } else {
@@ -667,7 +668,7 @@ static NSString* gLoggingProcessName = nil;
         "</div><br>\n";
       [outputHTML appendFormat:responseHeadersFormat,
         responseHeadersName,
-        [responseHeaders count],
+        (int)[responseHeaders count],
         (cookiesSet ? @"<i>sets cookies</i>" : @""),
         responseHeadersName,
         [responseHeaders description]];
@@ -690,7 +691,7 @@ static NSString* gLoggingProcessName = nil;
     // response data, toggleable links -- formatted and text versions
     if (responseDataFormattedFileName) {
       [outputHTML appendFormat:@"response data (%d bytes) formatted <b>%@</b> ",
-        responseDataLength,
+        (int)responseDataLength,
         [responseDataFormattedFileName pathExtension]];
 
       // inline (iframe) link
@@ -708,7 +709,7 @@ static NSString* gLoggingProcessName = nil;
     }
     if (responseDataUnformattedFileName) {
       [outputHTML appendFormat:@"response data (%d bytes) plain text ",
-        responseDataLength];
+        (int)responseDataLength];
 
       // inline (iframe) link
       NSString *responseInlineDataNameFormat = @"&nbsp;&nbsp;<a href=\""
@@ -738,7 +739,7 @@ static NSString* gLoggingProcessName = nil;
   } else {
     // could not parse response data; just show the length of it
     [outputHTML appendFormat:@"<i>Response data: %d bytes </i>\n",
-      responseDataLength];
+      (int)responseDataLength];
   }
 
   [outputHTML appendString:@"<br><hr><p>"];

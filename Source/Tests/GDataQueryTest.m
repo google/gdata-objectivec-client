@@ -220,7 +220,7 @@
     "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"PWA query 1 generation error");
-  STAssertEquals([pwaQuery1 imageSize], 32, @"image size error");
+  STAssertEquals([pwaQuery1 imageSize], (NSInteger) 32, @"image size error");
   
   GDataQueryGooglePhotos *pwaQuery2; 
   pwaQuery2 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"

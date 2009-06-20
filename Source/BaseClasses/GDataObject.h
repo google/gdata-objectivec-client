@@ -580,7 +580,7 @@ forCategoryWithScheme:(NSString *)scheme
                         URI:(NSString *)attributeURI;
 
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
-  attributeValueWithInteger:(int)val
+  attributeValueWithInteger:(NSInteger)val
                    withName:(NSString *)name;
 
 // adding child elements
