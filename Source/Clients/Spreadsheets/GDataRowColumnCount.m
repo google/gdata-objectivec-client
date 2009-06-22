@@ -34,7 +34,7 @@
 + (NSString *)extensionElementLocalName { return @"colCount"; }
 
 
-+ (GDataColumnCount *)columnCountWithInt:(int)val {
++ (GDataColumnCount *)columnCountWithInt:(NSInteger)val {
   GDataColumnCount *obj = [[[GDataColumnCount alloc] init] autorelease];
   [obj setCount:val];
   return obj;
@@ -49,7 +49,7 @@
 + (NSString *)extensionElementLocalName { return @"rowCount"; }
 
 
-+ (GDataRowCount *)rowCountWithInt:(int)val {
++ (GDataRowCount *)rowCountWithInt:(NSInteger)val {
   GDataRowCount *obj = [[[GDataRowCount alloc] init] autorelease];
   [obj setCount:val];
   return obj;
@@ -102,7 +102,7 @@
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
   
-  NSString *str = [NSString stringWithFormat:@"%d", [self count]];
+  NSString *str = [NSString stringWithFormat:@"%ld", (long) [self count]];
   [self addToArray:items objectDescriptionIfNonNil:str withName:@"count"];
   
   return items;
@@ -113,19 +113,20 @@
   
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gs:count"];
   
-  int count = [self count];
+  NSInteger count = [self count];
   if (count >= 0) {
-    NSString *str = [NSString stringWithFormat:@"%d", [self count]];
+    NSString *str = [NSString stringWithFormat:@"%ld", (long) [self count]];
     [element addStringValue:str];
   }
   
   return element;
 }
 
-- (int)count {
+- (NSInteger)count {
   return count_; 
 }
-- (void)setCount:(int)val {
+
+- (void)setCount:(NSInteger)val {
   count_ = val; 
 }
 

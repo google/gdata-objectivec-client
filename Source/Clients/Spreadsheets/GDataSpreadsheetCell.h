@@ -26,15 +26,15 @@
 // http://code.google.com/apis/spreadsheets/reference.html#gs_reference
 
 @interface GDataSpreadsheetCell : GDataObject <NSCopying, GDataExtension> {
-  int row_;
-  int column_;
+  NSInteger row_;
+  NSInteger column_;
   NSString *inputString_;
   NSNumber *numericValue_;
   NSString *resultString_;
 }
 
-+ (GDataSpreadsheetCell *)cellWithRow:(int)row
-                               column:(int)column
++ (GDataSpreadsheetCell *)cellWithRow:(NSInteger)row
+                               column:(NSInteger)column
                           inputString:(NSString *)inputStr
                          numericValue:(NSNumber *)numericValue
                          resultString:(NSString *)resultStr;
@@ -44,11 +44,11 @@
 
 - (NSXMLElement *)XMLElement;
 
-- (int)row;
-- (void)setRow:(int)row;
+- (NSInteger)row;
+- (void)setRow:(NSInteger)row;
 
-- (int)column;
-- (void)setColumn:(int)column;
+- (NSInteger)column;
+- (void)setColumn:(NSInteger)column;
 
 - (NSString *)inputString;
 - (void)setInputString:(NSString *)str;

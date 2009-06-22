@@ -11,6 +11,8 @@ Additions
 
 - Added support for Google Maps Data API
 
+- Added classes for Blogger Data API
+
 - Added support for Spreadsheets API version 3 with table and record feeds
 
 - Added support for Contacts API version 3
@@ -32,6 +34,12 @@ Changes
 - Tightened URL encoding rules so portions of feed URLs are more strictly
   percent-encoded.
 
+- Renamed newSubscriptionVideosFeedLink to recentSubscriptionVideosFeedLink to
+  make the static analyzer happier.
+  
+- Changed arguments and return types to use NSInteger/NSUInteger, and updated
+  print format strings to ensure fixed-size int specification (thanks dan94501)
+
 Bugs Fixed
 
 - Fixed compile on gcc 3.3.
@@ -42,6 +50,9 @@ Bugs Fixed
 - Avoid a crash on authentication errors when the failure callback is nil.
 
 - Removed inappropriate override header on POSTs (thanks riggle)
+
+- Fixed initialization code path that could create a duplicate entry in a
+  single-entry feed (thanks drjpierce)
 
 
 Release 1.7.0
