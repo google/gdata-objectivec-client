@@ -33,8 +33,8 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGSpreadPrefix; }
 + (NSString *)extensionElementLocalName { return @"cell"; }
 
-+ (GDataSpreadsheetCell *)cellWithRow:(int)row
-                               column:(int)column
++ (GDataSpreadsheetCell *)cellWithRow:(NSInteger)row
+                               column:(NSInteger)column
                           inputString:(NSString *)inputStr
                          numericValue:(NSNumber *)numericValue
                          resultString:(NSString *)resultStr {
@@ -151,17 +151,17 @@
   return element;
 }
 
-- (int)row {
+- (NSInteger)row {
   return row_; 
 }
-- (void)setRow:(int)row {
+- (void)setRow:(NSInteger)row {
   row_ = row; 
 }
 
-- (int)column {
+- (NSInteger)column {
   return column_; 
 }
-- (void)setColumn:(int)column {
+- (void)setColumn:(NSInteger)column {
   column_ = column; 
 }
 
