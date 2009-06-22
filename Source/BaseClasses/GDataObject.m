@@ -27,15 +27,15 @@
 #import "GDataEntryBase.h"
 #import "GDataCategory.h"
 
-// Creating a CFDictionary rather than an NSMutableDictionary here avoids
-// problems with the underlying map global variable becoming invalid across
-// unit tests when garbage collection is enabled
 static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
-
-  CFMutableDictionaryRef dict = CFDictionaryCreateMutable(kCFAllocatorDefault,
-          0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-
-  return (NSMutableDictionary *)dict;
+  NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+  Class cls = NSClassFromString(@"NSGarbageCollector");
+  if (cls) {
+    id collector = [cls performSelector:@selector(defaultCollector)];
+    [collector performSelector:@selector(disableCollectorForPointer:) 
+                    withObject:dict];
+  }
+  return dict;
 }
 
 // in a cache of attribute declarations, this marker indicates that the class
@@ -966,9 +966,9 @@ attributeValueIfNonNil:str
   NSString *versionStr = nil;
   NSScanner *scanner = [NSScanner scannerWithString:origLabel];
 
-  if ([scanner scanString:prefix intoString:nil]
+  if ([scanner scanString:prefix intoString:NULL]
       && [scanner scanUpToString:@":" intoString:&versionStr]
-      && [scanner scanString:@":" intoString:nil]
+      && [scanner scanString:@":" intoString:NULL]
       && [scanner scanUpToString:@"\n" intoString:&newLabel]) {
 
     if ((checkMinVersion && ![self isServiceVersionAtLeast:versionStr])

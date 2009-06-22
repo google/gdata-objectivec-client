@@ -102,19 +102,19 @@ static NSString* const kNowString = @"now";
   if ([scanner scanInt:&scannedInt]) {
     seconds = scannedInt;
     
-    if ([scanner scanCharactersFromSet:colon intoString:nil]
+    if ([scanner scanCharactersFromSet:colon intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
       // push seconds to minutes
       seconds = seconds * 60 + scannedInt;
     }
   
-    if ([scanner scanCharactersFromSet:colon intoString:nil]
+    if ([scanner scanCharactersFromSet:colon intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
       // push minutes to hours, seconds to minutes
       seconds = seconds * 60 + scannedInt;
     }
     
-    if ([scanner scanCharactersFromSet:period intoString:nil]
+    if ([scanner scanCharactersFromSet:period intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
       
       // append 000 and take the first 3 digits to create thousands
