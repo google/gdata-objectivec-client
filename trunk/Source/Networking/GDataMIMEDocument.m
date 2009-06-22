@@ -174,7 +174,7 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
   // if the boundary isn't unique, append random numbers, up to 10 attempts;
   // if that's still not unique, use a random number sequence instead,
   // and call it good
-  BOOL didCollide = FALSE;
+  BOOL didCollide = NO;
 
   const int maxTries = 10;  // Arbitrarily chosen maximum attempts.
   for (int tries = 0; tries < maxTries; ++tries) {
@@ -252,7 +252,7 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
 @end
 
 
-// memsrch - Return TRUE if needle is found in haystack, else FALSE.
+// memsrch - Return YES if needle is found in haystack, else NO.
 static BOOL memsrch(const unsigned char* needle, NSUInteger needleLen,
                     const unsigned char* haystack, NSUInteger haystackLen) {
 
@@ -267,13 +267,13 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needleLen,
   while ((ptr = memchr(ptr, needle[0], remain)) != 0) {
     remain = haystackLen - (ptr - haystack);
     if (remain < needleLen) {
-      return FALSE;
+      return NO;
     }
     if (memcmp(ptr, needle, needleLen) == 0) {
-      return TRUE;
+      return YES;
     }
     ptr++;
     remain--;
   }
-  return FALSE;
+  return NO;
 }

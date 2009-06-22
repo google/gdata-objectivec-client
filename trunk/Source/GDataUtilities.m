@@ -14,7 +14,7 @@
 */
 
 #import "GDataUtilities.h"
-#import <math.h>
+#include <math.h>
 
 @implementation GDataUtilities
 
@@ -114,7 +114,7 @@
     }
   }
 
-  while (true) {
+  while (1) {
     NSRange separatorRange = [result rangeOfCharacterFromSet:charsToDelete];
     if (separatorRange.location == NSNotFound) break;
 
@@ -132,9 +132,9 @@
 
   if (fpclassify(val) == FP_ZERO) {
     if ([str caseInsensitiveCompare:@"INF"] == NSOrderedSame) {
-      number = (NSNumber *)kCFNumberPositiveInfinity;
+      number = [NSNumber numberWithDouble:HUGE_VAL];
     } else if ([str caseInsensitiveCompare:@"-INF"] == NSOrderedSame) {
-      number = (NSNumber *)kCFNumberNegativeInfinity;
+      number = [NSNumber numberWithDouble:-HUGE_VAL];
     }
   }
   return number;

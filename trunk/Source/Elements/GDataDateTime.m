@@ -274,21 +274,21 @@ static inline BOOL ScanInteger(NSScanner *scanner, NSInteger *targetInteger) {
   //                or 2006-11-17T15:10:46Z
   if (// yyyy-mm-dd
       ScanInteger(scanner, &year) &&
-      [scanner scanCharactersFromSet:dashSet intoString:nil] &&
+      [scanner scanCharactersFromSet:dashSet intoString:NULL] &&
       ScanInteger(scanner, &month) &&
-      [scanner scanCharactersFromSet:dashSet intoString:nil] &&
+      [scanner scanCharactersFromSet:dashSet intoString:NULL] &&
       ScanInteger(scanner, &day) &&
       // Thh:mm:ss
-      [scanner scanCharactersFromSet:tSet intoString:nil] &&
+      [scanner scanCharactersFromSet:tSet intoString:NULL] &&
       ScanInteger(scanner, &hour) &&
-      [scanner scanCharactersFromSet:colonSet intoString:nil] &&
+      [scanner scanCharactersFromSet:colonSet intoString:NULL] &&
       ScanInteger(scanner, &minute) &&
-      [scanner scanCharactersFromSet:colonSet intoString:nil] &&
+      [scanner scanCharactersFromSet:colonSet intoString:NULL] &&
       [scanner scanFloat:&secFloat] &&
       // Z or +hh:mm
       [scanner scanCharactersFromSet:plusMinusZSet intoString:&sign] &&
       ScanInteger(scanner, &offsetHour) &&
-      [scanner scanCharactersFromSet:colonSet intoString:nil] &&
+      [scanner scanCharactersFromSet:colonSet intoString:NULL] &&
       ScanInteger(scanner, &offsetMinute)) {
   }
 

@@ -21,6 +21,7 @@
 
 #define GDATAPHOTOELEMENTS_DEFINE_GLOBALS 1
 #import "GDataPhotoElements.h"
+#include <math.h>
 
 #import "GDataEntryPhotoBase.h"
 

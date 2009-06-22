@@ -19,6 +19,7 @@
 
 #define GDATAGEO_DEFINE_GLOBALS 1
 #import "GDataGeo.h"
+#include <math.h>
 
 // http://www.w3.org/2003/01/geo/
 // xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"

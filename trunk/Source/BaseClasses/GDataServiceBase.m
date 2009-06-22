@@ -50,9 +50,9 @@ const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
 static void XorPlainMutableData(NSMutableData *mutable) {
 
   // this helps avoid storing passwords on the heap in plaintext
-  const UInt8 theXORValue = 0x95; // 0x95 = 0xb10010101
+  const unsigned char theXORValue = 0x95; // 0x95 = 0xb10010101
 
-  UInt8 *dataPtr = [mutable mutableBytes];
+  unsigned char *dataPtr = [mutable mutableBytes];
   NSUInteger length = [mutable length];
 
   for (NSUInteger idx = 0; idx < length; idx++) {
@@ -378,7 +378,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       NSData* xmlData = [[objectToPost XMLDocument] XMLData];
       contentLength = [xmlData length];
 
-      if (progressSelector == nil) {
+      if (progressSelector == NULL) {
         // there is no progress selector; we can post plain NSData, which
         // is simpler because it survives http redirects
         uploadData = xmlData;
@@ -402,7 +402,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
 
     uploadStream = contentInputStream;
-    if (progressSelector != nil) {
+    if (progressSelector != NULL) {
 
       // the caller is monitoring the upload progress, so wrap the input stream
       // with an input stream that will call back to the delegate's progress
@@ -676,7 +676,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
   NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
-  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
+  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : NULL;
 
   // determine the type of server response, since we will need to know if it
   // is structured XML
@@ -709,7 +709,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
   NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
-  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : nil;
+  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : NULL;
 
   if (failedSelector) {
 

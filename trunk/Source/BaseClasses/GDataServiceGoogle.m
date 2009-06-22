@@ -725,7 +725,7 @@ enum {
     NSString *value;
 
     if ([scanner scanUpToString:@"=" intoString:&key]
-        && [scanner scanString:@"=" intoString:nil]
+        && [scanner scanString:@"=" intoString:NULL]
         && [scanner scanUpToString:@"\n" intoString:&value]) {
 
       [responseDict setObject:value forKey:key];
