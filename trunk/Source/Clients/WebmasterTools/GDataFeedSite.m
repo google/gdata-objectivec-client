@@ -18,7 +18,7 @@
 //
 
 #import "GDataFeedSite.h"
-#import "GDataEntrySite.h"
+#import "GDataWebmasterToolsConstants.h"
 
 @implementation GDataFeedSite
 
@@ -26,7 +26,7 @@
   
   GDataFeedSite *feed = [[[self alloc] init] autorelease];
   
-  [feed setNamespaces:[GDataEntrySite webmasterToolsNamespaces]];
+  [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   
   return feed;
 }

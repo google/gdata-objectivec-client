@@ -20,61 +20,38 @@
 #import "GDataServiceGoogle.h"
 
 
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
-
 @interface GDataServiceGoogleBlogger : GDataServiceGoogle
 
 // use kGDataServiceDefaultUser for the feed for the authenticated user
 + (NSURL *)blogFeedURLForUserID:(NSString *)user;
 
-// Fetches with dynamic feed/class types are not yet supported by the
-// Blogger API server.
+// clients may use these fetch methods of GDataServiceGoogle
 //
-// Use fetchAuthenticatedFeedWithURL:, fetchAuthenticatedEntryWithURL:,
-// and fetchAuthenticatedFeedWithQuery: instead for now.
+// feed fetch calls must specify the expected object return class,
+// [GDataFeedBlog class] or [GDataFeedBlogPost class] or [GDataFeedBlogComment class]
 //
-//- (GDataServiceTicket *)fetchBloggerFeedWithURL:(NSURL *)feedURL
-//                                       delegate:(id)delegate
-//                              didFinishSelector:(SEL)finishedSelector
-//                                didFailSelector:(SEL)failedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL feedClass:(Class)feedClass delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query feedClass:(Class)feedClass delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
 //
-//- (GDataServiceTicket *)fetchBloggerEntryWithURL:(NSURL *)entryURL
-//                                        delegate:(id)delegate
-//                               didFinishSelector:(SEL)finishedSelector
-//                                 didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)fetchBloggerEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                               forFeedURL:(NSURL *)feedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)fetchBloggerEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                             forEntryURL:(NSURL *)entryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)deleteBloggerEntry:(GDataEntryBase *)entryToDelete
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicket *)deleteBloggerResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
-
-//- (GDataServiceTicket *)fetchBloggerQuery:(GDataQuery *)query
-//                                 delegate:(id)delegate
-//                        didFinishSelector:(SEL)finishedSelector
-//                          didFailSelector:(SEL)failedSelector;
+// entry fetch calls must specify the expected object return class,
+// [GDataEntryBlog class] or [GDataEntryBlogPost class] or [GDataEntryBlogComment class]
+//
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL entryClass:(Class)entryClass delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// Additional calls:
+//
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
 + (NSString *)serviceRootURLString;
 

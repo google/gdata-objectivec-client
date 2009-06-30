@@ -493,12 +493,16 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   
   if (!service) {
     service = [[GDataServiceGoogleContact alloc] init];
-    
+
     [service setUserAgent:@"MyCompany-SampleContactsApp-1.0"]; // set this to yourName-appName-appVersion
-    [service setShouldCacheDatedData:YES]; 
+    [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
-  
+
   // update the username/password each time the service is requested
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
@@ -709,40 +713,31 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   [query setShouldShowDeleted:showDeleted];
   [query setMaxResults:kBuncha];
   
-  ticket = [service fetchContactQuery:query
-                             delegate:self
-                    didFinishSelector:@selector(groupsFetchTicket:finishedWithFeed:)
-                      didFailSelector:@selector(groupsFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithQuery:query
+                              delegate:self
+                     didFinishSelector:@selector(groupsFetchTicket:finishedWithFeed:error:)];
   
   [self setGroupFetchTicket:ticket];
   
   [self updateUI];
 }
 
-//
-// group list fetch callbacks
-//
-
-// finished group list successfully
+// groups fetched callback
 - (void)groupsFetchTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedContactGroup *)feed {
+         finishedWithFeed:(GDataFeedContactGroup *)feed
+                    error:(NSError *)error {
+
   [self setGroupFeed:feed];
-  [self setGroupFetchError:nil];    
+  [self setGroupFetchError:error];
   [self setGroupFetchTicket:nil];
-    
-  // we have the groups; now get the contacts
-  [self fetchAllContacts];
-} 
 
-// failed
-- (void)groupsFetchTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  [self setGroupFeed:nil];
-  [self setGroupFetchError:error];    
-  [self setGroupFetchTicket:nil];
-  
-  [self updateUI];
+  if (error == nil) {
+    // we have the groups; now get the contacts
+    [self fetchAllContacts];
+  } else {
+    // error fetching groups
+    [self updateUI];
+  }
 }
 
 #pragma mark Fetch all contacts
@@ -804,39 +799,24 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     [query setGroupIdentifier:myContactsGroupID];
   }
 
-  ticket = [service fetchContactQuery:query
-                             delegate:self
-                    didFinishSelector:@selector(contactsFetchTicket:finishedWithFeed:)
-                      didFailSelector:@selector(contactsFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithQuery:query
+                              delegate:self
+                     didFinishSelector:@selector(contactsFetchTicket:finishedWithFeed:error:)];
 
   [self setContactFetchTicket:ticket];
 
   [self updateUI];
 }
 
-//
-// contact list fetch callbacks
-//
-
-// finished contact list successfully
+// contacts fetched callback
 - (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedContact *)feed {
-  
+           finishedWithFeed:(GDataFeedContact *)feed
+                      error:(NSError *)error {
+
   [self setContactFeed:feed];
-  [self setContactFetchError:nil];    
+  [self setContactFetchError:error];
   [self setContactFetchTicket:nil];
-  
-  [self updateUI];
-} 
 
-// failed
-- (void)contactsFetchTicket:(GDataServiceTicket *)ticket
-            failedWithError:(NSError *)error {
-  
-  [self setContactFeed:nil];
-  [self setContactFetchError:error];    
-  [self setContactFetchTicket:nil];
-  
   [self updateUI];
 }
 
@@ -880,11 +860,10 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
     errorMsg = [NSString stringWithFormat:@"need MIME type for file %@", path];
   } else {
     
-    
-    NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
-    
-    GDataEntryContact *newEntry = [GDataEntryContact contactEntryWithTitle:title];
-    
+    NSString *fullName = [[NSFileManager defaultManager] displayNameAtPath:path];
+
+    GDataEntryContact *newEntry = [GDataEntryContact contactEntryWithFullNameString:fullName];
+
     NSData *uploadData = [NSData dataWithContentsOfFile:path];
     if (!uploadData) {
       errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
@@ -909,11 +888,10 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       
       // insert the entry into the contacts feed
       GDataServiceTicket *ticket;
-      ticket = [service fetchContactEntryByUpdatingEntry:newEntry
-                                             forEntryURL:putURL
-                                                delegate:self
-                                       didFinishSelector:@selector(uploadPhotoTicket:finishedWithEntry:)
-                                         didFailSelector:@selector(uploadPhotoTicket:failedWithError:)];
+      ticket = [service fetchEntryByUpdatingEntry:newEntry
+                                      forEntryURL:putURL
+                                         delegate:self
+                                didFinishSelector:@selector(uploadPhotoTicket:finishedWithEntry:error:)];
       
       // we don't want future tickets to always use the upload progress selector
       [service setServiceUploadProgressSelector:nil];
@@ -939,32 +917,28 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [mSetContactImageProgressIndicator setDoubleValue:(double)numberOfBytesRead];
 }
 
-// upload finished successfully
+// finished callback
 - (void)uploadPhotoTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryBase *)entry {
-  
-  [mSetContactImageProgressIndicator setDoubleValue:0.0];
-  
-  // refetch the current contact list
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Uploaded photo", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo uploaded");
-} 
+        finishedWithEntry:(GDataEntryBase *)entry
+                    error:(NSError *)error {
 
-// upload failed
-- (void)uploadPhotoTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
   [mSetContactImageProgressIndicator setDoubleValue:0.0];
   [self updateUI];
-  
-  NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo upload failed: %@", error);
+
+  if (error == nil) {
+    // refetch the current contact list
+    [self fetchAllGroupsAndContacts];
+
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Uploaded photo", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo uploaded");
+  } else {
+    // error uploading photo
+    NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo upload failed: %@", error);
+  }
 }
 
 #pragma mark Delete contact image
@@ -998,34 +972,32 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     NSURL *editURL = [photoLink URL];
     NSString *etag = [photoLink ETag];
     
-    [service deleteContactResourceURL:editURL
-                                 ETag:etag
-                             delegate:self
-                    didFinishSelector:@selector(deletePhotoTicket:finishedWithNil:)
-                      didFailSelector:@selector(deletePhotoTicket:failedWithError:)];
+    [service deleteResourceURL:editURL
+                          ETag:etag
+                      delegate:self
+             didFinishSelector:@selector(deletePhotoTicket:finishedWithNil:error:)];
   }
 }
 
-// upload finished successfully
+// delete photo callback
 - (void)deletePhotoTicket:(GDataServiceTicket *)ticket
-          finishedWithNil:(GDataObject *)obj {
-  
-  NSBeginAlertSheet(@"Deleted photo", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo deleted");
-  
-  // refetch the current contact list
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];  
-} 
+          finishedWithNil:(GDataObject *)obj
+                    error:(NSError *)error {
+  if (error == nil) {
+    // photo deleted
+    NSBeginAlertSheet(@"Deleted photo", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo deleted");
 
-// upload failed
-- (void)deletePhotoTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete photo failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo delete failed: %@", error);
+    // refetch the current contact list
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    // failed
+    NSBeginAlertSheet(@"Delete photo failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo delete failed: %@", error);
+  }
 }
 
 #pragma mark Add a Contact
@@ -1068,39 +1040,35 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
    
     NSURL *postURL = [[mContactFeed postLink] URL];
     
-    [service fetchContactEntryByInsertingEntry:newContact
-                                    forFeedURL:postURL
-                                      delegate:self
-                             didFinishSelector:@selector(addContactTicket:addedEntry:)
-                               didFailSelector:@selector(addContactTicket:failedWithError:)];
+    [service fetchEntryByInsertingEntry:newContact
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(addContactTicket:addedEntry:error:)];
   }
 }
 
-
-// contact added successfully
+// add contact callback
 - (void)addContactTicket:(GDataServiceTicket *)ticket
-              addedEntry:(GDataEntryContact *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added contact", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Contact added");
-  
-  [mAddTitleField setStringValue:@""];
-  [mAddEmailField setStringValue:@""];
-  
-  // refetch the current contacts
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+              addedEntry:(GDataEntryContact *)object
+                   error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added contact", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Contact added");
 
-// failure to add contact
-- (void)addContactTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Contact add failed: %@", error);
+    [mAddTitleField setStringValue:@""];
+    [mAddEmailField setStringValue:@""];
+
+    // refetch the current contacts
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    // failure to add contact
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Contact add failed: %@", error);
+  }
 }
 
 #pragma mark Add a Group
@@ -1118,39 +1086,35 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     NSURL *postURL = [[mGroupFeed postLink] URL];
     
-    [service fetchContactEntryByInsertingEntry:newGroup
-                                    forFeedURL:postURL
-                                      delegate:self
-                             didFinishSelector:@selector(addGroupTicket:addedEntry:)
-                               didFailSelector:@selector(addGroupTicket:failedWithError:)];
+    [service fetchEntryByInsertingEntry:newGroup
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(addGroupTicket:addedEntry:error:)];
   }
 }
 
-
-// group added successfully
+// add group callback
 - (void)addGroupTicket:(GDataServiceTicket *)ticket
-            addedEntry:(GDataEntryContactGroup *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added group", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Group added");
-  
-  [mAddTitleField setStringValue:@""];
-  [mAddEmailField setStringValue:@""];
-  
-  // refetch the current groups
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+            addedEntry:(GDataEntryContactGroup *)object
+                 error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added group", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Group added");
 
-// failure to add group
-- (void)addGroupTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Group add failed: %@", error);
+    [mAddTitleField setStringValue:@""];
+    [mAddEmailField setStringValue:@""];
+
+    // refetch the current groups
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    // failure to add group
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Group add failed: %@", error);
+  }
 }
 
 #pragma mark Delete a Contact or Group
@@ -1181,34 +1145,29 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     
     id entry = [self selectedContactOrGroup];
     
-    [service deleteContactEntry:entry
-                       delegate:self
-              didFinishSelector:@selector(deleteEntryTicket:finishedWithNil:)
-                didFailSelector:@selector(deleteEntryTicket:failedWithError:)];
+    [service deleteEntry:entry
+                delegate:self
+       didFinishSelector:@selector(deleteEntryTicket:finishedWithNil:error:)];
   }
 }
 
-// entry deleted successfully
+// delete entry callback
 - (void)deleteEntryTicket:(GDataServiceTicket *)ticket
-          finishedWithNil:(id)object {
-  
-  NSBeginAlertSheet(@"Deleted", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Entry deleted");
-  
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+          finishedWithNil:(id)object
+                    error:(NSError *)error {
 
-// failure to delete entry
-- (void)deleteEntryTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Entry delete failed: %@", error);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Deleted", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Entry deleted");
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Entry delete failed: %@", error);
+  }
 }
-
 
 #pragma mark Batch Delete All Contacts or Groups
 
@@ -1310,11 +1269,10 @@ NSString* const kBatchResultsProperty = @"BatchResults";
           GDataServiceGoogleContact *service = [self contactService];
           GDataServiceTicket *ticket;
           
-          ticket = [service fetchContactBatchFeedWithBatchFeed:batchFeed
-                                               forBatchFeedURL:batchURL
-                                                      delegate:self
-                                             didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:)
-                                               didFailSelector:@selector(batchDeleteTicket:failedWithError:)];
+          ticket = [service fetchFeedWithBatchFeed:batchFeed
+                                   forBatchFeedURL:batchURL
+                                          delegate:self
+                                 didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:error:)];
           
           [batchTickets addObject:ticket];
           
@@ -1327,71 +1285,68 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   }
 }
 
-// batch delete completed
+// batch delete callback
 - (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedBase *)feed {
-  
-  NSMutableArray *batchTickets = [ticket propertyForKey:kBatchTicketsProperty];
-  NSMutableArray *batchResults = [ticket propertyForKey:kBatchResultsProperty];
-  
-  [batchResults addObjectsFromArray:[feed entries]];
-  [batchTickets removeObject:ticket];
-  
-  if ([batchTickets count] > 0) {
-    // more tickets are outstanding; let them complete
-    return;
-  }
-  
-  // step through all the entries in the response feed, 
-  // and build a string reporting each result
-  
-  // show the http status to start (should be 200)
-  NSString *template = @"http status:%d\n\n";
-  NSMutableString *reportStr = [NSMutableString stringWithFormat:template,
-                                [ticket statusCode]];
-  
-  for (int idx = 0; idx < [batchResults count]; idx++) {
-    
-    GDataEntryGoogleBase *entry = [batchResults objectAtIndex:idx];
-    GDataBatchID *batchID = [entry batchID];
-    
-    // report the batch ID and status for each item
-    [reportStr appendFormat:@"%@\n", [batchID stringValue]];
-    
-    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
-    if (interrupted) {
-      [reportStr appendFormat:@"%@\n", [interrupted description]];
-    }
-    
-    GDataBatchStatus *status = [entry batchStatus];
-    if (status) {
-      [reportStr appendFormat:@"%d %@\n", 
-                              [[status code] intValue], [status reason]];
-    }
-    [reportStr appendString:@"\n"];
-  }
-  
-  NSBeginAlertSheet(@"Delete completed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Delete All completed.\n%@", reportStr);
-  
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+         finishedWithFeed:(GDataFeedBase *)feed
+                    error:(NSError *)error {
 
-// failure to delete batch
-- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
   NSMutableArray *batchTickets = [ticket propertyForKey:kBatchTicketsProperty];
-  
-  [batchTickets removeObject:ticket];
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Batch delete failed: %@", error);
+
+  if (error == nil) {
+    NSMutableArray *batchResults = [ticket propertyForKey:kBatchResultsProperty];
+
+    [batchResults addObjectsFromArray:[feed entries]];
+    [batchTickets removeObject:ticket];
+
+    if ([batchTickets count] > 0) {
+      // more tickets are outstanding; let them complete
+      return;
+    }
+
+    // step through all the entries in the response feed,
+    // and build a string reporting each result
+
+    // show the http status to start (should be 200)
+    NSString *template = @"http status:%d\n\n";
+    NSMutableString *reportStr = [NSMutableString stringWithFormat:template,
+                                  [ticket statusCode]];
+
+    for (int idx = 0; idx < [batchResults count]; idx++) {
+
+      GDataEntryGoogleBase *entry = [batchResults objectAtIndex:idx];
+      GDataBatchID *batchID = [entry batchID];
+
+      // report the batch ID and status for each item
+      [reportStr appendFormat:@"%@\n", [batchID stringValue]];
+
+      GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+      if (interrupted) {
+        [reportStr appendFormat:@"%@\n", [interrupted description]];
+      }
+
+      GDataBatchStatus *status = [entry batchStatus];
+      if (status) {
+        [reportStr appendFormat:@"%d %@\n",
+         [[status code] intValue], [status reason]];
+      }
+      [reportStr appendString:@"\n"];
+    }
+
+    NSBeginAlertSheet(@"Delete completed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Delete All completed.\n%@", reportStr);
+
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    // batch delete failed
+    [batchTickets removeObject:ticket];
+
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Batch delete failed: %@", error);
+  }
 }
-
 
 #pragma mark Add an Item
 
@@ -1439,42 +1394,34 @@ NSString* const kBatchResultsProperty = @"BatchResults";
       // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[selectedEntryCopy editLink] URL];
-      
-      [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
-                                    forEntryURL:entryURL
+      [service fetchEntryByUpdatingEntry:selectedEntryCopy
                                        delegate:self
-                              didFinishSelector:@selector(addItemTicket:addedEntry:)
-                                didFailSelector:@selector(addItemTicket:failedWithError:)];
+                              didFinishSelector:@selector(addItemTicket:addedEntry:error:)];
     }
   }
   [addEntryController autorelease];
 }
 
-// item added successfully
+// add item callback
 - (void)addItemTicket:(GDataServiceTicket *)ticket
-           addedEntry:(GDataEntryContact *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added item", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Item added");
-  
-  // refetch the current contact's items
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+           addedEntry:(GDataEntryContact *)object
+                error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added item", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Item added");
 
-// failure to add item
-- (void)addItemTicket:(GDataServiceTicket *)ticket
-      failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Item add failed: %@\nUser info: %@", 
-                    error, [error userInfo]);
+    // refetch the current contact's items
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Item add failed: %@\nUser info: %@",
+                      error, [error userInfo]);
+  }
 }
-
 
 #pragma mark Edit an item
 
@@ -1515,40 +1462,32 @@ NSString* const kBatchResultsProperty = @"BatchResults";
       // now update the entry on the server
       GDataServiceGoogleContact *service = [self contactService];
       
-      NSURL *entryURL = [[selectedEntryCopy editLink] URL];
-      
-      [service fetchContactEntryByUpdatingEntry:selectedEntryCopy
-                                    forEntryURL:entryURL
-                                       delegate:self
-                              didFinishSelector:@selector(editItemTicket:editedEntry:)
-                                didFailSelector:@selector(editItemTicket:failedWithError:)];
+      [service fetchEntryByUpdatingEntry:selectedEntryCopy
+                                delegate:self
+                       didFinishSelector:@selector(editItemTicket:editedEntry:error:)];
     }
   }
   [editContactController autorelease];
 }
 
-// item edited successfully
+// edit item callback
 - (void)editItemTicket:(GDataServiceTicket *)ticket
-           editedEntry:(GDataEntryContact *)object {
-  
-  // tell the user that the update worked
-  NSBeginAlertSheet(@"Updated Entry", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Entry updated");
-  
-  // re-fetch the selected contact's items
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+           editedEntry:(GDataEntryContact *)object
+                 error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the update worked
+    NSBeginAlertSheet(@"Updated Entry", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Entry updated");
 
-// failure to submit edited item
-- (void)editItemTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Update failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Entry update failed: %@", error);
-  
+    // re-fetch the selected contact's items
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Update failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Entry update failed: %@", error);
+  }
 }
 
 #pragma mark Delete an item
@@ -1591,36 +1530,29 @@ NSString* const kBatchResultsProperty = @"BatchResults";
     // now update the contact on the server
     GDataServiceGoogleContact *service = [self contactService];
     
-    NSURL *entryURL = [[selectedContact editLink] URL];
-    
-    [service fetchContactEntryByUpdatingEntry:selectedContact
-                                  forEntryURL:entryURL
-                                     delegate:self
-                            didFinishSelector:@selector(deleteItemTicket:updatedEntry:)
-                              didFailSelector:@selector(deleteItemTicket:failedWithError:)];
+    [service fetchEntryByUpdatingEntry:selectedContact
+                              delegate:self
+                     didFinishSelector:@selector(deleteItemTicket:updatedEntry:error:)];
   }
 }
 
-// item deleted successfully
+// delete item callback
 - (void)deleteItemTicket:(GDataServiceTicket *)ticket
-            updatedEntry:(GDataEntryContact *)object {
-  
-  NSBeginAlertSheet(@"Deleted item", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Item deleted");
-  
-  // re-fetch the selected contact's items
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+            updatedEntry:(GDataEntryContact *)object
+                   error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Deleted item", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Item deleted");
 
-// failure to delete item
-- (void)deleteItemTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Item delete failed: %@", error);
+    // re-fetch the selected contact's items
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Item delete failed: %@", error);
+  }
 }
 
 #pragma mark Make selected item primary
@@ -1634,43 +1566,34 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   [selectedContactCopy performSelector:sel withObject:item];
   
   // now update the contact on the server
-  GDataServiceGoogleContact *service = [self contactService];
-  
-  NSURL *entryURL = [[selectedContactCopy editLink] URL];
-  
+  GDataServiceGoogleContact *service = [self contactService];  
+
   GDataServiceTicket *ticket =
-    [service fetchContactEntryByUpdatingEntry:selectedContactCopy
-                                  forEntryURL:entryURL
-                                     delegate:self
-                            didFinishSelector:@selector(makePrimaryTicket:finishedWithEntry:)
-                              didFailSelector:@selector(makePrimaryTicket:failedWithError:)];
+    [service fetchEntryByUpdatingEntry:selectedContactCopy
+                              delegate:self
+                     didFinishSelector:@selector(makePrimaryTicket:finishedWithEntry:error:)];
   [ticket setUserData:item];
 }
 
-// item edited successfully
+// make primary item callback
 - (void)makePrimaryTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryContact *)entry {
-  
-  NSBeginAlertSheet(@"Made primary", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Item made primary: %@",
-                    [self displayNameForItem:[ticket userData]]);  
-  
-  // re-fetch the selected contact's items
-  [self fetchAllGroupsAndContacts];
-  [self updateUI];
-} 
+        finishedWithEntry:(GDataEntryContact *)entry
+                    error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Made primary", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Item made primary: %@",
+                      [self displayNameForItem:[ticket userData]]);
 
-// item edited successfully
-- (void)makePrimaryTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Make primary failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Could not make item primary: %@", error);
-} 
-
-
+    // re-fetch the selected contact's items
+    [self fetchAllGroupsAndContacts];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Make primary failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Could not make item primary: %@", error);
+  }
+}
 
 #pragma mark TableView delegate methods
 //

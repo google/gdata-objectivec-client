@@ -25,116 +25,8 @@
 #import "GDataEntryWorksheet.h"
 #import "GDataQuerySpreadsheet.h"
 
-// These routines are all simple wrappers around GDataServiceGoogle methods
 
 @implementation GDataServiceGoogleSpreadsheet
-
-- (GDataServiceTicket *)fetchSpreadsheetFeedWithURL:(NSURL *)feedURL
-                                           delegate:(id)delegate
-                                  didFinishSelector:(SEL)finishedSelector
-                                    didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchSpreadsheetEntryWithURL:(NSURL *)entryURL
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchSpreadsheetEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                                   forFeedURL:(NSURL *)spreadsheetFeedURL
-                                                     delegate:(id)delegate
-                                            didFinishSelector:(SEL)finishedSelector
-                                              didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
-  }
-  
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:spreadsheetFeedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchSpreadsheetEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                                 forEntryURL:(NSURL *)spreadsheetEntryEditURL
-                                                    delegate:(id)delegate
-                                           didFinishSelector:(SEL)finishedSelector
-                                             didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
-  }
-  
-  
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:spreadsheetEntryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteSpreadsheetEntry:(GDataEntryBase *)entryToDelete
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];  
-}
-
-- (GDataServiceTicket *)deleteSpreadsheetResourceURL:(NSURL *)resourceEditURL
-                                                ETag:(NSString *)etag
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchSpreadsheetQuery:(GDataQuerySpreadsheet *)query
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchSpreadsheetFeedWithURL:[query URL]
-                                  delegate:delegate
-                         didFinishSelector:finishedSelector
-                           didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchSpreadsheetFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                          forBatchFeedURL:(NSURL *)feedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
-                                   forBatchFeedURL:feedURL
-                                          delegate:delegate
-                                 didFinishSelector:finishedSelector
-                                   didFailSelector:failedSelector];
-}
 
 - (NSString *)serviceID {
   return @"wise";
@@ -142,6 +34,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataSpreadsheetDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataSpreadsheetConstants spreadsheetNamespaces];
 }
 
 @end

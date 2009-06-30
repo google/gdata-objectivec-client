@@ -57,12 +57,6 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDFriendsActivity       _INITIALIZE
 @class GDataQueryYouTube;
 @class GDataEntryYouTubeVideo;
 
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
 // Note that setUserCredentialsWithUsername:password: may require either the
 // Google account e-mail address or the YouTube account name, depending on
@@ -97,57 +91,24 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDFriendsActivity       _INITIALIZE
 - (NSString *)youTubeDeveloperKey;
 - (void)setYouTubeDeveloperKey:(NSString *)str;
   
-// finished callback (see above) is passed an appropriate YouTube feed
-- (GDataServiceTicket *)fetchYouTubeFeedWithURL:(NSURL *)feedURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed an appropriate YouTube entry
-- (GDataServiceTicket *)fetchYouTubeEntryWithURL:(NSURL *)feedURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the inserted entry
-- (GDataServiceTicket *)fetchYouTubeEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                               forFeedURL:(NSURL *)youTubeFeedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the updated entry
-- (GDataServiceTicket *)fetchYouTubeEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                             forEntryURL:(NSURL *)youTubeEntryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the appropriate YouTube feed
-- (GDataServiceTicket *)fetchYouTubeQuery:(GDataQueryYouTube *)query
-                                 delegate:(id)delegate
-                        didFinishSelector:(SEL)finishedSelector
-                          didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nli object
-- (GDataServiceTicket *)deleteYouTubeEntry:(GDataEntryBase *)entryToDelete
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteYouTubeResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a batch feed
-- (GDataServiceTicket *)fetchYouTubeBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                           forBatchFeedURL:(NSURL *)feedURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector;
+// clients may use these fetch methods of GDataServiceGoogle
+//
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
 + (NSString *)serviceRootURLString;  
 

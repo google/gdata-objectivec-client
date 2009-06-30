@@ -44,15 +44,6 @@ _EXTERN NSString* const kGDataGooglePhotosKindComment _INITIALIZE_AS(@"comment")
 _EXTERN NSString* const kGDataGooglePhotosKindTag     _INITIALIZE_AS(@"tag");
 _EXTERN NSString* const kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
 
-@class GDataQueryGooglePhotos;
-@class GDataEntryPhotoBase;
-
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
 @interface GDataServiceGooglePhotos : GDataServiceGoogle 
 
@@ -70,48 +61,23 @@ _EXTERN NSString* const kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
 // utility for making a feed URL for a user's contacts feed
 + (NSURL *)photoContactsFeedURLForUserID:(NSString *)userID;
 
-// finished callback (see above) is passed an appropriate GooglePhotos feed
-- (GDataServiceTicket *)fetchPhotoFeedWithURL:(NSURL *)feedURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
+// clients may use these fetch methods of GDataServiceGoogle
+//
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
-// finished callback (see above) is passed an appropriate GooglePhotos entry
-- (GDataServiceTicket *)fetchPhotoEntryWithURL:(NSURL *)entryURL
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the inserted entry
-- (GDataServiceTicket *)fetchPhotoEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
-                                             forFeedURL:(NSURL *)photoFeedURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the updated entry
-- (GDataServiceTicket *)fetchPhotoEntryByUpdatingEntry:(GDataEntryPhotoBase *)entryToUpdate
-                                           forEntryURL:(NSURL *)photoEntryEditURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the appropriate GooglePhotos feed
-- (GDataServiceTicket *)fetchPhotoQuery:(GDataQueryGooglePhotos *)query
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector
-                        didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deletePhotoEntry:(GDataEntryPhotoBase *)entryToUpdate
-                                delegate:(id)delegate
-                       didFinishSelector:(SEL)finishedSelector
-                         didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deletePhotoResourceURL:(NSURL *)resourceEditURL
-                                          ETag:(NSString *)etag
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector;
 @end

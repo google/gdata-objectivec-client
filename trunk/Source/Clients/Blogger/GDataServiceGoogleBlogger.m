@@ -37,100 +37,52 @@
   return [NSURL URLWithString:urlString];
 }
 
-//- (GDataServiceTicket *)fetchBloggerFeedWithURL:(NSURL *)feedURL
-//                                       delegate:(id)delegate
-//                              didFinishSelector:(SEL)finishedSelector
-//                                didFailSelector:(SEL)failedSelector {
-//
-//  return [self fetchAuthenticatedFeedWithURL:feedURL
-//                                   feedClass:kGDataUseRegisteredClass
-//                                    delegate:delegate
-//                           didFinishSelector:finishedSelector
-//                             didFailSelector:failedSelector];
-//}
-//
-//- (GDataServiceTicket *)fetchBloggerEntryWithURL:(NSURL *)entryURL
-//                                        delegate:(id)delegate
-//                               didFinishSelector:(SEL)finishedSelector
-//                                 didFailSelector:(SEL)failedSelector {
-//
-//  return [self fetchAuthenticatedEntryWithURL:entryURL
-//                                   entryClass:kGDataUseRegisteredClass
-//                                     delegate:delegate
-//                            didFinishSelector:finishedSelector
-//                              didFailSelector:failedSelector];
-//}
+#pragma mark -
 
-- (GDataServiceTicket *)fetchBloggerEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                               forFeedURL:(NSURL *)feedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector {
+// warn the user off of the wrong method calls
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector {
 
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataBloggerConstants bloggerNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:feedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchFeedWithURL:feedClass: instead, specifying the expected class
+  // for the feed
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleBlogger: use fetchFeedWithURL:feedClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)fetchBloggerEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                             forEntryURL:(NSURL *)entryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
 
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataBloggerConstants bloggerNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:entryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchEntryWithURL:entryClass: instead, specifying the expected class
+  // of the entry
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleBlogger: use fetchEntryWithURL:entryClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)deleteBloggerEntry:(GDataEntryBase *)entryToDelete
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
                                   delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector {
+                         didFinishSelector:(SEL)finishedSelector {
 
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchFeedWithQuery:feedClass: instead, specifying the expected class
+  // of the feed
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleBlogger: use fetchFeedWithQuery:feedClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)deleteBloggerResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-//- (GDataServiceTicket *)fetchBloggerQuery:(GDataQuery *)query
-//                                 delegate:(id)delegate
-//                        didFinishSelector:(SEL)finishedSelector
-//                          didFailSelector:(SEL)failedSelector {
-//
-//  return [self fetchBloggerFeedWithURL:[query URL]
-//                              delegate:delegate
-//                     didFinishSelector:finishedSelector
-//                       didFailSelector:failedSelector];
-//}
+#pragma mark -
 
 - (NSString *)serviceID {
   return @"blogger";
@@ -142,6 +94,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataBloggerDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataBloggerConstants bloggerNamespaces];
 }
 
 @end

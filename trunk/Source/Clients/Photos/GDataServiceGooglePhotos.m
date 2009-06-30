@@ -22,7 +22,6 @@
 #import "GDataEntryPhotoBase.h"
 #import "GDataQueryGooglePhotos.h"
 
-// These routines are all simple wrappers around GDataServiceGoogle methods
 
 @implementation GDataServiceGooglePhotos
 
@@ -96,99 +95,7 @@
   return [NSURL URLWithString:urlString];
 }
 
-- (GDataServiceTicket *)fetchPhotoFeedWithURL:(NSURL *)feedURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchPhotoEntryWithURL:(NSURL *)entryURL
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchPhotoEntryByInsertingEntry:(GDataEntryPhotoBase *)entryToInsert
-                                             forFeedURL:(NSURL *)photoFeedURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataEntryPhotoBase photoNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:photoFeedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-  
-}
-
-- (GDataServiceTicket *)fetchPhotoEntryByUpdatingEntry:(GDataEntryPhotoBase *)entryToUpdate
-                                           forEntryURL:(NSURL *)photoEntryEditURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataEntryPhotoBase photoNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:photoEntryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deletePhotoEntry:(GDataEntryPhotoBase *)entryToDelete
-                                delegate:(id)delegate
-                       didFinishSelector:(SEL)finishedSelector
-                         didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deletePhotoResourceURL:(NSURL *)resourceEditURL
-                                          ETag:(NSString *)etag
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchPhotoQuery:(GDataQueryGooglePhotos *)query
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector
-                        didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchPhotoFeedWithURL:[query URL]
-                            delegate:delegate
-                   didFinishSelector:finishedSelector
-                     didFailSelector:failedSelector];
-}
+#pragma mark -
 
 - (NSString *)serviceID {
   return @"lh2";
@@ -200,6 +107,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataPhotosDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataEntryPhotoBase photoNamespaces];
 }
 
 @end

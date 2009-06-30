@@ -314,6 +314,10 @@
 
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // username/password may change
@@ -404,35 +408,20 @@
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleSpreadsheetsPrivateFullFeed];
 
   GDataServiceTicket *ticket;
-  ticket = [service fetchSpreadsheetFeedWithURL:feedURL
-                                       delegate:self
-                              didFinishSelector:@selector(spreadsheetsTicket:finishedWithFeed:)
-                                didFailSelector:@selector(spreadsheetsTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(spreadsheetsTicket:finishedWithFeed:error:)];
   [self setSpreadsheetFeedTicket:ticket];
 
   [self updateUI];
 }
 
-//
-// spreadsheet feed fetch callbacks
-//
-
-// fetched spreadsheet list successfully
+// spreadsheet feed fetch callback
 - (void)spreadsheetsTicket:(GDataServiceTicket *)ticket
-          finishedWithFeed:(GDataFeedSpreadsheet *)feed {
+          finishedWithFeed:(GDataFeedSpreadsheet *)feed
+                     error:(NSError *)error {
 
   [self setSpreadsheetFeed:feed];
-  [self setSpreadsheetFetchError:nil];
-  [self setSpreadsheetFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)spreadsheetsTicket:(GDataServiceTicket *)ticket
-           failedWithError:(NSError *)error {
-
-  [self setSpreadsheetFeed:nil];
   [self setSpreadsheetFetchError:error];
   [self setSpreadsheetFeedTicket:nil];
 
@@ -458,10 +447,9 @@
       [self setWorksheetFetchError:nil];
 
       GDataServiceTicket *ticket;
-      ticket = [service fetchSpreadsheetFeedWithURL:worksheetsFeedURL
-                                           delegate:self
-                                  didFinishSelector:@selector(worksheetsTicket:finishedWithFeed:)
-                                    didFailSelector:@selector(worksheetsTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:worksheetsFeedURL
+                                delegate:self
+                       didFinishSelector:@selector(worksheetsTicket:finishedWithFeed:error:)];
       [self setWorksheetFeedTicket:ticket];
     }
 
@@ -488,10 +476,9 @@
       [self setRecordFetchError:nil];
 
       GDataServiceTicket *ticket;
-      ticket = [service fetchSpreadsheetFeedWithURL:tablesFeedURL
-                                           delegate:self
-                                  didFinishSelector:@selector(tablesTicket:finishedWithFeed:)
-                                    didFailSelector:@selector(tablesTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:tablesFeedURL
+                                delegate:self
+                       didFinishSelector:@selector(tablesTicket:finishedWithFeed:error:)];
       [self setTableFeedTicket:ticket];
     }
 
@@ -499,52 +486,24 @@
   }
 }
 
-//
-// worksheets fetch callbacks
-//
-
-// fetched worksheets list successfully
+// worksheets feed fetch callback
 - (void)worksheetsTicket:(GDataServiceTicket *)ticket
-        finishedWithFeed:(GDataFeedWorksheet *)feed {
+        finishedWithFeed:(GDataFeedWorksheet *)feed
+                   error:(NSError *)error {
 
   [self setWorksheetFeed:feed];
-  [self setWorksheetFetchError:nil];
-  [self setWorksheetFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)worksheetsTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
-
-  [self setWorksheetFeed:nil];
   [self setWorksheetFetchError:error];
   [self setWorksheetFeedTicket:nil];
 
   [self updateUI];
 }
 
-//
-// tables fetch callbacks
-//
-
-// fetched table list successfully
+// tables feed fetch callback
 - (void)tablesTicket:(GDataServiceTicket *)ticket
-    finishedWithFeed:(GDataFeedSpreadsheetTable *)feed {
+    finishedWithFeed:(GDataFeedSpreadsheetTable *)feed
+               error:(NSError *)error {
 
   [self setTableFeed:feed];
-  [self setTableFetchError:nil];
-  [self setTableFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)tablesTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-
-  [self setTableFeed:nil];
   [self setTableFetchError:error];
   [self setTableFeedTicket:nil];
 
@@ -568,10 +527,9 @@
       [self setRecordFetchError:nil];
 
       GDataServiceTicket *ticket;
-      ticket = [service fetchSpreadsheetFeedWithURL:recordFeedURL
-                                           delegate:self
-                                  didFinishSelector:@selector(recordsTicket:finishedWithFeed:)
-                                    didFailSelector:@selector(recordsTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:recordFeedURL
+                                delegate:self
+                       didFinishSelector:@selector(recordsTicket:finishedWithFeed:error:)];
       [self setRecordFeedTicket:ticket];
 
       [self updateUI];
@@ -579,26 +537,12 @@
   }
 }
 
-//
-// records fetch callbacks
-//
-
-// fetched records list successfully
+// records feed fetch callback
 - (void)recordsTicket:(GDataServiceTicket *)ticket
-     finishedWithFeed:(GDataFeedSpreadsheetRecord *)feed {
+     finishedWithFeed:(GDataFeedSpreadsheetRecord *)feed
+                error:(NSError *)error {
 
   [self setRecordFeed:feed];
-  [self setRecordFetchError:nil];
-  [self setRecordFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)recordsTicket:(GDataServiceTicket *)ticket
-      failedWithError:(NSError *)error {
-
-  [self setRecordFeed:nil];
   [self setRecordFetchError:error];
   [self setRecordFeedTicket:nil];
 
@@ -639,35 +583,31 @@
     GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
     GDataServiceTicket *ticket;
 
-    ticket = [service fetchSpreadsheetEntryByInsertingEntry:newEntry
-                                                 forFeedURL:postURL
-                                                   delegate:self
-                                          didFinishSelector:@selector(addTableTicket:finishedWithEntry:)
-                                            didFailSelector:@selector(addTableTicket:failedWithError:)];
+    ticket = [service fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:postURL
+                                        delegate:self
+                               didFinishSelector:@selector(addTableTicket:finishedWithEntry:error:)];
   }
 }
 
 - (void)addTableTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntrySpreadsheetTable *)entry {
+     finishedWithEntry:(GDataEntrySpreadsheetTable *)entry
+                 error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Table added", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added table \"%@\"",
+                      [[entry title] stringValue]);
 
-  NSBeginAlertSheet(@"Table added", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added table \"%@\"",
-                    [[entry title] stringValue]);
-
-  [self fetchSelectedSpreadsheet];
-}
-
-- (void)addTableTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Add Table Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
+    [self fetchSelectedSpreadsheet];
+  } else {
+    NSBeginAlertSheet(@"Add Table Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
+  }
 }
 
 #pragma mark Delete the selected table
-
 
 - (void)deleteSelectedTable {
 
@@ -677,10 +617,9 @@
     GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
     GDataServiceTicket *ticket;
 
-    ticket = [service deleteSpreadsheetEntry:selectedTable
-                                    delegate:self
-                           didFinishSelector:@selector(deleteTableTicket:finishedWithNil:)
-                             didFailSelector:@selector(deleteTableTicket:failedWithError:)];
+    ticket = [service deleteEntry:selectedTable
+                         delegate:self
+                didFinishSelector:@selector(deleteTableTicket:finishedWithNil:error:)];
     // save the name in the ticket
     [ticket setProperty:[[selectedTable title] stringValue]
                  forKey:@"tableName"];
@@ -688,23 +627,23 @@
 }
 
 - (void)deleteTableTicket:(GDataServiceTicket *)ticket
-          finishedWithNil:(GDataObject *)nilObj {
+          finishedWithNil:(GDataObject *)nilObj
+                    error:(NSError *)error {
+  if (error == nil) {
+    // succeeded
+    NSString *tableName = [ticket propertyForKey:@"tableName"];
 
-  NSString *tableName = [ticket propertyForKey:@"tableName"];
+    NSBeginAlertSheet(@"Table deleted", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted table \"%@\"", tableName);
 
-  NSBeginAlertSheet(@"Table deleted", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Deleted table \"%@\"", tableName);
-
-  [self fetchSelectedSpreadsheet];
-}
-
-- (void)deleteTableTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Delete Table Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
+    [self fetchSelectedSpreadsheet];
+  } else {
+    // failed
+    NSBeginAlertSheet(@"Delete Table Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
+  }
 }
 
 #pragma mark Randomize the data in the records of the selected table
@@ -733,12 +672,9 @@
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
       GDataServiceTicket *ticket;
 
-      NSURL *editURL = [[recordEntry editLink] URL];
-      ticket = [service fetchSpreadsheetEntryByUpdatingEntry:recordEntry
-                                                 forEntryURL:editURL
-                                                     delegate:self
-                                            didFinishSelector:@selector(editRecordTicket:finishedWithEntry:)
-                                              didFailSelector:@selector(editRecordTicket:failedWithError:)];
+      ticket = [service fetchEntryByUpdatingEntry:recordEntry
+                                         delegate:self
+                                didFinishSelector:@selector(editRecordTicket:finishedWithEntry:error:)];
 
       if (mRecordUpdateTickets == nil) {
         mRecordUpdateTickets = [[NSMutableArray alloc] init];
@@ -749,23 +685,21 @@
 }
 
 - (void)editRecordTicket:(GDataServiceTicket *)ticket
-       finishedWithEntry:(GDataEntrySpreadsheetTable *)entry {
+       finishedWithEntry:(GDataEntrySpreadsheetTable *)entry
+                   error:(NSError *)error {
 
   [mRecordUpdateTickets removeObject:ticket];
-
-  if ([mRecordUpdateTickets count] == 0) {
-    // no more udpate tickets pending, so refresh the table's list of records
-    [self fetchSelectedTable];
+  if (error == nil) {
+    // succeeded
+    if ([mRecordUpdateTickets count] == 0) {
+      // no more udpate tickets pending, so refresh the table's list of records
+      [self fetchSelectedTable];
+    }
   } else {
-    [self updateUI];
+    // failed
+    NSLog(@"record update error: %@", error);
   }
-}
 
-- (void)editRecordTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  NSLog(@"record update error: %@", error);
-
-  [mRecordUpdateTickets removeObject:ticket];
   [self updateUI];
 }
 

@@ -20,6 +20,8 @@
 #import "GDataEntryBase.h"
 #import "GDataValueConstruct.h"
 #import "GDataDublinCore.h"
+#import "GDataRating.h"
+#import "GDataComment.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -81,9 +83,6 @@ _EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas
 + (NSString *)extensionElementPrefix;
 + (NSString *)extensionElementLocalName;
 @end
-
-@class GDataRating;
-@class GDataComment;
 
 @interface GDataEntryVolume : GDataEntryBase
 

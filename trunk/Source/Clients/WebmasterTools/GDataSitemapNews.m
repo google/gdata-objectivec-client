@@ -19,7 +19,7 @@
 
 #import "GDataSitemapNews.h"
 
-#import "GDataEntrySite.h" // for namespaces
+#import "GDataWebmasterToolsConstants.h"
 #import "GDataEntrySitemap.h" // for GDataSitemapPublicationLabel
 
 // News elements, like

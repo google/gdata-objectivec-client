@@ -71,102 +71,7 @@
   return [NSURL URLWithString:urlString];
 }
 
-
-
-- (GDataServiceTicket *)fetchHealthFeedWithURL:(NSURL *)feedURL
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithURL:feedURL
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchHealthEntryWithURL:(NSURL *)entryURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchHealthEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                              forFeedURL:(NSURL *)feedURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector {
-
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataEntryHealthProfile healthNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:feedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-
-}
-
-- (GDataServiceTicket *)fetchHealthEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                            forEntryURL:(NSURL *)entryEditURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
-
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataEntryHealthProfile healthNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:entryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-
-}
-
-- (GDataServiceTicket *)deleteHealthEntry:(GDataEntryBase *)entryToDelete
-                                 delegate:(id)delegate
-                        didFinishSelector:(SEL)finishedSelector
-                          didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteHealthResourceURL:(NSURL *)resourceEditURL
-                                           ETag:(NSString *)etag
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchHealthQuery:(GDataQueryGoogleHealth *)query
-                                delegate:(id)delegate
-                       didFinishSelector:(SEL)finishedSelector
-                         didFailSelector:(SEL)failedSelector {
-
-  return [self fetchHealthFeedWithURL:[query URL]
-                             delegate:delegate
-                    didFinishSelector:finishedSelector
-                      didFailSelector:failedSelector];
-}
+#pragma mark -
 
 - (NSString *)serviceID {
   return @"health";
@@ -178,6 +83,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataHealthDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataEntryHealthProfile healthNamespaces];
 }
 
 @end

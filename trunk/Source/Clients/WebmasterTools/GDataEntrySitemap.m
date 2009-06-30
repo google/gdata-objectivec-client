@@ -18,7 +18,7 @@
 //
 
 #import "GDataEntrySitemap.h"
-#import "GDataEntrySite.h" // for namespace declarations
+#import "GDataWebmasterToolsConstants.h"
 
 @implementation GDataSitemapStatus
 + (NSString *)extensionElementURI       { return kGDataNamespaceWebmasterTools; }
@@ -61,9 +61,9 @@
 + (id)sitemapEntry {
   
   GDataEntrySitemapBase *obj;
-  obj = [[[[self class] alloc] init] autorelease];
+  obj = [[[self alloc] init] autorelease];
   
-  [obj setNamespaces:[GDataEntrySite webmasterToolsNamespaces]];
+  [obj setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   
   return obj;
 }

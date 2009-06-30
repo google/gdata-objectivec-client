@@ -19,7 +19,7 @@
 
 #import "GDataSitemapMobile.h"
 
-#import "GDataEntrySite.h" // for namespaces
+#import "GDataWebmasterToolsConstants.h"
 
 // Mobile elements, like
 //

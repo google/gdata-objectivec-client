@@ -46,117 +46,29 @@
   return [NSURL URLWithString:urlString];
 }
 
-- (GDataServiceTicket *)fetchMapsFeedWithURL:(NSURL *)feedURL
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithURL:feedURL
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchMapsEntryWithURL:(NSURL *)entryURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchMapsEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                            forFeedURL:(NSURL *)feedURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
-
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataMapConstants mapsNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:feedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-
-}
-
-- (GDataServiceTicket *)fetchMapsEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                          forEntryURL:(NSURL *)entryEditURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
+// override the superclass's update method to use the namespaces that match
+// those provided by the server
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector {
 
   if ([entryToUpdate namespaces] == nil) {
     if ([entryToUpdate isKindOfClass:[GDataEntryMapFeature class]]) {
+      // we're updating a feature. Presumably it was supplied by the server
+      // with a default kml namespace
       [entryToUpdate setNamespaces:[GDataMapConstants mapsServerNamespaces]];
     } else {
+      // for other kinds of entries, the default namespace is atom
       [entryToUpdate setNamespaces:[GDataMapConstants mapsNamespaces]];
     }
   }
 
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:entryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-
+  return [super fetchEntryByUpdatingEntry:entryToUpdate
+                                 delegate:delegate
+                        didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)deleteMapsEntry:(GDataEntryBase *)entryToDelete
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector
-                        didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteMapsResourceURL:(NSURL *)resourceEditURL
-                                         ETag:(NSString *)etag
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchMapsQuery:(GDataQueryGoogleMaps *)query
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector {
-
-  return [self fetchMapsFeedWithURL:[query URL]
-                           delegate:delegate
-                  didFinishSelector:finishedSelector
-                    didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchMapsBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                        forBatchFeedURL:(NSURL *)feedURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
-                                   forBatchFeedURL:feedURL
-                                          delegate:delegate
-                                 didFinishSelector:finishedSelector
-                                   didFailSelector:failedSelector];
-}
+#pragma mark -
 
 - (NSString *)serviceID {
   return @"local";
@@ -168,6 +80,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataMapsDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataMapConstants mapsNamespaces];
 }
 
 @end

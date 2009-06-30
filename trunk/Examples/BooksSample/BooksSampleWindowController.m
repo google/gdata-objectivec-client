@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  BooksSampleWindowController.m
@@ -293,6 +293,10 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     [service setUserAgent:@"MyCompany-SampleBooksApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the username/password each time the service is requested
@@ -349,10 +353,9 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     feedType = kAnnotationsFeedSource;
   }
 
-  ticket = [service fetchBooksFeedWithURL:feedURL
-                                 delegate:self
-                        didFinishSelector:@selector(volumeListFetchTicket:finishedWithFeed:)
-                          didFailSelector:@selector(volumeListFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(volumeListFetchTicket:finishedWithFeed:error:)];
   [self setVolumesFetchTicket:ticket];
 
   [ticket setProperty:feedType forKey:kSourceProperty];
@@ -360,32 +363,20 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
   [self updateUI];
 }
 
-//
-// volume list fetch callbacks
-//
-
-// fetched volume list successfully
+// fetched volume list callback
 - (void)volumeListFetchTicket:(GDataServiceTicket *)ticket
-             finishedWithFeed:(GDataFeedVolume *)object {
+             finishedWithFeed:(GDataFeedVolume *)object
+                        error:(NSError *)error {
 
   [self setVolumesFeed:object];
-  [self setVolumesFetchError:nil];
+  [self setVolumesFetchError:error];
   [self setVolumesFetchTicket:nil];
 
   // transfer the feed source to a property in the feed object
-  NSString *sourceProp = [ticket propertyForKey:kSourceProperty];
-  [object setProperty:sourceProp forKey:kSourceProperty];
-
-  [self updateUI];
-}
-
-// failed
-- (void)volumeListFetchTicket:(GDataServiceTicket *)ticket
-              failedWithError:(NSError *)error {
-
-  [self setVolumesFeed:nil];
-  [self setVolumesFetchError:error];
-  [self setVolumesFetchTicket:nil];
+  if (error == nil) {
+    NSString *sourceProp = [ticket propertyForKey:kSourceProperty];
+    [object setProperty:sourceProp forKey:kSourceProperty];
+  }
 
   [self updateUI];
 }
@@ -422,10 +413,9 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
   GDataServiceGoogleBooks *service = [self booksService];
   GDataServiceTicket *ticket;
 
-  ticket = [service fetchBooksQuery:query
-                           delegate:self
-                  didFinishSelector:@selector(volumeListFetchTicket:finishedWithFeed:)
-                    didFailSelector:@selector(volumeListFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithQuery:query
+                              delegate:self
+                     didFinishSelector:@selector(volumeListFetchTicket:finishedWithFeed:error:)];
 
   [self setVolumesFetchTicket:ticket];
 
@@ -565,11 +555,9 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
     GDataServiceGoogleBooks *service = [self booksService];
     GDataServiceTicket *ticket;
-    ticket = [service fetchBooksEntryByUpdatingEntry:volCopy
-                                         forEntryURL:[[volCopy editLink] URL]
-                                            delegate:self
-                                   didFinishSelector:@selector(addLabelTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(addLabelTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:volCopy
+                                       delegate:self
+                              didFinishSelector:@selector(addLabelTicket:finishedWithEntry:error:)];
     [self setAnnotationsFetchTicket:ticket];
 
     // save the label so we can display it in the success callback
@@ -580,31 +568,29 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)addLabelTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryVolume *)object {
+     finishedWithEntry:(GDataEntryVolume *)object
+                 error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
 
-  NSString *label = [ticket userData];
+  if (error == nil) {
+    NSString *label = [ticket userData];
 
-  NSBeginAlertSheet(@"Added label", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added label \"%@\" to volume %@",
-                    label,
-                    [[object title] stringValue]);
+    NSBeginAlertSheet(@"Added label", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added label \"%@\" to volume %@",
+                      label,
+                      [[object title] stringValue]);
 
-  [self fetchVolumes];
-}
+    [self fetchVolumes];
+  } else {
+    // add label failed
+    NSBeginAlertSheet(@"Add label failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Label add failed: %@", error);
 
-- (void)addLabelTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  [self setAnnotationsFetchTicket:nil];
-
-  NSBeginAlertSheet(@"Add label failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Label add failed: %@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Set Review
@@ -632,11 +618,9 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
     GDataServiceGoogleBooks *service = [self booksService];
     GDataServiceTicket *ticket;
-    ticket = [service fetchBooksEntryByUpdatingEntry:volCopy
-                                         forEntryURL:[[volCopy editLink] URL]
-                                            delegate:self
-                                   didFinishSelector:@selector(setReviewTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(setReviewTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:volCopy
+                                       delegate:self
+                              didFinishSelector:@selector(setReviewTicket:finishedWithEntry:error:)];
     [self setAnnotationsFetchTicket:ticket];
 
     [self updateUI];
@@ -644,28 +628,26 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)setReviewTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryVolume *)object {
+      finishedWithEntry:(GDataEntryVolume *)object
+                  error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
 
-  NSBeginAlertSheet(@"Review set", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Updated review for volume %@",
-                    [[object title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Review set", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Updated review for volume %@",
+                      [[object title] stringValue]);
 
-  [self fetchVolumes];
-}
+    [self fetchVolumes];
+  } else {
+    // fetch failed
+    NSBeginAlertSheet(@"Set review failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Review set failed: %@", error);
 
-- (void)setReviewTicket:(GDataServiceTicket *)ticket
-        failedWithError:(NSError *)error {
-
-  [self setAnnotationsFetchTicket:nil];
-
-  NSBeginAlertSheet(@"Set review failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Review set failed: %@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Set Rating
@@ -691,11 +673,9 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
     GDataServiceGoogleBooks *service = [self booksService];
     GDataServiceTicket *ticket;
-    ticket = [service fetchBooksEntryByUpdatingEntry:volCopy
-                                         forEntryURL:[[volCopy editLink] URL]
-                                            delegate:self
-                                   didFinishSelector:@selector(setRatingTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(setRatingTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:volCopy
+                                       delegate:self
+                              didFinishSelector:@selector(setRatingTicket:finishedWithEntry:error:)];
     [self setAnnotationsFetchTicket:ticket];
 
     [self updateUI];
@@ -703,29 +683,27 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)setRatingTicket:(GDataServiceTicket *)ticket
-      finishedWithEntry:(GDataEntryVolume *)object {
+      finishedWithEntry:(GDataEntryVolume *)object
+                  error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
 
-  NSBeginAlertSheet(@"Set rating", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Set rating \"%@\" to volume %@",
-                    [[object rating] value],
-                    [[object title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Set rating", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Set rating \"%@\" to volume %@",
+                      [[object rating] value],
+                      [[object title] stringValue]);
 
-  [self fetchVolumes];
-}
+    [self fetchVolumes];
+  } else {
+    // fetch failed
+    NSBeginAlertSheet(@"Set rating failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Set rating failed: %@", error);
 
-- (void)setRatingTicket:(GDataServiceTicket *)ticket
-        failedWithError:(NSError *)error {
-
-  [self setAnnotationsFetchTicket:nil];
-
-  NSBeginAlertSheet(@"Set rating failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Set rating failed: %@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 ////////////////////////////////////////////////////////

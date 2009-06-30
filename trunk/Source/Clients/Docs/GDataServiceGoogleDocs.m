@@ -24,119 +24,8 @@
 #import "GDataQueryDocs.h"
 #import "GDataFeedDocList.h"
 
-// These routines are all simple wrappers around GDataServiceGoogle methods
 
 @implementation GDataServiceGoogleDocs
-
-
-- (GDataServiceTicket *)fetchDocsFeedWithURL:(NSURL *)feedURL
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:[GDataFeedDocList class]
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchDocEntryWithURL:(NSURL *)entryURL
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kUseRegisteredEntryClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchDocEntryByInsertingEntry:(GDataEntryDocBase *)entryToInsert
-                                           forFeedURL:(NSURL *)docsFeedURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataDocConstants baseDocumentNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:docsFeedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchDocEntryByUpdatingEntry:(GDataEntryDocBase *)entryToUpdate
-                                          forEntryURL:(NSURL *)docEntryEditURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataDocConstants baseDocumentNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:docEntryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-}
-
-// finished callback (see above) is passed the doc list feed
-- (GDataServiceTicket *)fetchDocsQuery:(GDataQueryDocs *)query
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector {
- 
-  NSURL *feedURL = [query URL];
-  
-  return [self fetchDocsFeedWithURL:feedURL
-                           delegate:delegate
-                  didFinishSelector:finishedSelector
-                    didFailSelector:failedSelector];  
-}
-
-- (GDataServiceTicket *)deleteDocEntry:(GDataEntryDocBase *)entryToDelete
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteDocResourceURL:(NSURL *)resourceEditURL
-                                        ETag:(NSString *)etag
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchDocsBatchFeedWithBatchFeed:(GDataFeedDocList *)batchFeed
-                                        forBatchFeedURL:(NSURL *)feedURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
-                                   forBatchFeedURL:feedURL
-                                          delegate:delegate
-                                 didFinishSelector:finishedSelector
-                                   didFailSelector:failedSelector];
-}
 
 - (NSString *)serviceID {
   return @"writely";
@@ -144,6 +33,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataDocsDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataDocConstants baseDocumentNamespaces];
 }
 
 @end

@@ -22,8 +22,9 @@
 
 @interface GDataEntrySpreadsheetDoc : GDataEntryDocBase
 
-// convenience accessor
+// convenience accessors
 - (GDataLink *)worksheetsLink;
+- (GDataLink *)tablesLink;
 
 @end
 

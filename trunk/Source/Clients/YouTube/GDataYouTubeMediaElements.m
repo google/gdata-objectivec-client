@@ -30,19 +30,6 @@
 + (NSString *)extensionElementLocalName { return @"format"; }
 @end
 
-// v2.0 additions
-
-@implementation GDataYouTubeVideoID
-+ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"videoid"; }
-@end
-
-@implementation GDataYouTubeUploadedDate
-+ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"uploaded"; }
-@end
 
 @implementation GDataMediaContent (YouTubeExtensions)
 
@@ -119,6 +106,7 @@
   
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
+   [GDataYouTubeAspectRatio class],
    [GDataYouTubeDuration class],
    [GDataYouTubePrivate class],
    [GDataYouTubeVideoID class],
@@ -142,10 +130,11 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"duration", @"duration",     kGDataDescValueLabeled   },
-    { @"videoID",  @"videoID",      kGDataDescValueLabeled   },
-    { @"uploaded", @"uploadedDate", kGDataDescValueLabeled   },
-    { @"private",  @"isPrivate",    kGDataDescBooleanPresent },
+    { @"duration",    @"duration",     kGDataDescValueLabeled   },
+    { @"videoID",     @"videoID",      kGDataDescValueLabeled   },
+    { @"aspectRatio", @"aspectRatio",  kGDataDescValueLabeled   },
+    { @"uploaded",    @"uploadedDate", kGDataDescValueLabeled   },
+    { @"private",     @"isPrivate",    kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
 
@@ -204,9 +193,22 @@
 
 - (void)setUploadedDate:(GDataDateTime *)dateTime {
   GDataYouTubeUploadedDate *obj;
-  
+
   obj = [GDataYouTubeUploadedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataYouTubeUploadedDate class]];
+}
+
+// aspectRatio available in v2.0
+- (NSString *)aspectRatio {
+  GDataYouTubeAspectRatio *obj;
+
+  obj = [self objectForExtensionClass:[GDataYouTubeAspectRatio class]];
+  return [obj stringValue];
+}
+
+- (void)setAspectRatio:(NSString *)str {
+  GDataYouTubeAspectRatio *obj = [GDataYouTubeAspectRatio valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeAspectRatio class]];
 }
 
 @end

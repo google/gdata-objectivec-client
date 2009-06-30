@@ -210,12 +210,16 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 - (GDataServiceGoogleSpreadsheet *)spreadsheetService {
   
   static GDataServiceGoogleSpreadsheet* service = nil;
-  
+
   if (!service) {
     service = [[GDataServiceGoogleSpreadsheet alloc] init];
-    
+
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // username/password may change
@@ -273,50 +277,35 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // begin retrieving the list of the user's spreadsheets
 - (void)fetchFeedOfSpreadsheets {
-  
+
   [self setSpreadsheetFeed:nil];
-  [self setSpreadsheetFetchError:nil];    
-  
+  [self setSpreadsheetFetchError:nil];
+
   [self setWorksheetFeed:nil];
   [self setWorksheetFetchError:nil];
-  
+
   [self setEntryFeed:nil];
   [self setEntryFetchError:nil];
-  
+
   mIsSpreadsheetFetchPending = YES;
-  
+
   GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleSpreadsheetsPrivateFullFeed];
-  [service fetchSpreadsheetFeedWithURL:feedURL
-                              delegate:self
-                     didFinishSelector:@selector(feedTicket:finishedWithFeed:)
-                       didFailSelector:@selector(feedTicket:failedWithError:)];
-  
+  [service fetchFeedWithURL:feedURL
+                   delegate:self
+          didFinishSelector:@selector(feedTicket:finishedWithFeed:error:)];
+
   [self updateUI];
 }
 
-//
-// spreadsheet list fetch callbacks
-//
-
-// finished spreadsheet list successfully
+// spreadsheet list fetch callback
 - (void)feedTicket:(GDataServiceTicket *)ticket
-  finishedWithFeed:(GDataFeedSpreadsheet *)feed {
-  
+  finishedWithFeed:(GDataFeedSpreadsheet *)feed
+             error:(NSError *)error {
+
   [self setSpreadsheetFeed:feed];
-  [self setSpreadsheetFetchError:nil];    
-  
-  mIsSpreadsheetFetchPending = NO;
-  [self updateUI];
-} 
+  [self setSpreadsheetFetchError:error];
 
-// failed
-- (void)feedTicket:(GDataServiceTicket *)ticket
-   failedWithError:(NSError *)error {
-  
-  [self setSpreadsheetFeed:nil];
-  [self setSpreadsheetFetchError:error];    
-  
   mIsSpreadsheetFetchPending = NO;
   [self updateUI];
 }
@@ -341,40 +330,24 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
       [self setEntryFetchError:nil];      
 
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
-      [service fetchSpreadsheetFeedWithURL:feedURL
-                                  delegate:self
-                         didFinishSelector:@selector(worksheetsTicket:finishedWithFeed:)
-                           didFailSelector:@selector(worksheetsTicket:failedWithError:)];
-      [self updateUI];  
+      [service fetchFeedWithURL:feedURL
+                       delegate:self
+              didFinishSelector:@selector(worksheetsTicket:finishedWithFeed:error:)];
+      [self updateUI];
     }
   }
 }
 
-//
-// worksheets fetch callbacks
-//
-
-// fetched Worksheet list successfully
+// fetch worksheet feed callback
 - (void)worksheetsTicket:(GDataServiceTicket *)ticket
-        finishedWithFeed:(GDataFeedWorksheet *)feed {
-  
+        finishedWithFeed:(GDataFeedWorksheet *)feed
+                   error:(NSError *)error {
+
   [self setWorksheetFeed:feed];
-  [self setWorksheetFetchError:nil];
-  
-  mIsWorksheetFetchPending = NO;
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)worksheetsTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
-  
-  [self setWorksheetFeed:nil];
   [self setWorksheetFetchError:error];
-  
+
   mIsWorksheetFetchPending = NO;
-  
+
   [self updateUI];
 }
 
@@ -399,52 +372,35 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     } else {
       feedURL = [worksheet listFeedURL];
     }
-    
+
     if (feedURL) {
-      
+
       [self setEntryFeed:nil];
       [self setEntryFetchError:nil];
 
       mIsEntryFetchPending = YES;
 
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
-      [service fetchSpreadsheetFeedWithURL:feedURL
-                                  delegate:self
-                         didFinishSelector:@selector(entriesTicket:finishedWithFeed:)
-                           didFailSelector:@selector(entriesTicket:failedWithError:)];
-      [self updateUI];  
+      [service fetchFeedWithURL:feedURL
+                       delegate:self
+              didFinishSelector:@selector(entriesTicket:finishedWithFeed:error:)];
+      [self updateUI];
     }
   }
 }
 
-//
-// entries list fetch callbacks
-//
-
-// fetched entry list successfully
+// fetch entries callback
 - (void)entriesTicket:(GDataServiceTicket *)ticket
-     finishedWithFeed:(GDataFeedBase *)feed {
-  
+     finishedWithFeed:(GDataFeedBase *)feed
+                error:(NSError *)error {
+
   [self setEntryFeed:feed];
-  [self setEntryFetchError:nil];
-  
-  mIsEntryFetchPending = NO;
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)entriesTicket:(GDataServiceTicket *)ticket
-      failedWithError:(NSError *)error {
-  
-  [self setEntryFeed:nil];
   [self setEntryFetchError:error];
-  
+
   mIsEntryFetchPending = NO;
-  
+
   [self updateUI];
 }
-
 
 #pragma mark TableView delegate methods
 //
@@ -575,7 +531,6 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   [mWorksheetFetchError release];
   mWorksheetFetchError = [error retain];
 }
-
 
 - (GDataFeedBase *)entryFeed {
   return mEntryFeed; 

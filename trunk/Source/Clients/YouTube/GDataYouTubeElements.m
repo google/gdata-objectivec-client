@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataYouTubeElements.m
@@ -32,10 +32,16 @@
 
 // user's age, an integer, like <yt:age>32</yt:age>
 @implementation GDataYouTubeAge
-// user's age, an integer, like <yt:age>32</yt:age>
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"age"; }
+@end
+
+// aspect ratio, like <yt:aspectRatio>widescreen</yt:aspectRatio>
+@implementation GDataYouTubeAspectRatio
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"aspectRatio"; }
 @end
 
 // user's books, like <yt:books>Pride and Prejudice</yt:books>
@@ -190,11 +196,11 @@
 + (NSString *)extensionElementLocalName { return @"queryString"; }
 @end
 
-// spam hint, like <yt:spamHint/>
-@implementation GDataYouTubeSpamHint
+// hint that the containing entry is spam, like <yt:spam/>
+@implementation GDataYouTubeSpam
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"spamHint"; }
++ (NSString *)extensionElementLocalName { return @"spam"; }
 @end
 
 // status, like <yt:status>accepted</yt:status>
@@ -223,6 +229,20 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"recorded"; }
+@end
+
+// uploaded date for v2 feeds, like <yt:uploaded>2008-03-06T23:49:12.000Z</yt:uploaded>
+@implementation GDataYouTubeUploadedDate
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"uploaded"; }
+@end
+
+// video ID for v2 feeds, like <yt:videoid>I-t-7lTw6mA</yt:videoid>
+@implementation GDataYouTubeVideoID
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"videoid"; }
 @end
 
 // elements deprecated for GData v2

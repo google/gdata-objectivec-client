@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceGoogleCalendar.h
@@ -41,17 +41,6 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultAllCalendarsFeed _INITIALIZE_
 // calendar events feed
 _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"http://www.google.com/calendar/feeds/default/private/full");
 
-@class GDataEntryCalendar;
-@class GDataEntryCalendarEvent;
-@class GDataFeedCalendarEvent;
-@class GDataQueryCalendar;
-
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
 // QuickAdd:  
 //
@@ -63,7 +52,7 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 //  [newEvent setContentWithString:@"Party today at 4pm"];
 //  [newEvent setIsQuickAdd:YES];
 //
-// then pass the event to fetchCalendarEventByInsertingEntry:
+// then pass the event to fetchEntryByInsertingEntry:
 //
 
 
@@ -73,104 +62,29 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 
 + (NSURL *)settingsFeedURLForUsername:(NSString *)username;
 
-// finished callback (see above) is passed a GDataFeedCalendar
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
                                             delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector;
+                                   didFinishSelector:(SEL)finishedSelector;
 
-// finished callback (see above) is passed a GDataFeedCalendar
-- (GDataServiceTicket *)fetchCalendarFeedWithURL:(NSURL *)feedURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a GDataEntryCalendar
-- (GDataServiceTicket *)fetchCalendarEntryWithURL:(NSURL *)entryURL
-                                         delegate:(id)delegate
-                                didFinishSelector:(SEL)finishedSelector
-                                  didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a GDataEntryCalendar
-- (GDataServiceTicket *)fetchCalendarEntryByInsertingEntry:(GDataEntryCalendar *)entryToInsert
-                                                forFeedURL:(NSURL *)calendarFeedURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector;  
-
-// finished callback (see above) is passed a GDataEntryCalendar
-- (GDataServiceTicket *)fetchCalendarEntryByUpdatingEntry:(GDataEntryCalendar *)entryToUpdate
-                                              forEntryURL:(NSURL *)calendarEntryEditURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector;  
-
-// finished callback (see above) is passed a GDataFeedCalendarEvent
-- (GDataServiceTicket *)fetchCalendarEventFeedWithURL:(NSURL *)feedURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a GDataEntryCalendarEvent
-- (GDataServiceTicket *)fetchCalendarEventEntryWithURL:(NSURL *)entryURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the GDataEntryCalendarEvent
-- (GDataServiceTicket *)fetchCalendarEventByInsertingEntry:(GDataEntryCalendarEvent *)entryToInsert
-                                                forFeedURL:(NSURL *)calendarEventFeedURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the GDataEntryCalendarEvent
-- (GDataServiceTicket *)fetchCalendarEventEntryByUpdatingEntry:(GDataEntryCalendarEvent *)entryToUpdate
-                                                         forEntryURL:(NSURL *)calendarEventEntryEditURL
-                                                            delegate:(id)delegate
-                                                   didFinishSelector:(SEL)finishedSelector
-                                                     didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the GDataFeedCalendar
-- (GDataServiceTicket *)fetchCalendarQuery:(GDataQueryCalendar *)query
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the GDataFeedCalendarEvent
-- (GDataServiceTicket *)fetchCalendarEventQuery:(GDataQueryCalendar *)query
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteCalendarEntry:(GDataEntryCalendar *)entryToDelete
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteCalendarEventEntry:(GDataEntryCalendarEvent *)entryToDelete
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteCalendarResourceURL:(NSURL *)resourceEditURL
-                                             ETag:(NSString *)etag
-                                         delegate:(id)delegate
-                                didFinishSelector:(SEL)finishedSelector
-                                  didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a batch result feed
+// clients may use these fetch methods of GDataServiceGoogle
 //
-// status may also be present inside the individual entries
-// as GDataBatchStatus and GDataBatchInterrupted elements
-- (GDataServiceTicket *)fetchCalendarEventBatchFeedWithBatchFeed:(GDataFeedCalendarEvent *)batchFeed
-                                                 forBatchFeedURL:(NSURL *)feedURL
-                                                        delegate:(id)delegate
-                                               didFinishSelector:(SEL)finishedSelector
-                                                 didFailSelector:(SEL)failedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
+
 
 + (NSString *)serviceRootURLString;
 

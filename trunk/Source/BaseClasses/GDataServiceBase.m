@@ -37,7 +37,6 @@ static NSString *const kXMLErrorContentType = @"application/vnd.google.gdata.err
 static NSString* const kFetcherDelegateKey = @"_delegate";
 static NSString* const kFetcherObjectClassKey = @"_objectClass";
 static NSString* const kFetcherFinishedSelectorKey = @"_finishedSelector";
-static NSString* const kFetcherFailedSelectorKey = @"_failedSelector";
 static NSString* const kFetcherTicketKey = @"_ticket";
 static NSString* const kFetcherStreamDataKey = @"_streamData";
 
@@ -66,7 +65,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
          didFinishedSelector:(SEL)finishedSelector
-             didFailSelector:(SEL)failedSelector
                       ticket:(GDataServiceTicketBase *)ticket;
 
 - (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
@@ -311,12 +309,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                     httpMethod:(NSString *)httpMethod
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector
                           retryInvocationValue:(NSValue *)retryInvocationValue
                                         ticket:(GDataServiceTicketBase *)ticket {
 
-  AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), 0);
-  AssertSelectorNilOrImplementedWithArguments(delegate, failedSelector, @encode(GDataServiceTicketBase *), @encode(NSError *), 0);
+  AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), @encode(NSError *), 0);
 
   // if no URL was supplied, treat this as if the fetch failed (below)
   // and immediately return a nil ticket, skipping the callbacks
@@ -464,9 +460,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [fetcher setProperty:NSStringFromSelector(finishedSelector)
                 forKey:kFetcherFinishedSelectorKey];
 
-  [fetcher setProperty:NSStringFromSelector(failedSelector)
-                forKey:kFetcherFailedSelectorKey];
-
   NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
   [fetcher setProperty:retryInvocation
                 forKey:kFetcherRetryInvocationKey];
@@ -505,7 +498,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
   Class objectClass = [fetcher propertyForKey:kFetcherObjectClassKey];
   SEL finishedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFinishedSelectorKey]);
-  SEL failedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFailedSelectorKey]);
 
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
@@ -603,7 +595,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         BOOL isFetchingNextFeed = [self fetchNextFeedWithURL:nextURL
                                                     delegate:delegate
                                          didFinishedSelector:finishedSelector
-                                             didFailSelector:failedSelector
                                                       ticket:ticket];
 
         // skip calling the callbacks since the ticket is still in progress
@@ -634,9 +625,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
 
     if (finishedSelector) {
-      [delegate performSelector:finishedSelector
-                     withObject:ticket
-                     withObject:object];
+      [GDataServiceBase invokeCallback:finishedSelector
+                                target:delegate
+                                ticket:ticket
+                                object:object
+                                error:nil];
     }
     [ticket setFetchedObject:object];
 
@@ -646,10 +639,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                   code:kGDataCouldNotConstructObjectError
                               userInfo:nil];
     }
-    if (failedSelector) {
-      [delegate performSelector:failedSelector
-                     withObject:ticket
-                     withObject:error];
+    if (finishedSelector) {
+      [GDataServiceBase invokeCallback:finishedSelector
+                                target:delegate
+                                ticket:ticket
+                                object:nil
+                                 error:error];
     }
     [ticket setFetchError:error];
   }
@@ -675,8 +670,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
-  NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
-  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : NULL;
+  NSString *finishedSelectorStr = [fetcher propertyForKey:kFetcherFinishedSelectorKey];
+  SEL finishedSelector = finishedSelectorStr ? NSSelectorFromString(finishedSelectorStr) : NULL;
 
   // determine the type of server response, since we will need to know if it
   // is structured XML
@@ -689,10 +684,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
                                        code:status
                                    userInfo:userInfo];
-  if (failedSelector) {
-    [delegate performSelector:failedSelector
-                   withObject:ticket
-                   withObject:error];
+  if (finishedSelector) {
+    [GDataServiceBase invokeCallback:finishedSelector
+                              target:delegate
+                              ticket:ticket
+                              object:nil
+                               error:error];
   }
 
   [fetcher setProperties:nil];
@@ -708,14 +705,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
-  NSString *failedSelectorStr = [fetcher propertyForKey:kFetcherFailedSelectorKey];
-  SEL failedSelector = failedSelectorStr ? NSSelectorFromString(failedSelectorStr) : NULL;
+  NSString *finishedSelectorStr = [fetcher propertyForKey:kFetcherFinishedSelectorKey];
+  SEL finishedSelector = finishedSelectorStr ? NSSelectorFromString(finishedSelectorStr) : NULL;
 
-  if (failedSelector) {
-
-    [delegate performSelector:failedSelector
-                   withObject:ticket
-                   withObject:error];
+  if (finishedSelector) {
+    [GDataServiceBase invokeCallback:finishedSelector
+                              target:delegate
+                              ticket:ticket
+                              object:nil
+                               error:error];
   }
 
   [fetcher setProperties:nil];
@@ -779,6 +777,23 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 
   return userInfo;
+}
+
++ (void)invokeCallback:(SEL)callbackSel
+                target:(id)target
+                ticket:(id)ticket
+                object:(id)object
+                 error:(id)error {
+
+  // GData fetch callbacks have no return value
+  NSMethodSignature *signature = [target methodSignatureForSelector:callbackSel];
+  NSInvocation *retryInvocation = [NSInvocation invocationWithMethodSignature:signature];
+  [retryInvocation setSelector:callbackSel];
+  [retryInvocation setTarget:target];
+  [retryInvocation setArgument:&ticket atIndex:2];
+  [retryInvocation setArgument:&object atIndex:3];
+  [retryInvocation setArgument:&error atIndex:4];
+  [retryInvocation invoke];
 }
 
 // The object fetcher may call into this retry method; this one invokes the
@@ -846,7 +861,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
          didFinishedSelector:(SEL)finishedSelector
-             didFailSelector:(SEL)failedSelector
                       ticket:(GDataServiceTicketBase *)ticket {
 
   // sanity check the number of pages fetched already
@@ -872,7 +886,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                 httpMethod:nil
                                   delegate:delegate
                          didFinishSelector:finishedSelector
-                           didFailSelector:failedSelector
                       retryInvocationValue:nil
                                     ticket:ticket];
 
@@ -913,11 +926,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 // These external entry points all call into fetchObjectWithURL: defined above
 
-- (GDataServiceTicketBase *)fetchFeedWithURL:(NSURL *)feedURL
-                                   feedClass:(Class)feedClass
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicketBase *)fetchPublicFeedWithURL:(NSURL *)feedURL
+                                         feedClass:(Class)feedClass
+                                          delegate:(id)delegate
+                                 didFinishSelector:(SEL)finishedSelector {
 
   return [self fetchObjectWithURL:feedURL
                       objectClass:feedClass
@@ -926,16 +938,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
              retryInvocationValue:nil
                            ticket:nil];
 }
 
-- (GDataServiceTicketBase *)fetchEntryWithURL:(NSURL *)entryURL
-                                   entryClass:(Class)entryClass
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicketBase *)fetchPublicEntryWithURL:(NSURL *)entryURL
+                                         entryClass:(Class)entryClass
+                                           delegate:(id)delegate
+                                  didFinishSelector:(SEL)finishedSelector {
 
   return [self fetchObjectWithURL:entryURL
                       objectClass:entryClass
@@ -944,133 +954,25 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
              retryInvocationValue:nil
                            ticket:nil];
 }
 
-- (GDataServiceTicketBase *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                            forFeedURL:(NSURL *)feedURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicketBase *)fetchPublicFeedWithQuery:(GDataQuery *)query
+                                           feedClass:(Class)feedClass
+                                            delegate:(id)delegate
+                                   didFinishSelector:(SEL)finishedSelector {
 
-  return [self fetchObjectWithURL:feedURL
-                      objectClass:[entryToInsert class]
-                     objectToPost:entryToInsert
-                             ETag:nil
-                       httpMethod:@"POST"
-                         delegate:delegate
-                didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
-             retryInvocationValue:nil
-                           ticket:nil];
+  return [self fetchPublicFeedWithURL:[query URL]
+                            feedClass:feedClass
+                             delegate:delegate
+                    didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicketBase *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                          forEntryURL:(NSURL *)entryURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
-
-  // Entries should be updated only if they contain copies of any unparsed XML
-  // (unknown children and attributes.)
-  //
-  // To update an entry that ignores unparsed XML, first fetch a complete copy
-  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
-  // the URL from the entry's selfLink.
-  //
-  // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
-  // information.
-
-  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
-               @"unsafe update of %@", [entryToUpdate class]);
-
-  return [self fetchObjectWithURL:entryURL
-                      objectClass:[entryToUpdate class]
-                     objectToPost:entryToUpdate
-                             ETag:[entryToUpdate ETag]
-                       httpMethod:@"PUT"
-                         delegate:delegate
-                didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
-             retryInvocationValue:nil
-                           ticket:nil];
-}
-
-- (GDataServiceTicketBase *)deleteEntry:(GDataEntryBase *)entryToDelete
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector
-                        didFailSelector:(SEL)failedSelector {
-
-  NSString *etag = [entryToDelete ETag];
-  NSURL *editURL = [[entryToDelete editLink] URL];
-
-  GDATA_ASSERT(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
-
-  return [self deleteResourceURL:editURL
-                            ETag:etag
-                        delegate:delegate
-               didFinishSelector:finishedSelector
-                 didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-  // This routine is deprecated for services that have been updated to support
-  // ETags
-  //
-  // pass through with a nil ETag
-
-  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
-
-  return [self deleteResourceURL:resourceEditURL
-                            ETag:nil
-                        delegate:self
-               didFinishSelector:finishedSelector
-                 didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
-                                         ETag:(NSString *)etag
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector {
-
-  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
-
-  return [self fetchObjectWithURL:resourceEditURL
-                      objectClass:nil
-                     objectToPost:nil
-                             ETag:etag
-                       httpMethod:@"DELETE"
-                         delegate:delegate
-                didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
-             retryInvocationValue:nil
-                           ticket:nil];
-}
-
-- (GDataServiceTicketBase *)fetchQuery:(GDataQuery *)query
-                             feedClass:(Class)feedClass
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector {
-
-  return [self fetchFeedWithURL:[query URL]
-                      feedClass:feedClass
-                       delegate:delegate
-              didFinishSelector:finishedSelector
-                didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicketBase *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                        forFeedURL:(NSURL *)feedURL
-                                          delegate:(id)delegate
-                                 didFinishSelector:(SEL)finishedSelector
-                                   didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                              forFeedURL:(NSURL *)feedURL
+                                                delegate:(id)delegate
+                                       didFinishSelector:(SEL)finishedSelector {
 
   // add batch namespace, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceBatchPrefix] == nil) {
@@ -1085,7 +987,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
-                  didFailSelector:failedSelector
              retryInvocationValue:nil
                            ticket:nil];
 }
@@ -1119,7 +1020,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)setUserAgent:(NSString *)userAgent {
   [userAgent_ release];
-  userAgent_ = [userAgent copy];
+
+  // remove whitespace and unfriendly characters
+  userAgent_ = [[GDataUtilities userAgentStringForString:userAgent] retain];
 }
 
 - (NSArray *)runLoopModes {
@@ -1603,4 +1506,3 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 @end
-

@@ -377,34 +377,30 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSURL *postURL = [[mDocListFeed postLink] URL];
 
-  [service fetchDocEntryByInsertingEntry:docEntry
-                              forFeedURL:postURL
-                                delegate:self
-                       didFinishSelector:@selector(createFolderTicket:finishedWithEntry:)
-                         didFailSelector:@selector(createFolderTicket:failedWithError:)];
+  [service fetchEntryByInsertingEntry:docEntry
+                           forFeedURL:postURL
+                             delegate:self
+                    didFinishSelector:@selector(createFolderTicket:finishedWithEntry:error:)];
 }
 
-// folder created successfully
+// folder create callback
 - (void)createFolderTicket:(GDataServiceTicket *)ticket
-         finishedWithEntry:(GDataEntryFolderDoc *)entry {
+         finishedWithEntry:(GDataEntryFolderDoc *)entry
+                     error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Created folder", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Created folder \"%@\"",
+                      [[entry title] stringValue]);
 
-  NSBeginAlertSheet(@"Created folder", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Created folder \"%@\"",
-                    [[entry title] stringValue]);
-
-  // re-fetch the document list
-  [self fetchDocList];
-  [self updateUI];
-}
-
-// failure to create folder
-- (void)createFolderTicket:(GDataServiceTicket *)ticket
-           failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Create failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Folder create failed: %@", error);
+    // re-fetch the document list
+    [self fetchDocList];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Create failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Folder create failed: %@", error);
+  }
 }
 
 #pragma mark -
@@ -432,36 +428,31 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     if (entry) {
       GDataServiceGoogleDocs *service = [self docsService];
-      [service deleteDocEntry:entry
-                     delegate:self
-            didFinishSelector:@selector(deleteDocEntryTicket:deletedEntry:)
-              didFailSelector:@selector(deleteDocEntryTicket:failedWithError:)];
+      [service deleteEntry:entry
+                  delegate:self
+         didFinishSelector:@selector(deleteDocEntryTicket:deletedEntry:error:)];
     }
   }
 }
 
-// Doc entry deleted successfully
+// entry delete callback
 - (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
-                deletedEntry:(GDataEntryDocBase *)object {
+                deletedEntry:(GDataEntryDocBase *)object
+                       error:(NSError *)error {
+  if (error == nil) {
+    // note: object is nil in the delete callback
+    NSBeginAlertSheet(@"Deleted Doc", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Document deleted");
 
-  // note: object is nil in the delete callback
-
-  NSBeginAlertSheet(@"Deleted Doc", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Document deleted");
-
-  // re-fetch the document list
-  [self fetchDocList];
-  [self updateUI];
-}
-
-// failure to delete document
-- (void)deleteDocEntryTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Document delete failed: %@", error);
+    // re-fetch the document list
+    [self fetchDocList];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Document delete failed: %@", error);
+  }
 }
 
 #pragma mark -
@@ -474,122 +465,114 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // entry in the folder's feed
 
   GDataEntryFolderDoc *folderEntry = [sender representedObject];
-  NSString *folderFeedURI = [[folderEntry content] sourceURI];
-  if (folderFeedURI != nil) {
-    NSURL *feedURL = [NSURL URLWithString:folderFeedURI];
+  NSURL *folderFeedURL = [[folderEntry content] sourceURL];
+  if (folderFeedURL != nil) {
 
     GDataServiceGoogleDocs *service = [self docsService];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchDocsFeedWithURL:feedURL
-                                  delegate:self
-                         didFinishSelector:@selector(fetchFolderTicket:finishedWithFeed:)
-                           didFailSelector:@selector(fetchFolderTicket:failedWithError:)];
-
+    ticket = [service fetchFeedWithURL:folderFeedURL
+                              delegate:self
+                     didFinishSelector:@selector(fetchFolderTicket:finishedWithFeed:error:)];
+    
     // save the selected doc in the ticket's userData
     GDataEntryDocBase *doc = [self selectedDoc];
     [ticket setUserData:doc];
   }
 }
 
-
+// folder feed fetch callback
 - (void)fetchFolderTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedDocList *)feed {
+         finishedWithFeed:(GDataFeedDocList *)feed
+                    error:(NSError *)error {
 
-  GDataEntryDocBase *docEntry = [ticket userData];
+  if (error == nil) {
+    GDataEntryDocBase *docEntry = [ticket userData];
 
-  GDataServiceGoogleDocs *service = [self docsService];
-  GDataServiceTicket *ticket2;
+    GDataServiceGoogleDocs *service = [self docsService];
+    GDataServiceTicket *ticket2;
 
-  // if the entry is not in the folder's feed, insert it; otherwise, delete
-  // it from the folder's feed
-  //
-  // We should be able to look up entries by ID
-  //  foundEntry = [feed entryForIdentifier:[docEntry identifier]];
-  // but currently the DocList server doesn't use consistent IDs for entries in
-  // different feeds, so we'll look up the entry by etag instead.  (Bug 1498057)
-  
-  GDataEntryDocBase *foundEntry;
-
-  foundEntry = [GDataUtilities firstObjectFromArray:[feed entries]
-                                          withValue:[docEntry ETag]
-                                         forKeyPath:@"ETag"];
-  if (foundEntry == nil) {
-    // the doc isn't in this folder's feed
+    // if the entry is not in the folder's feed, insert it; otherwise, delete
+    // it from the folder's feed
     //
-    // post the doc to the folder's feed
-    NSURL *postURL = [[feed postLink] URL];
+    // We should be able to look up entries by ID
+    //  foundEntry = [feed entryForIdentifier:[docEntry identifier]];
+    // but currently the DocList server doesn't use consistent IDs for entries in
+    // different feeds, so we'll look up the entry by etag instead.  (Bug 1498057)
+    
+    GDataEntryDocBase *foundEntry;
 
-    ticket2 = [service fetchDocEntryByInsertingEntry:docEntry
-                                          forFeedURL:postURL
-                                            delegate:self
-                                   didFinishSelector:@selector(addToFolderTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(addToFolderTicket:failedWithError:)];
-    [ticket2 setUserData:feed];
+    foundEntry = [GDataUtilities firstObjectFromArray:[feed entries]
+                                            withValue:[docEntry ETag]
+                                           forKeyPath:@"ETag"];
+    if (foundEntry == nil) {
+      // the doc isn't in this folder's feed
+      //
+      // post the doc to the folder's feed
+      NSURL *postURL = [[feed postLink] URL];
+
+      ticket2 = [service fetchEntryByInsertingEntry:docEntry
+                                         forFeedURL:postURL
+                                           delegate:self
+                                  didFinishSelector:@selector(addToFolderTicket:finishedWithEntry:error:)];
+      [ticket2 setUserData:feed];
+    } else {
+      ticket2 = [service deleteEntry:foundEntry
+                            delegate:self
+                   didFinishSelector:@selector(removeFromFolderTicket:finishedWithEntry:error:)];
+      [ticket2 setUserData:feed];
+    }
   } else {
-    ticket2 = [service deleteDocEntry:foundEntry
-                             delegate:self
-                    didFinishSelector:@selector(removeFromFolderTicket:finishedWithEntry:)
-                      didFailSelector:@selector(removeFromFolderTicket:failedWithError:)];
-    [ticket2 setUserData:feed];
+    // failed to fetch feed of folders
+    NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Fetch of folder feed failed: %@", error);
+    
   }
 }
 
-// failure to delete document
-- (void)fetchFolderTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Fetch of folder feed failed: %@", error);
-}
-
+// add to folder callback
 - (void)addToFolderTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryDocBase *)entry {
+        finishedWithEntry:(GDataEntryDocBase *)entry
+                    error:(NSError *)error {
+  if (error == nil) {
+    GDataFeedDocList *feed = [ticket userData];
 
-  GDataFeedDocList *feed = [ticket userData];
+    NSBeginAlertSheet(@"Added", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added document \"%@\" to feed \"%@\"",
+                      [[entry title] stringValue], [[feed title] stringValue]);
 
-  NSBeginAlertSheet(@"Added", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added document \"%@\" to feed \"%@\"",
-                    [[entry title] stringValue], [[feed title] stringValue]);
-
-  // re-fetch the document list
-  [self fetchDocList];
-  [self updateUI];
+    // re-fetch the document list
+    [self fetchDocList];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Insert failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Insert to folder feed failed: %@", error);
+  }
 }
 
-// failure to delete document
-- (void)addToFolderTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Insert to folder feed failed: %@", error);
-}
-
+// remove from folder callback
 - (void)removeFromFolderTicket:(GDataServiceTicket *)ticket
-             finishedWithEntry:(GDataEntryDocBase *)entry {
+             finishedWithEntry:(GDataEntryDocBase *)entry
+                         error:(NSError *)error {
+  if (error == nil) {
+    GDataFeedDocList *feed = [ticket userData];
 
-  GDataFeedDocList *feed = [ticket userData];
+    NSBeginAlertSheet(@"Removed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Removed document from feed \"%@\"",
+                      [[feed title] stringValue]);
 
-  NSBeginAlertSheet(@"Removed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Removed document from feed \"%@\"",
-                    [[feed title] stringValue]);
-
-  // re-fetch the document list
-  [self fetchDocList];
-  [self updateUI];
-}
-
-// failure to delete document
-- (void)removeFromFolderTicket:(GDataServiceTicket *)ticket
-               failedWithError:(NSError *)error {
-
-  NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Delete from folder feed failed: %@", error);
+    // re-fetch the document list
+    [self fetchDocList];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Remove from folder feed failed: %@", error);
+  }
 }
 
 #pragma mark -
@@ -611,6 +594,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [service setUserAgent:@"MyCompany-SampleDocsApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the username/password each time the service is requested
@@ -665,39 +652,24 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [query setMaxResults:1000];
   [query setShouldShowFolders:YES];
     
-  ticket = [service fetchDocsQuery:query
-                          delegate:self
-                 didFinishSelector:@selector(docListListFetchTicket:finishedWithFeed:)
-                   didFailSelector:@selector(docListListFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithQuery:query
+                              delegate:self
+                     didFinishSelector:@selector(docListListFetchTicket:finishedWithFeed:error:)];
   
   [self setDocListFetchTicket:ticket];
   
   [self updateUI];
 }
 
-//
-// docList list fetch callbacks
-//
-
-// finished docList list successfully
+// docList list fetch callback
 - (void)docListListFetchTicket:(GDataServiceTicket *)ticket
-              finishedWithFeed:(GDataFeedDocList *)object {
-  
-  [self setDocListFeed:object];
-  [self setDocListFetchError:nil];    
-  [self setDocListFetchTicket:nil];
-  
-  [self updateUI];
-} 
+              finishedWithFeed:(GDataFeedDocList *)feed
+                         error:(NSError *)error {
 
-// failed
-- (void)docListListFetchTicket:(GDataServiceTicket *)ticket
-               failedWithError:(NSError *)error {
-  
-  [self setDocListFeed:nil];
-  [self setDocListFetchError:error];    
+  [self setDocListFeed:feed];
+  [self setDocListFetchError:error];
   [self setDocListFetchTicket:nil];
-  
+
   [self updateUI];
 }
 
@@ -795,11 +767,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
       // insert the entry into the docList feed
       GDataServiceTicket *ticket;
-      ticket = [service fetchDocEntryByInsertingEntry:newEntry
-                                           forFeedURL:postURL
-                                             delegate:self
-                                    didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:)
-                                      didFailSelector:@selector(uploadFileTicket:failedWithError:)];
+      ticket = [service fetchEntryByInsertingEntry:newEntry
+                                        forFeedURL:postURL
+                                          delegate:self
+                                 didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
       
       // we don't want future tickets to always use the upload progress selector
       [service setServiceUploadProgressSelector:nil];
@@ -829,39 +800,30 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
 }
 
-// upload finished successfully
+// upload finished callback
 - (void)uploadFileTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryDocBase *)entry {
+     finishedWithEntry:(GDataEntryDocBase *)entry
+                   error:(NSError *)error {
   
   [self setUploadTicket:nil];
   [mUploadProgressIndicator setDoubleValue:0.0];
 
-  // refetch the current doc list
-  [self fetchDocList];
-  [self updateUI];
+  if (error == nil) {
+    // refetch the current doc list
+    [self fetchDocList];
 
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Uploaded file", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"File uploaded: %@", 
-                    [[entry title] stringValue]);
-  
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Uploaded file", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"File uploaded: %@", 
+                      [[entry title] stringValue]);
+  } else {
+    NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"File upload failed: %@", error);
+  }
+  [self updateUI];
 } 
-
-// upload failed
-- (void)uploadFileTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  
-  [self setUploadTicket:nil];
-  [mUploadProgressIndicator setDoubleValue:0.0];
-  
-  [self updateUI];
-
-  NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"File upload failed: %@", error);
-}
-
 
 #pragma mark TableView delegate methods
 

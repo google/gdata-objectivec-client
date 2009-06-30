@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataEntryYouTubeComment.m
@@ -48,7 +48,7 @@
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
    [GDataYouTubeCommentRating class],
-   [GDataYouTubeSpamHint class],
+   [GDataYouTubeSpam class],
    nil];
 }
 
@@ -59,7 +59,7 @@
 
   [self addToArray:items objectDescriptionIfNonNil:[self totalRating] withName:@"rating"];
 
-  if ([self hasSpamHint]) [items addObject:@"spamHint"];
+  if ([self hasSpam]) [items addObject:@"spam"];
 
   return items;
 }
@@ -85,20 +85,20 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeCommentRating class]];
 }
 
-- (BOOL)hasSpamHint {
-  GDataYouTubeSpamHint *obj;
+- (BOOL)hasSpam {
+  GDataYouTubeSpam *obj;
 
-  obj = [self objectForExtensionClass:[GDataYouTubeSpamHint class]];
+  obj = [self objectForExtensionClass:[GDataYouTubeSpam class]];
   return (obj != nil);
 }
 
-- (void)setHasSpamHint:(BOOL)flag {
+- (void)setHasSpam:(BOOL)flag {
   if (flag) {
-    GDataYouTubeSpamHint *spamHint = [GDataYouTubeSpamHint implicitValue];
+    GDataYouTubeSpam *spam = [GDataYouTubeSpam implicitValue];
 
-    [self setObject:spamHint forExtensionClass:[GDataYouTubeSpamHint class]];
+    [self setObject:spam forExtensionClass:[GDataYouTubeSpam class]];
   } else {
-    [self setObject:nil forExtensionClass:[GDataYouTubeSpamHint class]];
+    [self setObject:nil forExtensionClass:[GDataYouTubeSpam class]];
   }
 }
 

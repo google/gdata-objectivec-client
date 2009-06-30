@@ -1356,16 +1356,16 @@
 - (void)testWebmasterToolsFeeds {
   
   TestKeyPathValues tests[] =
-  { 
+  {
     //
     // Feed of a user's sites
     //
     { @"GDataFeedSite", @"Tests/FeedWebmasterToolsSite1.xml" },
-    
+
     { @"identifier", @"http://www.google.com/webmasters/tools/feeds/sites" },
-    
+
     // GDataEntrySite methods
-    
+
     { @"entries.0.categories.0.term", kGDataCategorySiteInfo },
     { @"entries.0.isIndexed", @"1" },
     { @"entries.0.crawledDate.date.timeIntervalSince1970", @"1206358560" },
@@ -1379,25 +1379,29 @@
     { @"entries.0.verificationMethodInUse.value", @"google28a5eb30440fabf0.html" },
     { @"entries.0.verificationEntryLink.href", @"contains:/http%3A%2F%2Fwww.domain.com%2F/verification" },
     { @"entries.0.sitemapsEntryLink.href", @"contains:/http%3A%2F%2Fwww.domain.com%2F/sitemaps" },
+    { @"entries.0.geoLocation", @"US" },
+    { @"entries.0.preferredDomain", kGDataSiteCrawlPreferredDomainNone },
+    { @"entries.0.crawlRate", kGDataSiteCrawlRateNormal },
+    { @"entries.0.hasEnhancedImageSearch", @"1" },
     { @"entries.0.entryLinks.@count", @"2" },
-    
+
     { @"", @"" }, // end of feed
-    
+
     //
     // Feed of a site's sitemaps
     //
     { @"GDataFeedSitemap", @"Tests/FeedWebmasterToolsSitemap1.xml" },
-    
+
     { @"identifier", @"contains:http%3A%2F%2Fwww.domain.com%2F/sitemaps" },
-    
+
     { @"sitemapNews.publicationLabels.@count", @"3" },
     { @"sitemapNews.publicationLabels.2.stringValue", @"a third publabel" },
-    
+
     { @"sitemapMobile.markupLanguages.@count", @"3" },
     { @"sitemapMobile.markupLanguages.2.stringValue", @"cHTML" },
-    
+
     // GDataEntrySitemap methods
-    
+
     { @"entries.0.categories.0.term", kGDataCategorySitemapRegular },
     { @"entries.0.sitemapType", @"WEB" },
     { @"entries.0.sitemapStatus", @"Pending" },
@@ -1409,15 +1413,68 @@
     { @"entries.1.sitemapStatus", @"StatusValue" },
     { @"entries.1.lastDownloadDate.date.timeIntervalSince1970", @"1163878052" },
     { @"entries.1.sitemapURLCount", @"102" },
-    
+
     { @"entries.2.categories.0.term", kGDataCategorySitemapNews },
     { @"entries.2.publicationLabel", @"pubLabelValue" },
     { @"entries.2.sitemapStatus", @"AnotherStatusValue" },
     { @"entries.2.lastDownloadDate.date.timeIntervalSince1970", @"1163878052" },
     { @"entries.2.sitemapURLCount", @"102" },
-    
+
     { @"", @"" }, // end of feed
-    
+
+    //
+    // Feed of a site's crawl issues
+    //
+    { @"GDataFeedSiteCrawlIssue", @"Tests/FeedWebmasterToolsCrawlIssues1.xml" },
+
+    { @"identifier", @"contains:http%3A%2F%2Fwww.example.net%2F/crawlissues" },
+    { @"title", @"Crawl Issues" },
+
+    // GDataEntrySiteCrawlIssue methods
+    { @"entries.0.crawlType", kGDataSiteCrawlTypeWeb },
+    { @"entries.0.detectedDate.RFC3339String", @"2008-11-17T01:06:10Z" },
+    { @"entries.0.detail", @"4xx Error" },
+    { @"entries.0.issueType", @"http-error" },
+    { @"entries.0.issueURLString", @"http://example.com/dir/" },
+    { @"entries.0.issueLinkedFromURLStrings.0", @"http://example.com" },
+    { @"entries.0.issueLinkedFromURLStrings.0.className", @"NSCFString" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of a site's messages
+    //
+    { @"GDataFeedSiteMessage", @"Tests/FeedWebmasterToolsMessages1.xml" },
+    { @"title", @"Messages" },
+
+    // GDataEntrySiteNessage methods
+    { @"entries.0.body", @"Crawl rate change has been requested." },
+    { @"entries.0.messageDate.RFC3339String", @"2008-09-18T20:49:57Z" },
+    { @"entries.0.language", @"en" },
+    { @"entries.0.read", @"1" },
+    { @"entries.0.subject", @"hasPrefix:Crawl rate change request" },
+
+    { @"", @"" }, // end of feed
+
+    //
+    // Feed of a site's keywords
+    //
+    { @"GDataFeedSiteKeyword", @"Tests/FeedWebmasterToolsKeywords1.xml" },
+
+    { @"identifier", @"contains:http%3A%2F%2Fwww.example.net%2F/keywords" },
+
+    { @"keywords.@count", @"4" },
+    { @"keywordsWithInternalSource.@count", @"1" },
+    { @"keywords.0.stringValue", @"example net" },
+    { @"keywords.0.source", kGDataSiteKeywordExternal },
+    { @"keywordsWithInternalSource.0.stringValue", @"example" },
+    { @"keywordsWithInternalSource.0.source", kGDataSiteKeywordInternal },
+
+    // the keywords feed has no entries
+    { @"entries", nil },
+
+    { @"", @"" }, // end of feed
+
     { nil, nil } // end of test array
   };
   
@@ -1826,6 +1883,7 @@
     { @"entries.0.mediaGroup.mediaTitle", @"Authors@Google: Michael Pollan" },
     { @"entries.0.mediaGroup.mediaDescription", @"Michael Pollan visits Google" },
     { @"entries.0.mediaGroup.videoID", @"I-t-7lTw6mA" },
+    { @"entries.0.mediaGroup.aspectRatio", @"widescreen" },
     { @"entries.0.mediaGroup.uploadedDate.date.timeIntervalSince1970", @"1204847352" },
     { @"entries.0.mediaGroup.mediaCredits.0.role", @"uploader" },
     { @"entries.0.mediaGroup.mediaCredits.0.scheme", @"urn:youtube" },
@@ -2184,7 +2242,10 @@
 
 @end
 
+///////////////////////////////////////////////////////////////////////////
+//
 // categories to test helper methods that require arguments
+//
 
 //
 // analytics
@@ -2227,5 +2288,19 @@
 @implementation GDataEntryMapFeature (TestHelperMethods)
 - (GDataCustomProperty *)customPropertyWithHeightName {
   return [self customPropertyWithName:@"height"];
+}
+@end
+
+//
+// webmaster tools
+//
+
+@interface GDataFeedSiteKeyword (TestHelperMethods)
+- (NSArray *)keywordsWithInternalSource;
+@end
+
+@implementation GDataFeedSiteKeyword (TestHelperMethods)
+- (NSArray *)keywordsWithInternalSource {
+  return [self keywordsWithSource:kGDataSiteKeywordInternal];
 }
 @end
