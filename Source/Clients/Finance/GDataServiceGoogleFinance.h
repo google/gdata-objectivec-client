@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceGoogleFinance.h
@@ -33,13 +33,6 @@ _EXTERN NSString* const kGDataGoogleFinanceDefaultPortfoliosFeed _INITIALIZE_AS(
 
 @class GDataQueryFinance;
 
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
-
 @interface GDataServiceGoogleFinance : GDataServiceGoogle
 
 // Utility for making feed URLs.  To set query parameters, use the
@@ -50,51 +43,24 @@ _EXTERN NSString* const kGDataGoogleFinanceDefaultPortfoliosFeed _INITIALIZE_AS(
 
 + (NSURL *)portfolioFeedURLForUserID:(NSString *)userID;
 
-
-// finished callback (see above) is passed an appropriate Google Finance feed
-- (GDataServiceTicket *)fetchFinanceFeedWithURL:(NSURL *)feedURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed an appropriate entry
-- (GDataServiceTicket *)fetchFinanceEntryWithURL:(NSURL *)entryURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the inserted entry
-- (GDataServiceTicket *)fetchFinanceEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                               forFeedURL:(NSURL *)financeFeedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the updated entry
-- (GDataServiceTicket *)fetchFinanceEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                             forEntryURL:(NSURL *)financeEntryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the appropriate finance feed
-- (GDataServiceTicket *)fetchFinanceQuery:(GDataQueryFinance *)query
-                                 delegate:(id)delegate
-                        didFinishSelector:(SEL)finishedSelector
-                          didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteFinanceEntry:(GDataEntryBase *)entryToDelete
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteFinanceResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
+// clients may use these fetch methods of GDataServiceGoogle
+//
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
 + (NSString *)serviceRootURLString;  
 

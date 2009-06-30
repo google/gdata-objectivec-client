@@ -297,7 +297,11 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     
     [service setUserAgent:@"MyCompany-SampleYouTubeApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
-    // [service setServiceShouldFollowNextLinks:YES];
+    [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the username/password each time the service is requested
@@ -365,33 +369,22 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     [service setYouTubeDeveloperKey:devKey];
   }
   
-  ticket = [service fetchYouTubeFeedWithURL:feedURL
-                                   delegate:self
-                          didFinishSelector:@selector(entryListFetchTicket:finishedWithFeed:)
-                            didFailSelector:@selector(entryListFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(entryListFetchTicket:finishedWithFeed:error:)];
 
   [self setEntriesFetchTicket:ticket];
   
   [self updateUI];
 }
 
-// fetched the feed
+// feed fetch callback
 - (void)entryListFetchTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedBase *)feed {
-  
-  [self setEntriesFeed:feed];
-  [self setEntriesFetchError:nil];    
-  [self setEntriesFetchTicket:nil];
-  
-  [self updateUI];
-} 
+            finishedWithFeed:(GDataFeedBase *)feed
+                       error:(NSError *)error {
 
-// failed to fetch the feed
-- (void)entryListFetchTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  [self setEntriesFeed:nil];
-  [self setEntriesFetchError:error];    
+  [self setEntriesFeed:feed];
+  [self setEntriesFetchError:error];
   [self setEntriesFetchTicket:nil];
 
   [self updateUI];
@@ -454,11 +447,10 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [service setServiceUploadProgressSelector:progressSel];
   
   GDataServiceTicket *ticket;
-  ticket = [service fetchYouTubeEntryByInsertingEntry:entry
+  ticket = [service fetchEntryByInsertingEntry:entry
                                            forFeedURL:url
                                              delegate:self
-                                    didFinishSelector:@selector(uploadTicket:finishedWithEntry:)
-                                      didFailSelector:@selector(uploadTicket:failedWithError:)];
+                             didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
 }
 
 // progress callback
@@ -471,32 +463,26 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
 }
 
-// uploaded successfully
+// upload callback
 - (void)uploadTicket:(GDataServiceTicket *)ticket
-   finishedWithEntry:(GDataEntryYouTubeVideo *)videoEntry {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Uploaded", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Uploaded video: %@", 
-                    [[videoEntry title] stringValue]);
-  
-  // refetch the current entries, in case the list of uploads
-  // has changed
-  [self fetchAllEntries];
-  [self updateUI];
-  
-  [mUploadProgressIndicator setDoubleValue:0.0];
-} 
+   finishedWithEntry:(GDataEntryYouTubeVideo *)videoEntry
+               error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Uploaded", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Uploaded video: %@",
+                      [[videoEntry title] stringValue]);
 
-// failure to upload
-- (void)uploadTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Upload failed: %@", error);
-  
+    // refetch the current entries, in case the list of uploads
+    // has changed
+    [self fetchAllEntries];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Upload failed: %@", error);
+  }
   [mUploadProgressIndicator setDoubleValue:0.0];
 }
 

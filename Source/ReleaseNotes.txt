@@ -17,7 +17,13 @@ Additions
 
 - Added support for Contacts API version 3
 
+- Added new classes for Webmaster Tools API
+
 - Added Geo accessor to Calendar API event entries
+
+- Added Calendar settings feed
+
+- Added ebook query parameter and epub link accessor to Books API
 
 - Added batch call to Docs API
 
@@ -28,17 +34,26 @@ Additions
 - Added query convenience method addCategoryFilterWithScheme:term: and
   filter methods addCategoryWithScheme:term: and
   addExcludeCategoryWithScheme:term:
+  
+- Added spam and aspectRatio elements to YouTube API
 
 Changes
 
+- Fetch callbacks now have a single selector rather than separate success
+  and failure methods
+
+- Most service-specific fetch calls have been removed; clients should use
+  the fetch calls in GDataServiceGoogle and GDataServiceGoogleBase
+
 - Tightened URL encoding rules so portions of feed URLs are more strictly
-  percent-encoded.
+  percent-encoded
 
 - Renamed newSubscriptionVideosFeedLink to recentSubscriptionVideosFeedLink to
-  make the static analyzer happier.
+  make the static analyzer happier
   
 - Changed arguments and return types to use NSInteger/NSUInteger, and updated
   print format strings to ensure fixed-size int specification (thanks dan94501)
+
 
 Bugs Fixed
 

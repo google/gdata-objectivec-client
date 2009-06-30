@@ -53,8 +53,7 @@ int main(int argc, const char *argv[]) {
   // Fetch the list of calendars
   GDataServiceTicket *ticket = [service fetchCalendarFeedForUsername:account
                                                             delegate:nil
-                                                   didFinishSelector:nil
-                                                     didFailSelector:nil];
+                                                   didFinishSelector:nil];
   
   // Spin the event loop until the fetch finshes.
   //
@@ -92,11 +91,10 @@ int main(int argc, const char *argv[]) {
     // Post the event.
     NSURL *altLinkURL = [[calendar alternateLink] URL];
     
-    ticket = [service fetchCalendarEventByInsertingEntry:event
-                                              forFeedURL:altLinkURL
-                                                delegate:nil
-                                       didFinishSelector:nil
-                                         didFailSelector:nil];
+    ticket = [service fetchEntryByInsertingEntry:event
+                                      forFeedURL:altLinkURL
+                                        delegate:nil
+                               didFinishSelector:nil];
     
     GDataEntryCalendarEvent *resultingEvent = nil;
     

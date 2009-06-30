@@ -258,6 +258,10 @@
 
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the name/password each time the service is requested
@@ -328,38 +332,23 @@
   GDataServiceGoogleBlogger *service = [self bloggerService];
   GDataServiceTicket *ticket;
 
-  ticket = [service fetchAuthenticatedFeedWithURL:feedURL
-                                        feedClass:[GDataFeedBlog class]
-                                         delegate:self
-                                didFinishSelector:@selector(blogListTicket:finishedWithFeed:)
-                                  didFailSelector:@selector(blogListTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                           feedClass:[GDataFeedBlog class]
+                            delegate:self
+                   didFinishSelector:@selector(blogListTicket:finishedWithFeed:error:)];
   [self setBlogFeedTicket:ticket];
 
   [self updateUI];
 }
 
-//
-// blog list fetch callbacks
-//
-
-// finished blog list successfully
+// blog feed fetch callback
 - (void)blogListTicket:(GDataServiceTicket *)ticket
-      finishedWithFeed:(GDataFeedBase *)feed {
+      finishedWithFeed:(GDataFeedBase *)feed
+                 error:(NSError *)error {
 
   [self setBlogFeed:feed];
-  [self setBlogFetchError:nil];
-  [self setBlogFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)blogListTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  [self setBlogFeed:nil];
   [self setBlogFetchError:error];
-  [self setBlogFeedTicket:ticket];
+  [self setBlogFeedTicket:nil];
 
   [self updateUI];
 }
@@ -383,36 +372,21 @@
 
     GDataServiceGoogleBlogger *service = [self bloggerService];
     GDataServiceTicket *ticket;
-    ticket = [service fetchAuthenticatedFeedWithURL:feedURL
-                                          feedClass:[GDataFeedBlogPost class]
-                                           delegate:self
-                                  didFinishSelector:@selector(blogPostTicket:finishedWithFeed:)
-                                    didFailSelector:@selector(blogPostTicket:failedWithError:)];
+    ticket = [service fetchFeedWithURL:feedURL
+                             feedClass:[GDataFeedBlogPost class]
+                              delegate:self
+                     didFinishSelector:@selector(blogPostTicket:finishedWithFeed:error:)];
     [self setPostFeedTicket:ticket];
     [self updateUI];
   }
 }
 
-//
-// post feed fetch callbacks
-//
-
-// fetched post list successfully
+// post feed fetch callback
 - (void)blogPostTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedBase *)feed {
+         finishedWithFeed:(GDataFeedBase *)feed
+                 error:(NSError *)error {
 
   [self setPostFeed:feed];
-  [self setPostFetchError:nil];
-  [self setPostFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)blogPostTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-
-  [self setPostFeed:nil];
   [self setPostFetchError:error];
   [self setPostFeedTicket:nil];
 
@@ -435,33 +409,22 @@
     if (feedURL != nil) {
       GDataServiceGoogleBlogger *service = [self bloggerService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchAuthenticatedFeedWithURL:feedURL
-                                            feedClass:[GDataFeedBlogComment class]
-                                             delegate:self
-                                    didFinishSelector:@selector(blogCommentTicket:finishedWithFeed:)
-                                      didFailSelector:@selector(blogCommentTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:feedURL
+                               feedClass:[GDataFeedBlogComment class]
+                                delegate:self
+                       didFinishSelector:@selector(blogCommentTicket:finishedWithFeed:error:)];
       [self setCommentFeedTicket:ticket];
     }
   }
   [self updateUI];
 }
 
-// fetched comment feed successfully
+// fetched comment feed callback
 - (void)blogCommentTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedBase *)feed {
+         finishedWithFeed:(GDataFeedBase *)feed
+                    error:(NSError *)error {
 
   [self setCommentFeed:feed];
-  [self setCommentFetchError:nil];
-  [self setCommentFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)blogCommentTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-
-  [self setCommentFeed:nil];
   [self setCommentFetchError:error];
   [self setCommentFeedTicket:nil];
 
@@ -488,45 +451,41 @@
     [service setServiceUserData:newEntry];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchBloggerEntryByInsertingEntry:newEntry
-                                             forFeedURL:postURL
-                                               delegate:self
-                                      didFinishSelector:@selector(addEntryTicket:finishedWithEntry:)
-                                        didFailSelector:@selector(addEntryTicket:failedWithError:)];
+    ticket = [service fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:postURL
+                                        delegate:self
+                               didFinishSelector:@selector(addEntryTicket:finishedWithEntry:error:)];
     [self setEditPostTicket:ticket];
     [self updateUI];
   }
 }
 
-// succeeded
+// add entry callback
 - (void)addEntryTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryBlogPost *)addedEntry {
+     finishedWithEntry:(GDataEntryBlogPost *)addedEntry
+                 error:(NSError *)error {
 
-  NSBeginAlertSheet(@"Add", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added entry: %@", [[addedEntry title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Add", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added entry: %@", [[addedEntry title] stringValue]);
 
-  NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
-  [entries insertObject:addedEntry atIndex:0];
-  [mPostFeed setEntries:entries];
+    NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
+    [entries insertObject:addedEntry atIndex:0];
+    [mPostFeed setEntries:entries];
+  } else {
+    // failed to add entry
+    GDataEntryBlogPost *addedEntry = [ticket postedObject];
+    NSBeginAlertSheet(@"Add", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Failed to add entry: %@\nError: %@",
+                      [[addedEntry title] stringValue], error);
+  }
 
   [self setEditPostTicket:nil];
   [self updateUI];
 }
 
-// failed
-- (void)addEntryTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  GDataEntryBlogPost *addedEntry = [ticket userData];
-  NSBeginAlertSheet(@"Add", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Failed to add entry: %@\nError: %@",
-                    [[addedEntry title] stringValue], error);
-
-  [self setEditPostTicket:nil];
-  [self updateUI];
-}
 
 #pragma mark Update an entry
 
@@ -539,54 +498,45 @@
     [[editedEntry content] setStringValue:[mPostEditField stringValue]];
 
     // send the edited entry to the server
-    NSURL *linkURL = [[editedEntry editLink] URL];
-
-
     GDataServiceGoogleBlogger *service = [self bloggerService];
 
     // remember the old entry; we'll replace the edited one with it later
     [service setServiceUserData:[self selectedPost]];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchBloggerEntryByUpdatingEntry:editedEntry
-                                  forEntryURL:linkURL
-                                     delegate:self
-                            didFinishSelector:@selector(updateTicket:finishedWithEntry:)
-                              didFailSelector:@selector(updateTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:editedEntry
+                                       delegate:self
+                              didFinishSelector:@selector(updateTicket:finishedWithEntry:error:)];
     [self setEditPostTicket:ticket];
     [self updateUI];
   }
 }
 
+// update entry callback
 - (void)updateTicket:(GDataServiceTicket *)ticket
-   finishedWithEntry:(GDataEntryBlogPost *)editedEntry {
+   finishedWithEntry:(GDataEntryBlogPost *)editedEntry
+               error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Update", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Updated entry: %@",
+                      [[editedEntry title] stringValue]);
 
-  NSBeginAlertSheet(@"Update", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Updated entry: %@",
-                    [[editedEntry title] stringValue]);
-
-  GDataEntryBlogPost *oldEntry = [ticket userData];
-  NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
-  unsigned int indexOfOldEntry = [entries indexOfObject:oldEntry];
-  if (indexOfOldEntry != NSNotFound) {
-    [entries replaceObjectAtIndex:indexOfOldEntry withObject:editedEntry];
-    [mPostFeed setEntries:entries];
+    GDataEntryBlogPost *oldEntry = [ticket userData];
+    NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
+    unsigned int indexOfOldEntry = [entries indexOfObject:oldEntry];
+    if (indexOfOldEntry != NSNotFound) {
+      [entries replaceObjectAtIndex:indexOfOldEntry withObject:editedEntry];
+      [mPostFeed setEntries:entries];
+    }
+  } else {
+    // update failed
+    GDataEntryBlogPost *editedEntry = [ticket userData];
+    NSBeginAlertSheet(@"Update", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Failed to update entry: %@\nError: %@",
+                      [[editedEntry title] stringValue], error);
   }
-
-  [self setEditPostTicket:nil];
-  [self updateUI];
-}
-
-// failed
-- (void)updateTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-
-  GDataEntryBlogPost *editedEntry = [ticket userData];
-  NSBeginAlertSheet(@"Update", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Failed to update entry: %@\nError: %@",
-                    [[editedEntry title] stringValue], error);
 
   [self setEditPostTicket:nil];
   [self updateUI];
@@ -601,52 +551,49 @@
     [service setServiceUserData:entry]; // remember which entry we're deleting
 
     GDataServiceTicket *ticket;
-    ticket = [service deleteBloggerEntry:entry
-                                delegate:self
-                       didFinishSelector:@selector(deleteTicket:finishedWithNil:)
-                         didFailSelector:@selector(deleteTicket:failedWithError:)];
+    ticket = [service deleteEntry:entry
+                         delegate:self
+                didFinishSelector:@selector(deleteTicket:finishedWithNil:error:)];
+
+    [ticket setUserData:entry];
     [self setEditPostTicket:ticket];
     [self updateUI];
   }
 }
 
 - (void)deleteTicket:(GDataServiceTicket *)ticket
-     finishedWithNil:(id)object {
-
+     finishedWithNil:(id)object
+               error:(NSError *)error {
   GDataEntryBlogPost *entry = [ticket userData];
 
-  NSBeginAlertSheet(@"Delete", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Deleted entry: %@", [[entry title] stringValue]);
+  if (error == nil) {
 
-  // remove the deleted entry from the list
-  NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
-  if ([entries containsObject:entry]) {
-    [entries removeObject:entry];
-    [mPostFeed setEntries:entries];
+    NSBeginAlertSheet(@"Delete", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted entry: %@",
+                      [[entry title] stringValue]);
+
+    // remove the deleted entry from the list
+    NSMutableArray *entries = [NSMutableArray arrayWithArray:[mPostFeed entries]];
+
+    if ([entries containsObject:entry]) {
+      [entries removeObject:entry];
+      [mPostFeed setEntries:entries];
+    }
+
+    [self reloadEntryEditField];
+
+  } else {
+    // delete failed
+    NSBeginAlertSheet(@"Delete", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Failed to delete entry: %@\nError: %@",
+                      [[entry title] stringValue], error);
   }
 
   [self setEditPostTicket:nil];
   [self updateUI];
-
-  [self reloadEntryEditField];
 }
-
-// failed
-- (void)deleteTicket:(GDataServiceTicket *)ticket
-failedWithError:(NSError *)error {
-
-  GDataEntryBlogPost *entry = [ticket userData];
-
-  NSBeginAlertSheet(@"Delete", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Failed to delete entry: %@\nError: %@", [[entry title] stringValue], error);
-
-  [self setEditPostTicket:nil];
-  [self updateUI];
-
-}
-
 
 #pragma mark Add an entry
 

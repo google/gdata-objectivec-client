@@ -27,23 +27,23 @@
 
 - (GDataServiceTicket *)fetchACLFeedWithURL:(NSURL *)feedURL
                                    delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector;
+                          didFinishSelector:(SEL)finishedSelector;
 
 - (GDataServiceTicket *)fetchACLEntryByInsertingEntry:(GDataEntryACL *)entryToInsert
                                            forFeedURL:(NSURL *)feedURL
                                              delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
+                                    didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicket *)fetchACLEntryByUpdatingEntry:(GDataEntryACL *)entryToUpdate
+                                            delegate:(id)delegate
+                                   didFinishSelector:(SEL)finishedSelector;
 
 - (GDataServiceTicket *)fetchACLEntryByUpdatingEntry:(GDataEntryACL *)entryToUpdate
                                          forEntryURL:(NSURL *)entryURL
                                             delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector;
+                                   didFinishSelector:(SEL)finishedSelector;
 
 - (GDataServiceTicket *)deleteACLEntry:(GDataEntryACL *)entryToDelete
                               delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector;
+                     didFinishSelector:(SEL)finishedSelector;
 @end

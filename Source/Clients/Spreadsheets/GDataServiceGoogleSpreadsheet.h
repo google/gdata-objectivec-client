@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataServiceGoogleSpreadsheet.h
@@ -31,71 +31,26 @@
 
 _EXTERN NSString* const kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"http://spreadsheets.google.com/feeds/spreadsheets/private/full");
 
-@class GDataEntrySpreadsheet;
-@class GDataQuerySpreadsheet;
-
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
 
 @interface GDataServiceGoogleSpreadsheet : GDataServiceGoogle 
 
-// finished callback (see above) is passed an appropriate spreadsheet feed
-- (GDataServiceTicket *)fetchSpreadsheetFeedWithURL:(NSURL *)feedURL
-                                           delegate:(id)delegate
-                                  didFinishSelector:(SEL)finishedSelector
-                                    didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed an appropriate spreadsheet entry
-- (GDataServiceTicket *)fetchSpreadsheetEntryWithURL:(NSURL *)entryURL
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the inserted entry
-- (GDataServiceTicket *)fetchSpreadsheetEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                                   forFeedURL:(NSURL *)spreadsheetFeedURL
-                                                     delegate:(id)delegate
-                                            didFinishSelector:(SEL)finishedSelector
-                                              didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the updated entry
-- (GDataServiceTicket *)fetchSpreadsheetEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                                 forEntryURL:(NSURL *)spreadsheetEntryEditURL
-                                                    delegate:(id)delegate
-                                           didFinishSelector:(SEL)finishedSelector
-                                             didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the appropriate spreadsheet feed
-- (GDataServiceTicket *)fetchSpreadsheetQuery:(GDataQuerySpreadsheet *)query
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteSpreadsheetEntry:(GDataEntryBase *)entryToDelete
-                                      delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector
-                               didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteSpreadsheetResourceURL:(NSURL *)resourceEditURL
-                                                ETag:(NSString *)etag
-                                            delegate:(id)delegate
-                                   didFinishSelector:(SEL)finishedSelector
-                                     didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a batch result feed
+// clients may use these fetch methods of GDataServiceGoogle
 //
-// status may also be present inside the individual entries
-// as GDataBatchStatus and GDataBatchInterrupted elements
-- (GDataServiceTicket *)fetchSpreadsheetFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                          forBatchFeedURL:(NSURL *)feedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
 @end

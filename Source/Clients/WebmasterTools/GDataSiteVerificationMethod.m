@@ -20,7 +20,7 @@
 #define GDATASITEVERIFICATIONMETHOD_DEFINE_GLOBALS 1
 #import "GDataSiteVerificationMethod.h"
 
-#import "GDataEntrySite.h" // for namespaces
+#import "GDataWebmasterToolsConstants.h"
 
 static NSString* const kTypeAttr = @"type";
 static NSString* const kInUseAttr = @"in-use";

@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GoogleBaseSampleWindowController.m
@@ -150,10 +150,9 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   [service setUserCredentialsWithUsername:nil
                                  password:nil];
     
-  [service fetchGoogleBaseQuery:query
-                             delegate:self
-                    didFinishSelector:@selector(ticket:finishedWithObject:)
-                      didFailSelector:@selector(ticket:failedWithError:)];
+  [service fetchFeedWithQuery:query
+                     delegate:self
+            didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   
   [mBaseQueryURLField setStringValue:[[query URL] absoluteString]];
   
@@ -172,10 +171,9 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   GDataServiceGoogleBase *service = [self googleBaseService];
   [service setUserCredentialsWithUsername:nil
                                  password:nil];
-  [service fetchGoogleBaseEntryWithURL:entryURL
-                              delegate:self
-                     didFinishSelector:@selector(ticket:finishedWithObject:)
-                       didFailSelector:@selector(ticket:failedWithError:)];
+  [service fetchEntryWithURL:entryURL
+                    delegate:self
+           didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   
   [self updateUI];
 }
@@ -192,10 +190,9 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   GDataServiceGoogleBase *service = [self googleBaseService];
   [service setUserCredentialsWithUsername:nil
                                  password:nil];
-  [service fetchGoogleBaseFeedWithURL:feedURL
-                             delegate:self
-                    didFinishSelector:@selector(ticket:finishedWithObject:)
-                      didFailSelector:@selector(ticket:failedWithError:)];
+  [service fetchFeedWithURL:feedURL
+                   delegate:self
+          didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   
   [self updateUI];
 }
@@ -225,42 +222,42 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   [service setUserCredentialsWithUsername:username
                                  password:password];
   
-  [service fetchGoogleBaseFeedWithURL:feedURL
-                             delegate:self
-                    didFinishSelector:@selector(ticket:finishedWithObject:)
-                      didFailSelector:@selector(ticket:failedWithError:)];
+  [service fetchFeedWithURL:feedURL
+                   delegate:self
+          didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   
   [self updateUI];
 }
 
 - (void)ticket:(GDataServiceTicket *)ticket
-  finishedWithObject:(GDataObject *)object {
-  
+  finishedWithObject:(GDataObject *)object
+         error:(NSError *)error {
+
   GDataFeedGoogleBase *feed;
-  
+
   if ([object isKindOfClass:[GDataEntryGoogleBase class]]) {
     // the fetch was for an entry, not a feed; wrap the entry in a feed
     // for our user interface
-    
+
     feed = [GDataFeedGoogleBase googleBaseFeed];
-    
+
     [feed addEntry:(GDataEntryGoogleBase *) object];
   } else {
     // the object was a Google Base feed
-    feed = (GDataFeedGoogleBase *) object; 
+    feed = (GDataFeedGoogleBase *) object;
   }
 
   [self setGoogleBaseFeed:feed];
-  [self setGoogleBaseFetchError:nil];
-    
+  [self setGoogleBaseFetchError:error];
+
   mIsGoogleBaseFetchPending = NO;
-  
+
   // select an appropriate tab by checking for attributes, metadata attributes,
   // or a metadata attribute list in the first entry
-  if ([[feed entries] count]) {
+  if ([[feed entries] count] > 0) {
     int tabIndex;
     GDataEntryGoogleBase *entry = [[feed entries] objectAtIndex:0];
-    
+
     if ([[entry entryAttributes] count]) {
       tabIndex = 0;
     } else if ([[entry metadataAttributes] count]) {
@@ -272,87 +269,77 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     }
     [mTabView selectTabViewItemAtIndex:tabIndex];
   }
-  [self updateUI];
-} 
 
-- (void)ticket:(GDataServiceTicket *)ticket
-   failedWithError:(NSError *)error {
-  
-  [self setGoogleBaseFeed:nil];
-  [self setGoogleBaseFetchError:error];    
-  
-  mIsGoogleBaseFetchPending = NO;
   [self updateUI];
 }
 
 #pragma mark -
 
 - (IBAction)batchUpdateContentClicked:(id)sender {
-  
+
   // for each entry, we'll add a timestamp to the end of the
   // content field, and batch update the whole group
-  
+
   NSArray *entries = [mGoogleBaseFeed entries];
   NSMutableArray *updatedEntries = [NSMutableArray array];
-  
+
   for (int idx = 0; idx < [entries count]; idx++) {
-    
+
     // get this entry's content string
     GDataEntryGoogleBase *entry = [entries objectAtIndex:idx];
     GDataEntryContent *content = [entry content];
     NSString *str = [content stringValue];
     if (str) {
-      
+
       // append newline and the current date/time to this entry's content
       str = [NSString stringWithFormat:@"%@\n%@", str, [NSDate date]];
       [content setStringValue:str];
-      
+
       // add a batch ID to this entry
       static int staticID = 0;
       NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
       [entry setBatchIDWithString:batchID];
-      
+
       // we don't need to add the batch operation to the entries since
       // we're putting it in the feed to apply to all entries
       [updatedEntries addObject:entry];
-      
+
       // we could force an error on an item by nuking the entry's identifier
       //   if (idx == 1) { [entry setIdentifier:nil]; }
     }
   }
-  
+
   NSURL *batchURL = [[mGoogleBaseFeed batchLink] URL];
   if (batchURL != nil && [updatedEntries count] > 0) {
-    
+
     // make a batch feed object: add entries, and since
-    // we are doing the same operation for all entries in the feed, 
+    // we are doing the same operation for all entries in the feed,
     // add the operation
-    
+
     GDataFeedGoogleBase *batchFeed = [GDataFeedGoogleBase googleBaseFeed];
     [batchFeed setEntriesWithEntries:updatedEntries];
-    
+
     GDataBatchOperation *op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationUpdate];
-    [batchFeed setBatchOperation:op];    
-    
+    [batchFeed setBatchOperation:op];
+
     // now do the usual steps for authenticating for this service, and issue
     // the fetch
-    
+
     NSString *username = [mUsernameField stringValue];
     NSString *password = [mPasswordField stringValue];
-    
+
     GDataServiceGoogleBase *service = [self googleBaseService];
-    
+
     [service setUserCredentialsWithUsername:username
                                    password:password];
-        
+
     mIsGoogleBaseFetchPending = YES;
 
-    [service fetchGoogleBaseFeedWithBatchFeed:batchFeed
-                              forBatchFeedURL:batchURL
-                                     delegate:self
-                            didFinishSelector:@selector(batchTicket:finishedWithFeed:)
-                              didFailSelector:@selector(batchTicket:failedWithError:)];
-    
+    [service fetchFeedWithBatchFeed:batchFeed
+                    forBatchFeedURL:batchURL
+                           delegate:self
+                  didFinishSelector:@selector(batchTicket:finishedWithFeed:error:)];
+
     [self updateUI];
   } else {
     // the button shouldn't be enabled when we can't batch update, so we
@@ -361,58 +348,58 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   }
 }
 
-
+// batch fetch callback
 - (void)batchTicket:(GDataServiceTicket *)ticket
-   finishedWithFeed:(GDataFeedGoogleBase *)feed {
-  
-  // step through all the entries in the response feed, 
-  // and build a string reporting each
-  
-  // show the http status to start (should be 200)
-  NSMutableString *reportStr = [NSMutableString stringWithFormat:@"http status:%d\n\n", 
-    [ticket statusCode]];
+   finishedWithFeed:(GDataFeedGoogleBase *)feed
+              error:(NSError *)error {
 
-  NSArray *responseEntries = [feed entries];
-  for (int idx = 0; idx < [responseEntries count]; idx++) {
-   
-    GDataEntryGoogleBase *entry = [responseEntries objectAtIndex:idx];
-    GDataBatchID *batchID = [entry batchID];
-    
-    // report the batch ID and status for each item
-    [reportStr appendFormat:@"%@\n", [batchID stringValue]];
+  if (error == nil) {
+    // fetch succeeded
 
-    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
-    if (interrupted) {
-      [reportStr appendFormat:@"%@\n", [interrupted description]];
+    // step through all the entries in the response feed,
+    // and build a string reporting each entry's status
+
+    // show the http status to start (should be 200)
+    NSMutableString *reportStr;
+
+    reportStr = [NSMutableString stringWithFormat:@"http status:%d\n\n",
+                 [ticket statusCode]];
+
+    NSArray *responseEntries = [feed entries];
+    for (int idx = 0; idx < [responseEntries count]; idx++) {
+
+      GDataEntryGoogleBase *entry = [responseEntries objectAtIndex:idx];
+      GDataBatchID *batchID = [entry batchID];
+
+      // report the batch ID and status for each item
+      [reportStr appendFormat:@"%@\n", [batchID stringValue]];
+
+      GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+      if (interrupted) {
+        [reportStr appendFormat:@"%@\n", [interrupted description]];
+      }
+
+      GDataBatchStatus *status = [entry batchStatus];
+      if (status) {
+        [reportStr appendFormat:@"%d %@\n", [[status code] intValue],
+         [status reason]];
+      }
+      [reportStr appendString:@"\n"];
     }
 
-    GDataBatchStatus *status = [entry batchStatus];
-    if (status) {
-      [reportStr appendFormat:@"%d %@\n", [[status code] intValue], [status reason]];
-    }
-    [reportStr appendString:@"\n"];
+    NSBeginAlertSheet(@"Batch update completed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Update completed.\n%@", reportStr);
+  } else {
+    // fetch failed
+    NSBeginAlertSheet(@"Batch update failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Update failed: %@", error);
   }
-  
-  NSBeginAlertSheet(@"Batch update completed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Update completed.\n%@", reportStr);
-  
+
   mIsGoogleBaseFetchPending = NO;
   [self updateUI];
 }
-  
-- (void)batchTicket:(GDataServiceTicket *)ticket
-    failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Batch update failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Update failed: %@", error);  
-  
-  mIsGoogleBaseFetchPending = NO;
-  [self updateUI];
-}
-
-
 
 #pragma mark -
 
@@ -428,6 +415,10 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
     
     [service setShouldCacheDatedData:YES];
     
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
+
     // Note: Though this sample doesn't demonstrate it, GData responses are
     //       typically chunked, so check all returned feeds for "next" links
     //       (use -nextLink method from the GDataLinkArray category on the
@@ -586,6 +577,5 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   [mGoogleBaseFetchError release];
   mGoogleBaseFetchError = [error retain];
 }
-
 
 @end

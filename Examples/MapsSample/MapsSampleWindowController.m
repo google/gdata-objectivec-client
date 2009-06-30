@@ -270,6 +270,10 @@
     // to avoid the memory usage
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.    
   }
 
   // username/password may change
@@ -328,35 +332,20 @@
                                                      projection:kGDataMapsProjectionFull];
 
   GDataServiceTicket *ticket;
-  ticket = [service fetchMapsFeedWithURL:feedURL
-                                delegate:self
-                       didFinishSelector:@selector(mapsTicket:finishedWithFeed:)
-                         didFailSelector:@selector(mapsTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(mapsTicket:finishedWithFeed:error:)];
   [self setMapFeedTicket:ticket];
 
   [self updateUI];
 }
 
-//
-// map feed fetch callbacks
-//
-
-// fetched map list successfully
+// map feed fetch callback
 - (void)mapsTicket:(GDataServiceTicket *)ticket
-  finishedWithFeed:(GDataFeedMap *)feed {
+  finishedWithFeed:(GDataFeedMap *)feed
+             error:(NSError *)error {
 
   [self setMapFeed:feed];
-  [self setMapFetchError:nil];
-  [self setMapFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)mapsTicket:(GDataServiceTicket *)ticket
-   failedWithError:(NSError *)error {
-
-  [self setMapFeed:nil];
   [self setMapFetchError:error];
   [self setMapFeedTicket:nil];
 
@@ -382,36 +371,21 @@
       [self setFeatureFetchError:nil];
 
       GDataServiceTicket *ticket;
-      ticket = [service fetchMapsFeedWithURL:featuresFeedURL
-                                    delegate:self
-                           didFinishSelector:@selector(featuresTicket:finishedWithFeed:)
-                             didFailSelector:@selector(featuresTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:featuresFeedURL
+                                delegate:self
+                       didFinishSelector:@selector(featuresTicket:finishedWithFeed:error:)];
       [self setFeatureFeedTicket:ticket];
     }
     [self updateUI];
   }
 }
 
-//
-// features fetch callbacks
-//
-
-// fetched features list successfully
+// features fetch callback
 - (void)featuresTicket:(GDataServiceTicket *)ticket
-      finishedWithFeed:(GDataFeedMapFeature *)feed {
+      finishedWithFeed:(GDataFeedMapFeature *)feed
+                 error:(NSError *)error {
 
   [self setFeatureFeed:feed];
-  [self setFeatureFetchError:nil];
-  [self setFeatureFeedTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)featuresTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  [self setFeatureFeed:nil];
   [self setFeatureFetchError:error];
   [self setFeatureFeedTicket:nil];
 
@@ -436,38 +410,34 @@
     GDataServiceGoogleMaps *service = [self mapService];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchMapsEntryByInsertingEntry:newEntry
-                                          forFeedURL:postURL
-                                            delegate:self
-                                   didFinishSelector:@selector(addMapTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(addMapTicket:failedWithError:)];
+    ticket = [service fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:postURL
+                                        delegate:self
+                               didFinishSelector:@selector(addMapTicket:finishedWithEntry:error:)];
     [self setMapEditTicket:ticket];
     [self updateUI];
   }
 }
 
 - (void)addMapTicket:(GDataServiceTicket *)ticket
-   finishedWithEntry:(GDataEntryMap *)entry {
+   finishedWithEntry:(GDataEntryMap *)entry
+               error:(NSError *)error {
 
   [self setMapEditTicket:nil];
 
-  NSBeginAlertSheet(@"Map added", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added map \"%@\"", [[entry title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Map added", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added map \"%@\"", [[entry title] stringValue]);
 
-  [self fetchFeedOfMaps];
-}
+    [self fetchFeedOfMaps];
+  } else {
+    NSBeginAlertSheet(@"Add Map Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)addMapTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-
-  [self setMapEditTicket:nil];
-
-  NSBeginAlertSheet(@"Add Map Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Rename a map
@@ -487,39 +457,35 @@
     [selectedMap setTitleWithString:newName];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchMapsEntryByUpdatingEntry:selectedMap
-                                        forEntryURL:editURL
-                                           delegate:self
-                                  didFinishSelector:@selector(renameMapTicket:finishedWithEntry:)
-                                    didFailSelector:@selector(renameMapTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:selectedMap
+                                       delegate:self
+                              didFinishSelector:@selector(renameMapTicket:finishedWithEntry:error:)];
     [self setMapEditTicket:ticket];
     [self updateUI];
   }
 }
 
+// rename map callback
 - (void)renameMapTicket:(GDataServiceTicket *)ticket
-      finishedWithEntry:(GDataEntryMap *)entry {
+      finishedWithEntry:(GDataEntryMap *)entry
+                  error:(NSError *)error {
 
   [self setMapEditTicket:nil];
 
-  NSBeginAlertSheet(@"Map renamed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Renamed map to \"%@\"",
-                    [[entry title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Map renamed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Renamed map to \"%@\"",
+                      [[entry title] stringValue]);
 
-  [self fetchFeedOfMaps];
-}
+    [self fetchFeedOfMaps];
+  } else {
+    NSBeginAlertSheet(@"Rename Map Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)renameMapTicket:(GDataServiceTicket *)ticket
-        failedWithError:(NSError *)error {
-
-  [self setMapEditTicket:nil];
-
-  NSBeginAlertSheet(@"Rename Map Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Delete the map
@@ -532,10 +498,9 @@
     GDataServiceGoogleMaps *service = [self mapService];
     GDataServiceTicket *ticket;
 
-    ticket = [service deleteMapsEntry:selectedMap
-                             delegate:self
-                    didFinishSelector:@selector(deleteMapTicket:finishedWithNil:)
-                      didFailSelector:@selector(deleteMapTicket:failedWithError:)];
+    ticket = [service deleteEntry:selectedMap
+                         delegate:self
+                didFinishSelector:@selector(deleteMapTicket:finishedWithNil:error:)];
     [self setMapEditTicket:ticket];
 
     // save the name in the ticket
@@ -547,29 +512,26 @@
 }
 
 - (void)deleteMapTicket:(GDataServiceTicket *)ticket
-          finishedWithNil:(GDataObject *)nilObj {
+        finishedWithNil:(GDataObject *)nilObj
+                  error:(NSError *)error {
 
   [self setMapEditTicket:nil];
 
-  NSString *name = [ticket propertyForKey:@"mapName"];
+  if (error == nil) {
+    NSString *name = [ticket propertyForKey:@"mapName"];
 
-  NSBeginAlertSheet(@"Map deleted", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Deleted map \"%@\"", name);
+    NSBeginAlertSheet(@"Map deleted", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted map \"%@\"", name);
 
-  [self fetchFeedOfMaps];
-}
+    [self fetchFeedOfMaps];
+  } else {
+    NSBeginAlertSheet(@"Delete Map Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)deleteMapTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-
-  [self setMapEditTicket:nil];
-
-  NSBeginAlertSheet(@"Delete Map Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Add a feature
@@ -605,39 +567,35 @@
     GDataServiceGoogleMaps *service = [self mapService];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchMapsEntryByInsertingEntry:newEntry
-                                          forFeedURL:postURL
-                                            delegate:self
-                                   didFinishSelector:@selector(addFeatureTicket:finishedWithEntry:)
-                                     didFailSelector:@selector(addFeatureTicket:failedWithError:)];
+    ticket = [service fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:postURL
+                                        delegate:self
+                               didFinishSelector:@selector(addFeatureTicket:finishedWithEntry:error:)];
     [self setFeatureEditTicket:ticket];
     [self updateUI];
   }
 }
 
 - (void)addFeatureTicket:(GDataServiceTicket *)ticket
-       finishedWithEntry:(GDataEntryMap *)entry {
+       finishedWithEntry:(GDataEntryMap *)entry
+                   error:(NSError *)error {
 
   [self setFeatureEditTicket:nil];
 
-  NSBeginAlertSheet(@"Feature added", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Added feature \"%@\"",
-                    [[entry title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Feature added", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Added feature \"%@\"",
+                      [[entry title] stringValue]);
 
-  [self fetchFeaturesOfSelectedMap];
-}
+    [self fetchFeaturesOfSelectedMap];
+  } else {
+    NSBeginAlertSheet(@"Add Feature Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)addFeatureTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
-
-  [self setFeatureEditTicket:nil];
-
-  NSBeginAlertSheet(@"Add Feature Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Rename a feature
@@ -664,39 +622,34 @@
     [[selectedFeature title] setStringValue:newName];
 
     GDataServiceTicket *ticket;
-    ticket = [service fetchMapsEntryByUpdatingEntry:selectedFeature
-                                        forEntryURL:editURL
-                                           delegate:self
-                                  didFinishSelector:@selector(renameFeatureTicket:finishedWithEntry:)
-                                    didFailSelector:@selector(renameFeatureTicket:failedWithError:)];
+    ticket = [service fetchEntryByUpdatingEntry:selectedFeature
+                                       delegate:self
+                              didFinishSelector:@selector(renameFeatureTicket:finishedWithEntry:error:)];
     [self setFeatureEditTicket:ticket];
     [self updateUI];
   }
 }
 
 - (void)renameFeatureTicket:(GDataServiceTicket *)ticket
-          finishedWithEntry:(GDataEntryMapFeature *)entry {
+          finishedWithEntry:(GDataEntryMapFeature *)entry
+                      error:(NSError *)error {
 
   [self setFeatureEditTicket:nil];
 
-  NSBeginAlertSheet(@"Feature renamed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Renamed feature to \"%@\"",
-                    [[entry title] stringValue]);
+  if (error == nil) {
+    NSBeginAlertSheet(@"Feature renamed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Renamed feature to \"%@\"",
+                      [[entry title] stringValue]);
 
-  [self fetchFeaturesOfSelectedMap];
-}
+    [self fetchFeaturesOfSelectedMap];
+  } else {
+    NSBeginAlertSheet(@"Rename Feature Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)renameFeatureTicket:(GDataServiceTicket *)ticket
-            failedWithError:(NSError *)error {
-
-  [self setFeatureEditTicket:nil];
-
-  NSBeginAlertSheet(@"Rename Feature Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Delete the feature
@@ -709,10 +662,9 @@
     GDataServiceGoogleMaps *service = [self mapService];
     GDataServiceTicket *ticket;
 
-    ticket = [service deleteMapsEntry:selectedFeature
-                             delegate:self
-                    didFinishSelector:@selector(deleteFeatureTicket:finishedWithNil:)
-                      didFailSelector:@selector(deleteFeatureTicket:failedWithError:)];
+    ticket = [service deleteEntry:selectedFeature
+                         delegate:self
+                didFinishSelector:@selector(deleteFeatureTicket:finishedWithNil:error:)];
     [self setFeatureEditTicket:ticket];
 
     // save the name in the ticket
@@ -724,29 +676,26 @@
 }
 
 - (void)deleteFeatureTicket:(GDataServiceTicket *)ticket
-        finishedWithNil:(GDataObject *)nilObj {
+            finishedWithNil:(GDataObject *)nilObj
+                      error:(NSError *)error {
 
   [self setFeatureEditTicket:nil];
 
-  NSString *name = [ticket propertyForKey:@"featureName"];
+  if (error == nil) {
+    NSString *name = [ticket propertyForKey:@"featureName"];
 
-  NSBeginAlertSheet(@"Feature deleted", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Deleted feature \"%@\"", name);
+    NSBeginAlertSheet(@"Feature deleted", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted feature \"%@\"", name);
 
-  [self fetchFeaturesOfSelectedMap];
-}
+    [self fetchFeaturesOfSelectedMap];
+  } else {
+    NSBeginAlertSheet(@"Delete Feature Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"%@", error);
 
-- (void)deleteFeatureTicket:(GDataServiceTicket *)ticket
-        failedWithError:(NSError *)error {
-
-  [self setFeatureEditTicket:nil];
-
-  NSBeginAlertSheet(@"Delete Feature Error", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"%@", error);
-
-  [self updateUI];
+    [self updateUI];
+  }
 }
 
 #pragma mark Text field delegate methods

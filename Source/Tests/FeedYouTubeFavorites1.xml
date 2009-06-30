@@ -92,6 +92,7 @@
             <media:keywords>@Google, atgoogle, Authors@Google, Dilemma, Food, Michael, Nutrition, Omnivore's, Pollan</media:keywords>
             <yt:duration seconds="3554"/>
             <yt:videoid>I-t-7lTw6mA</yt:videoid>
+            <yt:aspectRatio>widescreen</yt:aspectRatio>
             <yt:uploaded>2008-03-06T23:49:12.000Z</yt:uploaded>
             <media:player url="http://www.youtube.com/watch?v=I-t-7lTw6mA"/>
             <media:credit role="uploader" scheme="urn:youtube" yt:type="partner">AtGoogleTalks</media:credit>

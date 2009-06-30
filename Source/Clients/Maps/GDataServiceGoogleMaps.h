@@ -41,13 +41,6 @@ _EXTERN NSString* const kGDataMapsProjectionUnlisted   _INITIALIZE_AS(@"unlisted
 @end
 
 
-// These routines are all simple wrappers around GDataServiceGoogle methods.
-
-// finishedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has a signature like:
-//   serviceTicket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error
-
 @interface GDataServiceGoogleMaps : GDataServiceGoogle
 
 // Utility for making feed URLs.
@@ -58,57 +51,24 @@ _EXTERN NSString* const kGDataMapsProjectionUnlisted   _INITIALIZE_AS(@"unlisted
 + (NSURL *)mapsFeedURLForUserID:(NSString *)userID
                      projection:(NSString *)projection;
 
-// finished callback (see above) is passed an appropriate Google Maps feed
-- (GDataServiceTicket *)fetchMapsFeedWithURL:(NSURL *)feedURL
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed an appropriate entry
-- (GDataServiceTicket *)fetchMapsEntryWithURL:(NSURL *)entryURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the inserted entry
-- (GDataServiceTicket *)fetchMapsEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                            forFeedURL:(NSURL *)feedURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the updated entry
-- (GDataServiceTicket *)fetchMapsEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                          forEntryURL:(NSURL *)entryEditURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed the appropriate maps feed
-- (GDataServiceTicket *)fetchMapsQuery:(GDataQueryGoogleMaps *)query
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteMapsEntry:(GDataEntryBase *)entryToDelete
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector
-                        didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a nil object
-- (GDataServiceTicket *)deleteMapsResourceURL:(NSURL *)resourceEditURL
-                                         ETag:(NSString *)etag
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
-
-// finished callback (see above) is passed a feed of batch results
-- (GDataServiceTicket *)fetchMapsBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                        forBatchFeedURL:(NSURL *)feedURL
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector;
+// clients may use these fetch methods of GDataServiceGoogle
+//
+//  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert forFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL ETag:(NSString *)etag delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//  - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed forBatchFeedURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+//
+// finishedSelector has a signature like this for feed fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error;
+//
+// or this for entry fetches:
+// - (void)serviceTicket:(GDataServiceTicket *)ticket finishedWithEntry:(GDataEntryBase *)entry error:(NSError *)error;
+//
+// The class of the returned feed or entry is determined by the URL fetched.
 
 + (NSString *)serviceRootURLString;
 

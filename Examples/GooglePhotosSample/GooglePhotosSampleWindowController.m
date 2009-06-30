@@ -405,6 +405,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     [service setUserAgent:@"MyCompany-SamplePhotosApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the username/password each time the service is requested
@@ -464,48 +468,35 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   
   GDataServiceGooglePhotos *service = [self googlePhotosService];
   GDataServiceTicket *ticket;
-  
+
   NSURL *feedURL = [GDataServiceGooglePhotos photoFeedURLForUserID:username
                                                            albumID:nil
                                                          albumName:nil
                                                            photoID:nil
                                                               kind:nil
                                                             access:nil];
-  ticket = [service fetchPhotoFeedWithURL:feedURL
-                                 delegate:self
-                        didFinishSelector:@selector(albumListFetchTicket:finishedWithFeed:)
-                          didFailSelector:@selector(albumListFetchTicket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(albumListFetchTicket:finishedWithFeed:error:)];
   [self setAlbumFetchTicket:ticket];
-  
+
   [self updateUI];
 }
 
-//
-// album list fetch callbacks
-//
-
-// finished album list successfully
+// album list fetch callback
 - (void)albumListFetchTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedPhotoUser *)feed {
-  
+            finishedWithFeed:(GDataFeedPhotoUser *)feed
+                       error:(NSError *)error {
+
   [self setAlbumFeed:feed];
-  [self setAlbumFetchError:nil];    
+  [self setAlbumFetchError:error];
   [self setAlbumFetchTicket:nil];
-  
-  // load the Change Album pop-up button with the
-  // album entries
-  [self updateChangeAlbumList];
 
-  [self updateUI];
-} 
-
-// failed
-- (void)albumListFetchTicket:(GDataServiceTicket *)ticket
-                failedWithError:(NSError *)error {
-  
-  [self setAlbumFeed:nil];
-  [self setAlbumFetchError:error];    
-  [self setAlbumFetchTicket:nil];
+  if (error == nil) {
+    // load the Change Album pop-up button with the
+    // album entries
+    [self updateChangeAlbumList];
+  }
 
   [self updateUI];
 }
@@ -515,24 +506,23 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 // for the album selected in the top list, begin retrieving the list of
 // photos
 - (void)fetchSelectedAlbum {
-  
+
   GDataEntryPhotoAlbum *album = [self selectedAlbum];
   if (album) {
-    
+
     // fetch the photos feed
     NSURL *feedURL = [[album feedLink] URL];
     if (feedURL) {
-      
+
       [self setPhotoFeed:nil];
       [self setPhotoFetchError:nil];
       [self setPhotoFetchTicket:nil];
-      
+
       GDataServiceGooglePhotos *service = [self googlePhotosService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchPhotoFeedWithURL:feedURL
-                                     delegate:self
-                            didFinishSelector:@selector(photosTicket:finishedWithFeed:)
-                              didFailSelector:@selector(photosTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:feedURL
+                                delegate:self
+                       didFinishSelector:@selector(photosTicket:finishedWithFeed:error:)];
       [self setPhotoFetchTicket:ticket];
 
       [self updateUI];
@@ -540,31 +530,16 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   }
 }
 
-//
-// entries list fetch callbacks
-//
-
-// fetched photo list successfully
+// photo list fetch callback
 - (void)photosTicket:(GDataServiceTicket *)ticket
-    finishedWithFeed:(GDataFeedPhotoAlbum *)feed {
-  
+    finishedWithFeed:(GDataFeedPhotoAlbum *)feed
+               error:(NSError *)error {
+
   [self setPhotoFeed:feed];
-  [self setPhotoFetchError:nil];
-  [self setPhotoFetchTicket:nil];
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)photosTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  [self setPhotoFeed:nil];
   [self setPhotoFetchError:error];
   [self setPhotoFetchTicket:nil];
-  
+
   [self updateUI];
-  
 }
 
 #pragma mark Add a photo
@@ -602,46 +577,45 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 }
 
 - (void)uploadPhotoAtPath:(NSString *)photoPath {
-  
+
   // get the path to the selected photo, and read it into an NSData
   NSString *photoName = [photoPath lastPathComponent];
-  
+
   NSData *photoData = [NSData dataWithContentsOfFile:photoPath];
   if (photoData) {
-    
+
     // make a new entry for the photo
     GDataEntryPhoto *newEntry = [GDataEntryPhoto photoEntry];
-    
+
     // set a title, description, and timestamp
     [newEntry setTitleWithString:photoName];
-    [newEntry setPhotoDescriptionWithString:photoPath];    
+    [newEntry setPhotoDescriptionWithString:photoPath];
     [newEntry setTimestamp:[GDataPhotoTimestamp timestampWithDate:[NSDate date]]];
-    
+
     // attach the NSData and set the MIME type for the photo
     [newEntry setPhotoData:photoData];
-    
+
     NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:photoPath
                                                defaultMIMEType:@"image/jpeg"];
     [newEntry setPhotoMIMEType:mimeType];
-    
+
     // get the feed URL for the album we're inserting the photo into
     GDataEntryPhotoAlbum *album = [self selectedAlbum];
     NSURL *feedURL = [[album feedLink] URL];
-    
+
     // make service tickets call back into our upload progress selector
     GDataServiceGooglePhotos *service = [self googlePhotosService];
-    
+
     SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
     [service setServiceUploadProgressSelector:progressSel];
-    
+
     // insert the entry into the album feed
     GDataServiceTicket *ticket;
-    ticket = [service fetchPhotoEntryByInsertingEntry:newEntry
-                                           forFeedURL:feedURL
-                                             delegate:self
-                                    didFinishSelector:@selector(addPhotoTicket:finishedWithEntry:)
-                                      didFailSelector:@selector(addPhotoTicket:failedWithError:)];
-    
+    ticket = [service fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:feedURL
+                                        delegate:self
+                               didFinishSelector:@selector(addPhotoTicket:finishedWithEntry:error:)];
+
     // no need for future tickets to monitor progress
     [service setServiceUploadProgressSelector:nil];
 
@@ -649,57 +623,55 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // nil data from photo file
     NSBeginAlertSheet(@"Cannot get photo file data", nil, nil, nil,
                       [self window], nil, nil,
-                      nil, nil, @"Could not read photo file: %@", photoName);      
-  }  
+                      nil, nil, @"Could not read photo file: %@", photoName);
+  }
 }
 
 // progress callback
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
-   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+- (void)inputStream:(GDataProgressMonitorInputStream *)stream
+hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
    ofTotalByteCount:(unsigned long long)dataLength {
-  
+
   [mUploadProgressIndicator setMinValue:0.0];
   [mUploadProgressIndicator setMaxValue:(double)dataLength];
   [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
 }
 
-// photo added successfully
+// photo add callback
 - (void)addPhotoTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryPhoto *)photoEntry {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added Photo", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo added: %@", 
-                    [[photoEntry title] stringValue]);
-  
-  // refetch the current album's photos
-  [self fetchSelectedAlbum];
-  [self updateUI];
-  [mUploadProgressIndicator setDoubleValue:0.0];
-} 
+     finishedWithEntry:(GDataEntryPhoto *)photoEntry
+                 error:(NSError *)error {
 
-// failure to add photo
-- (void)addPhotoTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo add failed: %@", error);
-  
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added Photo", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo added: %@",
+                      [[photoEntry title] stringValue]);
+
+    // refetch the current album's photos
+    [self fetchSelectedAlbum];
+    [self updateUI];
+  } else {
+    // upload failed
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo add failed: %@", error);
+  }
+
   [mUploadProgressIndicator setDoubleValue:0.0];
 }
 
 #pragma mark Delete a photo
 
 - (void)deleteSelectedPhoto {
-  
+
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
-    
+
     // make the user confirm that the selected photo should be deleted
     NSBeginAlertSheet(@"Delete Photo", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(deleteSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the item \"%@\"?",
                       [[photo title] stringValue]);
@@ -708,44 +680,38 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // delete dialog callback
 - (void)deleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     // delete the photo
     GDataEntryPhoto *photo = [self selectedPhoto];
-    
+
     if ([photo canEdit]) {
       GDataServiceGooglePhotos *service = [self googlePhotosService];
-      [service deletePhotoEntry:photo
-                       delegate:self 
-              didFinishSelector:@selector(deleteTicket:deletedEntry:)
-                didFailSelector:@selector(deleteTicket:failedWithError:)];
+      [service deleteEntry:photo
+                  delegate:self
+         didFinishSelector:@selector(deleteTicket:nilObject:error:)];
     }
   }
 }
 
-// photo deleted successfully
+// photo delete callback
 - (void)deleteTicket:(GDataServiceTicket *)ticket
-        deletedEntry:(GDataFeedPhoto *)object {
-  
-  NSBeginAlertSheet(@"Deleted Photo", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo deleted");
-  
-  // re-fetch the selected album's photos
-  [self fetchSelectedAlbum];
-  [self updateUI];
-} 
+           nilObject:(GDataFeedPhoto *)object
+               error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Deleted Photo", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo deleted");
 
-
-// failure to delete photo
-- (void)deleteTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo delete failed: %@", error);
-  
+    // re-fetch the selected album's photos
+    [self fetchSelectedAlbum];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo delete failed: %@", error);
+  }
 }
 
 #pragma mark Move a photo to another album
@@ -762,73 +728,63 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry {
-  
+
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
-    
+
     NSString *destAlbumID = [albumEntry GPhotoID];
-    
+
     // let the photo entry retain its target album ID as a property
     // (since the contextInfo isn't retained)
     [photo setProperty:destAlbumID forKey:kDestAlbumKey];
-    
+
     // make the user confirm that the selected photo should be moved
     NSBeginAlertSheet(@"Move Photo", @"Move", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(moveSheetDidEnd:returnCode:contextInfo:),
                       nil, nil,
                       @"Move the item \"%@\" to the album \"%@\"?",
                       [[photo title] stringValue],
-                      [[albumEntry title] stringValue]);      
+                      [[albumEntry title] stringValue]);
   }
 }
 
 // move dialog callback
 - (void)moveSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     // move the photo
     GDataEntryPhoto *photo = [self selectedPhoto];
-    GDataLink *link = [photo editLink];
-    
-    if (link) {
-      // set the album to move to as the photo's new album ID
-      NSString *albumID = [photo propertyForKey:kDestAlbumKey];
-      [photo setAlbumID:albumID];
-      
-      GDataServiceGooglePhotos *service = [self googlePhotosService];
-      [service fetchPhotoEntryByUpdatingEntry:photo
-                                  forEntryURL:[link URL]
-                                     delegate:self
-                            didFinishSelector:@selector(moveTicket:finishedWithEntry:)
-                              didFailSelector:@selector(moveTicket:failedWithError:)];
-    }
+
+    // set the album to move to as the photo's new album ID
+    NSString *albumID = [photo propertyForKey:kDestAlbumKey];
+    [photo setAlbumID:albumID];
+
+    GDataServiceGooglePhotos *service = [self googlePhotosService];
+    [service fetchEntryByUpdatingEntry:photo
+                              delegate:self
+                     didFinishSelector:@selector(moveTicket:finishedWithEntry:error:)];
   }
 }
 
-// photo moved successfully
+// photo move callback
 - (void)moveTicket:(GDataServiceTicket *)ticket
- finishedWithEntry:(GDataEntryPhoto *)entry {
-  
-  NSBeginAlertSheet(@"Moved Photo", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo moved");
-  
-  // re-fetch the selected album's photos
-  [self fetchSelectedAlbum];
-  [self updateUI];
-} 
+ finishedWithEntry:(GDataEntryPhoto *)entry
+             error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Moved Photo", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo moved");
 
-
-// failure to move photo
-- (void)moveTicket:(GDataServiceTicket *)ticket
-   failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Move failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo move failed: %@", error);
-  
+    // re-fetch the selected album's photos
+    [self fetchSelectedAlbum];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Move failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Photo move failed: %@", error);
+  }
 }
 
 #pragma mark Add a tag or comment to a photo
@@ -837,22 +793,22 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 
   NSString *tagText = [mTagField stringValue];
   if ([tagText length]) {
-    
+
     GDataEntryPhotoTag *tagEntry = [GDataEntryPhotoTag tagEntryWithString:tagText];
-    
+
     [self postToSelectedPhotoEntry:tagEntry];
   }
-  
+
 }
 
 - (void)addCommentToSelectedPhoto {
-  
+
   NSString *commentText = [mCommentField stringValue];
   if ([commentText length]) {
-    
+
     GDataEntryPhotoComment *commentEntry;
     commentEntry = [GDataEntryPhotoComment commentEntryWithString:commentText];
-    
+
     [self postToSelectedPhotoEntry:commentEntry];
   }
 }
@@ -862,16 +818,15 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
-    
+
     NSURL *postURL = [[photo feedLink] URL];
     if (postURL) {
-      
+
       GDataServiceGooglePhotos *service = [self googlePhotosService];
-      [service fetchPhotoEntryByInsertingEntry:entry
-                                    forFeedURL:postURL
-                                      delegate:self
-                             didFinishSelector:@selector(postToPhotoTicket:finishedWithEntry:)
-                               didFailSelector:@selector(postToPhotoTicket:failedWithError:)];
+      [service fetchEntryByInsertingEntry:entry
+                               forFeedURL:postURL
+                                 delegate:self
+                        didFinishSelector:@selector(postToPhotoTicket:finishedWithEntry:error:)];
     }
   }
 }
@@ -879,36 +834,30 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 
 // tag or comment posted successfully
 - (void)postToPhotoTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryPhotoBase *)entry {
-  
-  NSString *label;
-  
-  if ([entry isKindOfClass:[GDataEntryPhotoComment class]]) {
-    label = @"comment"; 
+        finishedWithEntry:(GDataEntryPhotoBase *)entry
+                    error:(NSError *)error {
+  if (error == nil) {
+    NSString *label;
+
+    if ([entry isKindOfClass:[GDataEntryPhotoComment class]]) {
+      label = @"comment";
+    } else {
+      label = @"tag";
+    }
+
+    NSBeginAlertSheet(@"Added", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Successfully added %@ to photo", label);
+
+    // re-fetch the selected album's photos
+    [self fetchSelectedAlbum];
+    [self updateUI];
   } else {
-    label = @"tag"; 
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Add post failed: %@", error);
   }
-  
-  NSBeginAlertSheet(@"Added", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Successfully added %@ to photo", label);
-  
-  // re-fetch the selected album's photos
-  [self fetchSelectedAlbum];
-  [self updateUI];
-} 
-
-
-// failure to post to photo
-- (void)postToPhotoTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Post failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Photo post failed: %@", error);
-  
 }
-
 
 ////////////////////////////////////////////////////////
 #pragma mark Text field delegate methods

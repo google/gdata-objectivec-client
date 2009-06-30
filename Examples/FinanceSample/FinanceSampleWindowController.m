@@ -210,6 +210,10 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
     
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // username/password may change
@@ -281,35 +285,21 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   
   GDataServiceGoogleFinance *service = [self financeService];
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleFinanceDefaultPortfoliosFeed];
-  [service fetchFinanceFeedWithURL:feedURL
-                          delegate:self
-                 didFinishSelector:@selector(portfolioFeedTicket:finishedWithFeed:)
-                   didFailSelector:@selector(portfolioFeedTicket:failedWithError:)];
+  [service fetchFeedWithURL:feedURL
+                   delegate:self
+          didFinishSelector:@selector(portfolioFeedTicket:finishedWithFeed:error:)];
   
   [self updateUI];
 }
 
-//
-// portfolio list fetch callbacks
-//
-
+// portfolio list fetch callback
 - (void)portfolioFeedTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedFinancePortfolio *)feed {
-  
+           finishedWithFeed:(GDataFeedFinancePortfolio *)feed
+                      error:(NSError *)error {
+
   [self setPortfolioFeed:feed];
-  [self setPortfolioFetchError:nil];    
-  
-  mIsPortfolioFetchPending = NO;
-  [self updateUI];
-} 
+  [self setPortfolioFetchError:error];
 
-// failed
-- (void)portfolioFeedTicket:(GDataServiceTicket *)ticket
-            failedWithError:(NSError *)error {
-  
-  [self setPortfolioFeed:nil];
-  [self setPortfolioFetchError:error];    
-  
   mIsPortfolioFetchPending = NO;
   [self updateUI];
 }
@@ -319,55 +309,39 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 // for the portfolio selected in the top list, begin retrieving the list of
 // positions
 - (void)fetchSelectedPortfolio {
-  
+
   GDataEntryFinancePortfolio *portfolio = [self selectedPortfolio];
   if (portfolio) {
-    
+
     NSURL *feedURL = [portfolio positionURL];
     if (feedURL) {
-      
+
       [self setPositionFeed:nil];
       [self setPositionFetchError:nil];
       mIsPositionFetchPending = YES;
-      
+
       [self setTransactionFeed:nil];
-      [self setTransactionFetchError:nil];      
-      
+      [self setTransactionFetchError:nil];
+
       GDataServiceGoogleFinance *service = [self financeService];
-      [service fetchFinanceFeedWithURL:feedURL
-                              delegate:self
-                     didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:)
-                       didFailSelector:@selector(positionFeedTicket:failedWithError:)];
-      [self updateUI];  
+      [service fetchFeedWithURL:feedURL
+                       delegate:self
+              didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:error:)];
+      [self updateUI];
     }
   }
 }
 
-//
-// positions fetch callbacks
-//
-
-// fetched position list successfully
+// positions fetch callback
 - (void)positionFeedTicket:(GDataServiceTicket *)ticket
-          finishedWithFeed:(GDataFeedFinancePosition *)feed {
-  
+          finishedWithFeed:(GDataFeedFinancePosition *)feed
+                     error:(NSError *)error {
+
   [self setPositionFeed:feed];
-  [self setPositionFetchError:nil];
-  
-  mIsPositionFetchPending = NO;
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)positionFeedTicket:(GDataServiceTicket *)ticket
-           failedWithError:(NSError *)error {
-  
-  [self setPositionFeed:nil];
   [self setPositionFetchError:error];
-  
+
   mIsPositionFetchPending = NO;
-  
+
   [self updateUI];
 }
 
@@ -376,58 +350,41 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 // for the position selected, fetch the transactions feed
 
 - (void)fetchSelectedPosition {
-  
+
   GDataEntryFinancePosition *position = [self selectedPosition];
   if (position) {
-    
+
     NSURL *feedURL = [position transactionURL];
     if (feedURL) {
-      
+
       [self setTransactionFeed:nil];
       [self setTransactionFetchError:nil];
       mIsTransactionFetchPending = YES;
-      
+
       [self setTransactionFeed:nil];
-      [self setTransactionFetchError:nil];      
-      
+      [self setTransactionFetchError:nil];
+
       GDataServiceGoogleFinance *service = [self financeService];
-      [service fetchFinanceFeedWithURL:feedURL
-                              delegate:self
-                     didFinishSelector:@selector(transactionFeedTicket:finishedWithFeed:)
-                       didFailSelector:@selector(transactionFeedTicket:failedWithError:)];
-      [self updateUI];  
+      [service fetchFeedWithURL:feedURL
+                       delegate:self
+              didFinishSelector:@selector(transactionFeedTicket:finishedWithFeed:error:)];
+      [self updateUI];
     }
   }
 }
 
-//
-// entries list fetch callbacks
-//
-
-// fetched entry list successfully
+// entry list fetch callbacks
 - (void)transactionFeedTicket:(GDataServiceTicket *)ticket
-             finishedWithFeed:(GDataFeedFinanceTransaction *)feed {
-  
+             finishedWithFeed:(GDataFeedFinanceTransaction *)feed
+                        error:(NSError *)error {
+
   [self setTransactionFeed:feed];
-  [self setTransactionFetchError:nil];
-  
-  mIsTransactionFetchPending = NO;
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)transactionFeedTicket:(GDataServiceTicket *)ticket
-              failedWithError:(NSError *)error {
-  
-  [self setTransactionFeed:nil];
   [self setTransactionFetchError:error];
-  
+
   mIsTransactionFetchPending = NO;
-  
+
   [self updateUI];
 }
-
 
 #pragma mark TableView delegate methods
 //

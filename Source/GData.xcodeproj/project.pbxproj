@@ -984,6 +984,34 @@
 		4FD23A490B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */; };
 		4FD23A4A0B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */; };
 		4FD23A4C0B8FDB2A007C0AD4 /* FeedCalendarTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */; };
+		4FD3069D0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD3069B0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m */; };
+		4FD3069E0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD3069C0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD3069F0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD3069B0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m */; };
+		4FD306A00FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD3069B0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m */; };
+		4FD306A50FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306A30FFACAB300C8C727 /* GDataEntrySiteMessage.m */; };
+		4FD306A60FFACAB300C8C727 /* GDataEntrySiteMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306A40FFACAB300C8C727 /* GDataEntrySiteMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306A70FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306A30FFACAB300C8C727 /* GDataEntrySiteMessage.m */; };
+		4FD306A80FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306A30FFACAB300C8C727 /* GDataEntrySiteMessage.m */; };
+		4FD306B30FFACAC200C8C727 /* GDataFeedSiteMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306AD0FFACAC200C8C727 /* GDataFeedSiteMessage.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306B40FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AE0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m */; };
+		4FD306B50FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AF0FFACAC200C8C727 /* GDataFeedSiteKeyword.m */; };
+		4FD306B60FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306B00FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306B70FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306B10FFACAC200C8C727 /* GDataFeedSiteMessage.m */; };
+		4FD306B80FFACAC200C8C727 /* GDataFeedSiteKeyword.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306B20FFACAC200C8C727 /* GDataFeedSiteKeyword.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306B90FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AE0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m */; };
+		4FD306BA0FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AF0FFACAC200C8C727 /* GDataFeedSiteKeyword.m */; };
+		4FD306BB0FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306B10FFACAC200C8C727 /* GDataFeedSiteMessage.m */; };
+		4FD306BC0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AE0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m */; };
+		4FD306BD0FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306AF0FFACAC200C8C727 /* GDataFeedSiteKeyword.m */; };
+		4FD306BE0FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306B10FFACAC200C8C727 /* GDataFeedSiteMessage.m */; };
+		4FD306C50FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306C30FFACADD00C8C727 /* GDataSiteKeyword.m */; };
+		4FD306C60FFACADD00C8C727 /* GDataSiteKeyword.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306C40FFACADD00C8C727 /* GDataSiteKeyword.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306C70FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306C30FFACADD00C8C727 /* GDataSiteKeyword.m */; };
+		4FD306C80FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306C30FFACADD00C8C727 /* GDataSiteKeyword.m */; };
+		4FD306CF0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD306CD0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FD306D00FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306CE0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m */; };
+		4FD306D10FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306CE0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m */; };
+		4FD306D20FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD306CE0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m */; };
 		4FD66F510EA80000001D365E /* GDataQueryBooks.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD66F460EA80000001D365E /* GDataQueryBooks.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD66F520EA80000001D365E /* GDataEntryVolume.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FD66F470EA80000001D365E /* GDataEntryVolume.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FD66F530EA80000001D365E /* GDataQueryBooks.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FD66F480EA80000001D365E /* GDataQueryBooks.m */; };
@@ -1645,6 +1673,27 @@
 		4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemCountsTest1.xml; path = Tests/FeedGoogleBaseItemCountsTest1.xml; sourceTree = "<group>"; };
 		4FD23A430B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedCalendarEventTest1.xml; path = Tests/FeedCalendarEventTest1.xml; sourceTree = "<group>"; };
 		4FD23A450B8FDB2A007C0AD4 /* FeedCalendarTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedCalendarTest1.xml; path = Tests/FeedCalendarTest1.xml; sourceTree = "<group>"; };
+		4FD3069B0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntrySiteCrawlIssue.m; sourceTree = "<group>"; };
+		4FD3069C0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntrySiteCrawlIssue.h; sourceTree = "<group>"; };
+		4FD306A30FFACAB300C8C727 /* GDataEntrySiteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntrySiteMessage.m; sourceTree = "<group>"; };
+		4FD306A40FFACAB300C8C727 /* GDataEntrySiteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntrySiteMessage.h; sourceTree = "<group>"; };
+		4FD306AD0FFACAC200C8C727 /* GDataFeedSiteMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedSiteMessage.h; sourceTree = "<group>"; };
+		4FD306AE0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedSiteCrawlIssue.m; sourceTree = "<group>"; };
+		4FD306AF0FFACAC200C8C727 /* GDataFeedSiteKeyword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedSiteKeyword.m; sourceTree = "<group>"; };
+		4FD306B00FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedSiteCrawlIssue.h; sourceTree = "<group>"; };
+		4FD306B10FFACAC200C8C727 /* GDataFeedSiteMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedSiteMessage.m; sourceTree = "<group>"; };
+		4FD306B20FFACAC200C8C727 /* GDataFeedSiteKeyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedSiteKeyword.h; sourceTree = "<group>"; };
+		4FD306C30FFACADD00C8C727 /* GDataSiteKeyword.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataSiteKeyword.m; sourceTree = "<group>"; };
+		4FD306C40FFACADD00C8C727 /* GDataSiteKeyword.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataSiteKeyword.h; sourceTree = "<group>"; };
+		4FD306CD0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataWebmasterToolsConstants.h; sourceTree = "<group>"; };
+		4FD306CE0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataWebmasterToolsConstants.m; sourceTree = "<group>"; };
+		4FD306E20FFACB3C00C8C727 /* FeedWebmasterToolsKeywords1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsKeywords1.xml; path = Tests/FeedWebmasterToolsKeywords1.xml; sourceTree = "<group>"; };
+		4FD306E30FFACB3C00C8C727 /* FeedWebmasterToolsCrawlIssues1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsCrawlIssues1.xml; path = Tests/FeedWebmasterToolsCrawlIssues1.xml; sourceTree = "<group>"; };
+		4FD306E40FFACB3C00C8C727 /* FeedWebmasterToolsSitemap1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsSitemap1.xml; path = Tests/FeedWebmasterToolsSitemap1.xml; sourceTree = "<group>"; };
+		4FD306E50FFACB3C00C8C727 /* FeedWebmasterToolsSite1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsSite1.xml; path = Tests/FeedWebmasterToolsSite1.xml; sourceTree = "<group>"; };
+		4FD306E60FFACB3C00C8C727 /* FeedWebmasterToolsMessages1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsMessages1.xml; path = Tests/FeedWebmasterToolsMessages1.xml; sourceTree = "<group>"; };
+		4FD306E90FFACB7000C8C727 /* FeedServiceDocTest2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedServiceDocTest2.xml; path = Tests/FeedServiceDocTest2.xml; sourceTree = "<group>"; };
+		4FD306EA0FFACB7000C8C727 /* FeedServiceDocTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedServiceDocTest1.xml; path = Tests/FeedServiceDocTest1.xml; sourceTree = "<group>"; };
 		4FD66F460EA80000001D365E /* GDataQueryBooks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryBooks.h; path = Clients/Books/GDataQueryBooks.h; sourceTree = "<group>"; };
 		4FD66F470EA80000001D365E /* GDataEntryVolume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryVolume.h; path = Clients/Books/GDataEntryVolume.h; sourceTree = "<group>"; };
 		4FD66F480EA80000001D365E /* GDataQueryBooks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryBooks.m; path = Clients/Books/GDataQueryBooks.m; sourceTree = "<group>"; };
@@ -2096,18 +2145,32 @@
 				4F2D4B7A0E4A5A3F008D49F8 /* GDataWebmasterTools.h */,
 				4F2D4B6E0E4A5A3F008D49F8 /* GDataFeedSite.h */,
 				4F2D4B6F0E4A5A3F008D49F8 /* GDataFeedSite.m */,
+				4FD306AD0FFACAC200C8C727 /* GDataFeedSiteMessage.h */,
+				4FD306B10FFACAC200C8C727 /* GDataFeedSiteMessage.m */,
+				4FD306B00FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.h */,
+				4FD306AE0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m */,
+				4FD306B20FFACAC200C8C727 /* GDataFeedSiteKeyword.h */,
+				4FD306AF0FFACAC200C8C727 /* GDataFeedSiteKeyword.m */,
 				4F2D4B700E4A5A3F008D49F8 /* GDataFeedSitemap.h */,
 				4F2D4B710E4A5A3F008D49F8 /* GDataFeedSitemap.m */,
 				4F2D4B6A0E4A5A3F008D49F8 /* GDataEntrySite.h */,
 				4F2D4B6B0E4A5A3F008D49F8 /* GDataEntrySite.m */,
 				4F2D4B6C0E4A5A3F008D49F8 /* GDataEntrySitemap.h */,
 				4F2D4B6D0E4A5A3F008D49F8 /* GDataEntrySitemap.m */,
+				4FD3069C0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.h */,
+				4FD3069B0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m */,
+				4FD306A40FFACAB300C8C727 /* GDataEntrySiteMessage.h */,
+				4FD306A30FFACAB300C8C727 /* GDataEntrySiteMessage.m */,
+				4FD306CD0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.h */,
+				4FD306CE0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m */,
 				4F2D4B740E4A5A3F008D49F8 /* GDataSitemapMobile.h */,
 				4F2D4B750E4A5A3F008D49F8 /* GDataSitemapMobile.m */,
 				4F2D4B760E4A5A3F008D49F8 /* GDataSitemapNews.h */,
 				4F2D4B770E4A5A3F008D49F8 /* GDataSitemapNews.m */,
 				4F2D4B780E4A5A3F008D49F8 /* GDataSiteVerificationMethod.h */,
 				4F2D4B790E4A5A3F008D49F8 /* GDataSiteVerificationMethod.m */,
+				4FD306C40FFACADD00C8C727 /* GDataSiteKeyword.h */,
+				4FD306C30FFACADD00C8C727 /* GDataSiteKeyword.m */,
 				4F2D4B720E4A5A3F008D49F8 /* GDataServiceGoogleWebmasterTools.h */,
 				4F2D4B730E4A5A3F008D49F8 /* GDataServiceGoogleWebmasterTools.m */,
 			);
@@ -2635,13 +2698,36 @@
 				4F022FD30D58FF4F00EE6862 /* Photos */,
 				4F986F820F4F3B7C00C349F0 /* Spreadsheet */,
 				4F45B0AD0D510A3100004F37 /* YouTube */,
+				4FD306D40FFACB0A00C8C727 /* WebmasterTools */,
 				4FD66F700EA80689001D365E /* FeedDocListTest1.xml */,
 				4F346E500D7508AC006033E0 /* FeedContactTest1.xml */,
 				4F986F950F4F3BCA00C349F0 /* FeedHealthProfile1.xml */,
 				4F82A1990FCC869F00C477D4 /* FeedMapFeaturesTest1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
+				4FD306E70FFACB5D00C8C727 /* ServiceDocuments */,
 			);
 			name = "XML Files";
+			sourceTree = "<group>";
+		};
+		4FD306D40FFACB0A00C8C727 /* WebmasterTools */ = {
+			isa = PBXGroup;
+			children = (
+				4FD306E20FFACB3C00C8C727 /* FeedWebmasterToolsKeywords1.xml */,
+				4FD306E30FFACB3C00C8C727 /* FeedWebmasterToolsCrawlIssues1.xml */,
+				4FD306E40FFACB3C00C8C727 /* FeedWebmasterToolsSitemap1.xml */,
+				4FD306E50FFACB3C00C8C727 /* FeedWebmasterToolsSite1.xml */,
+				4FD306E60FFACB3C00C8C727 /* FeedWebmasterToolsMessages1.xml */,
+			);
+			name = WebmasterTools;
+			sourceTree = "<group>";
+		};
+		4FD306E70FFACB5D00C8C727 /* ServiceDocuments */ = {
+			isa = PBXGroup;
+			children = (
+				4FD306E90FFACB7000C8C727 /* FeedServiceDocTest2.xml */,
+				4FD306EA0FFACB7000C8C727 /* FeedServiceDocTest1.xml */,
+			);
+			name = ServiceDocuments;
 			sourceTree = "<group>";
 		};
 		4FD66F420EA7FFE9001D365E /* Books */ = {
@@ -3007,6 +3093,13 @@
 				4F3A81400FDED46200A89E1F /* GDataEntryContactBase.h in Headers */,
 				4F3A81460FDED46B00A89E1F /* GDataEntryContactProfile.h in Headers */,
 				4F3A814C0FDED4B900A89E1F /* GDataFeedContactProfile.h in Headers */,
+				4FD3069E0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.h in Headers */,
+				4FD306A60FFACAB300C8C727 /* GDataEntrySiteMessage.h in Headers */,
+				4FD306B30FFACAC200C8C727 /* GDataFeedSiteMessage.h in Headers */,
+				4FD306B60FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.h in Headers */,
+				4FD306B80FFACAC200C8C727 /* GDataFeedSiteKeyword.h in Headers */,
+				4FD306C60FFACADD00C8C727 /* GDataSiteKeyword.h in Headers */,
+				4FD306CF0FFACAEA00C8C727 /* GDataWebmasterToolsConstants.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3412,6 +3505,13 @@
 				4F3A81420FDED46200A89E1F /* GDataEntryContactBase.m in Sources */,
 				4F3A81480FDED46B00A89E1F /* GDataEntryContactProfile.m in Sources */,
 				4F3A814E0FDED4B900A89E1F /* GDataFeedContactProfile.m in Sources */,
+				4FD3069F0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */,
+				4FD306A70FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */,
+				4FD306B90FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */,
+				4FD306BA0FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */,
+				4FD306BB0FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */,
+				4FD306C70FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */,
+				4FD306D10FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3684,6 +3784,13 @@
 				4F3A81430FDED46200A89E1F /* GDataEntryContactBase.m in Sources */,
 				4F3A81490FDED46B00A89E1F /* GDataEntryContactProfile.m in Sources */,
 				4F3A814F0FDED4B900A89E1F /* GDataFeedContactProfile.m in Sources */,
+				4FD306A00FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */,
+				4FD306A80FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */,
+				4FD306BC0FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */,
+				4FD306BD0FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */,
+				4FD306BE0FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */,
+				4FD306C80FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */,
+				4FD306D20FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3954,6 +4061,13 @@
 				4F3A81410FDED46200A89E1F /* GDataEntryContactBase.m in Sources */,
 				4F3A81470FDED46B00A89E1F /* GDataEntryContactProfile.m in Sources */,
 				4F3A814D0FDED4B900A89E1F /* GDataFeedContactProfile.m in Sources */,
+				4FD3069D0FFACAA700C8C727 /* GDataEntrySiteCrawlIssue.m in Sources */,
+				4FD306A50FFACAB300C8C727 /* GDataEntrySiteMessage.m in Sources */,
+				4FD306B40FFACAC200C8C727 /* GDataFeedSiteCrawlIssue.m in Sources */,
+				4FD306B50FFACAC200C8C727 /* GDataFeedSiteKeyword.m in Sources */,
+				4FD306B70FFACAC200C8C727 /* GDataFeedSiteMessage.m in Sources */,
+				4FD306C50FFACADD00C8C727 /* GDataSiteKeyword.m in Sources */,
+				4FD306D00FFACAEA00C8C727 /* GDataWebmasterToolsConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

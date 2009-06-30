@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  CalendarSampleWindowController.m
@@ -61,7 +61,7 @@
 - (GDataFeedCalendar *)calendarFeed;
 - (void)setCalendarFeed:(GDataFeedCalendar *)feed;
 - (NSError *)calendarFetchError;
-- (void)setCalendarFetchError:(NSError *)error;  
+- (void)setCalendarFetchError:(NSError *)error;
 - (GDataServiceTicket *)calendarFetchTicket;
 - (void)setCalendarFetchTicket:(GDataServiceTicket *)ticket;
 
@@ -71,7 +71,7 @@
 - (void)setEventFetchError:(NSError *)error;
 - (GDataServiceTicket *)eventFetchTicket;
 - (void)setEventFetchTicket:(GDataServiceTicket *)ticket;
-  
+
 - (GDataFeedACL *)ACLFeed;
 - (void)setACLFeed:(GDataFeedACL *)feed;
 - (NSError *)ACLFetchError;
@@ -107,10 +107,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 
 + (CalendarSampleWindowController *)sharedCalendarSampleWindowController {
-  
+
   if (!gCalendarSampleWindowController) {
     gCalendarSampleWindowController = [[CalendarSampleWindowController alloc] init];
-  }  
+  }
   return gCalendarSampleWindowController;
 }
 
@@ -131,7 +131,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mCalendarResultTextField setFont:resultTextFont];
   [mEventResultTextField setFont:resultTextFont];
-  
+
   [mCalendarTable setDoubleAction:@selector(logEntryXML:)];
   [mEventTable setDoubleAction:@selector(logEntryXML:)];
 
@@ -142,11 +142,11 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [mCalendarFeed release];
   [mCalendarFetchError release];
   [mCalendarFetchTicket release];
-  
+
   [mEventFeed release];
   [mEventFetchError release];
   [mEventFetchTicket release];
-  
+
   [mACLFeed release];
   [mACLFetchError release];
   [mACLFetchTicket release];
@@ -154,7 +154,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [mSettingsFeed release];
   [mSettingsFetchError release];
   [mSettingsFetchTicket release];
-  
+
   [super dealloc];
 }
 
@@ -316,14 +316,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (NSString *)displayStringForACLEntry:(GDataEntryACL *)aclEntry  {
-  
-  // make a concise, readable string showing the scope type, scope value, 
+
+  // make a concise, readable string showing the scope type, scope value,
   // and role value for an ACL entry, like:
   //
   //    scope: user "fred@flintstone.com"  role:owner
-  
+
   NSMutableString *resultStr = [NSMutableString string];
-  
+
   GDataACLScope *scope = [aclEntry scope];
   if (scope) {
     NSString *type = ([scope type] ? [scope type] : @"");
@@ -332,24 +332,24 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       value = [NSString stringWithFormat:@"\"%@\"", [scope value]];
     }
     [resultStr appendFormat:@"scope: %@ %@  ", type, value];
-  }  
-  
+  }
+
   GDataACLRole *role = [aclEntry role];
   if (role) {
     // for the role value, display only anything after the # character
     // since roles may be rather long, like
     // http://schemas.google.com/calendar/2005/role#collaborator
-    
+
     NSString *value = [role value];
-    
+
     NSRange poundRange = [value rangeOfString:@"#" options:NSBackwardsSearch];
-    if (poundRange.location != NSNotFound 
+    if (poundRange.location != NSNotFound
         && [value length] > (1 + poundRange.location)) {
       value = [value substringFromIndex:(1 + poundRange.location)];
     }
     [resultStr appendFormat:@"role: %@", value];
   }
-  return resultStr;  
+  return resultStr;
 }
 
 - (NSString *)displayStringForSettingsEntry:(GDataEntryCalendarSettings *)settingsEntry  {
@@ -364,7 +364,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 #pragma mark IBActions
 
 - (IBAction)getCalendarClicked:(id)sender {
-  
+
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
   NSString *username = [mUsernameField stringValue];
@@ -374,7 +374,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     // if no domain was supplied, add @gmail.com
     username = [username stringByAppendingString:@"@gmail.com"];
   }
-  
+
   [mUsernameField setStringValue:username];
 
   [self fetchAllCalendars];
@@ -382,7 +382,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 - (IBAction)calendarSegmentClicked:(id)sender {
   // get the new calendar list for the selected segment
-  [self getCalendarClicked:sender]; 
+  [self getCalendarClicked:sender];
 }
 
 - (IBAction)addCalendarClicked:(id)sender {
@@ -390,7 +390,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (IBAction)renameCalendarClicked:(id)sender {
-  [self renameSelectedCalendar]; 
+  [self renameSelectedCalendar];
 }
 
 - (IBAction)deleteCalendarClicked:(id)sender {
@@ -413,7 +413,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if ([self isEventsSegmentSelected]) {
     [self addAnEvent];
   } else {
-    [self addAnACLEntry]; 
+    [self addAnACLEntry];
   }
 }
 
@@ -421,7 +421,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if ([self isEventsSegmentSelected]) {
     [self editSelectedEvent];
   } else {
-    [self editSelectedACLEntry]; 
+    [self editSelectedACLEntry];
   }
 }
 
@@ -461,24 +461,24 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (IBAction)entrySegmentClicked:(id)sender {
-  [self fetchSelectedCalendar];  
+  [self fetchSelectedCalendar];
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
 }
 
 // logEntryXML is called when the user double-clicks on a calendar,
 // event entry, or ACL entry
 - (IBAction)logEntryXML:(id)sender {
-  
+
   int row = [sender selectedRow];
-  
+
   if (sender == mCalendarTable) {
     // get the calendar entry's title
     GDataEntryCalendar *calendar = [[mCalendarFeed entries] objectAtIndex:row];
     NSLog(@"%@", [calendar XMLElement]);
-    
+
   } else if (sender == mEventTable) {
     // get the selected entry
     GDataFeedBase *feed = [self feedForSelectedSegment];
@@ -497,34 +497,38 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 // fetched data.)
 
 - (GDataServiceGoogleCalendar *)calendarService {
-  
+
   static GDataServiceGoogleCalendar* service = nil;
-  
+
   if (!service) {
     service = [[GDataServiceGoogleCalendar alloc] init];
-    
+
     [service setUserAgent:@"MyCompany-SampleCalendarApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+
+    // iPhone apps will typically disable caching dated data or will call
+    // clearLastModifiedDates after done fetching to avoid wasting
+    // memory.
   }
 
   // update the username/password each time the service is requested
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
-  
+
   [service setUserCredentialsWithUsername:username
                                  password:password];
-  
+
   return service;
 }
 
 // get the calendar selected in the top list, or nil if none
 - (GDataEntryCalendar *)selectedCalendar {
-  
+
   NSArray *calendars = [mCalendarFeed entries];
   int rowIndex = [mCalendarTable selectedRow];
   if ([calendars count] > 0 && rowIndex > -1) {
-    
+
     GDataEntryCalendar *calendar = [calendars objectAtIndex:rowIndex];
     return calendar;
   }
@@ -533,13 +537,13 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // get the events selected in the bottom list, or nil if none
 - (NSArray *)selectedEvents {
-  
+
   if ([self isEventsSegmentSelected]) {
-    
+
     NSIndexSet *indexes = [mEventTable selectedRowIndexes];
     NSArray *events = [mEventFeed entries];
     NSArray *selectedEvents = [events objectsAtIndexes:indexes];
-    
+
     if ([selectedEvents count] > 0) {
       return selectedEvents;
     }
@@ -548,10 +552,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataEntryCalendarEvent *)singleSelectedEvent {
-  
+
   NSArray *selectedEvents = [self selectedEvents];
   if ([selectedEvents count] == 1) {
-    return [selectedEvents objectAtIndex:0]; 
+    return [selectedEvents objectAtIndex:0];
   }
   return nil;
 }
@@ -559,13 +563,13 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // get the ACL selected in the bottom list, or nil if none
 - (GDataEntryACL *)selectedACLEntry {
-  
+
   if ([self isACLSegmentSelected]) {
 
     NSArray *entries = [mACLFeed entries];
     int rowIndex = [mEventTable selectedRow];
     if ([entries count] > 0 && rowIndex > -1) {
-      
+
       GDataEntryACL *entry = [entries objectAtIndex:rowIndex];
       return entry;
     }
@@ -602,7 +606,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 - (GDataFeedBase *)feedForSelectedSegment {
   int segmentNum = [mEntrySegmentedControl selectedSegment];
-  
+
   if (segmentNum == kEventsSegment) return mEventFeed;
   if (segmentNum == kACLSegment) return mACLFeed;
   return mSettingsFeed;
@@ -611,68 +615,64 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 #pragma mark Add/delete calendars
 
 - (void)addACalendar {
-  
+
   NSString *newCalendarName = [mCalendarNameField stringValue];
-  
+
   NSURL *postURL = [[mCalendarFeed postLink] URL];
 
   if ([newCalendarName length] > 0 && postURL != nil) {
-    
+
     GDataServiceGoogleCalendar *service = [self calendarService];
-    
+
     GDataEntryCalendar *newEntry = [GDataEntryCalendar calendarEntry];
     [newEntry setTitleWithString:newCalendarName];
     [newEntry setIsSelected:YES]; // check the calendar in the web display
-    
-    // as of Dec. '07 the server requires a color, 
+
+    // as of Dec. '07 the server requires a color,
     // or returns a 404 (Not Found) error
     [newEntry setColor:[GDataColorProperty valueWithString:@"#2952A3"]];
 
-    [service fetchCalendarEntryByInsertingEntry:newEntry
-                                     forFeedURL:postURL 
-                                       delegate:self
-                              didFinishSelector:@selector(addCalendarTicket:addedEntry:)
-                                didFailSelector:@selector(addCalendarTicket:failedWithError:)];
+    [service fetchEntryByInsertingEntry:newEntry
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(addCalendarTicket:addedEntry:error:)];
   }
 }
 
-// calendar added successfully
+// add calendar callback
 - (void)addCalendarTicket:(GDataServiceTicket *)ticket
-               addedEntry:(GDataEntryCalendar *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added Calendar", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar added");
-  
-  [mCalendarNameField setStringValue:@""];
-  
-  // refetch the current calendars
-  [self fetchAllCalendars];
-  [self updateUI];
-} 
+               addedEntry:(GDataEntryCalendar *)object
+                    error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added Calendar", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar added");
 
-// failure to add event
-- (void)addCalendarTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar add failed: %@", error);
-  
+    [mCalendarNameField setStringValue:@""];
+
+    // refetch the current calendars
+    [self fetchAllCalendars];
+    [self updateUI];
+  } else {
+    // add failed
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar add failed: %@", error);
+  }
 }
 
 - (void)renameSelectedCalendar {
-  
+
   GDataEntryCalendar *selectedCalendar = [self selectedCalendar];
   NSString *newCalendarName = [mCalendarNameField stringValue];
   NSURL *editURL = [[[self selectedCalendar] editLink] URL];
 
   if (selectedCalendar && editURL && [newCalendarName length] > 0) {
-    
+
     // make the user confirm that the selected calendar should be renamed
     NSBeginAlertSheet(@"Rename calendar", @"Rename", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(renameCalendarSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Rename the calendar \"%@\" as \"%@\"?",
                       [[selectedCalendar title] stringValue],
@@ -681,116 +681,104 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (void)renameCalendarSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     NSString *newCalendarName = [mCalendarNameField stringValue];
-    NSURL *editURL = [[[self selectedCalendar] editLink] URL];
     GDataEntryCalendar *selectedCalendar = [self selectedCalendar];
-    
+
     GDataServiceGoogleCalendar *service = [self calendarService];
-    
+
     // rename it
     [selectedCalendar setTitleWithString:newCalendarName];
-    
-    [service fetchCalendarEntryByUpdatingEntry:selectedCalendar
-                                   forEntryURL:editURL
-                                      delegate:self
-                             didFinishSelector:@selector(renameCalendarTicket:renamedEntry:)
-                               didFailSelector:@selector(renameCalendarTicket:failedWithError:)];
+
+    [service fetchEntryByUpdatingEntry:selectedCalendar
+                              delegate:self
+                     didFinishSelector:@selector(renameCalendarTicket:renamedEntry:error:)];
   }
 }
 
-// calendar renamed successfully
+// rename calendar callback
 - (void)renameCalendarTicket:(GDataServiceTicket *)ticket
-                renamedEntry:(GDataEntryCalendar *)object {
-  
-  // tell the user that the rename worked
-  NSBeginAlertSheet(@"Renamed Calendar", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar renamed");
-  
-  // refetch the current calendars
-  [self fetchAllCalendars];
-  [self updateUI];
-} 
+                renamedEntry:(GDataEntryCalendar *)object
+                       error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the rename worked
+    NSBeginAlertSheet(@"Renamed Calendar", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar renamed");
 
-// failure to rename event
-- (void)renameCalendarTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Rename failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar rename failed: %@", error);
-  
+    // refetch the current calendars
+    [self fetchAllCalendars];
+    [self updateUI];
+  } else {
+    // rename failed
+    NSBeginAlertSheet(@"Rename failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar rename failed: %@", error);
+  }
 }
 
-
 - (void)deleteSelectedCalendar {
-  
+
   GDataEntryCalendar *selectedCalendar = [self selectedCalendar];
   if (selectedCalendar) {
     // make the user confirm that the selected calendar should be deleted
     NSBeginAlertSheet(@"Delete calendar", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(deleteCalendarSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the calendar \"%@\"?",
                       [[selectedCalendar title] stringValue]);
   }
-  
+
 }
 
 - (void)deleteCalendarSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     NSURL *editURL = [[[self selectedCalendar] editLink] URL];
-    
+
     if (editURL != nil) {
-      
+
       GDataServiceGoogleCalendar *service = [self calendarService];
-      
-      [service deleteCalendarEntry:[self selectedCalendar]
-                          delegate:self
-                 didFinishSelector:@selector(deleteCalendarTicket:deletedEntry:)
-                   didFailSelector:@selector(deleteCalendarTicket:failedWithError:)];
+
+      [service deleteEntry:[self selectedCalendar]
+                  delegate:self
+         didFinishSelector:@selector(deleteCalendarTicket:deletedEntry:error:)];
     }
   }
 }
 
-// calendar deleted successfully
+// delete calendar callback
 - (void)deleteCalendarTicket:(GDataServiceTicket *)ticket
-                deletedEntry:(GDataEntryCalendar *)object {
-  
-  // tell the user that the delete worked
-  NSBeginAlertSheet(@"Deleted Calendar", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar deleted");
-  
-  // refetch the current calendars
-  [self fetchAllCalendars];
-  [self updateUI];
-} 
+                deletedEntry:(GDataEntryCalendar *)object
+                       error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the delete worked
+    NSBeginAlertSheet(@"Deleted Calendar", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar deleted");
 
-// failure to delete event
-- (void)deleteCalendarTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Calendar delete failed: %@", error);
-  
+    // refetch the current calendars
+    [self fetchAllCalendars];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Calendar delete failed: %@", error);
+  }
 }
 
 #pragma mark Fetch all calendars
 
 // begin retrieving the list of the user's calendars
 - (void)fetchAllCalendars {
-  
+
   [self setCalendarFeed:nil];
   [self setCalendarFetchError:nil];
   [self setCalendarFetchTicket:nil];
-  
+
   [self setEventFeed:nil];
   [self setEventFetchError:nil];
   [self setEventFetchTicket:nil];
@@ -798,14 +786,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [self setACLFeed:nil];
   [self setACLFetchError:nil];
   [self setACLFetchTicket:nil];
-  
+
   [self setSettingsFeed:nil];
   [self setSettingsFetchError:nil];
   [self setSettingsFetchTicket:nil];
-  
+
   GDataServiceGoogleCalendar *service = [self calendarService];
   GDataServiceTicket *ticket;
-  
+
   int segment = [mCalendarSegmentedControl selectedSegment];
   NSString *feedURLString;
 
@@ -815,20 +803,19 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   // allows subscriptions to non-owned calendars to be inserted and deleted,
   // just because it's a bit too complex to easily keep distinct from add/
   // delete in the user interface.
-  
+
   if (segment == kAllCalendarsSegment) {
     feedURLString = kGDataGoogleCalendarDefaultFeed;
   } else {
     feedURLString = kGDataGoogleCalendarDefaultOwnCalendarsFeed;
   }
-  
-  ticket = [service fetchCalendarFeedWithURL:[NSURL URLWithString:feedURLString]
-                                    delegate:self
-                           didFinishSelector:@selector(calendarListTicket:finishedWithFeed:)
-                             didFailSelector:@selector(calendarListTicket:failedWithError:)];
-  
+
+  ticket = [service fetchFeedWithURL:[NSURL URLWithString:feedURLString]
+                            delegate:self
+                   didFinishSelector:@selector(calendarListTicket:finishedWithFeed:error:)];
+
   [self setCalendarFetchTicket:ticket];
-  
+
   [self updateUI];
 }
 
@@ -836,23 +823,12 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 // calendar list fetch callbacks
 //
 
-// finished calendar list successfully
+// fetch calendar metafeed callback
 - (void)calendarListTicket:(GDataServiceTicket *)ticket
-          finishedWithFeed:(GDataFeedCalendar *)feed {
+          finishedWithFeed:(GDataFeedCalendar *)feed
+                     error:(NSError *)error {
   [self setCalendarFeed:feed];
-  [self setCalendarFetchError:nil];    
-  [self setCalendarFetchTicket:nil];
-
-  [self updateUI];
-  
-} 
-
-// failed
-- (void)calendarListTicket:(GDataServiceTicket *)ticket
-           failedWithError:(NSError *)error {
-  
-  [self setCalendarFeed:nil];
-  [self setCalendarFetchError:error];    
+  [self setCalendarFetchError:error];
   [self setCalendarFetchTicket:nil];
 
   [self updateUI];
@@ -861,47 +837,46 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 #pragma mark -
 
 - (void)fetchSelectedCalendar {
-  
+
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
-    
+
     BOOL hasACL = ([[self selectedCalendar] ACLLink] != nil);
     BOOL isDisplayingEvents = [self isEventsSegmentSelected];
     BOOL isDisplayingACL = [self isACLSegmentSelected];
-    
+
     if (isDisplayingEvents || (isDisplayingACL && !hasACL)) {
       [self fetchSelectedCalendarEvents];
     } else if (isDisplayingACL) {
-      [self fetchSelectedCalendarACLEntries]; 
+      [self fetchSelectedCalendarACLEntries];
     } else {
-      [self fetchSelectedCalendarSettingsEntries]; 
+      [self fetchSelectedCalendarSettingsEntries];
     }
   }
 }
 
-#pragma mark Fetch a calendar's events 
+#pragma mark Fetch a calendar's events
 
 // for the calendar selected in the top list, begin retrieving the list of
 // events
 - (void)fetchSelectedCalendarEvents {
-  
+
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
-    
+
     // fetch the events feed
     NSURL *feedURL = [[calendar alternateLink] URL];
     if (feedURL) {
-      
+
       [self setEventFeed:nil];
       [self setEventFetchError:nil];
       [self setEventFetchTicket:nil];
-      
+
       GDataServiceGoogleCalendar *service = [self calendarService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchCalendarEventFeedWithURL:feedURL
-                                             delegate:self
-                                    didFinishSelector:@selector(calendarEventsTicket:finishedWithFeed:)
-                                      didFailSelector:@selector(calendarEventsTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:feedURL
+                                delegate:self
+                       didFinishSelector:@selector(calendarEventsTicket:finishedWithFeed:error:)];
       [self setEventFetchTicket:ticket];
 
       [self updateUI];
@@ -909,45 +884,30 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   }
 }
 
-//
-// entries list fetch callbacks
-//
-
-// fetched event list successfully
+// event list fetch callback
 - (void)calendarEventsTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedCalendarEvent *)feed {
-  
+            finishedWithFeed:(GDataFeedCalendarEvent *)feed
+                       error:(NSError *)error {
+
   [self setEventFeed:feed];
-  [self setEventFetchError:nil];
-  [self setEventFetchTicket:nil];
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)calendarEventsTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  [self setEventFeed:nil];
   [self setEventFetchError:error];
   [self setEventFetchTicket:nil];
-  
+
   [self updateUI];
-  
 }
 
 #pragma mark Add an event
 
 - (void)addAnEvent {
-  
+
   // make a new event
   GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];
-  
+
   // set a title and description (the author is the authenticated user adding
   // the entry)
   [newEvent setTitleWithString:@"Sample Added Event"];
   [newEvent setContentWithString:@"Description of sample added event"];
-  
+
   // start time now, end time in an hour, reminder 10 minutes before
   NSDate *anHourFromNow = [NSDate dateWithTimeIntervalSinceNow:60*60];
   GDataDateTime *startDateTime = [GDataDateTime dateTimeWithDate:[NSDate date]
@@ -956,12 +916,12 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                                                       timeZone:[NSTimeZone systemTimeZone]];
   GDataReminder *reminder = [GDataReminder reminder];
   [reminder setMinutes:@"10"];
-  
+
   GDataWhen *when = [GDataWhen whenWithStartTime:startDateTime
                                          endTime:endDateTime];
   [when addReminder:reminder];
   [newEvent addTime:when];
-  
+
   // display the event edit dialog
   EditEventWindowController *controller = [[EditEventWindowController alloc] init];
   [controller runModalForTarget:self
@@ -971,23 +931,22 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // callback from the edit event dialog
 - (void)addEditControllerFinished:(EditEventWindowController *)addEventController {
-  
+
   if ([addEventController wasSaveClicked]) {
-    
+
     // insert the event into the selected calendar
     GDataEntryCalendarEvent *event = [addEventController event];
     if (event) {
-      
+
       GDataServiceGoogleCalendar *service = [self calendarService];
-      
+
       GDataEntryCalendar *calendar = [self selectedCalendar];
       NSURL *feedURL = [[calendar alternateLink] URL];
-      
-      [service fetchCalendarEventByInsertingEntry:event
-                                       forFeedURL:feedURL
-                                         delegate:self
-                                didFinishSelector:@selector(addEventTicket:addedEntry:)
-                                  didFailSelector:@selector(addEventTicket:failedWithError:)];
+
+      [service fetchEntryByInsertingEntry:event
+                               forFeedURL:feedURL
+                                 delegate:self
+                        didFinishSelector:@selector(addEventTicket:addedEntry:error:)];
     }
   }
   [addEventController autorelease];
@@ -995,33 +954,29 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // event added successfully
 - (void)addEventTicket:(GDataServiceTicket *)ticket
-            addedEntry:(GDataFeedCalendarEvent *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added Event", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event added");
-  
-  // refetch the current calendar's events
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+            addedEntry:(GDataFeedCalendarEvent *)entry
+                 error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added Event", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event added");
 
-// failure to add event
-- (void)addEventTicket:(GDataServiceTicket *)ticket
-       failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event add failed: %@", error);
-  
+    // refetch the current calendar's events
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    // the add failed
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event add failed: %@", error);
+  }
 }
-
 
 #pragma mark Edit an event
 
 - (void)editSelectedEvent {
-  
+
   // display the event edit dialog
   GDataEntryCalendarEvent *event = [self singleSelectedEvent];
   if (event) {
@@ -1035,72 +990,64 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 // callback from the edit event dialog
 - (void)editControllerFinished:(EditEventWindowController *)editEventController {
   if ([editEventController wasSaveClicked]) {
-    
+
     // update the event with the changed settings
     GDataEntryCalendarEvent *event = [editEventController event];
     if (event) {
-      
-      GDataLink *link = [event editLink];
-      
+
       GDataServiceGoogleCalendar *service = [self calendarService];
-      [service fetchCalendarEventEntryByUpdatingEntry:event
-                                          forEntryURL:[link URL]
-                                             delegate:self
-                                    didFinishSelector:@selector(editEventTicket:editedEntry:)
-                                      didFailSelector:@selector(editEventTicket:failedWithError:)];
-      
+      [service fetchEntryByUpdatingEntry:event
+                                delegate:self
+                       didFinishSelector:@selector(editEventTicket:editedEntry:error:)];
     }
   }
   [editEventController autorelease];
 }
 
-// event edited successfully
+// update event callback
 - (void)editEventTicket:(GDataServiceTicket *)ticket
-            editedEntry:(GDataFeedCalendarEvent *)object {
-  
-  // tell the user that the update worked
-  NSBeginAlertSheet(@"Updated Event", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event updated");
-  
-  // re-fetch the selected calendar's events
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+            editedEntry:(GDataFeedCalendarEvent *)object
+                  error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the update worked
+    NSBeginAlertSheet(@"Updated Event", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event updated");
 
-// failure to submit edited event
-- (void)editEventTicket:(GDataServiceTicket *)ticket
-        failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Update failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event update failed: %@", error);
-  
+    // re-fetch the selected calendar's events
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    // failed
+    NSBeginAlertSheet(@"Update failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event update failed: %@", error);
+  }
 }
 
 #pragma mark Delete selected events
 
 - (void)deleteSelectedEvents {
-  
+
   NSArray *events = [self selectedEvents];
   unsigned int numberOfSelectedEvents = [events count];
-  
+
   if (numberOfSelectedEvents == 1) {
-    
+
     // 1 event selected
     GDataEntryCalendarEvent *event = [events objectAtIndex:0];
-    
+
     // make the user confirm that the selected event should be deleted
     NSBeginAlertSheet(@"Delete Event", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(deleteSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the event \"%@\"?",
                       [event title]);
-    
+
   } else if (numberOfSelectedEvents >= 1) {
-    
+
     NSBeginAlertSheet(@"Delete Events", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(batchDeleteSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete %d events?",
                       numberOfSelectedEvents);
@@ -1109,49 +1056,45 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // delete dialog callback
 - (void)deleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     // delete the event
     GDataEntryCalendarEvent *event = [self singleSelectedEvent];
     GDataLink *link = [event editLink];
-    
+
     if (link) {
       GDataServiceGoogleCalendar *service = [self calendarService];
-      [service deleteCalendarEventEntry:event
-                               delegate:self
-                      didFinishSelector:@selector(deleteTicket:deletedEntry:)
-                        didFailSelector:@selector(deleteTicket:failedWithError:)];
+      [service deleteEntry:event
+                  delegate:self
+         didFinishSelector:@selector(deleteTicket:deletedEntry:error:)];
     }
   }
 }
 
-// event deleted successfully
+// event deleted callback
 - (void)deleteTicket:(GDataServiceTicket *)ticket
-        deletedEntry:(GDataFeedCalendarEvent *)object {
-  
-  NSBeginAlertSheet(@"Deleted Event", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event deleted");
-  
-  // re-fetch the selected calendar's events
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+        deletedEntry:(GDataFeedCalendarEvent *)nilObject
+               error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Deleted Event", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event deleted");
 
-// failure to delete event
-- (void)deleteTicket:(GDataServiceTicket *)ticket
-     failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Event delete failed: %@", error);
-  
+    // re-fetch the selected calendar's events
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    // failed
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Event delete failed: %@", error);
+  }
 }
 
 // delete dialog callback
 - (void)batchDeleteSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
     // delete the events
     [self batchDeleteSelectedEvents];
@@ -1159,48 +1102,47 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (void)batchDeleteSelectedEvents {
-  
+
   NSArray *selectedEvents = [self selectedEvents];
-  
+
   for (int idx = 0; idx < [selectedEvents count]; idx++) {
-    
+
     GDataEntryCalendarEvent *event = [selectedEvents objectAtIndex:idx];
-    
+
     // add a batch ID to this entry
     static int staticID = 0;
     NSString *batchID = [NSString stringWithFormat:@"batchID_%u", ++staticID];
     [event setBatchIDWithString:batchID];
-    
+
     // we don't need to add the batch operation to the entries since
     // we're putting it in the feed to apply to all entries
-    
+
     // we could force an error on an item by nuking the entry's identifier
     //   if (idx == 1) { [event setIdentifier:nil]; }
   }
 
   NSURL *batchURL = [[mEventFeed batchLink] URL];
   if (batchURL != nil && [selectedEvents count] > 0) {
-    
+
     // make a batch feed object: add entries, and since
-    // we are doing the same operation for all entries in the feed, 
+    // we are doing the same operation for all entries in the feed,
     // add the operation
-    
+
     GDataFeedCalendarEvent *batchFeed = [GDataFeedCalendarEvent calendarEventFeed];
     [batchFeed setEntriesWithEntries:selectedEvents];
-    
+
     GDataBatchOperation *op = [GDataBatchOperation batchOperationWithType:kGDataBatchOperationDelete];
-    [batchFeed setBatchOperation:op];    
-    
+    [batchFeed setBatchOperation:op];
+
     // now do the usual steps for authenticating for this service, and issue
     // the fetch
-    
+
     GDataServiceGoogleCalendar *service = [self calendarService];
-    
-    [service fetchCalendarEventBatchFeedWithBatchFeed:batchFeed
-                                      forBatchFeedURL:batchURL
-                                             delegate:self
-                                    didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:)
-                                      didFailSelector:@selector(batchDeleteTicket:failedWithError:)];
+
+    [service fetchFeedWithBatchFeed:batchFeed
+                    forBatchFeedURL:batchURL
+                           delegate:self
+                  didFinishSelector:@selector(batchDeleteTicket:finishedWithFeed:error:)];
   } else {
     // the button shouldn't be enabled when we can't batch delete, so we
     // shouldn't get here
@@ -1208,54 +1150,57 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   }
 }
 
+// batch delete callback
 - (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedCalendarEvent *)feed {
-  
-  // step through all the entries in the response feed, 
-  // and build a string reporting each
-  
-  // show the http status to start (should be 200)
-  NSMutableString *reportStr = [NSMutableString stringWithFormat:@"http status:%d\n\n", 
-    [ticket statusCode]];
-  
-  NSArray *responseEntries = [feed entries];
-  for (int idx = 0; idx < [responseEntries count]; idx++) {
-    
-    GDataEntryCalendarEvent *entry = [responseEntries objectAtIndex:idx];
-    GDataBatchID *batchID = [entry batchID];
-    
-    // report the batch ID, entry title, and status for each item
-    NSString *title= [[entry title] stringValue];
-    [reportStr appendFormat:@"%@: %@\n", [batchID stringValue], title];
-    
-    GDataBatchInterrupted *interrupted = [entry batchInterrupted];
-    if (interrupted) {
-      [reportStr appendFormat:@"%@\n", [interrupted description]];
-    }
-    
-    GDataBatchStatus *status = [entry batchStatus];
-    if (status) {
-      [reportStr appendFormat:@"%d %@\n", [[status code] intValue], [status reason]];
-    }
-    [reportStr appendString:@"\n"];
-  }
-  
-  NSBeginAlertSheet(@"Batch delete completed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Delete completed.\n%@", reportStr);
-  
-  // re-fetch the selected calendar's events
-  [self fetchSelectedCalendar];
-  [self updateUI];
-}
+         finishedWithFeed:(GDataFeedCalendarEvent *)feed
+                    error:(NSError *)error {
+  if (error == nil) {
+    // the fetch succeeded, though individual entries may have failed
 
-- (void)batchDeleteTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Batch delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Delete failed: %@", error);  
-  
+    // step through all the entries in the response feed,
+    // and build a string reporting each
+
+    // show the http status to start (should be 200)
+    NSString *format = @"http status:%d\n\n";
+    NSMutableString *reportStr = [NSMutableString stringWithFormat:format,
+                                  [ticket statusCode]];
+
+    NSArray *responseEntries = [feed entries];
+    for (int idx = 0; idx < [responseEntries count]; idx++) {
+
+      GDataEntryCalendarEvent *entry = [responseEntries objectAtIndex:idx];
+      GDataBatchID *batchID = [entry batchID];
+
+      // report the batch ID, entry title, and status for each item
+      NSString *title= [[entry title] stringValue];
+      [reportStr appendFormat:@"%@: %@\n", [batchID stringValue], title];
+
+      GDataBatchInterrupted *interrupted = [entry batchInterrupted];
+      if (interrupted) {
+        [reportStr appendFormat:@"%@\n", [interrupted description]];
+      }
+
+      GDataBatchStatus *status = [entry batchStatus];
+      if (status) {
+        [reportStr appendFormat:@"%d %@\n", [[status code] intValue],
+         [status reason]];
+      }
+      [reportStr appendString:@"\n"];
+    }
+
+    NSBeginAlertSheet(@"Batch delete completed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Delete completed.\n%@", reportStr);
+
+    // re-fetch the selected calendar's events
+    [self fetchSelectedCalendar];
+
+  } else {
+    // fetch failed
+    NSBeginAlertSheet(@"Batch delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Delete failed: %@", error);
+  }
   [self updateUI];
 }
 
@@ -1266,17 +1211,17 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 - (GDataDateTime *)dateTimeForTodayAtHour:(int)hour
                                    minute:(int)minute
                                    second:(int)second {
-  
+
   int const kComponentBits = (NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit
                               | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit);
-  
+
   NSCalendar *cal = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
-  
+
   NSDateComponents *dateComponents = [cal components:kComponentBits fromDate:[NSDate date]];
   [dateComponents setHour:hour];
   [dateComponents setMinute:minute];
   [dateComponents setSecond:second];
-  
+
   GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:[NSDate date]
                                                    timeZone:[NSTimeZone systemTimeZone]];
   [dateTime setDateComponents:dateComponents];
@@ -1287,131 +1232,115 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 - (void)queryTodaysEvents {
 
   GDataServiceGoogleCalendar *service = [self calendarService];
-  
+
   GDataEntryCalendar *calendar = [self selectedCalendar];
   NSURL *feedURL = [[calendar alternateLink] URL];
 
   // make start and end times for today, at the beginning and end of the day
-  
+
   GDataDateTime *startOfDay = [self dateTimeForTodayAtHour:0 minute:0 second:0];
   GDataDateTime *endOfDay = [self dateTimeForTodayAtHour:23 minute:59 second:59];
-  
+
   // make the query
-  GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+  GDataQueryCalendar* queryCal;
+
+  queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal setStartIndex:1];
   [queryCal setMaxResults:10];
-  [queryCal setMinimumStartTime:startOfDay]; 
+  [queryCal setMinimumStartTime:startOfDay];
   [queryCal setMaximumStartTime:endOfDay];
 
-  [service fetchCalendarEventFeedWithURL:[queryCal URL]
-                                delegate:self
-                       didFinishSelector:@selector(queryTicket:finishedWithFeed:)
-                         didFailSelector:@selector(queryTicket:failedWithError:)];
+  [service fetchFeedWithQuery:queryCal
+                     delegate:self
+            didFinishSelector:@selector(queryTicket:finishedWithFeed:error:)];
 }
 
-// today's events successfully retrieved
+// callback for query of today's events
 - (void)queryTicket:(GDataServiceTicket *)ticket
-   finishedWithFeed:(GDataFeedCalendarEvent *)feed {
-  
-  NSArray *entries = [feed entries];
-  
-  // make a comma-separate list of the event titles to display
-  NSMutableArray *titles = [NSMutableArray array];
-  
-  for (int idx = 0; idx < [entries count]; idx++) {
-    GDataEntryCalendarEvent *event = [entries objectAtIndex:idx];
-    NSString *title = [[event title] stringValue];
-    if ([title length] > 0) {
-      [titles addObject:title];
-    }
-  }
-  
-  NSString *resultStr = [titles componentsJoinedByString:@", "];
-  
-  NSBeginAlertSheet(@"Query ", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Query result: %@", resultStr);
-  
-} 
+   finishedWithFeed:(GDataFeedCalendarEvent *)feed
+              error:(NSError *)error {
+  if (error == nil) {
+    // query succeeded
+    NSArray *entries = [feed entries];
 
-// failure to fetch today's events
-- (void)queryTicket:(GDataServiceTicket *)ticket
-    failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Query failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"Query failed: %@", error);
-  
+    // make a comma-separate list of the event titles to display
+    NSMutableArray *titles = [NSMutableArray array];
+
+    for (int idx = 0; idx < [entries count]; idx++) {
+      GDataEntryCalendarEvent *event = [entries objectAtIndex:idx];
+      NSString *title = [[event title] stringValue];
+      if ([title length] > 0) {
+        [titles addObject:title];
+      }
+    }
+
+    NSString *resultStr = [titles componentsJoinedByString:@", "];
+
+    NSBeginAlertSheet(@"Query ", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Query result: %@", resultStr);
+  } else {
+    // query failed
+    NSBeginAlertSheet(@"Query failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Query failed: %@", error);
+  }
 }
 
 ////////////////////////////////////////////////////////
 #pragma mark ACL
 
 - (void)fetchSelectedCalendarACLEntries {
-  
+
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
-    
+
     NSURL *aclFeedURL = [[calendar ACLLink] URL];
     if (aclFeedURL) {
-      
+
       // fetch the ACL feed
       [self setACLFeed:nil];
       [self setACLFetchError:nil];
       [self setACLFetchTicket:nil];
-        
+
       GDataServiceGoogleCalendar *service = [self calendarService];
       GDataServiceTicket *ticket;
       ticket = [service fetchACLFeedWithURL:aclFeedURL
                                    delegate:self
-                          didFinishSelector:@selector(calendarACLTicket:finishedWithFeed:)
-                            didFailSelector:@selector(calendarACLTicket:failedWithError:)];
-      
+                          didFinishSelector:@selector(calendarACLTicket:finishedWithFeed:error:)];
+
       [self setACLFetchTicket:ticket];
-      
+
       [self updateUI];
     }
   }
 }
 
-
-// fetched acl list successfully
+// fetched ACL list callback
 - (void)calendarACLTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedACL *)feed {
-  
+         finishedWithFeed:(GDataFeedACL *)feed
+                    error:(NSError *)error {
+
   [self setACLFeed:feed];
-  [self setACLFetchError:nil];
-  [self setACLFetchTicket:nil];
-  
-  [self updateUI];
-} 
-
-// failed
-- (void)calendarACLTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  [self setACLFeed:nil];
   [self setACLFetchError:error];
   [self setACLFetchTicket:nil];
-  
-  [self updateUI];
-  
-}
 
+  [self updateUI];
+}
 
 #pragma mark Add an ACL entry
 
 - (void)addAnACLEntry {
-  
+
   // make a new entry
   NSString *email = @"fred.flintstone@bounce.spuriousmail.com";
-  
+
   GDataACLScope *scope = [GDataACLScope scopeWithType:@"user"
                                                 value:email];
   GDataACLRole *role = [GDataACLRole roleWithValue:kGDataRoleCalendarRead];
-  
+
   GDataEntryACL *newEntry = [GDataEntryACL ACLEntryWithScope:scope role:role];
-  
+
   // display the ACL edit dialog
   EditACLWindowController *controller = [[EditACLWindowController alloc] init];
   [controller runModalForTarget:self
@@ -1421,57 +1350,51 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // callback from the edit ACL dialog
 - (void)addACLEditControllerFinished:(EditACLWindowController *)addACLController {
-  
+
   if ([addACLController wasSaveClicked]) {
-    
+
     // insert the ACL into the selected calendar
     GDataEntryACL *entry = [addACLController ACLEntry];
     if (entry) {
-      
+
       GDataServiceGoogleCalendar *service = [self calendarService];
-      
+
       NSURL *postURL = [[mACLFeed postLink] URL];
       if (postURL) {
         [service fetchACLEntryByInsertingEntry:entry
                                     forFeedURL:postURL
                                       delegate:self
-                             didFinishSelector:@selector(addACLEntryTicket:addedEntry:)
-                               didFailSelector:@selector(addACLEntryTicket:failedWithError:)];
+                             didFinishSelector:@selector(addACLEntryTicket:addedEntry:error:)];
       }
     }
   }
   [addACLController autorelease];
 }
 
-// event added successfully
+// add ACL callback
 - (void)addACLEntryTicket:(GDataServiceTicket *)ticket
-               addedEntry:(GDataFeedACL *)object {
-  
-  // tell the user that the add worked
-  NSBeginAlertSheet(@"Added ACL Entry", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACL Entry added");
-  
-  // refetch the current calendar's ACL entries
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+               addedEntry:(GDataEntryACL *)entry
+                    error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the add worked
+    NSBeginAlertSheet(@"Added ACL Entry", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACL Entry added");
 
-// failure to add ACLEntry
-- (void)addACLEntryTicket:(GDataServiceTicket *)ticket
-          failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACL Entry add failed: %@", error);
-  
+    // refetch the current calendar's ACL entries
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACL Entry add failed: %@", error);
+  }
 }
-
 
 #pragma mark Edit an ACLEntry
 
 - (void)editSelectedACLEntry {
-  
+
   // display the ACLEntry edit dialog
   GDataEntryACL *entry = [self selectedACLEntry];
   if (entry) {
@@ -1485,61 +1408,55 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 // callback from the edit ACLEntry dialog
 - (void)ACLEditControllerFinished:(EditACLWindowController *)editACLEntryController {
   if ([editACLEntryController wasSaveClicked]) {
-    
+
     // update the ACLEntry with the changed settings
     GDataEntryACL *entry = [editACLEntryController ACLEntry];
     if (entry) {
-      
+
       GDataLink *link = [entry editLink];
       if (link) {
         GDataServiceGoogleCalendar *service = [self calendarService];
         [service fetchACLEntryByUpdatingEntry:entry
-                                  forEntryURL:[link URL]
                                      delegate:self
-                            didFinishSelector:@selector(editACLEntryTicket:editedEntry:)
-                              didFailSelector:@selector(editACLEntryTicket:failedWithError:)];
+                            didFinishSelector:@selector(editACLEntryTicket:editedEntry:error:)];
       }
     }
   }
   [editACLEntryController autorelease];
 }
 
-// ACLEntry edited successfully
+// ACLEntry edit callback
 - (void)editACLEntryTicket:(GDataServiceTicket *)ticket
-               editedEntry:(GDataFeedACL *)object {
-  
-  // tell the user that the update worked
-  NSBeginAlertSheet(@"Updated ACLEntry", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACL Entry updated");
-  
-  // re-fetch the selected calendar's ACLEntries
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+               editedEntry:(GDataFeedACL *)object
+                     error:(NSError *)error {
+  if (error == nil) {
+    // tell the user that the update worked
+    NSBeginAlertSheet(@"Updated ACLEntry", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACL Entry updated");
 
-// failure to submit edited ACL Entry
-- (void)editACLEntryTicket:(GDataServiceTicket *)ticket
-           failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Update failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACLEntry update failed: %@", error);
-  
+    // re-fetch the selected calendar's ACLEntries
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Update failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACLEntry update failed: %@", error);
+  }
 }
 
 #pragma mark Delete an ACL Entry
 
 - (void)deleteSelectedACLEntry {
-  
+
   GDataEntryACL *entry = [self selectedACLEntry];
   if (entry) {
     // make the user confirm that the selected ACLEntry should be deleted
     NSString *entryDesc = [NSString stringWithFormat:@"%@ %@",
                            [[entry scope] type], [[entry scope] value]];
-    
+
     NSBeginAlertSheet(@"Delete ACLEntry", @"Delete", @"Cancel", nil,
-                      [self window], self, 
+                      [self window], self,
                       @selector(deleteACLSheetDidEnd:returnCode:contextInfo:),
                       nil, nil, @"Delete the ACL entry \"%@\"?",
                       entryDesc);
@@ -1548,9 +1465,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 // delete dialog callback
 - (void)deleteACLSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSAlertDefaultReturn) {
-    
+
     // delete the ACLEntry
     GDataEntryACL *entry = [self selectedACLEntry];
 
@@ -1558,32 +1475,28 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       GDataServiceGoogleCalendar *service = [self calendarService];
       [service deleteACLEntry:entry
                      delegate:self
-            didFinishSelector:@selector(deleteACLEntryTicket:deletedEntry:)
-              didFailSelector:@selector(deleteACLEntryTicket:failedWithError:)];
+            didFinishSelector:@selector(deleteACLEntryTicket:deletedEntry:error:)];
     }
   }
 }
 
 // ACLEntry deleted successfully
 - (void)deleteACLEntryTicket:(GDataServiceTicket *)ticket
-                deletedEntry:(GDataFeedACL *)object {
-  
-  NSBeginAlertSheet(@"Deleted ACLEntry", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACL Entry deleted");
-  
-  // re-fetch the selected calendar's events
-  [self fetchSelectedCalendar];
-  [self updateUI];
-} 
+                deletedEntry:(GDataFeedACL *)object
+                       error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Deleted ACLEntry", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACL Entry deleted");
 
-// failure to delete event
-- (void)deleteACLEntryTicket:(GDataServiceTicket *)ticket
-             failedWithError:(NSError *)error {
-  
-  NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                    [self window], nil, nil,
-                    nil, nil, @"ACL Entry delete failed: %@", error);
+    // re-fetch the selected calendar's events
+    [self fetchSelectedCalendar];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"ACL Entry delete failed: %@", error);
+  }
 }
 
 ////////////////////////////////////////////////////////
@@ -1608,11 +1521,9 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       GDataServiceTicket *ticket;
 
       // temporary fetch call, waiting until settings feed has kind categories, http://b/1694419
-      ticket = [service fetchAuthenticatedFeedWithURL:settingsFeedURL
-                                            feedClass:[GDataFeedCalendarSettings class]
-                                             delegate:self
-                                    didFinishSelector:@selector(calendarSettingsTicket:finishedWithFeed:)
-                                      didFailSelector:@selector(calendarSettingsTicket:failedWithError:)];
+      ticket = [service fetchFeedWithURL:settingsFeedURL
+                                delegate:self
+                       didFinishSelector:@selector(calendarSettingsTicket:finishedWithFeed:error:)];
 
       [self setSettingsFetchTicket:ticket];
 
@@ -1621,22 +1532,12 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   }
 }
 
-// fetched settings list successfully
+// settings list fetch callback
 - (void)calendarSettingsTicket:(GDataServiceTicket *)ticket
-              finishedWithFeed:(GDataFeedCalendarSettings *)feed {
+              finishedWithFeed:(GDataFeedCalendarSettings *)feed
+                         error:(NSError *)error {
 
   [self setSettingsFeed:feed];
-  [self setSettingsFetchError:nil];
-  [self setSettingsFetchTicket:nil];
-
-  [self updateUI];
-}
-
-// failed
-- (void)calendarSettingsTicket:(GDataServiceTicket *)ticket
-               failedWithError:(NSError *)error {
-
-  [self setSettingsFeed:nil];
   [self setSettingsFetchError:error];
   [self setSettingsFetchTicket:nil];
 
@@ -1714,14 +1615,14 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 #pragma mark Control delegate methods
 
 - (void)controlTextDidChange:(NSNotification *)note {
-    
+
   [self updateUI]; // enabled/disable the Add Calendar button
 }
 
 #pragma mark Setters and Getters
 
 - (GDataFeedCalendar *)calendarFeed {
-  return mCalendarFeed; 
+  return mCalendarFeed;
 }
 
 - (void)setCalendarFeed:(GDataFeedCalendar *)feed {
@@ -1730,7 +1631,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (NSError *)calendarFetchError {
-  return mCalendarFetchError; 
+  return mCalendarFetchError;
 }
 
 - (void)setCalendarFetchError:(NSError *)error {
@@ -1739,7 +1640,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataServiceTicket *)calendarFetchTicket {
-  return mCalendarFetchTicket; 
+  return mCalendarFetchTicket;
 }
 
 - (void)setCalendarFetchTicket:(GDataServiceTicket *)ticket {
@@ -1748,7 +1649,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataFeedCalendarEvent *)eventFeed {
-  return mEventFeed; 
+  return mEventFeed;
 }
 
 - (void)setEventFeed:(GDataFeedCalendarEvent *)feed {
@@ -1757,7 +1658,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (NSError *)eventFetchError {
-  return mEventFetchError; 
+  return mEventFetchError;
 }
 
 - (void)setEventFetchError:(NSError *)error {
@@ -1766,7 +1667,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataServiceTicket *)eventFetchTicket {
-  return mEventFetchTicket; 
+  return mEventFetchTicket;
 }
 
 - (void)setEventFetchTicket:(GDataServiceTicket *)ticket {
@@ -1775,7 +1676,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataFeedACL *)ACLFeed {
-  return mACLFeed; 
+  return mACLFeed;
 }
 
 - (void)setACLFeed:(GDataFeedACL *)feed {
@@ -1784,7 +1685,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (NSError *)ACLFetchError {
-  return mACLFetchError; 
+  return mACLFetchError;
 }
 
 - (void)setACLFetchError:(NSError *)error {
@@ -1793,7 +1694,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (GDataServiceTicket *)ACLFetchTicket {
-  return mACLFetchTicket; 
+  return mACLFetchTicket;
 }
 
 - (void)setACLFetchTicket:(GDataServiceTicket *)ticket {

@@ -33,7 +33,6 @@ enum {
   kInvocationHTTPMethodIndex,
   kInvocationDelegateIndex,
   kInvocationFinishedSelectorIndex,
-  kInvocationFailedSelectorIndex,
   kInvocationRetryInvocationValueIndex,
   kInvocationTicketIndex
 };
@@ -42,6 +41,8 @@ enum {
 @interface GDataServiceGoogle (PrivateMethods)
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data;
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+
+- (void)addNamespacesIfNoneToObject:(GDataObject *)obj;
 @end
 
 @implementation GDataServiceGoogle
@@ -157,9 +158,9 @@ enum {
   } else {
     // we could not initiate a fetch; tell the client
     id delegate;
-    SEL failedSelector;
-    [invocation getArgument:&delegate       atIndex:kInvocationDelegateIndex];
-    [invocation getArgument:&failedSelector atIndex:kInvocationFailedSelectorIndex];
+    SEL finishedSelector;
+    [invocation getArgument:&delegate         atIndex:kInvocationDelegateIndex];
+    [invocation getArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
 
     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"empty username/password"
                                                          forKey:kGDataServerErrorStringKey];
@@ -167,10 +168,12 @@ enum {
                                          code:-1
                                      userInfo:userInfo];
 
-    if (failedSelector) {
-      [delegate performSelector:failedSelector
-                     withObject:ticket
-                     withObject:error];
+    if (finishedSelector) {
+      [GDataServiceBase invokeCallback:finishedSelector
+                                target:delegate
+                                ticket:ticket
+                                object:nil
+                                 error:error];
     }
 
     return nil;
@@ -263,19 +266,21 @@ enum {
   NSInvocation *invocation = [[[fetcher userData] retain] autorelease];
 
   id delegate;
-  SEL failedSelector;
+  SEL finishedSelector;
   GDataServiceTicket *ticket;
 
-  [invocation getArgument:&delegate       atIndex:kInvocationDelegateIndex];
-  [invocation getArgument:&failedSelector atIndex:kInvocationFailedSelectorIndex];
-  [invocation getArgument:&ticket         atIndex:kInvocationTicketIndex];
+  [invocation getArgument:&delegate         atIndex:kInvocationDelegateIndex];
+  [invocation getArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
+  [invocation getArgument:&ticket           atIndex:kInvocationTicketIndex];
 
   [fetcher setUserData:nil];
 
-  if (failedSelector) {
-    [delegate performSelector:failedSelector
-                   withObject:ticket
-                   withObject:error];
+  if (finishedSelector) {
+    [GDataServiceBase invokeCallback:finishedSelector
+                              target:delegate
+                              ticket:ticket
+                              object:nil
+                               error:error];
   }
 
   [ticket setFetchError:error];
@@ -292,8 +297,8 @@ enum {
   id delegate;
   GDataServiceTicket *ticket;
 
-  [invocation getArgument:&delegate       atIndex:kInvocationDelegateIndex];
-  [invocation getArgument:&ticket         atIndex:kInvocationTicketIndex];
+  [invocation getArgument:&delegate atIndex:kInvocationDelegateIndex];
+  [invocation getArgument:&ticket   atIndex:kInvocationTicketIndex];
 
   SEL retrySelector = [ticket retrySelector];
   if (retrySelector) {
@@ -316,13 +321,12 @@ enum {
                                                    ETag:(NSString *)etag
                                              httpMethod:(NSString *)httpMethod
                                                delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
+                                      didFinishSelector:(SEL)finishedSelector {
 
   // make an invocation for this call
   GDataServiceTicket *result = nil;
 
-  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:didFailSelector:retryInvocationValue:ticket:);
+  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:retryInvocationValue:ticket:);
 
   GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
 
@@ -337,7 +341,6 @@ enum {
   [invocation setArgument:&httpMethod       atIndex:kInvocationHTTPMethodIndex];
   [invocation setArgument:&delegate         atIndex:kInvocationDelegateIndex];
   [invocation setArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
-  [invocation setArgument:&failedSelector   atIndex:kInvocationFailedSelectorIndex];
   [invocation setArgument:&ticket           atIndex:kInvocationTicketIndex];
 
   NSValue *noRetryInvocation = nil;
@@ -400,11 +403,20 @@ enum {
 
 #pragma mark -
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithURL:(NSURL *)feedURL
-                                            feedClass:(Class)feedClass
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector {
+
+  return [self fetchFeedWithURL:feedURL
+                      feedClass:kGDataUseRegisteredClass
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                               feedClass:(Class)feedClass
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector {
 
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:feedClass
@@ -412,16 +424,23 @@ enum {
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
-
+                             didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryWithURL:(NSURL *)entryURL
-                                            entryClass:(Class)entryClass
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
+
+  return [self fetchEntryWithURL:entryURL
+                      entryClass:kGDataUseRegisteredClass
+                        delegate:delegate
+               didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
 
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:entryClass
@@ -429,17 +448,18 @@ enum {
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
+                             didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                                     forFeedURL:(NSURL *)feedURL
-                                                       delegate:(id)delegate
-                                              didFinishSelector:(SEL)finishedSelector
-                                                didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
+                                        forFeedURL:(NSURL *)feedURL
+                                          delegate:(id)delegate
+                                 didFinishSelector:(SEL)finishedSelector {
 
   NSString *etag = [entryToInsert ETag];
+
+  // objects being uploaded will always need some namespaces at the root level
+  [self addNamespacesIfNoneToObject:entryToInsert];
 
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:[entryToInsert class]
@@ -447,22 +467,33 @@ enum {
                                           ETag:etag
                                     httpMethod:@"POST"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
+                             didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                                   forEntryURL:(NSURL *)entryURL
-                                                      delegate:(id)delegate
-                                             didFinishSelector:(SEL)finishedSelector
-                                               didFailSelector:(SEL)failedSelector {
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector {
+
+  NSURL *editURL = [[entryToUpdate editLink] URL];
+
+  return [self fetchEntryByUpdatingEntry:entryToUpdate
+                             forEntryURL:editURL
+                                delegate:delegate
+                       didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                      forEntryURL:(NSURL *)entryURL
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector {
 
   // Entries should be updated only if they contain copies of any unparsed XML
   // (unknown children and attributes.)
   //
   // To update an entry that ignores unparsed XML, first fetch a complete copy
-  // with fetchAuthenticatedEntryWithURL: (or a service-specific entry
-  // fetch method) using the URL from the entry's selfLink.
+  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
+  // the URL from the entry's selfLink.
   //
   // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
   // information.
@@ -470,57 +501,37 @@ enum {
   GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
                @"unsafe update of %@", [entryToUpdate class]);
 
+  // objects being uploaded will always need some namespaces at the root level
+  [self addNamespacesIfNoneToObject:entryToUpdate];
+
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
                                           ETag:[entryToUpdate ETag]
                                     httpMethod:@"PUT"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
+                             didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)deleteAuthenticatedEntry:(GDataEntryBase *)entryToDelete
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
+                           delegate:(id)delegate
+                  didFinishSelector:(SEL)finishedSelector {
 
   NSString *etag = [entryToDelete ETag];
   NSURL *editURL = [[entryToDelete editLink] URL];
 
   GDATA_ASSERT(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
 
-  return [self deleteAuthenticatedResourceURL:editURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
+  return [self deleteResourceURL:editURL
+                            ETag:etag
+                        delegate:delegate
+               didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
-  // pass through with a nil ETag
-  //
-  // This is provided for compatibility with interfaces to v1 services (which
-  // lack etag support.)  Interfaces for newer services should only call into
-  // deleteAuthenticatedResourceURL:ETag:
-
-  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
-
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:nil
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
-                                                  ETag:(NSString *)etag
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
+                                     ETag:(NSString *)etag
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
 
   GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
 
@@ -530,32 +541,55 @@ enum {
                                           ETag:etag
                                     httpMethod:@"DELETE"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
+                             didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithQuery:(GDataQuery *)query
-                                              feedClass:(Class)feedClass
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector {
 
-  return [self fetchAuthenticatedFeedWithURL:[query URL]
-                                   feedClass:feedClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
+  return [self fetchFeedWithURL:[query URL]
+                      feedClass:kGDataUseRegisteredClass
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                                 feedClass:(Class)feedClass
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector {
+
+  return [self fetchFeedWithURL:[query URL]
+                      feedClass:feedClass
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
+// add namespaces to the object being uploaded, though only if it currently
+// lacks root-level namespaces
+- (void)addNamespacesIfNoneToObject:(GDataObject *)obj {
+
+  if ([obj namespaces] == nil) {
+    NSDictionary *namespaces = [[self class] standardServiceNamespaces];
+    GDATA_DEBUG_ASSERT(namespaces != nil, @"nil namespaces in service");
+
+    [obj setNamespaces:namespaces];
+  }
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  // subclasses override this if they have custom namespaces
+  return [GDataEntryBase baseGDataNamespaces];
 }
 
 #pragma mark -
 
 // Batch feed support
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                            forBatchFeedURL:(NSURL *)feedURL
-                                                   delegate:(id)delegate
-                                          didFinishSelector:(SEL)finishedSelector
-                                            didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                               forBatchFeedURL:(NSURL *)feedURL
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector {
   // add basic namespaces to feed, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceGDataPrefix] == nil) {
     [batchFeed addNamespaces:[GDataEntryBase baseGDataNamespaces]];
@@ -573,8 +607,7 @@ enum {
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
+                             didFinishSelector:finishedSelector];
 }
 
 #pragma mark -
@@ -785,4 +818,3 @@ enum {
   return nil;
 }
 @end
-

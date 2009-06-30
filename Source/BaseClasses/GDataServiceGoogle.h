@@ -32,6 +32,9 @@
 _EXTERN NSString* const kGDataServiceErrorCaptchaRequired _INITIALIZE_AS(@"CaptchaRequired");
 
 // The default user is the authenticated user
+//
+// In the projections of many feeds, the username can be replaced with "default"
+// to indicate the feed should be for the authenticate user's account
 _EXTERN NSString* const kGDataServiceDefaultUser _INITIALIZE_AS(@"default");
 
 enum {
@@ -78,57 +81,73 @@ enum {
   BOOL shouldUseMethodOverrideHeader_;
 }
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithURL:(NSURL *)feedURL
-                                            feedClass:(Class)feedClass
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
+// fetch a feed, authenticated
+//
+// when the class of the returned feed or entry is not specified, it
+// must be inferable from the XML (by "kind" category elements present
+// in the feed or entry)
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryWithURL:(NSURL *)entryURL
-                                            entryClass:(Class)entryClass
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                                     forFeedURL:(NSURL *)feedURL
-                                                       delegate:(id)delegate
-                                              didFinishSelector:(SEL)finishedSelector
-                                                didFailSelector:(SEL)failedSelector;
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                               feedClass:(Class)feedClass
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)fetchAuthenticatedEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                                   forEntryURL:(NSURL *)entryURL
-                                                      delegate:(id)delegate
-                                             didFinishSelector:(SEL)finishedSelector
-                                               didFailSelector:(SEL)failedSelector;
+// fetch a query, authenticated
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)deleteAuthenticatedEntry:(GDataEntryBase *)entryToDelete
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector;
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                                 feedClass:(Class)feedClass
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
+// fetch an entry, authenticated
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)deleteAuthenticatedResourceURL:(NSURL *)resourceEditURL
-                                                  ETag:(NSString *)etag
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithQuery:(GDataQuery *)query
-                                              feedClass:(Class)feedClass
-                                               delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector
-                                        didFailSelector:(SEL)failedSelector;
+// insert an entry, authenticated
+- (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
+                                        forFeedURL:(NSURL *)feedURL
+                                          delegate:(id)delegate
+                                 didFinishSelector:(SEL)finishedSelector;
 
-- (GDataServiceTicket *)fetchAuthenticatedFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                            forBatchFeedURL:(NSURL *)feedURL
-                                                   delegate:(id)delegate
-                                          didFinishSelector:(SEL)finishedSelector
-                                            didFailSelector:(SEL)failedSelector;
+// update an entry, authenticated
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                      forEntryURL:(NSURL *)entryURL
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector;
+
+// delete an entry, authenticated
+// (on success, callback will have nil object and error pointers)
+- (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
+                           delegate:(id)delegate
+                  didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
+                                     ETag:(NSString *)etag
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector;
+
+// fetch a batch feed
+- (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                               forBatchFeedURL:(NSURL *)feedURL
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector;
 
 - (void)setCaptchaToken:(NSString *)captchaToken
           captchaAnswer:(NSString *)captchaAnswer;
@@ -158,6 +177,10 @@ enum {
 
 - (void)setServiceID:(NSString *)str; // call only if not using a subclass
 - (NSString *)serviceID; // implemented by subclass, like @"cl" for calendar
+
+// subclasses may specify what namespaces to attach to posted user entries
+// when the entries lack explicit root-level namespaces
++ (NSDictionary *)standardServiceNamespaces;
 
   // internal utilities
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString;

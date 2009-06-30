@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataYouTubeElements.h
@@ -29,6 +29,10 @@
 
 // user's age, an integer, like <yt:age>32</yt:age>
 @interface GDataYouTubeAge : GDataValueElementConstruct <GDataExtension>
+@end
+
+// aspect ratio, like <yt:aspectRatio>widescreen</yt:aspectRatio>
+@interface GDataYouTubeAspectRatio : GDataValueElementConstruct <GDataExtension>
 @end
 
 // user's books, like <yt:books>Pride and Prejudice</yt:books>
@@ -124,8 +128,8 @@
 @interface GDataYouTubePlaylistTitle : GDataValueElementConstruct <GDataExtension>
 @end
 
-// spam hint, like <yt:spamHint/>
-@interface GDataYouTubeSpamHint : GDataImplicitValueConstruct <GDataExtension>
+// hint that the containing entry is spam, like <yt:spam/>
+@interface GDataYouTubeSpam : GDataImplicitValueConstruct <GDataExtension>
 @end
 
 // status, like <yt:status>accepted</yt:status>

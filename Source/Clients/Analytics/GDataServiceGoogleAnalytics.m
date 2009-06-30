@@ -27,100 +27,50 @@
 
 @implementation GDataServiceGoogleAnalytics
 
-- (GDataServiceTicket *)fetchAnalyticsFeedWithURL:(NSURL *)feedURL
-                                         delegate:(id)delegate
-                                didFinishSelector:(SEL)finishedSelector
-                                  didFailSelector:(SEL)failedSelector {
+// warn the user off of the wrong method calls
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector {
 
-  return [self fetchAuthenticatedFeedWithURL:feedURL
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchFeedWithURL:feedClass: instead, specifying the expected class
+  // of the feed
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleAnalytics: use fetchFeedWithURL:feedClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)fetchAnalyticsEntryWithURL:(NSURL *)entryURL
-                                          delegate:(id)delegate
-                                 didFinishSelector:(SEL)finishedSelector
-                                   didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
 
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchEntryWithURL:entryClass: instead, specifying the expected class
+  // of the entry
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleAnalytics: use fetchEntryWithURL:entryClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)fetchAnalyticsEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                                 forFeedURL:(NSURL *)feedURL
-                                                   delegate:(id)delegate
-                                          didFinishSelector:(SEL)finishedSelector
-                                            didFailSelector:(SEL)failedSelector {
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                                  delegate:(id)delegate
+                         didFinishSelector:(SEL)finishedSelector {
 
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataAnalyticsConstants analyticsNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:feedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-
+  // this service does not provide "kind" elements so cannot support
+  // automatic class determination
+  //
+  // call fetchFeedWithQuery:feedClass: instead, specifying the expected class
+  // of the feed
+  GDATA_DEBUG_LOG(@"GDataServiceGoogleAnalytics: use fetchFeedWithQueryL:feedClass:");
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
 }
 
-- (GDataServiceTicket *)fetchAnalyticsEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                               forEntryURL:(NSURL *)entryEditURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector {
-
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataAnalyticsConstants analyticsNamespaces]];
-  }
-
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:entryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-
-}
-
-- (GDataServiceTicket *)deleteAnalyticsEntry:(GDataEntryBase *)entryToDelete
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteAnalyticsResourceURL:(NSURL *)resourceEditURL
-                                              ETag:(NSString *)etag
-                                          delegate:(id)delegate
-                                 didFinishSelector:(SEL)finishedSelector
-                                   didFailSelector:(SEL)failedSelector {
-
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchAnalyticsQuery:(GDataQueryAnalytics *)query
-                                   delegate:(id)delegate
-                          didFinishSelector:(SEL)finishedSelector
-                            didFailSelector:(SEL)failedSelector {
-
-  return [self fetchAnalyticsFeedWithURL:[query URL]
-                                delegate:delegate
-                       didFinishSelector:finishedSelector
-                         didFailSelector:failedSelector];
-}
+#pragma mark -
 
 - (NSString *)serviceID {
   return @"analytics";
@@ -132,6 +82,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataAnalyticsDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataAnalyticsConstants analyticsNamespaces];
 }
 
 @end

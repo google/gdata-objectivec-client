@@ -28,26 +28,26 @@
 
 // feed is contacts or groups; projection is thin, default, or property-<key>
 + (NSURL *)contactURLForFeedName:(NSString *)feedName
-                          userID:(NSString *)userID 
+                          userID:(NSString *)userID
                       projection:(NSString *)projection {
-  
+
   NSString *baseURLString = [self serviceRootURLString];
-  
+
   NSString *template = @"%@%@/%@/%@";
-  
+
   NSString *feedURLString = [NSString stringWithFormat:template,
                              baseURLString,
                              [GDataUtilities stringByURLEncodingForURI:feedName],
                              [GDataUtilities stringByURLEncodingForURI:userID],
                              [GDataUtilities stringByURLEncodingForURI:projection]];
-  
+
   NSURL *url = [NSURL URLWithString:feedURLString];
-  
+
   return url;
 }
 
 + (NSURL *)contactFeedURLForPropertyName:(NSString *)property {
-  
+
   NSString *projection = [NSString stringWithFormat:@"property-%@", property];
   NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName
                                     userID:kGDataServiceDefaultUser
@@ -56,34 +56,34 @@
 }
 
 + (NSURL *)contactGroupFeedURLForPropertyName:(NSString *)property {
-  
+
   NSString *projection = [NSString stringWithFormat:@"property-%@", property];
   NSURL *url = [self contactURLForFeedName:kGDataGoogleContactGroupsFeedName
-                                    userID:kGDataServiceDefaultUser 
+                                    userID:kGDataServiceDefaultUser
                                 projection:projection];
   return url;
 }
 
 + (NSURL *)contactFeedURLForUserID:(NSString *)userID {
-  
-  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName 
+
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName
                                     userID:userID
                                 projection:kGDataGoogleContactFullProjection];
   return url;
 }
 
 + (NSURL *)groupFeedURLForUserID:(NSString *)userID {
-  
+
   NSURL *url = [self contactURLForFeedName:kGDataGoogleContactGroupsFeedName
                                     userID:userID
                                 projection:kGDataGoogleContactFullProjection];
   return url;
 }
 
-+ (NSURL *)contactFeedURLForUserID:(NSString *)userID 
++ (NSURL *)contactFeedURLForUserID:(NSString *)userID
                         projection:(NSString *)projection {
-  
-  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName 
+
+  NSURL *url = [self contactURLForFeedName:kGDataGoogleContactAllContactsFeedName
                                     userID:userID
                                 projection:projection];
   return url;
@@ -91,136 +91,30 @@
 
 - (GDataServiceTicket *)fetchContactFeedForUsername:(NSString *)username
                                            delegate:(id)delegate
-                                  didFinishSelector:(SEL)finishedSelector
-                                    didFailSelector:(SEL)failedSelector {
-  
+                                  didFinishSelector:(SEL)finishedSelector {
+
   NSURL *url = [[self class] contactFeedURLForUserID:username];
-  
-  return [self fetchContactFeedWithURL:url
-                              delegate:delegate
-                     didFinishSelector:finishedSelector
-                       didFailSelector:failedSelector];
+
+  return [self fetchFeedWithURL:url
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
 }
 
-- (GDataServiceTicket *)fetchContactFeedWithURL:(NSURL *)feedURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchContactEntryWithURL:(NSURL *)entryURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedEntryWithURL:entryURL
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchContactEntryByInsertingEntry:(id)entryToInsert
-                                               forFeedURL:(NSURL *)contactFeedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector {
-  
-  if ([(GDataObject *) entryToInsert namespaces] == nil) {
-    [(GDataObject *) entryToInsert setNamespaces:[GDataContactConstants contactNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:contactFeedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-  
-}
-
-- (GDataServiceTicket *)fetchContactEntryByUpdatingEntry:(id)entryToUpdate
-                                             forEntryURL:(NSURL *)contactEntryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector {
-  
-  if ([(GDataObject *) entryToUpdate namespaces] == nil) {
-    [(GDataObject *) entryToUpdate setNamespaces:[GDataContactConstants contactNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:contactEntryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-  
-}
-
-- (GDataServiceTicket *)fetchContactQuery:(GDataQueryContact *)query
-                                 delegate:(id)delegate
-                        didFinishSelector:(SEL)finishedSelector
-                          didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchContactFeedWithURL:[query URL]
-                              delegate:delegate
-                     didFinishSelector:finishedSelector
-                       didFailSelector:failedSelector];
-  
-}
-
-- (GDataServiceTicket *)deleteContactEntry:(id)entryToDelete
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteContactResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchContactBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                           forBatchFeedURL:(NSURL *)feedURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
-                                   forBatchFeedURL:feedURL
-                                          delegate:delegate
-                                 didFinishSelector:finishedSelector
-                                   didFailSelector:failedSelector];
-}
 
 - (NSString *)serviceID {
   return @"cp";
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://www.google.com/m8/feeds/"; 
+  return @"http://www.google.com/m8/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {
   return kGDataContactDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataContactConstants contactNamespaces];
 }
 
 @end

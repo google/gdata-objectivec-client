@@ -23,7 +23,6 @@
 #import "GDataEntryYouTubeVideo.h"
 #import "GDataQueryYouTube.h"
 
-// These routines are all simple wrappers around GDataServiceGoogle methods
 
 @implementation GDataServiceGoogleYouTube
 
@@ -138,113 +137,6 @@
   developerKey_ = [str copy];
 }
 
-
-- (GDataServiceTicket *)fetchYouTubeFeedWithURL:(NSURL *)feedURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector
-                                didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:kGDataUseRegisteredClass
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchYouTubeEntryWithURL:(NSURL *)entryURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedEntryWithURL:entryURL 
-                                   entryClass:kGDataUseRegisteredClass
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchYouTubeEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                               forFeedURL:(NSURL *)youTubeFeedURL
-                                                 delegate:(id)delegate
-                                        didFinishSelector:(SEL)finishedSelector
-                                          didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToInsert namespaces] == nil) {
-    [entryToInsert setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByInsertingEntry:entryToInsert
-                                            forFeedURL:youTubeFeedURL
-                                              delegate:delegate
-                                     didFinishSelector:finishedSelector
-                                       didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchYouTubeEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                             forEntryURL:(NSURL *)youTubeEntryEditURL
-                                                delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector
-                                         didFailSelector:(SEL)failedSelector {
-  
-  if ([entryToUpdate namespaces] == nil) {
-    [entryToUpdate setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]]; 
-  }
-  
-  return [self fetchAuthenticatedEntryByUpdatingEntry:entryToUpdate
-                                          forEntryURL:youTubeEntryEditURL
-                                             delegate:delegate
-                                    didFinishSelector:finishedSelector
-                                      didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteYouTubeEntry:(GDataEntryBase *)entryToDelete
-                                  delegate:(id)delegate
-                         didFinishSelector:(SEL)finishedSelector
-                           didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedEntry:entryToDelete
-                               delegate:delegate
-                      didFinishSelector:finishedSelector
-                        didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)deleteYouTubeResourceURL:(NSURL *)resourceEditURL
-                                            ETag:(NSString *)etag
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-  
-  return [self deleteAuthenticatedResourceURL:resourceEditURL
-                                         ETag:etag
-                                     delegate:delegate
-                            didFinishSelector:finishedSelector
-                              didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchYouTubeQuery:(GDataQueryYouTube *)query
-                                 delegate:(id)delegate
-                        didFinishSelector:(SEL)finishedSelector
-                          didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchYouTubeFeedWithURL:[query URL]
-                              delegate:delegate
-                     didFinishSelector:finishedSelector
-                       didFailSelector:failedSelector];
-}
-
-- (GDataServiceTicket *)fetchYouTubeBatchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                           forBatchFeedURL:(NSURL *)feedURL
-                                                  delegate:(id)delegate
-                                         didFinishSelector:(SEL)finishedSelector
-                                           didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithBatchFeed:batchFeed
-                                   forBatchFeedURL:feedURL
-                                          delegate:delegate
-                                 didFinishSelector:finishedSelector
-                                   didFailSelector:failedSelector];
-}
-
 #pragma mark -
 
 // overrides of the superclass
@@ -301,6 +193,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataYouTubeDefaultServiceVersion;
+}
+
++ (NSDictionary *)standardServiceNamespaces {
+  return [GDataEntryYouTubeVideo youTubeNamespaces];
 }
 
 @end

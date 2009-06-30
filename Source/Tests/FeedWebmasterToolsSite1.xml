@@ -21,6 +21,10 @@
         <wt:verification-method in-use="true" type="htmlpage">google28a5eb30440fabf0.html</wt:verification-method>
         <wt:verified>true</wt:verified>
         <wt:indexed>true</wt:indexed>
+        <wt:geolocation>US</wt:geolocation>
+        <wt:preferred-domain>none</wt:preferred-domain>
+        <wt:crawl-rate>normal</wt:crawl-rate>
+        <wt:enhanced-image-search>true</wt:enhanced-image-search>
         <gd:entryLink
             href="http://www.google.com/webmasters/tools/feeds/http%3A%2F%2Fwww.domain.com%2F/sitemaps" 
             rel="http://schemas.google.com/webmasters/tools/2007#sitemaps"/>

@@ -18,7 +18,7 @@
 //
 
 #import "GDataFeedSitemap.h"
-#import "GDataEntrySite.h" // for namespaces
+#import "GDataWebmasterToolsConstants.h"
 
 #import "GDataSitemapMobile.h"
 #import "GDataSitemapNews.h"
@@ -29,7 +29,7 @@
   
   GDataFeedSitemap *feed = [[[self alloc] init] autorelease];
   
-  [feed setNamespaces:[GDataEntrySite webmasterToolsNamespaces]];
+  [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   
   return feed;
 }

@@ -225,73 +225,48 @@ enum {
 //
 // Fetch methods
 //
-//  fetchFeed/fetchEntry/fetchQuery (GET)
-//  fetchEntryByInsertingEntry (POST)
-//  fetchEntryByUpdatingEntry (PUT)
+//  fetchPublicFeed/fetchPublicEntry/fetchPublicFeedWithQuery (GET)
+//  fetchPublicEntryByInsertingEntry (POST)
+//  fetchPublicEntryByUpdatingEntry (PUT)
 //  deleteEntry/deleteResourceURL (DELETE)
 //
+//   NOTE:
 // These base class methods are for unauthenticated fetches to public feeds.
 //
 // To make authenticated fetches to a user's account, use the methods in the
 // service's GDataServiceXxxx class, or in the GDataServiceGoogle class.
 //
 
-// finishedSelector has signature like:
-//   serviceTicket:(GDataServiceTicketBase *)ticket finishedWithObject:(GDataObject *)object;
-// failedSelector has signature like:
-//   serviceTicket:(GDataServiceTicketBase *)ticket failedWithError:(NSError *)error
+// finishedSelector has a signature like:
+//
+//   - (void)serviceTicket:(GDataServiceTicketBase *)ticket
+//      finishedWithObject:(GDataObject *)object          // a feed or an entry
+//                   error:(NSError *)error
+//
+// If an error occurred, the error parameter will be non-nil.  Otherwise,
+// the object parameter will point to a feed or entry, if any was returned by
+// the fetch.  (Delete fetches return no object, so the second parameter will
+// be nil.)
 
-- (GDataServiceTicketBase *)fetchFeedWithURL:(NSURL *)feedURL
-                                   feedClass:(Class)feedClass
-                                    delegate:(id)delegate
-                           didFinishSelector:(SEL)finishedSelector
-                             didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)fetchEntryWithURL:(NSURL *)entryURL
-                                   entryClass:(Class)entryClass
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
-                                            forFeedURL:(NSURL *)feedURL
-                                              delegate:(id)delegate
-                                     didFinishSelector:(SEL)finishedSelector
-                                       didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                          forEntryURL:(NSURL *)entryURL
-                                             delegate:(id)delegate
-                                    didFinishSelector:(SEL)finishedSelector
-                                      didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)deleteEntry:(GDataEntryBase *)entryToDelete
-                               delegate:(id)delegate
-                      didFinishSelector:(SEL)finishedSelector // object parameter will be nil
-                        didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector // object parameter will be nil
-                              didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)deleteResourceURL:(NSURL *)resourceEditURL
-                                         ETag:(NSString *)etag
-                                     delegate:(id)delegate
-                            didFinishSelector:(SEL)finishedSelector
-                              didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)fetchQuery:(GDataQuery *)query
-                             feedClass:(Class)feedClass
-                              delegate:(id)delegate
-                     didFinishSelector:(SEL)finishedSelector
-                       didFailSelector:(SEL)failedSelector;
-
-- (GDataServiceTicketBase *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
-                                        forFeedURL:(NSURL *)feedURL
+- (GDataServiceTicketBase *)fetchPublicFeedWithURL:(NSURL *)feedURL
+                                         feedClass:(Class)feedClass
                                           delegate:(id)delegate
-                                 didFinishSelector:(SEL)finishedSelector
-                                   didFailSelector:(SEL)failedSelector;
+                                 didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithQuery:(GDataQuery *)query
+                                           feedClass:(Class)feedClass
+                                            delegate:(id)delegate
+                                   didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicketBase *)fetchPublicEntryWithURL:(NSURL *)entryURL
+                                         entryClass:(Class)entryClass
+                                           delegate:(id)delegate
+                                  didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                              forFeedURL:(NSURL *)feedURL
+                                                delegate:(id)delegate
+                                       didFinishSelector:(SEL)finishedSelector;
 
 // reset the last modified dates to avoid getting a Not Modified status
 // based on prior queries
@@ -431,7 +406,9 @@ enum {
         fetchedObject:(GDataObject **)outObjectOrNil
                 error:(NSError **)outErrorOrNil;
 
+//
 // internal utilities
+//
 
 - (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher;
 
@@ -442,6 +419,8 @@ enum {
 - (NSString *)systemVersionString;
 
 - (BOOL)invokeRetrySelector:(SEL)retrySelector delegate:(id)delegate ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)willRetry error:(NSError *)error;
+
++ (void)invokeCallback:(SEL)callbackSel target:(id)target ticket:(id)ticket object:(id)object error:(id)error;
 
 @end
 
