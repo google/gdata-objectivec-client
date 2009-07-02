@@ -654,7 +654,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     
   ticket = [service fetchFeedWithQuery:query
                               delegate:self
-                     didFinishSelector:@selector(docListListFetchTicket:finishedWithFeed:error:)];
+                     didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
   
   [self setDocListFetchTicket:ticket];
   
@@ -662,9 +662,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 // docList list fetch callback
-- (void)docListListFetchTicket:(GDataServiceTicket *)ticket
-              finishedWithFeed:(GDataFeedDocList *)feed
-                         error:(NSError *)error {
+- (void)docListFetchTicket:(GDataServiceTicket *)ticket
+          finishedWithFeed:(GDataFeedDocList *)feed
+                     error:(NSError *)error {
 
   [self setDocListFeed:feed];
   [self setDocListFetchError:error];

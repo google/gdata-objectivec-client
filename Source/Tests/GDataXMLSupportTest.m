@@ -266,6 +266,24 @@
 
     STAssertEquals((int)[nodes count], 3, @"XPath count for opensearch ns");
     STAssertNil(error, @"XPath error");
+
+    // find nodes with the default atom namespace
+    path = @"_def_ns:entry/_def_ns:link"; // four entry link nodes
+    nodes = [root nodesForXPath:path error:&error];
+
+    STAssertEquals((int)[nodes count], 4, @"XPath count for default ns nodes");
+    STAssertNil(error, @"XPath error");
+
+    // find nodes with an explicit atom namespace
+    path = @"atom:entry/atom:link"; // four entry link nodes
+    NSDictionary *nsDict = [NSDictionary dictionaryWithObject:kGDataNamespaceAtom
+                                                       forKey:kGDataNamespaceAtomPrefix];
+    nodes = [(GDataXMLNode *)root nodesForXPath:path
+                                     namespaces:nsDict
+                                          error:&error];
+
+    STAssertEquals((int)[nodes count], 4, @"XPath count for atom ns nodes");
+    STAssertNil(error, @"XPath error");
   }
 }
 

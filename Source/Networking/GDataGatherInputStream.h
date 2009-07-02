@@ -24,7 +24,13 @@
 // stream have completed.
 
 #import <Foundation/Foundation.h>
+
+// GDataDefines.h is not required to use GDataMIMEDocument.  This import may be
+// omitted when using GDataGatherInputStream outside of the Google Data APIs
+// library.
+#ifndef SKIP_GDATA_DEFINES
 #import "GDataDefines.h"
+#endif
 
 #undef GDATA_NSSTREAM_DELEGATE
 #if TARGET_OS_MAC && !TARGET_OS_IPHONE && (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_6)
