@@ -41,7 +41,25 @@
 #import <libxml/xpath.h>
 #import <libxml/xpathInternals.h>
 
+// GDataDefines.h is not required to use GDataXMLNode.  This import may be
+// omitted when using GDataXMLNode outside of the Google Data APIs library.
+#ifndef SKIP_GDATA_DEFINES
 #import "GDataDefines.h"
+#endif
+
+#undef _EXTERN
+#undef _INITIALIZE_AS
+#ifdef GDATAXMLNODE_DEFINE_GLOBALS
+#define _EXTERN
+#define _INITIALIZE_AS(x) =x
+#else
+#define _EXTERN extern
+#define _INITIALIZE_AS(x)
+#endif
+
+// when no namespace dictionary is supplied for XPath, the default namespace
+// for the evaluated tree is registered with the prefix _def_ns
+_EXTERN const char* kGDataXMLXPathDefaultNamespacePrefix _INITIALIZE_AS("_def_ns");
 
 // Nomenclature for method names:
 //
@@ -125,8 +143,14 @@ typedef NSUInteger GDataXMLNodeKind;
 + (NSString *)localNameForName:(NSString *)name;
 + (NSString *)prefixForName:(NSString *)name;
 
+// This is the preferred entry point for nodesForXPath.  This takes an explicit
+// namespace dictionary (keys are prefixes, values are URIs).
+- (NSArray *)nodesForXPath:(NSString *)xpath namespaces:(NSDictionary *)namespaces error:(NSError **)error;
+
 // This implementation of nodesForXPath registers namespaces only from the
-// current node
+// document's root node.  _def_ns may be used as a prefix for the default
+// namespace, though there's no guarantee that the default namespace will
+// be consistenly the same namespace in server responses.
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error;
 
 // access to the underlying libxml node; be sure to release the cached values
@@ -176,8 +200,14 @@ typedef NSUInteger GDataXMLNodeKind;
 - (void)setVersion:(NSString *)version;
 - (void)setCharacterEncoding:(NSString *)encoding;
 
+// This is the preferred entry point for nodesForXPath.  This takes an explicit
+// namespace dictionary (keys are prefixes, values are URIs).
+- (NSArray *)nodesForXPath:(NSString *)xpath namespaces:(NSDictionary *)namespaces error:(NSError **)error;
+
 // This implementation of nodesForXPath registers namespaces only from the
-// document's root node
+// document's root node.  _def_ns may be used as a prefix for the default
+// namespace, though there's no guarantee that the default namespace will
+// be consistenly the same namespace in server responses.
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error;
 
 - (NSString *)description;

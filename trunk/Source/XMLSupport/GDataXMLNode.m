@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-
+#define GDATAXMLNODE_DEFINE_GLOBALS 1
 #import "GDataXMLNode.h"
 
 @class NSArray, NSDictionary, NSError, NSString, NSURL;
@@ -682,6 +682,14 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
+  // call through with no explicit namespace dictionary; that will register the
+  // root node's namespaces
+  return [self nodesForXPath:xpath namespaces:nil error:error];
+}
+
+- (NSArray *)nodesForXPath:(NSString *)xpath
+                namespaces:(NSDictionary *)namespaces
+                     error:(NSError **)error {
 
   NSMutableArray *array = nil;
 
@@ -712,32 +720,55 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
     xmlXPathContextPtr xpathCtx = xmlXPathNewContext(xmlNode_->doc);
     if (xpathCtx) {
-
       // anchor at our current node
       xpathCtx->node = xmlNode_;
 
-      // register the namespaces of this node, if it's an element, or of
-      // this node's root element, if it's a document
-      xmlNodePtr nsNodePtr = xmlNode_;
-      if (xmlNode_->type == XML_DOCUMENT_NODE) {
-        nsNodePtr = xmlDocGetRootElement((xmlDocPtr) xmlNode_);
-      }
+      // if a namespace dictionary was provided, register its contents
+      if (namespaces) {
+        // the dictionary keys are prefixes; the values are URIs
+        for (NSString *prefix in namespaces) {
+          NSString *uri = [namespaces objectForKey:prefix];
 
-      // step through the namespaces, if any, and register each with the
-      // xpath context
-      if (nsNodePtr != NULL) {
-        for (xmlNsPtr nsPtr = nsNodePtr->ns; nsPtr != NULL; nsPtr = nsPtr->next) {
-
-          // default namespace is nil in the tree but an empty string when
-          // registering
-          const xmlChar* prefix = nsPtr->prefix;
-          if (prefix == NULL) prefix = (xmlChar*) "";
-
-          int result = xmlXPathRegisterNs(xpathCtx, prefix, nsPtr->href);
+          xmlChar *prefixChars = (xmlChar *) [prefix UTF8String];
+          xmlChar *uriChars = (xmlChar *) [uri UTF8String];
+          int result = xmlXPathRegisterNs(xpathCtx, prefixChars, uriChars);
           if (result != 0) {
 #if DEBUG
-            NSCAssert(result == 0, @"GDataXMLNode XPath namespace problem");
+            NSCAssert1(result == 0, @"GDataXMLNode XPath namespace %@ issue",
+                      prefix);
 #endif
+          }
+        }
+      } else {
+        // no namespace dictionary was provided
+        //
+        // register the namespaces of this node, if it's an element, or of
+        // this node's root element, if it's a document
+        xmlNodePtr nsNodePtr = xmlNode_;
+        if (xmlNode_->type == XML_DOCUMENT_NODE) {
+          nsNodePtr = xmlDocGetRootElement((xmlDocPtr) xmlNode_);
+        }
+
+        // step through the namespaces, if any, and register each with the
+        // xpath context
+        if (nsNodePtr != NULL) {
+          for (xmlNsPtr nsPtr = nsNodePtr->ns; nsPtr != NULL; nsPtr = nsPtr->next) {
+
+            // default namespace is nil in the tree, but there's no way to
+            // register a default namespace, so we'll register a fake one,
+            // _def_ns
+            const xmlChar* prefix = nsPtr->prefix;
+            if (prefix == NULL) {
+              prefix = (xmlChar*) kGDataXMLXPathDefaultNamespacePrefix;
+            }
+
+            int result = xmlXPathRegisterNs(xpathCtx, prefix, nsPtr->href);
+            if (result != 0) {
+#if DEBUG
+              NSCAssert1(result == 0, @"GDataXMLNode XPath namespace %@ issue",
+                        prefix);
+#endif
+            }
           }
         }
       }
@@ -1728,9 +1759,17 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 }
 
 - (NSArray *)nodesForXPath:(NSString *)xpath error:(NSError **)error {
+  return [self nodesForXPath:xpath namespaces:nil error:error];
+}
+
+- (NSArray *)nodesForXPath:(NSString *)xpath
+                namespaces:(NSDictionary *)namespaces
+                     error:(NSError **)error {
   if (xmlDoc_ != NULL) {
-    NSXMLNode *docNode = [GDataXMLElement nodeBorrowingXMLNode:(xmlNodePtr)xmlDoc_];
-    NSArray *array = [docNode nodesForXPath:xpath error:error];
+    GDataXMLNode *docNode = [GDataXMLElement nodeBorrowingXMLNode:(xmlNodePtr)xmlDoc_];
+    NSArray *array = [docNode nodesForXPath:xpath
+                                 namespaces:namespaces
+                                      error:error];
     return array;
   }
   return nil;
