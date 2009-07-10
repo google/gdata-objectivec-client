@@ -20,7 +20,7 @@
 // http://code.google.com/apis/youtube/reference.html#Elements
 
 #import "GDataYouTubeElements.h"
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
 
 
 // user info, like <yt:aboutMe>I am hot</yt:about me>

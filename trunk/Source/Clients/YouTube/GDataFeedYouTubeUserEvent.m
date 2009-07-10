@@ -18,7 +18,7 @@
 //
 
 #import "GDataFeedYouTubeUserEvent.h"
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
 
 @implementation GDataFeedYouTubeUserEvent
 
@@ -26,7 +26,7 @@
 
   GDataFeedYouTubeUserEvent *feed = [[[self alloc] init] autorelease];
 
-  [feed setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]];
+  [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 
   return feed;
 }

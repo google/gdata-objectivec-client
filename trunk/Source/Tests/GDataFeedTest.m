@@ -1725,6 +1725,8 @@
     { @"entries.0.publicationState.reasonCode", @"32" },
     { @"entries.0.publicationState.helpURLString", @"http://www.youtube.com/" },
     { @"entries.0.publicationState.errorDescription", @"incorrect format" },
+    { @"entries.0.captionTracksLink.href", @"contains:GppRTi2JGQ8/captions" },
+    { @"entries.0.videoResponsesLink.href", @"contains:Dl643JFJWig/responses" },
 
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
@@ -1832,6 +1834,25 @@
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
       
+    { @"", @"" }, // end of feed
+
+    //
+    // caption track feed
+    //
+    { @"GDataFeedYouTubeCaptionTrack", @"Tests/FeedYouTubeCaptionTracks1.xml" },
+
+    { @"categories.0.term", kGDataCategoryYouTubeCaptionTrack },
+
+    { @"entries.0.className", @"GDataEntryYouTubeCaptionTrack" },
+    { @"entries.0.title", @"captrack name" },
+    { @"entries.0.categories.0.term", kGDataCategoryYouTubeCaptionTrack },
+
+    { @"entries.0.publicationState.state", @"failed" },
+    { @"entries.0.publicationState.reasonCode", @"invalidFormat" },
+
+    { @"entries.0.unknownAttributes.@count", @"0" },
+    { @"entries.0.unknownChildren.@count", @"0" },
+
     { @"", @"" }, // end of feed
 
     //

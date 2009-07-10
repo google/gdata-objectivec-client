@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (511 classes) 2009-06-30 15:50:16 -0700
+// com.google.GDataFramework v. 1.7 (514 classes) 2009-07-10 15:13:23 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -183,6 +183,7 @@
   #define GDataEntryStandardDoc                   _GDATA_NS_SYMBOL(GDataEntryStandardDoc)
   #define GDataEntryVolume                        _GDATA_NS_SYMBOL(GDataEntryVolume)
   #define GDataEntryWorksheet                     _GDATA_NS_SYMBOL(GDataEntryWorksheet)
+  #define GDataEntryYouTubeCaptionTrack           _GDATA_NS_SYMBOL(GDataEntryYouTubeCaptionTrack)
   #define GDataEntryYouTubeChannel                _GDATA_NS_SYMBOL(GDataEntryYouTubeChannel)
   #define GDataEntryYouTubeComment                _GDATA_NS_SYMBOL(GDataEntryYouTubeComment)
   #define GDataEntryYouTubeComplaint              _GDATA_NS_SYMBOL(GDataEntryYouTubeComplaint)
@@ -247,6 +248,7 @@
   #define GDataFeedSpreadsheetTable               _GDATA_NS_SYMBOL(GDataFeedSpreadsheetTable)
   #define GDataFeedVolume                         _GDATA_NS_SYMBOL(GDataFeedVolume)
   #define GDataFeedWorksheet                      _GDATA_NS_SYMBOL(GDataFeedWorksheet)
+  #define GDataFeedYouTubeCaptionTrack            _GDATA_NS_SYMBOL(GDataFeedYouTubeCaptionTrack)
   #define GDataFeedYouTubeChannel                 _GDATA_NS_SYMBOL(GDataFeedYouTubeChannel)
   #define GDataFeedYouTubeComment                 _GDATA_NS_SYMBOL(GDataFeedYouTubeComment)
   #define GDataFeedYouTubeComplaint               _GDATA_NS_SYMBOL(GDataFeedYouTubeComplaint)
@@ -501,6 +503,7 @@
   #define GDataYouTubeBooks                       _GDATA_NS_SYMBOL(GDataYouTubeBooks)
   #define GDataYouTubeCommentRating               _GDATA_NS_SYMBOL(GDataYouTubeCommentRating)
   #define GDataYouTubeCompany                     _GDATA_NS_SYMBOL(GDataYouTubeCompany)
+  #define GDataYouTubeConstants                   _GDATA_NS_SYMBOL(GDataYouTubeConstants)
   #define GDataYouTubeCountHint                   _GDATA_NS_SYMBOL(GDataYouTubeCountHint)
   #define GDataYouTubeCountryAttribute            _GDATA_NS_SYMBOL(GDataYouTubeCountryAttribute)
   #define GDataYouTubeDescription                 _GDATA_NS_SYMBOL(GDataYouTubeDescription)

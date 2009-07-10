@@ -52,6 +52,7 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDSubscriptions         _INITIALIZE
 _EXTERN NSString* const kGDataYouTubeUserFeedIDUploads               _INITIALIZE_AS(@"uploads");
 _EXTERN NSString* const kGDataYouTubeUserFeedIDNewSubscriptionVideos _INITIALIZE_AS(@"newsubscriptionvideos");
 _EXTERN NSString* const kGDataYouTubeUserFeedIDFriendsActivity       _INITIALIZE_AS(@"friendsactivity");
+_EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE_AS(@"recommendations");
 
 
 @class GDataQueryYouTube;

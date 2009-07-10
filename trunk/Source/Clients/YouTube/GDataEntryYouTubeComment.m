@@ -18,7 +18,8 @@
 //
 
 #import "GDataEntryYouTubeComment.h"
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
+#import "GDataYouTubeElements.h"
 
 @implementation GDataEntryYouTubeComment
 
@@ -26,7 +27,7 @@
 
   GDataEntryYouTubeComment *entry = [[[self alloc] init] autorelease];
 
-  [entry setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]];
+  [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 
   return entry;
 }

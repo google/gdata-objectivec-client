@@ -20,7 +20,7 @@
 #define GDATASERVICEYOUTUBE_DEFINE_GLOBALS 1
 #import "GDataServiceGoogleYouTube.h"
 
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
 #import "GDataQueryYouTube.h"
 
 
@@ -196,7 +196,7 @@
 }
 
 + (NSDictionary *)standardServiceNamespaces {
-  return [GDataEntryYouTubeVideo youTubeNamespaces];
+  return [GDataYouTubeConstants youTubeNamespaces];
 }
 
 @end

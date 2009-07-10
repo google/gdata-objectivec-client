@@ -55,6 +55,9 @@
             <yt:token>ZeeToken</yt:token>
         </link>
         <link
+          rel="http://gdata.youtube.com/schemas/2007#video.captionTracks" type="application/atom+xml"
+          href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions"/>
+        <link
             href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/responses"
             rel="http://gdata.youtube.com/schemas/2007#video.responses" type="application/atom+xml"/>
         <link
