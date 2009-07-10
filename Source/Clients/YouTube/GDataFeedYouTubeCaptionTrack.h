@@ -1,4 +1,4 @@
-/* Copyright (c) 2008 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,31 +14,11 @@
  */
 
 //
-//  GDataEntryYouTubeFavorite.m
+//  GDataFeedYouTubeCaptionTrack.h
 //
 
-#import "GDataEntryYouTubeFavorite.h"
-#import "GDataYouTubeConstants.h"
+#import "GDataFeedBase.h"
 
-@implementation GDataEntryYouTubeFavorite
-
-+ (GDataEntryYouTubeFavorite *)favoriteEntry {
-
-  GDataEntryYouTubeFavorite *entry = [[[self alloc] init] autorelease];
-
-  [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-
-  return entry;
-}
-
-#pragma mark -
-
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryYouTubeFavorite;
-}
-
-+ (void)load {
-  [self registerEntryClass];
-}
-
+@interface GDataFeedYouTubeCaptionTrack : GDataFeedBase
++ (GDataFeedYouTubeCaptionTrack *)captionTrackFeed;
 @end

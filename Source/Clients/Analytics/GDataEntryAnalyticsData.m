@@ -28,7 +28,7 @@
 + (GDataEntryAnalyticsData *)dataEntry {
 
   GDataEntryAnalyticsData *obj;
-  obj = [[[[self class] alloc] init] autorelease];
+  obj = [[[self alloc] init] autorelease];
 
   [obj setNamespaces:[GDataAnalyticsConstants analyticsNamespaces]];
 

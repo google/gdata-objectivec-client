@@ -46,7 +46,7 @@ static NSString *const kCountHintAttr = @"countHint";
 
 + (id)feedLinkWithHref:(NSString *)href
             isReadOnly:(BOOL)isReadOnly {
-  GDataFeedLink* feedLink = [[[[self class] alloc] init] autorelease];
+  GDataFeedLink* feedLink = [[[self alloc] init] autorelease];
   [feedLink setHref:href];
   [feedLink setIsReadOnly:isReadOnly];
   return feedLink;

@@ -1,4 +1,4 @@
-/* Copyright (c) 2008 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,25 @@
  */
 
 //
-//  GDataFeedYouTubeComplaint.m
+//  GDataFeedYouTubeCaptionTrack.m
 //
 
-#import "GDataFeedYouTubeComplaint.h"
+#import "GDataFeedYouTubeCaptionTrack.h"
 #import "GDataYouTubeConstants.h"
 
-@implementation GDataFeedYouTubeComplaint
+@implementation GDataFeedYouTubeCaptionTrack
 
-+ (GDataFeedYouTubeComplaint *)complaintFeed {
-  
-  GDataFeedYouTubeComplaint *feed = [[[self alloc] init] autorelease];
-  
++ (GDataFeedYouTubeCaptionTrack *)captionTrackFeed {
+
+  GDataFeedYouTubeCaptionTrack *feed = [[[self alloc] init] autorelease];
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 
 + (NSString *)standardFeedKind {
-  return kGDataCategoryYouTubeComplaint;
+  return kGDataCategoryYouTubeCaptionTrack;
 }
 
 + (void)load {

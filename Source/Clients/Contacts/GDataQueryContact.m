@@ -25,7 +25,7 @@ static NSString *const kGroupParamName = @"group";
 @implementation GDataQueryContact
 
 + (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[[self class] alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
 }
 
 + (GDataQueryContact *)contactQueryForUserID:(NSString *)userID {  

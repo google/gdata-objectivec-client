@@ -18,7 +18,7 @@
 //
 
 #import "GDataEntryYouTubeUserEvent.h"
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
 #import "GDataYouTubeElements.h"
 #import "GDataRating.h"
 
@@ -28,7 +28,7 @@
 
   GDataEntryYouTubeUserEvent *entry = [[[self alloc] init] autorelease];
 
-  [entry setNamespaces:[GDataEntryYouTubeVideo youTubeNamespaces]];
+  [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 
   return entry;
 }

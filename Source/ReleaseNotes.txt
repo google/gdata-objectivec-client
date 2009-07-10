@@ -23,6 +23,8 @@ Additions
 
 - Added Calendar settings feed
 
+- Added YouTube CaptionTrack feed
+
 - Added ebook query parameter and epub link accessor to Books API
 
 - Added batch call to Docs API
@@ -36,6 +38,10 @@ Additions
   addExcludeCategoryWithScheme:term:
   
 - Added spam and aspectRatio elements to YouTube API
+
+- Added a nodesForXPath: method that allows explicit namespace declarations,
+  and provided access to the default namespace in XPath expressions
+  (thanks berbie)
 
 Changes
 

@@ -29,7 +29,7 @@
 #define GDATAYOUTUBEPUBLICATIONSTATE_DEFINE_GLOBALS 1
 #import "GDataYouTubePublicationState.h"
 
-#import "GDataEntryYouTubeVideo.h"
+#import "GDataYouTubeConstants.h"
 
 static NSString *const kNameAttr = @"name";
 static NSString *const kReasonCodeAttr = @"reasonCode";
