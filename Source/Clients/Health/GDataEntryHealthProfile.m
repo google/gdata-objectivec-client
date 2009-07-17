@@ -112,4 +112,27 @@
   return [self linkWithRelAttributeValue:@"next"];
 }
 
+- (GDataCategory *)healthItemCategory {
+  NSArray *categories = [self categories];
+  GDataCategory *category = [GDataUtilities firstObjectFromArray:categories
+                                                       withValue:kGDataHealthSchemeItem
+                                                      forKeyPath:@"scheme"];
+  return category;
+}
+
+- (GDataCategory *)CCRCategory {
+  NSArray *categories = [self categories];
+  GDataCategory *category = [GDataUtilities firstObjectFromArray:categories
+                                                       withValue:kGDataHealthSchemeCCR
+                                                      forKeyPath:@"scheme"];
+  if (category == nil) {
+    // CCR categories may be missing a scheme element, since CCR is implicit
+    category = [GDataUtilities firstObjectFromArray:categories
+                                          withValue:nil
+                                         forKeyPath:@"scheme"];
+  }
+
+  return category;
+}
+
 @end
