@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBClasses</key>
+	<array>
+		<dict>
+			<key>ACTIONS</key>
+			<dict>
+				<key>entrySegmentClicked</key>
+				<string>id</string>
+				<key>getProfileListClicked</key>
+				<string>id</string>
+				<key>loggingCheckboxClicked</key>
+				<string>id</string>
+				<key>radioButtonClicked</key>
+				<string>id</string>
+				<key>xmlSegmentClicked</key>
+				<string>id</string>
+			</dict>
+			<key>CLASS</key>
+			<string>HealthSampleWindowController</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>OUTLETS</key>
+			<dict>
+				<key>mEntrySegmentedControl</key>
+				<string>NSSegmentedControl</string>
+				<key>mPasswordField</key>
+				<string>NSSecureTextField</string>
+				<key>mProfileListProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mProfileListResultTextField</key>
+				<string>NSTextView</string>
+				<key>mProfileListTable</key>
+				<string>NSTableView</string>
+				<key>mProfileProgressIndicator</key>
+				<string>NSProgressIndicator</string>
+				<key>mProfileResultTextField</key>
+				<string>NSTextView</string>
+				<key>mProfileTable</key>
+				<string>NSTableView</string>
+				<key>mRadioMatrix</key>
+				<string>NSMatrix</string>
+				<key>mUsernameField</key>
+				<string>NSTextField</string>
+				<key>mXMLField</key>
+				<string>NSTextView</string>
+				<key>mXMLSegmentedControl</key>
+				<string>NSSegmentedControl</string>
+			</dict>
+			<key>SUPERCLASS</key>
+			<string>NSWindowController</string>
+		</dict>
+		<dict>
+			<key>CLASS</key>
+			<string>FirstResponder</string>
+			<key>LANGUAGE</key>
+			<string>ObjC</string>
+			<key>SUPERCLASS</key>
+			<string>NSObject</string>
+		</dict>
+	</array>
+	<key>IBVersion</key>
+	<string>1</string>
+</dict>
+</plist>
