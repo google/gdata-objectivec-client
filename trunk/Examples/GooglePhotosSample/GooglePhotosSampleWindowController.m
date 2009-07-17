@@ -603,6 +603,15 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     GDataEntryPhotoAlbum *album = [self selectedAlbum];
     NSURL *feedURL = [[album feedLink] URL];
 
+    // to upload to the account's Drop Box, instead of using an album's
+    // feedLink, insert directly to this URL:
+    //  feedURL = [GDataServiceGooglePhotos photoFeedURLForUserID:kGDataServiceDefaultUser
+    //                                                    albumID:kGDataGooglePhotosDropBoxAlbumID
+    //                                                  albumName:nil
+    //                                                    photoID:nil
+    //                                                       kind:nil
+    //                                                     access:nil];
+
     // make service tickets call back into our upload progress selector
     GDataServiceGooglePhotos *service = [self googlePhotosService];
 

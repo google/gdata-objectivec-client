@@ -70,4 +70,7 @@ _EXTERN NSString* const kGDataHealthRelComplete _INITIALIZE_AS(@"http://schemas.
 // feeds with a "grouped=true" query
 - (GDataLink *)nextLink;
 
+- (GDataCategory *)healthItemCategory;
+- (GDataCategory *)CCRCategory;
+
 @end

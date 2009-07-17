@@ -44,6 +44,9 @@ _EXTERN NSString* const kGDataGooglePhotosKindComment _INITIALIZE_AS(@"comment")
 _EXTERN NSString* const kGDataGooglePhotosKindTag     _INITIALIZE_AS(@"tag");
 _EXTERN NSString* const kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
 
+// inserting a photo into the feed for the default user and default album ID
+// will post the photo into the user's "Drop Box" album
+_EXTERN NSString* const kGDataGooglePhotosDropBoxAlbumID _INITIALIZE_AS(@"default");
 
 @interface GDataServiceGooglePhotos : GDataServiceGoogle 
 

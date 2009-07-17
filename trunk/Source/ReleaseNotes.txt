@@ -29,7 +29,7 @@ Additions
 
 - Added batch call to Docs API
 
-- Added "next" link accessor to Health profile entries
+- Added "next" link and category accessors to Health profile entries
 
 - Added removeChild method to GDataXMLElement
 

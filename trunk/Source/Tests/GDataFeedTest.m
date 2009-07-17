@@ -1984,6 +1984,8 @@
     { @"entries.0.identifier", @"https://www.google.com/h9/feeds/profile/ui/wwYexvc_W.Q/wXQ4TZbjHAE" },
     { @"entries.0.continuityOfCareRecord.childXMLElements.0.XMLString", @"<CCRDocumentObjectID>wXQ4TZbjHAE</CCRDocumentObjectID>" },
     { @"entries.0.profileMetaData.childXMLElements.0.XMLString", @"<UserComment src=\"IRI\" type=\"text\"></UserComment>" },
+    { @"entries.0.CCRCategory.term", @"MEDICATION" },
+    { @"entries.0.healthItemCategory.term", @"A-200 Lice Treatment" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },

@@ -19,8 +19,8 @@
 // This tool takes the path to the GData framework, and searches it
 // for classes with the "GData" prefix.
 //
-// If any GData classes are found, it writes to stdout the contents for the
-// file GDataTargetNamespace.h, like
+// If any GData classes are found, it writes to the output path the contents
+// of the file GDataTargetNamespace.h, like
 //
 // #define GDataServiceBase _GDATA_NS_SYMBOL(GDataServiceBase)
 // #define GDataHTTPFetcher _GDATA_NS_SYMBOL(GDataHTTPFetcher)
@@ -100,7 +100,14 @@ int main (int argc, const char * argv[]) {
   }
 
   // generate the macros
+  printf("Generating macros for bundle: %s\nOutput path: %s\n\n",
+         [pathToBundle UTF8String], [pathToOutput UTF8String]);
   result = DoGDataClassSearch(targetBundle, pathToOutput);
+  if (result == 0) {
+    printf("Finished.\n");
+  } else {
+    printf("Failed.\n"); // DoGDataClassSearch writes error details to stderr
+  }
 
 Done:
   [pool release];
@@ -110,7 +117,7 @@ Done:
 
 
 // DoGDataClassSearch finds all classes in the target bundle that begin with
-// GData.  If it finds any, it prints to stdout the contents of
+// GData.  If it finds any, it writes to the output path the contents of
 // GDataTargetNamespace.h
 static int DoGDataClassSearch(NSBundle *targetBundle, NSString *outputPath) {
 

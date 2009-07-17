@@ -195,7 +195,12 @@
 
 #import <Foundation/Foundation.h>
 
+// GDataDefines.h is not required to use GDataHTTPFetcher.  This import may be
+// omitted when using GDataHTTPFetcher outside of the Google Data APIs
+// library.
+#ifndef SKIP_GDATA_DEFINES
 #import "GDataDefines.h"
+#endif
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
