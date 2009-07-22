@@ -1018,11 +1018,16 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return userAgent_;
 }
 
-- (void)setUserAgent:(NSString *)userAgent {
+- (void)setExactUserAgent:(NSString *)userAgent {
+  // internal use only
   [userAgent_ release];
+  userAgent_ = [userAgent copy];
+}
 
+- (void)setUserAgent:(NSString *)userAgent {
   // remove whitespace and unfriendly characters
-  userAgent_ = [[GDataUtilities userAgentStringForString:userAgent] retain];
+  NSString *str = [[GDataUtilities userAgentStringForString:userAgent] retain];
+  [self setExactUserAgent:str];
 }
 
 - (NSArray *)runLoopModes {

@@ -33,6 +33,7 @@
 
 - (void)uploadFileAtPath:(NSString *)path;
 - (void)saveSelectedDocumentToPath:(NSString *)path;
+- (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry toPath:(NSString *)savePath;
 
 - (GDataServiceGoogleDocs *)docsService;
 - (GDataEntryDocBase *)selectedDoc;
@@ -246,7 +247,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     
     NSString *title = [[doc title] stringValue];
     
-    NSString *filename = [NSString stringWithFormat:@"%@.html", title];
+    NSString *filename = [NSString stringWithFormat:@"%@.txt", title];
     
     SEL endSel = @selector(saveSheetDidEnd:returnCode:contextInfo:);
     
@@ -273,50 +274,154 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 - (void)saveSelectedDocumentToPath:(NSString *)savePath {
 
-  NSString *sourceURI = [[[self selectedDoc] content] sourceURI];
-  NSURL *url = [NSURL URLWithString:sourceURI];
-  if (url) {
+  // downloading docs, per
+  // http://code.google.com/apis/documents/docs/2.0/developers_guide_protocol.html#DownloadingDocs
 
-    // read the document's contents synchronously from the network
+  GDataEntryDocBase *docEntry = [self selectedDoc];
+
+  if ([docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]]) {
+    // this document entry is for a spreadsheet
+    //
+    // to save a spreadsheet, we need to acquire a spreadsheet service
+    // auth token by fetching a spreadsheet feed or entry, and then download
+    // the spreadsheet file
+    [self saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
+                   toPath:savePath];
+    return;
+  }
+
+  NSString *docID = [docEntry resourceID];
+  if ([docID length] > 0) {
+
+    // make the download URL for this document, exporting it as plain text
+    NSString *encodedDocID = [GDataUtilities stringByURLEncodingForURI:docID];
+
+    NSString *template = @"http://docs.google.com/feeds/download/documents/Export?docID=%@&exportFormat=txt";
+
+    NSString *urlStr = [NSString stringWithFormat:template, encodedDocID];
+    NSURL *downloadURL = [NSURL URLWithString:urlStr];
+
+    // read the document's contents asynchronously from the network
     //
     // since the user has already signed in, the service object
     // has the proper authentication token.  We'll use the service object
     // to generate an NSURLRequest with the auth token in the header, and
-    // then fetch that synchronously.  Without the auth token, the sourceURI
-    // would only give us the document if we were already signed into the
-    // user's account with Safari, or if the document was published with
-    // public access.
+    // then fetch that asynchronously.
     //
-    // A convenient way to retrieve the document asynchronously would be to
-    // use GDataHTTPFetcher
-
     GDataServiceGoogleDocs *service = [self docsService];
-    NSURLRequest *request = [service requestForURL:url
+    NSURLRequest *request = [service requestForURL:downloadURL
                                               ETag:nil
                                         httpMethod:nil];
 
-    NSURLResponse *response = nil;
-    NSError *error = nil;
-    NSData *data = [NSURLConnection sendSynchronousRequest:request
-                                         returningResponse:&response
-                                                     error:&error];
-
-    if (error != nil) {
-      NSLog(@"Error retrieving file: %@", error);
-      NSBeep();
-
-    } else {
-      // save the file to the local path specified by the user
-      BOOL didWrite = [data writeToFile:savePath
-                                options:NSAtomicWrite
-                                  error:&error];
-      if (!didWrite) {
-        NSLog(@"Error saving file: %@", error);
-        NSBeep();
-      }
-    }
+    GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+    [fetcher setUserData:savePath];
+    [fetcher beginFetchWithDelegate:self
+                  didFinishSelector:@selector(fetcher:finishedWithData:)
+                    didFailSelector:@selector(fetcher:failedWithError:)];
   }
 }
+
+- (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+  // save the file to the local path specified by the user
+  NSString *savePath = [fetcher userData];
+  NSError *error = nil;
+  BOOL didWrite = [data writeToFile:savePath
+                            options:NSAtomicWrite
+                              error:&error];
+  if (!didWrite) {
+    NSLog(@"Error saving file: %@", error);
+    NSBeep();
+  } else {
+    // successfully saved the document
+  }
+}
+
+- (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+  NSLog(@"Fetcher error: %@", error);
+  NSBeep();
+}
+
+- (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
+                 toPath:(NSString *)savePath {
+  // to download a spreadsheet document, we need a spreadsheet service object,
+  // and we first need to fetch a feed or entry with the service object so that
+  // it has a valid auth token
+  GDataServiceGoogleSpreadsheet *spreadsheetService;
+  spreadsheetService = [[[GDataServiceGoogleSpreadsheet alloc] init] autorelease];
+
+  GDataServiceGoogleDocs *docsService = [self docsService];
+  [spreadsheetService setUserAgent:[docsService userAgent]];
+  [spreadsheetService setUserCredentialsWithUsername:[docsService username]
+                                            password:[docsService password]];
+
+  // we don't really care about retrieving the worksheets feed, but it's
+  // a convenient URL to fetch to force the spreadsheet service object
+  // to acquire an auth token
+  NSURL *worksheetsURL = [[docEntry worksheetsLink] URL];
+
+  GDataServiceTicket *ticket;
+  ticket = [spreadsheetService fetchFeedWithURL:worksheetsURL
+                                       delegate:self
+                              didFinishSelector:@selector(spreadsheetTicket:finishedWithFeed:error:)];
+
+  // we'll hang on to the spreadsheet service object with a ticket property
+  // since we need it to create an authorized NSURLRequest
+  [ticket setProperty:spreadsheetService forKey:@"service"];
+  [ticket setProperty:savePath forKey:@"savePath"];
+  [ticket setProperty:[docEntry resourceID] forKey:@"docID"];
+}
+
+- (void)spreadsheetTicket:(GDataServiceTicket *)ticket
+         finishedWithFeed:(GDataFeedWorksheet *)feed
+                    error:(NSError *)error {
+  // we don't care if we fetched a worksheets feed, just that we have
+  // an auth token in the service object
+
+  GDataServiceGoogleSpreadsheet *service = [ticket propertyForKey:@"service"];
+  if ([[service authToken] length] == 0) {
+    // failed to authenticate; give up
+    NSLog(@"Spreadsheet authentication error: %@", error);
+    return;
+  }
+
+  NSString *docID = [ticket propertyForKey:@"docID"];
+  NSString *savePath = [ticket propertyForKey:@"savePath"];
+
+  NSString *encodedDocID = [GDataUtilities stringByURLEncodingForURI:docID];
+
+  // temporary...
+  // change "document:abcdef" into "abcdef"
+  // this is due to a server bug and should not be necessary
+  NSScanner *scanner = [NSScanner scannerWithString:docID];
+  NSString *trimmedDocID = docID;
+  if ([scanner scanUpToString:@":" intoString:nil]
+      && [scanner scanString:@":" intoString:nil]
+      && [scanner scanUpToString:@"\n" intoString:&trimmedDocID]) {
+    encodedDocID =  [GDataUtilities stringByURLEncodingForURI:trimmedDocID];
+  }
+
+  // we'll use the export format for tab-separate values, tsv
+  //
+  // add a gid parameter to specify a worksheet number
+  NSString *template = @"http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=%@&exportFormat=tsv";
+  NSString *urlStr = [NSString stringWithFormat:template, encodedDocID];
+
+  NSURL *downloadURL = [NSURL URLWithString:urlStr];
+
+  // with the spreadsheet service, we can now make an authenticated request
+  NSURLRequest *request = [service requestForURL:downloadURL
+                                            ETag:nil
+                                      httpMethod:nil];
+
+  // we'll reuse the document download fetcher's callbacks
+  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+  [fetcher setUserData:savePath];
+  [fetcher beginFetchWithDelegate:self
+                didFinishSelector:@selector(fetcher:finishedWithData:)
+                  didFailSelector:@selector(fetcher:failedWithError:)];
+}
+
+#pragma mark -
 
 - (IBAction)uploadFileClicked:(id)sender {
 
@@ -327,7 +432,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"ods", 
     @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
     @"jpeg", @"jpg", @"bmp", @"gif", @"html", @"htm", @"tsv", 
-    @"tab", nil];
+    @"tab", @"pdf", nil];
   
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
   [openPanel beginSheetForDirectory:nil
@@ -706,6 +811,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"htm", @"text/html", @"GDataEntryStandardDoc" },
     { @"tsv", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
     { @"tab", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
+    { @"pdf", @"application/pdf", @"GDataEntryPDFDoc" }, 
     
     { nil, nil, nil }
   };
@@ -834,7 +940,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
   // the user clicked on an entry; 
   // just display it below the entry table
-  
   [self updateUI]; 
 }
 

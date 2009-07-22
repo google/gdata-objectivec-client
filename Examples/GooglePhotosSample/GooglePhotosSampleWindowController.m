@@ -31,6 +31,7 @@
 
 - (void)fetchURLString:(NSString *)urlString forImageView:(NSImageView *)view;
 
+- (void)createAnAlbum;
 - (void)addAPhoto;
 - (void)deleteSelectedPhoto;
 - (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry;
@@ -279,7 +280,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   BOOL isCommentProvided = ([[mCommentField stringValue] length] > 0);
   
   [mAddTagButton setEnabled:(hasPhotoFeed && isTagProvided)];
-  [mAddCommentButton setEnabled:(hasPhotoFeed && isCommentProvided)];  
+  [mAddCommentButton setEnabled:(hasPhotoFeed && isCommentProvided)];
+
+  BOOL isNewAlbumNameProvided = ([[mCreateAlbumField stringValue] length] > 0);
+  [mCreateAlbumButton setEnabled:isNewAlbumNameProvided];
 }
 
 - (void)updateChangeAlbumList {
@@ -365,6 +369,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [mPhotosFetchTicket cancelTicket];
   [self setPhotoFetchTicket:nil];
   [self updateUI];
+}
+
+- (IBAction)createAlbumClicked:(id)sender {
+  [self createAnAlbum];
 }
 
 - (IBAction)addClicked:(id)sender {
@@ -540,6 +548,51 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [self setPhotoFetchTicket:nil];
 
   [self updateUI];
+}
+
+#pragma mark Create an album
+
+- (void)createAnAlbum {
+  NSString *albumName = [mCreateAlbumField stringValue];
+  if ([albumName length] > 0) {
+
+    NSString *description = [NSString stringWithFormat:@"Created %@",
+                             [NSDate date]];
+
+    BOOL doCreateUnlisted = ([mCreateAlbumUnlistedCheckbox state] == NSOnState);
+    NSString *access = (doCreateUnlisted ? kGDataPhotoAccessPrivate : kGDataPhotoAccessPublic);
+
+    GDataEntryPhotoAlbum *newAlbum = [GDataEntryPhotoAlbum albumEntry];
+    [newAlbum setTitleWithString:albumName];
+    [newAlbum setPhotoDescriptionWithString:description];
+    [newAlbum setAccess:access];
+
+    NSURL *postLink = [[mUserAlbumFeed postLink] URL];
+    GDataServiceGooglePhotos *service = [self googlePhotosService];
+
+    [service fetchEntryByInsertingEntry:newAlbum
+                             forFeedURL:postLink
+                               delegate:self
+                      didFinishSelector:@selector(createAlbumTicket:finishedWithEntry:error:)];
+  }
+}
+
+// album creation callback
+- (void)createAlbumTicket:(GDataServiceTicket *)ticket
+        finishedWithEntry:(GDataEntryPhotoAlbum *)entry
+                    error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Album created", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Created album \"%@\"",
+                      [[entry title] stringValue]);
+
+    [self fetchAllAlbums];
+  } else {
+    NSBeginAlertSheet(@"Failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Creating album failed: %@", error);
+  }
 }
 
 #pragma mark Add a photo
@@ -872,8 +925,11 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 #pragma mark Text field delegate methods
 
 - (void)controlTextDidChange:(NSNotification *)note {
-  if ([note object] == mTagField || [note object] == mCommentField) {
-    
+  id sender = [note object];
+  if (sender == mTagField
+      || sender == mCommentField
+      || sender == mCreateAlbumField) {
+
     [self updateUI]; // enabled/disable the Add buttons
   }
 }

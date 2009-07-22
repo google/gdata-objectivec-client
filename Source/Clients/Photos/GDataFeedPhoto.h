@@ -34,9 +34,6 @@
 - (NSString *)checksum;
 - (void)setChecksum:(NSString *)str;
 
-- (NSString *)client;
-- (void)setClient:(NSString *)str;
-
 - (NSNumber *)commentCount; // int
 - (void)setCommentCount:(NSNumber *)num;
 
@@ -46,9 +43,6 @@
 - (NSNumber *)height; // long long
 - (void)setHeight:(NSNumber *)num;
 
-- (NSNumber *)position; // double
-- (void)setPosition:(NSNumber *)num;
-
 - (NSNumber *)rotation; // int
 - (void)setRotation:(NSNumber *)num;
 
@@ -57,9 +51,6 @@
 
 - (GDataPhotoTimestamp *)timestamp; // use stringValue or date methods on timestamp
 - (void)setTimestamp:(GDataPhotoTimestamp *)str;
-
-- (NSString *)version;
-- (void)setVersion:(NSString *)str;
 
 - (NSNumber *)width; // long long
 - (void)setWidth:(NSNumber *)num;
@@ -77,4 +68,18 @@
 
 - (GDataEXIFTags *)EXIFTags;
 - (void)setEXIFTags:(GDataEXIFTags *)tags;
+
+//
+// V1 accessors
+//
+
+- (NSString *)client;
+- (void)setClient:(NSString *)str;
+
+- (NSNumber *)position; // double
+- (void)setPosition:(NSNumber *)num;
+
+- (NSString *)version;
+- (void)setVersion:(NSString *)str;
+
 @end

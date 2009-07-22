@@ -44,9 +44,6 @@
 - (NSString *)location;
 - (void)setLocation:(NSString *)obj;
 
-- (NSString *)name;
-- (void)setName:(NSString *)obj;
-
 - (NSString *)nickname;
 - (void)setNickname:(NSString *)obj;
 
@@ -66,4 +63,9 @@
 
 - (GDataMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataMediaGroup *)obj;
+
+// version 1 accessors
+- (NSString *)name;
+- (void)setName:(NSString *)obj;
+
 @end

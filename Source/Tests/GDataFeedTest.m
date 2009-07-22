@@ -1161,7 +1161,7 @@
     //
     // Feed of an album's photos
     //
-    { @"GDataFeedPhotoAlbum", @"Tests/FeedPhotosAlbumPhoto1.xml" },
+    { @"GDataFeedPhotoAlbum/1.0", @"Tests/FeedPhotosAlbumPhoto1.xml" },
 
     // GDataFeedPhotoAlbum - feed paths
     { @"GPhotoID", @"5067143575034336993" },
@@ -1249,7 +1249,7 @@
     //
     // Feed of a photo's comments
     //
-    { @"GDataFeedPhoto", @"Tests/FeedPhotosPhotoComment1.xml" },
+    { @"GDataFeedPhoto/1.0", @"Tests/FeedPhotosPhotoComment1.xml" },
 
     // GDataFeedPhoto - feed paths
     { @"generator.URI", @"http://photos.google.com/" },
@@ -1346,7 +1346,27 @@
     { @"entries.0.unknownChildren.@count", @"0" },
     
     { @"", @"" }, // end of feed
-      
+
+    //
+    // Feed of search results
+    //
+
+    // feed paths
+    { @"GDataFeedPhoto/2.0", @"Tests/FeedPhotosSearch1.xml" },
+    { @"title", @"Search Results" },
+
+    // entry paths
+    { @"entries.0.title", @"Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" },
+    { @"entries.0.GPhotoID", @"5310251879415742162" },
+    { @"entries.0.albumID", @"5310242183362606433" },
+    { @"entries.0.albumTitle", @"Shetland Sheepdog - B-litter - Belinda Mali Zmaj & Marvithall Sherwood" },
+    { @"entries.0.albumDescription", @"Leangi Pima Shetland Sheepdog puppies" },
+    { @"entries.0.location", @"Belgrade, Serbia, Leangi Pima kennel" },
+    { @"entries.0.snippet", @"... <b>puppies</b> ..." },
+    { @"entries.0.snippetType", kGDataPhotoSnippetTypePhotoTags },
+    { @"entries.0.truncated", @"0" },
+    { @"", @"" }, // end of feed
+
     { nil, nil } // end of test array
   };
   

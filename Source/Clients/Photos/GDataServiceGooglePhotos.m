@@ -21,7 +21,7 @@
 #import "GDataServiceGooglePhotos.h"
 #import "GDataEntryPhotoBase.h"
 #import "GDataQueryGooglePhotos.h"
-
+#import "GDataPhotoConstants.h"
 
 @implementation GDataServiceGooglePhotos
 
@@ -110,7 +110,7 @@
 }
 
 + (NSDictionary *)standardServiceNamespaces {
-  return [GDataEntryPhotoBase photoNamespaces];
+  return [GDataPhotoConstants photoNamespaces];
 }
 
 @end

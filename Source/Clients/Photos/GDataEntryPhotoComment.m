@@ -19,8 +19,7 @@
 
 #import "GDataEntryPhotoComment.h"
 #import "GDataPhotoElements.h"
-
-// extensions
+#import "GDataPhotoConstants.h"
 
 @implementation GDataEntryPhotoComment
 
@@ -28,7 +27,7 @@
   
   GDataEntryPhotoComment *entry = [[[GDataEntryPhotoComment alloc] init] autorelease];
 
-  [entry setNamespaces:[GDataEntryPhotoComment photoNamespaces]];
+  [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   
   [entry setContent:[GDataEntryContent contentWithString:commentStr]];
   

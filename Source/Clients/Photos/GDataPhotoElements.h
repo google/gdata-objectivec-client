@@ -97,10 +97,6 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 @interface GDataPhotoLocation : GDataValueElementConstruct <GDataExtension>
 @end
 
-// URL-safe album name, like <gphoto:name>mytrip</gphoto:name>  
-@interface GDataPhotoName : GDataValueElementConstruct <GDataExtension>
-@end
-
 // number of photos in an album, <gphoto:numphotos>237</gphoto:numphotos>
 @interface GDataPhotoNumberUsed : GDataValueElementConstruct <GDataExtension>
 @end
@@ -114,16 +110,8 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 @interface GDataPhotoChecksum : GDataValueElementConstruct <GDataExtension>
 @end
 
-// client application name, like <gphoto:client>Picasa1.2</gphoto:client>
-@interface GDataPhotoClient : GDataValueElementConstruct <GDataExtension>
-@end
-
 // photo height in pixels, like <gphoto:height>1200</gphoto:height>
 @interface GDataPhotoHeight : GDataValueElementConstruct <GDataExtension>
-@end
-
-// photo position in album, like <gphoto:position>10</gphoto:position> 
-@interface GDataPhotoPosition : GDataValueElementConstruct <GDataExtension>
 @end
 
 // unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>  
@@ -140,10 +128,6 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 + (GDataPhotoTimestamp *)timestampWithDate:(NSDate *)date;
 - (NSDate *)dateValue;
 - (void)setDateValue:(NSDate *)date;
-@end
-
-// version string, like <gphoto:version>22838</gphoto:version> 
-@interface GDataPhotoVersion : GDataValueElementConstruct <GDataExtension>
 @end
 
 // photo width in pixels, <gphoto:width>1600</gphoto:width>
@@ -163,3 +147,53 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 // number of appearances of the current tag, <gphoto:weight>3</gphoto:weight>
 @interface GDataPhotoWeight : GDataValueElementConstruct <GDataExtension>
 @end
+
+//
+// elements introduced in V2
+//
+
+// description of containing album, like
+// <gphoto:albumdesc>My picture collection</gphoto:albumdesc>
+@interface GDataPhotoAlbumDesc : GDataValueElementConstruct <GDataExtension>
+@end
+
+// title of containing, like
+// <gphoto:albumtitle>My album</gphoto:albumtitle>
+@interface GDataPhotoAlbumTitle : GDataValueElementConstruct <GDataExtension>
+@end
+
+// snippet matching search text, like
+// <gphoto:snippet>...happy birthday...</gphoto:snippet>
+@interface GDataPhotoSnippet : GDataValueElementConstruct <GDataExtension>
+@end
+
+// type of snippet from search text, like
+// <gphoto:snippettype>PHOTO_DESCRIPTION<gphoto:snippettype>
+@interface GDataPhotoSnippetType : GDataValueElementConstruct <GDataExtension>
+@end
+
+// truncation flag for serach results, like
+// <gphoto:truncated>1<gphoto:truncated>
+@interface GDataPhotoTruncated : GDataValueElementConstruct <GDataExtension>
+@end
+
+//
+// V1 elements deprecated in V2
+//
+
+// URL-safe album name, like <gphoto:name>mytrip</gphoto:name>  
+@interface GDataPhotoName : GDataValueElementConstruct <GDataExtension>
+@end
+
+// photo position in album, like <gphoto:position>10</gphoto:position> 
+@interface GDataPhotoPosition : GDataValueElementConstruct <GDataExtension>
+@end
+
+// version string, like <gphoto:version>22838</gphoto:version> 
+@interface GDataPhotoVersion : GDataValueElementConstruct <GDataExtension>
+@end
+
+// client application name, like <gphoto:client>Picasa1.2</gphoto:client>
+@interface GDataPhotoClient : GDataValueElementConstruct <GDataExtension>
+@end
+

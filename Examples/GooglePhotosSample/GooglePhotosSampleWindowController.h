@@ -33,6 +33,10 @@
   IBOutlet NSButton *mAlbumCancelButton;
   IBOutlet NSImageView *mAlbumImageView;
 
+  IBOutlet NSButton *mCreateAlbumButton;
+  IBOutlet NSButton *mCreateAlbumUnlistedCheckbox;
+  IBOutlet NSTextField *mCreateAlbumField;
+
   IBOutlet NSTableView *mPhotoTable;
   IBOutlet NSProgressIndicator *mPhotoProgressIndicator;
   IBOutlet NSTextView *mPhotoResultTextField;
@@ -66,6 +70,8 @@
 
 - (IBAction)cancelAlbumFetchClicked:(id)sender;
 - (IBAction)cancelPhotoFetchClicked:(id)sender;
+
+- (IBAction)createAlbumClicked:(id)sender;
 
 - (IBAction)addClicked:(id)sender;
 - (IBAction)deleteClicked:(id)sender;
