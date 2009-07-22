@@ -55,5 +55,6 @@
 
 - (IBAction)getSpreadsheetClicked:(id)sender;
 - (IBAction)feedSegmentClicked:(id)sender;
+- (IBAction)loggingCheckboxClicked:(id)sender;
 
 @end

@@ -19,6 +19,7 @@
 
 #import "GDataEntryPhoto.h"
 #import "GDataPhotoElements.h"
+#import "GDataPhotoConstants.h"
 
 @implementation GDataEntryPhoto
 
@@ -26,7 +27,7 @@
   
   GDataEntryPhoto *entry = [[[GDataEntryPhoto alloc] init] autorelease];
 
-  [entry setNamespaces:[GDataEntryPhoto photoNamespaces]];
+  [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   
   return entry;
 }
@@ -42,24 +43,33 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // Photo extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
-   [GDataPhotoVersion class], [GDataPhotoPosition class],
+
    [GDataPhotoWidth class], [GDataPhotoHeight class],
    [GDataPhotoRotation class], [GDataPhotoSize class],
    [GDataPhotoAlbumID class], [GDataPhotoTimestamp class],
    [GDataPhotoCommentCount class], [GDataPhotoCommentingEnabled class],
-   [GDataPhotoClient class], [GDataPhotoChecksum class],
-   [GDataPhotoVideoStatus class], [GDataMediaGroup class],
-   [GDataEXIFTags class],
+   [GDataPhotoChecksum class], [GDataPhotoVideoStatus class],
+   [GDataMediaGroup class], [GDataEXIFTags class],
+
+   // V2 elements
+   [GDataPhotoAlbumDesc class], [GDataPhotoAlbumTitle class],
+   [GDataPhotoSnippet class], [GDataPhotoSnippetType class],
+   [GDataPhotoTruncated class], [GDataPhotoLocation class],
+
+   // V1 elements
+   [GDataPhotoVersion class],
+   [GDataPhotoClient class],
+   [GDataPhotoPosition class],
    nil];
-  
+
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];
 }
@@ -68,22 +78,25 @@
 - (NSMutableArray *)itemsForDescription {
   
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"albumID",         @"albumID",         kGDataDescValueLabeled },
-    { @"checksum",        @"checksum",        kGDataDescValueLabeled },
-    { @"client",          @"client",          kGDataDescValueLabeled },
-    { @"commentCount",    @"commentCount",    kGDataDescValueLabeled },
-    { @"commentsEnabled", @"commentsEnabled", kGDataDescValueLabeled },
-    { @"height",          @"height",          kGDataDescValueLabeled },
-    { @"width",           @"width",           kGDataDescValueLabeled },
-    { @"videoStatus",     @"videoStatus",     kGDataDescValueLabeled },
-    { @"position",        @"position",        kGDataDescValueLabeled },
-    { @"rotation",        @"rotation",        kGDataDescValueLabeled },
-    { @"size",            @"size",            kGDataDescValueLabeled },
-    { @"timestamp",       @"timestamp",       kGDataDescValueLabeled },
-    { @"version",         @"version",         kGDataDescValueLabeled },
-    { @"mediaGroup",      @"mediaGroup",      kGDataDescValueLabeled },
-    { @"exifTags",        @"EXIFTags",        kGDataDescValueLabeled },
-    { @"geoLocation",     @"geoLocation",     kGDataDescValueLabeled },
+    { @"albumID",               @"albumID",          kGDataDescValueLabeled },
+    { @"checksum",              @"checksum",         kGDataDescValueLabeled },
+    { @"commentCount",          @"commentCount",     kGDataDescValueLabeled },
+    { @"commentsEnabled",       @"commentsEnabled",  kGDataDescValueLabeled },
+    { @"height",                @"height",           kGDataDescValueLabeled },
+    { @"width",                 @"width",            kGDataDescValueLabeled },
+    { @"videoStatus",           @"videoStatus",      kGDataDescValueLabeled },
+    { @"rotation",              @"rotation",         kGDataDescValueLabeled },
+    { @"size",                  @"size",             kGDataDescValueLabeled },
+    { @"timestamp",             @"timestamp",        kGDataDescValueLabeled },
+    { @"mediaGroup",            @"mediaGroup",       kGDataDescValueLabeled },
+    { @"exifTags",              @"EXIFTags",         kGDataDescValueLabeled },
+    { @"geoLocation",           @"geoLocation",      kGDataDescValueLabeled },
+    { @"version>2:albumDesc",   @"albumDescription", kGDataDescValueLabeled },
+    { @"version>2:albumTitle",  @"albumTitle",       kGDataDescValueLabeled },
+    { @"version>2:snippet",     @"snippet",          kGDataDescValueLabeled },
+    { @"version>2:snippetType", @"snippetType",      kGDataDescValueLabeled },
+    { @"version>2:truncated",   @"truncated",        kGDataDescValueLabeled },
+    { @"version>2:location",    @"location",         kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
   
@@ -135,16 +148,6 @@
   [self setObject:obj forExtensionClass:[obj class]];  
 }
 
-- (NSString *)client {
-  GDataPhotoClient *obj = [self objectForExtensionClass:[GDataPhotoClient class]];
-  return [obj stringValue];
-}
-
-- (void)setClient:(NSString *)str {
-  GDataObject *obj = [GDataPhotoClient valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
-}
-
 - (NSNumber *)commentCount {
   // int
   GDataPhotoCommentCount *obj = [self objectForExtensionClass:[GDataPhotoCommentCount class]];
@@ -178,17 +181,6 @@
   [self setObject:obj forExtensionClass:[obj class]];  
 }
 
-- (NSNumber *)position {
-  // double
-  GDataPhotoPosition *obj = [self objectForExtensionClass:[GDataPhotoPosition class]];
-  return [obj doubleNumberValue];
-}
-
-- (void)setPosition:(NSNumber *)num {
-  GDataObject *obj = [GDataPhotoPosition valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
-}
-
 - (NSNumber *)rotation {
   // int
   GDataPhotoRotation *obj = [self objectForExtensionClass:[GDataPhotoRotation class]];
@@ -218,16 +210,6 @@
 
 - (void)setTimestamp:(GDataPhotoTimestamp *)obj {
   [self setObject:obj forExtensionClass:[GDataPhotoTimestamp class]];  
-}
-
-- (NSString *)version {
-  GDataPhotoVersion *obj = [self objectForExtensionClass:[GDataPhotoVersion class]];
-  return [obj stringValue];
-}
-
-- (void)setVersion:(NSString *)str {
-  GDataObject *obj = [GDataPhotoVersion valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoVersion class]];  
 }
 
 - (NSNumber *)width {
@@ -276,6 +258,140 @@
 
 - (void)setEXIFTags:(GDataEXIFTags *)tags {
   [self setObject:tags forExtensionClass:[GDataEXIFTags class]];   
+}
+
+#pragma mark search response elements introduced in V2
+
+- (NSString *)albumDescription {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoAlbumDesc *obj;
+  obj = [self objectForExtensionClass:[GDataPhotoAlbumDesc class]];
+  return [obj stringValue];
+}
+
+- (void)setAlbumDescription:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoAlbumDesc *obj = [GDataPhotoAlbumDesc valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoAlbumDesc class]];
+}
+
+- (NSString *)albumTitle {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoAlbumTitle *obj;
+  obj = [self objectForExtensionClass:[GDataPhotoAlbumTitle class]];
+  return [obj stringValue];
+}
+
+- (void)setAlbumTitle:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoAlbumTitle *obj = [GDataPhotoAlbumTitle valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoAlbumTitle class]];
+}
+
+- (NSString *)snippet {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoSnippet *obj;
+  obj = [self objectForExtensionClass:[GDataPhotoSnippet class]];
+  return [obj stringValue];
+}
+
+- (void)setSnippet:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoSnippet *obj = [GDataPhotoSnippet valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoSnippet class]];
+}
+
+- (NSString *)snippetType {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoSnippetType *obj;
+  obj = [self objectForExtensionClass:[GDataPhotoSnippetType class]];
+  return [obj stringValue];
+}
+
+- (void)setSnippetType:(NSString *)str {
+  GDataPhotoSnippetType *obj = [GDataPhotoSnippetType valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoSnippetType class]];
+}
+
+- (NSNumber *)truncated { // int, 0 or 1
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoTruncated *obj;
+  obj = [self objectForExtensionClass:[GDataPhotoTruncated class]];
+  return [obj intNumberValue];
+}
+
+- (void)setTruncated:(NSNumber *)num {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoTruncated *obj = [GDataPhotoTruncated valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataPhotoTruncated class]];
+}
+
+- (NSString *)location {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoLocation *obj = [self objectForExtensionClass:[GDataPhotoLocation class]];
+  return [obj stringValue];
+}
+
+- (void)setLocation:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
+
+  GDataPhotoLocation *obj = [GDataPhotoLocation valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoLocation class]];
+}
+
+#pragma mark V1 accessors
+
+- (NSString *)client {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataPhotoClient *obj = [self objectForExtensionClass:[GDataPhotoClient class]];
+  return [obj stringValue];
+}
+
+- (void)setClient:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataObject *obj = [GDataPhotoClient valueWithString:str];
+  [self setObject:obj forExtensionClass:[obj class]];
+}
+
+- (NSNumber *)position {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  // double
+  GDataPhotoPosition *obj = [self objectForExtensionClass:[GDataPhotoPosition class]];
+  return [obj doubleNumberValue];
+}
+
+- (void)setPosition:(NSNumber *)num {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataObject *obj = [GDataPhotoPosition valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[obj class]];
+}
+
+- (NSString *)version {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataPhotoVersion *obj = [self objectForExtensionClass:[GDataPhotoVersion class]];
+  return [obj stringValue];
+}
+
+- (void)setVersion:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataObject *obj = [GDataPhotoVersion valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoVersion class]];
 }
 
 @end

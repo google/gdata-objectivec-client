@@ -37,6 +37,7 @@ _EXTERN NSString* const kGDataGooglePhotosAccessAll       _INITIALIZE_AS(@"all")
 _EXTERN NSString* const kGDataGooglePhotosAccessPublic    _INITIALIZE_AS(@"public");
 _EXTERN NSString* const kGDataGooglePhotosAccessProtected _INITIALIZE_AS(@"protected"); // "sign-in required"
 _EXTERN NSString* const kGDataGooglePhotosAccessPrivate   _INITIALIZE_AS(@"private");
+_EXTERN NSString* const kGDataGooglePhotosAccessVisible   _INITIALIZE_AS(@"visible");
 
 _EXTERN NSString* const kGDataGooglePhotosKindAlbum   _INITIALIZE_AS(@"album");
 _EXTERN NSString* const kGDataGooglePhotosKindPhoto   _INITIALIZE_AS(@"photo");

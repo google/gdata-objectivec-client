@@ -18,7 +18,7 @@
 //
 
 #import "GDataFeedPhotoAlbum.h"
-#import "GDataEntryPhotoBase.h"
+#import "GDataPhotoConstants.h"
 
 
 @implementation GDataFeedPhotoAlbum
@@ -27,7 +27,7 @@
   
   GDataFeedPhotoAlbum *entry = [[[GDataFeedPhotoAlbum alloc] init] autorelease];
   
-  [entry setNamespaces:[GDataEntryPhotoBase photoNamespaces]];
+  [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   
   return entry;
 }
@@ -54,9 +54,12 @@
    [GDataPhotoTimestamp class], [GDataPhotoNumberUsed class],
    [GDataPhotoNumberLeft class], [GDataPhotoBytesUsed class],
    [GDataPhotoUser class], [GDataPhotoNickname class],
-   [GDataPhotoName class], [GDataPhotoLocation class],
-   [GDataMediaGroup class], nil];
-  
+   [GDataPhotoLocation class], [GDataMediaGroup class],
+
+   // version 1 extensions
+   [GDataPhotoName class],
+   nil];
+
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:feedClass];
 }
@@ -71,13 +74,14 @@
     { @"commentsEnabled", @"commentsEnabled", kGDataDescValueLabeled },
     { @"date",            @"timestamp",       kGDataDescValueLabeled },
     { @"location",        @"location",        kGDataDescValueLabeled },
-    { @"name",            @"name",            kGDataDescValueLabeled },
     { @"nickname",        @"nickname",        kGDataDescValueLabeled },
     { @"photosLeft",      @"photosLeft",      kGDataDescValueLabeled },
     { @"photosUsed",      @"photosUsed",      kGDataDescValueLabeled },
     { @"username",        @"username",        kGDataDescValueLabeled },
     { @"mediaGroup",      @"mediaGroup",      kGDataDescValueLabeled },
     { @"geoLocation",     @"geoLocation",     kGDataDescValueLabeled },
+    { @"version<=1:name", @"name",            kGDataDescValueLabeled },
+
     { nil, nil, 0 }
   };
   
@@ -150,16 +154,6 @@
   [self setObject:obj forExtensionClass:[GDataPhotoLocation class]];  
 }
 
-- (NSString *)name {
-  GDataPhotoName *obj = [self objectForExtensionClass:[GDataPhotoName class]];
-  return [obj stringValue];
-}
-
-- (void)setName:(NSString *)str {
-  GDataPhotoName *obj = [GDataPhotoName valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoName class]];  
-}
-
 - (NSString *)nickname {
   GDataPhotoNickname *obj = [self objectForExtensionClass:[GDataPhotoNickname class]];
   return [obj stringValue];
@@ -216,6 +210,22 @@
 
 - (void)setMediaGroup:(GDataMediaGroup *)obj {
   [self setObject:obj forExtensionClass:[GDataMediaGroup class]];
+}
+
+// version 1 accessors
+
+- (NSString *)name {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataPhotoName *obj = [self objectForExtensionClass:[GDataPhotoName class]];
+  return [obj stringValue];
+}
+
+- (void)setName:(NSString *)str {
+  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
+
+  GDataPhotoName *obj = [GDataPhotoName valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataPhotoName class]];
 }
 
 @end

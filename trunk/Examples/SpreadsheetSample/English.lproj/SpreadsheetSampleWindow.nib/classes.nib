@@ -19,6 +19,8 @@
 				<string>id</string>
 				<key>getSpreadsheetClicked</key>
 				<string>id</string>
+				<key>loggingCheckboxClicked</key>
+				<string>id</string>
 			</dict>
 			<key>CLASS</key>
 			<string>SpreadsheetSampleWindowController</string>

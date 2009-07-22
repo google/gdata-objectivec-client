@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataPhotoElements.m
@@ -21,9 +21,8 @@
 
 #define GDATAPHOTOELEMENTS_DEFINE_GLOBALS 1
 #import "GDataPhotoElements.h"
-#include <math.h>
 
-#import "GDataEntryPhotoBase.h"
+#import "GDataPhotoConstants.h"
 
 @implementation GDataPhotoAlbumID
 // album id, like <gphoto:albumid>5024425138</gphoto:albumid>
@@ -116,13 +115,6 @@
 + (NSString *)extensionElementLocalName { return @"location"; }
 @end
 
-// URL-safe album name, like <gphoto:name>mytrip</gphoto:name>  
-@implementation GDataPhotoName
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"name"; }
-@end
-
 // number of photos in an album, <gphoto:numphotos>237</gphoto:numphotos>
 @implementation GDataPhotoNumberUsed
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
@@ -145,25 +137,11 @@
 + (NSString *)extensionElementLocalName { return @"checksum"; }
 @end
 
-// client application name, like <gphoto:client>Picasa1.2</gphoto:client>
-@implementation GDataPhotoClient
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"client"; }
-@end
-
 // photo height in pixels, like <gphoto:height>1200</gphoto:height>
 @implementation GDataPhotoHeight
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
 + (NSString *)extensionElementLocalName { return @"height"; }
-@end
-
-// photo position in album, like <gphoto:position>10</gphoto:position> 
-@implementation GDataPhotoPosition
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"position"; }
 @end
 
 // unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>  
@@ -210,13 +188,6 @@
 }
 @end
 
-// version string, like <gphoto:version>22838</gphoto:version> 
-@implementation GDataPhotoVersion
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"version"; }
-@end
-
 // photo width in pixels, <gphoto:width>1600</gphoto:width>
 @implementation GDataPhotoWidth
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
@@ -247,3 +218,79 @@
 @end
 
 
+//
+// elements introduced in V2
+//
+
+// description of containing album, like
+// <gphoto:albumdesc>My picture collection</gphoto:albumdesc>
+@implementation GDataPhotoAlbumDesc
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"albumdesc"; }
+@end
+
+// title of containing, like
+// <gphoto:albumtitle>My album</gphoto:albumtitle>
+@implementation GDataPhotoAlbumTitle
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"albumtitle"; }
+@end
+
+// snippet matching search text, like
+// <gphoto:snippet>...happy birthday...</gphoto:snippet>
+@implementation GDataPhotoSnippet
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"snippet"; }
+@end
+
+// type of snippet from search text, like
+// <gphoto:snippettype>PHOTO_DESCRIPTION<gphoto:snippettype>
+@implementation GDataPhotoSnippetType
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"snippettype"; }
+@end
+
+// truncation flag for serach results, like
+// <gphoto:truncated>1<gphoto:truncated>
+@implementation GDataPhotoTruncated
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"truncated"; }
+@end
+
+
+//
+// V1 elements deprecated in V2
+//
+
+// URL-safe album name, like <gphoto:name>mytrip</gphoto:name>  
+@implementation GDataPhotoName
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"name"; }
+@end
+
+// photo position in album, like <gphoto:position>10</gphoto:position> 
+@implementation GDataPhotoPosition
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"position"; }
+@end
+
+// version string, like <gphoto:version>22838</gphoto:version> 
+@implementation GDataPhotoVersion
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"version"; }
+@end
+
+// client application name, like <gphoto:client>Picasa1.2</gphoto:client>
+@implementation GDataPhotoClient
++ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
++ (NSString *)extensionElementLocalName { return @"client"; }
+@end

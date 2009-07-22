@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.7 (514 classes) 2009-07-10 15:13:23 -0700
+// com.google.GDataFramework v. 1.7 (520 classes) 2009-07-22 15:04:12 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -339,12 +339,15 @@
   #define GDataPersonURI                          _GDATA_NS_SYMBOL(GDataPersonURI)
   #define GDataPhoneNumber                        _GDATA_NS_SYMBOL(GDataPhoneNumber)
   #define GDataPhotoAccess                        _GDATA_NS_SYMBOL(GDataPhotoAccess)
+  #define GDataPhotoAlbumDesc                     _GDATA_NS_SYMBOL(GDataPhotoAlbumDesc)
   #define GDataPhotoAlbumID                       _GDATA_NS_SYMBOL(GDataPhotoAlbumID)
+  #define GDataPhotoAlbumTitle                    _GDATA_NS_SYMBOL(GDataPhotoAlbumTitle)
   #define GDataPhotoBytesUsed                     _GDATA_NS_SYMBOL(GDataPhotoBytesUsed)
   #define GDataPhotoChecksum                      _GDATA_NS_SYMBOL(GDataPhotoChecksum)
   #define GDataPhotoClient                        _GDATA_NS_SYMBOL(GDataPhotoClient)
   #define GDataPhotoCommentCount                  _GDATA_NS_SYMBOL(GDataPhotoCommentCount)
   #define GDataPhotoCommentingEnabled             _GDATA_NS_SYMBOL(GDataPhotoCommentingEnabled)
+  #define GDataPhotoConstants                     _GDATA_NS_SYMBOL(GDataPhotoConstants)
   #define GDataPhotoGPhotoID                      _GDATA_NS_SYMBOL(GDataPhotoGPhotoID)
   #define GDataPhotoHeight                        _GDATA_NS_SYMBOL(GDataPhotoHeight)
   #define GDataPhotoLocation                      _GDATA_NS_SYMBOL(GDataPhotoLocation)
@@ -359,8 +362,11 @@
   #define GDataPhotoQuotaUsed                     _GDATA_NS_SYMBOL(GDataPhotoQuotaUsed)
   #define GDataPhotoRotation                      _GDATA_NS_SYMBOL(GDataPhotoRotation)
   #define GDataPhotoSize                          _GDATA_NS_SYMBOL(GDataPhotoSize)
+  #define GDataPhotoSnippet                       _GDATA_NS_SYMBOL(GDataPhotoSnippet)
+  #define GDataPhotoSnippetType                   _GDATA_NS_SYMBOL(GDataPhotoSnippetType)
   #define GDataPhotoThumbnail                     _GDATA_NS_SYMBOL(GDataPhotoThumbnail)
   #define GDataPhotoTimestamp                     _GDATA_NS_SYMBOL(GDataPhotoTimestamp)
+  #define GDataPhotoTruncated                     _GDATA_NS_SYMBOL(GDataPhotoTruncated)
   #define GDataPhotoUser                          _GDATA_NS_SYMBOL(GDataPhotoUser)
   #define GDataPhotoVersion                       _GDATA_NS_SYMBOL(GDataPhotoVersion)
   #define GDataPhotoVideoStatus                   _GDATA_NS_SYMBOL(GDataPhotoVideoStatus)

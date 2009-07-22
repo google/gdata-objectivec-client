@@ -44,9 +44,6 @@
 - (NSString *)checksum;
 - (void)setChecksum:(NSString *)str;
 
-- (NSString *)client;
-- (void)setClient:(NSString *)str;
-
 - (NSNumber *)commentCount; // int
 - (void)setCommentCount:(NSNumber *)num;
 
@@ -56,9 +53,6 @@
 - (NSNumber *)height; // long long
 - (void)setHeight:(NSNumber *)num;
 
-- (NSNumber *)position; // double
-- (void)setPosition:(NSNumber *)num;
-
 - (NSNumber *)rotation; // int
 - (void)setRotation:(NSNumber *)num;
 
@@ -67,9 +61,6 @@
 
 - (GDataPhotoTimestamp *)timestamp; // use stringValue or date methods on timestamp
 - (void)setTimestamp:(GDataPhotoTimestamp *)str;
-
-- (NSString *)version;
-- (void)setVersion:(NSString *)str;
 
 - (NSNumber *)width; // long long
 - (void)setWidth:(NSNumber *)num;
@@ -87,5 +78,39 @@
 
 - (GDataEXIFTags *)EXIFTags;
 - (void)setEXIFTags:(GDataEXIFTags *)tags;
-@end
 
+//
+// search result elements introduced in V2
+//
+
+- (NSString *)albumDescription;
+- (void)setAlbumDescription:(NSString *)str;
+
+- (NSString *)albumTitle;
+- (void)setAlbumTitle:(NSString *)str;
+
+- (NSString *)snippet;
+- (void)setSnippet:(NSString *)str;
+
+// snippet type constants are in GDataPhotoConstants.h, like
+// kGDataPhotoSnippetTypeAlbumTitle
+- (NSString *)snippetType;
+- (void)setSnippetType:(NSString *)str;
+
+- (NSNumber *)truncated; // int, 0 or 1
+- (void)setTruncated:(NSNumber *)num;
+
+//
+// V1 accessors
+//
+
+- (NSString *)client;
+- (void)setClient:(NSString *)str;
+
+- (NSNumber *)position; // double
+- (void)setPosition:(NSNumber *)num;
+
+- (NSString *)version;
+- (void)setVersion:(NSString *)str;
+
+@end
