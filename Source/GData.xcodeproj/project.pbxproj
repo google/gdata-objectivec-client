@@ -1159,7 +1159,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		4F02304D0D5910A600EE6862 /* FeedYouTubePlaylistLink1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedYouTubePlaylistLink1.xml; path = Tests/FeedYouTubePlaylistLink1.xml; sourceTree = "<group>"; };
 		4F02305E0D5911DA00EE6862 /* FeedYouTubePlaylist1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedYouTubePlaylist1.xml; path = Tests/FeedYouTubePlaylist1.xml; sourceTree = "<group>"; };
@@ -1863,7 +1862,6 @@
 				4F2E11F20BA778D700237907 /* GDataFramework-Info.plist */,
 				4F14B13A0B13A6150072EBB8 /* GDataUnitTests-Info.plist */,
 				4F2E11F10BA778C900237907 /* DevelopmentTestApplication-Info.plist */,
-				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -4124,17 +4122,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		089C167DFE841241C02AAC07 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				089C167EFE841241C02AAC07 /* English */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1DEB913F08733D840010E9CD /* Debug */ = {
