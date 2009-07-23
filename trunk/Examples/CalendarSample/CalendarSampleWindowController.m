@@ -872,11 +872,24 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       [self setEventFetchError:nil];
       [self setEventFetchTicket:nil];
 
+      // The default feed of calendar events only has up to 25 events; since the
+      // service object is set to automatically follow next links, that can lead
+      // to many fetches to retrieve all of the event entries, and each fetch
+      // may take a few seconds.
+      //
+      // To reduce the need for the library to fetch repeatedly to acquire all
+      // of the entries, we'll specify a higher number of entries the server may
+      // return in a feed.  For Mac applications, a fetch with 1000 entries is
+      // reasonable; iPhone apps may want to avoid the memory hit of parsing
+      // such a large number of entries, and limit it to 100.
+      GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+      [query setMaxResults:1000];
+
       GDataServiceGoogleCalendar *service = [self calendarService];
       GDataServiceTicket *ticket;
-      ticket = [service fetchFeedWithURL:feedURL
-                                delegate:self
-                       didFinishSelector:@selector(calendarEventsTicket:finishedWithFeed:error:)];
+      ticket = [service fetchFeedWithQuery:query
+                                  delegate:self
+                         didFinishSelector:@selector(calendarEventsTicket:finishedWithFeed:error:)];
       [self setEventFetchTicket:ticket];
 
       [self updateUI];

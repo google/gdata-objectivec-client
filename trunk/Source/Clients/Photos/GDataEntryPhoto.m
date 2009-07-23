@@ -91,12 +91,12 @@
     { @"mediaGroup",            @"mediaGroup",       kGDataDescValueLabeled },
     { @"exifTags",              @"EXIFTags",         kGDataDescValueLabeled },
     { @"geoLocation",           @"geoLocation",      kGDataDescValueLabeled },
-    { @"version>2:albumDesc",   @"albumDescription", kGDataDescValueLabeled },
-    { @"version>2:albumTitle",  @"albumTitle",       kGDataDescValueLabeled },
-    { @"version>2:snippet",     @"snippet",          kGDataDescValueLabeled },
-    { @"version>2:snippetType", @"snippetType",      kGDataDescValueLabeled },
-    { @"version>2:truncated",   @"truncated",        kGDataDescValueLabeled },
-    { @"version>2:location",    @"location",         kGDataDescValueLabeled },
+    { @"version>=2:albumDesc",   @"albumDescription", kGDataDescValueLabeled },
+    { @"version>=2:albumTitle",  @"albumTitle",       kGDataDescValueLabeled },
+    { @"version>=2:snippet",     @"snippet",          kGDataDescValueLabeled },
+    { @"version>=2:snippetType", @"snippetType",      kGDataDescValueLabeled },
+    { @"version>=2:truncated",   @"truncated",        kGDataDescValueLabeled },
+    { @"version>=2:location",    @"location",         kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
   

@@ -3,6 +3,8 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.8.0
+24-July-2009
 Changes since 1.7.0
 
 Additions
@@ -31,6 +33,8 @@ Additions
 
 - Added "next" link and category accessors to Health profile entries
 
+- Added album creation to photos sample app
+
 - Added removeChild method to GDataXMLElement
 
 - Added query convenience method addCategoryFilterWithScheme:term: and
@@ -53,6 +57,10 @@ Changes
 
 - Tightened URL encoding rules so portions of feed URLs are more strictly
   percent-encoded
+  
+- Docs sample app now downloads docs by exporting as text files
+
+- Photos API now makes version 2 API requests
 
 - Renamed newSubscriptionVideosFeedLink to recentSubscriptionVideosFeedLink to
   make the static analyzer happier

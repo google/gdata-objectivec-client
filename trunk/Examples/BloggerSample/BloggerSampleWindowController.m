@@ -434,7 +434,7 @@
 #pragma mark Add an entry
 
 - (void)addEntry {
-  GDataEntryBlogPost *newEntry = [GDataEntryBlogPost entry];
+  GDataEntryBlogPost *newEntry = [GDataEntryBlogPost postEntry];
 
   NSString *title = [NSString stringWithFormat:@"Post Created %@",
                      [NSDate date]];

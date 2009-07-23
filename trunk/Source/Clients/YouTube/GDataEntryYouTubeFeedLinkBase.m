@@ -51,10 +51,10 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"thumbnail",                @"thumbnail",          kGDataDescArrayDescs },
-    { @"countHint",                @"countHint",          kGDataDescArrayDescs },
-    { @"version<=1.0:feedLink",    @"feedLink",           kGDataDescArrayDescs },
-    { @"version<=1.0:description", @"youTubeDescription", kGDataDescArrayDescs },
+    { @"thumbnail",                @"thumbnail",          kGDataDescValueLabeled },
+    { @"countHint",                @"countHint",          kGDataDescValueLabeled },
+    { @"version<=1.0:feedLink",    @"feedLink",           kGDataDescValueLabeled },
+    { @"version<=1.0:description", @"youTubeDescription", kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
 
