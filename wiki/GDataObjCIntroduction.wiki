@@ -95,30 +95,35 @@ For example, here is how to use the Google Calendar service to retrieve a feed o
   [service setUserAgent:@"MyCompanyName-MyCalendarAppName-1.0"];
   [service setUserCredentialsWithUsername:username
                                  password:password];
+  NSURL *feedURL = [GDataServiceGoogleCalendar calendarFeedURLForUsername:username];
 
   GDataServiceTicket *ticket;
-  ticket = [service fetchCalendarFeedForUsername:username
-                                        delegate:self
-                               didFinishSelector:@selector(ticket:finishedWithFeed:)
-                                 didFailSelector:@selector(ticket:failedWithError:)];
+  ticket = [service fetchFeedWithURL:feedURL
+                            delegate:self
+                   didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
 }}}
 Service objects maintain cookies and track data modification dates to minimize server loads, so it's best to reuse a service object for sequences of server requests.
 
 The application may choose to retain the ticket following the fetch call so the user can cancel the service request.  The ticket is valid so long as the application retains it.
 To cancel a fetch in progress, call `[ticket cancelTicket]`.  Once the finished or failed callback has been called, the ticket is no longer useful and may be released.
 
+The delegate of the fetch is also retained until the fetch has stopped.
+
 Here is what the callback from a successful fetch of the calendar list might look like.  This callback example just prints the title of the user's first calendar.
 {{{
 - (void)ticket:(GDataServiceTicket *)ticket
-finishedWithFeed:(GDataFeedCalendar *)feed {
-  
-  if ([[feed entries] count] > 0) {
+finishedWithFeed:(GDataFeedCalendar *)feed
+           error:(NSError *)error {
 
-    GDataEntryCalendar *firstCalendar = [[feed entries] objectAtIndex:0];
-    GDataTextConstruct *titleTextConstruct = [firstCalendar title];
-    NSString *title = [titleTextConstruct stringValue];
+  if (error == nil) {  
+    if ([[feed entries] count] > 0) {
+
+      GDataEntryCalendar *firstCalendar = [[feed entries] objectAtIndex:0];
+      GDataTextConstruct *titleTextConstruct = [firstCalendar title];
+      NSString *title = [titleTextConstruct stringValue];
     
-    NSLog(@"first calendar's title:%@", title);
+      NSLog(@"first calendar's title:%@", title);
+    }
   }
 }
 }}}
@@ -131,18 +136,15 @@ Service objects include a variety of methods for interacting with the service. T
   * performing queries to obtain a subset of the feed's entries
   * performing a [http://code.google.com/apis/gdata/batch.html batch operation] of inserting, updating, and deleting entries
 
-Feeds and entries typically contain *links* to themselves or to other objects. The library provides convenience categories on NSArray for retrieving individual links. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
+Feeds and entries usually contain *links* to themselves or to other objects. The library provides convenience methods for retrieving individual links. For example, to retrieve the events for a user's calendar, use a Calendar service object to fetch from the Calendar's "alternate" link:
 
 {{{
-    NSArray *entryLinks = [firstCalendar links];
-    GDataLink *link = [entryLinks alternateLink];
-    NSURL* linkURL = [link URL];
+    GDataLink *link = [calendarEntry alternateLink];
 
-    if (linkURL != nil) {
-      [service fetchCalendarEventFeedWithURL:linkURL
-                                    delegate:self
-                           didFinishSelector:@selector(eventsTicket:finishedWithEntries:)
-                             didFailSelector:@selector(eventsTicket:failedWithError:)];
+    if (link != nil) {
+      [service fetchFeedWithURL:[link URL]
+                       delegate:self
+              didFinishSelector:@selector(eventsTicket:finishedWithEntries:error:)];
     }
 }}}
 
@@ -152,13 +154,24 @@ Modifiable feeds may have a *post link*, which contains the URL for inserting ne
 
 Both entries and feeds have *self links*, which self-referentially contain the URL of the XML for the entry or feed.  The self link is useful for fetching a complete, current version of an entry prior to updating the entry on the server.
 
-A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.  
+A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set, or *pages*, of results from the request.  If the feed's `[links nextLink]` is present, the client application must perform a new request using the "next" link URL to retrieve additional entries.  
 
-To make the library's service object follow "next" links automatically, call `[service setServiceShouldFollowNextLinks:YES]`. The returned ticket then applies to the sequence of http requests needed to obtain the feed entries.  
+Rather than make a new fetch for each "next" link, the library's service object can follow "next" links automatically, and return a feed whose entries are the full accumulated set of entries from fetching all pages of the feed (up to 25 pages.)  This can be turned on in the service object with `[service setServiceShouldFollowNextLinks:YES]`. The fetch's ticket then applies to the sequence of http requests needed to obtain the entries from all pages in the feed.  
 
-Note, however, that large feeds may take a long time to be retrieved, as each "next" link will lead to a new http request.  Assigning a large value to a feed query's maxResults argument will give results faster than will following "next" links. Additionally, accumulating entries into a feed by following "next" links means that the feed's elements reflect only one of the fetches, even though the entries array contains the entries returned by multiple requests.
+Note, however, that feeds spread over many pages may take a long time to be retrieved, as each "next" link will lead to a new http request.  The server can be told to use a larger page size (that is, more entries in each page of the feed) by fetching a query for the feed with a maxResults parameter:
 
-Beginning with version 2 of the Google Data API core protocol, each fetched feed and entry has an *ETag* attribute. The ETag is just a string identifying the version of the resource. Services may require that the ETag attribute be present when updating or deleting an entry or other file, such as a photo. This prevents the client application from accidentally modifying or deleting the wrong version of the resource on the server.
+{{{
+      GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+      [query setMaxResults:1000];
+
+      GDataServiceGoogleCalendar *service = [self calendarService];
+      GDataServiceTicket *ticket;
+      ticket = [service fetchFeedWithQuery:query
+                                  delegate:self
+                         didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
+}}}
+
+Beginning with version 2 of the Google Data API core protocol, each fetched feed and entry has an *ETag* attribute. The ETag is just a hash string uniquely identifying the version of the resource. Services may require that the ETag attribute be present when updating or deleting an entry or other file, such as a photo. This prevents the client application from accidentally modifying or deleting the wrong version of the resource on the server.
 
 ETag strings are also useful to clients for determining if a feed, entry, or other file on the server has changed.  If the underlying resource data has changed, the ETag is guaranteed to have changed as well.
 
@@ -166,21 +179,20 @@ Service-specific *query* objects can generate URLs with parameters appropriate f
 {{{
 - (void)beginFetchingFiveEventsFromCalendar:(GDataEntryCalendar *)calendar {
     
-  NSURL *feedURL = [[[calendar links] alternateLink] URL];
+  NSURL *feedURL = [[calendar alternateLink] URL];
   
   GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal setStartIndex:1];
   [queryCal setMaxResults:5];
   
   GDataServiceGoogleCalendar *service = [self calendarService];
-  [service fetchCalendarQuery:queryCal
+  [service fetchFeedWithQuery:queryCal
                      delegate:self
-            didFinishSelector:@selector(queryTicket:finishedWithEntries:)
-              didFailSelector:@selector(queryTicket:failedWithError:)];
+            didFinishSelector:@selector(queryTicket:finishedWithEntries:error:)];
 }
 }}}
 
-All library users should specify a unique user-agent string on the service object instance. The user-agent string should indicate the product author (company, person, or domain), product name, and product version, separated by dashes:
+All library users should specify a unique user-agent string on the service object instance. The user-agent string should indicate the product author (the full name of the company, person, or domain), product name, and product version, separated by dashes:
 
 {{{
 [service setUserAgent:@"MyCompany-MyProduct-1.0"];
@@ -223,14 +235,13 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   [newEvent addTime:when];  
 
   // add it to the user's calendar
-  NSURL *feedURL = [[[calendar links] alternateLink] URL];
+  NSURL *feedURL = [[calendar alternateLink] URL];
  
   GDataServiceGoogleCalendar *service = [self calendarService];
-  [service fetchCalendarEventByInsertingEntry:newEvent
-                                   forFeedURL:feedURL
+  [service fetchEntryByInsertingEntry:newEvent
+                           forFeedURL:feedURL
                                      delegate:self
-                            didFinishSelector:@selector(addTicket:addedEntry:)
-                              didFailSelector:@selector(addTicket:failedWithError:)];
+                            didFinishSelector:@selector(addTicket:addedEntry:error:)];
 }
 }}}
 
