@@ -6,7 +6,7 @@
 
 [http://code.google.com/apis/gdata/index.html Google Data APIs] allow client software to access and manipulate data hosted by Google services.
 
-The Google Data APIs Objective-C Client Library is a Mac OS X framework that enables developers for Mac OS X to easily write native Cocoa applications.  The framework handles
+The Google Data APIs Objective-C Client Library is a Cocoa framework that enables developers for Mac OS X and iPhone to easily write native applications using Google Data APIs.  The framework handles
 
   * XML parsing and generation
   * Networking
@@ -16,7 +16,7 @@ The Google Data APIs Objective-C Client Library is a Mac OS X framework that ena
 
 == Requirements ==
 
-The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 due to dependencies on NSXMLDocument.
+The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 due to its use of NSXMLDocument.
 
 == Example Applications ==
 
@@ -24,7 +24,7 @@ The Examples directory contains example applications showing typical interaction
 
 == Adding Google Data APIs to a project ==
 
-The Google Data APIs Objective-C Client Library is provided as a built framework, suitable for inclusion in a Cocoa application bundle's Frameworks folder.  To add the framework to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
+The Google Data APIs Objective-C Client Library is provided as a built framework, suitable for inclusion in a Mac application bundle's Frameworks folder.  To add the framework to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
 
 Source files referring to GData objects should include either the full GData headers as 
 
@@ -126,7 +126,7 @@ finishedWithFeed:(GDataFeedCalendar *)feed
       NSLog(@"the user has no calendars")
     }
   } else {
-    NSLog(@"error: %@", error);
+    NSLog(@"fetch error: %@", error);
   }
 }
 }}}
@@ -147,7 +147,7 @@ Feeds and entries usually contain *links* to themselves or to other objects. The
     if (link != nil) {
       [service fetchFeedWithURL:[link URL]
                        delegate:self
-              didFinishSelector:@selector(eventsTicket:finishedWithEntries:error:)];
+              didFinishSelector:@selector(eventsTicket:finishedWithFeed:error:)];
     }
 }}}
 
@@ -157,9 +157,9 @@ Modifiable feeds may have a *post link*, which contains the URL for inserting ne
 
 Both entries and feeds have *self links*, which self-referentially contain the URL of the XML for the entry or feed.  The self link is useful for fetching a complete, current version of an entry prior to updating the entry on the server.
 
-A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set, or one *page*, of results from the request.  If the feed's `-nextLink` is non-nil, the client application must perform a new request using the "next" link URL to retrieve additional entries.  
+A particularly important link in feeds is the *next link*; it is present when the feed contains only a partial set, or one *page*, of entries from the request.  If the feed's `-nextLink` is non-nil, the client application must perform a new request using the "next" link URL to retrieve the next page of the feed, containing additional entries.  
 
-Rather than make a new fetch for each "next" link, the library's service object can follow "next" links automatically, and return a feed whose entries are the full accumulated set of entries from fetching all pages of the feed (up to 25 pages.)  This can be turned on in the service object with `[service setServiceShouldFollowNextLinks:YES]`. The fetch's ticket then applies to the sequence of http requests needed to obtain the entries from all pages in the feed.  
+Rather than make a new fetch for each "next" link, the library's service object can follow next links automatically, and return a feed whose entries are the full accumulated set of entries from fetching all pages of the feed (up to 25 pages.)  This can be turned on in the service object with `[service setServiceShouldFollowNextLinks:YES]`. The fetch's ticket then applies to the sequence of http requests needed to obtain the entries from all pages in the feed, so canceling the ticket will cancel the sequence of requests.
 
 Note, however, that feeds spread over many pages may take a long time to be retrieved, as each "next" link will lead to a new http request.  The server can be told to use a larger page size (that is, more entries in each page of the feed) by fetching a query for the feed with a maxResults parameter:
 
@@ -248,7 +248,7 @@ Typically GDataObjects are created by the framework from XML returned from a ser
 }
 }}}
 
-GData services always return the newest version of an object that has been inserted or updated, so the methods are called "fetch" even for inserts and updates.
+GData services always return to the callback the newest version of an entry that has been inserted or updated, so the methods are called "fetch" even for inserts and updates. When an entry is deleted, however, the callback is passed nil as the object parameter.
 
 == Adding custom data to GDataObject instances ==
 
@@ -289,6 +289,7 @@ service = [[GDataServiceGooglePhotos alloc] init];
 
 These three techniques only add data to elements _locally_ for the Objective-C code; the data will not be retained on the server. Some services support an [http://code.google.com/apis/gdata/elements.html#gdExtendedProperty extendedProperty] element which can retain arbitrary data for users.
 
+== Passing objects to fetch callbacks ==
 
 It is also often useful to pass an object to a callback. To retain an object from a fetch call to its callback, use GDataServiceTicket's `setUserData:` or `setProperty:forKey:` methods.  For example:
 
@@ -297,16 +298,17 @@ GDataServiceTicket *ticket = [service fetchFeedWithURL:...];
 [ticket setProperty:callbackData withKey:@"myCallbackData"];
 }}}
 
-The success or failure callback can then access the data:
+The callback can then access the data:
 {{{
 - (void)ticket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error {
+
   id myCallbackData = [ticket propertyForKey:@"myCallbackData"];
   ...
   }
 }}}
 
 
-=== Batch Requests ===
+=== Batch requests ===
 
 Some services support batch requests, allowing many insert, update, or delete operations to be performed with a single http request. 
 
@@ -366,7 +368,7 @@ ticket = [service fetchFeedWithBatchFeed:batchFeed
              forKey:kMyDataKey];
 }}}
 
-The success callback for a batch operation receives a feed that includes entries as the response for each operation.  Each result entry has a status code element, and may have the optional ID string.  If batch processing was halted at an entry, the corresponding response entry will have a GDataBatchInterrupted element.
+The callback for a batch operation receives a feed that includes entries as the response for each operation.  Each result entry has a status code element, and may have the optional ID string.  If batch processing was halted at an entry, the corresponding response entry will have a GDataBatchInterrupted element.
 
 {{{
 - (void)batchTicket:(GDataServiceTicket *)ticket
@@ -394,7 +396,7 @@ The success callback for a batch operation receives a feed that includes entries
 }
 }}}
 
-To ensure reasonable response times, a service may impose a limit on the number of entries in a single batch. See the service's documentation for specific details.
+To ensure reasonable response times, a service may impose a limit on the number of entries in a single batch. See the service's documentation for specific limits on the size of a batch.
 
 The [http://code.google.com/apis/gdata/batch.html batch processing documentation] has additional information on batch requests.
 
@@ -421,16 +423,16 @@ if (data) {
   
   NSURL *postURL = [[docListFeed postLink] URL];
 
-  ticket = [service fetchDocEntryByInsertingEntry:newEntry
-                                       forFeedURL:postURL
-                                         delegate:self
-                                didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
+  ticket = [service fetchEntryByInsertingEntry:newEntry
+                                    forFeedURL:postURL
+                                      delegate:self
+                             didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
 }
 }}}
 
 == Upload progress monitoring ==
 
-When uploading large blocks of data, such as photos or videos, your application can request periodic callbacks to update a progress indicator.  To receive the callback, set an upload progress selector in the service, such as:
+When uploading large blocks of data, such as photos or videos, your application can request periodic callbacks to update a progress indicator.  To receive the periodic callback, set an upload progress selector in the service, such as:
 
 {{{
 SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
@@ -449,7 +451,7 @@ The callback is a method with a signature matching this:
 {{{
 - (void)inputStream:(GDataProgressMonitorInputStream *)stream 
    hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
-   ofTotalByteCount:(unsigned long long)dataLength {
+        ofTotalByteCount:(unsigned long long)dataLength {
 
   // The progress method can obtain the ticket by 
   // calling [stream monitorSource];
@@ -467,6 +469,7 @@ Your service delegate will see the "Not modified" response in its callback metho
   if (error == nil) {
     // fetch succeeded
   } else {
+    // fetch failed
     if ([error code] == kGDataHTTPFetcherStatusNotModified) { // status 304
       // no change since previous request
     } else {
@@ -519,6 +522,7 @@ To handle captchas, the fetch callback method might look something like this:
   if (error == nil) {
     // fetch succeeded
   } else {
+    // fetch failed
     if ([error code] == kGDataBadAuthentication) {
     
       NSDictionary *userInfo = [error userInfo];
@@ -578,6 +582,7 @@ In corporate or institutional settings where a password-protected proxy is in us
   if (error == nil) {
     // fetch succeeded
   } else {
+    // fetch failed
     if ([error code] == kGDataHTTPFetcherErrorAuthenticationChallengeFailed
         && [[error domain] isEqual:kGDataHTTPFetcherErrorDomain]) {
 
@@ -642,9 +647,11 @@ To update an entry from a feed that ignores the unknown XML, fetch a complete co
   GDataServiceGoogleContact *service = [self contactService];
 
   // fetch a complete copy of the entry, including unknown XML, by using the self link
-  GDataServiceTicket *ticket = [service fetchContactEntryWithURL:[[entry selfLink] URL]
-    delegate:self
-    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
+  NSURL *entryURL = [[entry selfLink] URL];
+  GDataServiceTicket *ticket;
+  ticket = [service fetchEntryWithURL:entryURL
+                             delegate:self
+                    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
    
   [ticket setUserData:userData];
 }
