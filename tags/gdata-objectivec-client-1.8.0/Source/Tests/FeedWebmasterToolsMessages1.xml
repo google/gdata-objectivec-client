@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;DEMGQn8zeyp7ImA9WxJVEEs.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">
+    <id>https://www.google.com/webmasters/tools/feeds/messages</id>
+    <updated>2009-06-27T01:33:43.183Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/webmasters/tools/2007#messages-feed"/>
+    <title>Messages</title>
+    <link href="https://www.google.com/webmasters/tools/feeds/messages"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="https://www.google.com/webmasters/tools/feeds/messages"
+        rel="self" type="application/atom+xml"/>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry gd:etag="W/&quot;DUMCRX8_fip7ImA9WxRbFU8.&quot;">
+        <id>http://www.google.com/webmasters/tools/feeds/messages/Gn5KwVKnksi6iXZSA</id>
+        <updated>2008-09-24T01:01:39.629Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/webmasters/tools/2007#message"/>
+        <title type="text">Message</title>
+        <wt:read>true</wt:read>
+        <wt:date>2008-09-18T20:49:57.108</wt:date>
+        <wt:language>en</wt:language>
+        <wt:subject>Crawl rate change request for http://www.example.com/'</wt:subject>
+        <wt:body>Crawl rate change has been requested.</wt:body>
+    </entry>
+</feed>

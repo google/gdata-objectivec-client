@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;DkYHQHgzfCt7ImA9WxJREEU.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:gContact="http://schemas.google.com/contact/2008"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>fredflintstone@example.com</id>
+    <updated>2009-05-11T23:22:11.684Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+    <title>Fred Flintstone's Contacts</title>
+    <link href="http://www.google.com/" rel="alternate" type="text/html"/>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full/batch"
+        rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full?max-results=2000&amp;group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Ffredflintstone3%2540example.com%2Fbase%2F6"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Fred Flintstone</name>
+        <email>fredflintstone@example.com</email>
+    </author>
+    <generator uri="http://www.google.com/m8/feeds" version="1.0">Contacts</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>2000</openSearch:itemsPerPage>
+    <entry gd:etag="&quot;Rno_eTVSLyt7ImA9WxJREEUORwc.&quot;">
+        <id>http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/base/754fdf0c0db53ab3</id>
+        <updated>2009-05-11T23:20:37.441Z</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-05-11T23:20:37.441Z</app:edited>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+        <title>Fred Flintstone</title>
+        <link
+            href="http://www.google.com/m8/feeds/photos/media/fredflintstone%40example.com/754fdf0c0db53ab3"
+            rel="http://schemas.google.com/contacts/2008/rel#photo" type="image/*"/>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full/754fdf0c0db53ab3"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/fredflintstone%40example.com/full/754fdf0c0db53ab3"
+            rel="edit" type="application/atom+xml"/>
+        <gd:name>
+            <gd:fullName>Fred Flintstone</gd:fullName>
+            <gd:givenName>Fred</gd:givenName>
+            <gd:familyName>Flintstone</gd:familyName>
+        </gd:name>
+        <gContact:nickname>Rocks</gContact:nickname>
+        <gContact:maidenName>Marshovitzky</gContact:maidenName>
+        <gContact:shortName>Freddy</gContact:shortName>
+        <gContact:initials>F.F.</gContact:initials>
+        <gContact:gender value="male"/>
+        <gContact:birthday when="1990-12-01"/>
+        <gd:where valueString="The Quarry"/>
+        <gContact:sensitivity rel="normal"/>
+        <gContact:billingInformation>account overdue</gContact:billingInformation>
+        <gContact:priority rel="low"/>
+        <gContact:mileage>42 miles</gContact:mileage>
+        <gContact:directoryServer>dir server</gContact:directoryServer>
+        <gContact:subject>subject val</gContact:subject>
+        <gd:organization primary="true" rel="http://schemas.google.com/g/2005#work">
+            <gd:orgName>Acme Corp.</gd:orgName>
+        </gd:organization>
+        <gd:email address="fred@example.com" primary="true" rel="http://schemas.google.com/g/2005#home"/>
+        <gd:im address="fredsim@example.com" label="main messaging addr" protocol="http://schemas.google.com/g/2005#GOOGLE_TALK"/>
+        <gd:phoneNumber label="Grand Central" primary="true">425-555-1234</gd:phoneNumber>
+        <gd:phoneNumber rel="http://schemas.google.com/g/2005#car">425-555-0000</gd:phoneNumber>
+        <gd:structuredPostalAddress rel="http://schemas.google.com/g/2005#home" primary="true" >
+            <gd:formattedAddress>301 Cobblestone Way
+Bedrock, CA 12345
+United States</gd:formattedAddress>
+            <gd:street>301 Cobblestone Way</gd:street>
+            <gd:postcode>12345</gd:postcode>
+            <gd:city>Bedrock</gd:city>
+            <gd:region>CA</gd:region>
+            <gd:country>United States</gd:country>
+        </gd:structuredPostalAddress>
+        <gContact:externalId label="ext id" value="54321"/>
+        <gContact:occupation>TV Personality</gContact:occupation>
+        <gContact:relation rel="partner">Wilma</gContact:relation>
+        <gContact:userDefinedField key="Cat" value="Cheezeburger"/>
+        <gContact:website href="http://example.com/site.html" rel="home-page"/>
+        <gContact:calendarLink
+            href="http://www.google.com/calendar/render"
+            label="full calendar" primary="true"/>
+        <gContact:jot rel="home">1248</gContact:jot>
+        <gContact:hobby>gurgling</gContact:hobby>
+        <gd:extendedProperty name="fredprop" value="12345"/>
+        <gContact:groupMembershipInfo deleted="false" href="http://www.google.com/m8/feeds/groups/fredflintstone%40example.com/base/6"/>
+    </entry>
+</feed>
