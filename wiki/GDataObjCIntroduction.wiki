@@ -506,7 +506,7 @@ Setting the run loop modes will have no effect for service objects on Mac OS X 1
 
 The most common authentication error is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
 
-It is optional for your application to handle captcha requests. One easy way to handle them is to just open the Google's unlock captcha web page in the user's web browser.
+It is optional for your application to handle captcha requests. One easy way to handle them is to just open Google's unlock captcha web page in the user's web browser.
 
 {{{
 NSURL *captchaUnlockURL = [NSURL URLWithString:@"https://www.google.com/accounts/DisplayUnlockCaptcha"];
