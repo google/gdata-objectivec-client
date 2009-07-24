@@ -682,11 +682,13 @@ For an album feed, the MIME types that can be uploaded would be obtained from th
 
 {{{
 - (void)introspectTicket:(GDataServiceTicket *)ticket
-finishedWithServiceDocument:(GDataAtomServiceDocument *)serviceDoc {
-  
-  GDataAtomCollection *collection = [[serviceDoc primaryWorkspace] primaryCollection];
-  NSArray *theMIMETypes = [collection serviceAcceptStrings];
-  ...
+finishedWithServiceDocument:(GDataAtomServiceDocument *)serviceDoc
+                      error:(NSError *)error {
+  if (error == nil) {
+    GDataAtomCollection *collection = [[serviceDoc primaryWorkspace] primaryCollection];
+    NSArray *theMIMETypes = [collection serviceAcceptStrings];
+    ...
+  }
 }
 }}}
 
