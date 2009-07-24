@@ -1,5 +1,4 @@
 #summary Introduction for Objective-C Developers
-#labels Featured
 
 <wiki:toc max_depth="4" />
 
@@ -420,13 +419,12 @@ if (data) {
   NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
   [newEntry setTitleWithString:title];
   
-  NSURL *postURL = [[[docListFeed links] postLink] URL];
+  NSURL *postURL = [[docListFeed postLink] URL];
 
   ticket = [service fetchDocEntryByInsertingEntry:newEntry
                                        forFeedURL:postURL
                                          delegate:self
-                                didFinishSelector:finishedSel
-                                  didFailSelector:failedSel];
+                                didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
 }
 }}}
 
@@ -462,14 +460,18 @@ The callback is a method with a signature matching this:
 
 GData servers provide a "Last-Modified" header with their responses.  The service object remembers the header, and provides it as an "If-Modified-Since" request the next time the application makes a request to the same URL.  If the request would have the same response as it did previously, the server returns no data to the second request, just status 304, "Not modified". 
 
-Your service delegate will see the "Not modified" response in its `ticket:failedWithError:` method.  The application handles it like this:
+Your service delegate will see the "Not modified" response in its callback method.  The application handles it like this:
 
 {{{
-- (void)ticket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error {
-  if ([error code] == kGDataHTTPFetcherStatusNotModified) { // status 304
-    // no change since previous request
+- (void)ticket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error {
+  if (error == nil) {
+    // fetch succeeded
   } else {
-    // some unexpected error occurred
+    if ([error code] == kGDataHTTPFetcherStatusNotModified) { // status 304
+      // no change since previous request
+    } else {
+      // some unexpected error occurred
+    }
   }
 }
 }}}
@@ -479,7 +481,9 @@ The service can optionally remember the dated responses in a cache and provide t
 [service setShouldCacheDatedData:YES];
 }}}
 
-The service will thereafter call the delegate's ticket:finishedWithObject: method with duplicates of the original response rather than call the failure method with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
+The service will thereafter call the fetch callback methods with duplicates of the original response rather than with a status 304 error.  You can call `[service clearLastModifiedDates]` to purge the cache, or `[service setShouldCacheDatedData:NO]` to purge and disable the future caching.
+
+iPhone application developers will typically want to disable or purge the cache to avoid its use of memory.
 
 == Fetching during modal dialogs ==
 
@@ -508,45 +512,48 @@ NSURL *captchaUnlockURL = [NSURL URLWithString:@"https://www.google.com/accounts
 
 For the best user experience in handling captcha requests, your application can download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
 
-To handle captchas, the fetch failed method might look something like this:
+To handle captchas, the fetch callback method might look something like this:
 
 {{{
-- (void)ticket:(GDataServiceTicket *)ticket failedWithError:(NSError *)error {
-  
-  if ([error code] == kGDataBadAuthentication) {
+- (void)ticket:(GDataServiceTicket *)ticket finishedWithFeed:(GDataFeedBase *)feed error:(NSError *)error {
+  if (error == nil) {
+    // fetch succeeded
+  } else {
+    if ([error code] == kGDataBadAuthentication) {
     
-    NSDictionary *userInfo = [error userInfo];
-    NSString *authError = [userInfo authenticationError];
+      NSDictionary *userInfo = [error userInfo];
+      NSString *authError = [userInfo authenticationError];
     
-    if ([authError isEqual:kGDataServiceErrorCaptchaRequired]) {
+      if ([authError isEqual:kGDataServiceErrorCaptchaRequired]) {
   
       // URL for a captcha image (200x70 pixels)
 
-      NSURL *captchaURL = [userInfo captchaURL];
-      NSString *captchaToken = [userInfo captchaToken];
+        NSURL *captchaURL = [userInfo captchaURL];
+        NSString *captchaToken = [userInfo captchaToken];
       
-      // a synchronous read of the image is simple, as shown here,
-      // but to be nice to users, you can use GDataHTTPFetcher for
-      // an easy asynchronous fetch of the data instead
+        // a synchronous read of the image is simple, as shown here,
+        // but to be nice to users, you can use GDataHTTPFetcher for
+        // an easy asynchronous fetch of the data instead
 
-      NSData *imageData = [NSData dataWithContentsOfURL:captchaURL];
-      if (imageData) {
-        NSImage *image = [[[NSImage alloc] initWithData:imageData] autorelease];
+        NSData *imageData = [NSData dataWithContentsOfURL:captchaURL];
+        if (imageData) {
+          NSImage *image = [[[NSImage alloc] initWithData:imageData] autorelease];
  
-        [self askUserToSolveCaptchaImage:image 
-                               withToken:captchaToken];
+          [self askUserToSolveCaptchaImage:image 
+                                 withToken:captchaToken];
 
-        // pass the token and user's captcha answer later to the service, like
-        //   [service setCaptchaToken:captchaToken captchaAnswer:theUserAnswer]
-        // prior to retrying the fetch
-     }
-    } else {
+          // pass the token and user's captcha answer later to the service, like
+          //   [service setCaptchaToken:captchaToken captchaAnswer:theUserAnswer]
+          // prior to retrying the fetch
+        }
+      } else {
       // invalid username or password
+      }
+    } else {
+      // some other error authenticating or retrieving the GData object
+      // or a 304 status indicating the data has not been modified since it
+      // was previously fetched
     }
-  } else {
-    // some other error authenticating or retrieving the GData object
-    // or a 304 status indicating the data has not been modified since it
-    // was previously fetched
   }
 }
 }}}
@@ -566,13 +573,17 @@ The default errors retried are http status 408 (request timeout), 503 (service u
 In corporate or institutional settings where a password-protected proxy is in use, a proxy error may show up in the failure callback.  It would have constant error domain and code values, as shown here:
 {{{
 - (void)fetchTicket:(GDataServiceTicket *)ticket
-    failedWithError:(NSError *)error {
-  
-  if ([error code] == kGDataHTTPFetcherErrorAuthenticationChallengeFailed
-      && [[error domain] isEqual:kGDataHTTPFetcherErrorDomain]) {
+   finishedWithFeed:(GDataFeedBase *)feed
+              error:(NSError *)error {
+  if (error == nil) {
+    // fetch succeeded
+  } else {
+    if ([error code] == kGDataHTTPFetcherErrorAuthenticationChallengeFailed
+        && [[error domain] isEqual:kGDataHTTPFetcherErrorDomain]) {
 
-    NSURLAuthenticationChallenge *challenge;
-    challenge = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
+      NSURLAuthenticationChallenge *challenge;
+      challenge = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
+    }
   }
   ...
 }
@@ -633,21 +644,18 @@ To update an entry from a feed that ignores the unknown XML, fetch a complete co
   // fetch a complete copy of the entry, including unknown XML, by using the self link
   GDataServiceTicket *ticket = [service fetchContactEntryWithURL:[[entry selfLink] URL]
     delegate:self
-    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:)
-    didFailSelector:@selector(fetchEntryTicket:failedWithError:)];
+    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
    
   [ticket setUserData:userData];
 }
 
 - (void)fetchEntryTicket:(GDataServiceTicket *)ticket
-       finishedWithEntry:(GDataEntryContact *)completeEntry {
- 
-  // now we can modify the complete entry and update it on the
-  // server by calling -fetchContactEntryByUpdatingEntry:
-}
-
-- (void)fetchEntryTicket:(GDataServiceTicket *)ticket
-         failedWithError:(NSError *)error {
+       finishedWithEntry:(GDataEntryContact *)completeEntry
+                   error:(NSError *)error {
+  if (error == nil) {
+    // now we can modify the complete entry and update it on the
+    // server by calling -fetchContactEntryByUpdatingEntry:
+  }
 }
 }}}
 
@@ -663,10 +671,9 @@ introspectQuery = [GDataQueryGooglePhotos photoQueryWithFeedURL:albumFeedURL];
 [introspectQuery setResultFormat:kGDataQueryResultServiceDocument];
 
 GDataServiceTicket *ticket;
-ticket = [photosService fetchPhotoQuery:introspectQuery
-                               delegate:self
-                      didFinishSelector:@selector(introspectTicket:finishedWithServiceDocument:)
-                        didFailSelector:@selector(introspectTicket:failedWithError:)];
+ticket = [photosService fetchFeedWithQuery:introspectQuery
+                                  delegate:self
+                         didFinishSelector:@selector(introspectTicket:finishedWithServiceDocument:error)];
 }}}
 
 The service document includes a *workspace* that has a *collection* describing the feed. Feeds whose entries refer to other feeds will have one collection for each entry's feed.
