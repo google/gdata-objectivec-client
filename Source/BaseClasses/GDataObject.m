@@ -114,8 +114,6 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 
 - (NSString *)qualifiedNameForExtensionClass:(Class)class;
 
-- (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element;
-
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
                             fromMap:(NSDictionary *)map;
@@ -213,7 +211,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       attributeDeclarationsCache_ = [[NSMutableDictionary alloc] init];
     }
 
-    [self setNamespaces:[self dictionaryForElementNamespaces:element]];
+    [self setNamespaces:[[self class] dictionaryForElementNamespaces:element]];
     [self addUnknownChildNodesForElement:element];
 
     // if we've not previously cached declarations for this class,
@@ -1174,7 +1172,7 @@ objectDescriptionIfNonNil:(id)obj
 
 #pragma mark XML parsing helpers
 
-- (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element {
++ (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element {
 
   NSMutableDictionary *dict = nil;
 

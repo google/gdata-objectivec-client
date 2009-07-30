@@ -19,12 +19,28 @@
 
 #import "GDataObject.h"
 
+@interface GDataHealthContainerObject : GDataObject
+// objectWithXMLElement does not parse the element, but rather constructs the
+// new object incorporating the element's XML directly.
+//
+// The element's local name must match the extensionElementLocalName of the
+// class being constructed.
++ (id)objectWithXMLElement:(NSXMLElement *)element;
+@end
+
+
 // use -childXMLElements to access child element, or
 // -XMLElement to generate an XML tree with
 // the ContinuityOfCare or ProfileMetaData as the root element
 
-@interface GDataContinuityOfCareRecord : GDataObject <GDataExtension>
+@interface GDataContinuityOfCareRecord : GDataHealthContainerObject <GDataExtension>
+// this can be constructed from a CCR NSXMLElement with
+//
+// + (GDataObject *)objectWithXMLElement:(NSXMLElement *)element;
 @end
 
-@interface GDataProfileMetaData : GDataObject <GDataExtension>
+@interface GDataProfileMetaData : GDataHealthContainerObject <GDataExtension>
+// this can be constructed from a ProfileMetaData NSXMLElement with
+//
+// + (GDataObject *)objectWithXMLElement:(NSXMLElement *)element;
 @end

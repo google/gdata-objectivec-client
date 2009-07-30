@@ -23,33 +23,55 @@
 
 // a CCR element, like
 //
-// <ContinuityOfCareRecord xmlns="urn:astm-org:CCR"> 
+// <ContinuityOfCareRecord xmlns="urn:astm-org:CCR">
 //   ...
 // </ContinuityOfCareRecord>
 
 @implementation GDataContinuityOfCareRecord
-
 + (NSString *)extensionElementURI       { return kGDataNamespaceCCR; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceCCRPrefix; }
 + (NSString *)extensionElementLocalName { return @"ContinuityOfCareRecord"; }
-
-- (void)addParseDeclarations {
-  [self addChildXMLElementsDeclaration];
-}
-
 @end
 
 // a ProfileMetaData element, like
 //
-// <h9m:ProfileMetaData> 
+// <h9m:ProfileMetaData>
 //   ...
 // </h9m:ProfileMetaData>
 
 @implementation GDataProfileMetaData
-
 + (NSString *)extensionElementURI       { return kGDataNamespaceH9M; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceH9MPrefix; }
 + (NSString *)extensionElementLocalName { return @"ProfileMetaData"; }
+@end
+
+
+@implementation GDataHealthContainerObject
+
+- (GDataObject *)initWithXMLElement:(NSXMLElement *)element {
+  self = [super init];
+  if (self != nil) {
+    GDATA_DEBUG_ASSERT([[element localName] isEqual:[[self class] extensionElementLocalName]],
+                       @"element name %@ (expected %@)", [element localName],
+                       [[self class] extensionElementLocalName]);
+
+    // Add the children from the XML element to the GData object. Because
+    // NSXMLNodes cannot have two parents, we need to add copies of the children
+    NSArray *children = [element children];
+    NSArray *childCopies = [GDataUtilities arrayWithCopiesOfObjectsInArray:children];
+    [self setChildXMLElements:childCopies];
+
+    // Make the new object also have the same namespaces defined in the
+    // NSXMLElement so the children are valid
+    NSDictionary *ns = [[self class] dictionaryForElementNamespaces:element];
+    [self setNamespaces:ns];
+  }
+  return self;
+}
+
++ (id)objectWithXMLElement:(NSXMLElement *)element {
+  return [[[self alloc] initWithXMLElement:element] autorelease];
+}
 
 - (void)addParseDeclarations {
   [self addChildXMLElementsDeclaration];
