@@ -528,6 +528,8 @@ forCategoryWithScheme:(NSString *)scheme
 
 // element parsing
 
++ (NSDictionary *)dictionaryForElementNamespaces:(NSXMLElement *)element;
+
 // this method avoids the "recursive descent" behavior of NSXMLElement's
 // stringValue; the element parameter may be nil
 - (NSString *)stringValueFromElement:(NSXMLElement *)element;

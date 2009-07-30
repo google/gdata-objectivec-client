@@ -3,6 +3,17 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.8.0
+
+Additions
+
+- Added convenience method for creating CCR elements from NSXMLElements.
+
+Changes
+
+Bugs Fixed
+
+
 Release 1.8.0
 24-July-2009
 Changes since 1.7.0
