@@ -17,6 +17,8 @@
 //  GDataYouTubeElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -162,3 +164,5 @@
 // instead element indicating adult-oriented video, <yt:racy/>
 @interface GDataYouTubeRacy : GDataImplicitValueConstruct <GDataExtension>
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

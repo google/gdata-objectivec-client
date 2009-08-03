@@ -17,6 +17,9 @@
 //  GDataWhere.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+    || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATAWHERE_DEFINE_GLOBALS 1
 #import "GDataWhere.h"
 
@@ -103,3 +106,5 @@ static NSString* const kLabelAttr = @"label";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

@@ -17,9 +17,12 @@
 //  GDataFeedYouTubeUserProfile.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataFeedBase.h"
 
 @interface GDataFeedYouTubeUserProfile : GDataFeedBase 
 + (GDataFeedYouTubeUserProfile *)userProfileFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

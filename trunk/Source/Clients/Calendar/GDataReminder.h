@@ -17,6 +17,8 @@
 //  GDataReminder.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -62,3 +64,5 @@ _EXTERN NSString* const kGDataReminderMethodAll _INITIALIZE_AS(@"all");
 - (GDataDateTime *)absoluteTime;
 - (void)setAbsoluteTime:(GDataDateTime *)cdate;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

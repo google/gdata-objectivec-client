@@ -17,6 +17,8 @@
 //  GDataPortfolioElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 //
 // GDataPortfolioBase is a common base class for both GDataPortfolioData (which
 // adds currencyCode) and GDataPositionData (which adds shares).
@@ -114,3 +116,4 @@
 - (void)setShares:(NSNumber *)num;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

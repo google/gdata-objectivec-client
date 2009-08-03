@@ -17,6 +17,8 @@
 //  GDataEntryBlogPost.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataEntryBlogPost.h"
 #import "GDataBloggerConstants.h"
 #import "GDataThreadingElements.h"
@@ -114,3 +116,5 @@
                                     type:kGDataLinkTypeHTML];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

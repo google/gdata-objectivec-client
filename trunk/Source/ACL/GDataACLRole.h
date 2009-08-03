@@ -17,6 +17,9 @@
 //  GDataRole.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
+  || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -51,3 +54,4 @@ _EXTERN NSString* const kGDataRoleOwner     _INITIALIZE_AS(@"owner");
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

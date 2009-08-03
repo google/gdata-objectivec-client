@@ -17,6 +17,8 @@
 //  GDataQueryYouTube.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #define GDATAQUERYYOUTUBE_DEFINE_GLOBALS 1
 #import "GDataQueryYouTube.h"
 
@@ -137,3 +139,5 @@ static NSString *const kVideoQueryParamName = @"vq";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

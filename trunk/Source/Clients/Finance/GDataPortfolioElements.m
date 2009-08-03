@@ -17,6 +17,7 @@
 //  GDataPortfolioElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
 
 #import "GDataPortfolioElements.h"
 #import "GDataMoneyElements.h"
@@ -256,3 +257,5 @@ static NSString *const kSharesAttr = @"shares";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

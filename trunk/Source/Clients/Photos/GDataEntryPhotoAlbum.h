@@ -17,6 +17,8 @@
 //  GDataEntryPhotoAlbum.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryPhotoBase.h"
 #import "GDataGeo.h"
 #import "GDataMediaGroup.h"
@@ -69,3 +71,4 @@
 - (void)setMediaGroup:(GDataMediaGroup *)obj;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

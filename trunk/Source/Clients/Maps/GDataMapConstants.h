@@ -17,6 +17,8 @@
 //  GDataMapConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -47,3 +49,5 @@ _EXTERN NSString* const kGDataCategoryMapVersion _INITIALIZE_AS(@"http://schemas
 // temporary workaround: this namespace set has a default namespace of kml
 + (NSDictionary *)mapsServerNamespaces;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

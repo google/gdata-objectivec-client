@@ -17,6 +17,8 @@
 //  GDataServiceGoogleDocs.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #define GDATASERVICEDOCS_DEFINE_GLOBALS 1
 #import "GDataServiceGoogleDocs.h"
 #import "GDataDocConstants.h"
@@ -41,3 +43,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

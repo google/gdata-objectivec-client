@@ -17,6 +17,8 @@
 //  GDataServiceGoogleYouTube.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -116,3 +118,5 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 + (NSString *)serviceUploadRootURLString;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

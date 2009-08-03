@@ -17,6 +17,8 @@
 //  GDataFinanceTransactionData.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataFinanceTransactionData.h"
 
 #import "GDataEntryFinancePortfolio.h" // for namespaces
@@ -137,3 +139,5 @@ static NSString* const kNotesAttr = @"notes";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

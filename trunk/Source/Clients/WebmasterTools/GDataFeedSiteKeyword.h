@@ -17,6 +17,8 @@
 //  GDataFeedSiteKeyword.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 // Note: this feed never has any entries.
 
 #import "GDataFeedBase.h"
@@ -32,3 +34,5 @@
 // convenience accessor
 - (NSArray *)keywordsWithSource:(NSString *)source;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

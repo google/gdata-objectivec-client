@@ -17,6 +17,8 @@
 //  GDataMediaCredit.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataMediaCredit.h"
 #import "GDataMediaGroup.h"
@@ -74,4 +76,4 @@ static NSString* const kRoleAttr = @"role";
 
 @end
 
-
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

@@ -17,6 +17,8 @@
 //  GDataContactLanguage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 @interface GDataContactLanguage : GDataObject <GDataExtension>
@@ -31,3 +33,5 @@
 - (void)setCode:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

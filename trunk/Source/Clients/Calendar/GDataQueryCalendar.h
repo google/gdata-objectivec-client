@@ -17,6 +17,8 @@
 //  GDataQueryCalendar.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 // Calendar-specific query params, per 
 //   http://code.google.com/apis/calendar/reference.html#Parameters
 
@@ -54,3 +56,4 @@
   
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

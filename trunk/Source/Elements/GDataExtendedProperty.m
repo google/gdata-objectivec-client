@@ -17,6 +17,9 @@
 //  GDataExtendedProperty.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+  || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATAEXTENDEDPROPERTY_DEFINE_GLOBALS 1
 
 #import "GDataExtendedProperty.h"
@@ -182,3 +185,5 @@ static NSString* const kRealmAttr = @"realm";
 }
 
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeComment.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryBase.h"
 
 @interface GDataEntryYouTubeComment : GDataEntryBase
@@ -30,3 +32,5 @@
 - (void)setHasSpam:(BOOL)flag;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

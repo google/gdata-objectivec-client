@@ -17,6 +17,8 @@
 //  GDataGoogleBaseMetadataValue.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataObject.h"
 
 
@@ -43,3 +45,5 @@
 - (void)setCount:(NSNumber *)num;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

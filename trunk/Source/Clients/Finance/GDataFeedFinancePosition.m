@@ -17,6 +17,8 @@
 //  GDataFeedFinancePosition.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataFeedFinancePosition.h"
 #import "GDataEntryFinancePosition.h"
 
@@ -50,3 +52,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

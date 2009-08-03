@@ -17,6 +17,9 @@
 //  GDataRating.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE \
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #define GDATARATING_DEFINE_GLOBALS 1
 #import "GDataRating.h"
 
@@ -107,3 +110,4 @@ static NSString* const kNumRatersAttr = @"numRaters";
 
 @end
 
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

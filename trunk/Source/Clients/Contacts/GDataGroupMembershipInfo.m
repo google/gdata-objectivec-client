@@ -17,6 +17,8 @@
 //  GDataGroupMembershipInfo.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataGroupMembershipInfo.h" 
 #import "GDataContactConstants.h"
 
@@ -67,3 +69,5 @@ static NSString* const kDeletedAttr = @"deleted";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

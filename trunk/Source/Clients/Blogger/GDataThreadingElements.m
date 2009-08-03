@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 //
 //  GDataThreadingElements.h
 //
@@ -174,3 +176,5 @@ static NSString* const kTypeAttr = @"type";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

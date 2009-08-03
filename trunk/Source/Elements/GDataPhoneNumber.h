@@ -17,6 +17,8 @@
 //  GDataPhoneNumber.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -79,3 +81,5 @@ _EXTERN NSString* const kGDataPhoneNumberWorkPager   _INITIALIZE_AS(@"http://sch
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataFeedMapVersion.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataFeedMapVersion.h"
 #import "GDataMapConstants.h"
 #import "GDataEntryMapVersion.h"
@@ -50,3 +52,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

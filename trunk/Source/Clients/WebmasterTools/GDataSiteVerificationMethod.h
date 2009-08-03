@@ -17,6 +17,8 @@
 //  GDataSiteVerificationMethod.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataObject.h"
 
 
@@ -67,3 +69,4 @@ _EXTERN NSString* const kGDataSiteVerificationMethodHTMLPage _INITIALIZE_AS(@"ht
 - (void)setXMLValues:(NSArray *)values;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

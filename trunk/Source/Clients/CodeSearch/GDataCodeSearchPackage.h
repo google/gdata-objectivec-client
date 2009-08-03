@@ -17,6 +17,8 @@
 //  GDataCodeSearchPackage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 #import "GDataObject.h"
 
 // For code search packages, like
@@ -45,3 +47,5 @@
 - (NSString *)URI;
 - (void)setURI:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

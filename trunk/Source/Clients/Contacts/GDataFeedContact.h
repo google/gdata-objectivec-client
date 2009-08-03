@@ -17,6 +17,8 @@
 //  GDataFeedContact.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedContact : GDataFeedBase
@@ -28,3 +30,5 @@
 // convenience accessor
 - (NSArray *)entriesWithGroupHref:(NSString *)href;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

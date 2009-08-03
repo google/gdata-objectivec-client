@@ -17,6 +17,8 @@
 //  GDataColumnCount.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataRowColumnCount.h"
 
 #import "GDataEntrySpreadsheet.h" // for namespace
@@ -132,3 +134,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

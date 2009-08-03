@@ -17,6 +17,7 @@
 //  GDataFeedContact.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
 
 #import "GDataFeedContact.h"
 
@@ -83,3 +84,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

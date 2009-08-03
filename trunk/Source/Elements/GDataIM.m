@@ -17,6 +17,8 @@
 //  GDataIM.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATAIM_DEFINE_GLOBALS 1
 #import "GDataIM.h"
 
@@ -107,4 +109,4 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataYouTubePublicationState.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -60,3 +62,5 @@ _EXTERN NSString* const kGDataYouTubePubStateRestricted _INITIALIZE_AS(@"restric
 - (void)setErrorDescription:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

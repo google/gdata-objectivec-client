@@ -17,6 +17,8 @@
 //  GDataEXIFTag.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEXIFTags.h"
 #import "GDataPhotoConstants.h"
 
@@ -189,3 +191,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

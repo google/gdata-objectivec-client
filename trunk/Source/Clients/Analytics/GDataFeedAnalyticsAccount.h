@@ -17,8 +17,12 @@
 //  GDataFeedAnalyticsAccount.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedAnalyticsAccount : GDataFeedBase
 + (GDataFeedAnalyticsAccount *)accountFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

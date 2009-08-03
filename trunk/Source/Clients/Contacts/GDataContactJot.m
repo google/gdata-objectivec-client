@@ -17,6 +17,8 @@
 //  GDataContactJot.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTJOT_DEFINE_GLOBALS 1
 #import "GDataContactJot.h"
 
@@ -66,4 +68,4 @@ static NSString* const kRelAttr = @"rel";
 
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

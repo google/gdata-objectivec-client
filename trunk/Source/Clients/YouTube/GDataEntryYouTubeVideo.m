@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeVideo.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryYouTubeVideo.h"
 #import "GDataYouTubeConstants.h"
 #import "GDataYouTubeElements.h"
@@ -259,3 +261,5 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeToken class]];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

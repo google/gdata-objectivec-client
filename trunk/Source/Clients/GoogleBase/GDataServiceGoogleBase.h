@@ -17,6 +17,8 @@
 //  GDataServiceGoogleBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -63,3 +65,5 @@ _EXTERN NSString* const kGDataGoogleBaseUserItemsFeed  _INITIALIZE_AS(@"http://w
 // The class of the returned feed or entry is determined by the URL fetched.
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

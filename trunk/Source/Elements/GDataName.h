@@ -17,6 +17,8 @@
 //  GDataName.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 @interface GDataNameElement : GDataObject
@@ -64,3 +66,5 @@
 - (void)setNameSuffix:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

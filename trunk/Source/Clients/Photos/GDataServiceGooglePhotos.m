@@ -17,6 +17,8 @@
 //  GDataServiceGooglePhotos.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #define GDATASERVICEGOOGLEPHOTOS_DEFINE_GLOBALS 1
 #import "GDataServiceGooglePhotos.h"
 #import "GDataEntryPhotoBase.h"
@@ -115,3 +117,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

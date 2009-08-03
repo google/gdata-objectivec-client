@@ -17,8 +17,12 @@
 //  GDataFeedSiteMessage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedSiteMessage : GDataFeedBase
 + (GDataFeedSiteMessage *)messageFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

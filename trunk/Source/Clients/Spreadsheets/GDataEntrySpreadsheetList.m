@@ -17,6 +17,8 @@
 //  GDataEntrySpreadsheetList.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataEntrySpreadsheetList.h"
 #import "GDataSpreadsheetConstants.h"
 #import "GDataSpreadsheetCustomElement.h"
@@ -163,3 +165,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

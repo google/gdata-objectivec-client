@@ -17,6 +17,8 @@
 //  GDataFeedCalendarEvent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataFeedEvent.h"
 
 @class GDataTimeZoneProperty;
@@ -38,3 +40,5 @@
 - (void)setTimesCleaned:(NSNumber *)num;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

@@ -17,6 +17,8 @@
 //  GDataServiceGoogleBlogger.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataServiceGoogleBlogger.h"
 
 #import "GDataBloggerConstants.h" // for namespaces
@@ -101,3 +103,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

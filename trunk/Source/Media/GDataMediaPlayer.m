@@ -17,6 +17,8 @@
 //  GDataMediaPlayer.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataMediaPlayer.h"
 #import "GDataMediaGroup.h"
@@ -77,4 +79,4 @@ static NSString* const kWidthAttr = @"width";
 
 @end
 
-
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

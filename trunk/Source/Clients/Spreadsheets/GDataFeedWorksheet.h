@@ -17,6 +17,8 @@
 //  GDataFeedWorksheet.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedWorksheet : GDataFeedBase {
@@ -29,3 +31,5 @@
 
 - (Class)classForEntries;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

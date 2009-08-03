@@ -17,6 +17,8 @@
 //  GDataFinanceSymbol.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataFinanceSymbol.h"
 
 #import "GDataMoneyElements.h"
@@ -83,3 +85,5 @@ static NSString* const kSymbolAttr = @"symbol";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

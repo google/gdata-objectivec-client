@@ -17,6 +17,8 @@
 //  GDataGoogleBaseMetadataAttribute.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataObject.h"
 
 #import "GDataGoogleBaseMetadataValue.h"
@@ -54,3 +56,5 @@
 - (void)setValues:(NSArray *)values;
 - (void)addValue:(GDataGoogleBaseMetadataValue *)value;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

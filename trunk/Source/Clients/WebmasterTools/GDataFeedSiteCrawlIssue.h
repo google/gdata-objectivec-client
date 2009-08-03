@@ -17,8 +17,12 @@
 //  GDataFeedSiteCrawlIssue.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedSiteCrawlIssue : GDataFeedBase
 + (GDataFeedSiteCrawlIssue *)crawlIssueFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataYouTubeElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 // http://code.google.com/apis/youtube/reference.html#Elements
 
 #import "GDataYouTubeElements.h"
@@ -260,3 +262,5 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"racy"; }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

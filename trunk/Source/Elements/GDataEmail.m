@@ -17,6 +17,8 @@
 //  GDataEmail.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEmail.h"
 
 static NSString* const kLabelAttr = @"label";
@@ -86,4 +88,4 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

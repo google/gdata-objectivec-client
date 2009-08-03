@@ -17,6 +17,7 @@
 //  GDataEntryFinanceTransaction.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
 
 #import "GDataEntryFinanceTransaction.h"
 
@@ -80,3 +81,4 @@
 }
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

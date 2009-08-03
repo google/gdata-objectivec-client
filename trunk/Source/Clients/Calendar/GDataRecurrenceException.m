@@ -17,6 +17,8 @@
 //  GDataRecurrenceException.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataRecurrenceException.h"
 
 #import "GDataOriginalEvent.h"
@@ -149,3 +151,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

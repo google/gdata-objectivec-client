@@ -17,6 +17,8 @@
 //  GDataSpreadsheetConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -72,3 +74,5 @@ _EXTERN NSString* const kGDataCategorySpreadsheetTable     _INITIALIZE_AS(@"http
 + (NSDictionary *)spreadsheetNamespaces;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

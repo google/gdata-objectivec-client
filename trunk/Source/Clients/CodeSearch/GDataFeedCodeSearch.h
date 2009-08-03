@@ -17,6 +17,8 @@
 //  GDataFeedCodeSearch.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 // Since Code Search requires no authentication and has no custom query
 // parameters, it can be used with the base class service and query
 // objects, like this:
@@ -48,3 +50,5 @@
 - (Class)classForEntries;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

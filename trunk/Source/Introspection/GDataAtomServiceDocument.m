@@ -17,6 +17,8 @@
 //  GDataAtomServiceDocument.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 // app:service, an Atom service document,
 // per http://tools.ietf.org/html/rfc5023#section-8.3.1
 
@@ -95,3 +97,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

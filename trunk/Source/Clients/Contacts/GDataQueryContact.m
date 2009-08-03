@@ -17,6 +17,8 @@
 //  GDataQueryContact.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataQueryContact.h"
 #import "GDataServiceGoogleContact.h"
 
@@ -47,3 +49,5 @@ static NSString *const kGroupParamName = @"group";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

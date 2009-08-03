@@ -17,6 +17,8 @@
 //  GDataContactLink.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 @interface GDataContactLink : GDataObject
@@ -37,3 +39,5 @@
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

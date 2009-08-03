@@ -17,6 +17,7 @@
 //  GDataAnalyticsMetric.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
 #import "GDataAnalyticsMetric.h"
 #import "GDataAnalyticsConstants.h"
@@ -86,3 +87,5 @@ static NSString *const kValueAttr = @"value";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

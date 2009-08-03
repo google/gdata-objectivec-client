@@ -17,6 +17,8 @@
 //  GDataEntryPhotoBase.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #define GDATAPHOTOBASE_DEFINE_GLOBALS 1
 #import "GDataEntryPhotoBase.h"
 #import "GDataPhotoConstants.h"
@@ -80,3 +82,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataHealthElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataHealthElements.h"
 #import "GDataEntryHealthProfile.h"
 
@@ -78,3 +80,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

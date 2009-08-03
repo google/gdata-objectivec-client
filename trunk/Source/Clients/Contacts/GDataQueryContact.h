@@ -17,6 +17,8 @@
 //  GDataQueryContact.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 // Contact API query parameters
 //
 // http://code.google.com/apis/contacts/reference.html#Parameters
@@ -34,3 +36,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

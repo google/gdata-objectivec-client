@@ -17,6 +17,8 @@
 //  GDataPhotoElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 // http://code.google.com/apis/picasaweb/reference.html#gphoto_reference
 
 #define GDATAPHOTOELEMENTS_DEFINE_GLOBALS 1
@@ -294,3 +296,5 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
 + (NSString *)extensionElementLocalName { return @"client"; }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

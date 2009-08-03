@@ -17,6 +17,8 @@
 //  GDataContactWebsite.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -55,3 +57,5 @@ _EXTERN NSString* kGDataContactWebsiteOther    _INITIALIZE_AS(@"other");
 - (BOOL)isPrimary;
 - (void)setIsPrimary:(BOOL)flag;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

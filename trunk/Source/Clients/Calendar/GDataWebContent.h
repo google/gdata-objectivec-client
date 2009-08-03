@@ -17,6 +17,8 @@
 //  GDataWebContent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 #import "GDataExtendedProperty.h"
 
@@ -73,3 +75,5 @@ _EXTERN NSString* const kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.
 - (NSDictionary *)gadgetPreferenceDictionary;
   
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

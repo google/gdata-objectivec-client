@@ -17,6 +17,8 @@
 //  GDataContactExternalID.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -53,3 +55,5 @@ _EXTERN NSString* kGDataContactExternalIDOrganization _INITIALIZE_AS(@"organizat
 - (void)setStringValue:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

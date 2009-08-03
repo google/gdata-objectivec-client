@@ -17,6 +17,8 @@
 //  GDataFeedMessage.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataFeedMessage.h"
 #import "GDataEntryMessage.h"
 
@@ -45,3 +47,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

@@ -17,8 +17,12 @@
 //  GDataFeedHealthRegister.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedHealthRegister : GDataFeedBase 
 + (GDataFeedHealthRegister *)healthRegisterFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

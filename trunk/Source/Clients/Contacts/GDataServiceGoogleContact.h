@@ -17,6 +17,8 @@
 //  GDataServiceGoogleContact.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -105,3 +107,5 @@ _EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http:
 + (NSString *)serviceRootURLString;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

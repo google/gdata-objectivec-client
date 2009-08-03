@@ -17,6 +17,9 @@
 //  GDataMediaThumbnail.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 #import "GDataNormalPlayTime.h"
 
@@ -44,3 +47,5 @@
 - (GDataNormalPlayTime *)time;
 - (void)setTime:(GDataNormalPlayTime *)playTime;
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

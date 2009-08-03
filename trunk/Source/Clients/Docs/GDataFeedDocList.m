@@ -17,6 +17,8 @@
 //  GDataFeedDocList.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataFeedDocList.h"
 #import "GDataDocConstants.h"
 
@@ -27,3 +29,5 @@
   return kGDataDocsDefaultServiceVersion;
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

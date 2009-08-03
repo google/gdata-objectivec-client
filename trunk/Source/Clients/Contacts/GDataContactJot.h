@@ -17,6 +17,8 @@
 //  GDataContactJot.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -50,3 +52,5 @@ _EXTERN NSString* kGDataContactJotWork     _INITIALIZE_AS(@"work");
 - (void)setStringValue:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

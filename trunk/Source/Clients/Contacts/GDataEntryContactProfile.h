@@ -17,9 +17,13 @@
 //  GDataEntryContactProfile.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEntryContactBase.h"
 
 
 @interface GDataEntryContactProfile : GDataEntryContactBase
 + (id)contactProfileEntry;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

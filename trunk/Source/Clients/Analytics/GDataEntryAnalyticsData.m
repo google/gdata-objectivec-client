@@ -17,6 +17,7 @@
 //  GDataEntryAnalyticsData.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
 #import "GDataEntryAnalyticsData.h"
 #import "GDataAnalyticsConstants.h"
@@ -120,3 +121,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

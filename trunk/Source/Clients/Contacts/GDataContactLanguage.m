@@ -17,6 +17,8 @@
 //  GDataContactLanguage.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataContactLanguage.h"
 
 #import "GDataContactConstants.h"
@@ -64,3 +66,5 @@ static NSString *const kCodeAttr = @"code";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataQueryGoogleHealth.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataQuery.h"
 
 @interface GDataQueryGoogleHealth : GDataQuery
@@ -42,3 +44,5 @@
 - (NSInteger)startIndexInGroup;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

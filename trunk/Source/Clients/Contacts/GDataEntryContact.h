@@ -17,6 +17,8 @@
 //  GDataEntryContact.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEntryContactBase.h"
 #import "GDataGroupMembershipInfo.h"
 
@@ -42,3 +44,5 @@
 - (void)setYomi:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

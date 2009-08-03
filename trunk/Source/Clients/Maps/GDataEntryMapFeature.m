@@ -17,6 +17,7 @@
 //  GDataEntryMapFeature.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
 
 #import "GDataMapConstants.h"
 #import "GDataEntryMapFeature.h"
@@ -148,3 +149,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

@@ -17,6 +17,9 @@
 //  GDataWhen.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+  || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataWhen.h"
 
 static NSString* const kValueAttr = @"valueString";
@@ -74,3 +77,5 @@ static NSString* const kEndTimeAttr = @"endTime";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

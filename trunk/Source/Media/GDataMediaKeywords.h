@@ -17,6 +17,9 @@
 //  GDataMediaKeywords.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 // like <media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>
@@ -42,3 +45,5 @@
 + (NSArray *)keywordsFromString:(NSString *)commaSeparatedString;
 
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

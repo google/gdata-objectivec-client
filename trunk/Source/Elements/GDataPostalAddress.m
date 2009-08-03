@@ -17,6 +17,8 @@
 //  GDataPostalAddress.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataPostalAddress.h"
 
 static NSString* const kRelAttr = @"rel";
@@ -92,3 +94,4 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

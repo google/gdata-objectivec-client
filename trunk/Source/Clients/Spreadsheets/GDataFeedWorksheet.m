@@ -17,6 +17,8 @@
 //  GDataFeedWorksheet.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataEntryWorksheet.h"
 #import "GDataSpreadsheetConstants.h"
 #import "GDataFeedWorksheet.h"
@@ -72,3 +74,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

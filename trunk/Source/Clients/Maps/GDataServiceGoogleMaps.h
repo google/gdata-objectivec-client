@@ -17,6 +17,8 @@
 //  GDataServiceGoogleMaps.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -73,3 +75,5 @@ _EXTERN NSString* const kGDataMapsProjectionUnlisted   _INITIALIZE_AS(@"unlisted
 + (NSString *)serviceRootURLString;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataQueryGooglePhotos.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataDefines.h"
 
 #undef _EXTERN
@@ -64,3 +66,4 @@ _EXTERN const NSInteger kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-
   
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

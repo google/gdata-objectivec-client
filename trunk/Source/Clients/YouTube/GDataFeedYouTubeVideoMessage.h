@@ -17,6 +17,8 @@
 //  GDataFeedYouTubeVideoMessage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataFeedBase.h"
 
 // Note: the video message *entry* is a subclass of the YouTube video entry,
@@ -26,3 +28,5 @@
 @interface GDataFeedYouTubeVideoMessage : GDataFeedBase 
 + (GDataFeedYouTubeVideoMessage *)videoMessageFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

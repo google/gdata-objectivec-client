@@ -17,6 +17,8 @@
 //  GDataContactWebsite.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTWEBSITE_DEFINE_GLOBALS 1
 #import "GDataContactWebsite.h"
 
@@ -89,3 +91,5 @@ static NSString* const kPrimaryAttr = @"primary";
   [self setBoolValue:flag defaultValue:NO forAttribute:kPrimaryAttr];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

@@ -17,7 +17,11 @@
 //  GDataFeedDocList.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedDocList : GDataFeedBase
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

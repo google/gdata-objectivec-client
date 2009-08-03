@@ -17,6 +17,7 @@
 //  GDataFeedGoogleBase.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
 
 #import "GDataFeedGoogleBase.h"
 #import "GDataEntryGoogleBase.h"
@@ -43,3 +44,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

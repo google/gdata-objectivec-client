@@ -17,6 +17,8 @@
 //  GDataEntryGoogleBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataLink.h"
 
@@ -217,3 +219,5 @@ _EXTERN NSString* const kGDataGoogleBaseAttributeTypeLocation _INITIALIZE_AS(@"l
 - (NSNumber *)customerID;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

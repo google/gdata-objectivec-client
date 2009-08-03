@@ -17,6 +17,8 @@
 //  GDataEntryMapFeature.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataCustomProperty.h"
 #import "GDataStructuredPostalAddress.h"
@@ -44,3 +46,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

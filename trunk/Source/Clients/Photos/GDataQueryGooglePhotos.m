@@ -17,6 +17,8 @@
 //  GDataQueryGooglePhotos.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #define GDATAQUERYGOOGLEPHOTOS_DEFINE_GLOBALS 1
 #import "GDataQueryGooglePhotos.h"
 
@@ -116,3 +118,5 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
   return [self valueForParameterWithName:kTagParamName];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

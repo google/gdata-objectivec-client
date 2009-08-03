@@ -17,6 +17,8 @@
 //  GDataEntryHealthProfile.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataEntryBase.h"
 
 #undef _EXTERN
@@ -74,3 +76,5 @@ _EXTERN NSString* const kGDataHealthRelComplete _INITIALIZE_AS(@"http://schemas.
 - (GDataCategory *)CCRCategory;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

@@ -17,6 +17,8 @@
 //  GDataAnalyticsMetric.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataObject.h"
 
 // Metric, like
@@ -49,3 +51,5 @@
 - (NSNumber *)doubleValue;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

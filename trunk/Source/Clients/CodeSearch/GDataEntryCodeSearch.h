@@ -17,6 +17,8 @@
 //  GDataEntryCodeSearch.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 #import "GDataEntryBase.h"
 
 #undef _EXTERN
@@ -61,3 +63,5 @@ _EXTERN NSString* const kGDataCodeSearchFeed _INITIALIZE_AS(@"http://www.google.
 - (void)addMatch:(GDataCodeSearchMatch *)match;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

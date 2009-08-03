@@ -19,6 +19,8 @@
 //  NOTE: As of July 2007, GDataGeoPt is deprecated.  Use GDataGeo instead.
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 
 @class GDataDateTime;
@@ -58,3 +60,5 @@
 - (void)setTime:(GDataDateTime *)cdate;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

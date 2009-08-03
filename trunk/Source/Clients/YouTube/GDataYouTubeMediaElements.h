@@ -17,6 +17,7 @@
 //  GDataYouTubeMediaElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -78,3 +79,5 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 - (GDataDateTime *)uploadedDate;
 - (void)setUploadedDate:(GDataDateTime *)dateTime;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

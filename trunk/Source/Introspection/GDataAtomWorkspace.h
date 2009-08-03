@@ -17,6 +17,8 @@
 //  GDataAtomWorkspace.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 // app:workspace, per http://tools.ietf.org/html/rfc5023#section-8.3.2
 //
 // For example,
@@ -48,3 +50,5 @@
 // v1 used an older namespace URI, and put the title in an attribute instead
 // of a child element
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

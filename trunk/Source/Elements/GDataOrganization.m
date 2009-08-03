@@ -17,6 +17,8 @@
 //  GDataOrganization.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataOrganization.h"
 #import "GDataOrganizationName.h"
 #import "GDataWhere.h"
@@ -262,3 +264,5 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

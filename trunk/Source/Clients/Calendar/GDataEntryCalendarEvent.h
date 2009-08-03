@@ -17,6 +17,8 @@
 //  GDataEntryCalendarEvent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryEvent.h"
 #import "GDataWho.h"
 #import "GDataLink.h"
@@ -111,3 +113,5 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 - (GDataLink *)webContentLink;
 - (GDataWebContent *)webContent;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

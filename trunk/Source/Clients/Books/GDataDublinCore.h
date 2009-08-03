@@ -21,6 +21,8 @@
 // DublinCore elements - http://uk.dublincore.org/documents/dces/
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
+
 #import "GDataValueConstruct.h"
 
 #undef _EXTERN
@@ -89,3 +91,5 @@ _EXTERN NSString* const kGDataNamespaceDublinCorePrefix _INITIALIZE_AS(@"dc");
 + (NSString *)extensionElementPrefix;
 + (NSString *)extensionElementLocalName;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

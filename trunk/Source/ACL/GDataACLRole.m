@@ -17,6 +17,9 @@
 //  GDataACLRole.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
+  || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #define GDATAACLROLE_DEFINE_GLOBALS 1
 
 #import "GDataACLRole.h"
@@ -56,3 +59,5 @@ static NSString* const kValueAttr = @"value";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

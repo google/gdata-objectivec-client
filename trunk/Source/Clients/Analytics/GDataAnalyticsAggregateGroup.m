@@ -17,6 +17,7 @@
 //  GDataAnalyticsAggregateGroup.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
 #import "GDataAnalyticsAggregateGroup.h"
 
@@ -65,3 +66,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

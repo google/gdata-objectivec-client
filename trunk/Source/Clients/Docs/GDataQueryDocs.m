@@ -17,6 +17,8 @@
 //  GDataQueryDocument.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #define GDATAQUERYDOCS_DEFINE_GLOBALS 1
 #import "GDataQueryDocs.h"
 
@@ -122,3 +124,5 @@ static NSString *const kOpenedMaxParamName = @"opened-max";
   return [self dateTimeForParameterWithName:kOpenedMaxParamName];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

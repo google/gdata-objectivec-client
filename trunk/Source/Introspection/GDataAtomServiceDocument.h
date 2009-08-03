@@ -17,6 +17,8 @@
 //  GDataAtomServiceDocument.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 // app:workspace, per http://tools.ietf.org/html/rfc5023#section-8.3.2
 //
 // For example,
@@ -43,3 +45,5 @@
 @interface GDataAtomServiceDocument1_0 : GDataAtomServiceDocument
 // older namespace URI
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

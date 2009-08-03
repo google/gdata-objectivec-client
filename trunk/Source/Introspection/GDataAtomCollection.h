@@ -17,6 +17,8 @@
 //  GDataAtomCollection.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 // a collection in a service document for introspection,
 // per http://tools.ietf.org/html/rfc5023#section-8.3.3
 //
@@ -65,3 +67,4 @@
 // older namespace URI, and titles stored in attributes
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

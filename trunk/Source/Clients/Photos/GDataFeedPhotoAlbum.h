@@ -17,6 +17,8 @@
 //  GDataFeedPhotoBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataFeedPhotoBase.h"
 #import "GDataGeo.h"
 #import "GDataPhotoElements.h"
@@ -69,3 +71,5 @@
 - (void)setName:(NSString *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

@@ -17,8 +17,12 @@
 //  GDataFeedMap.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedMap : GDataFeedBase
 + (GDataFeedMap *)mapFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

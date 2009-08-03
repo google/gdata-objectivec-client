@@ -17,6 +17,8 @@
 //  GDataYouTubeMediaElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #define GDATAYOUTUBEMEDIAELEMENTS_DEFINE_GLOBALS 1
 #import "GDataYouTubeMediaElements.h"
 #import "GDataYouTubeConstants.h"
@@ -212,3 +214,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

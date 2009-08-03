@@ -17,6 +17,8 @@
 //  GDataEntryCalendarEvent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #define GDATACALENDAREVENT_DEFINE_GLOBALS 1
 
 #import "GDataWebContent.h"
@@ -476,3 +478,5 @@
 
 // to set web content, create a GDataLink and call addWebContent on it
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

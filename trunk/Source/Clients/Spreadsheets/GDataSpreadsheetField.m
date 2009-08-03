@@ -17,6 +17,8 @@
 //  GDataSpreadsheetField.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataSpreadsheetField.h"
 
 #import "GDataEntrySpreadsheet.h"
@@ -103,3 +105,5 @@ static NSString* const kFormulaAttr = @"formula";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

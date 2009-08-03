@@ -17,6 +17,8 @@
 //  GDataGoogleBaseMetadataAttribute.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataGoogleBaseMetadataAttribute.h"
 #import "GDataEntryGoogleBase.h"
 
@@ -166,3 +168,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
