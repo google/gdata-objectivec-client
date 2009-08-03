@@ -17,6 +17,8 @@
 //  GDataServiceGoogleHealth.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -75,3 +77,4 @@
 @interface GDataServiceGoogleHealthSandbox : GDataServiceGoogleHealth
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

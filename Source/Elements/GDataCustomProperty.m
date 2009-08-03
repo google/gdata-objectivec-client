@@ -17,6 +17,8 @@
 //  GDataCustomProperty.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataCustomProperty.h"
 
 static NSString* const kNameAttr = @"name";
@@ -91,3 +93,5 @@ static NSString* const kUnitAttr = @"unit";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

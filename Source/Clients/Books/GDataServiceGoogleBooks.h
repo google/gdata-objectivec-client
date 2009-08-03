@@ -17,6 +17,8 @@
 //  GDataServiceGoogleBooks.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -61,3 +63,5 @@ _EXTERN NSString* const kGDataGoogleBooksDefaultCollectionFeed _INITIALIZE_AS(@"
 + (NSString *)serviceRootURLString;  
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

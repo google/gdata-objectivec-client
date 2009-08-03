@@ -17,6 +17,8 @@
 //  GDataContactEvent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTEVENT_DEFINE_GLOBALS 1
 #import "GDataContactEvent.h"
 
@@ -96,4 +98,4 @@ static NSString* const kLabelAttr = @"label";
 
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

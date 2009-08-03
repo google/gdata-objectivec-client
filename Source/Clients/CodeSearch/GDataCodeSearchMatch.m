@@ -17,6 +17,8 @@
 //  GDataCodeSearchMatch.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 #import "GDataCodeSearchMatch.h"
 #import "GDataEntryCodeSearch.h"
 
@@ -66,3 +68,4 @@ static NSString* const kLineNumberAttr = @"lineNumber";
 }
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

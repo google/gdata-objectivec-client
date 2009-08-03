@@ -17,6 +17,8 @@
 //  GDataQueryAnalytics.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataQuery.h"
 
 @interface GDataQueryAnalytics : GDataQuery
@@ -49,3 +51,5 @@
 - (NSString *)sort;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

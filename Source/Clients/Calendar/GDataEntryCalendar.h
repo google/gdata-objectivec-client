@@ -17,6 +17,8 @@
 //  GDataEntryCalendar.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataLink.h"
 #import "GDataValueConstruct.h"
@@ -140,3 +142,5 @@ _EXTERN NSString* const kGDataRoleCalendarRoot        _INITIALIZE_AS(@"http://sc
 - (void)setLocations:(NSArray *)array;
 - (void)addLocation:(GDataWhere *)obj;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

@@ -17,6 +17,8 @@
 //  GDataOriginalEvent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataObject.h"
@@ -46,3 +48,5 @@
 - (GDataWhen *)originalStartTime;
 - (void)setOriginalStartTime:(GDataWhen *)startTime;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

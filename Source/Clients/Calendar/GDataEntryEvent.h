@@ -17,6 +17,8 @@
 //  GDataEntryEvent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataLink.h"
 
@@ -147,3 +149,5 @@ _EXTERN NSString* const kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http:
 - (void)setLocations:(NSArray *)array;
 - (void)addLocation:(GDataWhere *)obj;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

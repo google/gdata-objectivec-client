@@ -17,6 +17,8 @@
 //  GDataEntryFinancePortfolio.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataEntryBase.h"
 
 
@@ -63,3 +65,5 @@ _EXTERN NSString* const kGDataCategoryFinanceTransaction  _INITIALIZE_AS(@"http:
 - (NSURL *)positionURL; // from the feedLink's href attribute
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

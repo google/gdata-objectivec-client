@@ -17,6 +17,7 @@
 //  GDataQueryYouTube.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataQuery.h"
 
@@ -89,3 +90,4 @@ _EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderat
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

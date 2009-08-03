@@ -17,6 +17,8 @@
 //  GDataEntrySiteCrawlIssue.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataEntryBase.h"
 
 
@@ -45,3 +47,5 @@
 - (void)addIssueLinkedFromURLString:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

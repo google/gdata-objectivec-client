@@ -17,6 +17,8 @@
 //  GDataFeedVolume.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
+
 #import "GDataFeedVolume.h"
 #import "GDataEntryVolume.h"
 
@@ -48,3 +50,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataFinanceTransactionData.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataObject.h"
 
 //
@@ -58,3 +60,5 @@
 - (void)setPrice:(GDataPrice *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

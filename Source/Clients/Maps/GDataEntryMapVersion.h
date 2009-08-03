@@ -17,6 +17,8 @@
 //  GDataEntryMapVersion.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataEntryBase.h"
 
 @interface GDataEntryMapVersion : GDataEntryBase
@@ -24,3 +26,5 @@
 + (id)versionEntry;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

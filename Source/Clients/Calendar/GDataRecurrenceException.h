@@ -17,6 +17,8 @@
 //  GDataRecurrenceException.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 
 // a gd:recurrenceException link, possibly containing an entryLink or 
@@ -53,3 +55,5 @@
 - (GDataOriginalEvent *)originalEvent;
 - (void)setOriginalEvent:(GDataOriginalEvent *)originalEvent;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

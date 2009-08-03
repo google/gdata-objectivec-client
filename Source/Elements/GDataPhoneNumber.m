@@ -17,6 +17,8 @@
 //  GDataPhoneNumber.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATAPHONENUMBER_DEFINE_GLOBALS 1
 #import "GDataPhoneNumber.h"
 
@@ -98,3 +100,5 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

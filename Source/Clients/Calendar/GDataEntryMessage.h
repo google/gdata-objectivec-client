@@ -17,6 +17,8 @@
 //  GDataEntryMessage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryBase.h"
 
 #import "GDataRating.h"
@@ -61,3 +63,5 @@ _EXTERN NSString* const kGDataMessageInbox _INITIALIZE_AS(@"http://schemas.googl
 - (void)addParticipant:(GDataWho *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

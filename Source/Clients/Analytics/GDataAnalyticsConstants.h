@@ -17,6 +17,8 @@
 //  GDataAnalyticsConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -51,3 +53,5 @@ _EXTERN NSString* const kGDataMetricTypeUSCurrency _INITIALIZE_AS(@"us_currency"
 @interface GDataAnalyticsConstants : NSObject
 + (NSDictionary *)analyticsNamespaces;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

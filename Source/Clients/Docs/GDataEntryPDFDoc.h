@@ -17,8 +17,11 @@
 //  GDataEntryPDFDoc.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntryDocBase.h"
 
 @interface GDataEntryPDFDoc : GDataEntryDocBase
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

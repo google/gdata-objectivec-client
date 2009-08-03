@@ -17,6 +17,8 @@
 //  GDataEntryContact.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEntryContact.h"
 #import "GDataContactConstants.h"
 
@@ -142,3 +144,4 @@
 }
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

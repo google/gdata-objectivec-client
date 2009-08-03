@@ -17,6 +17,8 @@
 //  GDataWho.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #define GDATAWHO_DEFINE_GLOBALS 1
 #import "GDataWho.h"
 
@@ -147,3 +149,4 @@ static NSString* const kEmailAttr = @"email";
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

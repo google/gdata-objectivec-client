@@ -17,6 +17,8 @@
 //  GDataEntryBlog.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataEntryBase.h"
 
 @interface GDataEntryBlog : GDataEntryBase
@@ -30,3 +32,5 @@
 - (GDataLink *)templateLink;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

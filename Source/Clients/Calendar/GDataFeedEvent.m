@@ -17,6 +17,8 @@
 //  GDataFeedEvent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryEvent.h"
 #import "GDataFeedEvent.h"
 #import "GDataWhere.h"
@@ -56,3 +58,5 @@
   [self addObject:obj forExtensionClass:[obj class]];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

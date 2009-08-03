@@ -17,6 +17,8 @@
 //  GDataServiceGoogleCalendar.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -89,3 +91,5 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 + (NSString *)serviceRootURLString;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

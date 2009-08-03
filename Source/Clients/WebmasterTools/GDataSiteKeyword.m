@@ -17,6 +17,8 @@
 //  GDataSiteKeyword.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataSiteKeyword.h"
 #import "GDataWebmasterToolsConstants.h"
 
@@ -67,3 +69,5 @@ static NSString* const kSourceAttr = @"source";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataPhotoElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -197,3 +199,4 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 @interface GDataPhotoClient : GDataValueElementConstruct <GDataExtension>
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

@@ -17,6 +17,9 @@
 //  GDataStructuredPostalAddress.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE \
+  || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -111,3 +114,5 @@ _EXTERN NSString* kGDataPostalAddressLocal    _INITIALIZE_AS(@"http://schemas.go
 - (NSString *)usage;
 - (void)setUsage:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

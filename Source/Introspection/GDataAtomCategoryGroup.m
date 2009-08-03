@@ -17,6 +17,8 @@
 //  GDataAtomCategoryGroup.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 #import "GDataAtomCategoryGroup.h"
 #import "GDataCategory.h"
 
@@ -118,3 +120,5 @@ static NSString* const kFixedAttr = @"fixed";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

@@ -17,6 +17,9 @@
 //  GDataMediaCategory.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 
 // like <media:category scheme="http://search.yahoo.com/mrss/category_schema" label="foo">
@@ -38,3 +41,5 @@
 - (void)setStringValue:(NSString *)str;
 
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

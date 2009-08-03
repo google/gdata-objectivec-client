@@ -19,6 +19,8 @@
 //  This entry is used to upload to YouTube.
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryYouTubeUpload.h"
 #import "GDataYouTubeConstants.h"
 #import "GDataYouTubeElements.h"
@@ -87,3 +89,5 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeMediaGroup class]];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

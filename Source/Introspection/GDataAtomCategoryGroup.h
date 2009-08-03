@@ -17,6 +17,8 @@
 //  GDataAtomCategoryGroup.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 #import "GDataObject.h"
 
 // a collection in a service document for introspection,
@@ -50,3 +52,5 @@
 @interface GDataAtomCategoryGroup1_0 : GDataAtomCategoryGroup <GDataExtension>
 // older namespace URI
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

@@ -17,6 +17,8 @@
 //  GDataAnalyticsElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -44,3 +46,5 @@
 // table name, like <dxp:tableName>www.example.net</dxp:tableName>
 @interface GDataAnalyticsTableName : GDataValueElementConstruct <GDataExtension>
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

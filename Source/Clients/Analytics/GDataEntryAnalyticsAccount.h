@@ -17,6 +17,8 @@
 //  GDataEntryAnalyticsAccount.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataEntryBase.h"
 
 @class GDataAnalyticsProperty;
@@ -36,3 +38,5 @@
 - (void)addProperty:(GDataAnalyticsProperty *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

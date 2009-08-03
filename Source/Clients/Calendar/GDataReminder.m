@@ -17,6 +17,8 @@
 //  GDataReminder.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #define GDATAREMINDER_DEFINE_GLOBALS 1
 #import "GDataReminder.h"
 #import "GDataDateTime.h"
@@ -93,4 +95,4 @@ static NSString* const kAbsoluteTimeAttr = @"absoluteTime";
 }
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

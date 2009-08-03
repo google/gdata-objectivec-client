@@ -17,6 +17,8 @@
 //  GDataFeedSpreadsheet.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataEntrySpreadsheet.h"
 #import "GDataFeedSpreadsheet.h"
 #import "GDataCategory.h"
@@ -69,3 +71,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

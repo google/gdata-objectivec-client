@@ -17,6 +17,8 @@
 //  GDataEntryPhotoComment.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryPhotoComment.h"
 #import "GDataPhotoElements.h"
 #import "GDataPhotoConstants.h"
@@ -94,3 +96,5 @@
 
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

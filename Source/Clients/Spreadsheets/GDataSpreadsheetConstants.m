@@ -17,6 +17,8 @@
 //  GDataEntrySpreadsheet.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #define GDATASPREADSHEETCONSTANTS_DEFINE_GLOBALS 1
 
 #import "GDataSpreadsheetConstants.h"
@@ -53,3 +55,5 @@
   return namespaces;
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

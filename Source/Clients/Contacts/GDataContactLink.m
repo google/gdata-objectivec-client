@@ -17,6 +17,8 @@
 //  GDataContactLink.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataContactLink.h"
 
 #import "GDataEntryContact.h" // for namespace
@@ -85,4 +87,4 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

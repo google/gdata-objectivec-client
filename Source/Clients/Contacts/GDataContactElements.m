@@ -17,6 +17,8 @@
 //  GDataContactElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTELEMENTS_DEFINE_GLOBALS 1
 #import "GDataContactElements.h"
 
@@ -122,4 +124,4 @@
 + (NSString *)extensionElementLocalName { return @"website"; }
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

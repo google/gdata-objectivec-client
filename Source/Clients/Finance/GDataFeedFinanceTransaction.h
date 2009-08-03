@@ -17,8 +17,12 @@
 //  GDataFeedFinanceTransaction.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedFinanceTransaction : GDataFeedBase 
 + (GDataFeedFinanceTransaction *)transactionFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

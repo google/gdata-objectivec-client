@@ -17,6 +17,9 @@
 //  GDataMediaGroup.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE \
+  || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 #import "GDataTextConstruct.h"
 
@@ -112,3 +115,5 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 - (void)setMediaTitle:(GDataMediaTitle *)obj;
 
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

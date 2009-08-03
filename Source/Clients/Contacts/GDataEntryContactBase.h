@@ -19,6 +19,8 @@
 //  base class for GDataEntryContact and GDataEntryContactProfile
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataContactElements.h"
 #import "GDataOrganization.h"
@@ -205,3 +207,5 @@
 - (void)setPrimaryObject:(GDataObject *)newPrimaryObj
        forExtensionClass:(Class)extensionClass;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

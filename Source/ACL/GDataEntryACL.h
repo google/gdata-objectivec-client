@@ -17,6 +17,9 @@
 //  GDataEntryACL.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
+  || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryBase.h"
 
 #undef _EXTERN
@@ -63,3 +66,5 @@ _EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://sc
 @interface GDataEntryBase (GDataACLLinks)
 - (GDataLink *)ACLLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

@@ -17,6 +17,8 @@
 //  GDataEntryBlogComment.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataThreadingElements.h"
 
@@ -34,3 +36,5 @@
 - (GDataLink *)repliesLink;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

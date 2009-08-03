@@ -17,6 +17,8 @@
 //  GDataEntrySitemap.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataEntrySiteMessage.h"
 #import "GDataWebmasterToolsConstants.h"
 
@@ -189,3 +191,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

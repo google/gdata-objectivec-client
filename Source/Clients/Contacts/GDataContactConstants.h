@@ -17,6 +17,8 @@
 //  GDataContactConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -60,3 +62,5 @@ _EXTERN NSString* const kGDataContactEditPhotoRel _INITIALIZE_AS(@"http://schema
 + (NSDictionary *)contactNamespaces;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

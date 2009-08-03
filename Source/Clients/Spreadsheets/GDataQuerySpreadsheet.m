@@ -17,6 +17,8 @@
 //  GDataQuerySpreadsheet.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataQuerySpreadsheet.h"
 
 static NSString *const kSpreadsheetQueryParamName = @"sq";
@@ -146,3 +148,5 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

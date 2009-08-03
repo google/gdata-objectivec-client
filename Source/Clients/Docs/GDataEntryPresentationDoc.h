@@ -17,8 +17,11 @@
 //  GDataEntryPresentationDoc.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntryDocBase.h"
 
 @interface GDataEntryPresentationDoc : GDataEntryDocBase
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

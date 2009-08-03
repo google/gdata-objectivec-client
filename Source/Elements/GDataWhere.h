@@ -17,6 +17,9 @@
 //  GDataWhere.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+  || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -59,3 +62,5 @@ _EXTERN NSString* const kGDataEventWhereParking _INITIALIZE_AS(@"http://schemas.
 - (GDataEntryLink *)entryLink;
 - (void)setEntryLink:(GDataEntryLink *)entryLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

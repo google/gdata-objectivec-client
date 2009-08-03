@@ -13,6 +13,7 @@
 * limitations under the License.
 */
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
 
 #import "GDataObject.h"
 
@@ -41,3 +42,5 @@
 - (void)setStringValue:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

@@ -17,6 +17,9 @@
 //  GDataStructuredPostalAddress.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE \
+  || GDATA_INCLUDE_MAPS_SERVICE
+
 #define GDATASTRUCTUREDPOSTALADDRESS_DEFINE_GLOBALS 1
 #import "GDataStructuredPostalAddress.h"
 
@@ -455,3 +458,5 @@ static NSString* const kUsageAttr = @"usage";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

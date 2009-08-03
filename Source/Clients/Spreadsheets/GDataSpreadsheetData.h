@@ -17,6 +17,8 @@
 //  GDataSpreadsheetData.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -60,3 +62,5 @@ _EXTERN NSString* const kGDataSpreadsheetModeOverwrite _INITIALIZE_AS(@"overwrit
 - (void)addColumn:(GDataSpreadsheetColumn *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

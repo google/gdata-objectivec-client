@@ -17,6 +17,8 @@
 //  GDataEntryPhotoTag.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryPhotoBase.h"
 
 @interface GDataEntryPhotoTag : GDataEntryPhotoBase {
@@ -28,3 +30,4 @@
 - (void)setWeight:(NSNumber *)obj;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

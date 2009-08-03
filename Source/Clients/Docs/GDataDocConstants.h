@@ -17,6 +17,7 @@
 //  GDataDocConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
 #import <Foundation/Foundation.h>
 
@@ -52,3 +53,5 @@ _EXTERN NSString* const kGDataCategoryStandardDoc       _INITIALIZE_AS(@"http://
 + (NSDictionary *)baseDocumentNamespaces;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

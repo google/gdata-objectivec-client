@@ -17,6 +17,8 @@
 //  GDataYouTubeStatistics.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataYouTubeStatistics.h"
 #import "GDataYouTubeConstants.h"
 
@@ -115,3 +117,4 @@ static NSString* const kLastWebAccessAttr = @"lastWebAccess";
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

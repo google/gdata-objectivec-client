@@ -17,6 +17,8 @@
 //  GDataYouTubeConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -104,3 +106,5 @@ _EXTERN NSString* const kGDataYouTubeUserEventFriendAdded           _INITIALIZE_
 + (NSDictionary *)youTubeNamespaces;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

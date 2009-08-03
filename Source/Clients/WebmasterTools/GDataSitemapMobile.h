@@ -17,6 +17,8 @@
 //  GDataSitemapMobile.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -43,3 +45,4 @@
 - (void)addMarkupLanguage:(GDataSitemapMarkupLanguage *)obj;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

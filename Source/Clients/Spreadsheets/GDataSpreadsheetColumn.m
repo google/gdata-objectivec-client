@@ -17,6 +17,8 @@
 //  GDataSpreadsheetColumn.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataSpreadsheetColumn.h"
 
 #import "GDataEntrySpreadsheet.h"
@@ -82,3 +84,5 @@ static NSString* const kIndexAttr = @"index";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

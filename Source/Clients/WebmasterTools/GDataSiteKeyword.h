@@ -17,6 +17,8 @@
 //  GDataSiteKeyword.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataObject.h"
 
 // keyword, like
@@ -33,3 +35,5 @@
 - (NSString *)stringValue;
 - (void)setStringValue:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

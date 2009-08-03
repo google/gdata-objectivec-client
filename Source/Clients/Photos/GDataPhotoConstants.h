@@ -17,6 +17,8 @@
 //  GDataPhotoConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryBase.h"
 
 #undef _EXTERN
@@ -55,3 +57,5 @@ _EXTERN NSString* const kGDataPhotoSnippetTypeAlbumLocation    _INITIALIZE_AS(@"
 @interface GDataPhotoConstants : NSObject
 + (NSDictionary *)photoNamespaces;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

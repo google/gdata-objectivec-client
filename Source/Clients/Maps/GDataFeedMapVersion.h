@@ -17,8 +17,12 @@
 //  GDataFeedMapVersion.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedMapVersion : GDataFeedBase
 + (GDataFeedMapVersion *)versionFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataEntryPhotoBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataPhotoElements.h"
 
@@ -30,3 +32,5 @@
 - (void)setPhotoDescription:(GDataTextConstruct *)obj;
 - (void)setPhotoDescriptionWithString:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

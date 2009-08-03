@@ -17,6 +17,8 @@
 //  GDataSpreadsheetHeader.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataSpreadsheetHeader.h"
 
 #import "GDataEntrySpreadsheet.h"
@@ -51,3 +53,5 @@ static NSString* const kRowAttr = @"row";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

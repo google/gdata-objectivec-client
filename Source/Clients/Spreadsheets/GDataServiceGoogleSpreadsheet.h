@@ -17,6 +17,8 @@
 //  GDataServiceGoogleSpreadsheet.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -54,3 +56,5 @@ _EXTERN NSString* const kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@
 // The class of the returned feed or entry is determined by the URL fetched.
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

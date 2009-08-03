@@ -17,6 +17,7 @@
 //  GDataAnalyticsElements.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
 #import "GDataAnalyticsConstants.h"
 #import "GDataAnalyticsElements.h"
@@ -56,3 +57,5 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
 + (NSString *)extensionElementLocalName { return @"tableName"; }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

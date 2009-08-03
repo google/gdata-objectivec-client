@@ -17,6 +17,8 @@
 //  GDataEntryStandardDoc.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntryStandardDoc.h"
 
 @implementation GDataEntryStandardDoc
@@ -30,3 +32,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

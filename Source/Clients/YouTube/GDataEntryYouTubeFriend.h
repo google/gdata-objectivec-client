@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeFriend.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryBase.h"
 
 @interface GDataEntryYouTubeFriend : GDataEntryBase
@@ -32,3 +34,5 @@
 // to get the user profile link, use [[feed links] relatedLink]
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

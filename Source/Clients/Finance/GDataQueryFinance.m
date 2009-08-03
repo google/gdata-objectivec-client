@@ -17,6 +17,8 @@
 //  GDataQueryFinance.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataQueryFinance.h"
 
 #import "GDataServiceGoogleFinance.h"
@@ -67,3 +69,5 @@ static NSString *const kTransactionsParamName = @"transactions";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

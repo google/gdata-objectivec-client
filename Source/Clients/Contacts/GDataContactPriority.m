@@ -17,6 +17,8 @@
 //  GDataContactPriority.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTPRIORITY_DEFINE_GLOBALS 1
 #import "GDataContactPriority.h"
 
@@ -54,4 +56,4 @@ static NSString* const kRelAttr = @"rel";
 
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

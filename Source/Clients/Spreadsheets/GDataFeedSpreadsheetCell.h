@@ -17,6 +17,8 @@
 //  GDataFeedSpreadsheetCell.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedSpreadsheetCell : GDataFeedBase
@@ -32,3 +34,5 @@
 - (NSInteger)columnCount;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

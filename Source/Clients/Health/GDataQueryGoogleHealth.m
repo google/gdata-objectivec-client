@@ -17,6 +17,8 @@
 //  GDataQueryGoogleHealth.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataQueryGoogleHealth.h"
 
 static NSString *const kDigestParamName = @"digest";
@@ -101,3 +103,5 @@ static NSString *const kStartIndexInGroupParamName = @"start-index-in-group";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

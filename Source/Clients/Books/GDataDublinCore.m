@@ -21,6 +21,8 @@
 // DublinCore elements - http://uk.dublincore.org/documents/dces/
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
+
 #define GDATADUBLINCORE_DEFINE_GLOBALS 1
 #import "GDataDublinCore.h"
 
@@ -77,3 +79,5 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceDublinCorePrefix; }
 + (NSString *)extensionElementLocalName { return @"title"; }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

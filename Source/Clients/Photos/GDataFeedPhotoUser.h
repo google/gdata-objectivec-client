@@ -17,6 +17,8 @@
 //  GDataFeedPhotoBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataFeedPhotoBase.h"
 #import "GDataPhotoElements.h"
 
@@ -43,3 +45,5 @@
 - (NSString *)username;
 - (void)setUsername:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

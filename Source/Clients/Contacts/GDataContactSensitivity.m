@@ -17,6 +17,8 @@
 //  GDataContactSensitivity.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTSENSITIVITY_DEFINE_GLOBALS 1
 #import "GDataContactSensitivity.h"
 
@@ -54,4 +56,4 @@ static NSString* const kRelAttr = @"rel";
 
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

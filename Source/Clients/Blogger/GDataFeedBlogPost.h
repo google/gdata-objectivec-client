@@ -17,8 +17,12 @@
 //  GDataFeedBlogPost.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedBlogPost : GDataFeedBase
 + (GDataFeedBlogPost *)blogPostFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

@@ -17,6 +17,8 @@
 //  GDataMoney.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataMoney.h"
 
 static NSString* const kAmountAttr = @"amount";
@@ -64,3 +66,5 @@ static NSString* const kCurrencyCodeAttr = @"currencyCode";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

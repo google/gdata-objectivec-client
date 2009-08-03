@@ -17,6 +17,8 @@
 //  GDataFeedYouTubeVideo.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataFeedYouTubeVideo.h"
 #import "GDataYouTubeConstants.h"
 
@@ -47,3 +49,5 @@
   return kGDataYouTubeDefaultServiceVersion;
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

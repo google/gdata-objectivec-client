@@ -17,6 +17,8 @@
 //  GDataMoney.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataObject.h"
 
 // money element, as in
@@ -34,3 +36,5 @@
 - (NSString *)currencyCode;
 - (void)setCurrencyCode:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

@@ -17,8 +17,12 @@
 //  GDataFeedYouTubePlaylistLink.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedYouTubePlaylistLink : GDataFeedBase 
 + (GDataFeedYouTubePlaylistLink *)playlistLinkFeed;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

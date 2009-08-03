@@ -17,6 +17,8 @@
 //  GDataContactEvent.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataWhen.h"
 
@@ -49,3 +51,5 @@ _EXTERN NSString* kGDataContactEventOther       _INITIALIZE_AS(@"other");
 - (void)setWhen:(GDataWhen *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

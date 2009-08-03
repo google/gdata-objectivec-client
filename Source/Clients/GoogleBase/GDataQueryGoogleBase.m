@@ -17,6 +17,8 @@
 //  GDataQueryGoogleBase.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataQueryGoogleBase.h"
 
 static NSString *const kMaxValuesParamName = @"max-values";
@@ -49,3 +51,5 @@ static NSString *const kBQParamName = @"bq";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

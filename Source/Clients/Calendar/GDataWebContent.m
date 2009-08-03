@@ -17,6 +17,8 @@
 //  GDataWebContent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #define GDATAWEBCONTENT_DEFINE_GLOBALS 1
 #import "GDataWebContent.h"
 #import "GDataEntryCalendarEvent.h"
@@ -155,3 +157,4 @@ static NSString* const kURLAttr = @"url";
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

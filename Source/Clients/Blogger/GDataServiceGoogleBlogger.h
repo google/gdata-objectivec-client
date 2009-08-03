@@ -17,6 +17,8 @@
 //  GDataServiceGoogleBlogger.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 
@@ -56,3 +58,5 @@
 + (NSString *)serviceRootURLString;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

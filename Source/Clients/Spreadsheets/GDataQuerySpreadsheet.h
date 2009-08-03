@@ -17,6 +17,8 @@
 //  GDataQuerySpreadsheet.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataQuery.h"
 
 @interface GDataQuerySpreadsheet : GDataQuery 
@@ -60,3 +62,4 @@
 - (BOOL)shouldReturnEmpty;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

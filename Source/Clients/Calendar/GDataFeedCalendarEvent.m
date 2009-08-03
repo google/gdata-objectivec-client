@@ -17,6 +17,8 @@
 //  GDataFeedCalendar.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataEntryCalendar.h"
 #import "GDataEntryCalendarEvent.h"
 #import "GDataFeedCalendarEvent.h"
@@ -91,3 +93,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

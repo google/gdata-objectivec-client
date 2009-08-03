@@ -17,6 +17,9 @@
 //  GDataScope.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
+  || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -51,3 +54,4 @@ _EXTERN NSString* const kGDataScopeTypeGroup   _INITIALIZE_AS(@"group");
 - (void)setType:(NSString *)str;
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

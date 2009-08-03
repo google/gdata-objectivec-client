@@ -17,6 +17,8 @@
 //  GDataGoogleBaseAttribute.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataObject.h"
 
 // arbitrary Google Base attribute, like
@@ -68,3 +70,5 @@
 + (NSString *)elementLocalNameFromAttributeName:(NSString *)attributeName;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

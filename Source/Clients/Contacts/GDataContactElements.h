@@ -17,6 +17,8 @@
 //  GDataContactElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 #import "GDataContactLink.h"
@@ -103,3 +105,5 @@ _EXTERN NSString* kGDataContactWebsiteLinkWork     _INITIALIZE_AS(@"work");
 // related website link
 @interface GDataContactWebsiteLink : GDataContactLink <GDataExtension> 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

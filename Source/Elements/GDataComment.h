@@ -17,6 +17,9 @@
 //  GDataComment.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE \
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 
 @class GDataFeedLink;
@@ -39,3 +42,5 @@
 - (GDataFeedLink *)feedLink;
 - (void)setFeedLink:(GDataFeedLink *)feedLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

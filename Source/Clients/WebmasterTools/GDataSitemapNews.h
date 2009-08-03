@@ -17,6 +17,8 @@
 //  GDataSitemapNews.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -44,3 +46,5 @@
 - (void)setPublicationLabels:(NSArray *)arr;
 - (void)addPublicationLabel:(GDataSitemapPublicationLabel *)obj;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

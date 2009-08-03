@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeFeedLinkBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataFeedLink.h"
 #import "GDataMediaThumbnail.h"
@@ -46,3 +48,5 @@
 - (void)setPlaylistID:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

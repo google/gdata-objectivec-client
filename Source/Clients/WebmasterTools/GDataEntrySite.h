@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 //
 //  GDataEntrySite.h
 //
@@ -64,3 +66,5 @@
 - (GDataEntryLink *)verificationEntryLink;
 - (GDataEntryLink *)sitemapsEntryLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

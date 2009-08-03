@@ -17,7 +17,11 @@
 //  GDataFeedCalendarSettings.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataFeedBase.h"
 
 @interface GDataFeedCalendarSettings : GDataFeedBase
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

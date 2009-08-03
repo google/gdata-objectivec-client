@@ -17,6 +17,8 @@
 //  GDataSpreadsheetData.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #define GDATASPREADSHEETDATA_DEFINE_GLOBALS 1
 #import "GDataSpreadsheetData.h"
 
@@ -120,3 +122,5 @@ static NSString* const kStartRowAttr = @"startRow";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

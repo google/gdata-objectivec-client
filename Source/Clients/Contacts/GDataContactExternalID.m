@@ -17,6 +17,8 @@
 //  GDataContactExternalID.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #define GDATACONTACTEXTERNALID_DEFINE_GLOBALS 1
 #import "GDataContactExternalID.h"
 
@@ -77,3 +79,5 @@ static NSString* const kValueAttr = @"value";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

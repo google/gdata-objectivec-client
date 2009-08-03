@@ -17,6 +17,8 @@
 //  GDataEntrySpreadsheetDoc.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntryDocBase.h"
 
 
@@ -28,3 +30,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

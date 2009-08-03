@@ -17,6 +17,8 @@
 //  GDataQueryMaps.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 #import "GDataQueryMaps.h"
 #import "GDataServiceGoogleMaps.h"
 
@@ -39,3 +41,5 @@ static NSString *const kPrevIDParamName = @"previd";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

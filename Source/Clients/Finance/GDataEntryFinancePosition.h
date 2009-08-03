@@ -17,6 +17,8 @@
 //  GDataEntryFinancePosition.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataEntryBase.h"
 
 @class GDataPositionData;
@@ -42,3 +44,5 @@
 - (NSURL *)transactionURL;  // from the feedLink's href attribute
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

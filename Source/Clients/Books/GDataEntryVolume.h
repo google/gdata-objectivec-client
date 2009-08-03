@@ -17,6 +17,8 @@
 //  GDataEntryVolume.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataValueConstruct.h"
 #import "GDataDublinCore.h"
@@ -152,3 +154,5 @@ _EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas
 - (GDataLink *)infoLink;
 - (GDataLink *)annotationLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataEntrySpreadsheetDoc.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntrySpreadsheetDoc.h"
 
 @implementation GDataEntrySpreadsheetDoc
@@ -49,3 +51,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

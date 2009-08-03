@@ -17,6 +17,8 @@
 //  GDataYouTubePublicationState.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 // yt:state is an extension to GDataAtomPubControl for YouTube video entries, 
 // as in 
 //
@@ -87,3 +89,4 @@ static NSString *const kHelpURLAttr = @"helpUrl";
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

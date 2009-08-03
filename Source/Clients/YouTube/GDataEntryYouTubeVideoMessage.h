@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeVideoMessage.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataYouTubeElements.h"
 #import "GDataEntryYouTubeVideo.h"
 
@@ -30,5 +32,4 @@
 
 @end
 
-
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

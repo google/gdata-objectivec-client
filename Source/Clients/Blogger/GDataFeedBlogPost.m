@@ -17,6 +17,8 @@
 //  GDataFeedBlog.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE
+
 #import "GDataFeedBlogPost.h"
 #import "GDataEntryBlogPost.h"
 #import "GDataBloggerConstants.h"
@@ -50,3 +52,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BLOGGER_SERVICE

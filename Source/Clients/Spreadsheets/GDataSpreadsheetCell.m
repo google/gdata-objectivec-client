@@ -17,6 +17,8 @@
 //  GDataSpreadsheetCell.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataSpreadsheetCell.h"
 
 #import "GDataEntrySpreadsheet.h" // for namespaces
@@ -191,3 +193,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

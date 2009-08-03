@@ -17,6 +17,8 @@
 //  GDataQueryAnalytics.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataQueryAnalytics.h"
 
 static NSString *const kDimensionsParamName = @"dimensions";
@@ -122,3 +124,5 @@ static NSString *const kSortParamName       = @"sort";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

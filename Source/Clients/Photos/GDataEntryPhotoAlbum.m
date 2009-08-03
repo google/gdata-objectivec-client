@@ -17,6 +17,8 @@
 //  GDataEntryPhotoAlbum.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryPhotoAlbum.h"
 #import "GDataPhotoElements.h"
 #import "GDataPhotoConstants.h"
@@ -221,3 +223,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

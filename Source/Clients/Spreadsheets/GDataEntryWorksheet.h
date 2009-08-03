@@ -17,6 +17,8 @@
 //  GDataEntryWorksheet.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE
+
 #import "GDataEntryBase.h"
 
 
@@ -53,3 +55,5 @@ _EXTERN NSString* const kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.
 // listLink is deprecated in V2; use worksheetsFeedURL instead
 - (GDataLink *)listLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

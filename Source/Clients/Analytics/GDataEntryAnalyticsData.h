@@ -17,6 +17,8 @@
 //  GDataEntryAnalyticsData.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataEntryBase.h"
 
 @class GDataAnalyticsMetric;
@@ -43,3 +45,5 @@
 - (GDataAnalyticsMetric *)metricWithName:(NSString *)name;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

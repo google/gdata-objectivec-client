@@ -17,6 +17,9 @@
 //  GDataServiceACL.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
+  || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 @class GDataEntryACL;
@@ -47,3 +50,5 @@
                               delegate:(id)delegate
                      didFinishSelector:(SEL)finishedSelector;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

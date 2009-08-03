@@ -17,6 +17,9 @@
 //  GDataExtendedProperty.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+   || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -76,3 +79,4 @@ _EXTERN NSString* const kGDataExtendedPropertyRealmShared _INITIALIZE_AS(@"http:
 
 @end
 
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

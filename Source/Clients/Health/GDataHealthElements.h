@@ -17,6 +17,8 @@
 //  GDataHealthElements.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataObject.h"
 
 @interface GDataHealthContainerObject : GDataObject
@@ -44,3 +46,5 @@
 //
 // + (GDataObject *)objectWithXMLElement:(NSXMLElement *)element;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

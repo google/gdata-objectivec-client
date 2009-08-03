@@ -17,6 +17,9 @@
 //  GDataRating.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE \
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -61,3 +64,5 @@ _EXTERN NSString* const kGDataRatingQuality _INITIALIZE_AS(@"http://schemas.goog
 - (NSNumber *)numberOfRaters; // int
 - (void)setNumberOfRaters:(NSNumber *)num;
 @end
+
+#endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

@@ -17,6 +17,8 @@
 //  GDataAtomWorkspace.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
+
 #import "GDataAtomWorkspace.h"
 #import "GDataAtomCollection.h"
 #import "GDataBaseElements.h"
@@ -125,3 +127,5 @@ static NSString *const kTitleAttr = @"title";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

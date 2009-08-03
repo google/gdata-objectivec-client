@@ -17,6 +17,8 @@
 //  GDataEntryHealthRegister.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
+
 #import "GDataEntryBase.h"
 
 @interface GDataEntryHealthRegister : GDataEntryBase
@@ -27,3 +29,5 @@
 - (GDataLink *)completeLink;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

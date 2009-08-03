@@ -17,6 +17,8 @@
 //  GDataFeedYouTubeUserEvent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataFeedYouTubeUserEvent.h"
 #import "GDataYouTubeConstants.h"
 
@@ -48,3 +50,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

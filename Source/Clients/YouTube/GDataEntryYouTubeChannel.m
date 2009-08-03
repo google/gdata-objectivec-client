@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeChannel.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryYouTubeChannel.h"
 #import "GDataYouTubeConstants.h"
 #import "GDataYouTubeElements.h"
@@ -110,3 +112,4 @@
 
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

@@ -17,6 +17,8 @@
 //  GDataCodeSearchPackage.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 #import "GDataCodeSearchPackage.h"
 #import "GDataEntryCodeSearch.h"
 
@@ -117,3 +119,4 @@
 }
 @end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

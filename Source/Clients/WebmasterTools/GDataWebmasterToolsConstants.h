@@ -17,6 +17,8 @@
 //  GDataWebmasterToolsConstants.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE
+
 #import <Foundation/Foundation.h>
 
 #import "GDataDefines.h"
@@ -82,3 +84,5 @@ _EXTERN NSString* const kGDataSiteCrawlIssueTypeUnreachable         _INITIALIZE_
 @interface GDataWebmasterToolsConstants : NSObject
 + (NSDictionary *)webmasterToolsNamespaces;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_WEBMASTERTOOLS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataName.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataName.h"
 #import "GDataValueConstruct.h"
 
@@ -302,3 +304,5 @@ static NSString* const kYomiAttr = @"yomi";
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

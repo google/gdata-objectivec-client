@@ -19,6 +19,8 @@
 //  NOTE: As of July 2007, GDataGeoPt is deprecated.  Use GDataGeo instead.
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataGeoPt.h"
 #import "GDataDateTime.h"
 
@@ -175,4 +177,4 @@
 
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

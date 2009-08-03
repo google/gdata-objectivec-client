@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
+
 //
 //  GDataEntryMap.h
 //
@@ -28,3 +30,5 @@
 - (NSURL *)featuresFeedURL;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

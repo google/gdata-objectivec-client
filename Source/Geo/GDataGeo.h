@@ -17,6 +17,9 @@
 //  GDataGeo.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+     || GDATA_INCLUDE_PHOTO_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 // GDataGeo encapsulates three flavors of geo location in XML: W3X, GeoRSS,
 // and GeoGML.  Each flavor requires a separate subclass of GDataGeo for
 // parsing and XML generation.
@@ -122,4 +125,4 @@ _EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
 @interface GDataGeoRSSWhere : GDataGeo <GDataExtension>
 @end
 
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

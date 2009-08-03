@@ -17,6 +17,8 @@
 //  GDataEntryFinanceTransaction.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE
+
 #import "GDataEntryBase.h"
 
 @class GDataFinanceTransactionData;
@@ -30,3 +32,5 @@
 - (GDataFinanceTransactionData *)transactionData;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_FINANCE_SERVICE

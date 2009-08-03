@@ -17,6 +17,8 @@
 //  GDataEntryYouTubePlaylist.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryYouTubeVideo.h"
 #import "GDataYouTubeElements.h"
 
@@ -31,3 +33,5 @@
 - (GDataYouTubeDescription *)youTubeDescription;
 - (void)setYouTubeDescription:(GDataYouTubeDescription *)obj;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

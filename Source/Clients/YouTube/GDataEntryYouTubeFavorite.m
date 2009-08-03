@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeFavorite.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryYouTubeFavorite.h"
 #import "GDataYouTubeConstants.h"
 
@@ -42,3 +44,5 @@
 }
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

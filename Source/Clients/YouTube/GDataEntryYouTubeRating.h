@@ -17,6 +17,8 @@
 //  GDataEntryYouTubeRating.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataRating.h"
 
@@ -28,3 +30,5 @@
 - (void)setRating:(GDataRating *)obj;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

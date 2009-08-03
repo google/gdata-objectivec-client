@@ -17,6 +17,8 @@
 //  GDataEntryDocBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataFeedLink.h"
 #import "GDataDocConstants.h"
@@ -63,3 +65,5 @@
 - (GDataFeedLink *)ACLFeedLink;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

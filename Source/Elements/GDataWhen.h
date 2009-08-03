@@ -17,6 +17,9 @@
 //  GDataWhen.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
+   || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #import "GDataDateTime.h"
@@ -41,3 +44,5 @@
 - (NSString *)value;
 - (void)setValue:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

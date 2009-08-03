@@ -26,6 +26,8 @@
 //                value="1" />
 //  </dxp:aggregates>
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+
 #import "GDataObject.h"
 
 @class GDataAnalyticsMetric;
@@ -35,3 +37,5 @@
 - (void)setMetrics:(NSArray *)array;
 - (void)addMetric:(GDataAnalyticsMetric *)obj;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

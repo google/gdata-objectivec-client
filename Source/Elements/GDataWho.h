@@ -17,6 +17,8 @@
 //  GDataWho.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
@@ -96,3 +98,5 @@ _EXTERN NSString* const kGDataWhoMessageBCC     _INITIALIZE_AS(@"http://schemas.
 - (GDataEntryLink *)entryLink;
 - (void)setEntryLink:(GDataEntryLink *)entryLink;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

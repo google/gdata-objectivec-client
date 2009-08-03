@@ -17,6 +17,8 @@
 //  GDataFeedPhotoBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataFeedBase.h"
 
 @class GDataEntryPhotoBase;
@@ -39,3 +41,5 @@
 // convenience accessors
 - (id)entryForGPhotoID:(NSString *)str;
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataOriginalEvent.m
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
+
 #import "GDataOriginalEvent.h"
 #import "GDataWhen.h"
 
@@ -98,3 +100,5 @@ static NSString* const kHrefAttr = @"href";
   [self setObject:startTime forExtensionClass:[GDataWhen class]];
 }
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

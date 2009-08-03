@@ -17,6 +17,8 @@
 //  GDataContactPriority.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataObject.h"
 
 #undef _EXTERN
@@ -42,3 +44,5 @@ _EXTERN NSString* kGDataContactPriorityNormal _INITIALIZE_AS(@"normal");
 - (void)setRel:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

@@ -17,6 +17,8 @@
 //  GDataCodeSearchFile.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE
+
 #import "GDataObject.h"
 
 // For code search files, like
@@ -40,3 +42,5 @@
 - (void)setName:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CODESEARCH_SERVICE

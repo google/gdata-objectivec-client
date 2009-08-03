@@ -17,6 +17,8 @@
 //  GDataEntryPhoto.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE
+
 #import "GDataEntryPhotoBase.h"
 #import "GDataGeo.h"
 #import "GDataMediaGroup.h"
@@ -114,3 +116,5 @@
 - (void)setVersion:(NSString *)str;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

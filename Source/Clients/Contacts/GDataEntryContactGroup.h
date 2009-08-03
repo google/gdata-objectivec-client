@@ -17,6 +17,8 @@
 //  GDataEntryContactGroup.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
+
 #import "GDataEntryBase.h"
 #import "GDataExtendedProperty.h"
 
@@ -60,3 +62,5 @@ _EXTERN NSString* const kGDataSystemGroupIDCoworkers  _INITIALIZE_AS(@"Coworkers
 // note: support for gd:deleted is in GDataEntryBase
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

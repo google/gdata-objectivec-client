@@ -17,6 +17,8 @@
 //  GDataQueryGoogleBase.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE
+
 #import "GDataQuery.h"
 
 @interface GDataQueryGoogleBase : GDataQuery
@@ -30,3 +32,5 @@
 - (void)setMaxValues:(NSInteger)val;
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_GOOGLEBASE_SERVICE

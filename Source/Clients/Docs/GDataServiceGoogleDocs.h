@@ -17,6 +17,8 @@
 //  GDataServiceGoogleDocs.h
 //
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 #import "GDataServiceGoogle.h"
 
 #undef _EXTERN
@@ -56,3 +58,5 @@ _EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"
 // The class of the returned feed or entry is determined by the URL fetched.
 
 @end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
