@@ -541,17 +541,23 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       //
       // we only ever want to fetch feeds and discard the unknown XML, never
       // entries
-      BOOL shouldIgnoreUnknowns = (shouldServiceFeedsIgnoreUnknowns_
+      BOOL shouldIgnoreUnknowns = ([ticket shouldFeedsIgnoreUnknowns]
                       && [objectClass isSubclassOfClass:[GDataFeedBase class]]);
 
-      object = [[[objectClass alloc] initWithXMLElement:root
-                                                 parent:nil
-                                         serviceVersion:serviceVersion
-                                             surrogates:surrogates
-                                   shouldIgnoreUnknowns:shouldIgnoreUnknowns] autorelease];
+      // create a local pool to avoid buildup of objects from parsing feeds
+      NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+      object = [[objectClass alloc] initWithXMLElement:root
+                                                parent:nil
+                                        serviceVersion:serviceVersion
+                                            surrogates:surrogates
+                                  shouldIgnoreUnknowns:shouldIgnoreUnknowns];
 
       // we're done parsing; the extension declarations won't be needed again
       [object clearExtensionDeclarationsCache];
+
+      [pool release];
+      [object autorelease];
 
 #if GDATA_USES_LIBXML
       // retain the document so that pointers to internal nodes remain valid
@@ -974,21 +980,33 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                                 delegate:(id)delegate
                                        didFinishSelector:(SEL)finishedSelector {
 
+  // add basic namespaces to feed, if needed
+  if ([[batchFeed namespaces] objectForKey:kGDataNamespaceGDataPrefix] == nil) {
+    [batchFeed addNamespaces:[GDataEntryBase baseGDataNamespaces]];
+  }
+
   // add batch namespace, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceBatchPrefix] == nil) {
-
     [batchFeed addNamespaces:[GDataEntryBase batchNamespaces]];
   }
 
-  return [self fetchObjectWithURL:feedURL
-                      objectClass:[batchFeed class]
-                     objectToPost:batchFeed
-                             ETag:nil
-                       httpMethod:nil
-                         delegate:delegate
-                didFinishSelector:finishedSelector
-             retryInvocationValue:nil
-                           ticket:nil];
+  GDataServiceTicketBase *ticket;
+
+  ticket = [self fetchObjectWithURL:feedURL
+                        objectClass:[batchFeed class]
+                       objectToPost:batchFeed
+                               ETag:nil
+                         httpMethod:nil
+                           delegate:delegate
+                  didFinishSelector:finishedSelector
+               retryInvocationValue:nil
+                             ticket:nil];
+
+  // batch feeds never ignore unknowns, since they are intrinsically
+  // used for updating so their entries need to include complete XML
+  [ticket setShouldFeedsIgnoreUnknowns:NO];
+
+  return ticket;
 }
 
 #pragma mark -
@@ -1272,6 +1290,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [self setRetrySelector:[service serviceRetrySelector]];
     [self setMaxRetryInterval:[service serviceMaxRetryInterval]];
     [self setShouldFollowNextLinks:[service serviceShouldFollowNextLinks]];
+    [self setShouldFeedsIgnoreUnknowns:[service shouldServiceFeedsIgnoreUnknowns]];
   }
   return self;
 }
@@ -1382,6 +1401,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)setShouldFollowNextLinks:(BOOL)flag {
   shouldFollowNextLinks_ = flag;
+}
+
+- (BOOL)shouldFeedsIgnoreUnknowns {
+  return shouldFeedsIgnoreUnknowns_;
+}
+
+- (void)setShouldFeedsIgnoreUnknowns:(BOOL)flag {
+  shouldFeedsIgnoreUnknowns_ = flag;
 }
 
 - (BOOL)isRetryEnabled {

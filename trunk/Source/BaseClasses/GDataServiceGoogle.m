@@ -601,13 +601,21 @@ enum {
     [batchFeed addNamespaces:[GDataEntryBase batchNamespaces]];
   }
 
-  return [self fetchAuthenticatedObjectWithURL:feedURL
-                                   objectClass:[batchFeed class]
-                                  objectToPost:batchFeed
-                                          ETag:nil
-                                    httpMethod:nil
-                                      delegate:delegate
-                             didFinishSelector:finishedSelector];
+  GDataServiceTicket *ticket;
+
+  ticket = [self fetchAuthenticatedObjectWithURL:feedURL
+                                     objectClass:[batchFeed class]
+                                    objectToPost:batchFeed
+                                            ETag:nil
+                                      httpMethod:nil
+                                        delegate:delegate
+                               didFinishSelector:finishedSelector];
+
+  // batch feeds never ignore unknowns, since they are intrinsically
+  // used for updating so their entries need to include complete XML
+  [ticket setShouldFeedsIgnoreUnknowns:NO];
+
+  return ticket;
 }
 
 #pragma mark -
