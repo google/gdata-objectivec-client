@@ -71,6 +71,7 @@ enum {
   GDataHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
   BOOL shouldFollowNextLinks_;
+  BOOL shouldFeedsIgnoreUnknowns_;
   BOOL isRetryEnabled_;
   SEL retrySEL_;
   NSTimeInterval maxRetryInterval_;
@@ -120,6 +121,9 @@ enum {
 
 - (BOOL)shouldFollowNextLinks;
 - (void)setShouldFollowNextLinks:(BOOL)flag;
+
+- (BOOL)shouldFeedsIgnoreUnknowns;
+- (void)setShouldFeedsIgnoreUnknowns:(BOOL)flag;
 
 - (BOOL)isRetryEnabled;
 - (void)setIsRetryEnabled:(BOOL)flag;

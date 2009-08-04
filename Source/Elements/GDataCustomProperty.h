@@ -14,7 +14,7 @@
  */
 
 //
-//  GDataEmail.h
+//  GDataCustomProperty.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

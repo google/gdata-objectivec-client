@@ -7,9 +7,17 @@ Changes since 1.8.0
 
 Additions
 
+- Added GDATA_INCLUDE compiler conditionals to specify which service's code
+  should be built.
+
 - Added convenience method for creating CCR elements from NSXMLElements.
 
 Changes
+
+- Batch fetches now always disable ignoreUnknownXML so that the results
+  in the batch feed can be used for updates.
+
+- The shouldIgnoreUnknownXML flag is now settable in individual tickets.
 
 Bugs Fixed
 
