@@ -20,10 +20,10 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
 
 #define GDATASERVICEGOOGLEHEALTH_DEFINE_GLOBALS 1
-
 #import "GDataServiceGoogleHealth.h"
+
 #import "GDataQueryGoogleHealth.h"
-#import "GDataEntryHealthProfile.h"
+#import "GDataHealthConstants.h"
 
 @implementation GDataServiceGoogleHealthSandbox
 - (NSString *)serviceID {
@@ -88,7 +88,7 @@
 }
 
 + (NSDictionary *)standardServiceNamespaces {
-  return [GDataEntryHealthProfile healthNamespaces];
+  return [GDataHealthConstants healthNamespaces];
 }
 
 @end

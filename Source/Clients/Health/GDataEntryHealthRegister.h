@@ -21,9 +21,15 @@
 
 #import "GDataEntryBase.h"
 
+@class GDataContinuityOfCareRecord;
+
 @interface GDataEntryHealthRegister : GDataEntryBase
 
 + (id)registerEntry;
+
+// extensions
+- (GDataContinuityOfCareRecord *)continuityOfCareRecord;
+- (void)setContinuityOfCareRecord:(GDataContinuityOfCareRecord *)obj;
 
 // convenience method
 - (GDataLink *)completeLink;

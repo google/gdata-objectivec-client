@@ -13,19 +13,30 @@
  * limitations under the License.
  */
 
-// 
-// GDataHealth.h
+//
+//  GDataHealthConstants.m
 //
 
-#import "GDataElements.h"
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
 
-// Health
-
+#define GDATAHEALTHCONSTANTS_DEFINE_GLOBALS 1
 #import "GDataHealthConstants.h"
-#import "GDataHealthElements.h"
-#import "GDataEntryHealthProfile.h"
-#import "GDataEntryHealthRegister.h"
-#import "GDataFeedHealthProfile.h"
-#import "GDataFeedHealthRegister.h"
-#import "GDataServiceGoogleHealth.h"
-#import "GDataQueryGoogleHealth.h"
+
+#import "GDataEntryBase.h"
+
+@implementation GDataHealthConstants
+
++ (NSDictionary *)healthNamespaces {
+  NSMutableDictionary *namespaces;
+
+  namespaces = [NSMutableDictionary dictionaryWithObject:kGDataNamespaceCCR
+                                                  forKey:kGDataNamespaceCCRPrefix];
+
+  [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
+
+  return namespaces;
+}
+
+@end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE

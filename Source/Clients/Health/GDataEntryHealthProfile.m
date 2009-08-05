@@ -19,29 +19,18 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
 
-#define GDATAENTRYHEALTHPROFILE_DEFINE_GLOBALS 1
 #import "GDataEntryHealthProfile.h"
 
+#import "GDataHealthConstants.h"
 #import "GDataHealthElements.h"
 
 @implementation GDataEntryHealthProfile
-
-+ (NSDictionary *)healthNamespaces {
-  NSMutableDictionary *namespaces;
-
-  namespaces = [NSMutableDictionary dictionaryWithObject:kGDataNamespaceCCR
-                                                  forKey:kGDataNamespaceCCRPrefix];
-
-  [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
-
-  return namespaces;
-}
 
 + (id)profileEntry {
 
   GDataEntryHealthProfile *obj = [[[self alloc] init] autorelease];
 
-  [obj setNamespaces:[self healthNamespaces]];
+  [obj setNamespaces:[GDataHealthConstants healthNamespaces]];
 
   return obj;
 }
