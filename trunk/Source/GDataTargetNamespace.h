@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.8 (520 classes) 2009-07-23 16:53:21 -0700
+// com.google.GDataFramework v. 1.8 (522 classes) 2009-08-05 14:34:18 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -281,6 +281,8 @@
   #define GDataGuestsCanInviteOthersProperty      _GDATA_NS_SYMBOL(GDataGuestsCanInviteOthersProperty)
   #define GDataGuestsCanModifyProperty            _GDATA_NS_SYMBOL(GDataGuestsCanModifyProperty)
   #define GDataGuestsCanSeeGuestsProperty         _GDATA_NS_SYMBOL(GDataGuestsCanSeeGuestsProperty)
+  #define GDataHealthConstants                    _GDATA_NS_SYMBOL(GDataHealthConstants)
+  #define GDataHealthContainerObject              _GDATA_NS_SYMBOL(GDataHealthContainerObject)
   #define GDataHiddenProperty                     _GDATA_NS_SYMBOL(GDataHiddenProperty)
   #define GDataHTTPFetcher                        _GDATA_NS_SYMBOL(GDataHTTPFetcher)
   #define GDataICalUIDProperty                    _GDATA_NS_SYMBOL(GDataICalUIDProperty)

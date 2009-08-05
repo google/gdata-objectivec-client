@@ -21,40 +21,10 @@
 
 #import "GDataEntryBase.h"
 
-#undef _EXTERN
-#undef _INITIALIZE_AS
-#ifdef GDATAENTRYHEALTHPROFILE_DEFINE_GLOBALS
-#define _EXTERN
-#define _INITIALIZE_AS(x) =x
-#else
-#define _EXTERN extern
-#define _INITIALIZE_AS(x)
-#endif
-
-_EXTERN NSString* const kGDataHealthDefaultServiceVersion _INITIALIZE_AS(@"2.0");
-
-// Continuity of Care Record namespace 
-_EXTERN NSString* const kGDataNamespaceCCR       _INITIALIZE_AS(@"urn:astm-org:CCR");
-_EXTERN NSString* const kGDataNamespaceCCRPrefix _INITIALIZE_AS(@"ccr");
-
-_EXTERN NSString* const kGDataNamespaceH9M       _INITIALIZE_AS(@"http://schemas.google.com/health/metadata");
-_EXTERN NSString* const kGDataNamespaceH9MPrefix _INITIALIZE_AS(@"h9m");
-
-_EXTERN NSString* const kGDataCategoryH9Profile  _INITIALIZE_AS(@"http://schemas.google.com/health/kinds#profile");
-_EXTERN NSString* const kGDataCategoryH9Register _INITIALIZE_AS(@"http://schemas.google.com/health/kinds#register");
-
-_EXTERN NSString* const kGDataHealthSchemeCCR   _INITIALIZE_AS(@"http://schemas.google.com/health/ccr");
-_EXTERN NSString* const kGDataHealthSchemeItem  _INITIALIZE_AS(@"http://schemas.google.com/health/item");
-
-_EXTERN NSString* const kGDataHealthRelComplete _INITIALIZE_AS(@"http://schemas.google.com/health/data#complete");
-
-
 @class GDataContinuityOfCareRecord;
 @class GDataProfileMetaData;
 
 @interface GDataEntryHealthProfile : GDataEntryBase
-
-+ (NSDictionary *)healthNamespaces;
 
 + (id)profileEntry;
 

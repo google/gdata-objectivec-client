@@ -18,9 +18,10 @@
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
-
 #import "GDataEntryHealthRegister.h"
-#import "GDataEntryHealthProfile.h"
+
+#import "GDataHealthElements.h"
+#import "GDataHealthConstants.h"
 
 @implementation GDataEntryHealthRegister
 
@@ -28,7 +29,7 @@
 
   GDataEntryHealthRegister *obj = [[[self alloc] init] autorelease];
 
-  [obj setNamespaces:[GDataEntryHealthProfile healthNamespaces]];
+  [obj setNamespaces:[GDataHealthConstants healthNamespaces]];
 
   return obj;
 }
@@ -43,8 +44,40 @@
   [self registerEntryClass];
 }
 
+- (void)addExtensionDeclarations {
+
+  [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataContinuityOfCareRecord class]];
+}
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+- (NSMutableArray *)itemsForDescription {
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"CCR", @"continuityOfCareRecord", kGDataDescLabelIfNonNil },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;
+}
+#endif
+
 + (NSString *)defaultServiceVersion {
   return kGDataHealthDefaultServiceVersion;
+}
+
+#pragma mark -
+
+- (GDataContinuityOfCareRecord *)continuityOfCareRecord {
+  return [self objectForExtensionClass:[GDataContinuityOfCareRecord class]];
+}
+
+- (void)setContinuityOfCareRecord:(GDataContinuityOfCareRecord *)obj {
+  [self setObject:obj forExtensionClass:[GDataContinuityOfCareRecord class]];
 }
 
 #pragma mark -

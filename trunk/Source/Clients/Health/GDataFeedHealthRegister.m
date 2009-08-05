@@ -20,7 +20,7 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_HEALTH_SERVICE
 
 #import "GDataFeedHealthRegister.h"
-#import "GDataEntryHealthProfile.h"
+#import "GDataHealthConstants.h"
 
 @implementation GDataFeedHealthRegister
 
@@ -28,7 +28,7 @@
 
   GDataFeedHealthRegister *feed = [[[self alloc] init] autorelease];
 
-  [feed setNamespaces:[GDataEntryHealthProfile healthNamespaces]];
+  [feed setNamespaces:[GDataHealthConstants healthNamespaces]];
 
   return feed;
 }
