@@ -663,7 +663,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
 
-#ifdef DEBUG
+#if DEBUG
   NSString *dataString = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
   if (dataString) {

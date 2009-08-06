@@ -121,6 +121,14 @@
 - (void)setName:(NSString *)str {
   [attributeName_ autorelease];
   attributeName_ = [str copy];
+
+  // update the element name to match the attribute name, like "g:foo_bar"
+  if ([str length] > 0) {
+    NSString *localName = [[self class] elementLocalNameFromAttributeName:str];
+    NSString *elementName = [NSString stringWithFormat:@"%@:%@",
+                             kGDataNamespaceGoogleBasePrefix, localName];
+    [self setElementName:elementName];
+  }
 }
 
 - (NSString *)textValue {
