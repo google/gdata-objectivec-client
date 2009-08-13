@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		4F4D71F00FD8964B00054454 /* MapsSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F4D71EE0FD8964B00054454 /* MapsSampleWindow.nib */; };
 		4F82A5140FCDFECC00C477D4 /* MapsSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A5100FCDFECC00C477D4 /* MapsSampleAppController.m */; };
 		4F82A5150FCDFECC00C477D4 /* MapsSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A5120FCDFECC00C477D4 /* MapsSampleWindowController.m */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		4FE5DB0F1034B6EA00AC9EFE /* MapsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DB0B1034B6EA00AC9EFE /* MapsSampleWindow.xib */; };
+		4FE5DB101034B6EA00AC9EFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DB0D1034B6EA00AC9EFE /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -66,11 +66,9 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* MapsSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapsSample_Prefix.pch; path = SpreadsheetSample_Prefix.pch; sourceTree = "<group>"; };
-		4F4D71EF0FD8964B00054454 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MapsSampleWindow.nib; sourceTree = "<group>"; };
 		4F82A5100FCDFECC00C477D4 /* MapsSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapsSampleAppController.m; sourceTree = "<group>"; };
 		4F82A5110FCDFECC00C477D4 /* MapsSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapsSampleAppController.h; sourceTree = "<group>"; };
 		4F82A5120FCDFECC00C477D4 /* MapsSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapsSampleWindowController.m; sourceTree = "<group>"; };
@@ -78,6 +76,8 @@
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		4FE5DB0C1034B6EA00AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MapsSampleWindow.xib; sourceTree = "<group>"; };
+		4FE5DB0E1034B6EA00AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MapsSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapsSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -157,10 +157,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FE5DB0B1034B6EA00AC9EFE /* MapsSampleWindow.xib */,
+				4FE5DB0D1034B6EA00AC9EFE /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				4F4D71EE0FD8964B00054454 /* MapsSampleWindow.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -270,9 +270,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F4D71F00FD8964B00054454 /* MapsSampleWindow.nib in Resources */,
+				4FE5DB0F1034B6EA00AC9EFE /* MapsSampleWindow.xib in Resources */,
+				4FE5DB101034B6EA00AC9EFE /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,20 +339,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FE5DB0B1034B6EA00AC9EFE /* MapsSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FE5DB0C1034B6EA00AC9EFE /* English */,
 			);
-			name = MainMenu.nib;
+			name = MapsSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4F4D71EE0FD8964B00054454 /* MapsSampleWindow.nib */ = {
+		4FE5DB0D1034B6EA00AC9EFE /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F4D71EF0FD8964B00054454 /* English */,
+				4FE5DB0E1034B6EA00AC9EFE /* English */,
 			);
-			name = MapsSampleWindow.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

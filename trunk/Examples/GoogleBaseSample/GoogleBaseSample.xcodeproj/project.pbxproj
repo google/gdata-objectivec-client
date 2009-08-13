@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FA6F5501034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */; };
+		4FA6F5511034B53D00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */; };
 		4FAB42CA0BAA24C200FBBDC9 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB42B30BAA245500FBBDC9 /* GData.framework */; };
 		4FAB42CB0BAA24C900FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB42B30BAA245500FBBDC9 /* GData.framework */; };
 		4FF048270B7AADB7000CEC66 /* GoogleBaseSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF048250B7AADB7000CEC66 /* GoogleBaseSampleAppController.m */; };
 		4FF0484F0B7AAE7A000CEC66 /* GoogleBaseSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0484D0B7AAE7A000CEC66 /* GoogleBaseSampleWindowController.m */; };
-		4FF048520B7AAEA3000CEC66 /* GoogleBaseSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4FF048500B7AAEA3000CEC66 /* GoogleBaseSampleWindow.nib */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -67,10 +67,11 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* GoogleBaseSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleBaseSample_Prefix.pch; sourceTree = "<group>"; };
+		4FA6F54D1034B53D00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GoogleBaseSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F54F1034B53D00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FAB42AC0BAA245500FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1130CBC629A00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1140CBC629A00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -78,7 +79,6 @@
 		4FF048260B7AADB7000CEC66 /* GoogleBaseSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GoogleBaseSampleAppController.h; sourceTree = "<group>"; };
 		4FF0484D0B7AAE7A000CEC66 /* GoogleBaseSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GoogleBaseSampleWindowController.m; sourceTree = "<group>"; };
 		4FF0484E0B7AAE7A000CEC66 /* GoogleBaseSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GoogleBaseSampleWindowController.h; sourceTree = "<group>"; };
-		4FF048510B7AAEA3000CEC66 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/GoogleBaseSampleWindow.nib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* GoogleBaseSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoogleBaseSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -159,10 +159,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */,
+				4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				4FF048500B7AAEA3000CEC66 /* GoogleBaseSampleWindow.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -271,9 +271,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FF048520B7AAEA3000CEC66 /* GoogleBaseSampleWindow.nib in Resources */,
+				4FA6F5501034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */,
+				4FA6F5511034B53D00C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,20 +340,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FA6F54D1034B53D00C5DFA5 /* English */,
 			);
-			name = MainMenu.nib;
+			name = GoogleBaseSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FF048500B7AAEA3000CEC66 /* GoogleBaseSampleWindow.nib */ = {
+		4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FF048510B7AAEA3000CEC66 /* English */,
+				4FA6F54F1034B53D00C5DFA5 /* English */,
 			);
-			name = GoogleBaseSampleWindow.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

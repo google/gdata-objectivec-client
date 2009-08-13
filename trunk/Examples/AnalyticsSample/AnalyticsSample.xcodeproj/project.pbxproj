@@ -10,9 +10,9 @@
 		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
 		4F32C593100C043A00694A12 /* AnalyticsSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F32C58F100C043A00694A12 /* AnalyticsSampleWindowController.m */; };
 		4F32C594100C043A00694A12 /* AnalyticsSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F32C591100C043A00694A12 /* AnalyticsSampleAppController.m */; };
-		4F32C597100C044800694A12 /* AnalyticsSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F32C595100C044800694A12 /* AnalyticsSampleWindow.nib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		4FE5DA201034B60600AC9EFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DA1C1034B60600AC9EFE /* MainMenu.xib */; };
+		4FE5DA211034B60600AC9EFE /* AnalyticsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DA1E1034B60600AC9EFE /* AnalyticsSampleWindow.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -67,7 +67,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4F32C58E100C042900694A12 /* AnalyticsSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsSample_Prefix.pch; sourceTree = "<group>"; };
@@ -75,10 +74,11 @@
 		4F32C590100C043A00694A12 /* AnalyticsSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsSampleAppController.h; sourceTree = "<group>"; };
 		4F32C591100C043A00694A12 /* AnalyticsSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsSampleAppController.m; sourceTree = "<group>"; };
 		4F32C592100C043A00694A12 /* AnalyticsSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsSampleWindowController.h; sourceTree = "<group>"; };
-		4F32C596100C044800694A12 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/AnalyticsSampleWindow.nib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		4FE5DA1D1034B60600AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FE5DA1F1034B60600AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/AnalyticsSampleWindow.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* AnalyticsSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnalyticsSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -159,10 +159,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4F32C595100C044800694A12 /* AnalyticsSampleWindow.nib */,
+				4FE5DA1C1034B60600AC9EFE /* MainMenu.xib */,
+				4FE5DA1E1034B60600AC9EFE /* AnalyticsSampleWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -272,9 +272,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F32C597100C044800694A12 /* AnalyticsSampleWindow.nib in Resources */,
+				4FE5DA201034B60600AC9EFE /* MainMenu.xib in Resources */,
+				4FE5DA211034B60600AC9EFE /* AnalyticsSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,20 +341,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FE5DA1C1034B60600AC9EFE /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FE5DA1D1034B60600AC9EFE /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4F32C595100C044800694A12 /* AnalyticsSampleWindow.nib */ = {
+		4FE5DA1E1034B60600AC9EFE /* AnalyticsSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F32C596100C044800694A12 /* English */,
+				4FE5DA1F1034B60600AC9EFE /* English */,
 			);
-			name = AnalyticsSampleWindow.nib;
+			name = AnalyticsSampleWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -10,9 +10,9 @@
 		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
 		4F82A5140FCDFECC00C477D4 /* SpreadsheetTableSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A5100FCDFECC00C477D4 /* SpreadsheetTableSampleAppController.m */; };
 		4F82A5150FCDFECC00C477D4 /* SpreadsheetTableSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F82A5120FCDFECC00C477D4 /* SpreadsheetTableSampleWindowController.m */; };
-		4F82A5460FCE010F00C477D4 /* SpreadsheetTableSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F82A5440FCE010F00C477D4 /* SpreadsheetTableSampleWindow.nib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		4FE5DB521034B72A00AC9EFE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DB4E1034B72A00AC9EFE /* MainMenu.xib */; };
+		4FE5DB531034B72A00AC9EFE /* SpreadsheetTableSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5DB501034B72A00AC9EFE /* SpreadsheetTableSampleWindow.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -66,7 +66,6 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* SpreadsheetSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetSample_Prefix.pch; sourceTree = "<group>"; };
@@ -74,10 +73,11 @@
 		4F82A5110FCDFECC00C477D4 /* SpreadsheetTableSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetTableSampleAppController.h; sourceTree = "<group>"; };
 		4F82A5120FCDFECC00C477D4 /* SpreadsheetTableSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpreadsheetTableSampleWindowController.m; sourceTree = "<group>"; };
 		4F82A5130FCDFECC00C477D4 /* SpreadsheetTableSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpreadsheetTableSampleWindowController.h; sourceTree = "<group>"; };
-		4F82A5450FCE010F00C477D4 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/SpreadsheetTableSampleWindow.nib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		4FE5DB4F1034B72A00AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FE5DB511034B72A00AC9EFE /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/SpreadsheetTableSampleWindow.xib; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* SpreadsheetTableSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpreadsheetTableSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -157,10 +157,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FE5DB4E1034B72A00AC9EFE /* MainMenu.xib */,
+				4FE5DB501034B72A00AC9EFE /* SpreadsheetTableSampleWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				4F82A5440FCE010F00C477D4 /* SpreadsheetTableSampleWindow.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -270,9 +270,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F82A5460FCE010F00C477D4 /* SpreadsheetTableSampleWindow.nib in Resources */,
+				4FE5DB521034B72A00AC9EFE /* MainMenu.xib in Resources */,
+				4FE5DB531034B72A00AC9EFE /* SpreadsheetTableSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,20 +339,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FE5DB4E1034B72A00AC9EFE /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FE5DB4F1034B72A00AC9EFE /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4F82A5440FCE010F00C477D4 /* SpreadsheetTableSampleWindow.nib */ = {
+		4FE5DB501034B72A00AC9EFE /* SpreadsheetTableSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F82A5450FCE010F00C477D4 /* English */,
+				4FE5DB511034B72A00AC9EFE /* English */,
 			);
-			name = SpreadsheetTableSampleWindow.nib;
+			name = SpreadsheetTableSampleWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

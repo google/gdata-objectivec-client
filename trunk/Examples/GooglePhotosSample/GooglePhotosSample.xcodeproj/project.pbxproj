@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		4F5C29C00D9C68B900C647A5 /* GooglePhotosSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C29BC0D9C68B900C647A5 /* GooglePhotosSampleWindowController.m */; };
 		4F5C29C10D9C68B900C647A5 /* GooglePhotosSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */; };
-		4F5C29C50D9C691100C647A5 /* GooglePhotosSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */; };
 		4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		4FA6F5711034B56300C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */; };
+		4FA6F5721034B56300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -67,7 +67,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4F2B95A90BFA7D6600A70CB3 /* GooglePhotosSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePhotosSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,7 +74,8 @@
 		4F5C29BD0D9C68B900C647A5 /* GooglePhotosSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleAppController.h; sourceTree = "<group>"; };
 		4F5C29BE0D9C68B900C647A5 /* GooglePhotosSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleWindowController.h; sourceTree = "<group>"; };
 		4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePhotosSampleAppController.m; sourceTree = "<group>"; };
-		4F5C29C40D9C691100C647A5 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/GooglePhotosSampleWindow.nib; sourceTree = "<group>"; };
+		4FA6F56E1034B56300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GooglePhotosSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F5701034B56300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1570CBC638E00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1580CBC638E00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -157,9 +157,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */,
+				4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
-				4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
 			name = Resources;
@@ -270,9 +270,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F5C29C50D9C691100C647A5 /* GooglePhotosSampleWindow.nib in Resources */,
+				4FA6F5711034B56300C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */,
+				4FA6F5721034B56300C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,20 +339,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FA6F56E1034B56300C5DFA5 /* English */,
 			);
-			name = MainMenu.nib;
+			name = GooglePhotosSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4F5C29C30D9C691100C647A5 /* GooglePhotosSampleWindow.nib */ = {
+		4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F5C29C40D9C691100C647A5 /* English */,
+				4FA6F5701034B56300C5DFA5 /* English */,
 			);
-			name = GooglePhotosSampleWindow.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

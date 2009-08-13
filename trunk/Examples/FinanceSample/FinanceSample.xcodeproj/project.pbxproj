@@ -10,9 +10,9 @@
 		4F0288980DFDDA9B00E60E15 /* FinanceSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */; };
 		4F0288990DFDDA9B00E60E15 /* FinanceSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */; };
 		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		4F38F5EE0B66E2B400B24B81 /* FinanceSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F38F5EC0B66E2B400B24B81 /* FinanceSampleWindow.nib */; };
+		4FA6F52F1034B51B00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */; };
+		4FA6F5301034B51B00C5DFA5 /* FinanceSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -67,7 +67,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceSampleAppController.m; sourceTree = "<group>"; };
@@ -75,7 +74,8 @@
 		4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceSampleWindowController.m; sourceTree = "<group>"; };
 		4F0288970DFDDA9B00E60E15 /* FinanceSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSampleWindowController.h; sourceTree = "<group>"; };
 		4F02889A0DFDDAAD00E60E15 /* FinanceSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSample_Prefix.pch; sourceTree = "<group>"; };
-		4F38F5ED0B66E2B400B24B81 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/FinanceSampleWindow.nib; sourceTree = "<group>"; };
+		4FA6F52C1034B51B00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F52E1034B51B00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FinanceSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
@@ -159,10 +159,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */,
+				4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				4F38F5EC0B66E2B400B24B81 /* FinanceSampleWindow.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -272,9 +272,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F38F5EE0B66E2B400B24B81 /* FinanceSampleWindow.nib in Resources */,
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				4FA6F52F1034B51B00C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F5301034B51B00C5DFA5 /* FinanceSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,20 +341,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FA6F52C1034B51B00C5DFA5 /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4F38F5EC0B66E2B400B24B81 /* FinanceSampleWindow.nib */ = {
+		4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F38F5ED0B66E2B400B24B81 /* English */,
+				4FA6F52E1034B51B00C5DFA5 /* English */,
 			);
-			name = FinanceSampleWindow.nib;
+			name = FinanceSampleWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
