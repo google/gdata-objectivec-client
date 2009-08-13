@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		4F18350B0BBB2D31000E239F /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		4F25EBAA0BEA8423007C0836 /* EditACLWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F25EBA80BEA8423007C0836 /* EditACLWindow.nib */; };
 		4F25EBAD0BEA8466007C0836 /* EditACLWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25EBAB0BEA8466007C0836 /* EditACLWindowController.m */; };
 		4F38F5900B66E14800B24B81 /* CalendarSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F58F0B66E14800B24B81 /* CalendarSampleWindowController.m */; };
 		4F38F5D20B66E1BA00B24B81 /* CalendarSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F5D10B66E1BA00B24B81 /* CalendarSampleAppController.m */; };
-		4F38F5EE0B66E2B400B24B81 /* CalendarSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F38F5EC0B66E2B400B24B81 /* CalendarSampleWindow.nib */; };
-		4F38FAAD0B683E4300B24B81 /* EditEventWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F38FAAB0B683E4300B24B81 /* EditEventWindow.nib */; };
 		4F38FAB70B683F1C00B24B81 /* EditEventWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38FAB50B683F1C00B24B81 /* EditEventWindowController.m */; };
+		4FA6F4C41034B49900C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */; };
+		4FA6F4C51034B49900C5DFA5 /* CalendarSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */; };
+		4FA6F4C61034B49900C5DFA5 /* EditACLWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */; };
+		4FA6F4C71034B49900C5DFA5 /* EditEventWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -71,21 +71,21 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* CalendarSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarSample_Prefix.pch; sourceTree = "<group>"; };
-		4F25EBA90BEA8423007C0836 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/EditACLWindow.nib; sourceTree = "<group>"; };
 		4F25EBAB0BEA8466007C0836 /* EditACLWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = EditACLWindowController.m; sourceTree = "<group>"; };
 		4F25EBAC0BEA8466007C0836 /* EditACLWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = EditACLWindowController.h; sourceTree = "<group>"; };
 		4F38F58E0B66E14800B24B81 /* CalendarSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarSampleWindowController.h; sourceTree = "<group>"; };
 		4F38F58F0B66E14800B24B81 /* CalendarSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarSampleWindowController.m; sourceTree = "<group>"; };
 		4F38F5D00B66E1BA00B24B81 /* CalendarSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarSampleAppController.h; sourceTree = "<group>"; };
 		4F38F5D10B66E1BA00B24B81 /* CalendarSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarSampleAppController.m; sourceTree = "<group>"; };
-		4F38F5ED0B66E2B400B24B81 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/CalendarSampleWindow.nib; sourceTree = "<group>"; };
-		4F38FAAC0B683E4300B24B81 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/EditEventWindow.nib; sourceTree = "<group>"; };
 		4F38FAB40B683F1C00B24B81 /* EditEventWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventWindowController.h; sourceTree = "<group>"; };
 		4F38FAB50B683F1C00B24B81 /* EditEventWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventWindowController.m; sourceTree = "<group>"; };
+		4FA6F4BD1034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F4BF1034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/CalendarSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F4C11034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditACLWindow.xib; sourceTree = "<group>"; };
+		4FA6F4C31034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEventWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F04B0CBC5C5600059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F04C0CBC5C5600059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
@@ -173,12 +173,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */,
+				4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */,
+				4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */,
+				4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				4F38F5EC0B66E2B400B24B81 /* CalendarSampleWindow.nib */,
-				4F38FAAB0B683E4300B24B81 /* EditEventWindow.nib */,
-				4F25EBA80BEA8423007C0836 /* EditACLWindow.nib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -287,11 +287,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F38F5EE0B66E2B400B24B81 /* CalendarSampleWindow.nib in Resources */,
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F38FAAD0B683E4300B24B81 /* EditEventWindow.nib in Resources */,
-				4F25EBAA0BEA8423007C0836 /* EditACLWindow.nib in Resources */,
+				4FA6F4C41034B49900C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F4C51034B49900C5DFA5 /* CalendarSampleWindow.xib in Resources */,
+				4FA6F4C61034B49900C5DFA5 /* EditACLWindow.xib in Resources */,
+				4FA6F4C71034B49900C5DFA5 /* EditEventWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,36 +360,36 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FA6F4BD1034B49900C5DFA5 /* English */,
 			);
-			name = MainMenu.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4F25EBA80BEA8423007C0836 /* EditACLWindow.nib */ = {
+		4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F25EBA90BEA8423007C0836 /* English */,
+				4FA6F4BF1034B49900C5DFA5 /* English */,
 			);
-			name = EditACLWindow.nib;
+			name = CalendarSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4F38F5EC0B66E2B400B24B81 /* CalendarSampleWindow.nib */ = {
+		4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F38F5ED0B66E2B400B24B81 /* English */,
+				4FA6F4C11034B49900C5DFA5 /* English */,
 			);
-			name = CalendarSampleWindow.nib;
+			name = EditACLWindow.xib;
 			sourceTree = "<group>";
 		};
-		4F38FAAB0B683E4300B24B81 /* EditEventWindow.nib */ = {
+		4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F38FAAC0B683E4300B24B81 /* English */,
+				4FA6F4C31034B49900C5DFA5 /* English */,
 			);
-			name = EditEventWindow.nib;
+			name = EditEventWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

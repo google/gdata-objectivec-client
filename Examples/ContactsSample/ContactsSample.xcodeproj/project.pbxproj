@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		4F3584050C0F54500027B642 /* ContactsSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3584010C0F54500027B642 /* ContactsSampleAppController.m */; };
 		4F3584070C0F54500027B642 /* ContactsSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3584030C0F54500027B642 /* ContactsSampleWindowController.m */; };
-		4F3584250C0F56AD0027B642 /* ContactsSampleWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F35841F0C0F56AD0027B642 /* ContactsSampleWindow.nib */; };
-		4F3585F70C0F8DAB0027B642 /* EditEntryWindow.nib in Resources */ = {isa = PBXBuildFile; fileRef = 4F3585F10C0F8DAB0027B642 /* EditEntryWindow.nib */; };
 		4F35863A0C0F97BB0027B642 /* EditEntryWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35840D0C0F54B20027B642 /* EditEntryWindowController.m */; };
 		4F5166FC0EAD2826007A27D5 /* GData.framework in Copy GData framework */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
 		4F606D7C0D77699600DA1A87 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
-		8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 29B97318FDCFA39411CA2CEA /* MainMenu.nib */; };
+		4FA6F4EC1034B4C300C5DFA5 /* EditEntryWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */; };
+		4FA6F4ED1034B4C300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */; };
+		4FA6F4EE1034B4C300C5DFA5 /* ContactsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -70,7 +70,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		29B97319FDCFA39411CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		4F3475670D762F81006033E0 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
@@ -81,8 +80,9 @@
 		4F3584040C0F54500027B642 /* ContactsSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ContactsSampleWindowController.h; sourceTree = "<group>"; };
 		4F35840D0C0F54B20027B642 /* EditEntryWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = EditEntryWindowController.m; sourceTree = "<group>"; };
 		4F35840E0C0F54B20027B642 /* EditEntryWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = EditEntryWindowController.h; sourceTree = "<group>"; };
-		4F3584200C0F56AD0027B642 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/ContactsSampleWindow.nib; sourceTree = "<group>"; };
-		4F3585F20C0F8DAB0027B642 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/EditEntryWindow.nib; sourceTree = "<group>"; };
+		4FA6F4E71034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEntryWindow.xib; sourceTree = "<group>"; };
+		4FA6F4E91034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F4EB1034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ContactsSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ContactsSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,9 +165,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				29B97318FDCFA39411CA2CEA /* MainMenu.nib */,
-				4F35841F0C0F56AD0027B642 /* ContactsSampleWindow.nib */,
-				4F3585F10C0F8DAB0027B642 /* EditEntryWindow.nib */,
+				4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */,
+				4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */,
+				4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -279,10 +279,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D11072A0486CEB800E47090 /* MainMenu.nib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4F3584250C0F56AD0027B642 /* ContactsSampleWindow.nib in Resources */,
-				4F3585F70C0F8DAB0027B642 /* EditEntryWindow.nib in Resources */,
+				4FA6F4EC1034B4C300C5DFA5 /* EditEntryWindow.xib in Resources */,
+				4FA6F4ED1034B4C300C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F4EE1034B4C300C5DFA5 /* ContactsSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,28 +350,28 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		29B97318FDCFA39411CA2CEA /* MainMenu.nib */ = {
+		4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				29B97319FDCFA39411CA2CEA /* English */,
+				4FA6F4E71034B4C300C5DFA5 /* English */,
 			);
-			name = MainMenu.nib;
+			name = EditEntryWindow.xib;
 			sourceTree = "<group>";
 		};
-		4F35841F0C0F56AD0027B642 /* ContactsSampleWindow.nib */ = {
+		4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F3584200C0F56AD0027B642 /* English */,
+				4FA6F4E91034B4C300C5DFA5 /* English */,
 			);
-			name = ContactsSampleWindow.nib;
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4F3585F10C0F8DAB0027B642 /* EditEntryWindow.nib */ = {
+		4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4F3585F20C0F8DAB0027B642 /* English */,
+				4FA6F4EB1034B4C300C5DFA5 /* English */,
 			);
-			name = EditEntryWindow.nib;
+			name = ContactsSampleWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
