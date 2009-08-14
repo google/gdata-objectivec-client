@@ -47,6 +47,11 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
+
++ (NSString *)defaultServiceVersion {
+  return @"1.0";
+}
+
 @end
 
 @implementation GDataAtomPubControl
@@ -74,6 +79,10 @@
   GDataAtomPubControl *obj = [self atomPubControl];
   [obj setIsDraft:isDraft];
   return obj;
+}
+
++ (NSString *)defaultServiceVersion {
+  return @"2.0";
 }
 
 - (Class)draftExtensionClass {
