@@ -93,7 +93,7 @@ enum {
 // (though the client must still release the ticket if it retained the ticket)
 - (void)cancelTicket;
 
-- (GDataServiceBase *)service;
+- (id)service;
 
 - (id)userData;
 - (void)setUserData:(id)obj;
@@ -157,6 +157,12 @@ enum {
 - (NSUInteger)nextLinksFollowedCounter;
 
 - (NSInteger)statusCode;  // server status from object fetch
+@end
+
+
+// category to provide opaque access to tickets stored in fetcher properties
+@interface GDataHTTPFetcher (GDataServiceTicketAdditions)
+- (id)ticket;
 @end
 
 

@@ -149,6 +149,18 @@ enum {
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector;
 
+// authenticate without fetching a feed or entry
+//
+// authSelector has a signature matching:
+//   - (void)ticket:(GDataServiceTicket *)ticket authenticatedWithError:(NSError *)error;
+//
+// If authentication succeeds, the selector is invoked with a nil error,
+// and the auth token is available as [[ticket service] authToken]
+//
+// The returned ticket may be ignored unless the caller wants to cancel it
+- (GDataServiceTicket *)authenticateWithDelegate:(id)delegate
+                         didAuthenticateSelector:(SEL)authSelector;
+
 - (void)setCaptchaToken:(NSString *)captchaToken
           captchaAnswer:(NSString *)captchaAnswer;
 
@@ -166,9 +178,6 @@ enum {
 - (NSString *)signInDomain;
 - (void)setSignInDomain:(NSString *)domain;
 
-// subclasses may add headers to the authentication request
-- (NSMutableURLRequest *)authenticationRequestForURL:(NSURL *)url;
-
 // when it's not possible to do http methods other than GET and POST,
 // the X-HTTP-Method-Override header can be used in conjunction with POST
 // for other commands.  Default for this is NO.
@@ -181,8 +190,5 @@ enum {
 // subclasses may specify what namespaces to attach to posted user entries
 // when the entries lack explicit root-level namespaces
 + (NSDictionary *)standardServiceNamespaces;
-
-  // internal utilities
-+ (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString;
 
 @end

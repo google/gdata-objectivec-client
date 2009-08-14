@@ -60,6 +60,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 }
 
 
+// category to provide opaque access to tickets stored in fetcher properties
+@implementation GDataHTTPFetcher (GDataServiceTicketAdditions)
+- (id)ticket {
+  return [self propertyForKey:kFetcherTicketKey];
+}
+@end
+
+
 @interface GDataServiceBase (PrivateMethods)
 
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
@@ -849,7 +857,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSString *username = [self username];
   NSString *password = [self password];
 
-  if ([username length] && [password length]) {
+  if ([username length] > 0 && [password length] > 0) {
     // We're avoiding +[NSURCredential credentialWithUser:password:persistence:]
     // because it fails to autorelease itself on OS X 10.4 .. 10.5.x
     // rdar://5596278
@@ -1332,7 +1340,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   service_ = nil;
 }
 
-- (GDataServiceBase *)service {
+- (id)service {
   return service_;
 }
 

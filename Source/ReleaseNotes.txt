@@ -10,16 +10,26 @@ Additions
 - Added GDATA_INCLUDE compiler conditionals to specify which service's code
   should be built.
 
+- Added service method to authenticate without fetching a feed or entry.
+
 - Added convenience method for creating CCR elements from NSXMLElements.
+
+- Added CCR extension support to Health register entry.
+
+- Added GDataAuthenticationFetcher, which can be used to create a fetcher
+  for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
 
 Changes
 
-- Batch fetches now always disable ignoreUnknownXML so that the results
+- Batch fetches now always disable shouldIgnoreUnknownXML so that the results
   in the batch feed can be used for updates.
 
-- The shouldIgnoreUnknownXML flag is now settable in individual tickets.
+- The shouldIgnoreXML flag is now settable in individual tickets.
 
 Bugs Fixed
+
+- Setting the name of a Google Base attribute also now sets the XML element
+  local name.
 
 
 Release 1.8.0

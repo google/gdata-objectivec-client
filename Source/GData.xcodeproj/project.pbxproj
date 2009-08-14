@@ -1088,6 +1088,10 @@
 		4FE5C88C1017C1920035D549 /* GDataPhotoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5C88A1017C1920035D549 /* GDataPhotoConstants.m */; };
 		4FE5C88D1017C1920035D549 /* GDataPhotoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5C88A1017C1920035D549 /* GDataPhotoConstants.m */; };
 		4FE5C88E1017C1920035D549 /* GDataPhotoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5C88A1017C1920035D549 /* GDataPhotoConstants.m */; };
+		4FE5DC341034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DC321034E22D00AC9EFE /* GDataAuthenticationFetcher.m */; };
+		4FE5DC351034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DC321034E22D00AC9EFE /* GDataAuthenticationFetcher.m */; };
+		4FE5DC361034E22D00AC9EFE /* GDataAuthenticationFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5DC331034E22D00AC9EFE /* GDataAuthenticationFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FE5DC371034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DC321034E22D00AC9EFE /* GDataAuthenticationFetcher.m */; };
 		4FE81F710B250E8600D8C135 /* GDataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE81F700B250E8600D8C135 /* GDataQuery.m */; };
 		4FE8203F0B26104600D8C135 /* GDataQueryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8203E0B26104600D8C135 /* GDataQueryTest.m */; };
 		4FE8216F0B262DA000D8C135 /* GDataQueryCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8216E0B262DA000D8C135 /* GDataQueryCalendar.m */; };
@@ -1764,6 +1768,8 @@
 		4FE5C8781017C10A0035D549 /* FeedPhotosSearch1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedPhotosSearch1.xml; path = Tests/FeedPhotosSearch1.xml; sourceTree = "<group>"; };
 		4FE5C8891017C1920035D549 /* GDataPhotoConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataPhotoConstants.h; path = Clients/Photos/GDataPhotoConstants.h; sourceTree = "<group>"; };
 		4FE5C88A1017C1920035D549 /* GDataPhotoConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataPhotoConstants.m; path = Clients/Photos/GDataPhotoConstants.m; sourceTree = "<group>"; };
+		4FE5DC321034E22D00AC9EFE /* GDataAuthenticationFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAuthenticationFetcher.m; path = Networking/GDataAuthenticationFetcher.m; sourceTree = "<group>"; };
+		4FE5DC331034E22D00AC9EFE /* GDataAuthenticationFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAuthenticationFetcher.h; path = Networking/GDataAuthenticationFetcher.h; sourceTree = "<group>"; };
 		4FE81F6F0B250E8600D8C135 /* GDataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQuery.h; path = BaseClasses/GDataQuery.h; sourceTree = "<group>"; };
 		4FE81F700B250E8600D8C135 /* GDataQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQuery.m; path = BaseClasses/GDataQuery.m; sourceTree = "<group>"; };
 		4FE8203E0B26104600D8C135 /* GDataQueryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryTest.m; path = Tests/GDataQueryTest.m; sourceTree = "<group>"; };
@@ -2692,6 +2698,8 @@
 				4FDEA5970B39DE99007ACFE3 /* GDataHTTPFetcher.m */,
 				4F0B01500C35A3C400A554F7 /* GDataHTTPFetcherLogging.h */,
 				4F0B01510C35A3C400A554F7 /* GDataHTTPFetcherLogging.m */,
+				4FE5DC331034E22D00AC9EFE /* GDataAuthenticationFetcher.h */,
+				4FE5DC321034E22D00AC9EFE /* GDataAuthenticationFetcher.m */,
 				4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */,
 				4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */,
 				4F2B94DA0BFA61D700A70CB3 /* GDataGatherInputStream.h */,
@@ -3147,6 +3155,7 @@
 				4F49AFC11007EF3A008D6DB0 /* GDataYouTubeConstants.h in Headers */,
 				4FE5C88B1017C1920035D549 /* GDataPhotoConstants.h in Headers */,
 				4F25FDAA102A2DAD0035D678 /* GDataHealthConstants.h in Headers */,
+				4FE5DC361034E22D00AC9EFE /* GDataAuthenticationFetcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3564,6 +3573,7 @@
 				4FE5C88D1017C1920035D549 /* GDataPhotoConstants.m in Sources */,
 				4F25FD9E102A2D890035D678 /* GDataEntryHealthRegister.m in Sources */,
 				4F25FDA8102A2DAD0035D678 /* GDataHealthConstants.m in Sources */,
+				4FE5DC341034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3848,6 +3858,7 @@
 				4FE5C88E1017C1920035D549 /* GDataPhotoConstants.m in Sources */,
 				4F25FDA0102A2D890035D678 /* GDataEntryHealthRegister.m in Sources */,
 				4F25FDAB102A2DAD0035D678 /* GDataHealthConstants.m in Sources */,
+				4FE5DC371034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4130,6 +4141,7 @@
 				4FE5C88C1017C1920035D549 /* GDataPhotoConstants.m in Sources */,
 				4F25FD9F102A2D890035D678 /* GDataEntryHealthRegister.m in Sources */,
 				4F25FDA9102A2DAD0035D678 /* GDataHealthConstants.m in Sources */,
+				4FE5DC351034E22D00AC9EFE /* GDataAuthenticationFetcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

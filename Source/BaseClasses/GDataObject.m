@@ -885,7 +885,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 - (NSXMLNode *)addToElement:(NSXMLElement *)element
 childWithStringValueIfNonEmpty:(NSString *)str
                    withName:(NSString *)name {
-  if ([str length]) {
+  if ([str length] > 0) {
     NSXMLNode *child = [NSXMLElement elementWithName:name stringValue:str];
     [element addChild:child];
     return child;
@@ -1508,7 +1508,7 @@ objectDescriptionIfNonNil:(id)obj
 
 - (GDataDateTime *)dateTimeFromElement:(NSXMLElement *)element {
   NSString *str = [self stringValueFromElement:element];
-  if ([str length]) {
+  if ([str length] > 0) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
   }
   return nil;
@@ -1589,7 +1589,7 @@ objectDescriptionIfNonNil:(id)obj
                                     fromElement:element];
 
   NSString* str = [attribute stringValue];
-  if ([str length]) {
+  if ([str length] > 0) {
     return [GDataDateTime dateTimeWithRFC3339String:str];
   }
   return nil;

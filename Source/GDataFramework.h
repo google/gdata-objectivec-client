@@ -19,6 +19,29 @@
 
 #import "GDataDefines.h"
 
+
+// The project's static library target defines these by default:
+//
+//   -DGDATA_REQUIRE_SERVICE_INCLUDES=1
+//   -DGDATA_INCLUDE_nameServiceHere_SERVICE=1
+//
+// in the additional C flags.  Those should be replaced with specification of
+// the actual needed service code, such as:
+//
+//   -DGDATA_REQUIRE_SERVICE_INCLUDES=1
+//   -DGDATA_INCLUDE_CALENDAR_SERVICE=1
+//   -DGDATA_INCLUDE_CONTACTS_SERVICE=1
+//
+// This error will catch projects being built against the nameServiceHere
+// placeholder in release builds.
+//
+#if !DEBUG
+  #if GDATA_INCLUDE_nameServiceHere_SERVICE && !GDATA_SUPPRESS_INCLUDE_WARNING
+    #error The service placeholder compiler flag should be replaced by actual service specifications
+  #endif
+#endif
+
+
 // Returns the version of the framework.  Major and minor should
 // match the bundle version in the Info.plist file.
 //
