@@ -45,6 +45,8 @@
   IBOutlet NSProgressIndicator *mRecordProgressIndicator;
   IBOutlet NSTextView *mRecordResultTextField;
 
+  IBOutlet NSProgressIndicator *mGlobalFetchProgressIndicator;
+
   GDataFeedSpreadsheet *mSpreadsheetFeed;
   GDataServiceTicket *mSpreadsheetFeedTicket;
   NSError *mSpreadsheetFetchError;
