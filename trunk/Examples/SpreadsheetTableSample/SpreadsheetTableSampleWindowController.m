@@ -102,6 +102,17 @@
   [mTableResultTextField setFont:resultTextFont];
   [mRecordResultTextField setFont:resultTextFont];
 
+  // add notifications so we can track global starts and stops of fetching
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc addObserver:self
+         selector:@selector(fetchStateChanged:)
+             name:kGDataHTTPFetcherStartedNotification
+           object:nil];
+  [nc addObserver:self
+         selector:@selector(fetchStateChanged:)
+             name:kGDataHTTPFetcherStoppedNotification
+           object:nil];
+
   [self updateUI];
 }
 
@@ -701,6 +712,33 @@
   }
 
   [self updateUI];
+}
+
+#pragma mark Global fetch progress indicator
+
+- (void)fetchStateChanged:(NSNotification *)note {
+
+  // This notification observer is invoked whenever fetching starts or stops.
+  //
+  // If we turn on fetch retries in the service or the ticket, we can also
+  // display an indicator of fetch retry delays by observing
+  // kGDataHTTPFetcherRetryDelayStartedNotification and
+  // kGDataHTTPFetcherRetryDelayStoppedNotification
+
+  static int gCounter = 0;
+  if ([[note name] isEqual:kGDataHTTPFetcherStartedNotification]) {
+    // started
+    ++gCounter;
+  } else {
+    // stopped
+    --gCounter;
+  }
+
+  if (gCounter > 0) {
+    [mGlobalFetchProgressIndicator startAnimation:self];
+  } else {
+    [mGlobalFetchProgressIndicator stopAnimation:self];
+  }
 }
 
 #pragma mark TableView delegate and data source methods
