@@ -1,21 +1,28 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #import <Foundation/Foundation.h>
 
-#import "GDataDefines.h"
+#ifndef SKIP_GDATA_DEFINES
+  #import "GDataDefines.h"
+#else
+  #ifndef GDATA_FOREACH
+    #define GDATA_FOREACH(element, collection) for (element in collection)
+    #define GDATA_FOREACH_KEY(key, dict) for (key in dict)
+  #endif
+#endif
 
 // helper functions for implementing isEqual:
 BOOL AreEqualOrBothNil(id obj1, id obj2);
@@ -93,6 +100,13 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 //
 
 + (NSComparisonResult)compareVersion:(NSString *)ver1 toVersion:(NSString *)ver2;
+
+//
+// response string helpers
+//
+
+// convert responses of the form "a=foo \n b=bar"   to a dictionary
++ (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString;
 
 //
 // file type helpers

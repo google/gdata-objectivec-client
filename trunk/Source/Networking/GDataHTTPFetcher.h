@@ -213,16 +213,24 @@
 #endif
 
 // notifications
-_EXTERN NSString* const kGDataHTTPFetcherErrorDomain _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
-_EXTERN NSString* const kGDataHTTPFetcherStatusDomain _INITIALIZE_AS(@"com.google.HTTPStatus");
+//
+// fetch started and stopped, and fetch retry delay started and stopped
+_EXTERN NSString* const kGDataHTTPFetcherStartedNotification           _INITIALIZE_AS(@"kGDataHTTPFetcherStartedNotification");
+_EXTERN NSString* const kGDataHTTPFetcherStoppedNotification           _INITIALIZE_AS(@"kGDataHTTPFetcherStoppedNotification");
+_EXTERN NSString* const kGDataHTTPFetcherRetryDelayStartedNotification _INITIALIZE_AS(@"kGDataHTTPFetcherRetryDelayStartedNotification");
+_EXTERN NSString* const kGDataHTTPFetcherRetryDelayStoppedNotification _INITIALIZE_AS(@"kGDataHTTPFetcherRetryDelayStoppedNotification");
+
+// callback constants
+_EXTERN NSString* const kGDataHTTPFetcherErrorDomain       _INITIALIZE_AS(@"com.google.GDataHTTPFetcher");
+_EXTERN NSString* const kGDataHTTPFetcherStatusDomain      _INITIALIZE_AS(@"com.google.HTTPStatus");
 _EXTERN NSString* const kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
-_EXTERN NSString* const kGDataHTTPFetcherStatusDataKey _INITIALIZE_AS(@"data"); // data returned with a kGDataHTTPFetcherStatusDomain error
+_EXTERN NSString* const kGDataHTTPFetcherStatusDataKey     _INITIALIZE_AS(@"data");                        // data returned with a kGDataHTTPFetcherStatusDomain error
 
 
 // fetch history mutable dictionary keys
 _EXTERN NSString* const kGDataHTTPFetcherHistoryLastModifiedKey _INITIALIZE_AS(@"FetchHistoryLastModified");
-_EXTERN NSString* const kGDataHTTPFetcherHistoryDatedDataKey _INITIALIZE_AS(@"FetchHistoryDatedDataCache");
-_EXTERN NSString* const kGDataHTTPFetcherHistoryCookiesKey _INITIALIZE_AS(@"FetchHistoryCookies");
+_EXTERN NSString* const kGDataHTTPFetcherHistoryDatedDataKey    _INITIALIZE_AS(@"FetchHistoryDatedDataCache");
+_EXTERN NSString* const kGDataHTTPFetcherHistoryCookiesKey      _INITIALIZE_AS(@"FetchHistoryCookies");
 
 enum {
   kGDataHTTPFetcherErrorDownloadFailed = -1,
@@ -255,6 +263,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   SEL statusFailedSEL_;             // implemented by delegate if it needs separate network error callbacks
   SEL networkFailedSEL_;            // should be implemented by delegate
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
+  BOOL isStopNotificationNeeded_;   // set when start notification has been sent
   id userData_;                     // retained, if set by caller
   NSMutableDictionary *properties_; // more data retained for caller
   NSArray *runLoopModes_;           // optional, for 10.5 and later

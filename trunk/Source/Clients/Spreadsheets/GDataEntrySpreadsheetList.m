@@ -80,7 +80,7 @@
       [obj name], [obj stringValue]];
   }
   
-  if ([str length]) {
+  if ([str length] > 0) {
     [self addToArray:items objectDescriptionIfNonNil:str withName:@"customElements"];
   }
   

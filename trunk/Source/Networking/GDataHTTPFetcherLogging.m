@@ -598,7 +598,7 @@ static NSString* gLoggingProcessName = nil;
     postData = loggedStreamData_;
   }
 
-  if ([postData length]) {
+  if ([postData length] > 0) {
     NSString *postDataFormat = @"<a href=\"javascript:toggleLayer('%@');\">"
       "posted data (%d bytes)</a><div id=\"%@\">%@</div><br>\n";
     NSString *postDataStr = [self stringFromStreamData:postData];

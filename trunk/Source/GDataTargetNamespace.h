@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.8 (522 classes) 2009-08-05 14:34:18 -0700
+// com.google.GDataFramework v. 1.8 (523 classes) 2009-08-13 17:08:01 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -69,6 +69,7 @@
   #define GDataAttendeeStatus                     _GDATA_NS_SYMBOL(GDataAttendeeStatus)
   #define GDataAttendeeType                       _GDATA_NS_SYMBOL(GDataAttendeeType)
   #define GDataAttribute                          _GDATA_NS_SYMBOL(GDataAttribute)
+  #define GDataAuthenticationFetcher              _GDATA_NS_SYMBOL(GDataAuthenticationFetcher)
   #define GDataBatchID                            _GDATA_NS_SYMBOL(GDataBatchID)
   #define GDataBatchInterrupted                   _GDATA_NS_SYMBOL(GDataBatchInterrupted)
   #define GDataBatchOperation                     _GDATA_NS_SYMBOL(GDataBatchOperation)

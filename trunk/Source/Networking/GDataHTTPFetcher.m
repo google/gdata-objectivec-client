@@ -51,6 +51,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 - (void)destroyRetryTimer;
 - (void)beginRetryTimer;
 - (void)primeRetryTimerWithNewTimeInterval:(NSTimeInterval)secs;
+- (void)sendStopNotificationIfNeeded;
 - (void)retryFetch;
 @end
 
@@ -236,9 +237,9 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   }
 
   // finally, start the connection
-	
+
   Class connectionClass = [[self class] connectionClass];
-	
+
   NSArray *runLoopModes = nil;
 
   if ([[self class] doesSupportRunLoopModes]) {
@@ -276,6 +277,12 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     NSAssert(connection_ != nil, @"beginFetchWithDelegate could not create a connection");
     goto CannotBeginFetch;
   }
+
+  // once connection_ is non-nil we can send the start notification
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+  [defaultNC postNotificationName:kGDataHTTPFetcherStartedNotification
+                           object:self];
+  isStopNotificationNeeded_ = YES;
 
   // we'll retain the delegate only during the outstanding connection (similar
   // to what Cocoa does with performSelectorOnMainThread:) since we'd crash
@@ -354,8 +361,21 @@ CannotBeginFetch:
     [oldConnection cancel];
     [oldConnection autorelease];
 
+    // send the stopped notification
+    [self sendStopNotificationIfNeeded];
+
     // balance the retain done when the connection was opened
     [delegate_ release];
+  }
+}
+
+- (void)sendStopNotificationIfNeeded {
+  if (isStopNotificationNeeded_) {
+    isStopNotificationNeeded_ = NO;
+
+    NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+    [defaultNC postNotificationName:kGDataHTTPFetcherStoppedNotification
+                             object:self];
   }
 }
 
@@ -648,6 +668,15 @@ CannotBeginFetch:
 
   NSInteger status = [self statusAfterHandlingNotModifiedError];
 
+  // we want to send the stop notification before calling the delegate's
+  // callback selector, since the callback selector may release all of
+  // the fetcher properties that the client is using to track the fetches
+  //
+  // We'll also stop now so that, to any observers watching the notifications,
+  // it doesn't look like our wait for a retry (which may be long,
+  // 30 seconds or more) is part of the network activity
+  [self sendStopNotificationIfNeeded];
+
   // if there's an error status and the client gave us a status error
   // selector, then call that selector
   if (status >= 300 && statusFailedSEL_) {
@@ -701,6 +730,10 @@ CannotBeginFetch:
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 
   [self logFetchWithError:error];
+
+  // see comment about sendStopNotificationIfNeeded
+  // in connectionDidFinishLoading:
+  [self sendStopNotificationIfNeeded];
 
   if ([self shouldRetryNowForStatus:0 error:error]) {
 
@@ -819,6 +852,10 @@ CannotBeginFetch:
                                 userInfo:nil
                                  repeats:NO];
   [retryTimer_ retain];
+
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+  [defaultNC postNotificationName:kGDataHTTPFetcherRetryDelayStartedNotification
+                           object:self];
 }
 
 - (void)retryTimerFired:(NSTimer *)timer {
@@ -831,10 +868,15 @@ CannotBeginFetch:
 }
 
 - (void)destroyRetryTimer {
+  if (retryTimer_) {
+    NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+    [defaultNC postNotificationName:kGDataHTTPFetcherRetryDelayStoppedNotification
+                             object:self];
 
-  [retryTimer_ invalidate];
-  [retryTimer_ autorelease];
-  retryTimer_ = nil;
+    [retryTimer_ invalidate];
+    [retryTimer_ autorelease];
+    retryTimer_ = nil;
+  }
 }
 
 - (NSUInteger)retryCount {

@@ -130,7 +130,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   // append include categories
   GDataCategory *cat;
   GDATA_FOREACH(cat, categories_) {
-    if ([result length]) {
+    if ([result length] > 0) {
       [result appendString:@"|"];
     }
     [result appendString:[self queryStringForCategory:cat]];
@@ -138,7 +138,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 
   // append exclude categories, preceded by "-"
   GDATA_FOREACH(cat, excludeCategories_) {
-    if ([result length]) {
+    if ([result length] > 0) {
       [result appendString:@"|"];
     }
     [result appendFormat:@"-%@", [self queryStringForCategory:cat]];

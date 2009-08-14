@@ -34,9 +34,16 @@
   GDataServiceTicket *ticket_;
   GDataObject *fetchedObject_;
   NSError *fetcherError_;
+  int fetchStartedNotificationCount_;
+  int fetchStoppedNotificationCount_;
   unsigned long long lastProgressDeliveredCount_;
   unsigned long long lastProgressTotalCount_;
   int retryCounter_;
+  int retryDelayStartedNotificationCount_;
+  int retryDelayStoppedNotificationCount_;
+
+  NSString *authToken_;
+  NSError *authError_;
 }
 @end
 
@@ -111,6 +118,48 @@ static int kServerPortNumber = 54579;
 
   NSString *authDomain = [NSString stringWithFormat:@"localhost:%d", kServerPortNumber];
   [service_ setSignInDomain:authDomain];
+
+  // install observers for fetcher notifications
+  NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGDataHTTPFetcherStartedNotification object:nil];
+  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGDataHTTPFetcherStoppedNotification object:nil];
+  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGDataHTTPFetcherRetryDelayStartedNotification object:nil];
+  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGDataHTTPFetcherRetryDelayStoppedNotification object:nil];
+}
+
+- (void)fetchStateChanged:(NSNotification *)note {
+  GDataHTTPFetcher *fetcher = [note object];
+  GDataServiceTicketBase *ticket = [fetcher ticket];
+
+  STAssertNotNil(ticket, @"cannot get ticket from fetch notification");
+
+  if ([[note name] isEqual:kGDataHTTPFetcherStartedNotification]) {
+    ++fetchStartedNotificationCount_;
+  } else {
+    ++fetchStoppedNotificationCount_;
+  }
+
+  STAssertTrue(retryDelayStartedNotificationCount_ <= fetchStartedNotificationCount_,
+               @"fetch notification imbalance: starts=%d stops=%d",
+               fetchStartedNotificationCount_, retryDelayStartedNotificationCount_);
+}
+
+- (void)retryDelayStateChanged:(NSNotification *)note {
+  GDataHTTPFetcher *fetcher = [note object];
+  GDataServiceTicketBase *ticket = [fetcher ticket];
+
+  STAssertNotNil(ticket, @"cannot get ticket from retry delay notification");
+
+  if ([[note name] isEqual:kGDataHTTPFetcherRetryDelayStartedNotification]) {
+    ++retryDelayStartedNotificationCount_;
+  } else {
+    ++retryDelayStoppedNotificationCount_;
+  }
+
+  STAssertTrue(retryDelayStoppedNotificationCount_ <= retryDelayStartedNotificationCount_,
+               @"retry delay notification imbalance: starts=%d stops=%d",
+               retryDelayStartedNotificationCount_,
+               retryDelayStoppedNotificationCount_);
 }
 
 - (void)resetFetchResponse {
@@ -133,6 +182,11 @@ static int kServerPortNumber = 54579;
   if ([service_ userAgent] == nil) {
     [service_ setUserAgent:@"GData-UnitTests-99.99"];
   }
+
+  fetchStartedNotificationCount_ = 0;
+  fetchStoppedNotificationCount_ = 0;
+  retryDelayStartedNotificationCount_ = 0;
+  retryDelayStoppedNotificationCount_ = 0;
 }
 
 - (void)tearDown {
@@ -277,6 +331,12 @@ static int gFetchCounter = 0;
     [[feedURL path] lastPathComponent]];
 
   STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
+
+  // check that the expected notifications happened
+  STAssertEquals(fetchStartedNotificationCount_, 1, @"start note missing");
+  STAssertEquals(fetchStoppedNotificationCount_, 1, @"stopped note missing");
+  STAssertEquals(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
+  STAssertEquals(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
 
   // save a copy of the retrieved object to compare with our cache responses
   // later
@@ -450,6 +510,13 @@ static int gFetchCounter = 0;
   STAssertEqualObjects([ticket_ userData], customUserData, @"userdata error");
   STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
                        customPropertyValue, @"custom property error");
+
+  // check that the expected notifications happened for the authentication
+  // fetch and the object fetch
+  STAssertEquals(fetchStartedNotificationCount_, 2, @"start note missing");
+  STAssertEquals(fetchStoppedNotificationCount_, 2, @"stopped note missing");
+  STAssertEquals(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
+  STAssertEquals(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
 
   //
   // test: repeat last authenticated download so we're reusing the auth token
@@ -808,6 +875,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   lastProgressTotalCount_ = dataLength;
 }
 
+#pragma mark Retry fetch tests
 
 - (void)testRetryFetches {
 
@@ -843,6 +911,13 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 3,
                @"retry count should be 3, was %lu",
                (unsigned long) [[ticket_ objectFetcher] retryCount]);
+
+  // check that the expected notifications happened for the object
+  // fetches and the retries
+  STAssertEquals(fetchStartedNotificationCount_, 4, @"start note missing");
+  STAssertEquals(fetchStoppedNotificationCount_, 4, @"stopped note missing");
+  STAssertEquals(retryDelayStartedNotificationCount_, 3, @"retry delay note missing");
+  STAssertEquals(retryDelayStoppedNotificationCount_, 3, @"retry delay note missing");
 
   //
   // test:  retry twice, then give up
@@ -936,7 +1011,65 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   return YES; // do the retry fetch; it should succeed now
 }
 
+#pragma mark Standalone auth tests
+
+- (void)resetAuthResponse {
+  [authToken_ release];
+  authToken_ = nil;
+
+  [authError_ release];
+  authError_ = nil;
+}
+
+- (void)waitForAuth {
+
+  // Give time for the auth to happen, but give up if
+  // 10 seconds elapse with no response
+  NSDate* giveUpDate = [NSDate dateWithTimeIntervalSinceNow:10.0];
+
+  while ((!authToken_ && !authError_)
+         && [giveUpDate timeIntervalSinceNow] > 0) {
+
+    NSDate *stopDate = [NSDate dateWithTimeIntervalSinceNow:0.001];
+    [[NSRunLoop currentRunLoop] runUntilDate:stopDate];
+  }
+}
+
+- (void)testStandaloneServiceAuth {
+
+  // test successful auth
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"mypassword"];
+  [service_ authenticateWithDelegate:self
+             didAuthenticateSelector:@selector(ticket:authenticatedWithError:)];
+  [self waitForAuth];
+
+  STAssertTrue([authToken_ length] > 0, @"auth token missing");
+  STAssertNil(authError_, @"unexpected auth error: %@", authError_);
+
+  [self resetAuthResponse];
+
+  // test unsuccessful auth
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"bad"];
+  [service_ authenticateWithDelegate:self
+             didAuthenticateSelector:@selector(ticket:authenticatedWithError:)];
+  [self waitForAuth];
+
+  STAssertNil(authToken_, @"unexpected auth token: %@", authToken_);
+  STAssertNotNil(authError_, @"auth error missing");
+
+  [self resetAuthResponse];
+}
+
+- (void)ticket:(GDataServiceTicket *)ticket
+authenticatedWithError:(NSError *)error {
+  authToken_ = [[[ticket service] authToken] retain];
+  authError_ = [error retain];
+}
+
 @end
+
 
 @implementation MyGDataFeedSpreadsheetSurrogate
 - (NSString *)mySurrogateFeedName {

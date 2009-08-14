@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 #import "GDataUtilities.h"
 #include <math.h>
@@ -370,6 +370,30 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
     }
   }
   return nil;
+}
+
+#pragma mark Response-string helpers
+
+// convert responses of the form "a=foo \n b=bar"   to a dictionary
++ (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString {
+
+  NSArray *allLines = [responseString componentsSeparatedByString:@"\n"];
+  NSMutableDictionary *responseDict = [NSMutableDictionary dictionary];
+
+  NSString *line;
+  GDATA_FOREACH(line, allLines) {
+    NSScanner *scanner = [NSScanner scannerWithString:line];
+    NSString *key;
+    NSString *value;
+
+    if ([scanner scanUpToString:@"=" intoString:&key]
+        && [scanner scanString:@"=" intoString:NULL]
+        && [scanner scanUpToString:@"\n" intoString:&value]) {
+
+      [responseDict setObject:value forKey:key];
+    }
+  }
+  return responseDict;
 }
 
 #pragma mark Version helpers

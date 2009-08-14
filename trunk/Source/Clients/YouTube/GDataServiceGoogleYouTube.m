@@ -164,14 +164,9 @@
 }
 
 // when authenticating, add the Content-Type header required by YouTube
-- (NSMutableURLRequest *)authenticationRequestForURL:(NSURL *)url {
-  
-  NSMutableURLRequest *request = [super authenticationRequestForURL:url];
-  
-  [request setValue:@"application/x-www-form-urlencoded"
-     forHTTPHeaderField:@"Content-Type"];
-    
-  return request;
+- (NSDictionary *)customAuthenticationRequestHeaders {
+  return [NSDictionary dictionaryWithObject:@"application/x-www-form-urlencoded"
+                                     forKey:@"Content-Type"];
 }
 
 - (NSString *)signInDomain {
