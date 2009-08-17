@@ -72,7 +72,6 @@
 
 #pragma mark -
 
-
 - (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len {
 
   NSInteger numRead = [inputStream_ read:buffer maxLength:len];
@@ -81,19 +80,35 @@
 
     numBytesRead_ += numRead;
 
-    if (monitorDelegate_ && monitorSelector_) {
+    if (monitorDelegate_) {
 
-      // call the monitor delegate with the number of bytes read and the
-      // total bytes read
+      if (monitorSelector_) {
+        // call the monitor delegate with the number of bytes read and the
+        // total bytes read
+        NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:monitorSelector_];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation setSelector:monitorSelector_];
+        [invocation setTarget:monitorDelegate_];
+        [invocation setArgument:&self atIndex:2];
+        [invocation setArgument:&numBytesRead_ atIndex:3];
+        [invocation setArgument:&dataSize_ atIndex:4];
+        [invocation invoke];
+      }
 
-      NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:monitorSelector_];
-      NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-      [invocation setSelector:monitorSelector_];
-      [invocation setTarget:monitorDelegate_];
-      [invocation setArgument:&self atIndex:2];
-      [invocation setArgument:&numBytesRead_ atIndex:3];
-      [invocation setArgument:&dataSize_ atIndex:4];
-      [invocation invoke];
+      if (readSelector_) {
+        // call the read selector with the buffer and number of bytes actually
+        // read into it
+        unsigned long long length = numRead;
+
+        NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:readSelector_];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+        [invocation setSelector:readSelector_];
+        [invocation setTarget:monitorDelegate_];
+        [invocation setArgument:&self atIndex:2];
+        [invocation setArgument:&buffer atIndex:3];
+        [invocation setArgument:&length atIndex:4];
+        [invocation invoke];
+      }
     }
   }
   return numRead;
@@ -167,6 +182,14 @@
 
 - (SEL)monitorSelector {
   return monitorSelector_;
+}
+
+- (void)setReadSelector:(SEL)readSelector {
+  readSelector_ = readSelector;
+}
+
+- (SEL)readSelector {
+  return readSelector_;
 }
 
 - (void)setMonitorSource:(id)source {

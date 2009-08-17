@@ -64,8 +64,10 @@
     NSMutableString *mutableStr = [NSMutableString stringWithString:str];
     while (range.location != NSNotFound) {
 
-      GDATA_DEBUG_LOG(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"",
+#if DEBUG
+      NSLog(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"",
             [mutableStr characterAtIndex:range.location], str);
+#endif
 
       [mutableStr deleteCharactersInRange:range];
 
