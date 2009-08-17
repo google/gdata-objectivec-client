@@ -35,6 +35,7 @@
 
   IBOutlet NSTextField *mPostEditField;
   IBOutlet NSProgressIndicator *mEditProgressIndicator;
+  IBOutlet NSButton *mPostDraftCheckBox;
   IBOutlet NSButton *mAddPostButton;
   IBOutlet NSButton *mUpdatePostButton;
   IBOutlet NSButton *mDeletePostButton;
@@ -65,6 +66,8 @@
 - (IBAction)addPostClicked:(id)sender;
 - (IBAction)updatePostClicked:(id)sender;
 - (IBAction)deletePostClicked:(id)sender;
+
+- (IBAction)draftCheckboxClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 

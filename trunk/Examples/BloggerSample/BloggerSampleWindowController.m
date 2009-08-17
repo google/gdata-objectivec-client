@@ -159,14 +159,21 @@
 
   BOOL isPostSelected = ([self selectedPost] != nil);
   [mDeletePostButton setEnabled:isPostSelected];
+  [mPostDraftCheckBox setEnabled:isPostSelected];
 
   BOOL canUpdatePost = NO;
 
   if (isPostSelected) {
+    // the post can be updated if either the text or the draft checkbox state
+    // has changed
     NSString *postStr = [[[self selectedPost] content] stringValue];
     NSString *editedStr = [mPostEditField stringValue];
 
-    canUpdatePost = ![postStr isEqual:editedStr];
+    BOOL isPostDraft = [[[self selectedPost] atomPubControl] isDraft];
+    BOOL isEditedDraft = ([mPostDraftCheckBox state] == NSOnState);
+
+    canUpdatePost = ![postStr isEqual:editedStr]
+      || (isPostDraft != isEditedDraft);
   }
   [mUpdatePostButton setEnabled:canUpdatePost];
 
@@ -201,6 +208,9 @@
   GDataEntryBlogPost *entry = [self selectedPost];
   if (entry) {
     [mPostEditField setStringValue:[[entry content] stringValue]];
+
+    BOOL isDraft = [[entry atomPubControl] isDraft];
+    [mPostDraftCheckBox setState:(isDraft ? NSOnState : NSOffState)];
   }
 }
 
@@ -232,6 +242,10 @@
 
 - (IBAction)deletePostClicked:(id)sender {
   [self deleteSelectedPost];
+}
+
+- (IBAction)draftCheckboxClicked:(id)sender {
+  [self updateUI];
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
@@ -439,11 +453,15 @@
   NSString *title = [NSString stringWithFormat:@"Post Created %@",
                      [NSDate date]];
   NSString *content = [mPostEditField stringValue];
+  BOOL isDraft = [mPostDraftCheckBox state];
 
   [newEntry setTitleWithString:title];
   [newEntry setContentWithString:content];
   [newEntry addAuthor:[GDataPerson personWithName:@"Blogger Sample App"
                                             email:nil]];
+  GDataAtomPubControl *atomPub;
+  atomPub = [GDataAtomPubControl atomPubControlWithIsDraft:isDraft];
+  [newEntry setAtomPubControl:atomPub];
 
   NSURL *postURL = [[[self selectedBlog] postLink] URL];
   if (postURL != nil) {
@@ -496,6 +514,15 @@
 
     // save the edited text into the entry
     [[editedEntry content] setStringValue:[mPostEditField stringValue]];
+
+    BOOL isDraft = ([mPostDraftCheckBox state] == NSOnState);
+
+    GDataAtomPubControl *atomPub = [editedEntry atomPubControl];
+    if (atomPub == nil) {
+      atomPub = [GDataAtomPubControl atomPubControl];
+      [editedEntry setAtomPubControl:atomPub];
+    }
+    [atomPub setIsDraft:isDraft];
 
     // send the edited entry to the server
     GDataServiceGoogleBlogger *service = [self bloggerService];
@@ -594,8 +621,6 @@
   [self setEditPostTicket:nil];
   [self updateUI];
 }
-
-#pragma mark Add an entry
 
 #pragma mark Text field delegate methods
 
