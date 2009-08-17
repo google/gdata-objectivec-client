@@ -18,9 +18,29 @@
 //
 
 #import "GDataAuthenticationFetcher.h"
-#import "GDataUtilities.h"
 
 @implementation GDataAuthenticationFetcher
+
+// same as GDataUtilities stringByURLEncodingForURI:
+static NSString* StringByURLEncodingString(NSString *str) {
+  NSString *resultStr = str;
+  CFStringRef originalString = (CFStringRef) str;
+  CFStringRef leaveUnescaped = NULL;
+
+  CFStringRef escapedStr;
+  const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+
+  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                       originalString,
+                                                       leaveUnescaped,
+                                                       kCharsToForceEscape,
+                                                       kCFStringEncodingUTF8);
+  if (escapedStr) {
+    resultStr = [(id)CFMakeCollectable(escapedStr) autorelease];
+  }
+  return resultStr;
+}
+
 + (GDataHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
                                           password:(NSString *)password
                                            service:(NSString *)serviceID // code for the service to be used, like "cl"
@@ -65,11 +85,11 @@
 
   NSString *postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=%@";
   NSString *postString = [NSString stringWithFormat:postTemplate,
-                        [GDataUtilities stringByURLEncodingForURI:username],
-                        [GDataUtilities stringByURLEncodingForURI:password],
-                        [GDataUtilities stringByURLEncodingForURI:source],
-                        [GDataUtilities stringByURLEncodingForURI:serviceID],
-                        [GDataUtilities stringByURLEncodingForURI:accountType]];
+                          StringByURLEncodingString(username),
+                          StringByURLEncodingString(password),
+                          StringByURLEncodingString(source),
+                          StringByURLEncodingString(serviceID),
+                          StringByURLEncodingString(accountType)];
 
   // add custom post body parameters to the post string; typically params is
   // nil, but it may have captcha token and answer
@@ -77,7 +97,7 @@
   while ((key = [keyEnum nextObject]) != nil) {
     NSString *value = [params objectForKey:key];
     postString = [postString stringByAppendingFormat:@"&%@=%@",
-                  key, [GDataUtilities stringByURLEncodingForURI:value]];
+                  key, StringByURLEncodingString(value)];
   }
 
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
