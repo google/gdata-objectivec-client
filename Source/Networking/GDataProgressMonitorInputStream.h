@@ -16,7 +16,7 @@
 #import <Foundation/Foundation.h>
 
 // The monitored input stream calls back into the monitor delegate
-// with the number of bytes and total size
+// with the number of bytes and total size:
 //
 // - (void)inputStream:(GDataProgressMonitorInputStream *)stream
 //   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
@@ -29,11 +29,10 @@
 #define GDATA_NSSTREAM_DELEGATE
 #endif
 
-// GDataDefines.h is not required to use GDataProgressMonitorInputStream.
-// This import may be omitted when using GDataProgressMonitorInputStream
-// outside of the Google Data APIs library.
-#ifndef SKIP_GDATA_DEFINES
-#import "GDataDefines.h"
+
+#if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) || defined(GDATA_TARGET_NAMESPACE)
+  // we need NSInteger for the 10.4 SDK, or we're using target namespace macros
+  #import "GDataDefines.h"
 #endif
 
 @interface GDataProgressMonitorInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
@@ -45,6 +44,7 @@
 
   id monitorDelegate_;    // WEAK, not retained
   SEL monitorSelector_;
+  SEL readSelector_;
 
   id monitorSource_;     // WEAK, not retained
 }
@@ -75,5 +75,14 @@
 - (void)setMonitorSource:(id)source; // not retained
 - (id)monitorSource;
 
-@end
+// The monitor delegate may also provide a selector to see the bytes read, with
+// a signature matching
+//
+// - (void)inputStream:(GDataProgressMonitorInputStream *)stream
+//      readIntoBuffer:(uint8_t *)buffer
+//              length:(unsigned long long)length;
 
+- (void)setReadSelector:(SEL)readSelector;
+- (SEL)readSelector;
+
+@end

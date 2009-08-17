@@ -20,7 +20,6 @@
 #define GDATAHTTPFETCHER_DEFINE_GLOBALS 1
 
 #import "GDataHTTPFetcher.h"
-#import "GDataHTTPFetcherLogging.h"
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 @interface NSURLConnection (LeopardMethodsOnTigerBuilds)
@@ -46,6 +45,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
            inArray:(NSMutableArray *)cookieStorageArray;
 - (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
+
+- (void)logNowWithError:(NSError *)error;
 
 - (BOOL)shouldRetryNowForStatus:(NSInteger)status error:(NSError *)error;
 - (void)destroyRetryTimer;
@@ -188,13 +189,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     if (postData_) {
       [request_ setHTTPBody:postData_];
     } else {
-
-      // if logging is enabled, it needs a buffer to accumulate data from any
-      // NSInputStream used for uploading.  Logging will wrap the input
-      // stream with a stream that lets us keep a copy the data being read.
-      if ([GDataHTTPFetcher isLoggingEnabled] && postStream_ != nil) {
-        loggedStreamData_ = [[NSMutableData alloc] init];
-        [self logCapturePostStream];
+      if ([self respondsToSelector:@selector(setupStreamLogging)]) {
+        [self performSelector:@selector(setupStreamLogging)];
       }
 
       [request_ setHTTPBodyStream:postStream_];
@@ -455,7 +451,7 @@ CannotBeginFetch:
 
     // log the response we just received
     [self setResponse:redirectResponse];
-    [self logFetchWithError:nil];
+    [self logNowWithError:nil];
 
     // update the request for future logging
     [self setRequest:redirectRequest];
@@ -664,7 +660,7 @@ CannotBeginFetch:
 
   [[self retain] autorelease]; // in case the callback releases us
 
-  [self logFetchWithError:nil];
+  [self logNowWithError:nil];
 
   NSInteger status = [self statusAfterHandlingNotModifiedError];
 
@@ -729,7 +725,7 @@ CannotBeginFetch:
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
 
-  [self logFetchWithError:error];
+  [self logNowWithError:error];
 
   // see comment about sendStopNotificationIfNeeded
   // in connectionDidFinishLoading:
@@ -750,6 +746,14 @@ CannotBeginFetch:
     }
 
     [self stopFetching];
+  }
+}
+
+- (void)logNowWithError:(NSError *)error {
+  // if the logging category is available, then log the current request,
+  // response, data, and error
+  if ([self respondsToSelector:@selector(logFetchWithError:)]) {
+    [self performSelector:@selector(logFetchWithError:) withObject:error];
   }
 }
 

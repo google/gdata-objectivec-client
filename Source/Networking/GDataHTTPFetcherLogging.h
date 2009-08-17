@@ -44,6 +44,8 @@
 //
 // Projects may define STRIP_GDATA_FETCH_LOGGING to remove logging code.
 
+#if !STRIP_GDATA_FETCH_LOGGING
+
 @interface GDataHTTPFetcher (GDataHTTPFetcherLogging)
 
 // Note: the default logs directory is ~/Desktop/GDataHTTPDebugLogs; it will be
@@ -66,5 +68,7 @@
 
 // internal; called by fetcher
 - (void)logFetchWithError:(NSError *)error;
-- (void)logCapturePostStream;
+- (BOOL)logCapturePostStream;
 @end
+
+#endif
