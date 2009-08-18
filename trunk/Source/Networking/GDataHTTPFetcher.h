@@ -62,6 +62,17 @@
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData;
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 //
+//  The block callback version looks like:
+//
+//  [myFetcher beginFetchWithCompletionHandler:^(NSData *retrievedData, NSError *error) {
+//    if (error != nil) {
+//      // status code or network error
+//    } else {
+//      // succeeded
+//    }
+//  }];
+
+//
 // NOTE:  Fetches may retrieve data from the server even though the server
 //        returned an error.  The failure selector is called when the server
 //        status is >= 300, with an NSError having domain
@@ -198,9 +209,17 @@
 #if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) || defined(GDATA_TARGET_NAMESPACE)
   // we need NSInteger for the 10.4 SDK, or we're using target namespace macros
   #import "GDataDefines.h"
-#elif TARGET_OS_IPHONE && !defined(GDATA_FOUNDATION_ONLY)
-  #define GDATA_FOUNDATION_ONLY 1
+#else
+  #if TARGET_OS_IPHONE
+    #ifndef GDATA_FOUNDATION_ONLY
+      #define GDATA_FOUNDATION_ONLY 1
+    #endif
+    #ifndef GDATA_IPHONE
+      #define GDATA_IPHONE 1
+    #endif
+  #endif
 #endif
+
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -263,6 +282,17 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   SEL statusFailedSEL_;             // implemented by delegate if it needs separate network error callbacks
   SEL networkFailedSEL_;            // should be implemented by delegate
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
+#if NS_BLOCKS_AVAILABLE
+  void (^completionBlock_)(NSData *, NSError *);
+  void (^receivedDataBlock_)(NSData *);
+  BOOL (^retryBlock_)(BOOL, NSError *);
+#elif !__LP64__
+  // placeholders: for 32-bit builds, keep the size of the object's ivar section
+  // the same with and without blocks
+  id completionPlaceholder_;
+  id receivedDataPlaceholder_;
+  id retryPlaceholder_;
+#endif
   BOOL isStopNotificationNeeded_;   // set when start notification has been sent
   id userData_;                     // retained, if set by caller
   NSMutableDictionary *properties_; // more data retained for caller
@@ -330,19 +360,26 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (SEL)receivedDataSelector;
 - (void)setReceivedDataSelector:(SEL)theSelector;
 
+#if NS_BLOCKS_AVAILABLE
+- (void)setReceivedDataBlock:(void (^)(NSData *dataReceivedSoFar))block;
+#endif
 
 // retrying; see comments at the top of the file.  Calling
 // setIsRetryEnabled(YES) resets the min and max retry intervals.
 - (BOOL)isRetryEnabled;
 - (void)setIsRetryEnabled:(BOOL)flag;
 
-// retry selector is optional for retries.
+// retry selector or block is optional for retries.
 //
 // If present, it should have the signature:
 //   -(BOOL)fetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
 // and return YES to cause a retry.  See comments at the top of this file.
 - (SEL)retrySelector;
 - (void)setRetrySelector:(SEL)theSel;
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setRetryBlock:(BOOL (^)(BOOL suggestedWillRetry, NSError *error))block;
+#endif
 
 // retry intervals must be strictly less than maxRetryInterval, else
 // they will be limited to maxRetryInterval and no further retries will
@@ -388,6 +425,10 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (BOOL)beginFetchWithDelegate:(id)delegate
              didFinishSelector:(SEL)finishedSEL
                didFailSelector:(SEL)failedSEL;
+
+#if NS_BLOCKS_AVAILABLE
+- (BOOL)beginFetchWithCompletionHandler:(void (^)(NSData *data, NSError *error))handler;
+#endif
 
 
 // Begin fetching the request (original interface)

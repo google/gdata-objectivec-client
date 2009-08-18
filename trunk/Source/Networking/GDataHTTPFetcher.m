@@ -93,6 +93,11 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   [postStream_ release];
   [loggedStreamData_ release];
   [response_ release];
+#if NS_BLOCKS_AVAILABLE
+  [completionBlock_ release];
+  [receivedDataBlock_ release];
+  [retryBlock_ release];
+#endif
   [userData_ release];
   [properties_ release];
   [runLoopModes_ release];
@@ -126,6 +131,17 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
             didFailWithStatusSelector:kUnifiedFailureCallback
              didFailWithErrorSelector:failedSEL];
 }
+
+#if NS_BLOCKS_AVAILABLE
+- (BOOL)beginFetchWithCompletionHandler:(void (^)(NSData *data, NSError *error))handler {
+  completionBlock_ = [handler copy];
+  return [self beginFetchWithDelegate:nil
+                    didFinishSelector:nil
+            didFailWithStatusSelector:kUnifiedFailureCallback
+             didFailWithErrorSelector:nil];
+}
+#endif
+
 
 // Original fetcher API
 //
@@ -583,6 +599,12 @@ CannotBeginFetch:
                    withObject:self
                    withObject:downloadedData_];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  if (receivedDataBlock_) {
+    receivedDataBlock_(downloadedData_);
+  }
+#endif
 }
 
 - (void)updateFetchHistory {
@@ -673,18 +695,19 @@ CannotBeginFetch:
   // 30 seconds or more) is part of the network activity
   [self sendStopNotificationIfNeeded];
 
-  // if there's an error status and the client gave us a status error
-  // selector, then call that selector
-  if (status >= 300 && statusFailedSEL_) {
+  BOOL shouldStopFetching = YES;
+
+  // if there's an error status, retry or notify the client
+  if (status >= 300) {
 
     if ([self shouldRetryNowForStatus:status error:nil]) {
-
+      // retrying
       [self beginRetryTimer];
+      shouldStopFetching = NO;
 
     } else if (statusFailedSEL_ == kUnifiedFailureCallback) {
-
       // not retrying, and no separate status callback, so call the
-      // sole failure selector
+      // sole failure selector or the completion block
       NSDictionary *userInfo =
         [NSDictionary dictionaryWithObject:downloadedData_
                                     forKey:kGDataHTTPFetcherStatusDataKey];
@@ -692,14 +715,19 @@ CannotBeginFetch:
       NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherStatusDomain
                                            code:status
                                        userInfo:userInfo];
+      if (networkFailedSEL_) {
+        [delegate_ performSelector:networkFailedSEL_
+                        withObject:self
+                        withObject:error];
+      }
 
-      [delegate_ performSelector:networkFailedSEL_
-                      withObject:self
-                      withObject:error];
+#if NS_BLOCKS_AVAILABLE
+      if (completionBlock_) {
+        completionBlock_(nil, error);
+      }
+#endif
 
-      [self stopFetching];
-
-    } else {
+    } else if (statusFailedSEL_) {
       // not retrying, call status failure callback
       NSMethodSignature *signature = [delegate_ methodSignatureForSelector:statusFailedSEL_];
       NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -709,18 +737,25 @@ CannotBeginFetch:
       [invocation setArgument:&status atIndex:3];
       [invocation setArgument:&downloadedData_ atIndex:4];
       [invocation invoke];
-
-      [self stopFetching];
     }
-  } else if (finishedSEL_) {
-
+  } else {
     // successful http status (under 300)
-    [delegate_ performSelector:finishedSEL_
-                    withObject:self
-                    withObject:downloadedData_];
-    [self stopFetching];
+    if (finishedSEL_) {
+      [delegate_ performSelector:finishedSEL_
+                      withObject:self
+                      withObject:downloadedData_];
+    }
+
+#if NS_BLOCKS_AVAILABLE
+    if (completionBlock_) {
+      completionBlock_(downloadedData_, nil);
+    }
+#endif
   }
 
+  if (shouldStopFetching) {
+    [self stopFetching];
+  }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
@@ -737,13 +772,19 @@ CannotBeginFetch:
 
   } else {
 
-    if (networkFailedSEL_) {
-      [[self retain] autorelease]; // in case the callback releases us
+    [[self retain] autorelease]; // in case the callback releases us
 
+    if (networkFailedSEL_) {
       [delegate_ performSelector:networkFailedSEL_
                       withObject:self
                       withObject:error];
     }
+
+#if NS_BLOCKS_AVAILABLE
+    if (completionBlock_) {
+      completionBlock_(nil, error);
+    }
+#endif
 
     [self stopFetching];
   }
@@ -826,6 +867,12 @@ CannotBeginFetch:
 
         [invocation getReturnValue:&willRetry];
       }
+
+#if NS_BLOCKS_AVAILABLE
+      if (retryBlock_) {
+        willRetry = retryBlock_(willRetry, error);
+      }
+#endif
 
       return willRetry;
     }
@@ -927,6 +974,13 @@ CannotBeginFetch:
 - (void)setRetrySelector:(SEL)theSelector {
   retrySEL_ = theSelector;
 }
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setRetryBlock:(BOOL (^)(BOOL, NSError *))block {
+  [block release];
+  retryBlock_ = [block copy];
+}
+#endif
 
 - (NSTimeInterval)maxRetryInterval {
   return maxRetryInterval_;
@@ -1047,6 +1101,13 @@ CannotBeginFetch:
 - (void)setReceivedDataSelector:(SEL)theSelector {
   receivedDataSEL_ = theSelector;
 }
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setReceivedDataBlock:(void (^)(NSData *))block {
+  [block release];
+  receivedDataBlock_ = [block copy];
+}
+#endif
 
 - (NSURLResponse *)response {
   return response_;
@@ -1379,7 +1440,3 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...) {
   va_end(argList);
 #endif
 }
-
-
-
-
