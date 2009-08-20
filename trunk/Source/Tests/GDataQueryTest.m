@@ -339,9 +339,10 @@
   GDataQueryBooks *query1 = [GDataQueryBooks booksQueryWithFeedURL:feedURL];
 
   [query1 setMinimumViewability:kGDataGoogleBooksMinViewabilityFull];
+  [query1 setEBook:@"frogchild"];
 
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://books.google.com/books/feeds/volumes?min-viewability=full";
+  NSString *expected1 = @"http://books.google.com/books/feeds/volumes?ebook=frogchild&min-viewability=full";
   STAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Books query 1 generation error");
 }

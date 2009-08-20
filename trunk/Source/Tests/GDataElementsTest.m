@@ -1648,8 +1648,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   [entry setUploadData:[NSData dataWithBytes:"  " length:2]];
 
   NSString *desc = [entry description];
+
+#if GDATA_SIMPLE_DESCRIPTIONS
+  NSString *expectedBody = @": {extensions:(category,link,title)}";
+#else
   NSString *expectedBody = @": {v:2.0 title:Fred Flintstone categories:1"
-                            " links:rel uploadDataOnly:YES UploadData:#2}";
+  " links:rel uploadDataOnly:YES UploadData:#2}";
+#endif
 
   NSScanner *scanner = [NSScanner scannerWithString:desc];
   NSString *className = nil;

@@ -335,6 +335,10 @@
   return [self linkWithRelAttributeValue:kGDataBooksAnnotationRel]; 
 }
 
+- (GDataLink *)EPubDownloadLink {
+  return [self linkWithRelAttributeValue:kGDataBooksEPubDownloadRel];
+}
+
 
 @end
 
