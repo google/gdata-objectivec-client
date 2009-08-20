@@ -54,12 +54,13 @@ _EXTERN NSString* const kGDataBooksNotEmbeddable  _INITIALIZE_AS(@"http://schema
 _EXTERN NSString* const kGDataBooksEnabled   _INITIALIZE_AS(@"http://schemas.google.com/books/2008#enabled");
 _EXTERN NSString* const kGDataBooksDisabled  _INITIALIZE_AS(@"http://schemas.google.com/books/2008#disabled");
 
-_EXTERN NSString* const kGDataBooksInfoRel       _INITIALIZE_AS(@"http://schemas.google.com/books/2008/info");
-_EXTERN NSString* const kGDataBooksPreviewRel    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/preview");
-_EXTERN NSString* const kGDataBooksThumbnailRel  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/thumbnail");
-_EXTERN NSString* const kGDataBooksAnnotationRel _INITIALIZE_AS(@"http://schemas.google.com/books/2008/annotation");
+_EXTERN NSString* const kGDataBooksInfoRel         _INITIALIZE_AS(@"http://schemas.google.com/books/2008/info");
+_EXTERN NSString* const kGDataBooksPreviewRel      _INITIALIZE_AS(@"http://schemas.google.com/books/2008/preview");
+_EXTERN NSString* const kGDataBooksThumbnailRel    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/thumbnail");
+_EXTERN NSString* const kGDataBooksAnnotationRel   _INITIALIZE_AS(@"http://schemas.google.com/books/2008/annotation");
+_EXTERN NSString* const kGDataBooksEPubDownloadRel _INITIALIZE_AS(@"http://schemas.google.com/books/2008/epubdownload");
 
-_EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas.google.com/books/2008/labels");
+_EXTERN NSString* const kGDataBooksLabelsScheme    _INITIALIZE_AS(@"http://schemas.google.com/books/2008/labels");
 
 
 @interface GDataVolumeViewability : GDataValueConstruct <GDataExtension>
@@ -153,6 +154,7 @@ _EXTERN NSString* const kGDataBooksLabelsScheme  _INITIALIZE_AS(@"http://schemas
 - (GDataLink *)previewLink;
 - (GDataLink *)infoLink;
 - (GDataLink *)annotationLink;
+- (GDataLink *)EPubDownloadLink;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

@@ -1138,8 +1138,10 @@ objectDescriptionIfNonNil:(id)obj
   }
 
   if ([extnsItems count] > 0) {
+    // sort for predictable ordering in unit tests
+    NSArray *sortedItems = [extnsItems sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     NSString *extnsStr = [NSString stringWithFormat:@"extensions:(%@)",
-                          [extnsItems componentsJoinedByString:@","]];
+                          [sortedItems componentsJoinedByString:@","]];
     [items addObject:extnsStr];
   }
 #endif

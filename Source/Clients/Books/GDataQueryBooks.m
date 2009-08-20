@@ -43,6 +43,16 @@ static NSString *const kEBookParamName = @"ebook";
   return str;
 }
 
+- (void)setEBook:(NSString *)str {
+  [self addCustomParameterWithName:kEBookParamName
+                             value:str];  
+}
+
+- (NSString *)EBook {
+  NSString *str = [self valueForParameterWithName:kEBookParamName];
+  return str;
+}
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

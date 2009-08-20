@@ -431,10 +431,8 @@ enum {
 
 // Standalone auth: authenticate without fetching a feed or entry
 //
-// unlike authenticateThenInvoke, there is no ticket involved
-//
 // authSelector has a signature matching:
-//   - (void)service:(GDataServiceGoogle *)service authenticatedWithError:(NSError *)error;
+//   - (void)ticket:(GDataServiceTicket *)ticket authenticatedWithError:(NSError *)error;
 
 - (GDataServiceTicket *)authenticateWithDelegate:(id)delegate
                          didAuthenticateSelector:(SEL)authSelector {
