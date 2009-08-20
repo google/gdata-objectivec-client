@@ -1313,6 +1313,8 @@
 		4F66E20A0E11CCFF005DD84C /* GDataFeedSitemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F66E2080E11CCFE005DD84C /* GDataFeedSitemap.m */; };
 		4F66E20B0E11CCFF005DD84C /* GDataFeedSitemap.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F66E2080E11CCFE005DD84C /* GDataFeedSitemap.m */; };
 		4F66E20D0E11CD0F005DD84C /* GDataFeedSitemap.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F66E20C0E11CD0F005DD84C /* GDataFeedSitemap.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F6728F9103E16FA0064FB06 /* GDataHealthConstants.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F25FC191028E5F40035D678 /* GDataHealthConstants.h */; };
+		4F6728FA103E170F0064FB06 /* GDataHealthConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25FC1A1028E5F40035D678 /* GDataHealthConstants.m */; };
 		4F6933120D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6933110D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m */; };
 		4F6933130D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6933110D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m */; };
 		4F6933140D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6933110D5D53E000DE4FF2 /* GDataEntryYouTubeUpload.m */; };
@@ -2060,6 +2062,7 @@
 			dstSubfolderSpec = 16;
 			files = (
 				4F1C70721027B53600B46459 /* GData.h in Copy Static Library Headers */,
+				4F6728F9103E16FA0064FB06 /* GDataHealthConstants.h in Copy Static Library Headers */,
 				4F1C70731027B53600B46459 /* GDataACL.h in Copy Static Library Headers */,
 				4F1C70741027B53600B46459 /* GDataACLRole.h in Copy Static Library Headers */,
 				4F1C70751027B53600B46459 /* GDataACLScope.h in Copy Static Library Headers */,
@@ -5169,6 +5172,7 @@
 				4F1C6F5D1027B4B600B46459 /* GDataACLScope.m in Sources */,
 				4F1C6F5E1027B4B600B46459 /* GDataAnalyticsAggregateGroup.m in Sources */,
 				4F1C6F5F1027B4B600B46459 /* GDataAnalyticsConstants.m in Sources */,
+				4F6728FA103E170F0064FB06 /* GDataHealthConstants.m in Sources */,
 				4F1C6F601027B4B600B46459 /* GDataAnalyticsDataSource.m in Sources */,
 				4F1C6F611027B4B600B46459 /* GDataAnalyticsElements.m in Sources */,
 				4F1C6F621027B4B600B46459 /* GDataAnalyticsMetric.m in Sources */,
