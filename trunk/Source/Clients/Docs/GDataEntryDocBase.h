@@ -63,6 +63,7 @@
 - (NSArray *)parentLinks;
 
 - (GDataFeedLink *)ACLFeedLink;
+- (GDataFeedLink *)revisionFeedLink;
 
 @end
 

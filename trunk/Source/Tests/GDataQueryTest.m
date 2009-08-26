@@ -348,7 +348,7 @@
 }
 
 - (void)testDocsQuery {
-  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleDocsDefaultPrivateFullFeed];
+  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
   GDataQueryDocs *query1 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
 
   [query1 setTitleQuery:@"King Of Oceania"];
@@ -357,7 +357,7 @@
   [query1 setShouldShowFolders:YES];
 
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://docs.google.com/feeds/documents/private/full?"
+  NSString *expected1 = @"https://docs.google.com/feeds/default/private/full?"
     "folder=Major+Folder&showfolders=true&title=King+Of+Oceania&title-exact=true";
   STAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Docs query 1 generation error");
@@ -367,20 +367,25 @@
   [query2 setReader:@"wilma@flintstone.com,pebbles@flintstone.com"];
   [query2 setWriter:@"barney@rubble.com,betty@rubble.com"];
   NSURL *resultURL2 = [query2 URL];
-  NSString *expected2 = @"http://docs.google.com/feeds/documents/private/full?"
+  NSString *expected2 = @"https://docs.google.com/feeds/default/private/full?"
     "owner=fred%40flintstone.com&reader=wilma%40flintstone.com%2C"
     "pebbles%40flintstone.com&writer=barney%40rubble.com%2Cbetty%40rubble.com";
   STAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"Docs query 2 generation error");
-  
+
   GDataDateTime* minDate = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-29T07:35:59.000Z"];
   GDataDateTime* maxDate = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-30T07:35:59.000Z"];
-  
+  GDataDateTime* minDate2 = [GDataDateTime dateTimeWithRFC3339String:@"2006-04-29T07:35:59.000Z"];
+  GDataDateTime* maxDate2 = [GDataDateTime dateTimeWithRFC3339String:@"2006-04-30T07:35:59.000Z"];
+
   GDataQueryDocs *query3 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query3 setOpenedMinDateTime:minDate];
-  [query3 setOpenedMaxDateTime:maxDate];  
+  [query3 setOpenedMaxDateTime:maxDate];
+  [query3 setEditedMinDateTime:minDate2];
+  [query3 setEditedMaxDateTime:maxDate2];
   NSURL *resultURL3 = [query3 URL];
-  NSString *expected3 = @"http://docs.google.com/feeds/documents/private/full?"
+  NSString *expected3 = @"https://docs.google.com/feeds/default/private/full?"
+    "edited-max=2006-04-30T07%3A35%3A59Z&edited-min=2006-04-29T07%3A35%3A59Z&"
     "opened-max=2006-03-30T07%3A35%3A59Z&opened-min=2006-03-29T07%3A35%3A59Z";
   STAssertEqualObjects([resultURL3 absoluteString], expected3,
                        @"Docs query 3 generation error");

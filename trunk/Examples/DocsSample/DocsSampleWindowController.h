@@ -30,10 +30,18 @@
   IBOutlet NSProgressIndicator *mDocListProgressIndicator;
   IBOutlet NSTextView *mDocListResultTextField;
   IBOutlet NSButton *mDocListCancelButton;
+
+  IBOutlet NSTableView *mRevisionsTable;
+  IBOutlet NSProgressIndicator *mRevisionsProgressIndicator;
+  IBOutlet NSTextView *mRevisionsResultTextField;
+  IBOutlet NSButton *mRevisionsCancelButton;
+
   IBOutlet NSButton *mViewSelectedDocButton;
   IBOutlet NSButton *mDeleteSelectedDocButton;
   IBOutlet NSButton *mDownloadSelectedDocButton;
   IBOutlet NSButton *mCreateFolderButton;
+
+  IBOutlet NSButton *mViewSelectedRevisionButton;
 
   IBOutlet NSPopUpButton *mFolderMembershipPopup;
 
@@ -46,6 +54,10 @@
   GDataFeedDocList *mDocListFeed;
   GDataServiceTicket *mDocListFetchTicket;
   NSError *mDocListFetchError;
+
+  GDataFeedDocRevision *mRevisionFeed;
+  GDataServiceTicket *mRevisionFetchTicket;
+  NSError *mRevisionFetchError;
   
   GDataServiceTicket *mUploadTicket;
 }
@@ -54,9 +66,12 @@
 
 - (IBAction)getDocListClicked:(id)sender;
 - (IBAction)cancelDocListFetchClicked:(id)sender;
+- (IBAction)cancelRevisionsFetchClicked:(id)sender;
 
 - (IBAction)viewSelectedDocClicked:(id)sender;
 - (IBAction)downloadSelectedDocClicked:(id)sender;
+
+- (IBAction)viewSelectedRevisionClicked:(id)sender;
 
 - (IBAction)createFolderClicked:(id)sender;
 

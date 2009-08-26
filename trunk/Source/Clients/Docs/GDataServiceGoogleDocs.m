@@ -25,9 +25,106 @@
 #import "GDataEntryDocBase.h"
 #import "GDataQueryDocs.h"
 #import "GDataFeedDocList.h"
+#import "GDataFeedDocRevision.h"
 
 
 @implementation GDataServiceGoogleDocs
+
++ (NSURL *)docsFeedURLUsingHTTPS:(BOOL)shouldUseHTTPS {
+  NSURL *url = [self docsURLForUserID:kGDataServiceDefaultUser
+                           visibility:kGDataGoogleDocsVisibilityPrivate
+                           projection:kGDataGoogleDocsProjectionFull
+                           resourceID:nil
+                             feedType:nil
+                           revisionID:nil
+                             useHTTPS:shouldUseHTTPS];
+  return url;
+}
+
++ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID
+                                   useHTTPS:(BOOL)shouldUseHTTPS {
+  NSURL *url = [self docsURLForUserID:kGDataServiceDefaultUser
+                           visibility:kGDataGoogleDocsVisibilityPrivate
+                           projection:kGDataGoogleDocsProjectionFull
+                           resourceID:resourceID
+                             feedType:kGDataGoogleDocsFeedTypeFolderContents
+                           revisionID:nil
+                             useHTTPS:shouldUseHTTPS];
+  return url;
+}
+
++ (NSURL *)docsURLForUserID:(NSString *)userID
+                 visibility:(NSString *)visibility
+                 projection:(NSString *)projection
+                 resourceID:(NSString *)resourceID
+                   feedType:(NSString *)feedType
+                 revisionID:(NSString *)revisionID
+                   useHTTPS:(BOOL)shouldUseHTTPS {
+  // get the root URL, and fix the scheme
+  NSString *rootURLStr = [self serviceRootURLString];
+  if (shouldUseHTTPS) {
+    rootURLStr = [NSString stringWithFormat:@"https:%@",
+                  [rootURLStr substringFromIndex:5]];
+  }
+
+  if (projection == nil) {
+    projection = @"full";
+  }
+
+  NSString *template = @"%@%@/%@/%@";
+  NSString *encodedUser = [GDataUtilities stringByURLEncodingForURI:userID];
+  NSString *urlStr = [NSString stringWithFormat:template,
+                      rootURLStr, encodedUser, visibility, projection];
+
+  // now add the optional parts
+  if (resourceID) {
+    NSString *encodedResID = [GDataUtilities stringByURLEncodingForURI:resourceID];
+    urlStr = [urlStr stringByAppendingFormat:@"/%@", encodedResID];
+  }
+
+  if (feedType) {
+    urlStr = [urlStr stringByAppendingFormat:@"/%@", feedType];
+  }
+
+  if (revisionID) {
+    urlStr = [urlStr stringByAppendingFormat:@"/%@", revisionID];
+  }
+
+  return [NSURL URLWithString:urlStr];
+}
+
+// temporary fetch methods until the DocList API provides "kind" information in
+// the returned XML so we don't need to specify the feed class
+- (GDataServiceTicket *)fetchDocListFeedWithURL:(NSURL *)feedURL
+                                       delegate:(id)delegate
+                              didFinishSelector:(SEL)finishedSelector {
+  return [self fetchFeedWithURL:feedURL
+                      feedClass:[GDataFeedDocList class]
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchDocListFeedWithQuery:(GDataQueryDocs *)query
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector {
+  return [self fetchFeedWithQuery:query
+                        feedClass:[GDataFeedDocList class]
+                         delegate:delegate
+                didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchRevisionFeedWithURL:(NSURL *)feedURL
+                                        delegate:(id)delegate
+                               didFinishSelector:(SEL)finishedSelector {
+  return [self fetchFeedWithURL:feedURL
+                      feedClass:[GDataFeedDocRevision class]
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
++ (NSString *)serviceRootURLString {
+  return @"http://docs.google.com/feeds/";
+}
 
 - (NSString *)serviceID {
   return @"writely";

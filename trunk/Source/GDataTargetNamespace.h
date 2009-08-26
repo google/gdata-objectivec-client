@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.8 (523 classes) 2009-08-13 17:08:01 -0700
+// com.google.GDataFramework v. 1.8 (524 classes) 2009-08-26 11:17:54 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -147,6 +147,7 @@
   #define GDataEntryContactProfile                _GDATA_NS_SYMBOL(GDataEntryContactProfile)
   #define GDataEntryContent                       _GDATA_NS_SYMBOL(GDataEntryContent)
   #define GDataEntryDocBase                       _GDATA_NS_SYMBOL(GDataEntryDocBase)
+  #define GDataEntryDocRevision                   _GDATA_NS_SYMBOL(GDataEntryDocRevision)
   #define GDataEntryEvent                         _GDATA_NS_SYMBOL(GDataEntryEvent)
   #define GDataEntryFinancePortfolio              _GDATA_NS_SYMBOL(GDataEntryFinancePortfolio)
   #define GDataEntryFinancePosition               _GDATA_NS_SYMBOL(GDataEntryFinancePosition)
@@ -221,6 +222,7 @@
   #define GDataFeedContactGroup                   _GDATA_NS_SYMBOL(GDataFeedContactGroup)
   #define GDataFeedContactProfile                 _GDATA_NS_SYMBOL(GDataFeedContactProfile)
   #define GDataFeedDocList                        _GDATA_NS_SYMBOL(GDataFeedDocList)
+  #define GDataFeedDocRevision                    _GDATA_NS_SYMBOL(GDataFeedDocRevision)
   #define GDataFeedEvent                          _GDATA_NS_SYMBOL(GDataFeedEvent)
   #define GDataFeedFinancePortfolio               _GDATA_NS_SYMBOL(GDataFeedFinancePortfolio)
   #define GDataFeedFinancePosition                _GDATA_NS_SYMBOL(GDataFeedFinancePosition)
@@ -289,7 +291,6 @@
   #define GDataICalUIDProperty                    _GDATA_NS_SYMBOL(GDataICalUIDProperty)
   #define GDataIM                                 _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct             _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
-  #define GDataInputStreamLogger                  _GDATA_NS_SYMBOL(GDataInputStreamLogger)
   #define GDataInReplyTo                          _GDATA_NS_SYMBOL(GDataInReplyTo)
   #define GDataLastModifiedBy                     _GDATA_NS_SYMBOL(GDataLastModifiedBy)
   #define GDataLastViewed                         _GDATA_NS_SYMBOL(GDataLastViewed)

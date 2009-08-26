@@ -33,10 +33,12 @@
 
 - (void)uploadFileAtPath:(NSString *)path;
 - (void)saveSelectedDocumentToPath:(NSString *)path;
+- (void)saveDocEntry:(GDataEntryBase *)entry toPath:(NSString *)savePath exportFormat:(NSString *)exportFormat authService:(GDataServiceGoogle *)service;
 - (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry toPath:(NSString *)savePath;
 
 - (GDataServiceGoogleDocs *)docsService;
 - (GDataEntryDocBase *)selectedDoc;
+- (GDataEntryDocRevision *)selectedRevision;
 
 - (GDataFeedDocList *)docListFeed;
 - (void)setDocListFeed:(GDataFeedDocList *)feed;
@@ -44,6 +46,13 @@
 - (void)setDocListFetchError:(NSError *)error;  
 - (GDataServiceTicket *)docListFetchTicket;
 - (void)setDocListFetchTicket:(GDataServiceTicket *)ticket;
+
+- (GDataFeedDocRevision *)revisionFeed;
+- (void)setRevisionFeed:(GDataFeedDocRevision *)feed;
+- (NSError *)revisionFetchError;
+- (void)setRevisionFetchError:(NSError *)error;
+- (GDataServiceTicket *)revisionFetchTicket;
+- (void)setRevisionFetchTicket:(GDataServiceTicket *)ticket;
 
 - (GDataServiceTicket *)uploadTicket;
 - (void)setUploadTicket:(GDataServiceTicket *)ticket;
@@ -94,22 +103,22 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark -
 
 - (void)updateUI {
-  
+
   // docList list display
-  [mDocListTable reloadData]; 
-  
+  [mDocListTable reloadData];
+
   GDataEntryDocBase *selectedDoc = [self selectedDoc];
-  
+
   // spin indicator when retrieving feed
   BOOL isFetchingDocList = (mDocListFetchTicket != nil);
   if (isFetchingDocList) {
-    [mDocListProgressIndicator startAnimation:self];  
+    [mDocListProgressIndicator startAnimation:self];
   } else {
-    [mDocListProgressIndicator stopAnimation:self];  
+    [mDocListProgressIndicator stopAnimation:self];
   }
   [mDocListCancelButton setEnabled:isFetchingDocList];
-  
-  // show the feed fetch result error or the selected entry
+
+  // show the doclist feed fetch result error or the selected entry
   NSString *docResultStr = @"";
   if (mDocListFetchError) {
     docResultStr = [mDocListFetchError description];
@@ -119,18 +128,48 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     }
   }
   [mDocListResultTextField setString:docResultStr];
-  
+
+
+  // revision list display
+  [mRevisionsTable reloadData];
+
+  GDataEntryDocRevision *selectedRevision = [self selectedRevision];
+
+  // spin indicator when retrieving feed
+  BOOL isFetchingRevisions = (mRevisionFetchTicket != nil);
+  if (isFetchingRevisions) {
+    [mRevisionsProgressIndicator startAnimation:self];
+  } else {
+    [mRevisionsProgressIndicator stopAnimation:self];
+  }
+  [mRevisionsCancelButton setEnabled:isFetchingRevisions];
+
+  // show the revision feed fetch result error or the selected entry
+  NSString *revisionsResultStr = @"";
+  if (mRevisionFetchError) {
+    revisionsResultStr = [mRevisionFetchError description];
+  } else {
+    if (selectedRevision) {
+      revisionsResultStr = [selectedRevision description];
+    }
+  }
+  [mRevisionsResultTextField setString:revisionsResultStr];
+
+
   // enable the button for viewing the selected doc in a browser
   BOOL doesDocHaveHTMLLink = ([selectedDoc HTMLLink] != nil);
   [mViewSelectedDocButton setEnabled:doesDocHaveHTMLLink];
-  
-  BOOL doesDocHaveHTMLContent = ([[[selectedDoc content] type] isEqual:@"text/html"]);
-  [mDownloadSelectedDocButton setEnabled:doesDocHaveHTMLContent];
-  
+
+  BOOL doesRevisionHaveHTMLLink = ([selectedRevision HTMLLink] != nil);
+  [mViewSelectedRevisionButton setEnabled:doesRevisionHaveHTMLLink];
+
+  BOOL doesDocHaveExportURL = ([[[selectedDoc content] sourceURI] length] > 0);
+  [mDownloadSelectedDocButton setEnabled:doesDocHaveExportURL];
+
   BOOL doesDocHaveEditLink = ([selectedDoc editLink] != nil);
   [mDeleteSelectedDocButton setEnabled:doesDocHaveEditLink];
-  
-  // enable uploading buttons 
+
+  // enable uploading buttons
   BOOL isUploading = (mUploadTicket != nil);
   BOOL canPostToFeed = ([mDocListFeed postLink] != nil);
 
@@ -143,9 +182,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   // show the title of the file currently uploading
   NSString *uploadingStr = @"";
-  NSString *uploadingTitle = [[(GDataEntryBase *) 
+  NSString *uploadingTitle = [[(GDataEntryBase *)
     [mDocListFetchTicket postedObject] title] stringValue];
-  
+
   if (uploadingTitle) {
     uploadingStr = [NSString stringWithFormat:@"Uploading: %@", uploadingTitle];
   }
@@ -227,6 +266,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [self updateUI];
 }
 
+- (IBAction)cancelRevisionsFetchClicked:(id)sender {
+  [mRevisionFetchTicket cancelTicket];
+  [self setRevisionFetchTicket:nil];
+  [self updateUI];
+}
+
 - (IBAction)viewSelectedDocClicked:(id)sender {
   
   NSURL *docURL = [[[self selectedDoc] HTMLLink] URL];
@@ -235,6 +280,17 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [[NSWorkspace sharedWorkspace] openURL:docURL];
   } else {
     NSBeep(); 
+  }
+}
+
+- (IBAction)viewSelectedRevisionClicked:(id)sender {
+
+  NSURL *revisionURL = [[[self selectedRevision] HTMLLink] URL];
+
+  if (revisionURL) {
+    [[NSWorkspace sharedWorkspace] openURL:revisionURL];
+  } else {
+    NSBeep();
   }
 }
 
@@ -273,42 +329,46 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (void)saveSelectedDocumentToPath:(NSString *)savePath {
-
   // downloading docs, per
-  // http://code.google.com/apis/documents/docs/2.0/developers_guide_protocol.html#DownloadingDocs
+  // http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html#DownloadingDocs
 
   GDataEntryDocBase *docEntry = [self selectedDoc];
-
   if ([docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]]) {
-    // this document entry is for a spreadsheet
-    //
-    // to save a spreadsheet, we need to acquire a spreadsheet service
-    // auth token by fetching a spreadsheet feed or entry, and then download
-    // the spreadsheet file
+    // to save a spreadsheet, we need to authenticate a spreadsheet service
+    // object, and then download the spreadsheet file
     [self saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
                    toPath:savePath];
-    return;
-  }
-
-  NSString *docID = [docEntry resourceID];
-  if ([docID length] > 0) {
-
-    // make the download URL for this document, exporting it as plain text
-    NSString *encodedDocID = [GDataUtilities stringByURLEncodingForURI:docID];
-
-    NSString *template = @"http://docs.google.com/feeds/download/documents/Export?docID=%@&exportFormat=txt";
-
-    NSString *urlStr = [NSString stringWithFormat:template, encodedDocID];
-    NSURL *downloadURL = [NSURL URLWithString:urlStr];
-
-    // read the document's contents asynchronously from the network
-    //
-    // since the user has already signed in, the service object
+  } else {
+    // since the user has already fetched the doc list, the service object
     // has the proper authentication token.  We'll use the service object
     // to generate an NSURLRequest with the auth token in the header, and
     // then fetch that asynchronously.
+    GDataServiceGoogleDocs *docsService = [self docsService];
+    [self saveDocEntry:docEntry
+                toPath:savePath
+          exportFormat:@"txt"
+           authService:docsService];
+  }
+}
+
+- (void)saveDocEntry:(GDataEntryBase *)entry
+              toPath:(NSString *)savePath
+        exportFormat:(NSString *)exportFormat
+         authService:(GDataServiceGoogle *)service {
+
+  // the content src attribute is used for downloading
+  NSURL *exportURL = [[entry content] sourceURL];
+  if (exportURL != nil) {
+
+    // we'll use GDataQuery as a convenient way to append the exportFormat
+    // parameter of the docs export API to the content src URL
+    GDataQuery *query = [GDataQuery queryWithFeedURL:exportURL];
+    [query addCustomParameterWithName:@"exportFormat"
+                                value:exportFormat];
+    NSURL *downloadURL = [query URL];
+
+    // read the document's contents asynchronously from the network
     //
-    GDataServiceGoogleDocs *service = [self docsService];
     NSURLRequest *request = [service requestForURL:downloadURL
                                               ETag:nil
                                         httpMethod:nil];
@@ -353,72 +413,31 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [spreadsheetService setUserAgent:[docsService userAgent]];
   [spreadsheetService setUserCredentialsWithUsername:[docsService username]
                                             password:[docsService password]];
-
-  // we don't really care about retrieving the worksheets feed, but it's
-  // a convenient URL to fetch to force the spreadsheet service object
-  // to acquire an auth token
-  NSURL *worksheetsURL = [[docEntry worksheetsLink] URL];
-
   GDataServiceTicket *ticket;
-  ticket = [spreadsheetService fetchFeedWithURL:worksheetsURL
-                                       delegate:self
-                              didFinishSelector:@selector(spreadsheetTicket:finishedWithFeed:error:)];
+  ticket = [spreadsheetService authenticateWithDelegate:self
+                                didAuthenticateSelector:@selector(spreadsheetTicket:authenticatedWithError:)];
 
   // we'll hang on to the spreadsheet service object with a ticket property
   // since we need it to create an authorized NSURLRequest
-  [ticket setProperty:spreadsheetService forKey:@"service"];
+  [ticket setProperty:docEntry forKey:@"docEntry"];
   [ticket setProperty:savePath forKey:@"savePath"];
-  [ticket setProperty:[docEntry resourceID] forKey:@"docID"];
 }
 
 - (void)spreadsheetTicket:(GDataServiceTicket *)ticket
-         finishedWithFeed:(GDataFeedWorksheet *)feed
-                    error:(NSError *)error {
-  // we don't care if we fetched a worksheets feed, just that we have
-  // an auth token in the service object
+   authenticatedWithError:(NSError *)error {
+  if (error == nil) {
+    GDataEntrySpreadsheetDoc *docEntry = [ticket propertyForKey:@"docEntry"];
+    NSString *savePath = [ticket propertyForKey:@"savePath"];
 
-  GDataServiceGoogleSpreadsheet *service = [ticket propertyForKey:@"service"];
-  if ([[service authToken] length] == 0) {
+    [self saveDocEntry:docEntry
+                toPath:savePath
+          exportFormat:@"tsv"
+           authService:[ticket service]];
+  } else {
     // failed to authenticate; give up
     NSLog(@"Spreadsheet authentication error: %@", error);
     return;
   }
-
-  NSString *docID = [ticket propertyForKey:@"docID"];
-  NSString *savePath = [ticket propertyForKey:@"savePath"];
-
-  NSString *encodedDocID = [GDataUtilities stringByURLEncodingForURI:docID];
-
-  // temporary...
-  // change "document:abcdef" into "abcdef"
-  // this is due to a server bug and should not be necessary
-  NSScanner *scanner = [NSScanner scannerWithString:docID];
-  NSString *trimmedDocID = docID;
-  if ([scanner scanUpToString:@":" intoString:nil]
-      && [scanner scanString:@":" intoString:nil]
-      && [scanner scanUpToString:@"\n" intoString:&trimmedDocID]) {
-    encodedDocID =  [GDataUtilities stringByURLEncodingForURI:trimmedDocID];
-  }
-
-  // we'll use the export format for tab-separate values, tsv
-  //
-  // add a gid parameter to specify a worksheet number
-  NSString *template = @"http://spreadsheets.google.com/feeds/download/spreadsheets/Export?key=%@&exportFormat=tsv";
-  NSString *urlStr = [NSString stringWithFormat:template, encodedDocID];
-
-  NSURL *downloadURL = [NSURL URLWithString:urlStr];
-
-  // with the spreadsheet service, we can now make an authenticated request
-  NSURLRequest *request = [service requestForURL:downloadURL
-                                            ETag:nil
-                                      httpMethod:nil];
-
-  // we'll reuse the document download fetcher's callbacks
-  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-  [fetcher setUserData:savePath];
-  [fetcher beginFetchWithDelegate:self
-                didFinishSelector:@selector(fetcher:finishedWithData:)
-                  didFailSelector:@selector(fetcher:failedWithError:)];
 }
 
 #pragma mark -
@@ -429,11 +448,11 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
 
-  NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"ods", 
-    @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
-    @"jpeg", @"jpg", @"bmp", @"gif", @"html", @"htm", @"tsv", 
+  NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"docx",
+    @"ods", @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
+    @"xlsx", @"jpeg", @"jpg", @"bmp", @"gif", @"html", @"htm", @"tsv",
     @"tab", @"pdf", nil];
-  
+
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
   [openPanel beginSheetForDirectory:nil
                                file:nil
@@ -722,14 +741,22 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 // get the doc selected in the list, or nil if none
 - (GDataEntryDocBase *)selectedDoc {
-  
-  NSArray *docs = [mDocListFeed entries];
+
   int rowIndex = [mDocListTable selectedRow];
-  
-  if ([docs count] > 0 && rowIndex > -1) {
-    
-    GDataEntryDocBase *doc = [docs objectAtIndex:rowIndex];
+  if (rowIndex > -1) {
+    GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:rowIndex];
     return doc;
+  }
+  return nil;
+}
+
+// get the doc revision in the list, or nil if none
+- (GDataEntryDocRevision *)selectedRevision {
+
+  int rowIndex = [mRevisionsTable selectedRow];
+  if (rowIndex > -1) {
+    GDataEntryDocRevision *entry = [mRevisionFeed entryAtIndex:rowIndex];
+    return entry;
   }
   return nil;
 }
@@ -751,15 +778,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // at a time, instead of calling fetchDocsFeedWithURL, we can create a
   // GDataQueryDocs object, as shown here.
   
-  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleDocsDefaultPrivateFullFeed];
+  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
 
   GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query setMaxResults:1000];
   [query setShouldShowFolders:YES];
     
-  ticket = [service fetchFeedWithQuery:query
-                              delegate:self
-                     didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
+  ticket = [service fetchDocListFeedWithQuery:query
+                                     delegate:self
+                            didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
   
   [self setDocListFetchTicket:ticket];
   
@@ -774,6 +801,44 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [self setDocListFeed:feed];
   [self setDocListFetchError:error];
   [self setDocListFetchTicket:nil];
+
+  [self updateUI];
+}
+
+#pragma mark Fetch revisions or content feed
+
+- (void)fetchRevisionsForSelectedDoc {
+
+  [self setRevisionFeed:nil];
+  [self setRevisionFetchError:nil];
+  [self setRevisionFetchTicket:nil];
+
+  GDataEntryDocBase *selectedDoc = [self selectedDoc];
+  GDataFeedLink *revisionFeedLink = [selectedDoc revisionFeedLink];
+  NSURL *revisionFeedURL = [revisionFeedLink URL];
+  if (revisionFeedURL) {
+
+    GDataServiceGoogleDocs *service = [self docsService];
+    GDataServiceTicket *ticket;
+    ticket = [service fetchRevisionFeedWithURL:revisionFeedURL
+                                      delegate:self
+                             didFinishSelector:@selector(revisionFetchTicket:finishedWithFeed:error:)];
+
+    [self setRevisionFetchTicket:ticket];
+
+  }
+
+  [self updateUI];
+}
+
+// revisions list fetch callback
+- (void)revisionFetchTicket:(GDataServiceTicket *)ticket
+           finishedWithFeed:(GDataFeedDocRevision *)feed
+                      error:(NSError *)error {
+
+  [self setRevisionFeed:feed];
+  [self setRevisionFetchError:error];
+  [self setRevisionFetchTicket:nil];
 
   [self updateUI];
 }
@@ -794,6 +859,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   static struct MapEntry sMap[] = {
     { @"csv", @"text/csv", @"GDataEntryStandardDoc" },
     { @"doc", @"application/msword", @"GDataEntryStandardDoc" },
+    { @"docx", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document", @"GDataEntryStandardDoc" },
     { @"ods", @"application/vnd.oasis.opendocument.spreadsheet", @"GDataEntrySpreadsheetDoc" },
     { @"odt", @"application/vnd.oasis.opendocument.text", @"GDataEntryStandardDoc" },
     { @"pps", @"application/vnd.ms-powerpoint", @"GDataEntryPresentationDoc" },
@@ -802,6 +868,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"sxw", @"application/vnd.sun.xml.writer", @"GDataEntryStandardDoc" },
     { @"txt", @"text/plain", @"GDataEntryStandardDoc" },
     { @"xls", @"application/vnd.ms-excel", @"GDataEntrySpreadsheetDoc" },
+    { @"xlsx", @"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", @"GDataEntrySpreadsheetDoc" },
     { @"jpg", @"image/jpeg", @"GDataEntryStandardDoc" },
     { @"jpeg", @"image/jpeg", @"GDataEntryStandardDoc" },
     { @"png", @"image/png", @"GDataEntryStandardDoc" },
@@ -812,7 +879,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"tsv", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
     { @"tab", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
     { @"pdf", @"application/pdf", @"GDataEntryPDFDoc" }, 
-    
     { nil, nil, nil }
   };
   
@@ -938,27 +1004,36 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 //
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-  // the user clicked on an entry; 
-  // just display it below the entry table
-  [self updateUI]; 
+  // the user clicked a document or a revision entry
+  if ([notification object] == mDocListTable) {
+    // the user clicked a document entry, so fetch its revisions
+    [self fetchRevisionsForSelectedDoc];
+  } else {
+    [self updateUI];
+  }
 }
 
 // table view data source methods
 - (int)numberOfRowsInTableView:(NSTableView *)tableView {
   if (tableView == mDocListTable) {
     return [[mDocListFeed entries] count];
-  } 
+  }
+
+  if (tableView == mRevisionsTable) {
+    return [[mRevisionFeed entries] count];
+  }
+
   return 0;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
-  
+
   if (tableView == mDocListTable) {
     // get the docList entry's title, and the kind of document
-    GDataEntryDocBase *doc = [[mDocListFeed entries] objectAtIndex:row];
-    
+    GDataEntryDocBase *doc = [mDocListFeed entryAtIndex:row];
+
     NSString *docKind = @"unknown";
-        
+
     // the kind category for a doc entry includes a label like "document"
     // or "spreadsheet"
     NSArray *categories;
@@ -967,17 +1042,28 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     if ([categories count] >= 1) {
       docKind = [[categories objectAtIndex:0] label];
     }
-   
+
     // mark if the document is starred
     if ([doc isStarred]) {
       const UniChar kStarChar = 0x2605;
       docKind = [NSString stringWithFormat:@"%C, %@", kStarChar, docKind];
     }
-    
+
     NSString *displayStr = [NSString stringWithFormat:@"%@ (%@)",
-      [[doc title] stringValue], docKind];
+                            [[doc title] stringValue], docKind];
     return displayStr;
-  } 
+  }
+
+  if (tableView == mRevisionsTable) {
+    // get the revision entry
+    GDataEntryDocRevision *revisionEntry;
+    revisionEntry = [mRevisionFeed entryAtIndex:row];
+
+    NSString *displayStr = [NSString stringWithFormat:@"%@ (edited %@)",
+                            [[revisionEntry title] stringValue],
+                            [[revisionEntry editedDate] date]];
+    return displayStr;
+  }
   return nil;
 }
 
@@ -1009,6 +1095,35 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [mDocListFetchTicket release];
   mDocListFetchTicket = [ticket retain];
 }
+
+
+- (GDataFeedDocRevision *)revisionFeed {
+  return mRevisionFeed;
+}
+
+- (void)setRevisionFeed:(GDataFeedDocRevision *)feed {
+  [mRevisionFeed autorelease];
+  mRevisionFeed = [feed retain];
+}
+
+- (NSError *)revisionFetchError {
+  return mRevisionFetchError;
+}
+
+- (void)setRevisionFetchError:(NSError *)error {
+  [mRevisionFetchError release];
+  mRevisionFetchError = [error retain];
+}
+
+- (GDataServiceTicket *)revisionFetchTicket {
+  return mRevisionFetchTicket;
+}
+
+- (void)setRevisionFetchTicket:(GDataServiceTicket *)ticket {
+  [mRevisionFetchTicket release];
+  mRevisionFetchTicket = [ticket retain];
+}
+
 
 - (GDataServiceTicket *)uploadTicket {
   return mUploadTicket;

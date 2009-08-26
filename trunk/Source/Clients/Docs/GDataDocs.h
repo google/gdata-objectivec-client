@@ -28,6 +28,8 @@
 #import "GDataEntryPresentationDoc.h"
 #import "GDataEntryPDFDoc.h"
 #import "GDataEntryFolderDoc.h"
+#import "GDataEntryDocRevision.h"
 #import "GDataFeedDocList.h"
+#import "GDataFeedDocRevision.h"
 #import "GDataServiceGoogleDocs.h"
 #import "GDataQueryDocs.h"

@@ -48,6 +48,10 @@
 
 @implementation GDataEntryDocBase
 
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
+  return [GDataDocConstants coreProtocolVersionForServiceVersion:serviceVersion];
+}
+
 + (id)documentEntry {
 
   GDataEntryDocBase *entry = [[[self alloc] init] autorelease];
@@ -174,22 +178,34 @@
   return parentLinks;
 }
 
+- (GDataFeedLink *)feedLinkForRel:(NSString *)rel {
+
+  NSArray *feedLinks = [self objectsForExtensionClass:[GDataFeedLink class]];
+  GDataFeedLink *resultFeedLink;
+
+  resultFeedLink = [GDataUtilities firstObjectFromArray:feedLinks
+                                           withValue:rel
+                                          forKeyPath:@"rel"];
+  return resultFeedLink;
+}
+
 - (GDataFeedLink *)ACLFeedLink {
 
   // GDataEntryACL has an ACLLink method to get an entry's atom:link for
   // the ACL feed, but the docs feed puts the ACL link into a gd:feedLink
   // instead of into an atom:link
 
-  NSArray *feedLinks = [self objectsForExtensionClass:[GDataFeedLink class]];
-  GDataFeedLink *aclFeedLink;
-
   // same as kGDataLinkRelACL but avoids the dependence on GDataEntryACL.h
   NSString* const kACLRel = @"http://schemas.google.com/acl/2007#accessControlList";
 
-  aclFeedLink = [GDataUtilities firstObjectFromArray:feedLinks
-                                           withValue:kACLRel
-                                          forKeyPath:@"rel"];
-  return aclFeedLink;
+  GDataFeedLink *feedLink = [self feedLinkForRel:kACLRel];
+  return feedLink;
+}
+
+
+- (GDataFeedLink *)revisionFeedLink {
+  GDataFeedLink *feedLink = [self feedLinkForRel:kGDataDocsRevisionsRel];
+  return feedLink;
 }
 
 + (NSString *)defaultServiceVersion {
