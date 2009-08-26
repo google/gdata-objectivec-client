@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,23 +14,14 @@
  */
 
 //
-//  GDataFeedDocList.m
+//  GDataFeedDocRevision.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
-#import "GDataFeedDocList.h"
-#import "GDataDocConstants.h"
+#import "GDataFeedBase.h"
 
-@implementation GDataFeedDocList
-
-+ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
-  return [GDataDocConstants coreProtocolVersionForServiceVersion:serviceVersion];
-}
-
-+ (NSString *)defaultServiceVersion {
-  return kGDataDocsDefaultServiceVersion;
-}
+@interface GDataFeedDocRevision : GDataFeedBase
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

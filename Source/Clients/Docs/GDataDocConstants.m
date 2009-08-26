@@ -26,6 +26,19 @@
 
 @implementation GDataDocConstants
 
++ (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
+  // Docs     v1: core v1
+  //          v2:      v2
+  //          v3:      v2
+  NSComparisonResult result = [GDataUtilities compareVersion:serviceVersion
+                                                   toVersion:@"2.0"];
+  if (result != NSOrderedAscending) {
+    return @"2.0";
+  }
+  return @"1.0";
+}
+
+
 + (NSDictionary *)baseDocumentNamespaces {
 
   NSMutableDictionary *namespaces;

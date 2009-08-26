@@ -31,12 +31,52 @@
 #define _INITIALIZE_AS(x)
 #endif
 
+@class GDataQueryDocs;
 
-// doclist feed URL
-_EXTERN NSString* const kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/full");
-_EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/expandAcl");
+// constants for DocList v3 URLs
+//
+// use kGDataServiceDefaultUser for the currently-authenticated user
+//
+_EXTERN NSString* const kGDataGoogleDocsVisibilityPrivate      _INITIALIZE_AS(@"private");
+
+_EXTERN NSString* const kGDataGoogleDocsProjectionFull         _INITIALIZE_AS(@"full");
+_EXTERN NSString* const kGDataGoogleDocsProjectionExpandACL    _INITIALIZE_AS(@"expandAcl");
+
+_EXTERN NSString* const kGDataGoogleDocsFeedTypeFolderContents _INITIALIZE_AS(@"contents");
+_EXTERN NSString* const kGDataGoogleDocsFeedTypeACL            _INITIALIZE_AS(@"acl");
+_EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"revisions");
+
+// DocList feed URLs for versions 1-2 (deprecated)
+//  _EXTERN NSString* const kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/full");
+//  _EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/expandAcl");
 
 @interface GDataServiceGoogleDocs : GDataServiceGoogle 
+
+//
+// utilities for making feed URLs
+//
+
++ (NSURL *)docsFeedURLUsingHTTPS:(BOOL)shouldUseHTTPS;
+
++ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID
+                                   useHTTPS:(BOOL)shouldUseHTTPS;
+
++ (NSURL *)docsURLForUserID:(NSString *)userID
+                 visibility:(NSString *)visibility
+                 projection:(NSString *)projection
+                 resourceID:(NSString *)resourceID
+                   feedType:(NSString *)feedType
+                 revisionID:(NSString *)revisionID
+                   useHTTPS:(BOOL)shouldUseHTTPS;
+
++ (NSString *)serviceRootURLString;
+
+// temporary fetch methods until the DocList API provides "kind" information in
+// the returned XML
+// http://b/2066017
+- (GDataServiceTicket *)fetchDocListFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+- (GDataServiceTicket *)fetchDocListFeedWithQuery:(GDataQueryDocs *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
+- (GDataServiceTicket *)fetchRevisionFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
 
 // clients may use these fetch methods of GDataServiceGoogle
 //

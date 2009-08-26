@@ -31,6 +31,8 @@ static NSString *const kReaderParamName = @"reader";
 static NSString *const kWriterParamName = @"writer";
 static NSString *const kOpenedMinParamName = @"opened-min";
 static NSString *const kOpenedMaxParamName = @"opened-max";
+static NSString *const kEditedMinParamName = @"edited-min";
+static NSString *const kEditedMaxParamName = @"edited-max";
 
 
 @implementation GDataQueryDocs
@@ -122,6 +124,24 @@ static NSString *const kOpenedMaxParamName = @"opened-max";
 
 - (GDataDateTime *)openedMaxDateTime {
   return [self dateTimeForParameterWithName:kOpenedMaxParamName];
+}
+
+- (void)setEditedMinDateTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kEditedMinParamName
+                          dateTime:dateTime];
+}
+
+- (GDataDateTime *)editedMinDateTime {
+  return [self dateTimeForParameterWithName:kEditedMinParamName];
+}
+
+- (void)setEditedMaxDateTime:(GDataDateTime *)dateTime {
+  [self addCustomParameterWithName:kEditedMaxParamName
+                          dateTime:dateTime];
+}
+
+- (GDataDateTime *)editedMaxDateTime {
+  return [self dateTimeForParameterWithName:kEditedMaxParamName];
 }
 @end
 

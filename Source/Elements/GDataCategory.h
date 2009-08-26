@@ -38,6 +38,7 @@ _EXTERN NSString* const kGDataCategoryLabelPrivate          _INITIALIZE_AS(@"pri
 _EXTERN NSString* const kGDataCategoryLabelMine             _INITIALIZE_AS(@"mine");
 _EXTERN NSString* const kGDataCategoryLabelSharedWithDomain _INITIALIZE_AS(@"shared-with-domain");
 _EXTERN NSString* const kGDataCategoryLabelHidden           _INITIALIZE_AS(@"hidden");
+_EXTERN NSString* const kGDataCategoryLabelViewed           _INITIALIZE_AS(@"viewed");
 
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"
