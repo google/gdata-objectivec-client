@@ -808,9 +808,7 @@ static NSString* gLoggingProcessName = nil;
      readIntoBuffer:(void *)buffer
              length:(unsigned long long)length {
   // append the captured data
-  if (length >= 0) {
     [loggedStreamData_ appendBytes:buffer length:length];
-  }
 }
 
 @end
