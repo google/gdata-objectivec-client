@@ -41,7 +41,7 @@
   IBOutlet NSButton *mDownloadSelectedDocButton;
   IBOutlet NSButton *mCreateFolderButton;
 
-  IBOutlet NSButton *mViewSelectedRevisionButton;
+  IBOutlet NSButton *mDownloadSelectedRevisionButton;
 
   IBOutlet NSPopUpButton *mFolderMembershipPopup;
 
@@ -71,7 +71,7 @@
 - (IBAction)viewSelectedDocClicked:(id)sender;
 - (IBAction)downloadSelectedDocClicked:(id)sender;
 
-- (IBAction)viewSelectedRevisionClicked:(id)sender;
+- (IBAction)downloadSelectedRevisionClicked:(id)sender;
 
 - (IBAction)createFolderClicked:(id)sender;
 
