@@ -19,6 +19,7 @@
 
 // Ensure Apple's conditionals we depend on are defined.
 #import <TargetConditionals.h>
+#import <AvailabilityMacros.h>
 
 //
 // The developer may choose to define these in the project:
