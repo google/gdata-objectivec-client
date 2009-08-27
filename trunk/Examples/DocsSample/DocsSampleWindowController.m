@@ -32,7 +32,8 @@
 - (void)fetchDocList;
 
 - (void)uploadFileAtPath:(NSString *)path;
-- (void)saveSelectedDocumentToPath:(NSString *)path;
+- (void)showDownloadPanelForEntry:(GDataEntryBase *)entry suggestedTitle:(NSString *)title;
+- (void)saveDocumentEntry:(GDataEntryBase *)docEntry toPath:(NSString *)path;
 - (void)saveDocEntry:(GDataEntryBase *)entry toPath:(NSString *)savePath exportFormat:(NSString *)exportFormat authService:(GDataServiceGoogle *)service;
 - (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry toPath:(NSString *)savePath;
 
@@ -160,8 +161,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   BOOL doesDocHaveHTMLLink = ([selectedDoc HTMLLink] != nil);
   [mViewSelectedDocButton setEnabled:doesDocHaveHTMLLink];
 
-  BOOL doesRevisionHaveHTMLLink = ([selectedRevision HTMLLink] != nil);
-  [mViewSelectedRevisionButton setEnabled:doesRevisionHaveHTMLLink];
+  BOOL doesRevisionHaveExportURL = ([[[selectedRevision content] sourceURI] length] > 0);
+  [mDownloadSelectedRevisionButton setEnabled:doesRevisionHaveExportURL];
 
   BOOL doesDocHaveExportURL = ([[[selectedDoc content] sourceURI] length] > 0);
   [mDownloadSelectedDocButton setEnabled:doesDocHaveExportURL];
@@ -283,25 +284,42 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 }
 
-- (IBAction)viewSelectedRevisionClicked:(id)sender {
+- (IBAction)downloadSelectedDocClicked:(id)sender {
 
-  NSURL *revisionURL = [[[self selectedRevision] HTMLLink] URL];
+  GDataEntryDocBase *docEntry = [self selectedDoc];
 
-  if (revisionURL) {
-    [[NSWorkspace sharedWorkspace] openURL:revisionURL];
-  } else {
-    NSBeep();
-  }
+  NSString *saveTitle = [[[self selectedDoc] title] stringValue];
+
+  [self showDownloadPanelForEntry:docEntry
+                   suggestedTitle:saveTitle];
 }
 
-- (IBAction)downloadSelectedDocClicked:(id)sender {
+- (IBAction)downloadSelectedRevisionClicked:(id)sender {
   
-  GDataEntryDocBase *doc = [self selectedDoc];
+  GDataEntryDocRevision *revisionEntry = [self selectedRevision];
   
-  NSString *sourceURI = [[doc content] sourceURI];
-  if (sourceURI) {
+  GDataEntryDocBase *docEntry = [self selectedDoc];
+
+  NSString *docName = [[docEntry title] stringValue];
+  NSString *revisionName = [[revisionEntry title] stringValue];
+  NSString *saveTitle = [NSString stringWithFormat:@"%@ (%@)",
+                         docName, revisionName];
+
+  // we need to record if the document being saved is really a spreadsheet, and
+  // the revision entry doesn't tell us, so we look at the selected doc entry
+  BOOL isSpreadsheet = [docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]];
+  [revisionEntry setProperty:[NSNumber numberWithBool:isSpreadsheet]
+                      forKey:@"is spreadsheet"];
     
-    NSString *title = [[doc title] stringValue];
+  [self showDownloadPanelForEntry:revisionEntry
+                   suggestedTitle:saveTitle];
+}
+
+- (void)showDownloadPanelForEntry:(GDataEntryBase *)entry
+                   suggestedTitle:(NSString *)title {
+
+  NSString *sourceURI = [[entry content] sourceURI];
+  if (sourceURI) {
     
     NSString *filename = [NSString stringWithFormat:@"%@.txt", title];
     
@@ -313,7 +331,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                        modalForWindow:[self window]
                         modalDelegate:self
                        didEndSelector:endSel
-                          contextInfo:nil];
+                          contextInfo:[entry retain]];
   } else {
     NSBeep(); 
   }
@@ -321,19 +339,30 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 - (void)saveSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
   
+  GDataEntryBase *entry = [(GDataEntryBase *)contextInfo autorelease];
+
   if (returnCode == NSOKButton) {
     // user clicked OK
     NSString *savePath = [panel filename];
-    [self saveSelectedDocumentToPath:savePath];
+    [self saveDocumentEntry:entry
+                     toPath:savePath];
   }
 }
 
-- (void)saveSelectedDocumentToPath:(NSString *)savePath {
+// formerly saveSelectedDocumentToPath:
+- (void)saveDocumentEntry:(GDataEntryBase *)docEntry
+                   toPath:(NSString *)savePath {
   // downloading docs, per
   // http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html#DownloadingDocs
 
-  GDataEntryDocBase *docEntry = [self selectedDoc];
-  if ([docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]]) {
+  BOOL isSpreadsheet = [docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]];
+  if (!isSpreadsheet) {
+    // in a revision entry, we've add a property above indicating if this is a
+    // spreadsheet revision
+    isSpreadsheet = [[docEntry propertyForKey:@"is spreadsheet"] boolValue];
+  }
+
+  if (isSpreadsheet) {
     // to save a spreadsheet, we need to authenticate a spreadsheet service
     // object, and then download the spreadsheet file
     [self saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
@@ -380,6 +409,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                     didFailSelector:@selector(fetcher:failedWithError:)];
   }
 }
+
 
 - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
   // save the file to the local path specified by the user

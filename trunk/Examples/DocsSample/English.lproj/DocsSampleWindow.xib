@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.03">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">9L30</string>
+		<string key="IBDocument.SystemVersion">9L31a</string>
 		<string key="IBDocument.InterfaceBuilderVersion">677</string>
 		<string key="IBDocument.AppKitVersion">949.54</string>
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="6"/>
+			<integer value="5"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -37,7 +37,7 @@
 			<object class="NSWindowTemplate" id="471987556">
 				<int key="NSWindowStyleMask">15</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{40, 380}, {566, 640}}</string>
+				<string key="NSWindowRect">{{64, 193}, {566, 640}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">DocsSample</string>
 				<object class="NSMutableString" key="NSWindowClass">
@@ -601,13 +601,13 @@
 						<object class="NSButton" id="1009485389">
 							<reference key="NSNextResponder" ref="259934551"/>
 							<int key="NSvFlags">292</int>
-							<string key="NSFrame">{{165, 250}, {45, 16}}</string>
+							<string key="NSFrame">{{165, 248}, {68, 16}}</string>
 							<reference key="NSSuperview" ref="259934551"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="977400814">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">134479872</int>
-								<string key="NSContents">View</string>
+								<string key="NSContents">Download</string>
 								<reference key="NSSupport" ref="22"/>
 								<reference key="NSControlView" ref="1009485389"/>
 								<int key="NSButtonFlags">-2038284033</int>
@@ -1030,7 +1030,7 @@
 					<string key="NSFrameSize">{566, 640}</string>
 					<reference key="NSSuperview"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1440, 878}}</string>
 				<string key="NSMinSize">{566, 662}</string>
 				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
 			</object>
@@ -1322,22 +1322,6 @@
 					<int key="connectionID">293</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mViewSelectedRevisionButton</string>
-						<reference key="source" ref="920687348"/>
-						<reference key="destination" ref="1009485389"/>
-					</object>
-					<int key="connectionID">294</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">viewSelectedRevisionClicked:</string>
-						<reference key="source" ref="920687348"/>
-						<reference key="destination" ref="1009485389"/>
-					</object>
-					<int key="connectionID">295</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">viewSelectedDocClicked:</string>
 						<reference key="source" ref="920687348"/>
@@ -1352,6 +1336,22 @@
 						<reference key="destination" ref="315526116"/>
 					</object>
 					<int key="connectionID">299</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">downloadSelectedRevisionClicked:</string>
+						<reference key="source" ref="920687348"/>
+						<reference key="destination" ref="1009485389"/>
+					</object>
+					<int key="connectionID">301</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">mDownloadSelectedRevisionButton</string>
+						<reference key="source" ref="920687348"/>
+						<reference key="destination" ref="1009485389"/>
+					</object>
+					<int key="connectionID">302</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -1418,12 +1418,12 @@
 							<reference ref="958385951"/>
 							<reference ref="649969711"/>
 							<reference ref="977001796"/>
-							<reference ref="1009485389"/>
 							<reference ref="794816453"/>
 							<reference ref="688533844"/>
 							<reference ref="769770917"/>
 							<reference ref="28171352"/>
 							<reference ref="566810299"/>
+							<reference ref="1009485389"/>
 						</object>
 						<reference key="parent" ref="471987556"/>
 					</object>
@@ -2112,8 +2112,8 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
-					<string>{{0, 505}, {566, 640}}</string>
-					<string>{{0, 505}, {566, 640}}</string>
+					<string>{{17, 212}, {566, 640}}</string>
+					<string>{{17, 212}, {566, 640}}</string>
 					<reference ref="5"/>
 					<reference ref="5"/>
 					<string>{566, 640}</string>
@@ -2147,7 +2147,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">299</int>
+			<int key="maxID">302</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2164,12 +2164,12 @@
 							<string>createFolderClicked:</string>
 							<string>deleteSelectedDocClicked:</string>
 							<string>downloadSelectedDocClicked:</string>
+							<string>downloadSelectedRevisionClicked:</string>
 							<string>getDocListClicked:</string>
 							<string>loggingCheckboxClicked:</string>
 							<string>stopUploadClicked:</string>
 							<string>uploadFileClicked:</string>
 							<string>viewSelectedDocClicked:</string>
-							<string>viewSelectedRevisionClicked:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2197,6 +2197,7 @@
 							<string>mDocListResultTextField</string>
 							<string>mDocListTable</string>
 							<string>mDownloadSelectedDocButton</string>
+							<string>mDownloadSelectedRevisionButton</string>
 							<string>mFolderMembershipPopup</string>
 							<string>mPasswordField</string>
 							<string>mRevisionsCancelButton</string>
@@ -2209,7 +2210,6 @@
 							<string>mUploadingTextField</string>
 							<string>mUsernameField</string>
 							<string>mViewSelectedDocButton</string>
-							<string>mViewSelectedRevisionButton</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2219,6 +2219,7 @@
 							<string>NSProgressIndicator</string>
 							<string>NSTextView</string>
 							<string>NSTableView</string>
+							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSSecureTextField</string>
@@ -2231,7 +2232,6 @@
 							<string>NSProgressIndicator</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
-							<string>NSButton</string>
 							<string>NSButton</string>
 						</object>
 					</object>
