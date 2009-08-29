@@ -1174,7 +1174,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   } else {
     // be sure the property dictionary exists
     if (serviceProperties_ == nil) {
-      serviceProperties_ = [[NSMutableDictionary alloc] init];
+      [self setServiceProperties:[NSDictionary dictionary]];
     }
     [serviceProperties_ setObject:obj forKey:key];
   }
@@ -1372,7 +1372,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   } else {
     // be sure the property dictionary exists
     if (ticketProperties_ == nil) {
-      ticketProperties_ = [[NSMutableDictionary alloc] init];
+      [self setProperties:[NSDictionary dictionary]];
     }
     [ticketProperties_ setObject:obj forKey:key];
   }
