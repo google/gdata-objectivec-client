@@ -677,7 +677,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   } else {
     // be sure the property dictionary exists
     if (userProperties_ == nil) {
-      userProperties_ = [[NSMutableDictionary alloc] init];
+      [self setProperties:[NSDictionary dictionary]];
     }
     [userProperties_ setObject:obj forKey:key];
   }

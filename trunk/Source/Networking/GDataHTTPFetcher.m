@@ -1171,7 +1171,7 @@ CannotBeginFetch:
 - (void)setProperty:(id)obj forKey:(NSString *)key {
 
   if (properties_ == nil && obj != nil) {
-    properties_ = [[NSMutableDictionary alloc] init];
+    [self setProperties:[NSDictionary dictionary]];
   }
 
   [properties_ setValue:obj forKey:key];
