@@ -380,7 +380,9 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString {
 
   NSArray *allLines = [responseString componentsSeparatedByString:@"\n"];
-  NSMutableDictionary *responseDict = [NSMutableDictionary dictionary];
+  NSMutableDictionary *responseDict;
+
+  responseDict = [NSMutableDictionary dictionaryWithCapacity:[allLines count]];
 
   NSString *line;
   GDATA_FOREACH(line, allLines) {

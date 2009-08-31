@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.8 (524 classes) 2009-08-26 11:17:54 -0700
+// com.google.GDataFramework v. 1.8 (528 classes) 2009-08-31 16:16:03 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -76,6 +76,7 @@
   #define GDataBatchStatus                        _GDATA_NS_SYMBOL(GDataBatchStatus)
   #define GDataBloggerConstants                   _GDATA_NS_SYMBOL(GDataBloggerConstants)
   #define GDataBoolValueConstruct                 _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
+  #define GDataCachedURLResponse                  _GDATA_NS_SYMBOL(GDataCachedURLResponse)
   #define GDataCalendarSettingsProperty           _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
   #define GDataCategory                           _GDATA_NS_SYMBOL(GDataCategory)
   #define GDataCategoryFilter                     _GDATA_NS_SYMBOL(GDataCategoryFilter)
@@ -114,6 +115,7 @@
   #define GDataContactWebsiteLink                 _GDATA_NS_SYMBOL(GDataContactWebsiteLink)
   #define GDataContactYomiName                    _GDATA_NS_SYMBOL(GDataContactYomiName)
   #define GDataContinuityOfCareRecord             _GDATA_NS_SYMBOL(GDataContinuityOfCareRecord)
+  #define GDataCookieStorage                      _GDATA_NS_SYMBOL(GDataCookieStorage)
   #define GDataCostBasis                          _GDATA_NS_SYMBOL(GDataCostBasis)
   #define GDataCustomProperty                     _GDATA_NS_SYMBOL(GDataCustomProperty)
   #define GDataDateTime                           _GDATA_NS_SYMBOL(GDataDateTime)
@@ -288,6 +290,7 @@
   #define GDataHealthContainerObject              _GDATA_NS_SYMBOL(GDataHealthContainerObject)
   #define GDataHiddenProperty                     _GDATA_NS_SYMBOL(GDataHiddenProperty)
   #define GDataHTTPFetcher                        _GDATA_NS_SYMBOL(GDataHTTPFetcher)
+  #define GDataHTTPFetchHistory                   _GDATA_NS_SYMBOL(GDataHTTPFetchHistory)
   #define GDataICalUIDProperty                    _GDATA_NS_SYMBOL(GDataICalUIDProperty)
   #define GDataIM                                 _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct             _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
@@ -491,6 +494,7 @@
   #define GDataTimesCleanedProperty               _GDATA_NS_SYMBOL(GDataTimesCleanedProperty)
   #define GDataTimeZoneProperty                   _GDATA_NS_SYMBOL(GDataTimeZoneProperty)
   #define GDataTransparency                       _GDATA_NS_SYMBOL(GDataTransparency)
+  #define GDataURLCache                           _GDATA_NS_SYMBOL(GDataURLCache)
   #define GDataUtilities                          _GDATA_NS_SYMBOL(GDataUtilities)
   #define GDataValueConstruct                     _GDATA_NS_SYMBOL(GDataValueConstruct)
   #define GDataValueElementConstruct              _GDATA_NS_SYMBOL(GDataValueElementConstruct)

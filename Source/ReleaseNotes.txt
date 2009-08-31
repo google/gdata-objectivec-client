@@ -12,9 +12,13 @@ Additions
 
 - Added service method to authenticate without fetching a feed or entry.
 
+- Added Docs service v3 support, including the revision feed.
+
 - Added convenience method for creating CCR elements from NSXMLElements.
 
 - Added CCR extension support to Health register entry.
+
+- Added epub accessors to Books API.
 
 - Added GDataAuthenticationFetcher, which can be used to create a fetcher
   for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
@@ -26,10 +30,20 @@ Changes
 
 - The shouldIgnoreXML flag is now settable in individual tickets.
 
+- Made object properties dictionaries more KVO-compliant (thanks mtonkin)
+
+- GDataHTTPFetcher dated data cache now is bounded in size (by default, 15 MB
+  for Mac, 1 MB for iPhones) making it suitable for use on iPhones
+
+- GDataHTTPFetcher now takes a GDataFetchHistory class rather than a mutable
+  dictionary as the optional fetch history
+
 Bugs Fixed
 
 - Setting the name of a Google Base attribute also now sets the XML element
   local name.
+
+- Fixed the atomPub URI when creating new objects with code protocol v2.
 
 
 Release 1.8.0

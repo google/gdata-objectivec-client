@@ -258,13 +258,72 @@ enum {
   kGDataHTTPFetcherStatusNotModified = 304
 };
 
+// cookie storage methods
 enum {
   kGDataHTTPFetcherCookieStorageMethodStatic = 0,
   kGDataHTTPFetcherCookieStorageMethodFetchHistory = 1,
   kGDataHTTPFetcherCookieStorageMethodSystemDefault = 2
 };
 
+// default data cache size for when we're caching responses to handle "not
+// modified" errors for the client
+#if GDATA_IPHONE
+// iPhone: up to 1MB memory
+_EXTERN const NSUInteger kGDataDefaultDatedDataCacheMemoryCapacity _INITIALIZE_AS(1*1024*1024);
+#else
+// Mac OS X: up to 15MB memory
+_EXTERN const NSUInteger kGDataDefaultDatedDataCacheMemoryCapacity _INITIALIZE_AS(15*1024*1024);
+#endif
+
+
 void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
+
+@class GDataURLCache;
+@class GDataCookieStorage;
+
+//
+// Users of the GDataHTTPFetcher class may optionally create and set a fetch
+// history object.  The fetch history provides "memory" between subsequent
+// fetches, including:
+//
+// - For fetch responses with "last-modified" headers, the fetch history
+//   remembers the response headers. Future fetcher requests to the same URL
+//   will be given an "If-modified-since" header, telling the server to return
+//   a 304 Not Modified status if the response is unchanged, reducing the
+//   server load and network traffic.
+//
+// - Optionally, the fetch history can cache the dated data that was returned
+//   in the responses that contained "Last-modified" headers. If a later fetch
+//   results in a 304 status, the fetcher will return the cached dated data
+//   to the client along with a 200 status, hiding the 304.
+//
+// - The fetch history can track cookies.
+//
+
+@interface GDataHTTPFetchHistory : NSObject {
+  GDataURLCache *datedDataCache_;
+  BOOL shouldCacheDatedData_;      // if NO, then only headers are cached
+  GDataCookieStorage *cookieStorage_;
+}
+
+- (id)initWithMemoryCapacity:(NSUInteger)totalBytes
+        shouldCacheDatedData:(BOOL)shouldCacheDatedData;
+
+- (void)clearDatedDataCache;
+- (void)clearHistory;
+
+- (BOOL)shouldCacheDatedData;
+- (void)setShouldCacheDatedData:(BOOL)flag;
+
+- (GDataCookieStorage *)cookieStorage;
+- (void)setCookieStorage:(GDataCookieStorage *)obj;
+
+// the default dated data cache capacity is kGDataDefaultDatedDataCacheMemoryCapacity
+- (NSUInteger)memoryCapacity;
+- (void)setMemoryCapacity:(NSUInteger)totalBytes;
+
+@end
+
 
 // async retrieval of an http get or post
 @interface GDataHTTPFetcher : NSObject {
@@ -297,9 +356,9 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   id userData_;                     // retained, if set by caller
   NSMutableDictionary *properties_; // more data retained for caller
   NSArray *runLoopModes_;           // optional, for 10.5 and later
-  NSMutableDictionary *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
-  BOOL shouldCacheDatedData_;       // if true, remembers and returns data marked with a last-modified date
+  GDataHTTPFetchHistory *fetchHistory_; // if supplied by the caller, used for Last-Modified-Since checks and cookies
   NSInteger cookieStorageMethod_;   // constant from above
+  GDataCookieStorage *cookieStorage_;
 
   BOOL isRetryEnabled_;             // user wants auto-retry
   SEL retrySEL_;                    // optional; set with setRetrySelector
@@ -345,11 +404,11 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSInputStream *)postStream;
 - (void)setPostStream:(NSInputStream *)theStream;
 
+// the default cookie storage method is kGDataHTTPFetcherCookieStorageMethodStatic
+// without a fetch history set, and kGDataHTTPFetcherCookieStorageMethodFetchHistory
+// with a fetch history set
 - (NSInteger)cookieStorageMethod;
 - (void)setCookieStorageMethod:(NSInteger)method;
-
-// returns cookies from the currently appropriate cookie storage
-- (NSArray *)cookiesForURL:(NSURL *)theURL;
 
 // the delegate is not retained except during the connection
 - (id)delegate;
@@ -473,8 +532,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // if the caller supplies a mutable dictionary, it's used for Last-Modified-Since
 //  checks and for cookie storage
 //  side effect: setFetchHistory implicitly calls setCookieStorageMethod:
-- (NSMutableDictionary *)fetchHistory;
-- (void)setFetchHistory:(NSMutableDictionary *)fetchHistory;
+- (GDataHTTPFetchHistory *)fetchHistory;
+- (void)setFetchHistory:(GDataHTTPFetchHistory *)fetchHistory;
 
 // for fetched data with a last-modified date, cache the data
 // in the fetch history and return cached data instead of a 304 error

@@ -1037,6 +1037,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
 - (void)testStandaloneServiceAuth {
 
+  if (!isServerRunning_) return;
+
   // test successful auth
   [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
                                   password:@"mypassword"];

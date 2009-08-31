@@ -173,7 +173,7 @@ enum {
 @interface GDataServiceBase : NSObject {
   NSString *serviceVersion_;
   NSString *userAgent_;
-  NSMutableDictionary *fetchHistory_;
+  GDataHTTPFetchHistory *fetchHistory_;
   NSArray *runLoopModes_;
 
   NSString *username_;
@@ -193,6 +193,7 @@ enum {
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
 
   BOOL shouldCacheDatedData_;
+  NSUInteger datedDataCacheCapacity_;
   BOOL serviceShouldFollowNextLinks_;
 }
 
@@ -282,10 +283,16 @@ enum {
 // based on prior queries
 - (void)clearLastModifiedDates;
 
-// Turn on data caching to receive a copy of previously-retrieved objects.
-// Otherwise, fetches may return status 304 (No Change) rather than actual data
+// Turn on data caching to receive a copy of previously-retrieved objects rather
+// than a Status 304 (Not Modified) from the server rather than the actual
+// data.
 - (void)setShouldCacheDatedData:(BOOL)flag;
 - (BOOL)shouldCacheDatedData;
+
+// If dated data caching is on, this specifies the capacity of the cache.
+// Default is 15MB for Mac and 1 MB for iPhone.
+- (void)setDatedDataCacheCapacity:(NSUInteger)totalBytes;
+- (NSUInteger)datedDataCacheCapacity;
 
 // For feed requests, where the feed requires following "next" links to retrieve
 // all entries, the service can optionally do the additional fetches using the
