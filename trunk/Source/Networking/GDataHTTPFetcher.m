@@ -34,17 +34,118 @@ static NSString* const kGDataIfModifiedSinceHeader = @"If-Modified-Since";
 
 SEL const kUnifiedFailureCallback = (SEL) (void *) -1;
 
-static NSMutableArray* gGDataFetcherStaticCookies = nil;
+static GDataCookieStorage* gGDataFetcherStaticCookieStorage = nil;
 static Class gGDataFetcherConnectionClass = nil;
 static NSArray *gGDataFetcherDefaultRunLoopModes = nil;
 
 const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 
+const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
+
+//
+// internal classes
+//
+
+@interface GDataCookieStorage : NSObject {
+  // The cookie storage object manages an array holding cookies, but the array
+  // is allocated externally (it may be in a fetcher object or the static
+  // fetcher cookie array.)  See the fetcher's setCookieStorageMethod:
+  // for allocation of this object and assignment of its cookies array.
+  NSMutableArray *cookies_;
+}
+
+// add all NSHTTPCookies in the supplied array to the storage array,
+// replacing cookies in the storage array as appropriate
+// Side effect: removes expired cookies from the storage array
+- (void)setCookies:(NSArray *)newCookies;
+
+// retrieve all cookies appropriate for the given URL, considering
+// domain, path, cookie name, expiration, security setting.
+// Side effect: removes expired cookies from the storage array
+- (NSArray *)cookiesForURL:(NSURL *)theURL;
+
+// return a cookie with the same name, domain, and path as the
+// given cookie, or else return nil if none found
+//
+// Both the cookie being tested and all stored cookies should
+// be valid (non-nil name, domains, paths)
+- (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie;
+
+// remove any expired cookies, excluding cookies with nil expirations
+- (void)removeExpiredCookies;
+
+- (void)removeAllCookies;
+
+@end
+
+
+// GDataURLCache and GDataCachedURLResponse have interfaces similar to their
+// NSURLCache counterparts, in hopes that someday the NSURLCache versions
+// can be used. But in 10.5.8, those are not reliable enough except when
+// used with +setSharedURLCache. Our goal here is just to cache
+// responses for handling if-modified-since requests that return
+// "304 Not Modified" responses, not for replacing the general URL caches.
+
+@interface GDataCachedURLResponse : NSObject {
+  NSURLResponse *response_;
+  NSData *data_;
+  NSDate *useDate_;         // date this response was last saved or used
+  NSDate *reservationDate_; // date this response's last modified date was used
+}
+
+- (id)initWithResponse:(NSURLResponse *)response data:(NSData *)data;
+- (NSURLResponse *)response;
+- (NSData *)data;
+
+// date the response was saved or last accessed
+- (NSDate *)useDate;
+- (void)setUseDate:(NSDate *)date;
+
+// date the response's last-modified header was last used for a fetch request
+- (NSDate *)reservationDate;
+- (void)setReservationDate:(NSDate *)date;
+@end
+
+
+@interface GDataURLCache : NSObject {
+  NSMutableDictionary *responses_; // maps request URL to GDataCachedURLResponse
+  NSUInteger memoryCapacity_;      // capacity of NSDatas in the responses
+  NSUInteger totalDataSize_;       // sum of sizes of NSDatas of all responses
+  NSTimeInterval reservationInterval_; // reservation expiration interval
+}
+
+- (id)initWithMemoryCapacity:(NSUInteger)totalBytes;
+
+- (GDataCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request;
+- (void)storeCachedResponse:(GDataCachedURLResponse *)cachedResponse forRequest:(NSURLRequest *)request;
+- (void)removeCachedResponseForRequest:(NSURLRequest *)request;
+- (void)removeAllCachedResponses;
+
+- (NSUInteger)memoryCapacity;
+- (void)setMemoryCapacity:(NSUInteger)totalBytes;
+
+// for unit testing
+- (void)setReservationInterval:(NSTimeInterval)secs;
+- (NSDictionary *)responses;
+- (NSUInteger)totalDataSize;
+@end
+
+@interface GDataHTTPFetchHistory (InternalMethods)
+- (NSString *)cachedLastModifiedStringForRequest:(NSURLRequest *)request;
+- (NSData *)cachedDataForRequest:(NSURLRequest *)request;
+- (void)updateFetchHistoryWithRequest:(NSURLRequest *)request
+                             response:(NSURLResponse *)response
+                       downloadedData:(NSData *)downloadedData;
+@end
+
+
+//
+// GDataHTTPFetcher
+//
+
 @interface GDataHTTPFetcher (PrivateMethods)
-- (void)setCookies:(NSArray *)newCookies
-           inArray:(NSMutableArray *)cookieStorageArray;
-- (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
+- (void)setCookieStorage:(GDataCookieStorage *)obj;
 
 - (void)logNowWithError:(NSError *)error;
 
@@ -63,8 +164,8 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 }
 
 + (void)initialize {
-  if (!gGDataFetcherStaticCookies) {
-    gGDataFetcherStaticCookies = [[NSMutableArray alloc] init];
+  if (!gGDataFetcherStaticCookieStorage) {
+    gGDataFetcherStaticCookieStorage = [[GDataCookieStorage alloc] init];
   }
 }
 
@@ -77,10 +178,18 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
 
     request_ = [request mutableCopy];
 
+    // default to static cookie storage
     [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodStatic];
   }
   return self;
 }
+
+#if !GDATA_IPHONE
+- (void)finalize {
+  [self stopFetching]; // releases connection_, destroys timers
+  [super finalize];
+}
+#endif
 
 - (void)dealloc {
   [self stopFetching]; // releases connection_, destroys timers
@@ -102,6 +211,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   [properties_ release];
   [runLoopModes_ release];
   [fetchHistory_ release];
+  [cookieStorage_ release];
 
   [super dealloc];
 }
@@ -222,11 +332,12 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
     [request_ setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 
     if (isEffectiveHTTPGet) {
-      NSDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-      NSString* urlString = [[request_ URL] absoluteString];
-      NSString* lastModifiedStr = [lastModifiedDict objectForKey:urlString];
-
       // servers don't want if-modified-since on anything but GETs
+
+      // extract the last-modified date for this request from the fetch
+      // history
+      NSString *lastModifiedStr = [fetchHistory_ cachedLastModifiedStringForRequest:request_];
+
       if (lastModifiedStr != nil) {
         [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
       }
@@ -237,7 +348,7 @@ const NSTimeInterval kDefaultMaxRetryInterval = 60. * 10.; // 10 minutes
   // we have a storage array
   if (cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodSystemDefault) {
 
-    NSArray *cookies = [self cookiesForURL:[request_ URL]];
+    NSArray *cookies = [cookieStorage_ cookiesForURL:[request_ URL]];
     if ([cookies count]) {
 
       NSDictionary *headerFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
@@ -509,31 +620,7 @@ CannotBeginFetch:
       NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:responseHeaderFields
                                                                 forURL:[response URL]];
       if ([cookies count] > 0) {
-
-        NSMutableArray *cookieArray = nil;
-
-        // static cookies are stored in gGDataFetcherStaticCookies; fetchHistory
-        // cookies are stored in fetchHistory_'s kGDataHTTPFetcherHistoryCookiesKey
-
-        if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodStatic) {
-
-          cookieArray = gGDataFetcherStaticCookies;
-
-        } else if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodFetchHistory
-                   && fetchHistory_ != nil) {
-
-          cookieArray = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryCookiesKey];
-          if (cookieArray == nil) {
-            cookieArray = [NSMutableArray array];
-            [fetchHistory_ setObject:cookieArray forKey:kGDataHTTPFetcherHistoryCookiesKey];
-          }
-        }
-
-        if (cookieArray) {
-          @synchronized(cookieArray) {
-            [self setCookies:cookies inArray:cookieArray];
-          }
-        }
+        [cookieStorage_ setCookies:cookies];
       }
     }
   }
@@ -607,50 +694,6 @@ CannotBeginFetch:
 #endif
 }
 
-- (void)updateFetchHistory {
-
-  if (fetchHistory_) {
-
-    NSString* urlString = [[request_ URL] absoluteString];
-    if ([response_ respondsToSelector:@selector(allHeaderFields)]) {
-      NSDictionary *headers = [(NSHTTPURLResponse *)response_ allHeaderFields];
-      NSString* lastModifiedStr = [headers objectForKey:kGDataLastModifiedHeader];
-
-      // get the dictionary mapping URLs to last-modified dates
-      NSMutableDictionary* lastModifiedDict = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-      if (!lastModifiedDict) {
-        lastModifiedDict = [NSMutableDictionary dictionary];
-        [fetchHistory_ setObject:lastModifiedDict forKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-      }
-
-      NSMutableDictionary* datedDataCache = nil;
-      if (shouldCacheDatedData_) {
-        // get the dictionary mapping URLs to cached, dated data
-        datedDataCache = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryDatedDataKey];
-        if (!datedDataCache) {
-          datedDataCache = [NSMutableDictionary dictionary];
-          [fetchHistory_ setObject:datedDataCache forKey:kGDataHTTPFetcherHistoryDatedDataKey];
-        }
-      }
-
-      NSInteger statusCode = [self statusCode];
-      if (statusCode != kGDataHTTPFetcherStatusNotModified) {
-
-        // save this last modified date string for successful results (<300)
-        // If there's no last modified string, clear the dictionary
-        // entry for this URL. Also cache or delete the data, if appropriate
-        // (when datedDataCache is non-nil.)
-        if (lastModifiedStr && statusCode < 300) {
-          [lastModifiedDict setValue:lastModifiedStr forKey:urlString];
-          [datedDataCache setValue:downloadedData_ forKey:urlString];
-        } else {
-          [lastModifiedDict removeObjectForKey:urlString];
-          [datedDataCache removeObjectForKey:urlString];
-        }
-      }
-    }
-  }
-}
 
 // for error 304's ("Not Modified") where we've cached the data, return status
 // 200 ("OK") to the caller (but leave the fetcher status as 304)
@@ -659,14 +702,10 @@ CannotBeginFetch:
 - (NSInteger)statusAfterHandlingNotModifiedError {
 
   NSInteger status = [self statusCode];
-  if (status == kGDataHTTPFetcherStatusNotModified && shouldCacheDatedData_) {
+  if (status == kGDataHTTPFetcherStatusNotModified
+      && [fetchHistory_ shouldCacheDatedData]) {
 
-    // get the dictionary of URLs and data
-    NSString* urlString = [[request_ URL] absoluteString];
-
-    NSDictionary* datedDataCache = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryDatedDataKey];
-    NSData* cachedData = [datedDataCache objectForKey:urlString];
-
+    NSData *cachedData = [fetchHistory_ cachedDataForRequest:request_];
     if (cachedData) {
       // copy our stored data, and forge the status to pass on to the delegate
       [downloadedData_ setData:cachedData];
@@ -678,7 +717,9 @@ CannotBeginFetch:
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
 
-  [self updateFetchHistory];
+  [fetchHistory_ updateFetchHistoryWithRequest:request_
+                                      response:response_
+                                downloadedData:downloadedData_];
 
   [[self retain] autorelease]; // in case the callback releases us
 
@@ -1073,9 +1114,23 @@ CannotBeginFetch:
   cookieStorageMethod_ = method;
 
   if (method == kGDataHTTPFetcherCookieStorageMethodSystemDefault) {
+    // system default
     [request_ setHTTPShouldHandleCookies:YES];
+
+    // no need for a cookie storage object
+    [self setCookieStorage:nil];
+
   } else {
+    // not system default
     [request_ setHTTPShouldHandleCookies:NO];
+
+    if (method == kGDataHTTPFetcherCookieStorageMethodStatic) {
+      // store cookies in the static array
+      [self setCookieStorage:gGDataFetcherStaticCookieStorage];
+    } else {
+      // store cookies in the fetch history
+      [self setCookieStorage:[fetchHistory_ cookieStorage]];
+    }
   }
 }
 
@@ -1118,36 +1173,55 @@ CannotBeginFetch:
   response_ = [response retain];
 }
 
-- (NSMutableDictionary *)fetchHistory {
+- (GDataHTTPFetchHistory *)fetchHistory {
   return fetchHistory_;
 }
 
-- (void)setFetchHistory:(NSMutableDictionary *)fetchHistory {
+- (void)setFetchHistory:(GDataHTTPFetchHistory *)fetchHistory {
   [fetchHistory_ autorelease];
   fetchHistory_ = [fetchHistory retain];
 
   if (fetchHistory_ != nil) {
+    // set the fetch history's cookie array to be the cookie store
     [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodFetchHistory];
+
   } else {
-    [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodStatic];
+    // the fetch history was removed
+    if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodFetchHistory) {
+      // fall back to static storage
+      [self setCookieStorageMethod:kGDataHTTPFetcherCookieStorageMethodStatic];
+    }
   }
+}
+
+- (void)setCookieStorage:(GDataCookieStorage *)obj {
+  [cookieStorage_ autorelease];
+  cookieStorage_ = [obj retain];
+}
+
+- (GDataCookieStorage *)cookieStorage {
+  return cookieStorage_;
 }
 
 - (void)setShouldCacheDatedData:(BOOL)flag {
-  shouldCacheDatedData_ = flag;
-  if (!flag) {
-    [self clearDatedDataHistory];
-  }
+  [fetchHistory_ setShouldCacheDatedData:flag];
 }
 
 - (BOOL)shouldCacheDatedData {
-  return shouldCacheDatedData_;
+  return [fetchHistory_ shouldCacheDatedData];
 }
 
 // delete last-modified dates and cached data from the fetch history
 - (void)clearDatedDataHistory {
-  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey];
+  [fetchHistory_ clearDatedDataCache];
+}
+
+- (void)setDatedDataCacheMemoryCapacity:(NSUInteger)val {
+  [fetchHistory_ setMemoryCapacity:val];
+}
+
+- (NSUInteger)datedDataCacheMemoryCapacity {
+  return [fetchHistory_ memoryCapacity];
 }
 
 - (id)userData {
@@ -1215,27 +1289,142 @@ CannotBeginFetch:
   gGDataFetcherConnectionClass = theClass;
 }
 
-#pragma mark Cookies
+@end
+
+@implementation GDataCookieStorage
+
+- (id)init {
+  self = [super init];
+  if (self != nil) {
+    cookies_ = [[NSMutableArray alloc] init];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [cookies_ release];
+  [super dealloc];
+}
+
+// add all cookies in the new cookie array to the storage,
+// replacing stored cookies as appropriate
+//
+// Side effect: removes expired cookies from the storage array
+- (void)setCookies:(NSArray *)newCookies {
+
+  @synchronized(cookies_) {
+    [self removeExpiredCookies];
+
+    NSEnumerator *newCookieEnum = [newCookies objectEnumerator];
+    NSHTTPCookie *newCookie;
+
+    while ((newCookie = [newCookieEnum nextObject]) != nil) {
+
+      if ([[newCookie name] length] > 0
+          && [[newCookie domain] length] > 0
+          && [[newCookie path] length] > 0) {
+
+        // remove the cookie if it's currently in the array
+        NSHTTPCookie *oldCookie = [self cookieMatchingCookie:newCookie];
+        if (oldCookie) {
+          [cookies_ removeObjectIdenticalTo:oldCookie];
+        }
+
+        // make sure the cookie hasn't already expired
+        NSDate *expiresDate = [newCookie expiresDate];
+        if ((!expiresDate) || [expiresDate timeIntervalSinceNow] > 0) {
+          [cookies_ addObject:newCookie];
+        }
+
+      } else {
+        NSAssert1(NO, @"Cookie incomplete: %@", newCookie);
+      }
+    }
+  }
+}
+
+// retrieve all cookies appropriate for the given URL, considering
+// domain, path, cookie name, expiration, security setting.
+// Side effect: removed expired cookies from the storage array
+- (NSArray *)cookiesForURL:(NSURL *)theURL {
+
+  NSMutableArray *foundCookies = nil;
+
+  @synchronized(cookies_) {
+    [self removeExpiredCookies];
+
+    // we'll prepend "." to the desired domain, since we want the
+    // actual domain "nytimes.com" to still match the cookie domain
+    // ".nytimes.com" when we check it below with hasSuffix
+    NSString *host = [[theURL host] lowercaseString];
+    NSString *path = [theURL path];
+    NSString *scheme = [theURL scheme];
+
+    NSString *domain = nil;
+    BOOL isLocalhostRetrieval = NO;
+
+    if ([host isEqual:@"localhost"]) {
+      isLocalhostRetrieval = YES;
+    } else {
+      if (host) {
+        domain = [@"." stringByAppendingString:host];
+      }
+    }
+
+    NSUInteger numberOfCookies = [cookies_ count];
+    for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
+
+      NSHTTPCookie *storedCookie = [cookies_ objectAtIndex:idx];
+
+      NSString *cookieDomain = [[storedCookie domain] lowercaseString];
+      NSString *cookiePath = [storedCookie path];
+      BOOL cookieIsSecure = [storedCookie isSecure];
+
+      BOOL isDomainOK;
+
+      if (isLocalhostRetrieval) {
+        // prior to 10.5.6, the domain stored into NSHTTPCookies for localhost
+        // is "localhost.local"
+        isDomainOK = [cookieDomain isEqual:@"localhost"]
+          || [cookieDomain isEqual:@"localhost.local"];
+      } else {
+        isDomainOK = [domain hasSuffix:cookieDomain];
+      }
+
+      BOOL isPathOK = [cookiePath isEqual:@"/"] || [path hasPrefix:cookiePath];
+      BOOL isSecureOK = (!cookieIsSecure) || [scheme isEqual:@"https"];
+
+      if (isDomainOK && isPathOK && isSecureOK) {
+        if (foundCookies == nil) {
+          foundCookies = [NSMutableArray arrayWithCapacity:1];
+        }
+        [foundCookies addObject:storedCookie];
+      }
+    }
+  }
+  return foundCookies;
+}
 
 // return a cookie from the array with the same name, domain, and path as the
 // given cookie, or else return nil if none found
 //
-// Both the cookie being tested and all cookies in cookieStorageArray should
+// Both the cookie being tested and all cookies in the storage array should
 // be valid (non-nil name, domains, paths)
-- (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie
-                               inArray:(NSArray *)cookieStorageArray {
+//
+// note: this should only be called from inside a @synchronized(cookies_) block
+- (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie {
 
-  NSUInteger numberOfCookies = [cookieStorageArray count];
+  NSUInteger numberOfCookies = [cookies_ count];
   NSString *name = [cookie name];
   NSString *domain = [cookie domain];
   NSString *path = [cookie path];
 
   NSAssert3(name && domain && path, @"Invalid cookie (name:%@ domain:%@ path:%@)",
-                   name, domain, path);
+            name, domain, path);
 
   for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
 
-    NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
+    NSHTTPCookie *storedCookie = [cookies_ objectAtIndex:idx];
 
     if ([[storedCookie name] isEqual:name]
         && [[storedCookie domain] isEqual:domain]
@@ -1247,144 +1436,367 @@ CannotBeginFetch:
   return nil;
 }
 
-// remove any expired cookies from the array, excluding cookies with nil
-// expirations
-- (void)removeExpiredCookiesInArray:(NSMutableArray *)cookieStorageArray {
+
+// internal routine to remove any expired cookies from the array, excluding
+// cookies with nil expirations
+//
+// note: this should only be called from inside a @synchronized(cookies_) block
+- (void)removeExpiredCookies {
 
   // count backwards since we're deleting items from the array
-  for (NSInteger idx = [cookieStorageArray count] - 1; idx >= 0; idx--) {
+  for (NSInteger idx = [cookies_ count] - 1; idx >= 0; idx--) {
 
-    NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
+    NSHTTPCookie *storedCookie = [cookies_ objectAtIndex:idx];
 
     NSDate *expiresDate = [storedCookie expiresDate];
     if (expiresDate && [expiresDate timeIntervalSinceNow] < 0) {
-      [cookieStorageArray removeObjectAtIndex:idx];
+      [cookies_ removeObjectAtIndex:idx];
     }
   }
 }
 
-
-// retrieve all cookies appropriate for the given URL, considering
-// domain, path, cookie name, expiration, security setting.
-// Side effect: removed expired cookies from the storage array
-- (NSArray *)cookiesForURL:(NSURL *)theURL inArray:(NSMutableArray *)cookieStorageArray {
-
-  [self removeExpiredCookiesInArray:cookieStorageArray];
-
-  NSMutableArray *foundCookies = [NSMutableArray array];
-
-  // we'll prepend "." to the desired domain, since we want the
-  // actual domain "nytimes.com" to still match the cookie domain ".nytimes.com"
-  // when we check it below with hasSuffix
-  NSString *host = [[theURL host] lowercaseString];
-  NSString *path = [theURL path];
-  NSString *scheme = [theURL scheme];
-
-  NSString *domain = nil;
-  BOOL isLocalhostRetrieval = NO;
-
-  if ([host isEqual:@"localhost"]) {
-    isLocalhostRetrieval = YES;
-  } else {
-    if (host) {
-      domain = [@"." stringByAppendingString:host];
-    }
+- (void)removeAllCookies {
+  @synchronized(cookies_) {
+    [cookies_ removeAllObjects];
   }
+}
+@end
 
-  NSUInteger numberOfCookies = [cookieStorageArray count];
-  for (NSUInteger idx = 0; idx < numberOfCookies; idx++) {
+//
+// GDataCachedURLResponse
+//
 
-    NSHTTPCookie *storedCookie = [cookieStorageArray objectAtIndex:idx];
+@implementation GDataCachedURLResponse
 
-    NSString *cookieDomain = [[storedCookie domain] lowercaseString];
-    NSString *cookiePath = [storedCookie path];
-    BOOL cookieIsSecure = [storedCookie isSecure];
+- (id)initWithResponse:(NSURLResponse *)response data:(NSData *)data {
+  self = [super init];
+  if (self != nil) {
+    response_ = [response retain];
+    data_ = [data retain];
+    useDate_ = [[NSDate alloc] init];
+  }
+  return self;
+}
 
-    BOOL domainIsOK;
+- (void)dealloc {
+  [response_ release];
+  [data_ release];
+  [useDate_ release];
+  [reservationDate_ release];
+  [super dealloc];
+}
 
-    if (isLocalhostRetrieval) {
-      // prior to 10.5.6, the domain stored into NSHTTPCookies for localhost
-      // is "localhost.local"
-      domainIsOK = [cookieDomain isEqual:@"localhost"]
-        || [cookieDomain isEqual:@"localhost.local"];
+- (NSString *)description {
+  NSString *reservationStr = reservationDate_ ?
+    [NSString stringWithFormat:@" resDate:%@", reservationDate_] : @"";
+
+  return [NSString stringWithFormat:@"%@ %p: {bytes:%@ useDate:%@%@}",
+          [self class], self,
+          data_ ? [NSNumber numberWithInt:(int)[data_ length]] : nil,
+          useDate_,
+          reservationStr,
+          [response_ URL]];
+}
+
+// setters/getters
+
+- (NSURLResponse *)response {
+  return response_;
+}
+
+- (NSData *)data {
+  return data_;
+}
+
+- (NSDate *)reservationDate{
+  return reservationDate_;
+}
+
+- (void)setReservationDate:(NSDate *)date {
+  [reservationDate_ autorelease];
+  reservationDate_ = [date retain];
+}
+
+- (NSDate *)useDate{
+  return useDate_;
+}
+
+- (void)setUseDate:(NSDate *)date {
+  [useDate_ autorelease];
+  useDate_ = [date retain];
+}
+
+- (NSComparisonResult)compareUseDate:(GDataCachedURLResponse *)other {
+  return [useDate_ compare:[other useDate]];
+}
+
+@end
+
+//
+// GDataURLCache
+//
+
+@implementation GDataURLCache
+
+- (id)init {
+  return [self initWithMemoryCapacity:kGDataDefaultDatedDataCacheMemoryCapacity];
+}
+
+- (id)initWithMemoryCapacity:(NSUInteger)totalBytes {
+  self = [super init];
+  if (self != nil) {
+    memoryCapacity_ = totalBytes;
+
+    responses_ = [[NSMutableDictionary alloc] initWithCapacity:5];
+
+    reservationInterval_ = kCachedURLReservationInterval;
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [responses_ release];
+  [super dealloc];
+}
+
+- (NSString *)description {
+  return [NSString stringWithFormat:@"%@ %p: {responses:%@}",
+          [self class], self, [responses_ allValues]];
+}
+
+// setters/getters
+
+- (void)pruneCacheResponses {
+  // internal routine to remove the least-recently-used responses when the
+  // cache has grown too large
+  if (memoryCapacity_ >= totalDataSize_) return;
+
+  // sort keys by date
+  SEL sel = @selector(compareUseDate:);
+  NSArray *sortedKeys = [responses_ keysSortedByValueUsingSelector:sel];
+
+  // the least-recently-used keys are at the beginning of the sorted array;
+  // remove those (except ones still reserved) until the total data size is
+  // reduced sufficiently
+  NSEnumerator *keyEnum = [sortedKeys objectEnumerator];
+  NSURL *key;
+  while ((key = [keyEnum nextObject]) != nil) {
+    GDataCachedURLResponse *response = [responses_ objectForKey:key];
+
+    NSDate *resDate = [response reservationDate];
+    BOOL isResponseReserved = (resDate != nil)
+      && ([resDate timeIntervalSinceNow] > -reservationInterval_);
+
+    if (!isResponseReserved) {
+      // we can remove this response from the cache
+      NSUInteger storedSize = [[response data] length];
+      totalDataSize_ -= storedSize;
+      [responses_ removeObjectForKey:key];
+    }
+
+    // if we've removed enough response data, then we're done
+    if (memoryCapacity_ >= totalDataSize_) break;
+  }
+}
+
+- (void)storeCachedResponse:(GDataCachedURLResponse *)cachedResponse
+                 forRequest:(NSURLRequest *)request {
+  // remove any previous entry for this request
+  [self removeCachedResponseForRequest:request];
+
+  // cache this one only if it's not bigger than our cache
+  NSUInteger storedSize = [[cachedResponse data] length];
+  if (storedSize < memoryCapacity_) {
+
+    NSURL *key = [request URL];
+    [responses_ setObject:cachedResponse forKey:key];
+    totalDataSize_ += storedSize;
+
+    [self pruneCacheResponses];
+  }
+}
+
+- (GDataCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {
+  NSURL *key = [request URL];
+  GDataCachedURLResponse *response = [responses_ objectForKey:key];
+
+  // touch the date to indicate this was recently retrieved
+  [response setUseDate:[NSDate date]];
+
+  return response;
+}
+
+- (void)removeCachedResponseForRequest:(NSURLRequest *)request {
+  NSURL *key = [request URL];
+  totalDataSize_ -= [[[responses_ objectForKey:key] data] length];
+  [responses_ removeObjectForKey:key];
+}
+
+- (void)removeAllCachedResponses {
+  [responses_ removeAllObjects];
+  totalDataSize_ = 0;
+}
+
+- (NSUInteger)memoryCapacity {
+  return memoryCapacity_;
+}
+
+- (void)setMemoryCapacity:(NSUInteger)totalBytes {
+  BOOL didShrink = (totalBytes < memoryCapacity_);
+  memoryCapacity_ = totalBytes;
+
+  if (didShrink) {
+    [self pruneCacheResponses];
+  }
+}
+
+// methods for unit testing
+- (void)setReservationInterval:(NSTimeInterval)secs {
+  reservationInterval_ = secs;
+}
+
+- (NSDictionary *)responses {
+  return responses_;
+}
+
+- (NSUInteger)totalDataSize {
+  return totalDataSize_;
+}
+
+@end
+
+//
+// GDataHTTPFetchHistory
+//
+
+@implementation GDataHTTPFetchHistory
+
+- (id)init {
+ return [self initWithMemoryCapacity:kGDataDefaultDatedDataCacheMemoryCapacity
+                shouldCacheDatedData:NO];
+}
+
+- (id)initWithMemoryCapacity:(NSUInteger)totalBytes
+        shouldCacheDatedData:(BOOL)shouldCacheDatedData {
+  self = [super init];
+  if (self != nil) {
+    datedDataCache_ = [[GDataURLCache alloc] initWithMemoryCapacity:totalBytes];
+    shouldCacheDatedData_ = shouldCacheDatedData;
+    cookieStorage_ = [[GDataCookieStorage alloc] init];
+  }
+  return self;
+}
+
+- (void)dealloc {
+  [datedDataCache_ release];
+  [cookieStorage_ release];
+  [super dealloc];
+}
+
+- (void)updateFetchHistoryWithRequest:(NSURLRequest *)request
+                             response:(NSURLResponse *)response
+                       downloadedData:(NSData *)downloadedData {
+
+  if (![response respondsToSelector:@selector(allHeaderFields)]) return;
+
+  NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+
+  if (statusCode != kGDataHTTPFetcherStatusNotModified) {
+    // save this last modified date string for successful results (<300)
+    // If there's no last modified string, clear the dictionary
+    // entry for this URL. Also cache or delete the data, if appropriate
+    // (when datedDataCache is non-nil.)
+    NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+    NSString* lastModifiedStr = [headers objectForKey:kGDataLastModifiedHeader];
+
+    if (lastModifiedStr != nil && statusCode < 300) {
+
+      // we want to cache responses for the headers, even if the client
+      // doesn't want the response body data caches
+      NSData *dataToStore = shouldCacheDatedData_ ? downloadedData : nil;
+
+      GDataCachedURLResponse *cachedResponse;
+      cachedResponse = [[[GDataCachedURLResponse alloc] initWithResponse:response
+                                                                    data:dataToStore] autorelease];
+      [datedDataCache_ storeCachedResponse:cachedResponse
+                                forRequest:request];
     } else {
-      domainIsOK = [domain hasSuffix:cookieDomain];
-    }
-
-    BOOL pathIsOK = [cookiePath isEqual:@"/"] || [path hasPrefix:cookiePath];
-    BOOL secureIsOK = (!cookieIsSecure) || [scheme isEqual:@"https"];
-
-    if (domainIsOK && pathIsOK && secureIsOK) {
-      [foundCookies addObject:storedCookie];
-    }
-  }
-  return foundCookies;
-}
-
-// return cookies for the given URL using the current cookie storage method
-- (NSArray *)cookiesForURL:(NSURL *)theURL {
-
-  NSArray *cookies = nil;
-  NSMutableArray *cookieStorageArray = nil;
-
-  if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodStatic) {
-    cookieStorageArray = gGDataFetcherStaticCookies;
-  } else if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodFetchHistory) {
-    cookieStorageArray = [fetchHistory_ objectForKey:kGDataHTTPFetcherHistoryCookiesKey];
-  } else {
-    // kGDataHTTPFetcherCookieStorageMethodSystemDefault
-    cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookiesForURL:theURL];
-  }
-
-  if (cookieStorageArray) {
-
-    @synchronized(cookieStorageArray) {
-
-      // cookiesForURL returns a new array of immutable NSCookie objects
-      // from cookieStorageArray
-      cookies = [self cookiesForURL:theURL
-                            inArray:cookieStorageArray];
-    }
-  }
-  return cookies;
-}
-
-
-// add all cookies in the array |newCookies| to the storage array,
-// replacing cookies in the storage array as appropriate
-// Side effect: removes expired cookies from the storage array
-- (void)setCookies:(NSArray *)newCookies
-           inArray:(NSMutableArray *)cookieStorageArray {
-
-  [self removeExpiredCookiesInArray:cookieStorageArray];
-
-  NSEnumerator *newCookieEnum = [newCookies objectEnumerator];
-  NSHTTPCookie *newCookie;
-
-  while ((newCookie = [newCookieEnum nextObject]) != nil) {
-
-    if ([[newCookie name] length] > 0
-        && [[newCookie domain] length] > 0
-        && [[newCookie path] length] > 0) {
-
-      // remove the cookie if it's currently in the array
-      NSHTTPCookie *oldCookie = [self cookieMatchingCookie:newCookie
-                                                   inArray:cookieStorageArray];
-      if (oldCookie) {
-        [cookieStorageArray removeObject:oldCookie];
-      }
-
-      // make sure the cookie hasn't already expired
-      NSDate *expiresDate = [newCookie expiresDate];
-      if ((!expiresDate) || [expiresDate timeIntervalSinceNow] > 0) {
-        [cookieStorageArray addObject:newCookie];
-      }
-
-    } else {
-      NSAssert1(NO, @"Cookie incomplete: %@", newCookie);
+      [datedDataCache_ removeCachedResponseForRequest:request];
     }
   }
 }
+
+- (NSString *)cachedLastModifiedStringForRequest:(NSURLRequest *)request {
+  GDataCachedURLResponse *cachedResponse;
+  cachedResponse = [datedDataCache_ cachedResponseForRequest:request];
+
+  NSURLResponse *response = [cachedResponse response];
+  NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+  NSString *lastModifiedStr = [headers objectForKey:kGDataLastModifiedHeader];
+  if (lastModifiedStr) {
+    // since the request for a last-mod date implies this request is about
+    // to be fetched again, reserve the cached response to ensure that
+    // that it will be around at least until the fetch completes
+    //
+    // when the fetch completes, either the cached response will be replaced
+    // with a new response, or the cachedDataForRequest: method below will
+    // clear the reservation
+    [cachedResponse setReservationDate:[NSDate date]];
+  }
+  return lastModifiedStr;
+}
+
+- (NSData *)cachedDataForRequest:(NSURLRequest *)request {
+  GDataCachedURLResponse *cachedResponse;
+  cachedResponse = [datedDataCache_ cachedResponseForRequest:request];
+
+  NSData *cachedData = [cachedResponse data];
+
+  // since the data for this cached request is being obtained from the cache,
+  // we can clear the reservation as the fetch has completed
+  [cachedResponse setReservationDate:nil];
+
+  return cachedData;
+}
+
+- (void)clearDatedDataCache {
+  [datedDataCache_ removeAllCachedResponses];
+}
+
+- (void)clearHistory {
+  [self clearDatedDataCache];
+  [cookieStorage_ removeAllCookies];
+}
+
+- (GDataCookieStorage *)cookieStorage {
+  return cookieStorage_;
+}
+
+- (void)setCookieStorage:(GDataCookieStorage *)obj {
+  [cookieStorage_ autorelease];
+  cookieStorage_ = [obj retain];
+}
+
+- (BOOL)shouldCacheDatedData {
+  return shouldCacheDatedData_;
+}
+
+- (void)setShouldCacheDatedData:(BOOL)flag {
+  shouldCacheDatedData_ = flag;
+  if (!flag) {
+    // users expect turning off caching to free up the cache memory
+    [self clearDatedDataCache];
+  }
+}
+
+- (NSUInteger)memoryCapacity {
+  return [datedDataCache_ memoryCapacity];
+}
+
+- (void)setMemoryCapacity:(NSUInteger)totalBytes {
+  [datedDataCache_ setMemoryCapacity:totalBytes];
+}
+
 @end
 
 #ifdef GDATA_FOUNDATION_ONLY

@@ -1869,6 +1869,8 @@
 		4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FB730DE0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
 		4FB730DF0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
+		4FBD4DCD104C7E540004AE08 /* GDataFetcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD4DCC104C7E540004AE08 /* GDataFetcherTest.m */; };
+		4FBD4DCE104C7E540004AE08 /* GDataFetcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBD4DCC104C7E540004AE08 /* GDataFetcherTest.m */; };
 		4FBF381E0F57419900E1EFD9 /* GDataFeedYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381A0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.m */; };
 		4FBF381F0F57419900E1EFD9 /* GDataFeedYouTubeUserEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FBF381B0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FBF38200F57419900E1EFD9 /* GDataEntryYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */; };
@@ -2921,6 +2923,7 @@
 		4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStreamTest.m; path = Tests/GDataProgressMonitorInputStreamTest.m; sourceTree = "<group>"; };
 		4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStream.h; path = Networking/GDataProgressMonitorInputStream.h; sourceTree = "<group>"; };
 		4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStream.m; path = Networking/GDataProgressMonitorInputStream.m; sourceTree = "<group>"; };
+		4FBD4DCC104C7E540004AE08 /* GDataFetcherTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFetcherTest.m; path = Tests/GDataFetcherTest.m; sourceTree = "<group>"; };
 		4FBF381A0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedYouTubeUserEvent.m; path = Clients/YouTube/GDataFeedYouTubeUserEvent.m; sourceTree = "<group>"; };
 		4FBF381B0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeUserEvent.h; path = Clients/YouTube/GDataFeedYouTubeUserEvent.h; sourceTree = "<group>"; };
 		4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeUserEvent.m; path = Clients/YouTube/GDataEntryYouTubeUserEvent.m; sourceTree = "<group>"; };
@@ -3237,6 +3240,7 @@
 				4FE8203E0B26104600D8C135 /* GDataQueryTest.m */,
 				4F14B1220B13A5540072EBB8 /* GDataDateTimeTest.m */,
 				4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */,
+				4FBD4DCC104C7E540004AE08 /* GDataFetcherTest.m */,
 				4FD7B7210BC5922C00C578E1 /* GDataTestHTTPServer.py */,
 				4F0AAAD90BCAF3C900504521 /* GDataFrameworkTest.m */,
 				4FDAB3C40E4261CD00DAD951 /* GDataUtilitiesTest.m */,
@@ -4904,6 +4908,7 @@
 				4F0935161030D682004C7DC1 /* GDataAuthenticationFetcher.m in Sources */,
 				4F7B13C61045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13CF1045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
+				4FBD4DCD104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6060,6 +6065,7 @@
 				4F85E011103B83B700B4C418 /* GDataAuthenticationFetcher.m in Sources */,
 				4F7B13C71045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13D01045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
+				4FBD4DCE104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

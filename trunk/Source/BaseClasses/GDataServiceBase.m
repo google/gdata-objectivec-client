@@ -84,7 +84,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (id)init {
   self = [super init];
   if (self) {
-    fetchHistory_ = [[NSMutableDictionary alloc] init];
+    fetchHistory_ = [[GDataHTTPFetchHistory alloc] init];
   }
   return self;
 }
@@ -1072,7 +1072,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     // username changed; discard history so we're not caching for the wrong
     // user
-    [fetchHistory_ removeAllObjects];
+    [fetchHistory_ clearHistory];
   }
 
   [username_ release];
@@ -1108,22 +1108,25 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 // Turn on data caching to receive a copy of previously-retrieved objects.
 // Otherwise, fetches may return status 304 (No Change) rather than actual data
 - (void)setShouldCacheDatedData:(BOOL)flag {
-  shouldCacheDatedData_ = flag;
-
-  if (!flag) {
-    [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey];
-  }
+  [fetchHistory_ setShouldCacheDatedData:flag];
 }
 
 - (BOOL)shouldCacheDatedData {
-  return shouldCacheDatedData_;
+  return [fetchHistory_ shouldCacheDatedData];
+}
+
+- (void)setDatedDataCacheCapacity:(NSUInteger)totalBytes {
+  [fetchHistory_ setMemoryCapacity:totalBytes];
+}
+
+- (NSUInteger)datedDataCacheCapacity {
+  return [fetchHistory_ memoryCapacity];
 }
 
 // reset the last modified dates to avoid getting a Not Modified status
 // based on prior queries
 - (void)clearLastModifiedDates {
-  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryLastModifiedKey];
-  [fetchHistory_ removeObjectForKey:kGDataHTTPFetcherHistoryDatedDataKey];
+  [fetchHistory_ clearDatedDataCache];
 }
 
 - (BOOL)serviceShouldFollowNextLinks {
