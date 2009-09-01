@@ -21,6 +21,8 @@
 
 #import "GDataDefines.h"
 
+#import "GDataQuery.h"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAQUERYGOOGLEPHOTOS_DEFINE_GLOBALS
@@ -32,8 +34,6 @@
 #endif
 
 _EXTERN const NSInteger kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
-
-#import "GDataQuery.h"
 
 @interface GDataQueryGooglePhotos : GDataQuery 
 

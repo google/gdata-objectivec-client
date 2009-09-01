@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,7 +49,7 @@
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<string key="NSWindowContentMinSize">{620, 594}</string>
 				<object class="NSView" key="NSWindowView" id="197162646">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -458,7 +459,7 @@
 										<object class="NSTextView" id="297765879">
 											<reference key="NSNextResponder" ref="991491238"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{578, 56}</string>
+											<string key="NSFrameSize">{578, 14}</string>
 											<reference key="NSSuperview" ref="991491238"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="1011423675">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -549,8 +550,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{585, 1e+07}</string>
-											<string key="NSMinize">{463, 56}</string>
+											<string key="NSMaxSize">{1158, 1e+07}</string>
+											<string key="NSMinize">{463, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -608,7 +609,7 @@
 										<object class="NSTextView" id="232926060">
 											<reference key="NSNextResponder" ref="744994517"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{481, 77}</string>
+											<string key="NSFrameSize">{481, 14}</string>
 											<reference key="NSSuperview" ref="744994517"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="139287410">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -679,8 +680,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{488, 1e+07}</string>
-											<string key="NSMinize">{366, 77}</string>
+											<string key="NSMaxSize">{1061, 1e+07}</string>
+											<string key="NSMinize">{366, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -815,14 +816,14 @@
 						<object class="NSButton" id="702988960">
 							<reference key="NSNextResponder" ref="197162646"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{427, 20}, {140, 16}}</string>
+							<string key="NSFrame">{{427, 18}, {128, 18}}</string>
 							<reference key="NSSuperview" ref="197162646"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="781500325">
 								<int key="NSCellFlags">67239424</int>
 								<int key="NSCellFlags2">131072</int>
 								<string key="NSContents">Log http to desktop</string>
-								<reference key="NSSupport" ref="26"/>
+								<reference key="NSSupport" ref="794329592"/>
 								<reference key="NSControlView" ref="702988960"/>
 								<int key="NSButtonFlags">1211912703</int>
 								<int key="NSButtonFlags2">2</int>
@@ -1294,6 +1295,7 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{620, 594}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{620, 616}</string>
@@ -1412,14 +1414,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">mContactResultTextField</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="297765879"/>
-					</object>
-					<int key="connectionID">119</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">mEntrySegmentedControl</string>
 						<reference key="source" ref="437392050"/>
 						<reference key="destination" ref="133288285"/>
@@ -1449,22 +1443,6 @@
 						<reference key="destination" ref="167084224"/>
 					</object>
 					<int key="connectionID">124</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mContactCancelButton</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="496887578"/>
-					</object>
-					<int key="connectionID">127</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mContactTable</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="406380224"/>
-					</object>
-					<int key="connectionID">129</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1531,14 +1509,6 @@
 					<int key="connectionID">143</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mSortContactsCheckbox</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="250555869"/>
-					</object>
-					<int key="connectionID">145</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">loggingCheckboxClicked:</string>
 						<reference key="source" ref="437392050"/>
@@ -1587,14 +1557,6 @@
 					<int key="connectionID">160</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mSetContactButton</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="772966688"/>
-					</object>
-					<int key="connectionID">230</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">setContactImageClicked:</string>
 						<reference key="source" ref="437392050"/>
@@ -1620,14 +1582,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">mContactProgressIndicator</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="263827433"/>
-					</object>
-					<int key="connectionID">273</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">mDeleteContactImageButton</string>
 						<reference key="source" ref="437392050"/>
 						<reference key="destination" ref="446498455"/>
@@ -1641,30 +1595,6 @@
 						<reference key="destination" ref="446498455"/>
 					</object>
 					<int key="connectionID">311</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mSortEntriesCheckbox</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="250555869"/>
-					</object>
-					<int key="connectionID">353</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mEntryProgressIndicator</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="263827433"/>
-					</object>
-					<int key="connectionID">354</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mEntryCancelButton</string>
-						<reference key="source" ref="437392050"/>
-						<reference key="destination" ref="496887578"/>
-					</object>
-					<int key="connectionID">355</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -2525,6 +2455,8 @@
 					<string>40.ImportedFromIB2</string>
 					<string>44.IBPluginDependency</string>
 					<string>44.ImportedFromIB2</string>
+					<string>5.IBEditorWindowLastContentRect</string>
+					<string>5.IBWindowTemplateEditedContentRect</string>
 					<string>5.ImportedFromIB2</string>
 					<string>5.windowTemplate.hasMinSize</string>
 					<string>5.windowTemplate.minSize</string>
@@ -2554,15 +2486,53 @@
 					<string>86.ImportedFromIB2</string>
 					<string>909.IBPluginDependency</string>
 					<string>909.ImportedFromIB2</string>
+					<string>957.IBPluginDependency</string>
+					<string>958.IBPluginDependency</string>
+					<string>959.IBPluginDependency</string>
+					<string>960.IBPluginDependency</string>
+					<string>961.IBPluginDependency</string>
+					<string>962.IBPluginDependency</string>
+					<string>963.IBPluginDependency</string>
+					<string>964.IBPluginDependency</string>
+					<string>965.IBPluginDependency</string>
+					<string>966.IBPluginDependency</string>
+					<string>967.IBPluginDependency</string>
+					<string>968.IBPluginDependency</string>
+					<string>969.IBPluginDependency</string>
+					<string>970.IBPluginDependency</string>
+					<string>971.IBPluginDependency</string>
+					<string>972.IBPluginDependency</string>
+					<string>973.IBPluginDependency</string>
+					<string>974.IBPluginDependency</string>
+					<string>975.IBPluginDependency</string>
+					<string>976.IBPluginDependency</string>
+					<string>977.IBPluginDependency</string>
+					<string>978.IBPluginDependency</string>
+					<string>979.IBPluginDependency</string>
+					<string>980.IBPluginDependency</string>
+					<string>981.IBPluginDependency</string>
+					<string>982.IBPluginDependency</string>
+					<string>983.IBPluginDependency</string>
+					<string>984.IBPluginDependency</string>
+					<string>985.IBPluginDependency</string>
 					<string>985.IBShouldRemoveOnLegacySave</string>
+					<string>986.IBPluginDependency</string>
 					<string>986.IBShouldRemoveOnLegacySave</string>
+					<string>987.IBPluginDependency</string>
 					<string>987.IBShouldRemoveOnLegacySave</string>
+					<string>988.IBPluginDependency</string>
 					<string>988.IBShouldRemoveOnLegacySave</string>
+					<string>989.IBPluginDependency</string>
 					<string>989.IBShouldRemoveOnLegacySave</string>
+					<string>990.IBPluginDependency</string>
 					<string>990.IBShouldRemoveOnLegacySave</string>
+					<string>991.IBPluginDependency</string>
 					<string>991.IBShouldRemoveOnLegacySave</string>
+					<string>992.IBPluginDependency</string>
 					<string>992.IBShouldRemoveOnLegacySave</string>
+					<string>993.IBPluginDependency</string>
 					<string>993.IBShouldRemoveOnLegacySave</string>
+					<string>994.IBPluginDependency</string>
 					<string>994.IBShouldRemoveOnLegacySave</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -2630,6 +2600,8 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>{{0, 551}, {620, 594}}</string>
+					<string>{{0, 551}, {620, 594}}</string>
 					<reference ref="5"/>
 					<reference ref="5"/>
 					<string>{620, 594}</string>
@@ -2659,15 +2631,53 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 				</object>
 			</object>
@@ -2806,12 +2816,21 @@
 						</object>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">ContactsSampleWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">ContactsSampleWindowController</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">FirstResponder</string>
+					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
@@ -2819,6 +2838,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">NSSegmentedControl</string>
+					<string key="superclassName">NSControl</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>

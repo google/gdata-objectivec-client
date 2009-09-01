@@ -17,6 +17,8 @@
 #ifndef _GDATAFRAMEWORK_H_
 #define _GDATAFRAMEWORK_H_
 
+#import <Foundation/Foundation.h>
+
 #import "GDataDefines.h"
 
 
