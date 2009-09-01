@@ -144,6 +144,8 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 //
 
 @interface GDataHTTPFetcher (PrivateMethods)
+- (void)stopFetchReleasingBlocks:(BOOL)shouldReleaseBlocks;
+
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
 - (void)setCookieStorage:(GDataCookieStorage *)obj;
 
@@ -186,13 +188,13 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 
 #if !GDATA_IPHONE
 - (void)finalize {
-  [self stopFetching]; // releases connection_, destroys timers
+  [self stopFetchReleasingBlocks:YES]; // releases connection_, destroys timers
   [super finalize];
 }
 #endif
 
 - (void)dealloc {
-  [self stopFetching]; // releases connection_, destroys timers
+  [self stopFetchReleasingBlocks:YES]; // releases connection_, destroys timers
 
   [request_ release];
   [downloadedData_ release];
@@ -202,11 +204,6 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   [postStream_ release];
   [loggedStreamData_ release];
   [response_ release];
-#if NS_BLOCKS_AVAILABLE
-  [completionBlock_ release];
-  [receivedDataBlock_ release];
-  [retryBlock_ release];
-#endif
   [userData_ release];
   [properties_ release];
   [runLoopModes_ release];
@@ -469,7 +466,7 @@ CannotBeginFetch:
 }
 
 // Cancel the fetch of the URL that's currently in progress.
-- (void)stopFetching {
+- (void)stopFetchReleasingBlocks:(BOOL)shouldReleaseBlocks {
   [self destroyRetryTimer];
 
   if (connection_) {
@@ -490,6 +487,23 @@ CannotBeginFetch:
     // balance the retain done when the connection was opened
     [delegate_ release];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  // avoid a retain loop in case the blocks are referencing
+  // the fetcher instance
+  if (shouldReleaseBlocks) {
+    [completionBlock_ autorelease];
+    completionBlock_ = nil;
+
+    [self setReceivedDataBlock:nil];
+    [self setRetryBlock:nil];
+  }
+#endif
+}
+
+// external stop method
+- (void)stopFetching {
+  [self stopFetchReleasingBlocks:YES];
 }
 
 - (void)sendStopNotificationIfNeeded {
@@ -506,7 +520,7 @@ CannotBeginFetch:
 
   id holdDelegate = [[delegate_ retain] autorelease];
 
-  [self stopFetching];
+  [self stopFetchReleasingBlocks:NO];
 
   [self beginFetchWithDelegate:holdDelegate
              didFinishSelector:finishedSEL_
@@ -827,7 +841,7 @@ CannotBeginFetch:
     }
 #endif
 
-    [self stopFetching];
+    [self stopFetchReleasingBlocks:YES];
   }
 }
 
@@ -1018,7 +1032,7 @@ CannotBeginFetch:
 
 #if NS_BLOCKS_AVAILABLE
 - (void)setRetryBlock:(BOOL (^)(BOOL, NSError *))block {
-  [block release];
+  [block autorelease];
   retryBlock_ = [block copy];
 }
 #endif
@@ -1159,7 +1173,7 @@ CannotBeginFetch:
 
 #if NS_BLOCKS_AVAILABLE
 - (void)setReceivedDataBlock:(void (^)(NSData *))block {
-  [block release];
+  [block autorelease];
   receivedDataBlock_ = [block copy];
 }
 #endif
