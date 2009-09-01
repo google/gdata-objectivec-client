@@ -1666,7 +1666,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
   
   // e-mail and IM have address methods
   if ([item respondsToSelector:@selector(address)]) {
-    result = [item address]; 
+    result = (NSString *) [item address];
   }
   
   // org has title and name
