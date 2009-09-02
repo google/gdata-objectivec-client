@@ -64,7 +64,7 @@
 
   // display properties as "(name=value, name2=value2)"
 
-  GDATA_FOREACH(prop, [self properties]) {
+  GDATA_FOREACH(prop, [self analyticsProperties]) {
     NSString *propDisplay = [NSString stringWithFormat:@"%@=%@",
                              [prop name], [prop stringValue]];
     if (propsDisplayArray == nil) {
@@ -109,15 +109,15 @@
 }
 
 
-- (NSArray *)properties {
+- (NSArray *)analyticsProperties {
   return [self objectsForExtensionClass:[GDataAnalyticsProperty class]];
 }
 
-- (void)setProperties:(NSArray *)array {
+- (void)setAnalyticsProperties:(NSArray *)array {
   [self setObjects:array forExtensionClass:[GDataAnalyticsProperty class]];
 }
 
-- (void)addProperty:(GDataAnalyticsProperty *)obj {
+- (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj {
   [self addObject:obj forExtensionClass:[GDataAnalyticsProperty class]];
 }
 

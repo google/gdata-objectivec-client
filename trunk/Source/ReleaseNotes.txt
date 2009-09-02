@@ -20,6 +20,11 @@ Additions
 
 - Added epub accessors to Books API.
 
+- Added block callback support to GDataHTTPFetcher
+
+- Added sentData callback support to GDataHTTPFetcher on Snow Leopard and
+  iPhone 3.0
+
 - Added GDataAuthenticationFetcher, which can be used to create a fetcher
   for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
 
@@ -37,6 +42,9 @@ Changes
 
 - GDataHTTPFetcher now takes a GDataFetchHistory class rather than a mutable
   dictionary as the optional fetch history
+
+- Renamed analyticsProperties to avoid conflict with properties of the
+  GDataObject base class.
 
 Bugs Fixed
 

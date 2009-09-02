@@ -1007,10 +1007,10 @@
 
     // GDataEntryAnalyticsAccount paths
     { @"entries.0.tableID", @"ga:7966084" },
-    { @"entries.0.properties.0.name", @"ga:accountId" },
-    { @"entries.0.properties.0.stringValue", @"8925159" },
-    { @"entries.0.properties.1.name", @"ga:accountName" },
-    { @"entries.0.properties.1.stringValue", @"example" },
+    { @"entries.0.analyticsProperties.0.name", @"ga:accountId" },
+    { @"entries.0.analyticsProperties.0.stringValue", @"8925159" },
+    { @"entries.0.analyticsProperties.1.name", @"ga:accountName" },
+    { @"entries.0.analyticsProperties.1.stringValue", @"example" },
 
     { @"", @"" }, // end of feed
 
@@ -1031,9 +1031,9 @@
     { @"aggregateGroup.metrics.0.doubleValue", @"12" },
     { @"dataSources.0.tableID", @"ga:7966084" },
     { @"dataSources.0.tableName", @"www.example.net" },
-    { @"dataSources.0.properties.0.name", @"ga:profileId" },
-    { @"dataSources.0.properties.0.stringValue", @"7966084" },
-    { @"dataSources.0.propertyWithNameAccountName.stringValue", @"example" },
+    { @"dataSources.0.analyticsProperties.0.name", @"ga:profileId" },
+    { @"dataSources.0.analyticsProperties.0.stringValue", @"7966084" },
+    { @"dataSources.0.analyticsPropertyWithNameAccountName.stringValue", @"example" },
 
     // GDataEntryAnalyticsData paths
     { @"entries.0.title", @"ga:country=United States" },
@@ -2295,12 +2295,12 @@
 //
 
 @interface GDataAnalyticsDataSource (TestHelperMethods)
-- (GDataAnalyticsProperty *)propertyWithNameAccountName;
+- (GDataAnalyticsProperty *)analyticsPropertyWithNameAccountName;
 @end
 
 @implementation GDataAnalyticsDataSource (TestHelperMethods)
-- (GDataAnalyticsProperty *)propertyWithNameAccountName {
-  return [self propertyWithName:@"ga:accountName"];
+- (GDataAnalyticsProperty *)analyticsPropertyWithNameAccountName {
+  return [self analyticsPropertyWithName:@"ga:accountName"];
 }
 @end
 
