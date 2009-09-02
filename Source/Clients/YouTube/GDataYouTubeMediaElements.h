@@ -21,7 +21,7 @@
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
-#ifdef GYOUTUBMEDIAEELEMENTS_DEFINE_GLOBALS
+#ifdef GDATAYOUTUBEMEDIAELEMENTS_DEFINE_GLOBALS
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
@@ -78,6 +78,9 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 // uploadedDate available in v2.0
 - (GDataDateTime *)uploadedDate;
 - (void)setUploadedDate:(GDataDateTime *)dateTime;
+
+// convenience accessor
+- (GDataMediaContent *)mediaContentWithFormatNumber:(NSInteger)formatNumber;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

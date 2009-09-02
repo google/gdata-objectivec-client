@@ -1935,6 +1935,7 @@
     { @"entries.0.mediaGroup.mediaContents.0.type", @"application/x-shockwave-flash" },
     { @"entries.0.mediaGroup.mediaContents.0.URLString", @"http://www.youtube.com/v/I-t-7lTw6mA&f=gdata_user_favorites" },
     { @"entries.0.mediaGroup.mediaContents.0.youTubeFormatNumber", @"5" },
+    { @"entries.0.mediaGroup.mediaContentWithFormatNumber1.type", @"video/3gpp" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
@@ -2289,6 +2290,19 @@
 //
 // categories to test helper methods that require arguments
 //
+
+//
+// YouTube
+//
+
+@interface GDataYouTubeMediaGroup (TestHelperMethods)
+@end
+
+@implementation GDataYouTubeMediaGroup (TestHelperMethods)
+- (GDataMediaContent *)mediaContentWithFormatNumber1 {
+  return [self mediaContentWithFormatNumber:kGDataYouTubeMediaContentFormatRTSPStream];
+}
+@end
 
 //
 // analytics

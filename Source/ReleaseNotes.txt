@@ -28,6 +28,8 @@ Additions
 - Added GDataAuthenticationFetcher, which can be used to create a fetcher
   for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
 
+- Added YouTube convenience accessor mediaContentWithFormatNumber:
+
 Changes
 
 - Batch fetches now always disable shouldIgnoreUnknownXML so that the results
