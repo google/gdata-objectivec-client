@@ -242,7 +242,11 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 #if NS_BLOCKS_AVAILABLE
 - (BOOL)beginFetchWithCompletionHandler:(void (^)(NSData *data, NSError *error))handler {
   completionBlock_ = [handler copy];
-  return [self beginFetchWithDelegate:nil
+
+  // the user may have called setDelegate: earlier if they want to use other
+  // delegate-style callbacks during the fetch; otherwise, the delegate is nil,
+  // which is fine
+  return [self beginFetchWithDelegate:[self delegate]
                     didFinishSelector:nil
             didFailWithStatusSelector:kUnifiedFailureCallback
              didFailWithErrorSelector:nil];
@@ -495,6 +499,7 @@ CannotBeginFetch:
     [completionBlock_ autorelease];
     completionBlock_ = nil;
 
+    [self setSentDataBlock:nil];
     [self setReceivedDataBlock:nil];
     [self setRetryBlock:nil];
   }
@@ -689,7 +694,29 @@ CannotBeginFetch:
   [self connection:connection didFailWithError:error];
 }
 
+- (void)connection:(NSURLConnection *)connection
+   didSendBodyData:(NSInteger)bytesWritten
+ totalBytesWritten:(NSInteger)totalBytesWritten
+totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
+  if (delegate_ && sentDataSEL_) {
+    NSMethodSignature *signature = [delegate_ methodSignatureForSelector:sentDataSEL_];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setSelector:sentDataSEL_];
+    [invocation setTarget:delegate_];
+    [invocation setArgument:&self atIndex:2];
+    [invocation setArgument:&bytesWritten atIndex:3];
+    [invocation setArgument:&totalBytesWritten atIndex:4];
+    [invocation setArgument:&totalBytesExpectedToWrite atIndex:5];
+    [invocation invoke];
+  }
+
+#if NS_BLOCKS_AVAILABLE
+  if (sentDataBlock_) {
+    sentDataBlock_(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+  }
+#endif
+}
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
 
@@ -1163,6 +1190,22 @@ CannotBeginFetch:
   }
 }
 
++ (BOOL)doesSupportSentDataCallback {
+  // per WebKit's MaxFoundationVersionWithoutdidSendBodyDataDelegate
+  //
+  // indicates if NSURLConnection will invoke the didSendBodyData: delegate
+  // method
+  return (NSFoundationVersionNumber > 677.21);
+}
+
+- (SEL)sentDataSelector {
+  return sentDataSEL_;
+}
+
+- (void)setSentDataSelector:(SEL)theSelector {
+  sentDataSEL_ = theSelector;
+}
+
 - (SEL)receivedDataSelector {
   return receivedDataSEL_;
 }
@@ -1172,6 +1215,11 @@ CannotBeginFetch:
 }
 
 #if NS_BLOCKS_AVAILABLE
+- (void)setSentDataBlock:(void (^)(NSInteger, NSInteger, NSInteger))block {
+  [block autorelease];
+  sentDataBlock_ = [block copy];
+}
+
 - (void)setReceivedDataBlock:(void (^)(NSData *))block {
   [block autorelease];
   receivedDataBlock_ = [block copy];
