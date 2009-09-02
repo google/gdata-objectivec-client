@@ -40,12 +40,12 @@
 - (NSString *)tableName;
 - (void)setTableName:(NSString *)str;
 
-- (NSArray *)properties;
-- (void)setProperties:(NSArray *)array;
-- (void)addProperty:(GDataAnalyticsProperty *)obj;
+- (NSArray *)analyticsProperties;
+- (void)setAnalyticsProperties:(NSArray *)array;
+- (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj;
 
 // convenience accessors
-- (GDataAnalyticsProperty *)propertyWithName:(NSString *)name;
+- (GDataAnalyticsProperty *)analyticsPropertyWithName:(NSString *)name;
 
 @end
 

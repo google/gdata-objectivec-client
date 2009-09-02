@@ -86,22 +86,22 @@
 }
 
 
-- (NSArray *)properties {
+- (NSArray *)analyticsProperties {
   return [self objectsForExtensionClass:[GDataAnalyticsProperty class]];
 }
 
-- (void)setProperties:(NSArray *)array {
+- (void)setAnalyticsProperties:(NSArray *)array {
   [self setObjects:array forExtensionClass:[GDataAnalyticsProperty class]];
 }
 
-- (void)addProperty:(GDataAnalyticsProperty *)obj {
+- (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj {
   [self addObject:obj forExtensionClass:[GDataAnalyticsProperty class]];
 }
 
 #pragma mark -
 
-- (GDataAnalyticsProperty *)propertyWithName:(NSString *)name {
-  NSArray *array = [self properties];
+- (GDataAnalyticsProperty *)analyticsPropertyWithName:(NSString *)name {
+  NSArray *array = [self analyticsProperties];
   GDataAnalyticsProperty *obj = [GDataUtilities firstObjectFromArray:array
                                                            withValue:name
                                                           forKeyPath:@"name"];

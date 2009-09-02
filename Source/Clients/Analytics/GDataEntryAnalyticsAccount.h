@@ -33,9 +33,9 @@
 - (NSString *)tableID;
 - (void)setTableID:(NSString *)str;
 
-- (NSArray *)properties;
-- (void)setProperties:(NSArray *)array;
-- (void)addProperty:(GDataAnalyticsProperty *)obj;
+- (NSArray *)analyticsProperties;
+- (void)setAnalyticsProperties:(NSArray *)array;
+- (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj;
 
 @end
 
