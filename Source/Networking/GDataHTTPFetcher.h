@@ -340,10 +340,12 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   SEL finishedSEL_;                 // should by implemented by delegate
   SEL statusFailedSEL_;             // implemented by delegate if it needs separate network error callbacks
   SEL networkFailedSEL_;            // should be implemented by delegate
+  SEL sentDataSEL_;                 // optional, set with setSentDataSelector
   SEL receivedDataSEL_;             // optional, set with setReceivedDataSelector
 #if NS_BLOCKS_AVAILABLE
   void (^completionBlock_)(NSData *, NSError *);
   void (^receivedDataBlock_)(NSData *);
+  void (^sentDataBlock_)(NSInteger, NSInteger, NSInteger);
   BOOL (^retryBlock_)(BOOL, NSError *);
 #elif !__LP64__
   // placeholders: for 32-bit builds, keep the size of the object's ivar section
@@ -414,12 +416,24 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (id)delegate;
 - (void)setDelegate:(id)theDelegate;
 
+// the delegate's optional sentData selector has a signature like:
+//  - (void)myFetcher:(GDataHTTPFetcher *)fetcher
+//              didSendBytes:(NSInteger)bytesSent
+//            totalBytesSent:(NSInteger)totalBytesSent
+//  totalBytesExpectedToSend:(NSInteger)totalBytesExpectedToSend;
+//
+// +doesSupportSentDataCallback indicates if this delegate method is supported
++ (BOOL)doesSupportSentDataCallback;
+- (SEL)sentDataSelector;
+- (void)setSentDataSelector:(SEL)theSelector;
+
 // the delegate's optional receivedData selector has a signature like:
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
 - (SEL)receivedDataSelector;
 - (void)setReceivedDataSelector:(SEL)theSelector;
 
 #if NS_BLOCKS_AVAILABLE
+- (void)setSentDataBlock:(void (^)(NSInteger bytesSent, NSInteger totalBytesSent, NSInteger bytesExpectedToSend))block;
 - (void)setReceivedDataBlock:(void (^)(NSData *dataReceivedSoFar))block;
 #endif
 
