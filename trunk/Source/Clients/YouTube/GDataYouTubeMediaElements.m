@@ -213,6 +213,16 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeAspectRatio class]];
 }
 
+// convenience accessors
+- (GDataMediaThumbnail *)highQualityThumbnail {
+  // the HQ thumbnail is the one lacking a time attribute
+  NSArray *array = [self mediaThumbnails];
+  GDataMediaThumbnail *obj = [GDataUtilities firstObjectFromArray:array
+                                                        withValue:nil
+                                                       forKeyPath:@"time"];
+  return obj;
+}
+
 - (GDataMediaContent *)mediaContentWithFormatNumber:(NSInteger)formatNumber {
   NSArray *mediaContents = [self mediaContents];
 

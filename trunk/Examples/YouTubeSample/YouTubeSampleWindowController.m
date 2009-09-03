@@ -127,13 +127,12 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     
   } else {    
     // if the new thumbnail URL string is different from the previous one,
-    // save the new UTL, clear the existing image and fetch the new image
+    // save the new URL, clear the existing image and fetch the new image
     GDataEntryYouTubeVideo *video = (GDataEntryYouTubeVideo *)entry;
-    
-    NSArray *thumbnails = [[video mediaGroup] mediaThumbnails];
-    if ([thumbnails count] > 0) {
-      
-      NSString *imageURLString = [[thumbnails objectAtIndex:0] URLString];
+
+    GDataMediaThumbnail *thumbnail = [[video mediaGroup] highQualityThumbnail];
+    if (thumbnail != nil) {
+      NSString *imageURLString = [thumbnail URLString];
       if (!imageURLString || ![mEntryImageURLString isEqual:imageURLString]) {
         
         [self setEntryImageURLString:imageURLString];

@@ -364,11 +364,9 @@ enum {
 // The optional uploadProgressSelector will be called in the delegate as bytes
 // are uploaded to the server.  It should have a signature matching
 //
-// - (void)inputStream:(GDataProgressMonitorInputStream *)stream
+// - (void)ticket:(GDataServiceTicketBase *)ticket
 //   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 //        ofTotalByteCount:(unsigned long long)dataLength;
-//
-// The progress method can obtain the ticket by calling [stream monitorSource];
 - (void)setServiceUploadProgressSelector:(SEL)progressSelector;
 - (SEL)serviceUploadProgressSelector;
 

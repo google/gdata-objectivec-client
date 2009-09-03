@@ -28,7 +28,8 @@ Additions
 - Added GDataAuthenticationFetcher, which can be used to create a fetcher
   for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
 
-- Added YouTube convenience accessor mediaContentWithFormatNumber:
+- Added YouTube convenience accessors highQualityThumbnail and
+  mediaContentWithFormatNumber:
 
 Changes
 
@@ -47,6 +48,10 @@ Changes
 
 - Renamed analyticsProperties to avoid conflict with properties of the
   GDataObject base class.
+
+- The service progress callback now takes a ticket as its first parameter
+  rather than a progress monitor input stream, as progress monitoring
+  no longer requires that input stream on iPhone 3.0 and Mac OS X 10.5.8
 
 Bugs Fixed
 

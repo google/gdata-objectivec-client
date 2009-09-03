@@ -113,7 +113,7 @@
                 url="http://i.ytimg.com/vi/I-t-7lTw6mA/1.jpg" width="130"/>
             <media:thumbnail height="97" time="00:44:25.500"
                 url="http://i.ytimg.com/vi/I-t-7lTw6mA/3.jpg" width="130"/>
-            <media:thumbnail height="240" time="00:29:37"
+            <media:thumbnail height="240"
                 url="http://i.ytimg.com/vi/I-t-7lTw6mA/0.jpg" width="320"/>
         </media:group>
         <yt:statistics favoriteCount="506" viewCount="53476"/>
