@@ -44,7 +44,7 @@
 
 #pragma mark -
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"sitemaps";
 }
 

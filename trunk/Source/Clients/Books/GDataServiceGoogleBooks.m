@@ -29,7 +29,7 @@
 
 @implementation GDataServiceGoogleBooks
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"print";
 }
 

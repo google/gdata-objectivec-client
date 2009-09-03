@@ -126,7 +126,7 @@
   return @"http://docs.google.com/feeds/";
 }
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"writely";
 }
 

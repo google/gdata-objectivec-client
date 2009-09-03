@@ -103,7 +103,7 @@
 }
 
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"cp";
 }
 

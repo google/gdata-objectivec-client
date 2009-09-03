@@ -26,7 +26,7 @@
 #import "GDataHealthConstants.h"
 
 @implementation GDataServiceGoogleHealthSandbox
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"weaver";
 }
 
@@ -75,7 +75,7 @@
 
 #pragma mark -
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"health";
 }
 

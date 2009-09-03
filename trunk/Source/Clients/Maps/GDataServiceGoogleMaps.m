@@ -72,7 +72,7 @@
 
 #pragma mark -
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"local";
 }
 

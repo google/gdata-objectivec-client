@@ -30,7 +30,7 @@
 
 @implementation GDataServiceGoogleSpreadsheet
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"wise";
 }
 
