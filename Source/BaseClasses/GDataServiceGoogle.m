@@ -834,14 +834,18 @@ enum {
   return request;
 }
 
-- (NSString *)serviceID {
-  // subclasses should return the service ID, like @"cl" for calendar
-  //
-  // if this class is used directly, call setServiceID: before fetching
++ (NSString *)serviceID {
+  // subclasses should override this class method to return the service ID,
+  // like @"cl" for calendar
+  return nil;
+}
 
-  if (serviceID_) {
-    return serviceID_;
-  }
+- (NSString *)serviceID {
+  // if the base class is used directly, call setServiceID: before fetching
+  if (serviceID_) return serviceID_;
+
+  NSString *str = [[self class] serviceID];
+  if (str) return str;
 
   GDATA_ASSERT(0, @"GDataServiceGoogle should have a serviceID");
   return nil;

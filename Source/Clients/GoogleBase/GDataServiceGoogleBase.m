@@ -75,7 +75,7 @@
 
 #pragma mark -
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"gbase";
 }
 

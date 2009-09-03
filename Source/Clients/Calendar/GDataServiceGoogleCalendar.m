@@ -67,7 +67,7 @@
 
 #pragma mark -
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"cl";
 }
 

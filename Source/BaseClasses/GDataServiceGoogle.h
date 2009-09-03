@@ -184,8 +184,10 @@ enum {
 - (BOOL)shouldUseMethodOverrideHeader;
 - (void)setShouldUseMethodOverrideHeader:(BOOL)flag;
 
++ (NSString *)serviceID; // implemented by subclasses, like @"cl" for calendar
+
 - (void)setServiceID:(NSString *)str; // call only if not using a subclass
-- (NSString *)serviceID; // implemented by subclass, like @"cl" for calendar
+- (NSString *)serviceID;
 
 // subclasses may specify what namespaces to attach to posted user entries
 // when the entries lack explicit root-level namespaces

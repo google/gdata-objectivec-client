@@ -176,7 +176,7 @@
   return @"www.google.com/youtube";
 }
 
-- (NSString *)serviceID {
++ (NSString *)serviceID {
   return @"youtube";
 }
 
