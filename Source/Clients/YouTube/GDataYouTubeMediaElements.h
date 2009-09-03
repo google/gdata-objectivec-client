@@ -79,7 +79,8 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 - (GDataDateTime *)uploadedDate;
 - (void)setUploadedDate:(GDataDateTime *)dateTime;
 
-// convenience accessor
+// convenience accessors
+- (GDataMediaThumbnail *)highQualityThumbnail;
 - (GDataMediaContent *)mediaContentWithFormatNumber:(NSInteger)formatNumber;
 @end
 

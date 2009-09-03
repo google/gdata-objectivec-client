@@ -1935,6 +1935,7 @@
     { @"entries.0.mediaGroup.mediaContents.0.type", @"application/x-shockwave-flash" },
     { @"entries.0.mediaGroup.mediaContents.0.URLString", @"http://www.youtube.com/v/I-t-7lTw6mA&f=gdata_user_favorites" },
     { @"entries.0.mediaGroup.mediaContents.0.youTubeFormatNumber", @"5" },
+    { @"entries.0.mediaGroup.highQualityThumbnail.URLString", @"http://i.ytimg.com/vi/I-t-7lTw6mA/0.jpg" },
     { @"entries.0.mediaGroup.mediaContentWithFormatNumber1.type", @"video/3gpp" },
 
     { @"entries.0.unknownAttributes.@count", @"0" },

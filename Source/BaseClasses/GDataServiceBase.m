@@ -348,6 +348,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       @encode(GDataServiceTicketBase *),@encode(BOOL), @encode(NSError *), 0);
 
   NSInputStream *uploadStream = nil;
+  SEL sentDataSel = NULL;
   NSData *uploadData = nil;
   NSData *dataToRetain = nil;
 
@@ -362,6 +363,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     NSInputStream *contentInputStream = nil;
     unsigned long long contentLength = 0;
     NSDictionary *contentHeaders = nil;
+
+    BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
 
     SEL progressSelector = [ticket uploadProgressSelector];
 
@@ -382,13 +385,15 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       NSData* xmlData = [[objectToPost XMLDocument] XMLData];
       contentLength = [xmlData length];
 
-      if (progressSelector == NULL) {
-        // there is no progress selector; we can post plain NSData, which
-        // is simpler because it survives http redirects
+      if (progressSelector == NULL || doesSupportSentData) {
+        // there is no progress selector, or the fetcher can call us back on
+        // sent data; we can post plain NSData, which is simpler because it
+        // survives http redirects
         uploadData = xmlData;
 
       } else {
-        // there is a progress selector, so we need to be posting a stream
+        // there is a progress selector and NSURLConnection won't call us back,
+        // so we need to be posting a stream
         //
         // we'll make a default input stream from the XML data
         contentInputStream = [NSInputStream inputStreamWithData:xmlData];
@@ -406,25 +411,34 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
 
     uploadStream = contentInputStream;
+
     if (progressSelector != NULL) {
+      if (doesSupportSentData) {
+        // there is sentData callback support
+        sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
+      } else {
+        // there's no sentData callback support, so we need a monitored input
+        // stream
+        //
+        // wrap the input stream with an input stream that will call back to the
+        // delegate's progress selector
+        GDataProgressMonitorInputStream* monitoredInputStream;
 
-      // the caller is monitoring the upload progress, so wrap the input stream
-      // with an input stream that will call back to the delegate's progress
-      // selector
-      GDataProgressMonitorInputStream* monitoredInputStream;
+        monitoredInputStream = [GDataProgressMonitorInputStream inputStreamWithStream:contentInputStream
+                                                                               length:contentLength];
 
-      monitoredInputStream = [GDataProgressMonitorInputStream inputStreamWithStream:contentInputStream
-                                                                             length:contentLength];
-      [monitoredInputStream setDelegate:nil];
-      [monitoredInputStream setMonitorDelegate:delegate];
-      [monitoredInputStream setMonitorSelector:progressSelector];
-      [monitoredInputStream setMonitorSource:ticket];
+        SEL sel = @selector(progressMonitorInputStream:hasDeliveredBytes:ofTotalBytes:);
+        [monitoredInputStream setDelegate:nil];
+        [monitoredInputStream setMonitorDelegate:self];
+        [monitoredInputStream setMonitorSelector:sel];
+        [monitoredInputStream setMonitorSource:ticket];
 
-      uploadStream = monitoredInputStream;
+        uploadStream = monitoredInputStream;
+      }
+
+      NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
+      [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
     }
-
-    NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
-    [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
   }
 
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
@@ -435,6 +449,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [fetcher setPostStream:uploadStream];
   } else if (uploadData) {
     [fetcher setPostData:uploadData];
+  }
+
+  if (sentDataSel) {
+    [fetcher setSentDataSelector:sentDataSel];
   }
 
   // add cookie and last-modified-since history
@@ -498,6 +516,53 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 
   return ticket;
+}
+
+- (void)invokeProgressCallbackForTicket:(GDataServiceTicketBase *)ticket
+                         deliveredBytes:(unsigned long long)numReadSoFar
+                             totalBytes:(unsigned long long)total {
+
+  SEL progressSelector = [ticket uploadProgressSelector];
+  if (progressSelector) {
+
+    GDataHTTPFetcher *fetcher = [ticket objectFetcher];
+    id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
+
+    NSMethodSignature *signature = [delegate methodSignatureForSelector:progressSelector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+
+    [invocation setSelector:progressSelector];
+    [invocation setTarget:delegate];
+    [invocation setArgument:&ticket atIndex:2];
+    [invocation setArgument:&numReadSoFar atIndex:3];
+    [invocation setArgument:&total atIndex:4];
+    [invocation invoke];
+  }
+}
+
+// sentData callback from fetcher
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+         didSendBytes:(NSInteger)bytesSent
+       totalBytesSent:(NSInteger)totalBytesSent
+totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
+
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+
+  [self invokeProgressCallbackForTicket:ticket
+                         deliveredBytes:(unsigned long long)totalBytesSent
+                             totalBytes:(unsigned long long)totalBytesExpected];
+}
+
+// progress callback from monitorInputStream
+- (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
+                 hasDeliveredBytes:(unsigned long long)numReadSoFar
+                      ofTotalBytes:(unsigned long long)total {
+
+  id monitorSource = [stream monitorSource];
+
+  [self invokeProgressCallbackForTicket:(GDataServiceTicketBase *)monitorSource
+                         deliveredBytes:numReadSoFar
+                             totalBytes:total];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -1404,6 +1469,19 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (void)setUploadProgressSelector:(SEL)progressSelector {
   uploadProgressSelector_ = progressSelector;
+
+  // if the user is turning on the progress selector in the ticket after the
+  // ticket's fetcher has been created, we need to give the fetcher our sentData
+  // callback.
+  //
+  // The progress monitor must be set in the service prior to creation of the
+  // ticket on 10.4 and iPhone 2.0, since on those systems the upload data must
+  // be wrapped with a ProgressMonitorInputStream prior to the creation of the
+  // fetcher.
+  if (progressSelector != NULL) {
+    SEL sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
+    [[self objectFetcher] setSentDataSelector:sentDataSel];
+  }
 }
 
 - (BOOL)shouldFollowNextLinks {
