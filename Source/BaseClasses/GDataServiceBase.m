@@ -342,10 +342,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   }
 
   AssertSelectorNilOrImplementedWithArguments(delegate, [ticket uploadProgressSelector],
-      @encode(GDataProgressMonitorInputStream *), @encode(unsigned long long),
+      @encode(GDataServiceTicketBase *), @encode(unsigned long long),
       @encode(unsigned long long), 0);
   AssertSelectorNilOrImplementedWithArguments(delegate, [ticket retrySelector],
-      @encode(GDataServiceTicketBase *),@encode(BOOL), @encode(NSError *), 0);
+      @encode(GDataServiceTicketBase *), @encode(BOOL), @encode(NSError *), 0);
 
   NSInputStream *uploadStream = nil;
   SEL sentDataSel = NULL;
@@ -698,6 +698,22 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
           [accumulatedFeed removeLink:accumulatedFeedNextLink];
         }
 
+#if DEBUG && !GDATA_SKIP_NEXTLINK_WARNING
+        // each next link followed to accumulate all pages of a feed takes up to
+        // a few seconds.  When multiple next links are being followed, that
+        // usually indicates that a larger page size (that is, more entries per
+        // feed fetched) should be requested.
+        //
+        // To avoid following next links, when fetching a feed, make it a query
+        // fetch instead; when fetching a query, use setMaxResults: so the feed
+        // requested is large enough to rarely need to follow next links.
+        NSUInteger feedPageCount = [ticket nextLinksFollowedCounter];
+        if (feedPageCount > 2) {
+          NSLog(@"Fetching %@ required following %u \"next\" links; use a query with a larger setMaxResults: for faster feed accumulation",
+                [accumulatedFeed className],
+                (unsigned int) [ticket nextLinksFollowedCounter]);
+        }
+#endif
         // return the completed feed as the object that was fetched
         object = accumulatedFeed;
       }
@@ -953,6 +969,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
               nextFeedURL);
     return NO;
   }
+
   [ticket setNextLinksFollowedCounter:(1 + followedCounter)];
 
   // by definition, feed requests are GETs, so objectToPost: and httpMethod:

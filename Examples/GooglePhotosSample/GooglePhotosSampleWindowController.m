@@ -668,7 +668,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // make service tickets call back into our upload progress selector
     GDataServiceGooglePhotos *service = [self googlePhotosService];
 
-    SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+    SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
     [service setServiceUploadProgressSelector:progressSel];
 
     // insert the entry into the album feed
@@ -690,7 +690,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 }
 
 // progress callback
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream
+- (void)ticket:(GDataServiceTicket *)ticket
 hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
    ofTotalByteCount:(unsigned long long)dataLength {
 

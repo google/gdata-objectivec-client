@@ -964,7 +964,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleDocs *service = [self docsService];
       
-      SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
       [service setServiceUploadProgressSelector:progressSel];
 
       // insert the entry into the docList feed
@@ -993,7 +993,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
   
 // progress callback
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+- (void)ticket:(GDataServiceTicket *)ticket
    hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
    ofTotalByteCount:(unsigned long long)dataLength {
   

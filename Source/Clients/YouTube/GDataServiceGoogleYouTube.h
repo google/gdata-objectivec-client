@@ -39,7 +39,7 @@ _EXTERN NSString* const kGDataYouTubeFeedIDMostViewed                _INITIALIZE
 _EXTERN NSString* const kGDataYouTubeFeedIDMostPopular               _INITIALIZE_AS(@"most_popular");
 _EXTERN NSString* const kGDataYouTubeFeedIDMostRecent                _INITIALIZE_AS(@"most_recent");
 _EXTERN NSString* const kGDataYouTubeFeedIDMostDiscussed             _INITIALIZE_AS(@"most_discussed");
-_EXTERN NSString* const kGDataYouTubeFeedIDMostLinked                _INITIALIZE_AS(@"most_linked");
+// _EXTERN NSString* const kGDataYouTubeFeedIDMostLinked                _INITIALIZE_AS(@"most_linked"); deprecated
 _EXTERN NSString* const kGDataYouTubeFeedIDMostResponded             _INITIALIZE_AS(@"most_responded");
 _EXTERN NSString* const kGDataYouTubeFeedIDRecentlyFeatured          _INITIALIZE_AS(@"recently_featured");
 _EXTERN NSString* const kGDataYouTubeFeedIDWatchOnMobile             _INITIALIZE_AS(@"watch_on_mobile");
