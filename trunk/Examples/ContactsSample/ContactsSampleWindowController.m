@@ -883,7 +883,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleContact *service = [self contactService];
       
-      SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
       [service setServiceUploadProgressSelector:progressSel];
       
       // insert the entry into the contacts feed
@@ -908,7 +908,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 }
 
 // progress callback
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+- (void)ticket:(GDataServiceTicket *)ticket
 hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
    ofTotalByteCount:(unsigned long long)dataLength {
   

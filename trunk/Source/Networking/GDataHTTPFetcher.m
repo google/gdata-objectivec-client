@@ -186,6 +186,12 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone {
+  // disallow use of fetchers in a copy property
+  [self doesNotRecognizeSelector:_cmd];
+  return nil;
+}
+
 #if !GDATA_IPHONE
 - (void)finalize {
   [self stopFetchReleasingBlocks:YES]; // releases connection_, destroys timers
@@ -1663,40 +1669,49 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
 - (void)storeCachedResponse:(GDataCachedURLResponse *)cachedResponse
                  forRequest:(NSURLRequest *)request {
-  // remove any previous entry for this request
-  [self removeCachedResponseForRequest:request];
+  @synchronized(self) {
+    // remove any previous entry for this request
+    [self removeCachedResponseForRequest:request];
 
-  // cache this one only if it's not bigger than our cache
-  NSUInteger storedSize = [[cachedResponse data] length];
-  if (storedSize < memoryCapacity_) {
+    // cache this one only if it's not bigger than our cache
+    NSUInteger storedSize = [[cachedResponse data] length];
+    if (storedSize < memoryCapacity_) {
 
-    NSURL *key = [request URL];
-    [responses_ setObject:cachedResponse forKey:key];
-    totalDataSize_ += storedSize;
+      NSURL *key = [request URL];
+      [responses_ setObject:cachedResponse forKey:key];
+      totalDataSize_ += storedSize;
 
-    [self pruneCacheResponses];
+      [self pruneCacheResponses];
+    }
   }
 }
 
 - (GDataCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {
-  NSURL *key = [request URL];
-  GDataCachedURLResponse *response = [responses_ objectForKey:key];
+  GDataCachedURLResponse *response;
 
-  // touch the date to indicate this was recently retrieved
-  [response setUseDate:[NSDate date]];
+  @synchronized(self) {
+    NSURL *key = [request URL];
+    response = [[[responses_ objectForKey:key] retain] autorelease];
 
+    // touch the date to indicate this was recently retrieved
+    [response setUseDate:[NSDate date]];
+  }
   return response;
 }
 
 - (void)removeCachedResponseForRequest:(NSURLRequest *)request {
-  NSURL *key = [request URL];
-  totalDataSize_ -= [[[responses_ objectForKey:key] data] length];
-  [responses_ removeObjectForKey:key];
+  @synchronized(self) {
+    NSURL *key = [request URL];
+    totalDataSize_ -= [[[responses_ objectForKey:key] data] length];
+    [responses_ removeObjectForKey:key];
+  }
 }
 
 - (void)removeAllCachedResponses {
-  [responses_ removeAllObjects];
-  totalDataSize_ = 0;
+  @synchronized(self) {
+    [responses_ removeAllObjects];
+    totalDataSize_ = 0;
+  }
 }
 
 - (NSUInteger)memoryCapacity {
@@ -1704,11 +1719,13 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)setMemoryCapacity:(NSUInteger)totalBytes {
-  BOOL didShrink = (totalBytes < memoryCapacity_);
-  memoryCapacity_ = totalBytes;
+  @synchronized(self) {
+    BOOL didShrink = (totalBytes < memoryCapacity_);
+    memoryCapacity_ = totalBytes;
 
-  if (didShrink) {
-    [self pruneCacheResponses];
+    if (didShrink) {
+      [self pruneCacheResponses];
+    }
   }
 }
 

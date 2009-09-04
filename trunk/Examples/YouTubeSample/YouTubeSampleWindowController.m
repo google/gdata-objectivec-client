@@ -442,7 +442,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
                                                     MIMEType:mimeType
                                                         slug:filename];
   
-  SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+  SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
   [service setServiceUploadProgressSelector:progressSel];
   
   GDataServiceTicket *ticket;
@@ -453,7 +453,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 }
 
 // progress callback
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream 
+- (void)ticket:(GDataServiceTicket *)ticket
    hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
    ofTotalByteCount:(unsigned long long)dataLength {
   

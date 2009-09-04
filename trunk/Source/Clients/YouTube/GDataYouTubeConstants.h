@@ -91,6 +91,7 @@ _EXTERN NSString* const kGDataLinkYouTubeNewSubscriptionVideos _INITIALIZE_AS(@"
 _EXTERN NSString* const kGDataLinkYouTubeVlog                  _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#user.vlog");
 _EXTERN NSString* const kGDataLinkYouTubeGetUploadToken        _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#action.getUploadToken");
 _EXTERN NSString* const kGDataLinkYouTubeVideo                 _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#video");
+_EXTERN NSString* const kGDataLinkYouTubeInsightViews          _INITIALIZE_AS(@"http://gdata.youtube.com/schemas/2007#insight.views");
 
 // user event types
 _EXTERN NSString* const kGDataYouTubeUserEventVideoUploaded         _INITIALIZE_AS(@"video_uploaded");
