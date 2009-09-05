@@ -710,7 +710,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
         NSUInteger feedPageCount = [ticket nextLinksFollowedCounter];
         if (feedPageCount > 2) {
           NSLog(@"Fetching %@ required following %u \"next\" links; use a query with a larger setMaxResults: for faster feed accumulation",
-                [accumulatedFeed className],
+                NSStringFromClass([accumulatedFeed class]),
                 (unsigned int) [ticket nextLinksFollowedCounter]);
         }
 #endif
