@@ -814,9 +814,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [query setMaxResults:1000];
   [query setShouldShowFolders:YES];
     
-  ticket = [service fetchDocListFeedWithQuery:query
-                                     delegate:self
-                            didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
+  ticket = [service fetchFeedWithQuery:query
+                              delegate:self
+                     didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
   
   [self setDocListFetchTicket:ticket];
   
@@ -850,10 +850,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     GDataServiceGoogleDocs *service = [self docsService];
     GDataServiceTicket *ticket;
-    ticket = [service fetchRevisionFeedWithURL:revisionFeedURL
-                                      delegate:self
-                             didFinishSelector:@selector(revisionFetchTicket:finishedWithFeed:error:)];
-
+    ticket = [service fetchFeedWithURL:revisionFeedURL
+                              delegate:self
+                     didFinishSelector:@selector(revisionFetchTicket:finishedWithFeed:error:)];
+    
     [self setRevisionFetchTicket:ticket];
 
   }

@@ -28,6 +28,10 @@
   return [GDataDocConstants coreProtocolVersionForServiceVersion:serviceVersion];
 }
 
++ (NSString *)standardFeedKind {
+  return kGDataCategoryDocItem;
+}
+
 + (NSString *)defaultServiceVersion {
   return kGDataDocsDefaultServiceVersion;
 }

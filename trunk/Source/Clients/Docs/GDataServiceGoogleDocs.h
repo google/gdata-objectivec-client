@@ -71,13 +71,6 @@ _EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"
 
 + (NSString *)serviceRootURLString;
 
-// temporary fetch methods until the DocList API provides "kind" information in
-// the returned XML
-// http://b/2066017
-- (GDataServiceTicket *)fetchDocListFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
-- (GDataServiceTicket *)fetchDocListFeedWithQuery:(GDataQueryDocs *)query delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
-- (GDataServiceTicket *)fetchRevisionFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
-
 // clients may use these fetch methods of GDataServiceGoogle
 //
 //  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
