@@ -37,6 +37,9 @@ _EXTERN NSString* const kGDataServiceErrorCaptchaRequired _INITIALIZE_AS(@"Captc
 // to indicate the feed should be for the authenticate user's account
 _EXTERN NSString* const kGDataServiceDefaultUser _INITIALIZE_AS(@"default");
 
+// The Auth token is stored in the response dict under this key.
+_EXTERN NSString* const kGDataServiceAuthTokenKey _INITIALIZE_AS(@"Auth");
+
 enum {
   kGDataBadAuthentication = 403
 };

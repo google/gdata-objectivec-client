@@ -93,35 +93,6 @@
   return [NSURL URLWithString:urlStr];
 }
 
-// temporary fetch methods until the DocList API provides "kind" information in
-// the returned XML so we don't need to specify the feed class
-- (GDataServiceTicket *)fetchDocListFeedWithURL:(NSURL *)feedURL
-                                       delegate:(id)delegate
-                              didFinishSelector:(SEL)finishedSelector {
-  return [self fetchFeedWithURL:feedURL
-                      feedClass:[GDataFeedDocList class]
-                       delegate:delegate
-              didFinishSelector:finishedSelector];
-}
-
-- (GDataServiceTicket *)fetchDocListFeedWithQuery:(GDataQueryDocs *)query
-                                         delegate:(id)delegate
-                                didFinishSelector:(SEL)finishedSelector {
-  return [self fetchFeedWithQuery:query
-                        feedClass:[GDataFeedDocList class]
-                         delegate:delegate
-                didFinishSelector:finishedSelector];
-}
-
-- (GDataServiceTicket *)fetchRevisionFeedWithURL:(NSURL *)feedURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector {
-  return [self fetchFeedWithURL:feedURL
-                      feedClass:[GDataFeedDocRevision class]
-                       delegate:delegate
-              didFinishSelector:finishedSelector];
-}
-
 + (NSString *)serviceRootURLString {
   return @"http://docs.google.com/feeds/";
 }
