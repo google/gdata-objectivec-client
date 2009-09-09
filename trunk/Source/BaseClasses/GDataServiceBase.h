@@ -429,9 +429,9 @@ enum {
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data;
 
-- (NSString *)defaultApplicationIdentifier;
++ (NSString *)defaultApplicationIdentifier;
 
-- (NSString *)systemVersionString;
++ (NSString *)systemVersionString;
 
 - (BOOL)invokeRetrySelector:(SEL)retrySelector delegate:(id)delegate ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)willRetry error:(NSError *)error;
 
