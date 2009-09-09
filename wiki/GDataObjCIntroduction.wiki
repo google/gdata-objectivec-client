@@ -36,6 +36,8 @@ or the header for a specific service, such as
 
 The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcode project or the GData source files directly in your application project.  The example applications show how to include a reference to the GData framework project file in your Xcode project.
 
+_Tip_: if Xcode's debugger is ignoring breakpoints set in the framework, turn off the "Load symbols lazily" option in Xcode's Debugging preferences.
+
 === Compiling the source files directly into your own project ===
 
 Rather than link to the GData framework, you can compile the GData library sources directly into your own project. To do this, drag the GData Sources source group from the GData Xcode project into your project's window (add by reference, not by copying the files.)  
