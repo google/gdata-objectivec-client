@@ -1,0 +1,58 @@
+#summary Performance Tuning in the Google Data APIs Objective-C Library
+
+<wiki:toc max_depth="4" />
+
+= Performance Tuning in the Google Data APIs Objective-C Library =
+
+== Setting the feed size ==
+
+== Clearing the Cache ==
+
+
+== Optimizations for iPhone Applications ==
+
+[GDataObjCIntroduction#Development_with_the_iPhone_SDK Development with the iPhone SDK] explains how to add the library to your iPhone application project.
+
+=== Compiling Library Sources ===
+
+iPhone application projects should include only the source files in the Common group from the GData framework project, plus the source groups for just the services needed by the application (Calendar, Contacts, and so on.)  Sources from the Optional subgroup of the Common group may be omitted.
+
+=== Ignoring Unknown XML ===
+
+iPhone applications can speed up parsing of feeds and reduce memory usage during parsing of feeds by calling
+
+{{{
+  [service setShouldServiceFeedsIgnoreUnknowns:YES];
+}}}
+
+After this call, the library will not attempt to retain the unexpected child elements and attributes for any parsed objects in a feed.  This improves parsing performance and reduces memory usage when parsing large feeds (such as feeds having over 100 entries.)  The benefit is not noticeable in desktop applications.
+
+The downside is that the entries in the feed fetched this way cannot be directly used for updates; attempting to update one will make the library throw an assert.
+
+To update an entry from a feed that ignores the unknown XML, fetch a complete copy of the entry using the self link before doing the update fetch. Here's how it might look to fetch a complete contact entry, given the entry from the feed.
+
+{{{
+- (void)retrieveCompleteEntryForEntry:(GDataEntryContact *)entry
+                             userData:(id)userData {
+ 
+  GDataServiceGoogleContact *service = [self contactService];
+
+  // fetch a complete copy of the entry, including unknown XML, by using the self link
+  NSURL *entryURL = [[entry selfLink] URL];
+  GDataServiceTicket *ticket;
+  ticket = [service fetchEntryWithURL:entryURL
+                             delegate:self
+                    didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
+   
+  [ticket setUserData:userData];
+}
+
+- (void)fetchEntryTicket:(GDataServiceTicket *)ticket
+       finishedWithEntry:(GDataEntryContact *)completeEntry
+                   error:(NSError *)error {
+  if (error == nil) {
+    // now we can modify the complete entry and update it on the
+    // server by calling -fetchContactEntryByUpdatingEntry:
+  }
+}
+}}}
