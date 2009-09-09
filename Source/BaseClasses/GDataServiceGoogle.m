@@ -97,7 +97,7 @@ enum {
 
   NSString *userAgent = [self userAgent];
   if ([userAgent length] == 0) {
-    userAgent = [self defaultApplicationIdentifier];
+    userAgent = [[self class] defaultApplicationIdentifier];
   }
 
   NSDictionary *captchaDict = nil;
@@ -197,7 +197,7 @@ enum {
   NSString* responseString = [[[NSString alloc] initWithData:data
                                                     encoding:NSUTF8StringEncoding] autorelease];
   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
-  NSString *authToken = [responseDict objectForKey:@"Auth"];
+  NSString *authToken = [responseDict objectForKey:kGDataServiceAuthTokenKey];
 
   [self setAuthToken:authToken];
 
@@ -480,7 +480,7 @@ enum {
   NSDictionary *responseDict;
   responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
 
-  NSString *authToken = [responseDict objectForKey:@"Auth"];
+  NSString *authToken = [responseDict objectForKey:kGDataServiceAuthTokenKey];
 
   // save the new auth token, even if it's empty
   [self setAuthToken:authToken];
