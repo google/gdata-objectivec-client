@@ -6,8 +6,26 @@
 
 == Setting the feed size ==
 
+Feeds may contain zero, one, or many entries; the default "page size" for a feed is up to the server. When a feed does not contain all entries, it has a link to the next page of the feed.
+
+The service class provides a method to hide the paging of feeds. Calling `[service setServiceShouldFollowNextLinks:YES]` makes the library accumulate the entries from successive pages of a feed.  Though this hides the work of following "next" links, it also hides the cost, which may be several seconds per page.
+
+
+Sometimes, the default page size is far different from the typical number of entries in a feed. For example, while a default page size of 20 entries may be enough for a feed of a user's calendar, it's typically far smaller than the number of events on a user's calendar.
+
+When fetching feeds, you should have some idea of the total number of entries typically expected. Fetching a feed with a query specifying a reasonably large number of entries to be returned at once, such as `[query setMaxResults:500]`, can reduce the number of network requests, speeding up the application.
+
+iPhone applications fetching feeds may also be concerned about retrieving too many entries for a feed, since entries can each take quite a bit of memory.  When a feed is likely to return more entries than the application wants at once in memory, turn off the service's `setServiceShouldFollowNextLinks:` setting and specify an appropriate maximum number of entries desired in the feed with a query's `setMaxResults:`.
+
+Remember that turning off automatic following of "next" links will leave it up to the application to look for and follow a feed's `-nextLink` to get all the entries.
+
 == Clearing the Cache ==
 
+Google Data API servers look for an "If-modified-since" header on requests to avoid the need to send the same data repeatedly to an application. When they see that header indicates that the application's request would yield the same response as before, they return a status 304, "Not Modified" error rather than returning the data.
+
+The Objective-C library automatically tracks the "Last-modified" dates for all fetched entries and feeds, and provides those dates to the server in future request fetches. So every application either needs to expect and handle 304 status responses on fetches, or should turn on caching by calling `[service setShouldCacheDatedData:YES]` on the service instance.  With caching of dated data enabled, the library will hide the 304 responses and return cached copies of the previous server response data with a 200, "Success" response.
+
+Although the accumulated cache data is limited in size (15 MB on Mac OS X, 1 MB on iPhone), applications that do not expect to fetch again soon may explicitly clear the cache to free up memory by calling `[service clearLastModifiedDates]`.
 
 == Optimizations for iPhone Applications ==
 
