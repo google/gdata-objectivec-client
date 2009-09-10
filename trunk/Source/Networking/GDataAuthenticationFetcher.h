@@ -21,20 +21,41 @@
 
 @interface GDataAuthenticationFetcher : NSObject
 
-// authTokenFetcherWithUsername: returns a GDataHTTPFetcher
+// authTokenFetcherWithUsername: returns a GDataHTTPFetcher for obtaining a
+// response with Google's ClientLogin protocol
 //
-// serviceID is the code for the service to be used, like "cl"
+// Protocol docs: http://code.google.com/apis/accounts/docs/AuthForInstalledApps.html
+//
+// serviceID is the code for the service to be used, such as
+//   [GDataServiceGoogleCalendar serviceID]
 // source is the app's identifier, in the form companyName-applicationName-versionID
 // domain should be nil to authenticate against www.google.com; it may be
 //   localhost:n for unit testing to port n
-// params is a dictionary with additional parameters for the post body,
-//   such as the captcha token and response
-// headers are custom headers to be added to the request
+// params is a dictionary with additional parameters for the post body
+// headers are custom headers to be added to the request; typically this is nil
+//
+// The params dictionary may be used to specify a captcha response, as in
+//    NSDictionary *params = nil;
+//    if ([captchaToken length] > 0 && [captchaAnswer length] > 0) {
+//      params = [NSDictionary dictionaryWithObjectsAndKeys:
+//                                        captchaToken, @"logintoken",
+//                                        captchaAnswer, @"logincaptcha", nil];
+//    }
 //
 // The user should invoke the fetcher's beginFetchWithDelegate: method
 // and provide the callbacks, consistent with the GDataHTTPFetcher
 // conventions.
 //
+// The callback data may be parsed with +dictionaryWithResponseString
+// from GDataUtilities, as in
+//
+// - (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+//   NSString *responseString = [[[NSString alloc] initWithData:data
+//                                                     encoding:NSUTF8StringEncoding] autorelease];
+//   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
+//   ...
+//
+
 + (GDataHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
                                           password:(NSString *)password
                                            service:(NSString *)serviceID
