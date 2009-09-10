@@ -124,8 +124,7 @@ Google web application interactions are handled by *service objects*.  A single 
 For example, here is how to use the Google Calendar service to retrieve a feed of calendar entries, where each entry describes one of the user's calendars.
 {{{
   service = [[GDataServiceGoogleCalendar alloc] init];
-    
-  [service setUserAgent:@"MyCompanyName-MyCalendarAppName-1.0"];
+
   [service setUserCredentialsWithUsername:username
                                  password:password];
   NSURL *feedURL = [GDataServiceGoogleCalendar calendarFeedURLForUsername:username];
@@ -229,13 +228,6 @@ Service-specific *query* objects can generate URLs with parameters appropriate f
 }
 }}}
 
-All applications using the library should specify a unique user-agent string on the service object instance. The user-agent string should indicate the product author (the full name of the company, person, or domain), product name, and product version, separated by dashes:
-
-{{{
-[service setUserAgent:@"MyCompany-MyProduct-1.0"];
-}}}
-
-If a unique user-agent string isn't specified, then the library will write the message "gdata developer user-agent unspecified" to the console log during each fetch.
 
 == Creating GDataObjects from scratch ==
 
