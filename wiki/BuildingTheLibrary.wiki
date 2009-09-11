@@ -29,13 +29,13 @@ To facilitate debugging, you may choose to include the GData.xcodeproj project o
 
 The library project file in the top-of-trunk sources now includes a target for building a static library for iPhone and iPod Touch apps; this avoids dragging individual library source files into the iPhone application's project.
 
-To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app.
+To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], and add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app.
 
-Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC link option] to the application project's build settings, along with the libxml2 flag:
+Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC link option] to the application target's build settings, along with the libxml2 flag:
 
   Other Linker Flags: `-ObjC -lxml2`
 
-Also add the flags described below in "Removing Unneeded Code".
+Also add the compile flags described below in "Removing Unneeded Code".
 
 The static library build creates a directory of header files that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
 
