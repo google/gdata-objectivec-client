@@ -1209,7 +1209,7 @@
 		4F478C2A0FF567EB00138739 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F478C250FF567EB00138739 /* GDataSiteKeyword.m */; };
 		4F48F075105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
 		4F48F076105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
-		4F48F077105AEAD60053938E /* GDataEntryFileDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */; };
+		4F48F077105AEAD60053938E /* GDataEntryFileDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F48F078105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
 		4F48F079105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
 		4F48F07A105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
