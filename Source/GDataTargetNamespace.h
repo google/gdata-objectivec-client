@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.8 (528 classes) 2009-08-31 16:16:03 -0700
+// com.google.GDataFramework v. 1.8 (529 classes) 2009-09-11 13:06:27 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -151,6 +151,7 @@
   #define GDataEntryDocBase                       _GDATA_NS_SYMBOL(GDataEntryDocBase)
   #define GDataEntryDocRevision                   _GDATA_NS_SYMBOL(GDataEntryDocRevision)
   #define GDataEntryEvent                         _GDATA_NS_SYMBOL(GDataEntryEvent)
+  #define GDataEntryFileDoc                       _GDATA_NS_SYMBOL(GDataEntryFileDoc)
   #define GDataEntryFinancePortfolio              _GDATA_NS_SYMBOL(GDataEntryFinancePortfolio)
   #define GDataEntryFinancePosition               _GDATA_NS_SYMBOL(GDataEntryFinancePosition)
   #define GDataEntryFinanceTransaction            _GDATA_NS_SYMBOL(GDataEntryFinanceTransaction)

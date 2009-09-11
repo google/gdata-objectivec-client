@@ -1207,6 +1207,13 @@
 		4F478C280FF567EB00138739 /* GDataSiteKeyword.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F478C260FF567EB00138739 /* GDataSiteKeyword.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F478C290FF567EB00138739 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F478C250FF567EB00138739 /* GDataSiteKeyword.m */; };
 		4F478C2A0FF567EB00138739 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F478C250FF567EB00138739 /* GDataSiteKeyword.m */; };
+		4F48F075105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
+		4F48F076105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
+		4F48F077105AEAD60053938E /* GDataEntryFileDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */; };
+		4F48F078105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
+		4F48F079105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
+		4F48F07A105AEAD60053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */; };
+		4F48F07B105AEAE30053938E /* GDataEntryFileDoc.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */; };
 		4F4B93E80C5045020064B6F6 /* GDataEntrySpreadsheetDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B93DE0C5045020064B6F6 /* GDataEntrySpreadsheetDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B93E90C5045020064B6F6 /* GDataEntryDocBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B93DF0C5045020064B6F6 /* GDataEntryDocBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B93EA0C5045020064B6F6 /* GDataEntryPresentationDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B93E00C5045020064B6F6 /* GDataEntryPresentationDoc.m */; };
@@ -2079,6 +2086,7 @@
 			files = (
 				4F1C70721027B53600B46459 /* GData.h in Copy Static Library Headers */,
 				4F6728F9103E16FA0064FB06 /* GDataHealthConstants.h in Copy Static Library Headers */,
+				4F48F07B105AEAE30053938E /* GDataEntryFileDoc.h in Copy Static Library Headers */,
 				4F7B13D61045B35F00FD8F66 /* GDataFeedDocRevision.h in Copy Static Library Headers */,
 				4F7B13D41045B35500FD8F66 /* GDataEntryDocRevision.h in Copy Static Library Headers */,
 				4F1C70731027B53600B46459 /* GDataACL.h in Copy Static Library Headers */,
@@ -2720,6 +2728,8 @@
 		4F478D4C0FF59FD500138739 /* FeedWebmasterToolsKeywords1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsKeywords1.xml; path = Tests/FeedWebmasterToolsKeywords1.xml; sourceTree = "<group>"; };
 		4F478D9B0FF5B97600138739 /* FeedWebmasterToolsCrawlIssues1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsCrawlIssues1.xml; path = Tests/FeedWebmasterToolsCrawlIssues1.xml; sourceTree = "<group>"; };
 		4F478D9C0FF5B97600138739 /* FeedWebmasterToolsMessages1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsMessages1.xml; path = Tests/FeedWebmasterToolsMessages1.xml; sourceTree = "<group>"; };
+		4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryFileDoc.h; path = Clients/Docs/GDataEntryFileDoc.h; sourceTree = "<group>"; };
+		4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryFileDoc.m; path = Clients/Docs/GDataEntryFileDoc.m; sourceTree = "<group>"; };
 		4F493DF00FB90BDD003B3670 /* FeedContactTest2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedContactTest2.xml; path = Tests/FeedContactTest2.xml; sourceTree = "<group>"; };
 		4F4B93DE0C5045020064B6F6 /* GDataEntrySpreadsheetDoc.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntrySpreadsheetDoc.h; path = Clients/Docs/GDataEntrySpreadsheetDoc.h; sourceTree = "<group>"; };
 		4F4B93DF0C5045020064B6F6 /* GDataEntryDocBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryDocBase.h; path = Clients/Docs/GDataEntryDocBase.h; sourceTree = "<group>"; };
@@ -3689,6 +3699,8 @@
 				4F4B93E10C5045020064B6F6 /* GDataEntryDocBase.m */,
 				4F4B93E60C5045020064B6F6 /* GDataEntryStandardDoc.h */,
 				4F4B93E30C5045020064B6F6 /* GDataEntryStandardDoc.m */,
+				4F48F073105AEAD60053938E /* GDataEntryFileDoc.h */,
+				4F48F074105AEAD60053938E /* GDataEntryFileDoc.m */,
 				4F1FE3610E5CE9B600D6880C /* GDataEntryPDFDoc.h */,
 				4F1FE3620E5CE9B600D6880C /* GDataEntryPDFDoc.m */,
 				4F4B93E50C5045020064B6F6 /* GDataEntryPresentationDoc.h */,
@@ -4416,6 +4428,7 @@
 				4F0935151030D682004C7DC1 /* GDataAuthenticationFetcher.h in Headers */,
 				4F7B13C41045B32300FD8F66 /* GDataEntryDocRevision.h in Headers */,
 				4F7B13CC1045B33000FD8F66 /* GDataFeedDocRevision.h in Headers */,
+				4F48F077105AEAD60053938E /* GDataEntryFileDoc.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4909,6 +4922,7 @@
 				4F7B13C61045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13CF1045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
 				4FBD4DCD104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
+				4F48F075105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5196,6 +5210,7 @@
 				4F0935181030D682004C7DC1 /* GDataAuthenticationFetcher.m in Sources */,
 				4F7B13C81045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13D11045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
+				4F48F07A105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5481,6 +5496,7 @@
 				4F0935171030D682004C7DC1 /* GDataAuthenticationFetcher.m in Sources */,
 				4F7B13C51045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13CE1045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
+				4F48F079105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5766,6 +5782,7 @@
 				4F0935141030D682004C7DC1 /* GDataAuthenticationFetcher.m in Sources */,
 				4F7B13C31045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13CD1045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
+				4F48F078105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6066,6 +6083,7 @@
 				4F7B13C71045B32300FD8F66 /* GDataEntryDocRevision.m in Sources */,
 				4F7B13D01045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
 				4FBD4DCE104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
+				4F48F076105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
