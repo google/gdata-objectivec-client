@@ -372,7 +372,7 @@ if (data) {
 }
 }}}
 
-== Upload progress monitoring ==
+=== Upload progress monitoring ===
 
 When uploading large blocks of data, such as photos or videos, your application can request periodic callbacks to update a progress indicator.  To receive the periodic callback, set an upload progress selector in the service, such as:
 
@@ -444,16 +444,16 @@ Setting the run loop modes will have no effect for service objects on Mac OS X 1
 
 [http://code.google.com/apis/gdata/auth.html Authenticating] the user with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
 
-The most common authentication error is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
+The most common error during authentication is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
 
-It is optional for your application to handle captcha requests. One easy way to handle them is to just open Google's unlock captcha web page in the user's web browser.
+It is *optional* for your application to handle captcha requests. One easy way to handle them is to just open Google's unlock captcha web page in the user's web browser.
 
 {{{
 NSURL *captchaUnlockURL = [NSURL URLWithString:@"https://www.google.com/accounts/DisplayUnlockCaptcha"];
 [[NSWorkspace sharedWorkspace] openURL:captchaUnlockURL];
 }}}
 
-For the best user experience in handling captcha requests, your application can download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
+For the best user experience in handling captcha requests, your application may download and display the captcha image to the user, and wait for the user to provide the answer. If the user offers an answer, put the captcha token and the user's answer into the service object with `setCaptchaToken:captchaAnswer:`, and retry the fetch.
 
 To handle captchas, the fetch callback method might look something like this:
 
@@ -561,6 +561,8 @@ to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugL
 In the iPhone simulator, the default logs location is the user's home directory. On the iPhone device, the default location is the application's documents folder on the device.
 
 To view the most recently saved logs, use a web browser to open the symlink named !My_App_Name_http_log_newest.html (for whatever your application's name is) in the logging directory.  Note that Camino and Firefox display XML in a more useful fashion than does Safari.
+
+*_Tip:_* providing a convenient way for your users to enable logging is often helpful in diagnosing problems when using the API.
 
 == Service Introspection ==
 
