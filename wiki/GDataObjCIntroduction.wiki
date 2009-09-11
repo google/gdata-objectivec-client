@@ -250,7 +250,7 @@ The callback can then access the data:
 }}}
 
 
-=== Batch requests ===
+== Batch requests ==
 
 Some services support batch requests, allowing many insert, update, or delete operations to be performed with a single http request. 
 
