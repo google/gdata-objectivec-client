@@ -1,4 +1,5 @@
 #summary Performance Tuning in the Google Data APIs Objective-C Library
+#labels Featured
 
 <wiki:toc max_depth="4" />
 
