@@ -1,4 +1,5 @@
 #summary Adding the Google Data API Objective-C Client Library to a Project
+#labels Featured
 
 <wiki:toc max_depth="4" />
 
