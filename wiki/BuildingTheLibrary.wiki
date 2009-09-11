@@ -19,21 +19,28 @@ or the header for a specific service, such as
 
 `#import "GData/GDataCalendar.h"`
 
-The GData source code and the project for building the framework are also provided. To facilitate debugging, you may opt to include the GData.xcodeproj project or the GData source files directly in your application project as a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference].  The example applications show how to include a reference to the GData framework project file in an Xcode project.
+To facilitate debugging, you may choose to include the GData.xcodeproj project or the GData source files directly in your application project as a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference].  The example applications show how to include a reference to the GData framework project file in an Xcode project.
 
 *_Tip_*: if Xcode's debugger is ignoring breakpoints set in the framework, turn off the [http://developer.apple.com/mac/library/documentation/DeveloperTools/Conceptual/XcodeDebugging/920-Debugging_Preferences/debugging_preferences.html "Load symbols lazily" option] in Xcode's Debugging preferences.
 
 == Linking to the iPhone Static Library ==
 
-*_New since version 1.8:_*
+*_New since library version 1.8:_*
 
 The library project file in the top-of-trunk sources now includes a target for building a static library for iPhone and iPod Touch apps; this avoids dragging individual library source files into the iPhone application's project.
 
-To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app, and add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html -ObjC link option] to the app. Also add the above defines to the GData project so that it won't compile unneeded services.
+To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app.
 
-The static library build also creates a directory of header files that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
+Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC link option] to the application project's build settings, along with the libxml2 flag:
+
+  Other Linker Flags: `-ObjC -lxml2`
+
+Also add the flags described below in "Removing Unneeded Code".
+
+The static library build creates a directory of header files that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
 
 `#import "GDataCalendar.h"`
+
 
 == Compiling the Source Files Directly into a Mac or iPhone Application ==
 
@@ -58,15 +65,16 @@ Or, if the Other C Flags setting is not available in your target's build options
 
   `OTHER_CFLAGS=-DDEBUG=1`
 
-*_Note for iPhone apps_*: Be sure that the files GDataXMLNode.m and GDataXMLNode.h in the Common/Optional/XMLSupport group are included in your project.  They are required for iPhone builds.
 
 With the source files compiled directly in your project, refer directly to the headers by omitting the framework name, like
 
 `#import "GDataCalendar.h"`
 
-== Additional Settings for Development with the iPhone SDK ==
+*_Notes for iPhone apps compiling the source files directly_*: 
 
-Add these build settings needed by GDataXMLNode to your project or target:
+Be sure that the files GDataXMLNode.m and GDataXMLNode.h in the Common/Optional/XMLSupport group are included in your project.  They are required for iPhone builds.
+
+iPhone applications also need these build settings in the project or target:
 
  Header Search Paths: `/usr/include/libxml2`
 
@@ -76,16 +84,15 @@ Add these build settings needed by GDataXMLNode to your project or target:
 
 *_New since library version 1.8:_*
 
-However you build the library, it is worthwhile to remove code for the services that your application will not be using. To remove unneeded code, set these compile flags in the top-level project settings of the GData.xcodeproj. When compiling the sources directly into your application, set these flags in your project's settings.
+However you build the library, it is worthwhile to remove code for the services that your application will not be using. To remove unneeded code, set these compile flags in the  project or target build settings of the GData.xcodeproj project file. When compiling the sources directly into your application, set these flags in your project's settings.
 
-The conditional flags in each source file look something like this:
+The conditional flags in most source files of the library look something like this:
 {{{
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
 }}}
-So if your project is building on the top-of-trunk sources, in either the
-project file settings for compile flags or in your project config file, set
+So in either the project's settings for compile flags or in your project's config file, set
 `GDATA_REQUIRE_SERVICE_INCLUDES` to 1, along with the services you are using.
 For example,
-{{{
--DGDATA_REQUIRE_SERVICE_INCLUDES=1 -DGDATA_INCLUDE_CONTACTS_SERVICE=1 
-}}}
+ Other C Flags: `-DGDATA_REQUIRE_SERVICE_INCLUDES=1 -DGDATA_INCLUDE_CONTACTS_SERVICE=1`
+
+Do remember to set build setings to apply to Debug _and_ Release configurations.
