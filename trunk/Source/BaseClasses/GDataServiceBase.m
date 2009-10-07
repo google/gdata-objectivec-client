@@ -580,8 +580,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   if (dataLength > 0) {
 
 #if GDATA_LOG_PERFORMANCE
-    UnsignedWide msecs1, msecs2;
-    Microseconds(&msecs1);
+    NSTimeInterval secs1, secs2;
+    secs1 = [NSDate timeIntervalSinceReferenceDate];
 #endif
 
     NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithData:data
@@ -635,11 +635,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 #endif
 
 #if GDATA_LOG_PERFORMANCE
-      Microseconds(&msecs2);
-      UInt64 msStart = (UInt64)msecs1.lo + (((UInt64)msecs1.hi) << 32);
-      UInt64 msEnd   = (UInt64)msecs2.lo + (((UInt64)msecs2.hi) << 32);
-      NSLog(@"allocation of %@ took %qu microseconds",
-            objectClass, (msEnd - msStart));
+      secs2 = [NSDate timeIntervalSinceReferenceDate];
+      NSLog(@"allocation of %@ took %f seconds", objectClass, secs2 - secs1);
 #endif
 
     } else {
@@ -717,11 +714,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     }
 
     if (finishedSelector) {
-      [GDataServiceBase invokeCallback:finishedSelector
-                                target:delegate
-                                ticket:ticket
-                                object:object
-                                error:nil];
+      [[self class] invokeCallback:finishedSelector
+                            target:delegate
+                            ticket:ticket
+                            object:object
+                             error:nil];
     }
     [ticket setFetchedObject:object];
 
@@ -732,11 +729,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                               userInfo:nil];
     }
     if (finishedSelector) {
-      [GDataServiceBase invokeCallback:finishedSelector
-                                target:delegate
-                                ticket:ticket
-                                object:nil
-                                 error:error];
+      [[self class] invokeCallback:finishedSelector
+                            target:delegate
+                            ticket:ticket
+                            object:nil
+                             error:error];
     }
     [ticket setFetchError:error];
   }
@@ -1131,7 +1128,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
 - (void)setUserAgent:(NSString *)userAgent {
   // remove whitespace and unfriendly characters
-  NSString *str = [[GDataUtilities userAgentStringForString:userAgent] retain];
+  NSString *str = [GDataUtilities userAgentStringForString:userAgent];
   [self setExactUserAgent:str];
 }
 
