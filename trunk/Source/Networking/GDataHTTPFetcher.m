@@ -1861,8 +1861,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)setShouldCacheDatedData:(BOOL)flag {
+  BOOL wasCaching = shouldCacheDatedData_;
   shouldCacheDatedData_ = flag;
-  if (!flag) {
+
+  if (wasCaching && !flag) {
     // users expect turning off caching to free up the cache memory
     [self clearDatedDataCache];
   }
