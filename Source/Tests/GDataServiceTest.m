@@ -183,6 +183,13 @@ static int kServerPortNumber = 54579;
     [service_ setUserAgent:@"GData-UnitTests-99.99"];
   }
 
+  if (![service_ shouldCacheDatedData]) {
+    // we don't want to see 304s in our service response tests now,
+    // though the tests below will check for them in the underlying
+    // fetchers when we get a cached response
+    [service_ clearLastModifiedDates];
+  }
+
   fetchStartedNotificationCount_ = 0;
   fetchStoppedNotificationCount_ = 0;
   retryDelayStartedNotificationCount_ = 0;
