@@ -48,6 +48,7 @@
   IBOutlet NSButton *mUploadFileButton;
   IBOutlet NSButton *mStopUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
+  IBOutlet NSPopUpButton *mUploadPopup;
 
   IBOutlet NSTextField *mUploadingTextField;
 

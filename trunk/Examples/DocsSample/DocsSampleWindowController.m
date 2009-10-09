@@ -480,7 +480,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"docx",
     @"ods", @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
-    @"xlsx", @"jpeg", @"jpg", @"bmp", @"gif", @"html", @"htm", @"tsv",
+    @"xlsx", @"jpeg", @"jpg", @"bmp", @"gif", @"png", @"html", @"htm", @"tsv",
     @"tab", @"pdf", nil];
 
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
@@ -958,9 +958,44 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       [newEntry setUploadData:uploadData];
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
-  
+
       NSURL *postURL = [[mDocListFeed postLink] URL];
-      
+
+      // add the OCR or translation parameters, if the user set the pop-up
+      // button appropriately
+      int popupTag = [[mUploadPopup selectedItem] tag];
+      if (popupTag != 0) {
+        NSString *paramName, *paramValue;
+        switch (popupTag) {
+            // OCR
+          case 1: paramName = @"ocr"; paramValue = @"true"; break;
+
+            // translation
+            //
+            // we'll leave out the sourceLanguage parameter to get
+            // auto-detection of the file's language
+            //
+            // language codes: http://www.loc.gov/standards/iso639-2/php/code_list.php
+
+            // german
+          case 2: paramName = @"targetLanguage"; paramValue = @"de"; break;
+            // japanese
+          case 3: paramName = @"targetLanguage"; paramValue = @"ja"; break;
+            // english
+          case 4: paramName = @"targetLanguage"; paramValue = @"en"; break;
+
+          default: paramName = nil; paramValue = nil;
+        }
+
+        if (paramName) {
+          // use a GData query to conveniently append the new parameter
+          GDataQuery *query = [GDataQuery queryWithFeedURL:postURL];
+          [query addCustomParameterWithName:paramName
+                                      value:paramValue];
+          postURL = [query URL];
+        }
+      }
+
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleDocs *service = [self docsService];
       
