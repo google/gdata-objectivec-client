@@ -51,6 +51,9 @@
 - (BOOL)shouldShowInlineComments;
 - (void)setShouldShowInlineComments:(BOOL)flag;
 
+- (BOOL)shouldShowHiddenEvents;
+- (void)setShouldShowHiddenEvents:(BOOL)flag;
+
 - (NSString *)currentTimeZoneName;
 - (void)setCurrentTimeZoneName:(NSString *)str;
   

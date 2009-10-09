@@ -32,6 +32,7 @@ static NSString *const kFutureEventsParamName  = @"futureevents";
 static NSString *const kSingleEventsParamName = @"singleevents";
 static NSString *const kCurrentTimeZoneParamName = @"ctz";
 static NSString *const kShowInlineCommentsParamName = @"showinlinecomments";
+static NSString *const kShowHiddenParamName = @"showhidden";
 
 @implementation GDataQueryCalendar
 
@@ -118,6 +119,17 @@ static NSString *const kShowInlineCommentsParamName = @"showinlinecomments";
   [self addCustomParameterWithName:kShowInlineCommentsParamName
                          boolValue:flag
                       defaultValue:YES];
+}
+
+- (BOOL)shouldShowHiddenEvents {
+  return [self boolValueForParameterWithName:kShowHiddenParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldShowHiddenEvents:(BOOL)flag {
+  [self addCustomParameterWithName:kShowHiddenParamName
+                         boolValue:flag
+                      defaultValue:NO];
 }
 
 - (NSString *)currentTimeZoneName {
