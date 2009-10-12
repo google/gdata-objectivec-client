@@ -543,6 +543,9 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSURLResponse *)response;
 - (void)setResponse:(NSURLResponse *)response;
 
+// buffer of currently-downloaded data
+- (NSData *)downloadedData;
+
 // if the caller supplies a mutable dictionary, it's used for Last-Modified-Since
 //  checks and for cookie storage
 //  side effect: setFetchHistory implicitly calls setCookieStorageMethod:

@@ -692,7 +692,10 @@ CannotBeginFetch:
                                                        forKey:kGDataHTTPFetcherErrorChallengeKey];
   [[challenge sender] cancelAuthenticationChallenge:challenge];
 
-
+  // cancelAuthenticationChallenge seems to indirectly call
+  // connection:didFailWithError: now, though that isn't documented;
+  // if connection_ has already been set to nil, this next invocation
+  // of the failure method will be a no-op
   NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherErrorDomain
                                        code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
                                    userInfo:userInfo];
@@ -847,6 +850,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+
+  // prevent the failure callback from being called twice, since the stopFetch
+  // call below (either the explicit one at the end of this method, or the
+  // implicit one when the retry occurs) will release the delegate
+  if (connection_ == nil) return;
 
   [self logNowWithError:error];
 
@@ -1231,6 +1239,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   receivedDataBlock_ = [block copy];
 }
 #endif
+
+- (NSData *)downloadedData {
+  return downloadedData_;
+}
 
 - (NSURLResponse *)response {
   return response_;
