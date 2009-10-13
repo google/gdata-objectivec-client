@@ -44,15 +44,63 @@
   [self registerEntryClass];
 }
 
+- (void)addExtensionDeclarations {
+
+  [super addExtensionDeclarations];
+
+  Class entryClass = [self class];
+
+  [self addExtensionDeclarationForParentClass:entryClass
+                                   childClass:[GDataCustomProperty class]];
+}
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+- (NSMutableArray *)itemsForDescription {
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"properties", @"customProperties", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;
+}
+#endif
+
 + (NSString *)defaultServiceVersion {
   return kGDataMapsDefaultServiceVersion;
 }
+
+#pragma mark -
+
+- (NSArray *)customProperties {
+  return [self objectsForExtensionClass:[GDataCustomProperty class]];
+}
+
+- (void)setCustomProperties:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataCustomProperty class]];
+}
+
+- (void)addCustomProperty:(GDataCustomProperty *)obj {
+  [self addObject:obj forExtensionClass:[GDataCustomProperty class]];
+}
+
+#pragma mark -
 
 // convenience accessors
 
 - (NSURL *)featuresFeedURL {
   NSURL *featuresFeedURL = [[self content] sourceURL];
   return featuresFeedURL;
+}
+
+- (GDataCustomProperty *)customPropertyWithName:(NSString *)name {
+  NSArray *array = [self customProperties];
+  GDataCustomProperty *obj = [GDataUtilities firstObjectFromArray:array
+                                                        withValue:name
+                                                       forKeyPath:@"name"];
+  return obj;
 }
 
 @end
