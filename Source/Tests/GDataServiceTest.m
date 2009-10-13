@@ -25,6 +25,7 @@
 
 #import "GData.h"
 
+
 @interface GDataServiceTest : SenTestCase {
   NSTask *server_;
   BOOL isServerRunning_;
@@ -61,12 +62,7 @@
 - (NSString *)mySurrogateLinkName;
 @end
 
-@implementation GDataServiceTest
-
-static int kServerPortNumber = 54579;
-
-- (void)setUp {
-
+NSTask *StartHTTPServerTask(int portNumber) {
   // run the python http server, located in the Tests directory
   NSString *currentDir = [[NSFileManager defaultManager] currentDirectoryPath];
   NSString *serverPath = [currentDir stringByAppendingPathComponent:@"Tests/GDataTestHTTPServer.py"];
@@ -85,19 +81,20 @@ static int kServerPortNumber = 54579;
   [mutableEnv removeObjectForKey:@"MallocScribble"];
 
   NSArray *argArray = [NSArray arrayWithObjects:serverPath,
-    @"-p", [NSString stringWithFormat:@"%d", kServerPortNumber],
-    @"-r", [serverPath stringByDeletingLastPathComponent], nil];
+                       @"-p", [NSString stringWithFormat:@"%d", portNumber],
+                       @"-r", [serverPath stringByDeletingLastPathComponent],
+                       nil];
 
-  server_ = [[NSTask alloc] init];
-  [server_ setArguments:argArray];
-  [server_ setLaunchPath:@"/usr/bin/python"];
-  [server_ setEnvironment:mutableEnv];
+  NSTask *server = [[NSTask alloc] init];
+  [server setArguments:argArray];
+  [server setLaunchPath:@"/usr/bin/python"];
+  [server setEnvironment:mutableEnv];
 
-  // pipe will be cleaned up when server_ is torn down.
+  // pipe will be cleaned up when server is torn down.
   NSPipe *pipe = [NSPipe pipe];
-  [server_ setStandardOutput:pipe];
-  [server_ setStandardError:pipe];
-  [server_ launch];
+  [server setStandardOutput:pipe];
+  [server setStandardError:pipe];
+  [server launch];
 
   NSData *launchMessageData = [[pipe fileHandleForReading] availableData];
   NSString *launchStr = [[[NSString alloc] initWithData:launchMessageData
@@ -107,10 +104,20 @@ static int kServerPortNumber = 54579;
   // launchStr either has the confirmation, or the error message.
 
   NSString *expectedLaunchStr = @"started GDataTestServer.py...";
-  STAssertEqualObjects(launchStr, expectedLaunchStr,
-       @">>> Python http test server failed to launch; skipping fetch tests\n"
-        "Server path:%@\n", serverPath);
-  isServerRunning_ = [launchStr isEqual:expectedLaunchStr];
+  BOOL isServerRunning = [launchStr isEqual:expectedLaunchStr];
+  return isServerRunning ? server : nil;
+}
+
+@implementation GDataServiceTest
+
+static int kServerPortNumber = 54579;
+
+- (void)setUp {
+  server_ = StartHTTPServerTask(kServerPortNumber);
+  isServerRunning_ = (server_ != nil);
+
+  STAssertTrue(isServerRunning_,
+     @">>> Python http test server failed to launch; skipping service tests\n");
 
   // create the GData service object, and set it to authenticate
   // from our own python http server

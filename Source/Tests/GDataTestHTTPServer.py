@@ -80,6 +80,9 @@ class SimpleServer(BaseHTTPRequestHandler):
   Paths ending in .authsub have the .authsub extension stripped, and must have
   an authorization header of "AuthSub token=GoodAuthSubToken" to succeed.
   
+  Paths ending in .authwww have the .authwww extension stripped, and must have
+  an authorization header for GoodWWWUser:GoodWWWPassword to succeed.
+  
   Successful results have a Last-Modified header set; if that header's value
   ("thursday") is supplied in a request's "If-Modified-Since" header, the 
   result is 304 (Not Modified).
@@ -132,9 +135,22 @@ class SimpleServer(BaseHTTPRequestHandler):
       
     ifModifiedSince = self.headers.getheader("If-Modified-Since", "");
 
-    # retrieve the auth header; require it if the file path ends 
-    # with the string ".auth" or ".authsub"
+    # retrieve the auth header
     authorization = self.headers.getheader("Authorization", "")
+    
+    # require basic auth if the file path ends with the string ".authwww"
+    # GoodWWWUser:GoodWWWPassword is base64 R29vZFdXV1VzZXI6R29vZFdXV1Bhc3N3b3Jk
+    if self.path.endswith(".authwww"):
+      if authorization != "Basic R29vZFdXV1VzZXI6R29vZFdXV1Bhc3N3b3Jk":
+        self.send_response(401)
+        self.send_header('WWW-Authenticate', "Basic realm='testrealm'")
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        return
+      self.path = self.path[:-8] # remove the .authwww at the end
+
+    # require Google auth if the file path ends with the string ".auth"
+    # or ".authsub"
     if self.path.endswith(".auth"):
       if authorization != "GoogleLogin auth=GoodAuthToken":
         self.send_error(401,"Unauthorized: %s" % self.path)
