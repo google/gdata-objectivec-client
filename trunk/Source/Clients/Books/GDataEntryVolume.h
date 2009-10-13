@@ -35,7 +35,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataBooksDefaultServiceVersion _INITIALIZE_AS(@"1.0");
+_EXTERN NSString* const kGDataBooksDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceBooks       _INITIALIZE_AS(@"http://schemas.google.com/books/2008");
 _EXTERN NSString* const kGDataNamespaceBooksPrefix _INITIALIZE_AS(@"gbs");
