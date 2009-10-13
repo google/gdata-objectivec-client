@@ -1259,6 +1259,8 @@
 		4F4E917E0EBA85D900C59A7E /* GDataServerError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E917B0EBA85D900C59A7E /* GDataServerError.m */; };
 		4F4E917F0EBA85D900C59A7E /* GDataServerError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E917B0EBA85D900C59A7E /* GDataServerError.m */; };
 		4F4E93320EBBC83E00C59A7E /* GDataServerErrorTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E93310EBBC83E00C59A7E /* GDataServerErrorTest.m */; };
+		4F5764941085397000F5E9F8 /* GDataHTTPFetcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5764931085397000F5E9F8 /* GDataHTTPFetcherTest.m */; };
+		4F5764951085397000F5E9F8 /* GDataHTTPFetcherTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5764931085397000F5E9F8 /* GDataHTTPFetcherTest.m */; };
 		4F5C29420D9C60BC00C647A5 /* GDataServiceGooglePhotos.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F5C293E0D9C60BC00C647A5 /* GDataServiceGooglePhotos.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F5C29430D9C60BC00C647A5 /* GDataServiceGooglePhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C293F0D9C60BC00C647A5 /* GDataServiceGooglePhotos.m */; };
 		4F5C29460D9C60BC00C647A5 /* GDataServiceGooglePhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C293F0D9C60BC00C647A5 /* GDataServiceGooglePhotos.m */; };
@@ -2758,6 +2760,7 @@
 		4F56525E0DFF5FFF00975DBD /* FeedFinancePortfolioTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePortfolioTest1.xml; path = Tests/FeedFinancePortfolioTest1.xml; sourceTree = "<group>"; };
 		4F56525F0DFF5FFF00975DBD /* FeedFinancePositionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePositionTest1.xml; path = Tests/FeedFinancePositionTest1.xml; sourceTree = "<group>"; };
 		4F5652600DFF5FFF00975DBD /* FeedFinanceTransactionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinanceTransactionTest1.xml; path = Tests/FeedFinanceTransactionTest1.xml; sourceTree = "<group>"; };
+		4F5764931085397000F5E9F8 /* GDataHTTPFetcherTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataHTTPFetcherTest.m; path = Tests/GDataHTTPFetcherTest.m; sourceTree = "<group>"; };
 		4F5C293E0D9C60BC00C647A5 /* GDataServiceGooglePhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceGooglePhotos.h; path = Clients/Photos/GDataServiceGooglePhotos.h; sourceTree = "<group>"; };
 		4F5C293F0D9C60BC00C647A5 /* GDataServiceGooglePhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGooglePhotos.m; path = Clients/Photos/GDataServiceGooglePhotos.m; sourceTree = "<group>"; };
 		4F5C294A0D9C60D100C647A5 /* GDataQueryGooglePhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryGooglePhotos.h; path = Clients/Photos/GDataQueryGooglePhotos.h; sourceTree = "<group>"; };
@@ -3250,6 +3253,7 @@
 				4FE8203E0B26104600D8C135 /* GDataQueryTest.m */,
 				4F14B1220B13A5540072EBB8 /* GDataDateTimeTest.m */,
 				4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */,
+				4F5764931085397000F5E9F8 /* GDataHTTPFetcherTest.m */,
 				4FBD4DCC104C7E540004AE08 /* GDataFetcherTest.m */,
 				4FD7B7210BC5922C00C578E1 /* GDataTestHTTPServer.py */,
 				4F0AAAD90BCAF3C900504521 /* GDataFrameworkTest.m */,
@@ -4923,6 +4927,7 @@
 				4F7B13CF1045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
 				4FBD4DCD104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
 				4F48F075105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
+				4F5764941085397000F5E9F8 /* GDataHTTPFetcherTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6084,6 +6089,7 @@
 				4F7B13D01045B33000FD8F66 /* GDataFeedDocRevision.m in Sources */,
 				4FBD4DCE104C7E540004AE08 /* GDataFetcherTest.m in Sources */,
 				4F48F076105AEAD60053938E /* GDataEntryFileDoc.m in Sources */,
+				4F5764951085397000F5E9F8 /* GDataHTTPFetcherTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
