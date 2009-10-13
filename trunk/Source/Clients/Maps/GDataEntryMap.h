@@ -20,14 +20,21 @@
 //
 
 #import "GDataEntryBase.h"
+#import "GDataCustomProperty.h"
 
 
 @interface GDataEntryMap : GDataEntryBase
 
 + (id)mapEntryWithTitle:(NSString *)str;
 
+- (NSArray *)customProperties;
+- (void)setCustomProperties:(NSArray *)array;
+- (void)addCustomProperty:(GDataCustomProperty *)obj;
+
 // convenience accessor
 - (NSURL *)featuresFeedURL;
+
+- (GDataCustomProperty *)customPropertyWithName:(NSString *)name;
 
 @end
 
