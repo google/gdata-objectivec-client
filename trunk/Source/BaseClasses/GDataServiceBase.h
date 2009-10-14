@@ -51,6 +51,10 @@ _EXTERN NSString* const kGDataStructuredErrorsKey _INITIALIZE_AS(@"serverErrors"
 // unconditionally.  Do not use this in entries in a batch feed.
 _EXTERN NSString* const kGDataETagWildcard _INITIALIZE_AS(@"*");
 
+// notifications when parsing of a fetcher feed or entry begins or ends
+_EXTERN NSString* const kGDataServiceTicketParsingStartedNotification _INITIALIZE_AS(@"kGDataServiceTicketParsingStartedNotification");
+_EXTERN NSString* const kGDataServiceTicketParsingStoppedNotification _INITIALIZE_AS(@"kGDataServiceTicketParsingStoppedNotification");
+
 enum {
  kGDataCouldNotConstructObjectError = -100
 };
@@ -171,6 +175,12 @@ enum {
 //
 
 @interface GDataServiceBase : NSObject {
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+  NSOperationQueue *operationQueue_;
+#else
+  id operationQueue_;
+#endif
+
   NSString *serviceVersion_;
   NSString *userAgent_;
   GDataHTTPFetchHistory *fetchHistory_;
