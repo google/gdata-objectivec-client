@@ -39,6 +39,9 @@ static NSString* const kFetcherObjectClassKey = @"_objectClass";
 static NSString* const kFetcherFinishedSelectorKey = @"_finishedSelector";
 static NSString* const kFetcherTicketKey = @"_ticket";
 static NSString* const kFetcherStreamDataKey = @"_streamData";
+static NSString* const kFetcherParsedObjectKey = @"_parsedObject";
+static NSString* const kFetcherParseErrorKey = @"_parseError";
+static NSString* const kFetcherCallbackThreadKey = @"_callbackThread";
 
 NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
@@ -84,12 +87,31 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (id)init {
   self = [super init];
   if (self) {
+
+#if GDATA_IPHONE || (MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5)
+    operationQueue_ = [[NSOperationQueue alloc] init];
+#elif (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4) && !GDATA_SKIP_PARSE_THREADING
+    // Avoid NSOperationQueue prior to 10.5.6, per
+    // http://www.mikeash.com/?page=pyblog/use-nsoperationqueue.html
+    SInt32 bcdSystemVersion = 0;
+    (void) Gestalt(gestaltSystemVersion, &bcdSystemVersion);
+
+    if (bcdSystemVersion >= 0x1057) {
+      operationQueue_ = [[NSOperationQueue alloc] init];
+    }
+#else
+    // operationQueue_ defaults to nil, so parsing will be done immediately
+    // on the current thread
+#endif
+
     fetchHistory_ = [[GDataHTTPFetchHistory alloc] init];
   }
   return self;
 }
 
 - (void)dealloc {
+  [operationQueue_ release];
+
   [serviceVersion_ release];
   [userAgent_ release];
   [fetchHistory_ release];
@@ -563,90 +585,165 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+  // we now have the XML data for a feed or entry
+
+  // save the current thread into the fetcher, since we'll handle additional
+  // fetches and callbacks on this thread
+  [fetcher setProperty:[NSThread currentThread]
+                forKey:kFetcherCallbackThreadKey];
+
+  // we post parsing notifications now to ensure they're on caller's
+  // original thread
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+  [defaultNC postNotificationName:kGDataServiceTicketParsingStartedNotification
+                           object:ticket];
+
+  // if there's an operation queue, then use that to schedule parsing on another
+  // thread
+  SEL parseSel = @selector(parseObjectFromDataOfFetcher:);
+  if (operationQueue_ != nil) {
+
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+    NSInvocationOperation *op;
+    op = [[[NSInvocationOperation alloc] initWithTarget:self
+                                               selector:parseSel
+                                                 object:fetcher] autorelease];
+    [operationQueue_ addOperation:op];
+#endif
+  } else {
+    // parse on the current thread, on Mac OS X 10.4 through 10.5.7
+    // or when the project defines GDATA_SKIP_PARSE_THREADING
+    [self performSelector:parseSel
+               withObject:fetcher];
+  }
+}
+
+- (void)parseObjectFromDataOfFetcher:(GDataHTTPFetcher *)fetcher {
+
+  // this may be invoked in a separate thread
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+#if GDATA_LOG_PERFORMANCE
+  NSTimeInterval secs1, secs2;
+  secs1 = [NSDate timeIntervalSinceReferenceDate];
+#endif
+
+  NSError *error = nil;
+  GDataObject* object = nil;
+
+  Class objectClass = [fetcher propertyForKey:kFetcherObjectClassKey];
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+
+  NSData *data = [fetcher downloadedData];
+  NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithData:data
+                                                            options:0
+                                                              error:&error] autorelease];
+  if (xmlDocument) {
+
+    NSXMLElement* root = [xmlDocument rootElement];
+
+    if (!objectClass) {
+      objectClass = [GDataObject objectClassForXMLElement:root];
+    }
+
+    // see if the top-level class for the XML is listed in the surrogates;
+    // if so, instantiate the surrogate class instead
+    NSDictionary *surrogates = [ticket surrogates];
+    Class baseSurrogate = [surrogates objectForKey:objectClass];
+    if (baseSurrogate) {
+      objectClass = baseSurrogate;
+    }
+
+    // use the actual service version indicated by the response headers
+    NSDictionary *responseHeaders = [fetcher responseHeaders];
+    NSString *serviceVersion = [responseHeaders objectForKey:@"Gdata-Version"];
+
+    // feeds may optionally be instantiated without unknown elements tracked
+    //
+    // we only ever want to fetch feeds and discard the unknown XML, never
+    // entries
+    BOOL shouldIgnoreUnknowns = ([ticket shouldFeedsIgnoreUnknowns]
+                                 && [objectClass isSubclassOfClass:[GDataFeedBase class]]);
+
+    // create a local pool to avoid buildup of objects from parsing feeds
+
+    object = [[objectClass alloc] initWithXMLElement:root
+                                              parent:nil
+                                      serviceVersion:serviceVersion
+                                          surrogates:surrogates
+                                shouldIgnoreUnknowns:shouldIgnoreUnknowns];
+
+    // we're done parsing; the extension declarations won't be needed again
+    [object clearExtensionDeclarationsCache];
+
+
+#if GDATA_USES_LIBXML
+    // retain the document so that pointers to internal nodes remain valid
+    [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
+#endif
+
+    [fetcher setProperty:object forKey:kFetcherParsedObjectKey];
+    [object release];
+
+#if GDATA_LOG_PERFORMANCE
+    secs2 = [NSDate timeIntervalSinceReferenceDate];
+    NSLog(@"allocation of %@ took %f seconds", objectClass, secs2 - secs1);
+#endif
+  }
+  [fetcher setProperty:error forKey:kFetcherParseErrorKey];
+
+  SEL parseDoneSel = @selector(handleParsedObjectForFetcher:);
+
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+  NSThread *callbackThread = [fetcher propertyForKey:kFetcherCallbackThreadKey];
+
+  NSArray *runLoopModes = [self runLoopModes];
+  if (runLoopModes) {
+    [self performSelector:parseDoneSel
+                 onThread:callbackThread
+               withObject:fetcher
+            waitUntilDone:NO
+                    modes:runLoopModes];
+  } else {
+    // defaults to common modes
+    [self performSelector:parseDoneSel
+                 onThread:callbackThread
+               withObject:fetcher
+            waitUntilDone:NO];
+  }
+
+  // the thread is retaining the fetcher, so the fetcher shouldn't keep
+  // retaining the thread
+  [fetcher setProperty:nil forKey:@"_callbackThread"];
+#else
+  // in 10.4, there's no performSelector:onThread:
+  [self performSelector:parseDoneSel withObject:fetcher];
+  [fetcher setProperty:nil forKey:@"_callbackThread"];
+#endif
+
+  [pool release];
+}
+
+- (void)handleParsedObjectForFetcher:(GDataHTTPFetcher *)fetcher {
+
+  // after parsing is complete, this is invoked on the thread that the
+  // fetch was performed on
 
   // unpack the callback parameters
   id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
-  Class objectClass = [fetcher propertyForKey:kFetcherObjectClassKey];
+  GDataObject *object = [fetcher propertyForKey:kFetcherParsedObjectKey];
+  NSError *error = [fetcher propertyForKey:kFetcherParseErrorKey];
   SEL finishedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFinishedSelectorKey]);
 
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
-  NSError *error = nil;
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+  [defaultNC postNotificationName:kGDataServiceTicketParsingStoppedNotification
+                           object:ticket];
 
-  GDataObject* object = nil;
+  NSData *data = [fetcher downloadedData];
   NSUInteger dataLength = [data length];
-
-  // create the object returned by the service, if any
-  if (dataLength > 0) {
-
-#if GDATA_LOG_PERFORMANCE
-    NSTimeInterval secs1, secs2;
-    secs1 = [NSDate timeIntervalSinceReferenceDate];
-#endif
-
-    NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithData:data
-                                                              options:0
-                                                                error:&error] autorelease];
-    if (xmlDocument) {
-
-      NSXMLElement* root = [xmlDocument rootElement];
-
-      if (!objectClass) {
-        objectClass = [GDataObject objectClassForXMLElement:root];
-      }
-
-      // see if the top-level class for the XML is listed in the surrogates;
-      // if so, instantiate the surrogate class instead
-      NSDictionary *surrogates = [ticket surrogates];
-      Class baseSurrogate = [surrogates objectForKey:objectClass];
-      if (baseSurrogate) {
-        objectClass = baseSurrogate;
-      }
-
-      // use the actual service version indicated by the response headers
-      NSDictionary *responseHeaders = [fetcher responseHeaders];
-      NSString *serviceVersion = [responseHeaders objectForKey:@"Gdata-Version"];
-
-      // feeds may optionally be instantiated without unknown elements tracked
-      //
-      // we only ever want to fetch feeds and discard the unknown XML, never
-      // entries
-      BOOL shouldIgnoreUnknowns = ([ticket shouldFeedsIgnoreUnknowns]
-                      && [objectClass isSubclassOfClass:[GDataFeedBase class]]);
-
-      // create a local pool to avoid buildup of objects from parsing feeds
-      NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-      object = [[objectClass alloc] initWithXMLElement:root
-                                                parent:nil
-                                        serviceVersion:serviceVersion
-                                            surrogates:surrogates
-                                  shouldIgnoreUnknowns:shouldIgnoreUnknowns];
-
-      // we're done parsing; the extension declarations won't be needed again
-      [object clearExtensionDeclarationsCache];
-
-      [pool release];
-      [object autorelease];
-
-#if GDATA_USES_LIBXML
-      // retain the document so that pointers to internal nodes remain valid
-      [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
-#endif
-
-#if GDATA_LOG_PERFORMANCE
-      secs2 = [NSDate timeIntervalSinceReferenceDate];
-      NSLog(@"allocation of %@ took %f seconds", objectClass, secs2 - secs1);
-#endif
-
-    } else {
-#if DEBUG
-      NSString *invalidXML = [[[NSString alloc] initWithData:data
-                                                    encoding:NSUTF8StringEncoding] autorelease];
-      NSLog(@"GDataServiceBase fetching: %@\n invalidXML received: %@",[fetcher request], invalidXML);
-#endif
-    }
-  }
 
   // if we created the object (or we got empty data back, as from a GData
   // delete resource request) then we succeeded

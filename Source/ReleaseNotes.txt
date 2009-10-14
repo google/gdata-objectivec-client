@@ -30,8 +30,16 @@ Additions
 
 - Added YouTube convenience accessors highQualityThumbnail and
   mediaContentWithFormatNumber:
+  
+- Added OCR and translation on upload to the DocsSample app.
+
+- Added calendar query setShouldShowHiddenEvents: for displaying unanswered
+  calendar invitations.
 
 Changes
+
+- Parsing is now done asynchronously (on another thread, via NSOperationQueue)
+  and NSNotifications are sent when parsing begins and ends.
 
 - Batch fetches now always disable shouldIgnoreUnknownXML so that the results
   in the batch feed can be used for updates.
@@ -46,12 +54,15 @@ Changes
 - GDataHTTPFetcher now takes a GDataFetchHistory class rather than a mutable
   dictionary as the optional fetch history
 
-- Renamed analyticsProperties to avoid conflict with properties of the
-  GDataObject base class.
-
 - The service progress callback now takes a ticket as its first parameter
   rather than a progress monitor input stream, as progress monitoring
   no longer requires that input stream on iPhone 3.0 and Mac OS X 10.5.8
+  
+- Rather than warn about an omitted user agent, just quietly default to the
+  bundle ID instead.
+
+- Renamed analyticsProperties to avoid conflict with properties of the
+  GDataObject base class.
 
 Bugs Fixed
 
@@ -59,6 +70,9 @@ Bugs Fixed
   local name.
 
 - Fixed the atomPub URI when creating new objects with code protocol v2.
+
+- Fixed a bug causing the service's dated data cache to be cleared for every
+  call setDatedDataCache:NO
 
 
 Release 1.8.0

@@ -39,6 +39,8 @@
   int fetchStoppedNotificationCount_;
   unsigned long long lastProgressDeliveredCount_;
   unsigned long long lastProgressTotalCount_;
+  int parseStartedCount_;
+  int parseStoppedCount_;
   int retryCounter_;
   int retryDelayStartedNotificationCount_;
   int retryDelayStoppedNotificationCount_;
@@ -130,6 +132,8 @@ static int kServerPortNumber = 54579;
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGDataHTTPFetcherStartedNotification object:nil];
   [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGDataHTTPFetcherStoppedNotification object:nil];
+  [nc addObserver:self selector:@selector(parseStateChanged:) name:kGDataServiceTicketParsingStartedNotification object:nil];
+  [nc addObserver:self selector:@selector(parseStateChanged:) name:kGDataServiceTicketParsingStoppedNotification object:nil];
   [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGDataHTTPFetcherRetryDelayStartedNotification object:nil];
   [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGDataHTTPFetcherRetryDelayStoppedNotification object:nil];
 }
@@ -149,6 +153,24 @@ static int kServerPortNumber = 54579;
   STAssertTrue(retryDelayStartedNotificationCount_ <= fetchStartedNotificationCount_,
                @"fetch notification imbalance: starts=%d stops=%d",
                fetchStartedNotificationCount_, retryDelayStartedNotificationCount_);
+}
+
+- (void)parseStateChanged:(NSNotification *)note {
+  GDataServiceTicketBase *ticket = [note object];
+
+  STAssertTrue([ticket isKindOfClass:[GDataServiceTicketBase class]],
+               @"cannot get ticket from parse notification");
+
+  if ([[note name] isEqual:kGDataServiceTicketParsingStartedNotification]) {
+    ++parseStartedCount_;
+  } else {
+    ++parseStoppedCount_;
+  }
+
+  STAssertTrue(parseStoppedCount_ <= parseStartedCount_,
+               @"parse notification imbalance: starts=%d stops=%d",
+               parseStartedCount_,
+               parseStoppedCount_);
 }
 
 - (void)retryDelayStateChanged:(NSNotification *)note {
@@ -199,6 +221,8 @@ static int kServerPortNumber = 54579;
 
   fetchStartedNotificationCount_ = 0;
   fetchStoppedNotificationCount_ = 0;
+  parseStartedCount_ = 0;
+  parseStoppedCount_ = 0;
   retryDelayStartedNotificationCount_ = 0;
   retryDelayStoppedNotificationCount_ = 0;
 }
@@ -347,8 +371,10 @@ static int gFetchCounter = 0;
   STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
 
   // check that the expected notifications happened
-  STAssertEquals(fetchStartedNotificationCount_, 1, @"start note missing");
-  STAssertEquals(fetchStoppedNotificationCount_, 1, @"stopped note missing");
+  STAssertEquals(fetchStartedNotificationCount_, 1, @"fetch start note missing");
+  STAssertEquals(fetchStoppedNotificationCount_, 1, @"fetch stopped note missing");
+  STAssertEquals(parseStartedCount_, 1, @"parse start note missing");
+  STAssertEquals(parseStoppedCount_, 1, @"parse stopped note missing");
   STAssertEquals(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
   STAssertEquals(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
 
