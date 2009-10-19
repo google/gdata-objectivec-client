@@ -121,6 +121,9 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (GDataDateTime *)updatedMaxDateTime;
 - (void)setUpdatedMaxDateTime:(GDataDateTime *)dateTime;
 
+- (BOOL)shouldFormatErrorsAsXML;
+- (void)setShouldFormatErrorsAsXML:(BOOL)flag;
+
 - (NSArray *)categoryFilters;
 - (void)setCategoryFilters:(NSArray *)filters;
 - (void)addCategoryFilter:(GDataCategoryFilter *)filter;

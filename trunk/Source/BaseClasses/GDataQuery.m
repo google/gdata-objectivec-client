@@ -22,6 +22,7 @@
 
 static NSString *const kAltParamName = @"alt";
 static NSString *const kAuthorParamName  = @"author";
+static NSString *const kErrorParamName  = @"err";
 static NSString *const kFullTextQueryStringParamName  = @"q";
 static NSString *const kLanguageParamName  = @"hl";
 static NSString *const kMaxResultsParamName = @"max-results";
@@ -181,11 +182,12 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   return query;
 }
 
-
 - (NSString *)description {
  return [NSString stringWithFormat:@"%@ %p: {%@}",
    [self class], self, [[self URL] absoluteString]];
 }
+
+#pragma mark -
 
 - (NSURL *)feedURL {
   return feedURL_;
@@ -360,6 +362,18 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
 - (void)setUpdatedMaxDateTime:(GDataDateTime *)dateTime {
   [self addCustomParameterWithName:kUpdatedMaxParamName
                           dateTime:dateTime];
+}
+
+- (BOOL)shouldFormatErrorsAsXML {
+  NSString *value = [self valueForParameterWithName:kErrorParamName];
+  BOOL flag = (value != nil)
+    && ([value caseInsensitiveCompare:@"xml"] == NSOrderedSame);
+  return flag;
+}
+
+- (void)setShouldFormatErrorsAsXML:(BOOL)flag {
+  [self addCustomParameterWithName:kErrorParamName
+                             value:(flag ? @"xml" : nil)];
 }
 
 - (NSArray *)categoryFilters {
