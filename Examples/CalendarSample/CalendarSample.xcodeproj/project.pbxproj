@@ -12,10 +12,10 @@
 		4F38F5900B66E14800B24B81 /* CalendarSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F58F0B66E14800B24B81 /* CalendarSampleWindowController.m */; };
 		4F38F5D20B66E1BA00B24B81 /* CalendarSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F5D10B66E1BA00B24B81 /* CalendarSampleAppController.m */; };
 		4F38FAB70B683F1C00B24B81 /* EditEventWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38FAB50B683F1C00B24B81 /* EditEventWindowController.m */; };
-		4FA6F4C41034B49900C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */; };
-		4FA6F4C51034B49900C5DFA5 /* CalendarSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */; };
-		4FA6F4C61034B49900C5DFA5 /* EditACLWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */; };
-		4FA6F4C71034B49900C5DFA5 /* EditEventWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */; };
+		4FA6F2C81034AB7100C5DFA5 /* EditEventWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C01034AB7100C5DFA5 /* EditEventWindow.xib */; };
+		4FA6F2C91034AB7100C5DFA5 /* EditACLWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C21034AB7100C5DFA5 /* EditACLWindow.xib */; };
+		4FA6F2CA1034AB7100C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C41034AB7100C5DFA5 /* MainMenu.xib */; };
+		4FA6F2CB1034AB7100C5DFA5 /* CalendarSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C61034AB7100C5DFA5 /* CalendarSampleWindow.xib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -23,6 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4FA6F2BC1034AB5F00C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 		4FAB41B20BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
@@ -82,10 +89,10 @@
 		4F38F5D10B66E1BA00B24B81 /* CalendarSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarSampleAppController.m; sourceTree = "<group>"; };
 		4F38FAB40B683F1C00B24B81 /* EditEventWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditEventWindowController.h; sourceTree = "<group>"; };
 		4F38FAB50B683F1C00B24B81 /* EditEventWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditEventWindowController.m; sourceTree = "<group>"; };
-		4FA6F4BD1034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		4FA6F4BF1034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/CalendarSampleWindow.xib; sourceTree = "<group>"; };
-		4FA6F4C11034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditACLWindow.xib; sourceTree = "<group>"; };
-		4FA6F4C31034B49900C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEventWindow.xib; sourceTree = "<group>"; };
+		4FA6F2C11034AB7100C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEventWindow.xib; sourceTree = "<group>"; };
+		4FA6F2C31034AB7100C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditACLWindow.xib; sourceTree = "<group>"; };
+		4FA6F2C51034AB7100C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F2C71034AB7100C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/CalendarSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F04B0CBC5C5600059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F04C0CBC5C5600059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
@@ -173,10 +180,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */,
-				4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */,
-				4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */,
-				4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */,
+				4FA6F2C41034AB7100C5DFA5 /* MainMenu.xib */,
+				4FA6F2C61034AB7100C5DFA5 /* CalendarSampleWindow.xib */,
+				4FA6F2C01034AB7100C5DFA5 /* EditEventWindow.xib */,
+				4FA6F2C21034AB7100C5DFA5 /* EditACLWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -196,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				4FAB41B30BAA215D00FBBDC9 /* GData.framework */,
+				4FA6F2BD1034AB5F00C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FAB41B50BAA215D00FBBDC9 /* GDataUnitTests.octest */,
 				4FAB41B70BAA215D00FBBDC9 /* DevelopmentTestTool */,
 			);
@@ -259,6 +267,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4FA6F2BD1034AB5F00C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F2BC1034AB5F00C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4FAB41B30BAA215D00FBBDC9 /* GData.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -288,10 +303,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F4C41034B49900C5DFA5 /* MainMenu.xib in Resources */,
-				4FA6F4C51034B49900C5DFA5 /* CalendarSampleWindow.xib in Resources */,
-				4FA6F4C61034B49900C5DFA5 /* EditACLWindow.xib in Resources */,
-				4FA6F4C71034B49900C5DFA5 /* EditEventWindow.xib in Resources */,
+				4FA6F2C81034AB7100C5DFA5 /* EditEventWindow.xib in Resources */,
+				4FA6F2C91034AB7100C5DFA5 /* EditACLWindow.xib in Resources */,
+				4FA6F2CA1034AB7100C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F2CB1034AB7100C5DFA5 /* CalendarSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,36 +375,36 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F4BC1034B49900C5DFA5 /* MainMenu.xib */ = {
+		4FA6F2C01034AB7100C5DFA5 /* EditEventWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F4BD1034B49900C5DFA5 /* English */,
+				4FA6F2C11034AB7100C5DFA5 /* English */,
 			);
-			name = MainMenu.xib;
+			name = EditEventWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F4BE1034B49900C5DFA5 /* CalendarSampleWindow.xib */ = {
+		4FA6F2C21034AB7100C5DFA5 /* EditACLWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F4BF1034B49900C5DFA5 /* English */,
-			);
-			name = CalendarSampleWindow.xib;
-			sourceTree = "<group>";
-		};
-		4FA6F4C01034B49900C5DFA5 /* EditACLWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4FA6F4C11034B49900C5DFA5 /* English */,
+				4FA6F2C31034AB7100C5DFA5 /* English */,
 			);
 			name = EditACLWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F4C21034B49900C5DFA5 /* EditEventWindow.xib */ = {
+		4FA6F2C41034AB7100C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F4C31034B49900C5DFA5 /* English */,
+				4FA6F2C51034AB7100C5DFA5 /* English */,
 			);
-			name = EditEventWindow.xib;
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		4FA6F2C61034AB7100C5DFA5 /* CalendarSampleWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F2C71034AB7100C5DFA5 /* English */,
+			);
+			name = CalendarSampleWindow.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -10,8 +10,8 @@
 		4F38F5900B66E14800B24B81 /* BloggerSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F58F0B66E14800B24B81 /* BloggerSampleWindowController.m */; };
 		4F38F5D20B66E1BA00B24B81 /* BloggerSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38F5D10B66E1BA00B24B81 /* BloggerSampleAppController.m */; };
 		4F53A0A80BAA182D009A3C4E /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F539F8D0BAA0F24009A3C4E /* GData.framework */; };
-		4FA6F47E1034B45200C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F47A1034B45200C5DFA5 /* MainMenu.xib */; };
-		4FA6F47F1034B45200C5DFA5 /* BloggerSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F47C1034B45200C5DFA5 /* BloggerSampleWindow.xib */; };
+		4FA6F2791034AA3E00C5DFA5 /* BloggerSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2751034AA3E00C5DFA5 /* BloggerSampleWindow.xib */; };
+		4FA6F27A1034AA3E00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2771034AA3E00C5DFA5 /* MainMenu.xib */; };
 		4FAB41590BAA194300FBBDC9 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F539F8D0BAA0F24009A3C4E /* GData.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -47,6 +47,13 @@
 			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
 			remoteInfo = GDataFramework;
 		};
+		4FA6F2661034AA2B00C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4F539F7F0BAA0F24009A3C4E /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -75,8 +82,8 @@
 		4F38F5D10B66E1BA00B24B81 /* BloggerSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BloggerSampleAppController.m; sourceTree = "<group>"; };
 		4F539F7F0BAA0F24009A3C4E /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FA3BDF10B978D5F001C1943 /* BloggerSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = BloggerSample_Prefix.pch; sourceTree = "<group>"; };
-		4FA6F47B1034B45200C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		4FA6F47D1034B45200C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BloggerSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F2761034AA3E00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BloggerSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F2781034AA3E00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FD0EFD10CBC5A2400059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0EFD20CBC5A2400059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -159,8 +166,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F47A1034B45200C5DFA5 /* MainMenu.xib */,
-				4FA6F47C1034B45200C5DFA5 /* BloggerSampleWindow.xib */,
+				4FA6F2751034AA3E00C5DFA5 /* BloggerSampleWindow.xib */,
+				4FA6F2771034AA3E00C5DFA5 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -180,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				4F539F8D0BAA0F24009A3C4E /* GData.framework */,
+				4FA6F2671034AA2B00C5DFA5 /* libGDataTouchStaticLib.a */,
 				4F539F8F0BAA0F24009A3C4E /* GDataUnitTests.octest */,
 				4F539F910BAA0F24009A3C4E /* DevelopmentTestTool */,
 			);
@@ -264,6 +272,13 @@
 			remoteRef = 4F539F900BAA0F24009A3C4E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4FA6F2671034AA2B00C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F2661034AA2B00C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -272,8 +287,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F47E1034B45200C5DFA5 /* MainMenu.xib in Resources */,
-				4FA6F47F1034B45200C5DFA5 /* BloggerSampleWindow.xib in Resources */,
+				4FA6F2791034AA3E00C5DFA5 /* BloggerSampleWindow.xib in Resources */,
+				4FA6F27A1034AA3E00C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,20 +355,20 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F47A1034B45200C5DFA5 /* MainMenu.xib */ = {
+		4FA6F2751034AA3E00C5DFA5 /* BloggerSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F47B1034B45200C5DFA5 /* English */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		4FA6F47C1034B45200C5DFA5 /* BloggerSampleWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4FA6F47D1034B45200C5DFA5 /* English */,
+				4FA6F2761034AA3E00C5DFA5 /* English */,
 			);
 			name = BloggerSampleWindow.xib;
+			sourceTree = "<group>";
+		};
+		4FA6F2771034AA3E00C5DFA5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F2781034AA3E00C5DFA5 /* English */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

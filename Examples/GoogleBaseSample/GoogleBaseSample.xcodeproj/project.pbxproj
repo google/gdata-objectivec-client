@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4FA6F5501034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */; };
-		4FA6F5511034B53D00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */; };
+		4FA6F3631034ADC300C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F35F1034ADC300C5DFA5 /* GoogleBaseSampleWindow.xib */; };
+		4FA6F3641034ADC300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F3611034ADC300C5DFA5 /* MainMenu.xib */; };
 		4FAB42CA0BAA24C200FBBDC9 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB42B30BAA245500FBBDC9 /* GData.framework */; };
 		4FAB42CB0BAA24C900FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB42B30BAA245500FBBDC9 /* GData.framework */; };
 		4FF048270B7AADB7000CEC66 /* GoogleBaseSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF048250B7AADB7000CEC66 /* GoogleBaseSampleAppController.m */; };
@@ -19,6 +19,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4FA6F35B1034ADA900C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB42AC0BAA245500FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 		4FAB42B20BAA245500FBBDC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB42AC0BAA245500FBBDC9 /* GData.xcodeproj */;
@@ -70,8 +77,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* GoogleBaseSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleBaseSample_Prefix.pch; sourceTree = "<group>"; };
-		4FA6F54D1034B53D00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GoogleBaseSampleWindow.xib; sourceTree = "<group>"; };
-		4FA6F54F1034B53D00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F3601034ADC300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GoogleBaseSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F3621034ADC300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FAB42AC0BAA245500FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1130CBC629A00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1140CBC629A00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -159,8 +166,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */,
-				4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */,
+				4FA6F35F1034ADC300C5DFA5 /* GoogleBaseSampleWindow.xib */,
+				4FA6F3611034ADC300C5DFA5 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -180,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				4FAB42B30BAA245500FBBDC9 /* GData.framework */,
+				4FA6F35C1034ADA900C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FAB42B50BAA245500FBBDC9 /* GDataUnitTests.octest */,
 				4FAB42B70BAA245500FBBDC9 /* DevelopmentTestTool */,
 			);
@@ -243,6 +251,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4FA6F35C1034ADA900C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F35B1034ADA900C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4FAB42B30BAA245500FBBDC9 /* GData.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -272,8 +287,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F5501034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */,
-				4FA6F5511034B53D00C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F3631034ADC300C5DFA5 /* GoogleBaseSampleWindow.xib in Resources */,
+				4FA6F3641034ADC300C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,18 +355,18 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F54C1034B53D00C5DFA5 /* GoogleBaseSampleWindow.xib */ = {
+		4FA6F35F1034ADC300C5DFA5 /* GoogleBaseSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F54D1034B53D00C5DFA5 /* English */,
+				4FA6F3601034ADC300C5DFA5 /* English */,
 			);
 			name = GoogleBaseSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F54E1034B53D00C5DFA5 /* MainMenu.xib */ = {
+		4FA6F3611034ADC300C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F54F1034B53D00C5DFA5 /* English */,
+				4FA6F3621034ADC300C5DFA5 /* English */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
