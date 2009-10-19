@@ -262,7 +262,8 @@ enum {
 enum {
   kGDataHTTPFetcherCookieStorageMethodStatic = 0,
   kGDataHTTPFetcherCookieStorageMethodFetchHistory = 1,
-  kGDataHTTPFetcherCookieStorageMethodSystemDefault = 2
+  kGDataHTTPFetcherCookieStorageMethodSystemDefault = 2,
+  kGDataHTTPFetcherCookieStorageMethodNone = 3
 };
 
 // default data cache size for when we're caching responses to handle "not

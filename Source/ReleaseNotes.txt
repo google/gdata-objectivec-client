@@ -28,6 +28,8 @@ Additions
 - Added GDataAuthenticationFetcher, which can be used to create a fetcher
   for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
 
+- Added cookie storage method "none" to GDataHTTPFetcher to ignore all cookies.
+
 - Added YouTube convenience accessors highQualityThumbnail and
   mediaContentWithFormatNumber:
   
