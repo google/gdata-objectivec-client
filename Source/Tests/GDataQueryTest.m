@@ -134,10 +134,11 @@
   [queryCal2 setCurrentTimeZoneName:@"America/Los Angeles"];
   [queryCal2 setShouldShowInlineComments:NO];
   [queryCal2 setShouldShowHiddenEvents:YES];
+  [queryCal2 setShouldFormatErrorsAsXML:YES];
 
   NSURL* resultURLC2 = [queryCal2 URL];
   NSString *expectedC2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "ctz=America%2FLos_Angeles&futureevents=true&"
+    "ctz=America%2FLos_Angeles&err=xml&futureevents=true&"
     "recurrence-expansion-end=2006-03-29T07%3A35%3A59Z&"
     "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&"
     "showhidden=true&showinlinecomments=false&singleevents=true";

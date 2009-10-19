@@ -12,6 +12,9 @@ Additions
 
 - Added service method to authenticate without fetching a feed or entry.
 
+- Added setShouldFormatErrorsAsXML: for queries to encourage older API servers
+  to return the structured versions of errors.
+
 - Added Docs service v3 support, including the revision feed.
 
 - Added convenience method for creating CCR elements from NSXMLElements.
@@ -37,6 +40,8 @@ Additions
 
 - Added calendar query setShouldShowHiddenEvents: for displaying unanswered
   calendar invitations.
+  
+- Added display attribute to Calendar WebContent element.
 
 Changes
 
