@@ -12,9 +12,9 @@
 		4F35863A0C0F97BB0027B642 /* EditEntryWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35840D0C0F54B20027B642 /* EditEntryWindowController.m */; };
 		4F5166FC0EAD2826007A27D5 /* GData.framework in Copy GData framework */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
 		4F606D7C0D77699600DA1A87 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3482970D7768DC006033E0 /* GData.framework */; };
-		4FA6F4EC1034B4C300C5DFA5 /* EditEntryWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */; };
-		4FA6F4ED1034B4C300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */; };
-		4FA6F4EE1034B4C300C5DFA5 /* ContactsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */; };
+		4FA6F2F31034AC7E00C5DFA5 /* EditEntryWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2ED1034AC7E00C5DFA5 /* EditEntryWindow.xib */; };
+		4FA6F2F41034AC7E00C5DFA5 /* ContactsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2EF1034AC7E00C5DFA5 /* ContactsSampleWindow.xib */; };
+		4FA6F2F51034AC7E00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2F11034AC7E00C5DFA5 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -49,6 +49,13 @@
 			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
 			remoteInfo = GDataFramework;
 		};
+		4FA6F2E91034AC6E00C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,9 +87,9 @@
 		4F3584040C0F54500027B642 /* ContactsSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = ContactsSampleWindowController.h; sourceTree = "<group>"; };
 		4F35840D0C0F54B20027B642 /* EditEntryWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = EditEntryWindowController.m; sourceTree = "<group>"; };
 		4F35840E0C0F54B20027B642 /* EditEntryWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = EditEntryWindowController.h; sourceTree = "<group>"; };
-		4FA6F4E71034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEntryWindow.xib; sourceTree = "<group>"; };
-		4FA6F4E91034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		4FA6F4EB1034B4C300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ContactsSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F2EE1034AC7E00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/EditEntryWindow.xib; sourceTree = "<group>"; };
+		4FA6F2F01034AC7E00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/ContactsSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F2F21034AC7E00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ContactsSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ContactsSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,9 +172,9 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */,
-				4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */,
-				4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */,
+				4FA6F2F11034AC7E00C5DFA5 /* MainMenu.xib */,
+				4FA6F2EF1034AC7E00C5DFA5 /* ContactsSampleWindow.xib */,
+				4FA6F2ED1034AC7E00C5DFA5 /* EditEntryWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -196,6 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				4F3482970D7768DC006033E0 /* GData.framework */,
+				4FA6F2EA1034AC6E00C5DFA5 /* libGDataTouchStaticLib.a */,
 				4F3482990D7768DC006033E0 /* GDataUnitTests.octest */,
 				4F34829B0D7768DC006033E0 /* DevelopmentTestTool */,
 			);
@@ -272,6 +280,13 @@
 			remoteRef = 4F34829A0D7768DC006033E0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4FA6F2EA1034AC6E00C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F2E91034AC6E00C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -280,9 +295,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F4EC1034B4C300C5DFA5 /* EditEntryWindow.xib in Resources */,
-				4FA6F4ED1034B4C300C5DFA5 /* MainMenu.xib in Resources */,
-				4FA6F4EE1034B4C300C5DFA5 /* ContactsSampleWindow.xib in Resources */,
+				4FA6F2F31034AC7E00C5DFA5 /* EditEntryWindow.xib in Resources */,
+				4FA6F2F41034AC7E00C5DFA5 /* ContactsSampleWindow.xib in Resources */,
+				4FA6F2F51034AC7E00C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -350,28 +365,28 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F4E61034B4C300C5DFA5 /* EditEntryWindow.xib */ = {
+		4FA6F2ED1034AC7E00C5DFA5 /* EditEntryWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F4E71034B4C300C5DFA5 /* English */,
+				4FA6F2EE1034AC7E00C5DFA5 /* English */,
 			);
 			name = EditEntryWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F4E81034B4C300C5DFA5 /* MainMenu.xib */ = {
+		4FA6F2EF1034AC7E00C5DFA5 /* ContactsSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F4E91034B4C300C5DFA5 /* English */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
-		4FA6F4EA1034B4C300C5DFA5 /* ContactsSampleWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4FA6F4EB1034B4C300C5DFA5 /* English */,
+				4FA6F2F01034AC7E00C5DFA5 /* English */,
 			);
 			name = ContactsSampleWindow.xib;
+			sourceTree = "<group>";
+		};
+		4FA6F2F11034AC7E00C5DFA5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F2F21034AC7E00C5DFA5 /* English */,
+			);
+			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

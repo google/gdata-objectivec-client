@@ -11,8 +11,8 @@
 		4F5C29C10D9C68B900C647A5 /* GooglePhotosSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */; };
 		4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
-		4FA6F5711034B56300C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */; };
-		4FA6F5721034B56300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */; };
+		4FA6F38B1034AE3600C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F3871034AE3600C5DFA5 /* GooglePhotosSampleWindow.xib */; };
+		4FA6F38C1034AE3600C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F3891034AE3600C5DFA5 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -47,6 +47,13 @@
 			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
 			remoteInfo = GDataFramework;
 		};
+		4FA6F3821034AE2100C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -74,8 +81,8 @@
 		4F5C29BD0D9C68B900C647A5 /* GooglePhotosSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleAppController.h; sourceTree = "<group>"; };
 		4F5C29BE0D9C68B900C647A5 /* GooglePhotosSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GooglePhotosSampleWindowController.h; sourceTree = "<group>"; };
 		4F5C29BF0D9C68B900C647A5 /* GooglePhotosSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GooglePhotosSampleAppController.m; sourceTree = "<group>"; };
-		4FA6F56E1034B56300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GooglePhotosSampleWindow.xib; sourceTree = "<group>"; };
-		4FA6F5701034B56300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F3881034AE3600C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/GooglePhotosSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F38A1034AE3600C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1570CBC638E00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1580CBC638E00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -157,8 +164,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */,
-				4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */,
+				4FA6F3871034AE3600C5DFA5 /* GooglePhotosSampleWindow.xib */,
+				4FA6F3891034AE3600C5DFA5 /* MainMenu.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -178,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				4FA1CB850C03C08C006D556A /* GData.framework */,
+				4FA6F3831034AE2100C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FA1CB870C03C08C006D556A /* GDataUnitTests.octest */,
 				4FA1CB890C03C08C006D556A /* DevelopmentTestTool */,
 			);
@@ -263,6 +271,13 @@
 			remoteRef = 4FA1CB880C03C08C006D556A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4FA6F3831034AE2100C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F3821034AE2100C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -271,8 +286,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F5711034B56300C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */,
-				4FA6F5721034B56300C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F38B1034AE3600C5DFA5 /* GooglePhotosSampleWindow.xib in Resources */,
+				4FA6F38C1034AE3600C5DFA5 /* MainMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,18 +354,18 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F56D1034B56300C5DFA5 /* GooglePhotosSampleWindow.xib */ = {
+		4FA6F3871034AE3600C5DFA5 /* GooglePhotosSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F56E1034B56300C5DFA5 /* English */,
+				4FA6F3881034AE3600C5DFA5 /* English */,
 			);
 			name = GooglePhotosSampleWindow.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F56F1034B56300C5DFA5 /* MainMenu.xib */ = {
+		4FA6F3891034AE3600C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F5701034B56300C5DFA5 /* English */,
+				4FA6F38A1034AE3600C5DFA5 /* English */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";

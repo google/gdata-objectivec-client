@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,7 +49,7 @@
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<string key="NSWindowContentMinSize">{505, 462}</string>
 				<object class="NSView" key="NSWindowView" id="521275967">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -433,7 +434,7 @@
 						<object class="NSButton" id="223563233">
 							<reference key="NSNextResponder" ref="521275967"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{359, 18}, {128, 16}}</string>
+							<string key="NSFrame">{{359, 18}, {128, 18}}</string>
 							<reference key="NSSuperview" ref="521275967"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="907315290">
@@ -466,7 +467,7 @@
 										<object class="NSTextView" id="606970056">
 											<reference key="NSNextResponder" ref="418277333"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{366, 67}</string>
+											<string key="NSFrameSize">{366, 14}</string>
 											<reference key="NSSuperview" ref="418277333"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="744838200">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -557,7 +558,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{463, 1e+07}</string>
+											<string key="NSMaxSize">{831, 1e+07}</string>
+											<string key="NSMinize">{366, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -615,7 +617,7 @@
 										<object class="NSTextView" id="374361547">
 											<reference key="NSNextResponder" ref="720446493"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{366, 56}</string>
+											<string key="NSFrameSize">{366, 14}</string>
 											<reference key="NSSuperview" ref="720446493"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="923114107">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -674,7 +676,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{463, 1e+07}</string>
+											<string key="NSMaxSize">{831, 1e+07}</string>
+											<string key="NSMinize">{366, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -748,7 +751,7 @@
 						<object class="NSMatrix" id="250927765">
 							<reference key="NSNextResponder" ref="521275967"/>
 							<int key="NSvFlags">265</int>
-							<string key="NSFrame">{{412, 552}, {130, 38}}</string>
+							<string key="NSFrame">{{412, 552}, {80, 38}}</string>
 							<reference key="NSSuperview" ref="521275967"/>
 							<bool key="NSEnabled">YES</bool>
 							<int key="NSNumRows">2</int>
@@ -882,7 +885,7 @@ QXBwbGUgQ29tcHV0ZXIsIEluYy4sIDIwMDUAAAAAA</bytes>
 									<int key="NSPeriodicInterval">75</int>
 								</object>
 							</object>
-							<string key="NSCellSize">{130, 18}</string>
+							<string key="NSCellSize">{80, 18}</string>
 							<string key="NSIntercellSpacing">{4, 2}</string>
 							<int key="NSMatrixFlags">1151868928</int>
 							<string key="NSCellClass">NSActionCell</string>
@@ -979,7 +982,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<string>WebURLsWithTitlesPboardType</string>
 												</object>
 											</object>
-											<string key="NSFrameSize">{448, 94}</string>
+											<string key="NSFrameSize">{448, 14}</string>
 											<reference key="NSSuperview" ref="971585274"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="96146571">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -1034,8 +1037,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{463, 1e+07}</string>
-											<string key="NSMinize">{223, 94}</string>
+											<string key="NSMaxSize">{913, 1e+07}</string>
+											<string key="NSMinize">{223, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -1107,6 +1110,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 					</object>
 					<string key="NSFrameSize">{505, 600}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{505, 484}</string>
@@ -1192,38 +1196,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">78</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPortfoliosTable</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="501700556"/>
-					</object>
-					<int key="connectionID">166</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPortfoliosProgressIndicator</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="514083620"/>
-					</object>
-					<int key="connectionID">191</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPositionsTable</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="979658971"/>
-					</object>
-					<int key="connectionID">241</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPositionsProgressIndicator</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="1049251853"/>
-					</object>
-					<int key="connectionID">266</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
 						<string key="label">loggingCheckboxClicked:</string>
 						<reference key="source" ref="677188098"/>
@@ -1233,75 +1205,11 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPositionsResultTextField</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="606970056"/>
-					</object>
-					<int key="connectionID">429</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPortfoliosResultTextField</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="374361547"/>
-					</object>
-					<int key="connectionID">430</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">mUsernameField</string>
 						<reference key="source" ref="677188098"/>
 						<reference key="destination" ref="885926032"/>
 					</object>
 					<int key="connectionID">456</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAccountsTable</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="501700556"/>
-					</object>
-					<int key="connectionID">457</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAnalyticsDataTable</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="979658971"/>
-					</object>
-					<int key="connectionID">458</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAnalyticsDataResultTextField</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="606970056"/>
-					</object>
-					<int key="connectionID">500</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAccountsResultTextField</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="374361547"/>
-					</object>
-					<int key="connectionID">501</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAnalyticsDataProgressIndicator</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="1049251853"/>
-					</object>
-					<int key="connectionID">502</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAccountsProgressIndicator</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="514083620"/>
-					</object>
-					<int key="connectionID">503</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1374,14 +1282,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="destination" ref="250927765"/>
 					</object>
 					<int key="connectionID">709</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mSegmentedControl</string>
-						<reference key="source" ref="677188098"/>
-						<reference key="destination" ref="677955237"/>
-					</object>
-					<int key="connectionID">731</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1478,13 +1378,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="162766194"/>
 							<reference ref="514083620"/>
 							<reference ref="1049251853"/>
-							<reference ref="223563233"/>
 							<reference ref="365384191"/>
 							<reference ref="476835534"/>
 							<reference ref="677955237"/>
 							<reference ref="250927765"/>
 							<reference ref="67491955"/>
 							<reference ref="377283914"/>
+							<reference ref="223563233"/>
 						</object>
 						<reference key="parent" ref="980857387"/>
 					</object>
@@ -1873,6 +1773,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>426.ImportedFromIB2</string>
 					<string>44.IBPluginDependency</string>
 					<string>44.ImportedFromIB2</string>
+					<string>5.IBEditorWindowLastContentRect</string>
+					<string>5.IBWindowTemplateEditedContentRect</string>
 					<string>5.ImportedFromIB2</string>
 					<string>5.windowTemplate.hasMinSize</string>
 					<string>5.windowTemplate.minSize</string>
@@ -1892,17 +1794,39 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<string>736.ImportedFromIB2</string>
 					<string>737.IBPluginDependency</string>
 					<string>737.ImportedFromIB2</string>
+					<string>747.IBPluginDependency</string>
+					<string>748.IBPluginDependency</string>
+					<string>749.IBPluginDependency</string>
+					<string>750.IBPluginDependency</string>
+					<string>751.IBPluginDependency</string>
+					<string>752.IBPluginDependency</string>
+					<string>753.IBPluginDependency</string>
+					<string>754.IBPluginDependency</string>
+					<string>755.IBPluginDependency</string>
+					<string>756.IBPluginDependency</string>
+					<string>757.IBPluginDependency</string>
 					<string>757.IBShouldRemoveOnLegacySave</string>
+					<string>758.IBPluginDependency</string>
 					<string>758.IBShouldRemoveOnLegacySave</string>
+					<string>759.IBPluginDependency</string>
 					<string>759.IBShouldRemoveOnLegacySave</string>
+					<string>760.IBPluginDependency</string>
 					<string>760.IBShouldRemoveOnLegacySave</string>
+					<string>761.IBPluginDependency</string>
 					<string>761.IBShouldRemoveOnLegacySave</string>
+					<string>762.IBPluginDependency</string>
 					<string>762.IBShouldRemoveOnLegacySave</string>
+					<string>763.IBPluginDependency</string>
 					<string>763.IBShouldRemoveOnLegacySave</string>
+					<string>764.IBPluginDependency</string>
 					<string>764.IBShouldRemoveOnLegacySave</string>
+					<string>765.IBPluginDependency</string>
 					<string>765.IBShouldRemoveOnLegacySave</string>
+					<string>766.IBPluginDependency</string>
 					<string>766.IBShouldRemoveOnLegacySave</string>
+					<string>767.IBPluginDependency</string>
 					<string>767.IBShouldRemoveOnLegacySave</string>
+					<string>768.IBPluginDependency</string>
 					<string>768.IBShouldRemoveOnLegacySave</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
@@ -1952,6 +1876,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>{{0, 545}, {505, 600}}</string>
+					<string>{{0, 545}, {505, 600}}</string>
 					<reference ref="5"/>
 					<reference ref="5"/>
 					<string>{505, 462}</string>
@@ -1971,17 +1897,39 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 				</object>
 			</object>
@@ -2012,6 +1960,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">FirstResponder</string>
+					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
@@ -2072,6 +2021,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string>NSSegmentedControl</string>
 						</object>
 					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">HealthSampleWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">HealthSampleWindowController</string>
+					<string key="superclassName">NSWindowController</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>

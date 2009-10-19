@@ -10,8 +10,8 @@
 		4F0288980DFDDA9B00E60E15 /* FinanceSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */; };
 		4F0288990DFDDA9B00E60E15 /* FinanceSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */; };
 		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
-		4FA6F52F1034B51B00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */; };
-		4FA6F5301034B51B00C5DFA5 /* FinanceSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */; };
+		4FA6F33F1034AD7300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */; };
+		4FA6F3401034AD7300C5DFA5 /* FinanceSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -19,6 +19,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4FA6F3371034AD5F00C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 		4FAB41B20BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
@@ -74,8 +81,8 @@
 		4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceSampleWindowController.m; sourceTree = "<group>"; };
 		4F0288970DFDDA9B00E60E15 /* FinanceSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSampleWindowController.h; sourceTree = "<group>"; };
 		4F02889A0DFDDAAD00E60E15 /* FinanceSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSample_Prefix.pch; sourceTree = "<group>"; };
-		4FA6F52C1034B51B00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		4FA6F52E1034B51B00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FinanceSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F33C1034AD7300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F33E1034AD7300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FinanceSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
@@ -159,8 +166,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */,
-				4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */,
+				4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */,
+				4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -180,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				4FAB41B30BAA215D00FBBDC9 /* GData.framework */,
+				4FA6F3381034AD5F00C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FAB41B50BAA215D00FBBDC9 /* GDataUnitTests.octest */,
 				4FAB41B70BAA215D00FBBDC9 /* DevelopmentTestTool */,
 			);
@@ -244,6 +252,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4FA6F3381034AD5F00C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F3371034AD5F00C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4FAB41B30BAA215D00FBBDC9 /* GData.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -273,8 +288,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F52F1034B51B00C5DFA5 /* MainMenu.xib in Resources */,
-				4FA6F5301034B51B00C5DFA5 /* FinanceSampleWindow.xib in Resources */,
+				4FA6F33F1034AD7300C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F3401034AD7300C5DFA5 /* FinanceSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,18 +356,18 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F52B1034B51B00C5DFA5 /* MainMenu.xib */ = {
+		4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F52C1034B51B00C5DFA5 /* English */,
+				4FA6F33C1034AD7300C5DFA5 /* English */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F52D1034B51B00C5DFA5 /* FinanceSampleWindow.xib */ = {
+		4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F52E1034B51B00C5DFA5 /* English */,
+				4FA6F33E1034AD7300C5DFA5 /* English */,
 			);
 			name = FinanceSampleWindow.xib;
 			sourceTree = "<group>";

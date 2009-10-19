@@ -12,8 +12,8 @@
 		4F7FBD350E9DA14300F7F945 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7FBD340E9DA14300F7F945 /* WebKit.framework */; };
 		4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
-		4FA6F49F1034B47000C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F49B1034B47000C5DFA5 /* MainMenu.xib */; };
-		4FA6F4A01034B47000C5DFA5 /* BooksSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F49D1034B47000C5DFA5 /* BooksSampleWindow.xib */; };
+		4FA6F2A01034AAA700C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F29C1034AAA700C5DFA5 /* MainMenu.xib */; };
+		4FA6F2A11034AAA700C5DFA5 /* BooksSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F29E1034AAA700C5DFA5 /* BooksSampleWindow.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -48,6 +48,13 @@
 			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
 			remoteInfo = GDataFramework;
 		};
+		4FA6F2951034AA9800C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteInfo = GDataTouchStaticLib;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -76,8 +83,8 @@
 		4F7FBD180E9DA0D300F7F945 /* BooksSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BooksSampleAppController.h; sourceTree = "<group>"; };
 		4F7FBD190E9DA0D300F7F945 /* BooksSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BooksSampleWindowController.h; sourceTree = "<group>"; };
 		4F7FBD340E9DA14300F7F945 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		4FA6F49C1034B47000C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		4FA6F49E1034B47000C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BooksSampleWindow.xib; sourceTree = "<group>"; };
+		4FA6F29D1034AAA700C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F29F1034AAA700C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/BooksSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F1570CBC638E00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
 		4FD0F1580CBC638E00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
@@ -161,8 +168,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4FA6F49B1034B47000C5DFA5 /* MainMenu.xib */,
-				4FA6F49D1034B47000C5DFA5 /* BooksSampleWindow.xib */,
+				4FA6F29C1034AAA700C5DFA5 /* MainMenu.xib */,
+				4FA6F29E1034AAA700C5DFA5 /* BooksSampleWindow.xib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 			);
@@ -182,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				4FA1CB850C03C08C006D556A /* GData.framework */,
+				4FA6F2961034AA9800C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FA1CB870C03C08C006D556A /* GDataUnitTests.octest */,
 				4FA1CB890C03C08C006D556A /* DevelopmentTestTool */,
 			);
@@ -267,6 +275,13 @@
 			remoteRef = 4FA1CB880C03C08C006D556A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4FA6F2961034AA9800C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F2951034AA9800C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -275,8 +290,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				4FA6F49F1034B47000C5DFA5 /* MainMenu.xib in Resources */,
-				4FA6F4A01034B47000C5DFA5 /* BooksSampleWindow.xib in Resources */,
+				4FA6F2A01034AAA700C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F2A11034AAA700C5DFA5 /* BooksSampleWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,18 +358,18 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		4FA6F49B1034B47000C5DFA5 /* MainMenu.xib */ = {
+		4FA6F29C1034AAA700C5DFA5 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F49C1034B47000C5DFA5 /* English */,
+				4FA6F29D1034AAA700C5DFA5 /* English */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		4FA6F49D1034B47000C5DFA5 /* BooksSampleWindow.xib */ = {
+		4FA6F29E1034AAA700C5DFA5 /* BooksSampleWindow.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				4FA6F49E1034B47000C5DFA5 /* English */,
+				4FA6F29F1034AAA700C5DFA5 /* English */,
 			);
 			name = BooksSampleWindow.xib;
 			sourceTree = "<group>";

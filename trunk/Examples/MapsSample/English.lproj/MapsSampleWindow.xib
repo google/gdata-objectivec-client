@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -48,7 +49,7 @@
 				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
 				<string key="NSWindowContentMinSize">{512, 521}</string>
 				<object class="NSView" key="NSWindowView" id="456976485">
-					<nil key="NSNextResponder"/>
+					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
 					<object class="NSMutableArray" key="NSSubviews">
 						<bool key="EncodedWithXMLCoder">YES</bool>
@@ -335,7 +336,7 @@
 										<object class="NSTextView" id="245764279">
 											<reference key="NSNextResponder" ref="501853945"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{463, 56}</string>
+											<string key="NSFrameSize">{463, 14}</string>
 											<reference key="NSSuperview" ref="501853945"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="296125869">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -426,7 +427,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{463, 1e+07}</string>
+											<string key="NSMaxSize">{928, 1e+07}</string>
+											<string key="NSMinize">{463, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -664,7 +666,7 @@
 										<object class="NSTextView" id="808914201">
 											<reference key="NSNextResponder" ref="1040878464"/>
 											<int key="NSvFlags">2322</int>
-											<string key="NSFrameSize">{366, 67}</string>
+											<string key="NSFrameSize">{366, 14}</string>
 											<reference key="NSSuperview" ref="1040878464"/>
 											<object class="NSTextContainer" key="NSTextContainer" id="869351545">
 												<object class="NSLayoutManager" key="NSLayoutManager">
@@ -738,7 +740,8 @@
 												<nil key="NSDefaultParagraphStyle"/>
 											</object>
 											<int key="NSTVFlags">6</int>
-											<string key="NSMaxSize">{463, 1e+07}</string>
+											<string key="NSMaxSize">{831, 1e+07}</string>
+											<string key="NSMinize">{366, 0}</string>
 											<nil key="NSDelegate"/>
 										</object>
 									</object>
@@ -884,7 +887,7 @@
 						<object class="NSTextField" id="484776008">
 							<reference key="NSNextResponder" ref="456976485"/>
 							<int key="NSvFlags">264</int>
-							<string key="NSFrame">{{17, 251}, {70, 14}}</string>
+							<string key="NSFrame">{{17, 251}, {60, 14}}</string>
 							<reference key="NSSuperview" ref="456976485"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="58897056">
@@ -953,6 +956,7 @@
 						</object>
 					</object>
 					<string key="NSFrameSize">{512, 521}</string>
+					<reference key="NSSuperview"/>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
 				<string key="NSMinSize">{512, 543}</string>
@@ -1044,14 +1048,6 @@
 						<reference key="destination" ref="78557691"/>
 					</object>
 					<int key="connectionID">366</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mAddTableButton</string>
-						<reference key="source" ref="832027606"/>
-						<reference key="destination" ref="760729592"/>
-					</object>
-					<int key="connectionID">368</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
@@ -1824,6 +1820,8 @@
 					<string>40.ImportedFromIB2</string>
 					<string>44.IBPluginDependency</string>
 					<string>44.ImportedFromIB2</string>
+					<string>5.IBEditorWindowLastContentRect</string>
+					<string>5.IBWindowTemplateEditedContentRect</string>
 					<string>5.ImportedFromIB2</string>
 					<string>5.windowTemplate.hasMinSize</string>
 					<string>5.windowTemplate.minSize</string>
@@ -1847,15 +1845,43 @@
 					<string>661.ImportedFromIB2</string>
 					<string>663.IBPluginDependency</string>
 					<string>663.ImportedFromIB2</string>
+					<string>740.IBPluginDependency</string>
+					<string>741.IBPluginDependency</string>
+					<string>742.IBPluginDependency</string>
+					<string>743.IBPluginDependency</string>
+					<string>744.IBPluginDependency</string>
+					<string>745.IBPluginDependency</string>
+					<string>746.IBPluginDependency</string>
+					<string>747.IBPluginDependency</string>
+					<string>748.IBPluginDependency</string>
+					<string>749.IBPluginDependency</string>
+					<string>750.IBPluginDependency</string>
+					<string>751.IBPluginDependency</string>
+					<string>752.IBPluginDependency</string>
+					<string>753.IBPluginDependency</string>
+					<string>754.IBPluginDependency</string>
+					<string>755.IBPluginDependency</string>
+					<string>756.IBPluginDependency</string>
+					<string>757.IBPluginDependency</string>
+					<string>758.IBPluginDependency</string>
 					<string>758.IBShouldRemoveOnLegacySave</string>
+					<string>759.IBPluginDependency</string>
 					<string>759.IBShouldRemoveOnLegacySave</string>
+					<string>760.IBPluginDependency</string>
 					<string>760.IBShouldRemoveOnLegacySave</string>
+					<string>761.IBPluginDependency</string>
 					<string>761.IBShouldRemoveOnLegacySave</string>
+					<string>762.IBPluginDependency</string>
 					<string>762.IBShouldRemoveOnLegacySave</string>
+					<string>763.IBPluginDependency</string>
 					<string>763.IBShouldRemoveOnLegacySave</string>
+					<string>764.IBPluginDependency</string>
 					<string>764.IBShouldRemoveOnLegacySave</string>
+					<string>765.IBPluginDependency</string>
 					<string>765.IBShouldRemoveOnLegacySave</string>
+					<string>766.IBPluginDependency</string>
 					<string>766.IBShouldRemoveOnLegacySave</string>
+					<string>767.IBPluginDependency</string>
 					<string>767.IBShouldRemoveOnLegacySave</string>
 					<string>80.IBPluginDependency</string>
 					<string>80.ImportedFromIB2</string>
@@ -1909,6 +1935,8 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>{{21, 601}, {512, 521}}</string>
+					<string>{{21, 601}, {512, 521}}</string>
 					<reference ref="5"/>
 					<reference ref="5"/>
 					<string>{512, 521}</string>
@@ -1932,15 +1960,43 @@
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="5"/>
@@ -1975,6 +2031,7 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
 					<string key="className">FirstResponder</string>
+					<string key="superclassName">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
@@ -1991,19 +2048,13 @@
 							<string>addMapClicked:</string>
 							<string>deleteFeatureClicked:</string>
 							<string>deleteMapClicked:</string>
-							<string>deleteTableClicked:</string>
 							<string>getMapsClicked:</string>
-							<string>getSpreadsheetClicked:</string>
 							<string>loggingCheckboxClicked:</string>
-							<string>randomizeTableClicked:</string>
 							<string>renameFeatureClicked:</string>
 							<string>renameMapClicked:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
-							<string>id</string>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2031,21 +2082,9 @@
 							<string>mMapResultTextField</string>
 							<string>mMapTable</string>
 							<string>mPasswordField</string>
-							<string>mRecordProgressIndicator</string>
-							<string>mRecordResultTextField</string>
-							<string>mRecordTable</string>
 							<string>mRenameFeatureButton</string>
 							<string>mRenameMapButton</string>
-							<string>mSpreadsheetProgressIndicator</string>
-							<string>mSpreadsheetResultTextField</string>
-							<string>mSpreadsheetTable</string>
-							<string>mTableProgressIndicator</string>
-							<string>mTableResultTextField</string>
-							<string>mTableTable</string>
 							<string>mUsernameField</string>
-							<string>mWorksheetProgressIndicator</string>
-							<string>mWorksheetResultTextField</string>
-							<string>mWorksheetTable</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -2062,18 +2101,62 @@
 							<string>NSTextView</string>
 							<string>NSTableView</string>
 							<string>NSSecureTextField</string>
-							<string>NSProgressIndicator</string>
-							<string>NSTextView</string>
-							<string>NSTableView</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
-							<string>NSProgressIndicator</string>
-							<string>NSTextView</string>
-							<string>NSTableView</string>
-							<string>NSProgressIndicator</string>
-							<string>NSTextView</string>
-							<string>NSTableView</string>
 							<string>NSTextField</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">MapsSampleWindowController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MapsSampleWindowController</string>
+					<string key="superclassName">NSWindowController</string>
+					<object class="NSMutableDictionary" key="actions">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>deleteTableClicked:</string>
+							<string>getSpreadsheetClicked:</string>
+							<string>randomizeTableClicked:</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
+							<string>id</string>
+						</object>
+					</object>
+					<object class="NSMutableDictionary" key="outlets">
+						<bool key="EncodedWithXMLCoder">YES</bool>
+						<object class="NSMutableArray" key="dict.sortedKeys">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>mRecordProgressIndicator</string>
+							<string>mRecordResultTextField</string>
+							<string>mRecordTable</string>
+							<string>mSpreadsheetProgressIndicator</string>
+							<string>mSpreadsheetResultTextField</string>
+							<string>mSpreadsheetTable</string>
+							<string>mTableProgressIndicator</string>
+							<string>mTableResultTextField</string>
+							<string>mTableTable</string>
+							<string>mWorksheetProgressIndicator</string>
+							<string>mWorksheetResultTextField</string>
+							<string>mWorksheetTable</string>
+						</object>
+						<object class="NSMutableArray" key="dict.values">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>NSProgressIndicator</string>
+							<string>NSTextView</string>
+							<string>NSTableView</string>
+							<string>NSProgressIndicator</string>
+							<string>NSTextView</string>
+							<string>NSTableView</string>
+							<string>NSProgressIndicator</string>
+							<string>NSTextView</string>
+							<string>NSTableView</string>
 							<string>NSProgressIndicator</string>
 							<string>NSTextView</string>
 							<string>NSTableView</string>
