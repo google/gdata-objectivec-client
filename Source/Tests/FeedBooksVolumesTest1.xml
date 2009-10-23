@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom"
     xmlns:dc="http://purl.org/dc/terms"
     xmlns:gbs="http://schemas.google.com/books/2008"
-    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://www.google.com/books/feeds/users/1728172424007912469/volumes</id>
     <updated>2008-10-13T22:08:00.000Z</updated>
     <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/books/2008#volume"/>

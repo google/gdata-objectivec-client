@@ -28,53 +28,11 @@ static NSString *const kTitleAttr = @"title";
 
 
 @implementation GDataAtomAccept
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"accept"; }
 @end
 
-@implementation GDataAtomAccept1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return @"accept"; }
-@end
-
-
-@implementation GDataAtomCollection1_0
-// original atom collection: older namespace, and titles stored
-// as attributes
-
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return @"collection"; }
-
-+ (Class)categoryGroupClass {
-  return [GDataAtomCategoryGroup1_0 class];
-}
-
-+ (Class)acceptClass {
-  return [GDataAtomAccept1_0 class];
-}
-
-- (void)addParseDeclarations {
-
-  NSArray *attrs = [NSArray arrayWithObjects:kHrefAttr, kTitleAttr, nil];
-
-  [self addLocalAttributeDeclarations:attrs];
-}
-
-
-- (GDataTextConstruct *)title {
-  NSString *str = [self stringValueForAttribute:kTitleAttr];
-  GDataTextConstruct *obj = [GDataTextConstruct textConstructWithString:str];
-  return obj;
-}
-
-- (void)setTitle:(GDataTextConstruct *)obj {
-  [self setStringValue:[obj stringValue] forAttribute:kTitleAttr];
-}
-
-@end
 
 @implementation GDataAtomCollection
 // a collection in a service document for introspection,
@@ -90,17 +48,9 @@ static NSString *const kTitleAttr = @"title";
 //    </app:categories>
 //  </app:collection>
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"collection"; }
-
-+ (Class)categoryGroupClass {
-  return [GDataAtomCategoryGroup class];
-}
-
-+ (Class)acceptClass {
-  return [GDataAtomAccept class];
-}
 
 - (void)addParseDeclarations {
 
@@ -115,8 +65,8 @@ static NSString *const kTitleAttr = @"title";
 
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
-   [[self class] categoryGroupClass],
-   [[self class] acceptClass],
+   [GDataAtomCategoryGroup class],
+   [GDataAtomAccept class],
    [GDataAtomTitle class],
    nil];
 }
@@ -156,23 +106,17 @@ static NSString *const kTitleAttr = @"title";
 }
 
 - (GDataAtomCategoryGroup *)categoryGroup {
-  Class categoryGroupClass = [[self class] categoryGroupClass];
-
-  return [self objectForExtensionClass:categoryGroupClass];
+  return [self objectForExtensionClass:[GDataAtomCategoryGroup class]];
 }
 
 - (void)setCategoryGroup:(GDataAtomCategoryGroup *)obj {
-  Class categoryGroupClass = [[self class] categoryGroupClass];
-
-  [self setObject:obj forExtensionClass:categoryGroupClass];
+  [self setObject:obj forExtensionClass:[GDataAtomCategoryGroup class]];
 }
 
 - (NSArray *)serviceAcceptStrings {
   NSArray *acceptObjs;
 
-  Class acceptClass = [[self class] acceptClass];
-
-  acceptObjs = [self objectsForExtensionClass:acceptClass];
+  acceptObjs = [self objectsForExtensionClass:[GDataAtomAccept class]];
 
   if ([acceptObjs count] > 0) {
     // using KVC, make an array of the strings in each accept element
@@ -184,8 +128,6 @@ static NSString *const kTitleAttr = @"title";
 - (void)setServiceAcceptStrings:(NSArray *)array {
   NSMutableArray *objArray = nil;
 
-  Class acceptClass = [[self class] acceptClass];
-
   // make an accept object for each string in the array
   NSUInteger numberOfStrings = [array count];
   if (numberOfStrings > 0) {
@@ -194,12 +136,12 @@ static NSString *const kTitleAttr = @"title";
 
     NSString *str;
     GDATA_FOREACH(str, array) {
-      [objArray addObject:[acceptClass valueWithString:str]];
+      [objArray addObject:[GDataAtomAccept valueWithString:str]];
     }
   }
 
   // if objArray is still nil, the extensions will be removed
-  [self setObjects:objArray forExtensionClass:acceptClass];
+  [self setObjects:objArray forExtensionClass:[GDataAtomAccept class]];
 }
 
 @end

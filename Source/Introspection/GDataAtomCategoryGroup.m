@@ -26,12 +26,6 @@ static NSString* const kHrefAttr = @"href";
 static NSString* const kSchemeAttr = @"scheme";
 static NSString* const kFixedAttr = @"fixed";
 
-@implementation GDataAtomCategoryGroup1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return @"categories"; }
-@end
-
 @implementation GDataAtomCategoryGroup
 // a collection in a service document for introspection,
 // per http://tools.ietf.org/html/rfc5023#section-7.2
@@ -45,7 +39,7 @@ static NSString* const kFixedAttr = @"fixed";
 //
 //  <categories href="http://example.com/cats/forMain.cats" />
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"categories"; }
 

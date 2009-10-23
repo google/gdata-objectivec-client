@@ -50,12 +50,7 @@
   Class entryClass = [self class];
   
   [self addExtensionDeclarationForParentClass:entryClass
-                                 childClasses:
-   [GDataYouTubePosition class],
-
-   // elements for GData v1 only
-   [GDataYouTubeDescription class],
-   nil];
+                                   childClass:[GDataYouTubePosition class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -64,9 +59,6 @@
   NSMutableArray *items = [super itemsForDescription];
 
   [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"]; 
-  
-  // elements for GData v1 only
-  [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"]; 
     
   return items;
 }
@@ -86,19 +78,6 @@
 
 - (void)setPosition:(GDataYouTubePosition *)obj {
   [self setObject:obj forExtensionClass:[GDataYouTubePosition class]];
-}
-
-// elements for GData v1 only
-- (GDataYouTubeDescription *)youTubeDescription {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  return [self objectForExtensionClass:[GDataYouTubeDescription class]];
-}
-
-- (void)setYouTubeDescription:(GDataYouTubeDescription *)obj {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 
 @end

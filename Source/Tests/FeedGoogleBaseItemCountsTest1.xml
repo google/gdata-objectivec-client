@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearchrss/1.0/' xmlns:gm='http://base.google.com/ns-metadata/1.0'>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/' xmlns:gm='http://base.google.com/ns-metadata/1.0'>
 <id>http://www.google.com/base/feeds/attributes</id>
 <updated>2007-02-01T03:02:57.981Z</updated>
 <category scheme='http://base.google.com/categories/itemtypes' term='products'>

@@ -230,51 +230,6 @@
   [self setObject:tags forExtensionClass:[GDataEXIFTags class]];   
 }
 
-#pragma mark V1 accessors
-
-- (NSString *)client {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoClient *obj = [self objectForExtensionClass:[GDataPhotoClient class]];
-  return [obj stringValue];
-}
-
-- (void)setClient:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoClient valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];
-}
-
-- (NSNumber *)position {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  // double
-  GDataPhotoPosition *obj = [self objectForExtensionClass:[GDataPhotoPosition class]];
-  return [obj doubleNumberValue];
-}
-
-- (void)setPosition:(NSNumber *)num {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoPosition valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];
-}
-
-- (NSString *)version {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoVersion *obj = [self objectForExtensionClass:[GDataPhotoVersion class]];
-  return [obj stringValue];
-}
-
-- (void)setVersion:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoVersion valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoVersion class]];
-}
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

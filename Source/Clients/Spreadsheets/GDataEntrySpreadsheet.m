@@ -70,12 +70,6 @@
   return [self linkWithRelAttributeValue:kGDataLinkTablesFeed];
 }
 
-- (GDataLink *)worksheetsLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  return [self linkWithRelAttributeValue:kGDataLinkWorksheetsFeed];
-}
-
 - (NSURL *)worksheetsFeedURL {
 
   // the worksheets feed URL is the URI in the entry's content element

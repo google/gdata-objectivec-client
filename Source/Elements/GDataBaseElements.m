@@ -105,55 +105,30 @@
 
 #pragma mark AtomPub
 
-// deprecated namespace
-@implementation GDataAtomPubEditedDate1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return @"edited"; }
-@end
-
 // standard AtomPub namespace
-@implementation GDataAtomPubEditedDateStd
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
+@implementation GDataAtomPubEditedDate
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"edited"; }
 @end
 
 #pragma mark OpenSearch
 
-@implementation GDataOpenSearchTotalResults1_0
+// OpenSearch 1.1, adopted for GData version 2
+@implementation GDataOpenSearchTotalResults
 + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
 + (NSString *)extensionElementLocalName { return @"totalResults"; }
 @end
 
-@implementation GDataOpenSearchStartIndex1_0
+@implementation GDataOpenSearchStartIndex
 + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
 + (NSString *)extensionElementLocalName { return @"startIndex"; }
 @end
 
-@implementation GDataOpenSearchItemsPerPage1_0
+@implementation GDataOpenSearchItemsPerPage
 + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
-+ (NSString *)extensionElementLocalName { return @"itemsPerPage"; }
-@end
-
-// OpenSearch 1.1, adopted for GData version 2, uses a newer namespace URI
-@implementation GDataOpenSearchTotalResults1_1
-+ (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
-+ (NSString *)extensionElementLocalName { return @"totalResults"; }
-@end
-
-@implementation GDataOpenSearchStartIndex1_1
-+ (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
-+ (NSString *)extensionElementLocalName { return @"startIndex"; }
-@end
-
-@implementation GDataOpenSearchItemsPerPage1_1
-+ (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceOpenSearchPrefix; }
 + (NSString *)extensionElementLocalName { return @"itemsPerPage"; }
 @end

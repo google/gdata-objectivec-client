@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"
     xmlns:gd="http://schemas.google.com/g/2005"
-    xmlns:gf="http://schemas.google.com/finance/2007" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:gf="http://schemas.google.com/finance/2007" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://finance.google.com/finance/feeds/default/portfolios</id>
     <updated>2007-01-01T00:00:00.000Z</updated>
     <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/finance/2007#portfolio"/>

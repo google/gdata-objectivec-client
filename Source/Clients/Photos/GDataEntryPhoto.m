@@ -80,25 +80,25 @@
 - (NSMutableArray *)itemsForDescription {
   
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"albumID",               @"albumID",          kGDataDescValueLabeled },
-    { @"checksum",              @"checksum",         kGDataDescValueLabeled },
-    { @"commentCount",          @"commentCount",     kGDataDescValueLabeled },
-    { @"commentsEnabled",       @"commentsEnabled",  kGDataDescValueLabeled },
-    { @"height",                @"height",           kGDataDescValueLabeled },
-    { @"width",                 @"width",            kGDataDescValueLabeled },
-    { @"videoStatus",           @"videoStatus",      kGDataDescValueLabeled },
-    { @"rotation",              @"rotation",         kGDataDescValueLabeled },
-    { @"size",                  @"size",             kGDataDescValueLabeled },
-    { @"timestamp",             @"timestamp",        kGDataDescValueLabeled },
-    { @"mediaGroup",            @"mediaGroup",       kGDataDescValueLabeled },
-    { @"exifTags",              @"EXIFTags",         kGDataDescValueLabeled },
-    { @"geoLocation",           @"geoLocation",      kGDataDescValueLabeled },
-    { @"version>=2:albumDesc",   @"albumDescription", kGDataDescValueLabeled },
-    { @"version>=2:albumTitle",  @"albumTitle",       kGDataDescValueLabeled },
-    { @"version>=2:snippet",     @"snippet",          kGDataDescValueLabeled },
-    { @"version>=2:snippetType", @"snippetType",      kGDataDescValueLabeled },
-    { @"version>=2:truncated",   @"truncated",        kGDataDescValueLabeled },
-    { @"version>=2:location",    @"location",         kGDataDescValueLabeled },
+    { @"albumID",         @"albumID",          kGDataDescValueLabeled },
+    { @"checksum",        @"checksum",         kGDataDescValueLabeled },
+    { @"commentCount",    @"commentCount",     kGDataDescValueLabeled },
+    { @"commentsEnabled", @"commentsEnabled",  kGDataDescValueLabeled },
+    { @"height",          @"height",           kGDataDescValueLabeled },
+    { @"width",           @"width",            kGDataDescValueLabeled },
+    { @"videoStatus",     @"videoStatus",      kGDataDescValueLabeled },
+    { @"rotation",        @"rotation",         kGDataDescValueLabeled },
+    { @"size",            @"size",             kGDataDescValueLabeled },
+    { @"timestamp",       @"timestamp",        kGDataDescValueLabeled },
+    { @"mediaGroup",      @"mediaGroup",       kGDataDescValueLabeled },
+    { @"exifTags",        @"EXIFTags",         kGDataDescValueLabeled },
+    { @"geoLocation",     @"geoLocation",      kGDataDescValueLabeled },
+    { @"albumDesc",       @"albumDescription", kGDataDescValueLabeled },
+    { @"albumTitle",      @"albumTitle",       kGDataDescValueLabeled },
+    { @"snippet",         @"snippet",          kGDataDescValueLabeled },
+    { @"snippetType",     @"snippetType",      kGDataDescValueLabeled },
+    { @"truncated",       @"truncated",        kGDataDescValueLabeled },
+    { @"location",        @"location",         kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
   
@@ -349,51 +349,6 @@
 
   GDataPhotoLocation *obj = [GDataPhotoLocation valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataPhotoLocation class]];
-}
-
-#pragma mark V1 accessors
-
-- (NSString *)client {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoClient *obj = [self objectForExtensionClass:[GDataPhotoClient class]];
-  return [obj stringValue];
-}
-
-- (void)setClient:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoClient valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];
-}
-
-- (NSNumber *)position {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  // double
-  GDataPhotoPosition *obj = [self objectForExtensionClass:[GDataPhotoPosition class]];
-  return [obj doubleNumberValue];
-}
-
-- (void)setPosition:(NSNumber *)num {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoPosition valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];
-}
-
-- (NSString *)version {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoVersion *obj = [self objectForExtensionClass:[GDataPhotoVersion class]];
-  return [obj stringValue];
-}
-
-- (void)setVersion:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataObject *obj = [GDataPhotoVersion valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoVersion class]];
 }
 
 @end

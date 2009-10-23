@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://spreadsheets.google.com/feeds/spreadsheets/private/full</id>
     <updated>2007-03-22T23:53:26.423Z</updated>
     <category scheme="fool me once" />

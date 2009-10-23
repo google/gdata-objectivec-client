@@ -42,8 +42,4 @@
 
 @end
 
-@interface GDataAtomServiceDocument1_0 : GDataAtomServiceDocument
-// older namespace URI
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

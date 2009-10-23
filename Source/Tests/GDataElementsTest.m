@@ -35,7 +35,7 @@
                         " xmlns:gs='http://schemas.google.com/spreadsheets/2006' "
                         " xmlns:gsx='http://schemas.google.com/spreadsheets/2006/extended' "
                         " xmlns:batch='http://schemas.google.com/gdata/batch' "
-                        " xmlns:app='http://purl.org/atom/app#'"
+                        " xmlns:app='http://www.w3.org/2007/app'"
                         " xmlns:gcs='http://schemas.google.com/codesearch/2006'"
                         " xmlns:gf='http://schemas.google.com/finance/2007'"
                         " xmlns:wt='http://schemas.google.com/webmasters/tools/2007'"
@@ -796,7 +796,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"isDraft", @"0" },
     { @"", @"" },
 
-    { @"GDataAtomPubControl1_0", @"<app:control><app:draft>Yes</app:draft></app:control>" },
+    { @"GDataAtomPubControl", @"<app:control><app:draft>Yes</app:draft></app:control>" },
     { @"isDraft", @"1" },
     { @"", @"" },
     
@@ -1573,62 +1573,6 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   completeNamespaces = [feedLink completeNamespaces];
   STAssertEquals((int) [namespaces count], 1, @"%@", namespaces);
   STAssertEquals((int) [completeNamespaces count], 2, @"%@", completeNamespaces);
-}
-
-- (void)testVersionedNamespaces {
-  
-#if !GDATA_USES_LIBXML
-  
-  // verify that the NSXMLElement really has the version-specific namespace we
-  // expect
-  //
-  // this is conditional to avoid a dependency on NSXMLElement's 
-  // namespaceForPrefix method in libxml builds
-  
-  // Allocating entries with convenience methods should add the default
-  // namespaces; allocating them with alloc/init doesn't add namespaces
-  // to the new entry
-  GDataEntryContact *entry = [[[GDataEntryContact alloc] initWithServiceVersion:@"1.0"] autorelease];
-  
-  [entry setNamespaces:[GDataContactConstants contactNamespaces]];
-  [entry setTitleWithString:@"Joe Smith"];
-  
-  NSXMLElement *element = [entry XMLElement];
-  NSString *nsStr;
-  
-  nsStr = [[element namespaceForPrefix:kGDataNamespaceAtomPubPrefix] stringValue];
-  STAssertEqualObjects(nsStr, kGDataNamespaceAtomPub1_0, 
-                       @"expected v1 app namespace");
-  
-  GDataEntryContact *entry2 = [[[GDataEntryContact alloc] initWithServiceVersion:@"2.0"] autorelease];
-  
-  [entry2 setNamespaces:[GDataContactConstants contactNamespaces]];
-  [entry2 setTitleWithString:@"Joe Smith"];
-  
-  element = [entry2 XMLElement];
-  nsStr = [[element namespaceForPrefix:kGDataNamespaceAtomPubPrefix] stringValue];
-  STAssertEqualObjects(nsStr, kGDataNamespaceAtomPubStd, 
-                       @"expected v2 app namespace");
-  
-  // Allocating entries with init calls should not add any namespaces,
-  // nor should copying
-  
-  // init from scratch
-  entry = [[[GDataEntryContact alloc] init] autorelease];
-  STAssertNil([[entry XMLElement] namespaces], @"unexpected namespaces");
-  
-  // init from XML and copy
-  NSError *error = nil;
-  NSString *xml = @"<entry><id>12345</id><title>Foo Bagz</title></entry>";
-  element = [[[NSXMLElement alloc] initWithXMLString:xml
-                                               error:&error] autorelease];
-  STAssertNil(error, @"error creating XML");
-
-  entry = [[[GDataEntryContact alloc] initWithXMLElement:element
-                                                  parent:nil] autorelease];
-  GDataEntryContact *entry3 = [[entry copy] autorelease];
-  STAssertNil([[entry3 XMLElement] namespaces], @"unexpected namespaces");
-#endif
 }
 
 - (void)testDescriptionGeneration {

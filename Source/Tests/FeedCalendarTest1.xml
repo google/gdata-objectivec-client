@@ -2,8 +2,8 @@
 <feed xmlns="http://www.w3.org/2005/Atom" 
     xmlns:gCal="http://schemas.google.com/gCal/2005"
     xmlns:gd="http://schemas.google.com/g/2005" 
-    xmlns:app="http://purl.org/atom/app#"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/"
+    xmlns:app="http://www.w3.org/2007/app"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
     gd:etag="Nofzeigeritznum">
     
 	<id>http://www.google.com/calendar/feeds/test%40domain.net</id>

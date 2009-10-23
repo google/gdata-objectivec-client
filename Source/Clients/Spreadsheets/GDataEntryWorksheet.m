@@ -131,12 +131,6 @@
   return [self alternateLink]; 
 }
 
-- (GDataLink *)listLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(kGDataSpreadsheetServiceV1);
-
-  return [self linkWithRelAttributeValue:kGDataLinkListFeed];
-}
-
 - (GDataLink *)cellsLink {
   return [self linkWithRelAttributeValue:kGDataLinkCellsFeed];
 }

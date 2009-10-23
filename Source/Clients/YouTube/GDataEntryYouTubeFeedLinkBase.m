@@ -42,7 +42,6 @@
 
    // elements present in GData v1 only
    [GDataFeedLink class],
-   [GDataYouTubeDescription class],
 
    // media extensions
    [GDataMediaThumbnail class],
@@ -55,8 +54,6 @@
   static struct GDataDescriptionRecord descRecs[] = {
     { @"thumbnail",                @"thumbnail",          kGDataDescValueLabeled },
     { @"countHint",                @"countHint",          kGDataDescValueLabeled },
-    { @"version<=1.0:feedLink",    @"feedLink",           kGDataDescValueLabeled },
-    { @"version<=1.0:description", @"youTubeDescription", kGDataDescValueLabeled },
     { nil, nil, 0 }
   };
 
@@ -93,33 +90,6 @@
 
   GDataYouTubeCountHint *obj = [GDataYouTubeCountHint valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeCountHint class]];
-}
-
-// elements present in GData v1 only
-- (GDataFeedLink *)feedLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  return [self objectForExtensionClass:[GDataFeedLink class]]; 
-}
-
-- (void)setFeedLink:(GDataFeedLink *)feedLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  [self setObject:feedLink forExtensionClass:[GDataFeedLink class]]; 
-}
-
-- (NSString *)youTubeDescription {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
-  return [obj stringValue];
-}
-
-- (void)setYouTubeDescription:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 
 - (NSString *)playlistID {

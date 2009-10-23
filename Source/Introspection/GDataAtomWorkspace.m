@@ -25,56 +25,20 @@
 
 static NSString *const kTitleAttr = @"title";
 
-@implementation GDataAtomWorkspace1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return @"workspace"; }
-
-+ (Class)collectionClass {
-  return  [GDataAtomCollection1_0 class];
-}
-
-- (void)addParseDeclarations {
-  // version 1 has a title attribute rather than storing the title in a child
-  // element
-  NSArray *attrs = [NSArray arrayWithObject:kTitleAttr];
-
-  [self addLocalAttributeDeclarations:attrs];
-}
-
-- (GDataTextConstruct *)title {
-  // v1 keeps the title in an attribute
-  NSString *str = [self stringValueForAttribute:kTitleAttr];
-  GDataTextConstruct *obj = [GDataTextConstruct textConstructWithString:str];
-  return obj;
-}
-
-- (void)setTitle:(GDataTextConstruct *)obj {
-
-  [self setStringValue:[obj stringValue] forAttribute:kTitleAttr];
-}
-
-@end
 
 @implementation GDataAtomWorkspace
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"workspace"; }
-
-+ (Class)collectionClass {
-  return [GDataAtomCollection class];
-}
 
 - (void)addExtensionDeclarations {
 
   [super addExtensionDeclarations];
 
-  Class collectionClass = [[self class] collectionClass];
-
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
-   collectionClass,
+   [GDataAtomCollection class],
    [GDataAtomTitle class],
    nil];
 }
@@ -104,16 +68,12 @@ static NSString *const kTitleAttr = @"title";
 }
 
 - (NSArray *)collections {
-  Class collectionClass = [[self class] collectionClass];
-
-  NSArray *array = [self objectsForExtensionClass:collectionClass];
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomCollection class]];
   return array;
 }
 
 - (void)setCollections:(NSArray *)array {
-  Class collectionClass = [[self class] collectionClass];
-
-  [self setObjects:array forExtensionClass:collectionClass];
+  [self setObjects:array forExtensionClass:[GDataAtomCollection class]];
 }
 
 - (GDataAtomCollection *)primaryCollection {

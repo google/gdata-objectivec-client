@@ -23,35 +23,13 @@
 // app:draft, like
 //   <app:draft>yes<app:draft>
 
-// In version 1 of GData, a pre-standard URI was used for app elements
 @interface GDataAtomPubDraft : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataAtomPubDraft1_0 : GDataAtomPubDraft <GDataExtension>
-@end
-
 @implementation GDataAtomPubDraft
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"draft"; }
-@end
-
-@implementation GDataAtomPubDraft1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
-@end
-
-
-@implementation GDataAtomPubControl1_0
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub1_0; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
-+ (NSString *)extensionElementLocalName { return [super extensionElementLocalName]; }
-
-+ (NSString *)defaultServiceVersion {
-  return @"1.0";
-}
-
 @end
 
 @implementation GDataAtomPubControl
@@ -59,7 +37,7 @@
 // For app:control, like:
 //   <app:control><app:draft>yes</app:draft></app:control>
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPubStd; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAtomPubPrefix; }
 + (NSString *)extensionElementLocalName { return @"control"; }
 
@@ -85,20 +63,12 @@
   return @"2.0";
 }
 
-- (Class)draftExtensionClass {
-  if ([self isKindOfClass:[GDataAtomPubControl1_0 class]]) {
-    return [GDataAtomPubDraft1_0 class];
-  } else {
-    return [GDataAtomPubDraft class];
-  }
-}
-
 - (void)addExtensionDeclarations {
 
   [super addExtensionDeclarations];
 
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[self draftExtensionClass]];
+                                   childClass:[GDataAtomPubDraft class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -115,8 +85,7 @@
 
 - (BOOL)isDraft {
   GDataValueElementConstruct *obj;
-
-  obj = [self objectForExtensionClass:[self draftExtensionClass]];
+  obj = [self objectForExtensionClass:[GDataAtomPubDraft class]];
 
   NSString *str = [obj stringValue];
   BOOL isDraft = (str != nil
@@ -126,26 +95,12 @@
 
 - (void)setIsDraft:(BOOL)isDraft {
 
-  Class draftClass = [self draftExtensionClass];
-
   id obj = nil;
   if (isDraft) {
-    obj = [draftClass valueWithString:@"yes"];
+    obj = [GDataAtomPubDraft valueWithString:@"yes"];
   }
 
-  [self setObject:obj forExtensionClass:draftClass];
-}
-
-#pragma mark -
-
-+ (Class)atomPubControlClassForObject:(GDataObject *)obj {
-  // version 1 of GData used a preliminary namespace URI for the atom pub
-  // element; the standard version of the class uses the proper URI
-  if ([obj isCoreProtocolVersion1]) {
-    return [GDataAtomPubControl1_0 class];
-  } else {
-    return [GDataAtomPubControl class];
-  }
+  [self setObject:obj forExtensionClass:[GDataAtomPubDraft class]];
 }
 
 @end

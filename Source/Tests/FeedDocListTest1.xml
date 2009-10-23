@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
     xmlns:docs="http://schemas.google.com/docs/2007"
-    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://docs.google.com/feeds/documents/private/full</id>
     <title type="text">Available Documents - test@domain.net</title>
     <link href="http://docs.google.com" rel="alternate" type="text/html"/>

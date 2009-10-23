@@ -882,12 +882,6 @@
   return [self linkWithRelAttributeValue:kGDataContactPhotoRel];
 }
 
-- (GDataLink *)editPhotoLink {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(kGDataContactServiceV1);
-
-  return [self linkWithRelAttributeValue:kGDataContactEditPhotoRel];
-}
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

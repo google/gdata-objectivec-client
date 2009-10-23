@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <feed xmlns="http://www.w3.org/2005/Atom" 
     xmlns:gd="http://schemas.google.com/g/2005" 
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     
 	<updated>2006-11-14T00:03:38.535Z</updated>
 	<link rel='alternate' type='text/html' href='http://www.google.com/calendar/feeds/default/private/full/rs45qa5d44q5pdi4dknj5pai5o/comments' title='alternate'></link>

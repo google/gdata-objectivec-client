@@ -63,9 +63,6 @@
      [GDataYouTubeFirstName class],  [GDataYouTubeLastName class], 
      [GDataYouTubeStatistics class], 
      
-     // elements deprecated for GData v2
-     [GDataYouTubeDescription class],
-     
      // media extensions
      [GDataMediaThumbnail class], nil];
 }
@@ -302,21 +299,6 @@
 - (void)setLastName:(NSString *)str {
   GDataYouTubeLastName *obj = [GDataYouTubeLastName valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeLastName class]];
-}
-
-// youTubeDescription is deprecated for GData v2
-- (NSString *)youTubeDescription {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataYouTubeDescription *obj = [self objectForExtensionClass:[GDataYouTubeDescription class]];
-  return [obj stringValue];
-}
-
-- (void)setYouTubeDescription:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  GDataYouTubeDescription *obj = [GDataYouTubeDescription valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
 }
 
 - (NSArray *)feedLinks {

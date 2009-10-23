@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">
     <wt:sitemap-news>
       <wt:publication-label>publabel</wt:publication-label>
       <wt:publication-label>another publabel</wt:publication-label>

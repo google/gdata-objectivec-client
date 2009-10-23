@@ -25,32 +25,14 @@
 #import "GDataAtomServiceDocument.h"
 #import "GDataAtomWorkspace.h"
 
-@implementation GDataAtomServiceDocument1_0
-
-+ (Class)workspaceClass {
-  return [GDataAtomWorkspace1_0 class];
-}
-
-+ (NSString *)defaultServiceVersion {
-  return @"1.0";
-}
-
-@end
-
 @implementation GDataAtomServiceDocument
-
-+ (Class)workspaceClass {
-  return [GDataAtomWorkspace class];
-}
 
 - (void)addExtensionDeclarations {
 
   [super addExtensionDeclarations];
 
-  Class workspaceClass = [[self class] workspaceClass];
-
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:workspaceClass];
+                                   childClass:[GDataAtomWorkspace class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -70,16 +52,12 @@
 #pragma mark -
 
 - (NSArray *)workspaces {
-  Class workspaceClass = [[self class] workspaceClass];
-
-  NSArray *array = [self objectsForExtensionClass:workspaceClass];
+  NSArray *array = [self objectsForExtensionClass:[GDataAtomWorkspace class]];
   return array;
 }
 
 - (void)setWorkspaces:(NSArray *)array {
-  Class workspaceClass = [[self class] workspaceClass];
-
-  [self setObjects:array forExtensionClass:workspaceClass];
+  [self setObjects:array forExtensionClass:[GDataAtomWorkspace class]];
 }
 
 - (GDataAtomWorkspace *)primaryWorkspace {

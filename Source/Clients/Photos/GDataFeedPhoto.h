@@ -71,19 +71,6 @@
 - (GDataEXIFTags *)EXIFTags;
 - (void)setEXIFTags:(GDataEXIFTags *)tags;
 
-//
-// V1 accessors
-//
-
-- (NSString *)client;
-- (void)setClient:(NSString *)str;
-
-- (NSNumber *)position; // double
-- (void)setPosition:(NSNumber *)num;
-
-- (NSString *)version;
-- (void)setVersion:(NSString *)str;
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
     
     <id>http://gdata.youtube.com/feeds/api/users/TestAccount/contacts?start-index=1&amp;max-results=25</id>
     <generator uri="http://gdata.youtube.com/" version="beta">YouTube data API</generator>

@@ -693,24 +693,6 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
 #pragma mark XML generation helpers
 
-- (NSString *)updatedVersionedNamespaceURIForPrefix:(NSString *)prefix
-                                                URI:(NSString *)uri {
-
-  // If there are many more transforms like this needed for future version
-  // changes, we can create a global registry of version-specific
-  // namespace tuples, rather than rely on this narrow hack.
-
-  if ([prefix isEqual:kGDataNamespaceAtomPubPrefix]) {
-
-    if ([self isCoreProtocolVersion1]) {
-      uri = kGDataNamespaceAtomPub1_0;
-    } else {
-      uri = kGDataNamespaceAtomPubStd;
-    }
-  }
-  return uri;
-}
-
 - (void)addNamespacesToElement:(NSXMLElement *)element {
 
   // we keep namespaces in a dictionary with prefixes
@@ -722,8 +704,9 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
     NSString *uri = [namespaces_ objectForKey:prefix];
 
-    uri = [self updatedVersionedNamespaceURIForPrefix:prefix
-                                                  URI:uri];
+    // no per-version namespace transforms are currently needed
+    // uri = [self updatedVersionedNamespaceURIForPrefix:prefix
+    //                                              URI:uri];
 
     [element addNamespace:[NSXMLElement namespaceWithName:prefix
                                               stringValue:uri]];
@@ -2607,15 +2590,8 @@ forCategoryWithScheme:(NSString *)scheme
 
   } else if ([elementName isEqual:@"service"]) {
 
-    // introspection - return service document
-    NSString *serviceDocClassName;
-
-    if ([[element URI] isEqual:kGDataNamespaceAtomPub1_0]) {
-      // old namespace URI
-      serviceDocClassName = @"GDataAtomServiceDocument1_0";
-    } else {
-      serviceDocClassName = @"GDataAtomServiceDocument";
-    }
+    // introspection - return service document, if the class is available
+    NSString *serviceDocClassName = @"GDataAtomServiceDocument";
 
 #ifdef GDATA_TARGET_NAMESPACE
     // prepend the class name prefix

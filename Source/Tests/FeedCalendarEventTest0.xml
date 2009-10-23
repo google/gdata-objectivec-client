@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"
     xmlns:gCal="http://schemas.google.com/gCal/2005"
-    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full</id>
     <updated>2006-11-03T21:17:40.000Z</updated>
     <title type="text">Fred Flintstone</title>

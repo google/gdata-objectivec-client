@@ -45,42 +45,6 @@
   [self registerEntryClass];
 }
 
-- (void)addExtensionDeclarations {
-  
-  [super addExtensionDeclarations];
-  
-  Class entryClass = [self class];
-
-  // GDataYouTubeDescription has been deprecated for GData v2
-  [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeDescription class]];
-}
-
-#if !GDATA_SIMPLE_DESCRIPTIONS
-- (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self youTubeDescription] withName:@"description"];
-
-  return items;
-}
-#endif
-
-#pragma mark -
-
-- (GDataYouTubeDescription *)youTubeDescription {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  return [self objectForExtensionClass:[GDataYouTubeDescription class]];
-}
-
-- (void)setYouTubeDescription:(GDataYouTubeDescription *)obj {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  [self setObject:obj forExtensionClass:[GDataYouTubeDescription class]];
-}
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

@@ -200,7 +200,6 @@
 - (GDataExtendedProperty *)extendedPropertyForName:(NSString *)name;
 
 - (GDataLink *)photoLink;
-- (GDataLink *)editPhotoLink; // V1 only
 
 // protected methods - for subclasses only
 - (GDataObject *)primaryObjectForExtensionClass:(Class)extensionClass;

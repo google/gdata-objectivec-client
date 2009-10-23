@@ -61,11 +61,6 @@
 - (GDataDateTime *)recordedDate;
 - (void)setRecordedDate:(GDataDateTime *)dateTime;
 
-// isRacy is deprecated for GData v2, replaced by GDataMediaRating
-- (BOOL)isRacy;
-- (void)setIsRacy:(BOOL)flag;
-
-
 // convenience accessors
 - (GDataLink *)videoResponsesLink;
 - (GDataLink *)ratingsLink;

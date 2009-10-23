@@ -52,8 +52,6 @@ _EXTERN NSString* const kGDataCategoryWorksheet _INITIALIZE_AS(@"http://schemas.
 - (GDataLink *)cellsLink;
 - (NSURL *)listFeedURL;
 
-// listLink is deprecated in V2; use worksheetsFeedURL instead
-- (GDataLink *)listLink;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

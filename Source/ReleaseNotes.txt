@@ -36,17 +36,22 @@ Additions
 - Added YouTube convenience accessors highQualityThumbnail and
   mediaContentWithFormatNumber:
   
-- Added OCR and translation on upload to the DocsSample app.
-
 - Added calendar query setShouldShowHiddenEvents: for displaying unanswered
   calendar invitations.
   
 - Added display attribute to Calendar WebContent element.
 
+- Added OCR and translation on upload to the DocsSample app.
+
+- Added uploading to FinanceSample app.
+
 Changes
 
 - Parsing is now done asynchronously (on another thread, via NSOperationQueue)
   and NSNotifications are sent when parsing begins and ends.
+
+- Removed support for version 1 of the core GData protocol.  (See the Google
+  Data APIs migration guide for core protocol version information.)
 
 - Batch fetches now always disable shouldIgnoreUnknownXML so that the results
   in the batch feed can be used for updates.

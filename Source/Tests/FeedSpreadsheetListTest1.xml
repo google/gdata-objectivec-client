@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"
-    xmlns:gsx="http://schemas.google.com/spreadsheets/2006/extended" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    xmlns:gsx="http://schemas.google.com/spreadsheets/2006/extended" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
     <id>http://spreadsheets.google.com/feeds/list/o04181601172097104111.497668944883620000/od6/private/full</id>
     <updated>2007-03-22T23:28:50.977Z</updated>
     <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#list"/>

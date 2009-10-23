@@ -247,20 +247,4 @@
 + (NSString *)extensionElementLocalName { return @"videoid"; }
 @end
 
-// elements deprecated for GData v2
-
-// user or playlist description, like <yt:description>User's description goes here.</yt:description>
-@implementation GDataYouTubeDescription
-+ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"description"; }
-@end
-
-// element indicating adult-oriented video, <yt:racy/>
-@implementation GDataYouTubeRacy
-+ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"racy"; }
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

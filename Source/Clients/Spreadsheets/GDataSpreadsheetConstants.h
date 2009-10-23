@@ -35,7 +35,6 @@
 #endif
 
 
-_EXTERN NSString* const kGDataSpreadsheetServiceV1 _INITIALIZE_AS(@"1.0");
 _EXTERN NSString* const kGDataSpreadsheetServiceV2 _INITIALIZE_AS(@"2.0");
 _EXTERN NSString* const kGDataSpreadsheetServiceV3 _INITIALIZE_AS(@"3.0");
 _EXTERN NSString* const kGDataSpreadsheetDefaultServiceVersion _INITIALIZE_AS(@"3.0");
