@@ -24,35 +24,52 @@
 @interface FinanceSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
   IBOutlet NSSecureTextField *mPasswordField;
-  
+
   IBOutlet NSTableView *mPortfoliosTable;
   IBOutlet NSProgressIndicator *mPortfoliosProgressIndicator;
   IBOutlet NSTextView *mPortfoliosResultTextField;
 
+  IBOutlet NSButton *mCreatePortfolioButton;
+  IBOutlet NSTextField *mPortfolioNameField;
+  IBOutlet NSButton *mDeletePortfolioButton;
+
   IBOutlet NSTableView *mPositionsTable;
   IBOutlet NSProgressIndicator *mPositionsProgressIndicator;
   IBOutlet NSTextView *mPositionsResultTextField;
-  
+
   IBOutlet NSTableView *mTransactionsTable;
   IBOutlet NSProgressIndicator *mTransactionsProgressIndicator;
   IBOutlet NSTextView *mTransactionsResultTextField;
-  
+
+  IBOutlet NSButton *mCreateTransactionButton;
+  IBOutlet NSDatePicker *mTransactionDatePicker;
+  IBOutlet NSTextField *mTransactionSharesField;
+  IBOutlet NSPopUpButton *mTransactionTypePopup;
+  IBOutlet NSTextField *mTransactionPriceField;
+  IBOutlet NSButton *mDeleteTransactionButton;
+
   GDataFeedFinancePortfolio *mPortfolioFeed;
-  BOOL mIsPortfolioFetchPending;
+  int mPortfolioFetchesPendingCount;
   NSError *mPortfolioFetchError;
-    
+
   GDataFeedFinancePosition *mPositionFeed;
-  BOOL mIsPositionFetchPending;
+  int mPositionFetchesPendingCount;
   NSError *mPositionFetchError;
-  
+
   GDataFeedFinanceTransaction *mTransactionFeed;
-  BOOL mIsTransactionFetchPending;
+  int mTransactionFetchesPendingCount;
   NSError *mTransactionFetchError;
 }
 
 + (FinanceSampleWindowController *)sharedFinanceSampleWindowController;
 
 - (IBAction)getPortfoliosClicked:(id)sender;
+
+- (IBAction)createPortfolioClicked:(id)sender;
+- (IBAction)deletePortfolioClicked:(id)sender;
+
+- (IBAction)createTransactionClicked:(id)sender;
+- (IBAction)deleteTransactionClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 

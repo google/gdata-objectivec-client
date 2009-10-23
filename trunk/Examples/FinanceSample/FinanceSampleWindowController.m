@@ -26,6 +26,12 @@
 - (void)fetchSelectedPortfolio;
 - (void)fetchSelectedPosition;
 
+- (void)createPortfolioWithName:(NSString *)portfolioName;
+- (void)deletePortfolio:(GDataEntryFinancePortfolio *)portfolioEntry;
+
+- (void)createTransactionWithDate:(NSDate *)date shares:(double)shares price:(double)price type:(NSString *)type;
+- (void)deleteTransaction:(GDataEntryFinanceTransaction *)transactionEntry;
+
 - (GDataServiceGoogleFinance *)financeService;
 - (GDataEntryFinancePortfolio *)selectedPortfolio;
 - (GDataEntryFinancePosition *)selectedPosition;
@@ -34,18 +40,17 @@
 - (GDataFeedFinancePortfolio *)portfolioFeed;
 - (void)setPortfolioFeed:(GDataFeedFinancePortfolio *)feed;
 - (NSError *)portfolioFetchError;
-- (void)setPortfolioFetchError:(NSError *)error;  
+- (void)setPortfolioFetchError:(NSError *)error;
 
 - (GDataFeedFinancePosition *)positionFeed;
 - (void)setPositionFeed:(GDataFeedFinancePosition *)feed;
 - (NSError *)positionFetchError;
 - (void)setPositionFetchError:(NSError *)error;
-  
+
 - (GDataFeedBase *)transactionFeed;
 - (void)setTransactionFeed:(GDataFeedBase *)feed;
 - (NSError *)transactionFetchError;
 - (void)setTransactionFetchError:(NSError *)error;
-
 @end
 
 @implementation FinanceSampleWindowController
@@ -68,16 +73,18 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 - (void)awakeFromNib {
   // Set the result text fields to have a distinctive color and mono-spaced font
   // to aid in understanding of each query operation.
-  
+
   [mPortfoliosResultTextField setTextColor:[NSColor darkGrayColor]];
   [mPositionsResultTextField setTextColor:[NSColor darkGrayColor]];
   [mTransactionsResultTextField setTextColor:[NSColor darkGrayColor]];
-  
+
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mPortfoliosResultTextField setFont:resultTextFont];
   [mPositionsResultTextField setFont:resultTextFont];
   [mTransactionsResultTextField setFont:resultTextFont];
-  
+
+  [mTransactionDatePicker setDateValue:[NSDate date]];
+
   [self updateUI];
 }
 
@@ -101,7 +108,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   // portfolio list display
   [mPortfoliosTable reloadData]; 
   
-  if (mIsPortfolioFetchPending) {
+  if (mPortfolioFetchesPendingCount > 0) {
     [mPortfoliosProgressIndicator startAnimation:self];  
   } else {
     [mPortfoliosProgressIndicator stopAnimation:self];  
@@ -109,21 +116,28 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   
   // portfolio fetch result or selected item
   NSString *portfolioResultStr = @"";
+  GDataEntryFinancePortfolio *selectedPortfolio = [self selectedPortfolio];
   if (mPortfolioFetchError) {
     portfolioResultStr = [mPortfolioFetchError description];
   } else {
-    GDataEntryFinancePortfolio *portfolio = [self selectedPortfolio];
-    if (portfolio) {
-      portfolioResultStr = [portfolio description];
+    if (selectedPortfolio) {
+      portfolioResultStr = [selectedPortfolio description];
     } 
   }
   [mPortfoliosResultTextField setString:portfolioResultStr];
   
+  // enable the create and delete portfolio buttons
+  BOOL canInsertPortfolio = ([mPortfolioFeed postLink] != nil);
+  BOOL hasPortfolioName = ([[mPortfolioNameField stringValue] length] > 0);
+  [mCreatePortfolioButton setEnabled:(canInsertPortfolio && hasPortfolioName)];
+
+  BOOL isEditablePortfolioSelected = ([selectedPortfolio editLink] != nil);
+  [mDeletePortfolioButton setEnabled:isEditablePortfolioSelected];
   
   // position list display
   [mPositionsTable reloadData]; 
   
-  if (mIsPositionFetchPending) {
+  if (mPositionFetchesPendingCount > 0) {
     [mPositionsProgressIndicator startAnimation:self];  
   } else {
     [mPositionsProgressIndicator stopAnimation:self];  
@@ -145,23 +159,32 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   // transaction list display
   [mTransactionsTable reloadData];
   
-  if (mIsTransactionFetchPending) {
+  if (mTransactionFetchesPendingCount > 0) {
     [mTransactionsProgressIndicator startAnimation:self];  
   } else {
     [mTransactionsProgressIndicator stopAnimation:self];  
   }
-  
+
   // transaction fetch result or selected item
   NSString *transactionResultStr = @"";
+  GDataEntryFinanceTransaction *selectedTransaction = [self selectedTransaction];
   if (mTransactionFetchError) {
     transactionResultStr = [mTransactionFetchError description];
   } else {
-    GDataEntryFinanceTransaction *transaction = [self selectedTransaction];
-    if (transaction) {
-      transactionResultStr = [transaction description];
+    if (selectedTransaction) {
+      transactionResultStr = [selectedTransaction description];
     }
   }
-  [mTransactionsResultTextField setString:transactionResultStr];  
+  [mTransactionsResultTextField setString:transactionResultStr];
+
+  // enable the create and delete transaction buttons and related controls
+  double shares = [mTransactionSharesField doubleValue];
+  double price = [mTransactionPriceField doubleValue];
+  BOOL hasSharedAndPrice = (shares > 0 && price > 0);
+  [mCreateTransactionButton setEnabled:hasSharedAndPrice];
+
+  BOOL isTransactionSelected = (selectedTransaction != nil);
+  [mDeleteTransactionButton setEnabled:isTransactionSelected];
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
@@ -187,9 +210,38 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   [self fetchFeedOfPortfolios];
 }
 
-- (IBAction)feedSegmentClicked:(id)sender {
-  // user switched between cell and list feed
-  [self fetchSelectedPosition];
+- (IBAction)createPortfolioClicked:(id)sender {
+  NSString *name = [mPortfolioNameField stringValue];
+  if ([name length] > 0) {
+    [self createPortfolioWithName:name];
+  }
+}
+
+- (IBAction)deletePortfolioClicked:(id)sender {
+  GDataEntryFinancePortfolio *entry = [self selectedPortfolio];
+  if (entry) {
+    [self deletePortfolio:entry];
+  }
+}
+
+- (IBAction)createTransactionClicked:(id)sender {
+
+  NSDate *date = [mTransactionDatePicker dateValue];
+  double shares = [mTransactionSharesField doubleValue];
+  double price = [mTransactionPriceField doubleValue];
+  NSString *type = [mTransactionTypePopup titleOfSelectedItem];
+
+  [self createTransactionWithDate:date
+                           shares:shares
+                            price:price
+                             type:type];
+}
+
+- (IBAction)deleteTransactionClicked:(id)sender {
+  GDataEntryFinanceTransaction *entry = [self selectedTransaction];
+  if (entry) {
+    [self deleteTransaction:entry];
+  }
 }
 
 #pragma mark -
@@ -281,7 +333,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   [self setTransactionFeed:nil];
   [self setTransactionFetchError:nil];
   
-  mIsPortfolioFetchPending = YES;
+  mPortfolioFetchesPendingCount++;
   
   GDataServiceGoogleFinance *service = [self financeService];
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleFinanceDefaultPortfoliosFeed];
@@ -300,8 +352,109 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   [self setPortfolioFeed:feed];
   [self setPortfolioFetchError:error];
 
-  mIsPortfolioFetchPending = NO;
+  mPortfolioFetchesPendingCount--;
   [self updateUI];
+}
+
+#pragma mark Create a portfolio
+
+- (void)createPortfolioWithName:(NSString *)portfolioName {
+
+  NSURL *postURL = [[mPortfolioFeed postLink] URL];
+  if (postURL) {
+
+    GDataPortfolioData *portfolioData = [GDataPortfolioData portfolioData];
+    [portfolioData setCurrencyCode:@"USD"];
+
+    GDataEntryFinancePortfolio *newEntry = [GDataEntryFinancePortfolio portfolioEntry];
+    [newEntry setTitleWithString:portfolioName];
+    [newEntry setPortfolioData:portfolioData];
+
+    GDataServiceGoogleFinance *service = [self financeService];
+    [service fetchEntryByInsertingEntry:newEntry
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(createPortfolioTicket:finishedWithEntry:error:)];
+    mPortfolioFetchesPendingCount++;
+    [self updateUI];
+  }
+}
+
+- (void)createPortfolioTicket:(GDataServiceTicket *)ticket
+            finishedWithEntry:(GDataEntryFinancePortfolio *)entry
+                        error:(NSError *)error {
+
+  mPortfolioFetchesPendingCount--;
+
+  if (error == nil) {
+    // add portfolio succeeded
+    NSString *portfolioName = [[entry title] stringValue];
+
+    NSBeginAlertSheet(@"Created portfolio", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Created portfolio \"%@\"",
+                      portfolioName);
+
+    // refresh the portfolio list
+    [self fetchFeedOfPortfolios];
+
+    // erase the portfolio name so the placeholder text shows again
+    [mPortfolioNameField setStringValue:@""];
+
+  } else {
+    // add portfolio failed
+    NSBeginAlertSheet(@"Create portfolio failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Create portfolio failed: %@", error);
+
+    [self updateUI];
+  }
+}
+
+#pragma mark Delete a portfolio
+
+// begin retrieving the list of the user's portfolios
+- (void)deletePortfolio:(GDataEntryFinancePortfolio *)portfolioEntry {
+
+  GDataServiceGoogleFinance *service = [self financeService];
+  GDataServiceTicket *ticket;
+  ticket = [service deleteEntry:portfolioEntry
+                       delegate:self
+              didFinishSelector:@selector(deletePortfolioTicket:finishedWithNil:error:)];
+
+  // hold on to the name of the portfolio being deleted so we can report it
+  // when the delete has finished
+  [ticket setProperty:[[portfolioEntry title] stringValue]
+               forKey:@"portfolio name"];
+
+  mPortfolioFetchesPendingCount++;
+  [self updateUI];
+}
+
+- (void)deletePortfolioTicket:(GDataServiceTicket *)ticket
+              finishedWithNil:(GDataObject *)nilObject
+                        error:(NSError *)error {
+
+  mPortfolioFetchesPendingCount--;
+
+  if (error == nil) {
+    // delete portfolio succeeded
+    NSString *portfolioName = [ticket propertyForKey:@"portfolio name"];
+
+    NSBeginAlertSheet(@"Deleted portfolio", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted portfolio \"%@\"",
+                      portfolioName);
+
+    // refresh the portfolio list
+    [self fetchFeedOfPortfolios];
+  } else {
+    // delete portfolio failed
+    NSBeginAlertSheet(@"Delete portfolio failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Delete portfolio failed: %@", error);
+    [self updateUI];
+  }
 }
 
 #pragma mark Fetch a portfolio's positions
@@ -318,7 +471,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 
       [self setPositionFeed:nil];
       [self setPositionFetchError:nil];
-      mIsPositionFetchPending = YES;
+      mPositionFetchesPendingCount++;
 
       [self setTransactionFeed:nil];
       [self setTransactionFetchError:nil];
@@ -327,9 +480,10 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
       [service fetchFeedWithURL:feedURL
                        delegate:self
               didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:error:)];
-      [self updateUI];
     }
   }
+
+  [self updateUI];
 }
 
 // positions fetch callback
@@ -340,12 +494,12 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   [self setPositionFeed:feed];
   [self setPositionFetchError:error];
 
-  mIsPositionFetchPending = NO;
+  mPositionFetchesPendingCount--;
 
   [self updateUI];
 }
 
-#pragma mark Fetch a position's entries
+#pragma mark Fetch a position's transactions
 
 // for the position selected, fetch the transactions feed
 
@@ -359,7 +513,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 
       [self setTransactionFeed:nil];
       [self setTransactionFetchError:nil];
-      mIsTransactionFetchPending = YES;
+      mTransactionFetchesPendingCount++;
 
       [self setTransactionFeed:nil];
       [self setTransactionFetchError:nil];
@@ -381,9 +535,127 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   [self setTransactionFeed:feed];
   [self setTransactionFetchError:error];
 
-  mIsTransactionFetchPending = NO;
+  mTransactionFetchesPendingCount--;
 
   [self updateUI];
+}
+
+#pragma mark Create a transaction
+
+- (void)createTransactionWithDate:(NSDate *)date
+                           shares:(double)shares
+                            price:(double)price
+                             type:(NSString *)type {
+
+  NSURL *postURL = [[mTransactionFeed postLink] URL];
+  if (postURL) {
+
+    GDataMoney *money;
+    money = [GDataMoney moneyWithAmount:[NSNumber numberWithDouble:price]
+                           currencyCode:@"USD"];
+    GDataPrice *price = [GDataPrice moneyGroupWithMoney:money];
+
+    GDataFinanceTransactionData *transData;
+    transData = [GDataFinanceTransactionData transactionDataWithType:type];
+
+    [transData setDate:[GDataDateTime dateTimeWithDate:date
+                                              timeZone:[NSTimeZone defaultTimeZone]]];
+    [transData setShares:[NSNumber numberWithDouble:shares]];
+    [transData setPrice:price];
+
+    GDataEntryFinanceTransaction *newEntry;
+    newEntry = [GDataEntryFinanceTransaction transactionEntry];
+    [newEntry setTransactionData:transData];
+
+    GDataServiceGoogleFinance *service = [self financeService];
+    [service fetchEntryByInsertingEntry:newEntry
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(createTransactionTicket:finishedWithEntry:error:)];
+    mTransactionFetchesPendingCount++;
+    [self updateUI];
+  }
+}
+
+- (void)createTransactionTicket:(GDataServiceTicket *)ticket
+              finishedWithEntry:(GDataEntryFinanceTransaction *)entry
+                          error:(NSError *)error {
+
+  mTransactionFetchesPendingCount--;
+
+  if (error == nil) {
+    // add transaction succeeded
+    NSDate *date = [[[entry transactionData] date] date];
+
+    NSBeginAlertSheet(@"Created transaction", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Created transaction dated \"%@\"",
+                      date);
+
+    // refresh the list of transactions
+    [self fetchSelectedPosition];
+
+    // erase the share and price numbers in the text field so the
+    // placeholder text shows again
+    [mTransactionSharesField setStringValue:@""];
+    [mTransactionPriceField setStringValue:@""];
+
+  } else {
+    // add transaction failed
+    NSBeginAlertSheet(@"Create transaction failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Create transaction failed: %@", error);
+
+    [self updateUI];
+  }
+}
+
+#pragma mark Delete a transaction
+
+// delete a transaction
+- (void)deleteTransaction:(GDataEntryFinanceTransaction *)transactionEntry {
+
+  GDataServiceGoogleFinance *service = [self financeService];
+  GDataServiceTicket *ticket;
+  ticket = [service deleteEntry:transactionEntry
+                       delegate:self
+              didFinishSelector:@selector(deleteTransactionTicket:finishedWithNil:error:)];
+
+  // hold on to the date of the transaction being deleted so we can report it
+  // when the delete has finished
+  NSDate *date = [[[transactionEntry transactionData] date] date];
+  [ticket setProperty:date
+               forKey:@"transaction date"];
+
+  mTransactionFetchesPendingCount++;
+  [self updateUI];
+}
+
+- (void)deleteTransactionTicket:(GDataServiceTicket *)ticket
+                finishedWithNil:(GDataObject *)nilObject
+                          error:(NSError *)error {
+
+  mTransactionFetchesPendingCount--;
+
+  if (error == nil) {
+
+    NSString *date = [ticket propertyForKey:@"transaction date"];
+
+    NSBeginAlertSheet(@"Deleted transaction", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Deleted transaction \"%@\"",
+                      date);
+
+    // refresh the list of transactions
+    [self fetchSelectedPosition];
+
+  } else {
+    // delete portfolio failed
+    NSBeginAlertSheet(@"Delete transaction failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Delete transaction failed: %@", error);
+    [self updateUI];
+  }
 }
 
 #pragma mark TableView delegate methods
@@ -446,6 +718,13 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
     GDataEntryFinanceTransaction *entry = [[mTransactionFeed entries] objectAtIndex:row];
     return [[entry title] stringValue];    
   }  
+}
+
+#pragma mark Text Field Delegate Methods
+
+- (void)controlTextDidChange:(NSNotification *)note {
+  // enable and disable buttons
+  [self updateUI];
 }
 
 #pragma mark Setters and Getters
