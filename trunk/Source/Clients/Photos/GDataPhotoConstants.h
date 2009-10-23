@@ -31,7 +31,6 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataPhotosServiceV1 _INITIALIZE_AS(@"1.0");
 _EXTERN NSString* const kGDataPhotosServiceV2 _INITIALIZE_AS(@"2.0");
 _EXTERN NSString* const kGDataPhotosDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 

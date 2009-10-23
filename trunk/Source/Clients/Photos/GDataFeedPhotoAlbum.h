@@ -66,10 +66,6 @@
 - (GDataMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataMediaGroup *)obj;
 
-// version 1 accessors
-- (NSString *)name;
-- (void)setName:(NSString *)obj;
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

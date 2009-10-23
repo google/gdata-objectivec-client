@@ -45,7 +45,7 @@
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
     kGDataNamespaceGData, kGDataNamespaceGDataPrefix,
-    kGDataNamespaceAtomPubStd, kGDataNamespaceAtomPubPrefix,
+    kGDataNamespaceAtomPub, kGDataNamespaceAtomPubPrefix,
     nil];
   return namespaces;
 }
@@ -55,15 +55,6 @@
 
   [entry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
   return entry;
-}
-
-- (Class)atomPubEditedObjectClass {
-  // version 1 of GData used a preliminary namespace URI
-  if ([self isCoreProtocolVersion1]) {
-    return [GDataAtomPubEditedDate1_0 class];
-  } else {
-    return [GDataAtomPubEditedDateStd class];
-  }
 }
 
 - (void)addExtensionDeclarations {
@@ -94,8 +85,8 @@
    [GDataDeleted class],
 
    // atom publishing control support
-   [GDataAtomPubControl atomPubControlClassForObject:self],
-   [self atomPubEditedObjectClass],
+   [GDataAtomPubControl class],
+   [GDataAtomPubEditedDate class],
 
    // batch support
    [GDataBatchOperation class], [GDataBatchID class],
@@ -371,15 +362,15 @@ forCategoryWithScheme:scheme
 - (GDataDateTime *)editedDate {
   GDataValueElementConstruct *obj;
 
-  obj = [self objectForExtensionClass:[self atomPubEditedObjectClass]];
+  obj = [self objectForExtensionClass:[GDataAtomPubEditedDate class]];
   return [obj dateTimeValue];
 }
 
 - (void)setEditedDate:(GDataDateTime *)dateTime {
-  Class class = [self atomPubEditedObjectClass];
+  GDataValueElementConstruct *obj;
 
-  GDataValueElementConstruct *obj = [class valueWithDateTime:dateTime];
-  [self setObject:obj forExtensionClass:[self atomPubEditedObjectClass]];
+  obj = [GDataAtomPubEditedDate valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataAtomPubEditedDate class]];
 }
 
 - (GDataTextConstruct *)title {
@@ -570,15 +561,11 @@ forCategoryWithScheme:scheme
 // extensions for Atom publishing control
 
 - (GDataAtomPubControl *)atomPubControl {
-  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-
-  return [self objectForExtensionClass:class];
+  return [self objectForExtensionClass:[GDataAtomPubControl class]];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
-  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-
-  [self setObject:obj forExtensionClass:class];
+  [self setObject:obj forExtensionClass:[GDataAtomPubControl class]];
 }
 
 // extensions for batch support

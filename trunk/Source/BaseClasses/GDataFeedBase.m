@@ -22,14 +22,6 @@
 
 #import "GDataBaseElements.h"
 
-//   eventually we'll change the opensearch extensio URI, as in...
-//  @implementation GDataOpenSearchTotalResults1_1
-//  + (NSString *)extensionElementURI       { return kGDataNamespaceOpenSearch1_1; }
-//  @end
-//
-//  for now, we can rely on the openSearch: prefix string finding us any
-//  OpenSearch 1.1 elements despite the different URI
-
 
 @interface GDataFeedBase (PrivateMethods)
 - (void)setupFromXMLElement:(NSXMLElement *)root;
@@ -79,33 +71,19 @@
    [GDataAtomUpdatedDate class],
 
    // atom publishing control support
-   [GDataAtomPubControl atomPubControlClassForObject:self],
+   [GDataAtomPubControl class],
 
    // batch support
    [GDataBatchOperation class],
    nil];
 
-  if ([self isCoreProtocolVersion1]) {
+  [self addExtensionDeclarationForParentClass:feedClass
+                                 childClasses:
 
-    // GData version 1 classes
-    [self addExtensionDeclarationForParentClass:feedClass
-                                   childClasses:
-
-     [GDataOpenSearchTotalResults1_0 class],
-     [GDataOpenSearchStartIndex1_0 class],
-     [GDataOpenSearchItemsPerPage1_0 class],
-     nil];
-
-  } else {
-    // GData version 2 classes
-    [self addExtensionDeclarationForParentClass:feedClass
-                                   childClasses:
-
-     [GDataOpenSearchTotalResults1_1 class],
-     [GDataOpenSearchStartIndex1_1 class],
-     [GDataOpenSearchItemsPerPage1_1 class],
-     nil];
-  }
+   [GDataOpenSearchTotalResults class],
+   [GDataOpenSearchStartIndex class],
+   [GDataOpenSearchItemsPerPage class],
+   nil];
 
   // Attributes
   [self addAttributeExtensionDeclarationForParentClass:feedClass
@@ -516,86 +494,44 @@ forCategoryWithScheme:scheme
 
 - (NSNumber *)totalResults {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchTotalResults1_0 class];
-  } else {
-    objClass = [GDataOpenSearchTotalResults1_1 class];
-  }
-
-  obj = [self objectForExtensionClass:objClass];
+  obj = [self objectForExtensionClass:[GDataOpenSearchTotalResults class]];
   return [obj intNumberValue];
 }
 
 - (void)setTotalResults:(NSNumber *)num {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchTotalResults1_0 class];
-  } else {
-    objClass = [GDataOpenSearchTotalResults1_1 class];
-  }
-
-  obj = [objClass valueWithNumber:num];
-  [self setObject:obj forExtensionClass:objClass];
+  obj = [GDataOpenSearchTotalResults valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchTotalResults class]];
 }
 
 - (NSNumber *)startIndex {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchStartIndex1_0 class];
-  } else {
-    objClass = [GDataOpenSearchStartIndex1_1 class];
-  }
-
-  obj = [self objectForExtensionClass:objClass];
+  obj = [self objectForExtensionClass:[GDataOpenSearchStartIndex class]];
   return [obj intNumberValue];
 }
 
 - (void)setStartIndex:(NSNumber *)num {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchStartIndex1_0 class];
-  } else {
-    objClass = [GDataOpenSearchStartIndex1_1 class];
-  }
-
-  obj = [objClass valueWithNumber:num];
-  [self setObject:obj forExtensionClass:objClass];
+  obj = [GDataOpenSearchStartIndex valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchStartIndex class]];
 }
 
 - (NSNumber *)itemsPerPage {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchItemsPerPage1_0 class];
-  } else {
-    objClass = [GDataOpenSearchItemsPerPage1_1 class];
-  }
-
-  obj = [self objectForExtensionClass:objClass];
+  obj = [self objectForExtensionClass:[GDataOpenSearchItemsPerPage class]];
   return [obj intNumberValue];
 }
 
 - (void)setItemsPerPage:(NSNumber *)num {
   GDataValueElementConstruct *obj;
-  Class objClass;
 
-  if ([self isCoreProtocolVersion1]) {
-    objClass = [GDataOpenSearchItemsPerPage1_0 class];
-  } else {
-    objClass = [GDataOpenSearchItemsPerPage1_1 class];
-  }
-
-  obj = [objClass valueWithNumber:num];
-  [self setObject:obj forExtensionClass:objClass];
+  obj = [GDataOpenSearchItemsPerPage valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataOpenSearchItemsPerPage class]];
 }
 
 - (NSString *)ETag {
@@ -685,15 +621,11 @@ forCategoryWithScheme:scheme
 // extensions for Atom publishing control
 
 - (GDataAtomPubControl *)atomPubControl {
-  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-
-  return [self objectForExtensionClass:class];
+  return [self objectForExtensionClass:[GDataAtomPubControl class]];
 }
 
 - (void)setAtomPubControl:(GDataAtomPubControl *)obj {
-  Class class = [GDataAtomPubControl atomPubControlClassForObject:self];
-
-  [self setObject:obj forExtensionClass:class];
+  [self setObject:obj forExtensionClass:[GDataAtomPubControl class]];
 }
 
 // extensions for batch support

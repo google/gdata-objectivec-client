@@ -28,12 +28,4 @@
 
 - (BOOL)isDraft;
 - (void)setIsDraft:(BOOL)flag;
-
-// implementation utilities
-+ (Class)atomPubControlClassForObject:(GDataObject *)obj;
-
-@end
-
-// In version 1 of GData, a pre-standard URI was used
-@interface GDataAtomPubControl1_0 : GDataAtomPubControl  <GDataExtension>
 @end

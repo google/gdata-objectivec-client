@@ -186,7 +186,7 @@
   if (shouldUseShim) {
     expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
     "xmlns:gd=\"http://schemas.google.com/g/2005\" "
-    "xmlns:openSearch=\"http://a9.com/-/spec/opensearchrss/1.0/\" "
+    "xmlns:openSearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
     "gd:foo=\"baz\" openSearch:foo=\"baz2\" "
     "{http://schemas.google.com/gdata/batch}:zorgbot=\"gollyfum\">"
     "buzz<gd:chyld>fuzz</gd:chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
@@ -196,7 +196,7 @@
   } else {
     expectedXML = @"<dad xmlns=\"http://www.w3.org/2005/Atom\" "
     "xmlns:gd=\"http://schemas.google.com/g/2005\" "
-    "xmlns:openSearch=\"http://a9.com/-/spec/opensearchrss/1.0/\" "
+    "xmlns:openSearch=\"http://a9.com/-/spec/opensearch/1.1/\" "
     "foo=\"baz\" openSearch:foo=\"baz2\" zorgbot=\"gollyfum\">"
     "buzz<chyld>fuzz</chyld><openSearch:chyld>fuzz2</openSearch:chyld>"
     "<chyld>fuzz3</chyld><zorgtree>gollyfoo</zorgtree>"
@@ -259,7 +259,7 @@
     STAssertNil(error, @"XPath error");
 
     // find elements with a non-default namespace URI
-    path = @"*[namespace-uri()='http://a9.com/-/spec/opensearchrss/1.0/']";
+    path = @"*[namespace-uri()='http://a9.com/-/spec/opensearch/1.1/']";
 
     // find the opensearch nodes
     nodes = [root nodesForXPath:path error:&error];

@@ -42,11 +42,6 @@
 @interface GDataAtomAccept : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataAtomAccept1_0 : GDataValueElementConstruct <GDataExtension>
-// older namespace URI
-@end
-
-
 @interface GDataAtomCollection : GDataObject <GDataExtension>
 
 - (NSString *)href;
@@ -60,11 +55,6 @@
 
 - (NSArray *)serviceAcceptStrings;
 - (void)setServiceAcceptStrings:(NSArray *)array;
-@end
-
-
-@interface GDataAtomCollection1_0 : GDataAtomCollection
-// older namespace URI, and titles stored in attributes
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

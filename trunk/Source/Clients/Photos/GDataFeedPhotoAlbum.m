@@ -82,7 +82,6 @@
     { @"username",        @"username",        kGDataDescValueLabeled },
     { @"mediaGroup",      @"mediaGroup",      kGDataDescValueLabeled },
     { @"geoLocation",     @"geoLocation",     kGDataDescValueLabeled },
-    { @"version<=1:name", @"name",            kGDataDescValueLabeled },
 
     { nil, nil, 0 }
   };
@@ -212,22 +211,6 @@
 
 - (void)setMediaGroup:(GDataMediaGroup *)obj {
   [self setObject:obj forExtensionClass:[GDataMediaGroup class]];
-}
-
-// version 1 accessors
-
-- (NSString *)name {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoName *obj = [self objectForExtensionClass:[GDataPhotoName class]];
-  return [obj stringValue];
-}
-
-- (void)setName:(NSString *)str {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataPhotoName *obj = [GDataPhotoName valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoName class]];
 }
 
 @end

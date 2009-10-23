@@ -34,9 +34,6 @@
 - (GDataLink *)tablesFeedLink;
 - (NSURL *)worksheetsFeedURL;
 
-// worksheetsLink is deprecated in V2; use worksheetsFeedURL instead
-- (GDataLink *)worksheetsLink;
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

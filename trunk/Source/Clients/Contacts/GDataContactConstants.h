@@ -33,7 +33,6 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataContactServiceV1 _INITIALIZE_AS(@"1.0");
 _EXTERN NSString* const kGDataContactServiceV2 _INITIALIZE_AS(@"2.0");
 _EXTERN NSString* const kGDataContactServiceV3 _INITIALIZE_AS(@"3.0");
 _EXTERN NSString* const kGDataContactDefaultServiceVersion _INITIALIZE_AS(@"3.0");

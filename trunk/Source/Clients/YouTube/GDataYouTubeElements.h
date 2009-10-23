@@ -154,15 +154,4 @@
 @interface GDataYouTubeUploadedDate : GDataValueElementConstruct <GDataExtension>
 @end
 
-// note: GDataYouTubeDescription has been deprecated; use the entry's
-// -summary and -setSummary: methods instead
-// user or playlist description, like <yt:description>User's description goes here.</yt:description>
-@interface GDataYouTubeDescription : GDataValueElementConstruct <GDataExtension>
-@end
-
-// GDataYouTubeRacy has been deprecated for GData v2; use GDataMediaRating
-// instead element indicating adult-oriented video, <yt:racy/>
-@interface GDataYouTubeRacy : GDataImplicitValueConstruct <GDataExtension>
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

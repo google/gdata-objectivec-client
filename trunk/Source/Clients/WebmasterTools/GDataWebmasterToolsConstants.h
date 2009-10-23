@@ -33,7 +33,6 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataWebmasterToolsServiceV1 _INITIALIZE_AS(@"1.0");
 _EXTERN NSString* const kGDataWebmasterToolsServiceV2 _INITIALIZE_AS(@"2.0");
 _EXTERN NSString* const kGDataWebmasterToolsDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 

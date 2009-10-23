@@ -7,7 +7,7 @@
     xmlns:gml="http://www.opengis.net/gml"
     xmlns:gphoto="http://schemas.google.com/photos/2007"
     xmlns:media="http://search.yahoo.com/mrss/"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:photo="http://www.pheed.com/pheed/">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
     <gphoto:id>5067143575034336993</gphoto:id>
     <gphoto:name>TestAlbM</gphoto:name>
     <gphoto:access>public</gphoto:access>

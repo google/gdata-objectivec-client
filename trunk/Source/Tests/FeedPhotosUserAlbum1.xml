@@ -6,7 +6,7 @@
     xmlns:gml="http://www.opengis.net/gml"
     xmlns:gphoto="http://schemas.google.com/photos/2007"
     xmlns:media="http://search.yahoo.com/mrss/"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:photo="http://www.pheed.com/pheed/">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
     <gphoto:maxPhotosPerAlbum>500</gphoto:maxPhotosPerAlbum>
     <gphoto:quotacurrent>108303</gphoto:quotacurrent>
     <gphoto:thumbnail>http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo/AAAAAAAAAAA/LRLjNgdEmmU/TestdomainTestAccount.jpg?imgmax=64&amp;crop=1</gphoto:thumbnail>

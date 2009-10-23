@@ -102,19 +102,6 @@
 - (NSNumber *)truncated; // int, 0 or 1
 - (void)setTruncated:(NSNumber *)num;
 
-//
-// V1 accessors
-//
-
-- (NSString *)client;
-- (void)setClient:(NSString *)str;
-
-- (NSNumber *)position; // double
-- (void)setPosition:(NSNumber *)num;
-
-- (NSString *)version;
-- (void)setVersion:(NSString *)str;
-
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

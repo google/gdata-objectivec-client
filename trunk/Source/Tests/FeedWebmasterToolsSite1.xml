@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <feed xmlns="http://www.w3.org/2005/Atom"
     xmlns:gd="http://schemas.google.com/g/2005"
-    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">
     <id>http://www.google.com/webmasters/tools/feeds/sites</id>
     <title type="text">Sites</title>
     <link href="http://www.google.com/webmasters/tools/feeds/sites"

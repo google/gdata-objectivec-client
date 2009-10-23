@@ -226,7 +226,7 @@
     //
     // Calendar Feed
     //
-    { @"GDataFeedCalendar/1.0", @"Tests/FeedCalendarTest1.xml" },
+    { @"GDataFeedCalendar/2.0", @"Tests/FeedCalendarTest1.xml" },
       
     // GDataFeedCalendar paths 
     { @"title", @"Fred Flintstone's Calendar List" },
@@ -651,7 +651,7 @@
     //
     // Google Base snippet feed
     //
-    { @"GDataFeedGoogleBase/1.0", @"Tests/FeedGoogleBaseSnippetTest1.xml" },
+    { @"GDataFeedGoogleBase/2.0", @"Tests/FeedGoogleBaseSnippetTest1.xml" },
       
     // feed paths 
     { @"generator.URI", @"http://base.google.com" },
@@ -1161,11 +1161,10 @@
     //
     // Feed of an album's photos
     //
-    { @"GDataFeedPhotoAlbum/1.0", @"Tests/FeedPhotosAlbumPhoto1.xml" },
+    { @"GDataFeedPhotoAlbum/2.0", @"Tests/FeedPhotosAlbumPhoto1.xml" },
 
     // GDataFeedPhotoAlbum - feed paths
     { @"GPhotoID", @"5067143575034336993" },
-    { @"name", @"TestAlbM" },
     { @"access", @"public" },
     { @"photosUsed", @"2" },
     { @"commentCount", @"0" },
@@ -1199,12 +1198,9 @@
     // GDataEntryPhoto - entry paths
     { @"entries.0.categories.0.term", kGDataCategoryPhotosPhoto },
 
-    { @"entries.0.position", @"1.1" },
     { @"entries.0.checksum", @"23512309abbs298" },
     { @"entries.0.GPhotoID", @"5067143579329304306" },
-    { @"entries.0.version", @"1179786875940336" },
     { @"entries.0.albumID", @"5067143575034336993" },
-    { @"entries.0.client", @"Picasa 2.6" },
     { @"entries.0.width", @"660" },
     { @"entries.0.height", @"433" },
     { @"entries.0.videoStatus", kGDataPhotoStatusReady },
@@ -1249,7 +1245,7 @@
     //
     // Feed of a photo's comments
     //
-    { @"GDataFeedPhoto/1.0", @"Tests/FeedPhotosPhotoComment1.xml" },
+    { @"GDataFeedPhoto/2.0", @"Tests/FeedPhotosPhotoComment1.xml" },
 
     // GDataFeedPhoto - feed paths
     { @"generator.URI", @"http://photos.google.com/" },
@@ -1258,12 +1254,9 @@
     { @"EXIFTags.tagDictionary.exposure", @"0.0080" },
     { @"categories.0.term", kGDataCategoryPhotosPhoto },
     { @"EXIFTags.tagDictionary.imageUniqueID", @"d8a9e8fd57a384d216f4b2a853d654fc" },
-    { @"position", @"1.1" },
     { @"checksum", @"23512309abbs298" },
     { @"GPhotoID", @"5067143579329304306" },
-    { @"version", @"1179786875940336" },
     { @"albumID", @"5067143575034336993" },
-    { @"client", @"Picasa 2.6" },
     { @"width", @"660" },
     { @"height", @"433" },
     { @"commentsEnabled", @"1" },
@@ -1725,7 +1718,7 @@
     //
     // video feed
     //
-    { @"GDataFeedYouTubeVideo/1.0", @"Tests/FeedYouTubeVideo1.xml" },
+    { @"GDataFeedYouTubeVideo/2.0", @"Tests/FeedYouTubeVideo1.xml" },
     
     // video entry elements
     { @"entries.0.statistics.viewCount", @"177" },
@@ -1778,35 +1771,6 @@
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
       
-    { @"", @"" }, // end of feed
-        
-    //
-    // playlist link feed, v1
-    //
-    
-    { @"GDataFeedYouTubePlaylistLink/1.0", @"Tests/FeedYouTubePlaylistLink1v1.xml" },
-    { @"categories.0.term", kGDataCategoryYouTubePlaylistLink },
-    { @"totalResults", @"2" },
-    { @"startIndex", @"1" },
-    { @"itemsPerPage", @"25" },
-    
-    { @"categories.0.term", kGDataCategoryYouTubePlaylistLink },
-    
-    { @"entries.0.className", @"GDataEntryYouTubePlaylistLink" },    
-    { @"entries.0.isPrivate", @"1" },
-    { @"entries.0.categories.0.term", kGDataCategoryYouTubePlaylistLink },
-    { @"entries.0.categories.1.scheme", kGDataSchemeYouTubeTag },
-    { @"entries.0.categories.1.term", @"moreplaylisttags" },
-    
-    { @"entries.1.categories.0.scheme", kGDataSchemeYouTubeTag },
-    { @"entries.1.categories.0.term", @"PlaylistTags" },
-    { @"entries.1.categories.1.term", kGDataCategoryYouTubePlaylistLink },
-    { @"entries.1.youTubeDescription", @"My Playlist Description" },
-    { @"entries.1.isPrivate", @"0" },
-    
-    { @"unknownAttributes.@count", @"0" },
-    { @"unknownChildren.@count", @"0" },    
-    
     { @"", @"" }, // end of feed
     
     //
@@ -2186,12 +2150,12 @@
   TestKeyPathValues tests[] =
   {
     //
-    // service document, v2
+    // service document
     //
     { @"GDataAtomServiceDocument", @"Tests/FeedServiceDocTest2.xml" },
 
     // GDataAtomServiceDocument paths
-    { @"namespaces.app", kGDataNamespaceAtomPubStd },
+    { @"namespaces.app", kGDataNamespaceAtomPub },
     { @"workspaces.@count", @"2" },
 
     // workspace paths
@@ -2211,39 +2175,6 @@
     { @"workspaces.1.collections.0.categoryGroup.isFixed", @"1" },
     { @"workspaces.1.collections.0.categoryGroup.scheme", @"bogusscheme" },
     { @"workspaces.1.collections.0.categoryGroup.href", @"bogushref" },
-    { @"workspaces.1.collections.0.categoryGroup.categories.@count", @"2" },
-    { @"workspaces.1.collections.0.categoryGroup.categories.1.term", @"serious" },
-
-    { @"unknownAttributes.@count", @"0" },
-    { @"unknownChildren.@count", @"0" },
-
-    { @"", @"" }, // end of feed
-
-    //
-    // service document, v1
-    //
-    { @"GDataAtomServiceDocument1_0", @"Tests/FeedServiceDocTest1.xml" },
-
-    // GDataAtomServiceDocument paths
-    { @"namespaces.app", kGDataNamespaceAtomPub1_0 },
-    { @"workspaces.@count", @"2" },
-
-    // workspace paths
-    { @"workspaces.0.title", @"wilmaflintstone" },
-    { @"workspaces.0.collections.@count", @"1" },
-    { @"workspaces.0.collections.0.title", @"photo types" },
-    { @"workspaces.0.collections.0.serviceAcceptStrings.@count", @"1" },
-    { @"workspaces.0.collections.0.serviceAcceptStrings.0", @"image/png,image/gif,video/*,image/jpg" },
-
-    { @"workspaces.1.title", @"forgespace" },
-    { @"workspaces.1.collections.@count", @"1" },
-    { @"workspaces.1.collections.0.href", @"http://example.org/hrefcollection" },
-    { @"workspaces.1.collections.0.title", @"Remaindered Links" },
-    { @"workspaces.1.collections.0.serviceAcceptStrings.@count", @"1" },
-    { @"workspaces.1.collections.0.serviceAcceptStrings.0", @"entry" },
-    { @"workspaces.1.collections.0.categoryGroup.isFixed", @"1" },
-    { @"workspaces.1.collections.0.categoryGroup.scheme", @"hocus-scheme" },
-    { @"workspaces.1.collections.0.categoryGroup.href", @"hocus-href" },
     { @"workspaces.1.collections.0.categoryGroup.categories.@count", @"2" },
     { @"workspaces.1.collections.0.categoryGroup.categories.1.term", @"serious" },
 

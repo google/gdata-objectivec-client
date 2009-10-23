@@ -49,8 +49,7 @@
 
   // the publication state element is an extension to the Atom publishing
   // control element
-  Class appClass = [GDataAtomPubControl atomPubControlClassForObject:self];
-  [self addExtensionDeclarationForParentClass:appClass
+  [self addExtensionDeclarationForParentClass:[GDataAtomPubControl class]
                                    childClass:[GDataYouTubePublicationState class]];
 }
 

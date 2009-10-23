@@ -46,9 +46,4 @@
 
 @end
 
-@interface GDataAtomWorkspace1_0 : GDataAtomWorkspace <GDataExtension>
-// v1 used an older namespace URI, and put the title in an attribute instead
-// of a child element
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION

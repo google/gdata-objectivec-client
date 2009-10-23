@@ -66,23 +66,25 @@ static AnalyticsSampleWindowController* gWindowController = nil;
 - (NSArray *)dimensionNames {
   return [NSArray arrayWithObjects:
           @"ga:browser", @"ga:browserVersion", @"ga:city",
-          @"ga:connectionSpeed", @"ga:continent", @"ga:countOfVisits",
+          @"ga:connectionSpeed", @"ga:continent", @"ga:visitCount",
           @"ga:country", @"ga:date", @"ga:day", @"ga:daysSinceLastVisit",
           @"ga:flashVersion", @"ga:hostname", @"ga:hour", @"ga:javaEnabled",
           @"ga:language", @"ga:latitude", @"ga:longitude", @"ga:month",
           @"ga:networkDomain", @"ga:networkLocation", @"ga:pageDepth",
           @"ga:operatingSystem", @"ga:operatingSystemVersion", @"ga:region",
           @"ga:screenColors", @"ga:screenResolution", @"ga:subContinent",
-          @"ga:userDefinedValue", @"ga:visitorType", @"ga:week", @"ga:year",
-          @"ga:adContent", @"ga:adGroup", @"ga:adSlot", @"ga:adSlotPosition",
-          @"ga:campaign", @"ga:keyword", @"ga:medium", @"ga:referralPath",
-          @"ga:source", @"ga:exitPagePath", @"ga:landingPagePath",
-          @"ga:pagePath", @"ga:pageTitle", @"ga:affiliation",
-          @"ga:daysToTransaction", @"ga:productCategory", @"ga:productName",
-          @"ga:productSku", @"ga:transactionId", @"ga:searchCategory",
+          @"ga:userDefinedValue", @"ga:visitLength", @"ga:visitorType",
+          @"ga:week", @"ga:year", @"ga:adContent", @"ga:adGroup", @"ga:adSlot",
+          @"ga:adSlotPosition", @"ga:campaign", @"ga:keyword", @"ga:medium",
+          @"ga:referralPath", @"ga:source", @"ga:exitPagePath",
+          @"ga:landingPagePath",  @"ga:secondPagePath", @"ga:pagePath",
+          @"ga:pageTitle", @"ga:affiliation", @"ga:daysToTransaction",
+          @"ga:productCategory", @"ga:productName", @"ga:productSku",
+          @"ga:transactionId", @"ga:searchCategory",
           @"ga:searchDestinationPage", @"ga:searchKeyword",
           @"ga:searchKeywordRefinement", @"ga:searchStartPage",
-          @"ga:searchUsed", nil];
+          @"ga:searchUsed", @"ga:nextPagePath", @"ga:previousPagePath",
+          @"ga:eventCategory", @"ga:eventAction", @"ga:eventLabel", nil];
 }
 
 - (NSArray *)metricNames {
@@ -101,7 +103,8 @@ static AnalyticsSampleWindowController* gWindowController = nil;
           @"ga:transactionRevenue", @"ga:transactions",
           @"ga:transactionShipping", @"ga:transactionTax",
           @"ga:uniquePageviews", @"ga:uniquePurchases",
-          @"ga:visitors", @"ga:visits", nil];
+          @"ga:visitors", @"ga:visits",
+          @"ga:totalEvents", @"ga:uniqueEvents", @"ga:eventValue", nil];
 }
 
 - (void)awakeFromNib {

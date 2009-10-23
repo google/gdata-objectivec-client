@@ -61,8 +61,6 @@
    [GDataYouTubeLocation class],
    [GDataYouTubeRecordedDate class],
    
-   [GDataYouTubeRacy class], // racy is deprecated for GData v2
-   
    // YouTubeMediaGroup encapsulates YouTubeMediaContent
    [GDataYouTubeMediaGroup class],
    nil];
@@ -73,8 +71,7 @@
   
   // the publication state element is an extension to the Atom publishing
   // control element
-  Class appClass = [GDataAtomPubControl atomPubControlClassForObject:self];
-  [self addExtensionDeclarationForParentClass:appClass
+  [self addExtensionDeclarationForParentClass:[GDataAtomPubControl class]
                                    childClass:[GDataYouTubePublicationState class]];
 
   // the token element is an extension to the edit-media GDataLink
@@ -96,7 +93,6 @@
     { @"mediaGroup",        @"mediaGroup",       kGDataDescValueLabeled   },
     { @"geoLocation",       @"geoLocation",      kGDataDescValueLabeled   },
     { @"notEmbeddable",     nonEmbeddableValue,  kGDataDescValueIsKeyPath },
-    { @"version<=1.0:racy", @"isRacy",             kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
 
@@ -152,24 +148,6 @@
 
   obj = [GDataYouTubeRecordedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataYouTubeRecordedDate class]];
-}
-
-- (BOOL)isRacy {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-
-  GDataYouTubeRacy *obj = [self objectForExtensionClass:[GDataYouTubeRacy class]];
-  return (obj != nil);
-}
-
-- (void)setIsRacy:(BOOL)flag {
-  GDATA_DEBUG_ASSERT_MAX_SERVICE_V1();
-  
-  if (flag) {
-    GDataYouTubeRacy *racy = [GDataYouTubeRacy implicitValue];
-    [self setObject:racy forExtensionClass:[GDataYouTubeRacy class]];
-  } else {
-    [self setObject:nil forExtensionClass:[GDataYouTubeRacy class]];
-  }
 }
 
 - (BOOL)isEmbeddable {

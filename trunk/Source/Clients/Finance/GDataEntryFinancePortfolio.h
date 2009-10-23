@@ -34,7 +34,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataFinanceDefaultServiceVersion _INITIALIZE_AS(@"1.0");
+_EXTERN NSString* const kGDataFinanceDefaultServiceVersion _INITIALIZE_AS(@"2.0");
 
 _EXTERN NSString* const kGDataNamespaceFinance       _INITIALIZE_AS(@"http://schemas.google.com/finance/2007");
 _EXTERN NSString* const kGDataNamespaceFinancePrefix _INITIALIZE_AS(@"gf");

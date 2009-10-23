@@ -49,8 +49,4 @@
 
 @end
 
-@interface GDataAtomCategoryGroup1_0 : GDataAtomCategoryGroup <GDataExtension>
-// older namespace URI
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SERVICE_INTROSPECTION
