@@ -1214,6 +1214,7 @@
 		4F48F01A105AE2920053938E /* GDataEntryFileDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F48F015105AE2920053938E /* GDataEntryFileDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F48F01B105AE2920053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F014105AE2920053938E /* GDataEntryFileDoc.m */; };
 		4F48F028105AE3520053938E /* GDataEntryFileDoc.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F48F015105AE2920053938E /* GDataEntryFileDoc.h */; };
+		4F49364C1096488600A142D4 /* GDataEntryHealthRegister.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25FB6C1028D05C0035D678 /* GDataEntryHealthRegister.m */; };
 		4F4B93E80C5045020064B6F6 /* GDataEntrySpreadsheetDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B93DE0C5045020064B6F6 /* GDataEntrySpreadsheetDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B93E90C5045020064B6F6 /* GDataEntryDocBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F4B93DF0C5045020064B6F6 /* GDataEntryDocBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F4B93EA0C5045020064B6F6 /* GDataEntryPresentationDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4B93E00C5045020064B6F6 /* GDataEntryPresentationDoc.m */; };
@@ -5502,6 +5503,7 @@
 				4F61CB29103CAA1B00C0692E /* GDataEntryDocRevision.m in Sources */,
 				4F61CB2A103CAA1B00C0692E /* GDataFeedDocRevision.m in Sources */,
 				4F48F018105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
+				4F49364C1096488600A142D4 /* GDataEntryHealthRegister.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
