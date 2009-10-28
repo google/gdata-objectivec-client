@@ -3,6 +3,8 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.9.0
+28-October-2009
 Changes since 1.8.0
 
 Additions
@@ -10,18 +12,12 @@ Additions
 - Added GDATA_INCLUDE compiler conditionals to specify which service's code
   should be built.
 
+- Added iPhone static library build target to the project file.
+
 - Added service method to authenticate without fetching a feed or entry.
 
 - Added setShouldFormatErrorsAsXML: for queries to encourage older API servers
   to return the structured versions of errors.
-
-- Added Docs service v3 support, including the revision feed.
-
-- Added convenience method for creating CCR elements from NSXMLElements.
-
-- Added CCR extension support to Health register entry.
-
-- Added epub accessors to Books API.
 
 - Added block callback support to GDataHTTPFetcher
 
@@ -33,6 +29,14 @@ Additions
 
 - Added cookie storage method "none" to GDataHTTPFetcher to ignore all cookies.
 
+- Added Docs service v3 support, including the revision feed.
+
+- Added convenience method for creating CCR elements from NSXMLElements.
+
+- Added CCR extension support to Health register entry.
+
+- Added epub accessors to Books API.
+
 - Added YouTube convenience accessors highQualityThumbnail and
   mediaContentWithFormatNumber:
   
@@ -43,7 +47,7 @@ Additions
 
 - Added OCR and translation on upload to the DocsSample app.
 
-- Added uploading to FinanceSample app.
+- Added uploading to the FinanceSample app.
 
 Changes
 
@@ -58,7 +62,7 @@ Changes
 
 - The shouldIgnoreXML flag is now settable in individual tickets.
 
-- Made object properties dictionaries more KVO-compliant (thanks mtonkin)
+- Made object properties dictionaries more KVO-compliant (thanks mtonkin.)
 
 - GDataHTTPFetcher dated data cache now is bounded in size (by default, 15 MB
   for Mac, 1 MB for iPhones) making it suitable for use on iPhones
@@ -70,8 +74,9 @@ Changes
   rather than a progress monitor input stream, as progress monitoring
   no longer requires that input stream on iPhone 3.0 and Mac OS X 10.5.8
   
-- Rather than warn about an omitted user agent, just quietly default to the
-  bundle ID instead.
+- Rather than warn about an omitted user agent, the library just quietly
+  defaults to the bundle ID instead.  Library users no longer need to call
+  setUserAgent:.
 
 - Renamed analyticsProperties to avoid conflict with properties of the
   GDataObject base class.
@@ -80,13 +85,16 @@ Bugs Fixed
 
 - Changing the service authentication now clears the dated data cache.
 
-- Setting the name of a Google Base attribute also now sets the XML element
-  local name.
-
 - Fixed the atomPub URI when creating new objects with code protocol v2.
 
 - Fixed a bug causing the service's dated data cache to be cleared for every
   call setDatedDataCache:NO
+
+- Setting the name of a Google Base attribute also now sets the XML element
+  local name.
+
+- Changed to stricter encoding of query category filter parameters
+  (thanks cnoble)
 
 
 Release 1.8.0

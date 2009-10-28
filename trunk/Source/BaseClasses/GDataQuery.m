@@ -530,7 +530,7 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
     id filter;
     GDATA_FOREACH(filter, categoryFilters_) {
       NSString *filterValue = [filter stringValue];
-      NSString *filterStr = [GDataUtilities stringByURLEncodingString:filterValue];
+      NSString *filterStr = [GDataUtilities stringByURLEncodingForURI:filterValue];
       if ([filterStr length] > 0) {
         [pathStr appendFormat:@"/%@", filterStr];
       }
