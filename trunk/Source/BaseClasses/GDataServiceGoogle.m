@@ -764,12 +764,14 @@ enum {
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password {
   // if the username or password is changing, invalidate the
-  // auth token
+  // auth token and clear the history of last-modified dates
   if (!AreEqualOrBothNil([self username], username)
       || !AreEqualOrBothNil([self password], password)) {
 
     [self setAuthToken:nil];
     [self setAuthSubToken:nil];
+
+    [self clearLastModifiedDates];
   }
 
   [super setUserCredentialsWithUsername:username password:password];

@@ -78,6 +78,8 @@ Changes
 
 Bugs Fixed
 
+- Changing the service authentication now clears the dated data cache.
+
 - Setting the name of a Google Base attribute also now sets the XML element
   local name.
 

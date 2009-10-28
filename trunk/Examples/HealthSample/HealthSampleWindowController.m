@@ -21,6 +21,7 @@
 
 @interface HealthSampleWindowController (PrivateMethods)
 - (void)updateUI;
+- (void)updateServiceClass;
 
 - (void)fetchFeedOfProfileList;
 - (void)fetchSelectedProfile;
@@ -75,7 +76,7 @@ static HealthSampleWindowController* gWindowController = nil;
 
   // initialize the service class to match the selected radio button
   // (sandbox or production)
-  [self radioButtonClicked:mRadioMatrix];
+  [self updateServiceClass];
 
   [self updateUI];
 }
@@ -185,6 +186,17 @@ static HealthSampleWindowController* gWindowController = nil;
   [mProfileResultTextField setString:resultStr];
 }
 
+- (void)updateServiceClass {
+  NSButtonCell *cell = [mRadioMatrix selectedCell];
+  int tag = [cell tag];
+
+  if (tag == 1) {
+    mServiceClass = [GDataServiceGoogleHealthSandbox class];
+  } else {
+    mServiceClass = [GDataServiceGoogleHealth class];
+  }
+}
+
 - (IBAction)loggingCheckboxClicked:(id)sender {
   [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
 }
@@ -220,14 +232,7 @@ static HealthSampleWindowController* gWindowController = nil;
 
 - (IBAction)radioButtonClicked:(id)sender {
   // user changed to or from the sandbox service
-  NSButtonCell *cell = [sender selectedCell];
-  int tag = [cell tag];
-
-  if (tag == 1) {
-    mServiceClass = [GDataServiceGoogleHealthSandbox class];
-  } else {
-    mServiceClass = [GDataServiceGoogleHealth class];
-  }
+  [self updateServiceClass];
 
   [self fetchFeedOfProfileList];
 }
