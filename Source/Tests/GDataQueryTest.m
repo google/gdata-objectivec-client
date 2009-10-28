@@ -85,12 +85,14 @@
   GDataQuery* query3 = [GDataQuery queryWithFeedURL:feedURL];
   [query3 addCategoryFilter:categoryFilter];
   NSURL* resultURL3 = [query3 URL];
- 
-  NSString* expected3 = @"http://www.google.com/calendar/feeds/userID/private/basic/"
-    "-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3";
+
+  NSString* expected3 = @"http://www.google.com/calendar/feeds/userID/private/"
+    "basic/-/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp"
+    "%3A%2F%2Fschemas.google.com%2Fg%2F2005%23event%7C%7BMyScheme2%7D"
+    "MyTerm2%7C-MyTerm3";
   STAssertEqualObjects([resultURL3 absoluteString], expected3, @"Category filter generation error");
-  
-  
+
+
   // finally, add the previous category filter and another category filter
   // to the second query's parameters
   [query2 addCategoryFilter:categoryFilter];
@@ -98,13 +100,14 @@
   
   NSURL* resultURL2a = [query2 URL];
 
-  NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/basic"
-    "/-/%7Bhttp://schemas.google.com/g/2005%23kind%7Dhttp://schemas.google.com/g/2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/Zonk4?"
-    "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&orderby=random"
-    "&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
-    "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true"
-    "&sortorder=ascending&start-index=10&strict=true"
-    "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
+  NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/"
+    "basic/-/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp%3A%2F%2F"
+    "schemas.google.com%2Fg%2F2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/"
+    "Zonk4?author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&"
+    "orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z&"
+    "published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true&"
+    "sortorder=ascending&start-index=10&strict=true&"
+    "updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
 
   STAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
