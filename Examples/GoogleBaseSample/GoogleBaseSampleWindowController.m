@@ -252,6 +252,10 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
 
   mIsGoogleBaseFetchPending = NO;
 
+  // the feed has changed, so the table displaying the feed needs its data
+  // refreshed
+  [mGoogleBaseTable reloadData];
+
   // select an appropriate tab by checking for attributes, metadata attributes,
   // or a metadata attribute list in the first entry
   if ([[feed entries] count] > 0) {

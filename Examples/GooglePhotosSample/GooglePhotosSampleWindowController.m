@@ -282,8 +282,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [mAddTagButton setEnabled:(hasPhotoFeed && isTagProvided)];
   [mAddCommentButton setEnabled:(hasPhotoFeed && isCommentProvided)];
 
+  BOOL doesFeedHavePostLink = ([mUserAlbumFeed postLink] != nil);
   BOOL isNewAlbumNameProvided = ([[mCreateAlbumField stringValue] length] > 0);
-  [mCreateAlbumButton setEnabled:isNewAlbumNameProvided];
+  BOOL canCreateAlbum = doesFeedHavePostLink && isNewAlbumNameProvided;
+  [mCreateAlbumButton setEnabled:canCreateAlbum];
 }
 
 - (void)updateChangeAlbumList {
