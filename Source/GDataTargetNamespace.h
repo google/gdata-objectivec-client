@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9 (516 classes) 2009-10-29 11:52:38 -0700
+// com.google.GDataFramework v. 1.9 (516 classes) 2009-10-29 11:57:18 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
