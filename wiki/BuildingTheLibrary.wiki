@@ -25,9 +25,7 @@ To facilitate debugging, you may choose to include the GData.xcodeproj project f
 
 == Linking to the iPhone Static Library ==
 
-*_New since library version 1.8:_*
-
-The library project file in the top-of-trunk sources now includes a target for building a static library for iPhone and iPod Touch apps; this avoids dragging individual library source files into the iPhone application's project.
+The library project includes a target for building a static library for iPhone and iPod Touch apps; this avoids dragging individual library source files into the iPhone application's project.
 
 To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], and add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app.
 
@@ -37,7 +35,7 @@ Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC
 
 Also add the compile flags described below in "Removing Unneeded Code".
 
-The static library build creates a directory of header files that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
+The static library build creates a directory of header files (in its build products directory) that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
 
 `#import "GDataCalendar.h"`
 
@@ -81,8 +79,6 @@ iPhone applications also need these build settings in the project or target:
  Other Linker Flags:  `-lxml2`
 
 == Removing Unneeded Code ==
-
-*_New since library version 1.8:_*
 
 However you build the library, it is worthwhile to remove code for the services that your application will not be using. To remove unneeded code, set these compile flags in the  project or target build settings of the GData.xcodeproj project file. When compiling the sources directly into your application, set these flags in your project's settings.
 
