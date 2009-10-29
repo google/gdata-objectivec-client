@@ -1,5 +1,4 @@
 #summary Google Data APIs Objective-C Client Library Design Document
-#labels Featured
 
 = Google Data APIs Objective-C Client Library Design Document =
 
@@ -458,8 +457,6 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
-
-
 
 
 
