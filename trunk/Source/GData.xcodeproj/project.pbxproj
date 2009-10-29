@@ -80,6 +80,7 @@
 		4F10BBAE0F1E9A07002AE29A /* GDataAtomServiceDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F10BB9C0F1E9A07002AE29A /* GDataAtomServiceDocument.m */; };
 		4F10BBAF0F1E9A07002AE29A /* GDataAtomCategoryGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F10BB9F0F1E9A07002AE29A /* GDataAtomCategoryGroup.m */; };
 		4F10BD6F0F1FEEF5002AE29A /* GDataServiceIntrospection.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F10BD6E0F1FEEF5002AE29A /* GDataServiceIntrospection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F117DB9109A205100FBF198 /* GDataAuthenticationFetcher.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F0935131030D682004C7DC1 /* GDataAuthenticationFetcher.h */; };
 		4F14A9E70B1277290072EBB8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
 		4F14ABEE0B12897B0072EBB8 /* GDataLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEB0B12897B0072EBB8 /* GDataLink.m */; };
 		4F14ABEF0B12897B0072EBB8 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
@@ -2104,6 +2105,7 @@
 				4F1C707E1027B53600B46459 /* GDataAtomPubControl.h in Copy Static Library Headers */,
 				4F1C707F1027B53600B46459 /* GDataAtomServiceDocument.h in Copy Static Library Headers */,
 				4F1C70801027B53600B46459 /* GDataAtomWorkspace.h in Copy Static Library Headers */,
+				4F117DB9109A205100FBF198 /* GDataAuthenticationFetcher.h in Copy Static Library Headers */,
 				4F1C70811027B53600B46459 /* GDataBaseElements.h in Copy Static Library Headers */,
 				4F1C70821027B53600B46459 /* GDataBatchID.h in Copy Static Library Headers */,
 				4F1C70831027B53600B46459 /* GDataBatchInterrupted.h in Copy Static Library Headers */,
