@@ -3,6 +3,13 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.9.0
+
+Changes
+
+- GDataQueryYouTube's videoQuery now calls through to the base class
+  fullTextQuery (thanks voxxar)
+
 Release 1.9.0
 28-October-2009
 Changes since 1.8.0
