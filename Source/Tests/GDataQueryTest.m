@@ -287,11 +287,11 @@
   [ytQuery1 setUploader:@"foo"];
   
   NSURL* resultURL1 = [ytQuery1 URL];
-  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/favorites?"
-    "format=0%2C5%2C6&location=Canada&location-radius=2km&lr=en&orderby=relevance"
-    "&restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo"
-    "&vq=%22Fred+Flintstone%22";
-  
+  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
+    "favorites?format=0%2C5%2C6&location=Canada&location-radius=2km&lr=en&"
+    "orderby=relevance&q=%22Fred+Flintstone%22&restriction=127.0.0.1&"
+    "safeSearch=strict&time=this_week&uploader=foo";
+
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"YouTube query 1 generation error");
 }

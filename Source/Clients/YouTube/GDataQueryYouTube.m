@@ -34,10 +34,6 @@ static NSString *const kLocationRadiusParamName = @"location-radius";
 static NSString *const kRacyParamName = @"racy";
 static NSString *const kUploaderParamName = @"uploader";
 
-// Deprecated: The vq parameter has been replaced with
-// "q" (kFullTextQueryStringParamName) for v2
-static NSString *const kVideoQueryParamName = @"vq";
-
 @implementation GDataQueryYouTube
 
 + (GDataQueryYouTube *)youTubeQueryWithFeedURL:(NSURL *)feedURL {
@@ -46,12 +42,13 @@ static NSString *const kVideoQueryParamName = @"vq";
 
 
 - (void)setVideoQuery:(NSString *)str {
-  [self addCustomParameterWithName:kVideoQueryParamName
-                             value:str];
+  // The vq query parameter has been replaced with
+  // "q" (kFullTextQueryStringParamName) for v2
+  [self setFullTextQueryString:str];
 }
 
 - (NSString *)videoQuery {
-  return [self valueForParameterWithName:kVideoQueryParamName];
+  return [self fullTextQueryString];
 }
 
 - (void)setFormat:(NSString *)str {
