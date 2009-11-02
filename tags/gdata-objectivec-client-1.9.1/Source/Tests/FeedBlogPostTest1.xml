@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="http://www.blogger.com/styles/atom.css" type="text/css"?>
+<feed gd:etag="W/&quot;CUEAQXozeyp7ImA9WxJXEEg.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:georss="http://www.georss.org/georss" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>tag:blogger.com,1999:blog-1452780071865767697</id>
+    <updated>2009-06-03T11:27:20.483-07:00</updated>
+    <title>Test Posts</title>
+    <subtitle type="html"/>
+    <link
+        href="http://testaccount.blogspot.com/feeds/posts/default"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://testaccount.blogspot.com/feeds/posts/default"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://www.blogger.com/feeds/1452780071865767697/posts/default"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link href="http://testaccount.blogspot.com/"
+        rel="alternate" type="text/html"/>
+    <author>
+        <name>TestAccount</name>
+        <uri>http://www.blogger.com/profile/1693785270945345398</uri>
+        <email>noreply@blogger.com</email>
+    </author>
+    <generator uri="http://www.blogger.com" version="7.00">Blogger</generator>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry gd:etag="W/&quot;A0MCSXk5eSp7ImA9WxJQGUU.&quot;">
+        <id>tag:blogger.com,1999:blog-1452780071865767697.post-6317479243618470383</id>
+        <published>2009-06-02T17:37:00.003-07:00</published>
+        <updated>2009-06-02T17:37:48.721-07:00</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-06-02T17:37:48.721-07:00</app:edited>
+        <app:control xmlns:app="http://www.w3.org/2007/app">
+          <app:draft>yes</app:draft>
+        </app:control>
+        <title>Post Created 2009-06-02 17:37:48 -0700</title>
+        <content type="html">frog Zzone2</content>
+        <link rel="enclosure" type="text/plain" href="http://example.net/file.txt" length="0"/>
+        <link
+            href="http://testaccount.blogspot.com/feeds/6317479243618470383/comments/default"
+            rel="replies" title="Post Comments" type="application/atom+xml"/>
+        <link
+            href="https://www.blogger.com/comment.g?blogID=1452780071865767697&amp;postID=6317479243618470383"
+            rel="replies" title="0 Comments" type="text/html"/>
+        <link
+            href="http://www.blogger.com/feeds/1452780071865767697/posts/default/6317479243618470383"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://testaccount.blogspot.com/feeds/posts/default/6317479243618470383"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://testaccount.blogspot.com/2009/06/post-created-2009-06-02-173748-0700.html"
+            rel="alternate"
+            title="Post Created 2009-06-02 17:37:48 -0700" type="text/html"/>
+        <author>
+            <name>TestAccount</name>
+            <uri>http://www.blogger.com/profile/1693785270945345398</uri>
+            <email>noreply@blogger.com</email>
+        </author>
+        <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" 
+            url="http://3.bp.blogspot.com/_dpLlUQvimjU/Sib4sNjy02I/AAAAAAAAAAM/4xlEoAm1D6Q/s72-c/Hippo.jpg" 
+            height="72" width="72"/>
+        <thr:total xmlns:thr="http://purl.org/syndication/thread/1.0">3</thr:total>
+    </entry>
+    <entry gd:etag="W/&quot;CUEAQXoyeSp7ImA9WxJXEEg.&quot;">
+        <id>tag:blogger.com,1999:blog-1452780071865767697.post-1015986829942539734</id>
+        <published>2009-06-02T16:16:00.001-07:00</published>
+        <updated>2009-06-03T11:27:20.491-07:00</updated>
+        <app:edited xmlns:app="http://www.w3.org/2007/app">2009-06-03T11:27:20.491-07:00</app:edited>
+        <title>Post Created 2009-06-02 16:16:00 -0700</title>
+        <content type="html">Here's the content<br/>That's enough.</content>
+        <link
+            href="http://testaccount.blogspot.com/feeds/1015986829942539734/comments/default"
+            rel="replies" title="Post Comments" type="application/atom+xml"/>
+        <link
+            href="https://www.blogger.com/comment.g?blogID=1452780071865767697&amp;postID=1015986829942539734"
+            rel="replies" title="2 Comments" type="text/html"/>
+        <link
+            href="http://www.blogger.com/feeds/1452780071865767697/posts/default/1015986829942539734"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://testaccount.blogspot.com/feeds/posts/default/1015986829942539734"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://testaccount.blogspot.com/2009/06/post-created-2009-06-02-161600-0700.html"
+            rel="alternate"
+            title="Post Created 2009-06-02 16:16:00 -0700" type="text/html"/>
+        <author>
+            <name>TestAccount</name>
+            <uri>http://www.blogger.com/profile/1693785270945345398</uri>
+            <email>noreply@blogger.com</email>
+        </author>
+        <thr:total xmlns:thr="http://purl.org/syndication/thread/1.0">2</thr:total>
+    </entry>
+</feed>
+
+

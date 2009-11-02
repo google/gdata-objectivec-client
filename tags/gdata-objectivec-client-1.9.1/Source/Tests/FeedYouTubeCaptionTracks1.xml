@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;DEENRXc9fip7ImA9WxJUEEQ.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:app="http://www.w3.org/2007/app"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>tag:youtube.com,2008:videos:GppRTi2JGQ8:captions</id>
+    <updated>2009-07-08T23:44:54.966Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#captionTrack"/>
+    <title>Caption Tracks for MyVideo</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8"
+        rel="related" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions/batch"
+        rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions?start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions?alt=atom-service"
+        rel="service" type="application/atomsvc+xml"/>
+    <author>
+        <name>youtubeuser</name>
+        <uri>http://gdata.youtube.com/feeds/api/users/youtubeuser</uri>
+    </author>
+    <generator uri="http://gdata.youtube.com/" version="2.0">YouTube data API</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry gd:etag="W/&quot;DEIDSXc6eCp7ImA9WxJUEEQ.&quot;">
+        <id>tag:youtube.com,2008:captions:CiYLEO3ZhwUaHQiPsqTs4qmUzRoSAmVuGg1jYXB0cmFjayBuYW1lDA</id>
+        <published>2009-07-08T16:42:58.910-07:00</published>
+        <updated>2009-07-08T16:42:58.910-07:00</updated>
+        <app:control>
+            <app:draft>yes</app:draft>
+            <yt:state name="failed" reasonCode="invalidFormat"/>
+        </app:control>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#captionTrack"/>
+        <title>captrack name</title>
+        <content
+            src="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captiondata/CiYLEO3ZhwUaHQiPsqTs4qmUzRoSAmVuGg1jYXB0cmFjayBuYW1lDA"
+            type="application/vnd.youtube.timedtext" xml:lang="en"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions/CiYLEO3ZhwUaHQiPsqTs4qmUzRoSAmVuGg1jYXB0cmFjayBuYW1lDA"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captiondata/CiYLEO3ZhwUaHQiPsqTs4qmUzRoSAmVuGg1jYXB0cmFjayBuYW1lDA"
+            rel="edit-media" type="application/vnd.youtube.timedtext"/>
+    </entry>
+</feed>

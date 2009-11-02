@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:base="http://www.google.com"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gcs="http://schemas.google.com/codesearch/2006" xmlns:opensearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    <id>http://www.google.com/codesearch/feeds/search?q=package:perl+Frodo</id>
+    <updated>2007-06-12T16:02:54Z</updated>
+    <title type="text">Google Code Search</title>
+    <generator uri="http://www.google.com/codesearch" version="1.0">Google Code Search</generator>
+    <opensearch:totalResults>50</opensearch:totalResults>
+    <opensearch:startIndex>1</opensearch:startIndex>
+    <author>
+        <name>Google Code Search</name>
+        <uri>http://www.google.com/codesearch</uri>
+    </author>
+    <link href="http://schemas.google.com/codesearch/2006"
+        rel="http://schemas.google.com/g/2006#feed" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/codesearch/feeds/search?q=package:perl+Frodo"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/codesearch/feeds/search?q=package:perl+Frodo&amp;start-index=11"
+        rel="next" type="application/atom+xml"/>
+    <link href="http://www.google.com/codesearch?q=package:perl+Frodo"
+        rel="alternate" type="text/html"/>
+    <entry>
+        <id>http://www.google.com/codesearch?hl=en&amp;q=+package:perl+Frodo+show:J2wdpicUdYk:4-xJQg3UTlQ:MH9iZQiK0Ag&amp;sa=N&amp;ct=rx&amp;cd=1&amp;cs_p=http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz&amp;cs_f=perl-5.9.1/toke.c&amp;cs_p=http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz&amp;cs_f=perl-5.9.1/toke.c#a0</id>
+        <updated>2007-06-12T16:02:54Z</updated>
+        <author>
+            <name>Code owned by external author.</name>
+        </author>
+        <title type="text">perl-5.9.1/toke.c</title>
+        <link
+            href="http://www.google.com/codesearch?hl=en&amp;q=+package:perl+Frodo+show:J2wdpicUdYk:4-xJQg3UTlQ:MH9iZQiK0Ag&amp;sa=N&amp;ct=rx&amp;cd=1&amp;cs_p=http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz&amp;cs_f=perl-5.9.1/toke.c&amp;cs_p=http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz&amp;cs_f=perl-5.9.1/toke.c#a0"
+            rel="alternate" type="text/html"/>
+        <gcs:package
+            name="http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz" uri="http://ftp.funet.fi/pub/CPAN/src/perl-5.9.1.tar.gz"/>
+        <gcs:file name="perl-5.9.1/toke.c"/>
+        <content type="text/html">&lt;pre&gt;    11: /*
+         *   &amp;quot;It all comes from here, the stench and the peril.&amp;quot;  --&lt;b&gt;Frodo&lt;/b&gt;
+         */
+&lt;/pre&gt;</content>
+        <gcs:match lineNumber="12" type="text/html">&lt;pre&gt; *   &amp;quot;It all comes from here, the stench and the peril.&amp;quot;  --&lt;b&gt;Frodo&lt;/b&gt;
+&lt;/pre&gt;</gcs:match>
+        <rights>Artistic</rights>
+    </entry>
+    <entry>
+        <id>http://www.google.com/codesearch?hl=en&amp;q=+package:perl+Frodo+show:DWV7aKbgxJw:GjZg55ktqTE:-r9jEhjIW6U&amp;sa=N&amp;ct=rx&amp;cd=5&amp;cs_p=http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz&amp;cs_f=Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t&amp;cs_p=http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz&amp;cs_f=Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t#a0</id>
+        <updated>2007-06-12T16:02:54Z</updated>
+        <author>
+            <name>Code owned by external author.</name>
+        </author>
+        <title type="text">Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t</title>
+        <link
+            href="http://www.google.com/codesearch?hl=en&amp;q=+package:perl+Frodo+show:DWV7aKbgxJw:GjZg55ktqTE:-r9jEhjIW6U&amp;sa=N&amp;ct=rx&amp;cd=5&amp;cs_p=http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz&amp;cs_f=Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t&amp;cs_p=http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz&amp;cs_f=Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t#a0"
+            rel="alternate" type="text/html"/>
+        <gcs:package
+            name="http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz" uri="http://gentoo.osuosl.org/distfiles/Perl6-Pugs-6.2.12.tar.gz"/>
+        <gcs:file name="Perl6-Pugs-6.2.12/t/subroutines/sub_named_params.t"/>
+        <content type="text/html">&lt;pre&gt;   131: my %fellowship = slurpee(hobbit =&amp;gt; &amp;#39;&lt;b&gt;Frodo&lt;/b&gt;&amp;#39;, wizard =&amp;gt; &amp;#39;Gandalf&amp;#39;);
+        is(%fellowship&amp;lt;hobbit&amp;gt;, &amp;#39;&lt;b&gt;Frodo&lt;/b&gt;&amp;#39;, &amp;quot;hobbit arg was slurped&amp;quot;);
+&lt;/pre&gt;</content>
+        <gcs:match lineNumber="131" type="text/html">&lt;pre&gt;my %fellowship = slurpee(hobbit =&amp;gt; &amp;#39;&lt;b&gt;Frodo&lt;/b&gt;&amp;#39;, wizard =&amp;gt; &amp;#39;Gandalf&amp;#39;);
+&lt;/pre&gt;</gcs:match>
+        <gcs:match lineNumber="132" type="text/html">&lt;pre&gt;is(%fellowship&amp;lt;hobbit&amp;gt;, &amp;#39;&lt;b&gt;Frodo&lt;/b&gt;&amp;#39;, &amp;quot;hobbit arg was slurped&amp;quot;);
+&lt;/pre&gt;</gcs:match>
+    </entry>
+</feed>

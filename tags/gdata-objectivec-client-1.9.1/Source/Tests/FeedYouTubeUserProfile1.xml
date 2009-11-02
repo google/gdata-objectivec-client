@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:media="http://search.yahoo.com/mrss/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>http://gdata.youtube.com/feeds/api/users/TestAccount</id>
+    <published>2008-01-29T16:27:19.000-08:00</published>
+    <updated>2008-01-30T13:35:26.000-08:00</updated>
+    <category
+        scheme="http://gdata.youtube.com/schemas/2007/channeltypes.cat" term="Standard"/>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#userProfile"/>
+    <title type="text">TestAccount Channel</title>
+    <content type="text">About me stuff</content>
+    <link
+        href="http://gdata.youtube.com/feeds/api/playlists/BBA2B78EF2F08B10"
+        rel="http://gdata.youtube.com/schemas/2007#user.vlog" type="application/atom+xml"/>
+    <link href="http://testaccount.com/" rel="related" type="text/html"/>
+    <link href="http://www.youtube.com/profile?user=TestAccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>TestAccount</name>
+        <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
+    </author>
+    <yt:aboutMe>Narf narf</yt:aboutMe>
+    <yt:firstName>Test</yt:firstName>
+    <yt:lastName>Account</yt:lastName>
+    <yt:age>49</yt:age>
+    <yt:username>TestAccount</yt:username>
+    <yt:books>Booksz</yt:books>
+    <yt:gender>m</yt:gender>
+    <yt:company>Apple, Google</yt:company>
+    <yt:hobbies>Hobbiez, and more hobbiez</yt:hobbies>
+    <yt:hometown>Oakland, CA</yt:hometown>
+    <yt:location>Seattle, WA, US</yt:location>
+    <yt:movies>Moviez</yt:movies>
+    <yt:music>Musicz</yt:music>
+    <yt:occupation>worker, player</yt:occupation>
+    <yt:relationship>open</yt:relationship>
+    <yt:school>Wildwood Elementary</yt:school>
+    <media:thumbnail url="http://i.ytimg.com/vi/Bkhnvn1PIHs/default.jpg"/>
+    <yt:statistics lastWebAccess="2008-01-30T11:38:20.000-08:00"
+        videoWatchCount="1" viewCount="2" favoriteCount="7"/>
+    <gd:feedLink countHint="1"
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/favorites" rel="http://gdata.youtube.com/schemas/2007#user.favorites"/>
+    <gd:feedLink countHint="1"
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/contacts" rel="http://gdata.youtube.com/schemas/2007#user.contacts"/>
+    <gd:feedLink countHint="0"
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/inbox" rel="http://gdata.youtube.com/schemas/2007#user.inbox"/>
+    <gd:feedLink
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/playlists" rel="http://gdata.youtube.com/schemas/2007#user.playlists"/>
+    <gd:feedLink countHint="1"
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/subscriptions" rel="http://gdata.youtube.com/schemas/2007#user.subscriptions"/>
+    <gd:feedLink countHint="1"
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/uploads" rel="http://gdata.youtube.com/schemas/2007#user.uploads"/>
+</entry>

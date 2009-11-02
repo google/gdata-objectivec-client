@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:docs="http://schemas.google.com/docs/2007"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://docs.google.com/feeds/documents/private/full</id>
+    <title type="text">Available Documents - test@domain.net</title>
+    <link href="http://docs.google.com" rel="alternate" type="text/html"/>
+    <link href="http://docs.google.com/feeds/documents/private/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="http://docs.google.com/feeds/documents/private/full"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://docs.google.com/feeds/documents/private/full?max-results=1000"
+        rel="self" type="application/atom+xml"/>
+    <updated>2007-08-02T20:09:37Z</updated>
+    <openSearch:totalResults>4</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/document%3Ad3mjx28_1d9k4sg</id>
+        <title type="text">the hi mom doc</title>
+        <content
+            src="http://docs.google.com/RawDocContents?action=fetch&amp;justBody=false&amp;revision=_latest&amp;editMode=false&amp;docID=d3mjx28_1d9k4sg" type="text/html"/>
+        <updated>2007-07-27T01:22:43Z</updated>
+        <link href="http://docs.google.com/Doc?id=d3mjx28_1d9k4sg"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/document%3Ad3mjx28_1d9k4sg"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <category label="document"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#document"/>
+        <gd:resourceId>spreadsheet:pmEMxYRcQzzATwbOb71BmGA</gd:resourceId>
+        <gd:lastModifiedBy>
+            <name>Fred Flintstone</name>
+            <email>test@domain.net</email>
+        </gd:lastModifiedBy>
+        <gd:lastViewed>2008-10-01T23:54:56.557Z</gd:lastViewed>
+        <gd:quotaBytesUsed>12345</gd:quotaBytesUsed>
+        <docs:writersCanInvite value="true"/>
+        <category label="hidden"
+            scheme="http://schemas.google.com/g/2005/labels" term="http://schemas.google.com/g/2005/labels#hidden"/>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/spreadsheet%3Ap73g0ZxwICDptJYjDRBPoBg</id>
+        <title type="text">My Test Spreadsheet</title>
+        <content
+            src="http://spreadsheets.google.com/fm?fmcmd=102&amp;key=p73g0ZxwICDptJYjDRBPoBg" type="text/html"/>
+        <updated>2007-03-25T06:31:37Z</updated>
+        <link
+            href="http://spreadsheets.google.com/ccc?key=p73g0ZxwICDptJYjDRBPoBg"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/worksheets/p73g0ZxwICDptJYjDRBPoBg/private/full"
+            rel="http://schemas.google.com/spreadsheets/2006#worksheetsfeed" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/spreadsheet%3Ap73g0ZxwICDptJYjDRBPoBg"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <category label="spreadsheet"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#spreadsheet"/>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/presentation%3Ad3mjx28_2gg3hk2</id>
+        <updated>2007-07-27T01:24:19.749Z</updated>
+        <category label="presentation"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#presentation"/>
+        <title type="text">my presentation doc</title>
+        <content
+            src="http://docs.google.com/RawDocContents?action=fetch&amp;docID=d3mjx28_2gg3hk2" type="text/html"/>
+        <link
+            href="http://docs.google.com/Doc?tab=vieworedit&amp;docid=d3mjx28_2gg3hk2"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/presentation%3Ad3mjx28_2gg3hk2"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/pdf%3A54595-47abfc9-842f-b44e09724f38</id>
+        <published>0001-01-03T00:00:00.000Z</published>
+        <updated>2008-08-20T23:19:53.637Z</updated>
+        <category label="pdf"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#pdf"/>
+        <category label="starred"
+            scheme="http://schemas.google.com/g/2005/labels" term="http://schemas.google.com/g/2005/labels#starred"/>
+        <category label="Other folder"
+            scheme="http://schemas.google.com/docs/2007/folders/test@domain.net" term="Other folder"/>
+        <title type="text">24HRflyer.pdf</title>
+        <content
+            src="http://docs.google.com/gb?export=download?id=F.54595c7b-47abfc9-842f-b44e09724f38" type="text/html"/>
+        <link
+            href="http://docs.google.com/fileview?id=F.54595c7b-47abfc9-842f-b44e09724f38"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38/fk4khr8l"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="http://schemas.google.com/docs/2007#parent"
+            title="Other folder" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <gd:feedLink
+            href="http://docs.google.com/feeds/acl/private/full/pdf54595c7b-47abfc9-842f-b44e09724f38" rel="http://schemas.google.com/acl/2007#accessControlList"/>
+    </entry>
+    <entry>
+        <id>http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e</id>
+        <published>0001-01-03T00:00:00.000Z</published>
+        <updated>2007-10-02T20:22:06.419Z</updated>
+        <category label="folder"
+            scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#folder"/>
+        <title type="text">Other folder</title>
+        <content
+            src="http://docs.google.com/feeds/folders/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/#folders/folder.0.4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://docs.google.com/feeds/documents/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3/f7auwz0z"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@domain.net</email>
+        </author>
+        <gd:feedLink
+            href="http://docs.google.com/feeds/acl/private/full/folder%3A4ce02913-e607-4e9e-a4cd-cc5275b740e3" rel="http://schemas.google.com/acl/2007#accessControlList"/>
+    </entry>
+</feed>
