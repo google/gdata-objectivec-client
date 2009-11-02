@@ -1213,11 +1213,17 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 + (BOOL)doesSupportSentDataCallback {
+#if GDATA_IPHONE
+  // NSURLConnection's didSendBodyData: delegate support appears to be
+  // available starting in iPhone OS 3.0
+  return (NSFoundationVersionNumber >= 678.47);
+#else
   // per WebKit's MaxFoundationVersionWithoutdidSendBodyDataDelegate
   //
   // indicates if NSURLConnection will invoke the didSendBodyData: delegate
   // method
   return (NSFoundationVersionNumber > 677.21);
+#endif
 }
 
 - (SEL)sentDataSelector {

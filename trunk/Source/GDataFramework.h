@@ -51,4 +51,7 @@
 
 void GDataFrameworkVersion(NSUInteger* major, NSUInteger* minor, NSUInteger* release);
 
+// Returns the version in @"a.b" or @"a.b.c" format
+NSString *GDataFrameworkVersionString(void);
+
 #endif

@@ -16,7 +16,25 @@
 #include "GDataFramework.h"
 
 void GDataFrameworkVersion(NSUInteger* major, NSUInteger* minor, NSUInteger* release) {
+  // version 1.9.1
   if (major)   *major = 1;
   if (minor)   *minor = 9;
-  if (release) *release = 0;
+  if (release) *release = 1;
+}
+
+NSString *GDataFrameworkVersionString(void) {
+  NSUInteger major, minor, release;
+  NSString *libVersionString;
+
+  GDataFrameworkVersion(&major, &minor, &release);
+
+  // most library releases will have a release value of zero
+  if (release != 0) {
+    libVersionString = [NSString stringWithFormat:@"%d.%d.%d",
+                        (int)major, (int)minor, (int)release];
+  } else {
+    libVersionString = [NSString stringWithFormat:@"%d.%d",
+                        (int)major, (int)minor];
+  }
+  return libVersionString;
 }
