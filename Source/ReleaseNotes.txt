@@ -3,12 +3,24 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.9.1
+30-October-2009
 Changes since 1.9.0
+
+Additions
+
+- Added GDataFrameworkVersionString function.
 
 Changes
 
 - GDataQueryYouTube's videoQuery now calls through to the base class
-  fullTextQuery (thanks voxxar)
+  fullTextQuery. (thanks voxxar)
+
+Bugs Fixed
+
+- Fixed criteria for expecting new NSURLConnection callback support to
+  start at iPhone OS 3. (thanks christophvz)
+
 
 Release 1.9.0
 28-October-2009

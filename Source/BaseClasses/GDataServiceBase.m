@@ -200,18 +200,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   if (libRange.location == NSNotFound) {
     // the user agent doesn't specify the client library, so append that
     // information, and the system version
-    NSUInteger major, minor, release;
-    NSString *libVersionString;
-    GDataFrameworkVersion(&major, &minor, &release);
-
-    // most library releases will have a release value of zero
-    if (release != 0) {
-      libVersionString = [NSString stringWithFormat:@"%d.%d.%d",
-        (int)major, (int)minor, (int)release];
-    } else {
-      libVersionString = [NSString stringWithFormat:@"%d.%d",
-                          (int)major, (int)minor];
-    }
+    NSString *libVersionString = GDataFrameworkVersionString();
 
     NSString *systemString = [[self class] systemVersionString];
 

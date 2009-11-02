@@ -48,8 +48,7 @@
   
   if (infoDict) {
     
-    NSString *binaryVersionStr = [NSString stringWithFormat:@"%d.%d",
-                                  (int)major, (int)minor];
+    NSString *binaryVersionStr = GDataFrameworkVersionString();
     
     NSString *plistVersionStr = [infoDict valueForKey:@"CFBundleVersion"];
 
