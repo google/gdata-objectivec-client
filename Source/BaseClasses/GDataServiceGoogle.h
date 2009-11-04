@@ -84,6 +84,10 @@ enum {
   BOOL shouldUseMethodOverrideHeader_;
 }
 
+//
+// delegate callback fetches
+//
+
 // fetch a feed, authenticated
 //
 // when the class of the returned feed or entry is not specified, it
@@ -151,6 +155,48 @@ enum {
                                forBatchFeedURL:(NSURL *)feedURL
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector;
+
+#if NS_BLOCKS_AVAILABLE
+//
+// Blocks callback fetches
+//
+
+// fetch a feed, authenticated
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                       completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler;
+
+// fetch a feed using query, authenticated
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                         completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler;
+
+// fetch an entry, authenticated
+ - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                        completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+
+// insert an entry, authenticated
+- (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
+                                        forFeedURL:(NSURL *)feedURL
+                                 completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+
+// update an entry, authenticated
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+
+// delete an entry, authenticated
+// (on success, callback will have receive nil pointers for both object and error)
+- (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
+                  completionHandler:(void (^)(GDataServiceTicket *ticket, id nilObject, NSError *error))handler;
+
+- (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
+                                     ETag:(NSString *)etag
+                  completionHandler:(void (^)(GDataServiceTicket *ticket, id nilObject, NSError *error))handler;
+
+// fetch a batch feed, authenticated
+- (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                               forBatchFeedURL:(NSURL *)feedURL
+                             completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler;
+#endif // NS_BLOCKS_AVAILABLE
+
 
 // authenticate without fetching a feed or entry
 //

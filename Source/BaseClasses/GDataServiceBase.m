@@ -37,6 +37,7 @@ static NSString *const kXMLErrorContentType = @"application/vnd.google.gdata.err
 static NSString* const kFetcherDelegateKey = @"_delegate";
 static NSString* const kFetcherObjectClassKey = @"_objectClass";
 static NSString* const kFetcherFinishedSelectorKey = @"_finishedSelector";
+static NSString* const kFetcherCompletionHandlerKey = @"_completionHandler";
 static NSString* const kFetcherTicketKey = @"_ticket";
 static NSString* const kFetcherStreamDataKey = @"_streamData";
 static NSString* const kFetcherParsedObjectKey = @"_parsedObject";
@@ -76,6 +77,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
          didFinishedSelector:(SEL)finishedSelector
+           completionHandler:(GDataServiceCompletionHandler)completionHandler
                       ticket:(GDataServiceTicketBase *)ticket;
 
 - (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
@@ -123,6 +125,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [serviceUserData_ release];
   [serviceProperties_ release];
   [serviceSurrogates_ release];
+
+#if NS_BLOCKS_AVAILABLE
+  [serviceUploadProgressBlock_ release];
+#endif
 
   [super dealloc];
 }
@@ -325,6 +331,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                     httpMethod:(NSString *)httpMethod
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
+                             completionHandler:(GDataServiceCompletionHandler)completionHandler
                           retryInvocationValue:(NSValue *)retryInvocationValue
                                         ticket:(GDataServiceTicketBase *)ticket {
 
@@ -374,7 +381,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
 
-    SEL progressSelector = [ticket uploadProgressSelector];
+    BOOL shouldReportUploadProgress;
+#if NS_BLOCKS_AVAILABLE
+    shouldReportUploadProgress = ([ticket uploadProgressSelector] != NULL
+                                  || [ticket uploadProgressHandler] != NULL);
+#else
+    shouldReportUploadProgress = ([ticket uploadProgressSelector] != NULL);
+#endif
 
     if ([objectToPost generateContentInputStream:&contentInputStream
                                           length:&contentLength
@@ -393,7 +406,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       NSData* xmlData = [[objectToPost XMLDocument] XMLData];
       contentLength = [xmlData length];
 
-      if (progressSelector == NULL || doesSupportSentData) {
+      if (!shouldReportUploadProgress || doesSupportSentData) {
         // there is no progress selector, or the fetcher can call us back on
         // sent data; we can post plain NSData, which is simpler because it
         // survives http redirects
@@ -420,7 +433,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     uploadStream = contentInputStream;
 
-    if (progressSelector != NULL) {
+    NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
+    [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
+
+    if (shouldReportUploadProgress) {
       if (doesSupportSentData) {
         // there is sentData callback support
         sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
@@ -443,9 +459,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
         uploadStream = monitoredInputStream;
       }
-
-      NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
-      [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
     }
   }
 
@@ -494,6 +507,14 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [fetcher setProperty:NSStringFromSelector(finishedSelector)
                 forKey:kFetcherFinishedSelectorKey];
 
+#if NS_BLOCKS_AVAILABLE
+  // copy the completion handler block to the heap; this does nothing if the
+  // block is already on the heap
+  completionHandler = [[completionHandler copy] autorelease];
+  [fetcher setProperty:completionHandler
+                forKey:kFetcherCompletionHandlerKey];
+#endif
+
   NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
   [fetcher setProperty:retryInvocation
                 forKey:kFetcherRetryInvocationKey];
@@ -520,6 +541,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   // success/failure callbacks have not yet been called by checking the
   // ticket
   if (!didFetch || [ticket hasCalledCallback]) {
+    [fetcher setProperties:nil];
+    [ticket setCurrentFetcher:nil];
     return nil;
   }
 
@@ -546,6 +569,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [invocation setArgument:&total atIndex:4];
     [invocation invoke];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceUploadProgressHandler block = [ticket uploadProgressHandler];
+  if (block) {
+    block(ticket, numReadSoFar, total);
+  }
+#endif
 }
 
 // sentData callback from fetcher
@@ -725,6 +755,13 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSError *error = [fetcher propertyForKey:kFetcherParseErrorKey];
   SEL finishedSelector = NSSelectorFromString([fetcher propertyForKey:kFetcherFinishedSelectorKey]);
 
+  GDataServiceCompletionHandler completionHandler;
+#if NS_BLOCKS_AVAILABLE
+  completionHandler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
+#else
+  completionHandler = NULL;
+#endif
+
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
   NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
@@ -754,6 +791,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
         BOOL isFetchingNextFeed = [self fetchNextFeedWithURL:nextURL
                                                     delegate:delegate
                                          didFinishedSelector:finishedSelector
+                                           completionHandler:completionHandler
                                                       ticket:ticket];
 
         // skip calling the callbacks since the ticket is still in progress
@@ -806,6 +844,13 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                             object:object
                              error:nil];
     }
+
+#if NS_BLOCKS_AVAILABLE
+    if (completionHandler) {
+      completionHandler(ticket, object, nil);
+    }
+#endif
+
     [ticket setFetchedObject:object];
 
   } else {
@@ -821,6 +866,12 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                             object:nil
                              error:error];
     }
+
+#if NS_BLOCKS_AVAILABLE
+    if (completionHandler) {
+      completionHandler(ticket, nil, error);
+    }
+#endif
     [ticket setFetchError:error];
   }
 
@@ -860,12 +911,21 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                                        code:status
                                    userInfo:userInfo];
   if (finishedSelector) {
-    [GDataServiceBase invokeCallback:finishedSelector
-                              target:delegate
-                              ticket:ticket
-                              object:nil
-                               error:error];
+    [[self class] invokeCallback:finishedSelector
+                          target:delegate
+                          ticket:ticket
+                          object:nil
+                           error:error];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceCompletionHandler completionHandler;
+
+  completionHandler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
+  if (completionHandler) {
+    completionHandler(ticket, nil, error);
+  }
+#endif
 
   [fetcher setProperties:nil];
 
@@ -884,12 +944,21 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   SEL finishedSelector = finishedSelectorStr ? NSSelectorFromString(finishedSelectorStr) : NULL;
 
   if (finishedSelector) {
-    [GDataServiceBase invokeCallback:finishedSelector
-                              target:delegate
-                              ticket:ticket
-                              object:nil
-                               error:error];
+    [[self class] invokeCallback:finishedSelector
+                          target:delegate
+                          ticket:ticket
+                          object:nil
+                           error:error];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceCompletionHandler completionHandler;
+
+  completionHandler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
+  if (completionHandler) {
+    completionHandler(ticket, nil, error);
+  }
+#endif
 
   [fetcher setProperties:nil];
 
@@ -1036,6 +1105,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
          didFinishedSelector:(SEL)finishedSelector
+           completionHandler:(GDataServiceCompletionHandler)completionHandler
                       ticket:(GDataServiceTicketBase *)ticket {
 
   // sanity check the number of pages fetched already
@@ -1062,6 +1132,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                                 httpMethod:nil
                                   delegate:delegate
                          didFinishSelector:finishedSelector
+                         completionHandler:completionHandler
                       retryInvocationValue:nil
                                     ticket:ticket];
 
@@ -1114,6 +1185,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
+                completionHandler:nil
              retryInvocationValue:nil
                            ticket:nil];
 }
@@ -1130,6 +1202,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                        httpMethod:nil
                          delegate:delegate
                 didFinishSelector:finishedSelector
+                completionHandler:nil
              retryInvocationValue:nil
                            ticket:nil];
 }
@@ -1148,7 +1221,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 - (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
                                               forFeedURL:(NSURL *)feedURL
                                                 delegate:(id)delegate
-                                       didFinishSelector:(SEL)finishedSelector {
+                                       didFinishSelector:(SEL)finishedSelector
+                                      completionHandler:(GDataServiceCompletionHandler)completionHandler {
+  // internal routine, used for both callback and blocks style of batch feed
+  // fetches
 
   // add basic namespaces to feed, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceGDataPrefix] == nil) {
@@ -1169,6 +1245,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                          httpMethod:nil
                            delegate:delegate
                   didFinishSelector:finishedSelector
+                  completionHandler:completionHandler
                retryInvocationValue:nil
                              ticket:nil];
 
@@ -1178,6 +1255,71 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
   return ticket;
 }
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                              forFeedURL:(NSURL *)feedURL
+                                                delegate:(id)delegate
+                                       didFinishSelector:(SEL)finishedSelector {
+
+  return [self fetchPublicFeedWithBatchFeed:batchFeed
+                                 forFeedURL:feedURL
+                                   delegate:delegate
+                          didFinishSelector:finishedSelector
+                          completionHandler:NULL];
+}
+
+#if NS_BLOCKS_AVAILABLE
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithURL:(NSURL *)feedURL
+                                         feedClass:(Class)feedClass
+                                 completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+
+  return [self fetchObjectWithURL:feedURL
+                      objectClass:feedClass
+                     objectToPost:nil
+                             ETag:nil
+                       httpMethod:nil
+                         delegate:nil
+                didFinishSelector:NULL
+                completionHandler:(GDataServiceCompletionHandler)handler
+             retryInvocationValue:nil
+                           ticket:nil];
+}
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithQuery:(GDataQuery *)query
+                                           feedClass:(Class)feedClass
+                                   completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+return [self fetchPublicFeedWithURL:[query URL]
+                            feedClass:feedClass
+                             completionHandler:handler];
+}
+
+- (GDataServiceTicketBase *)fetchPublicEntryWithURL:(NSURL *)entryURL
+                                         entryClass:(Class)entryClass
+                                  completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+return [self fetchObjectWithURL:entryURL
+                      objectClass:entryClass
+                     objectToPost:nil
+                             ETag:nil
+                       httpMethod:nil
+                         delegate:nil
+                didFinishSelector:NULL
+              completionHandler:(GDataServiceCompletionHandler)handler
+             retryInvocationValue:nil
+                           ticket:nil];
+}
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                              forFeedURL:(NSURL *)feedURL
+                                       completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+return [self fetchPublicFeedWithBatchFeed:batchFeed
+                                 forFeedURL:feedURL
+                                   delegate:nil
+                          didFinishSelector:NULL
+                        completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+#endif // NS_BLOCKS_AVAILABLE
 
 #pragma mark -
 
@@ -1378,6 +1520,18 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   serviceUploadProgressSelector_ = progressSelector;
 }
 
+#if NS_BLOCKS_AVAILABLE
+- (void)setServiceUploadProgressHandler:(GDataServiceUploadProgressHandler)block {
+  [serviceUploadProgressBlock_ autorelease];
+  serviceUploadProgressBlock_ = [block copy];
+}
+
+- (GDataServiceUploadProgressHandler)serviceUploadProgressHandler {
+  return serviceUploadProgressBlock_;
+}
+#endif
+
+
 // retrying; see comments on retry support at the top of GDataHTTPFetcher
 - (BOOL)isServiceRetryEnabled {
   return isServiceRetryEnabled_;
@@ -1473,6 +1627,9 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     [self setMaxRetryInterval:[service serviceMaxRetryInterval]];
     [self setShouldFollowNextLinks:[service serviceShouldFollowNextLinks]];
     [self setShouldFeedsIgnoreUnknowns:[service shouldServiceFeedsIgnoreUnknowns]];
+#if NS_BLOCKS_AVAILABLE
+    [self setUploadProgressHandler:[service serviceUploadProgressHandler]];
+#endif
   }
   return self;
 }
@@ -1487,6 +1644,9 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [currentFetcher_ release];
   [objectFetcher_ release];
 
+#if NS_BLOCKS_AVAILABLE
+  [uploadProgressBlock_ release];
+#endif
   [postedObject_ release];
   [fetchedObject_ release];
   [accumulatedFeed_ release];
@@ -1509,6 +1669,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [self setCurrentFetcher:nil];
   [self setUserData:nil];
   [self setProperties:nil];
+
+  [self setUploadProgressSelector:NULL];
+#if NS_BLOCKS_AVAILABLE
+  [self setUploadProgressHandler:nil];
+#endif
 
   [service_ autorelease];
   service_ = nil;
@@ -1589,6 +1754,23 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     [[self objectFetcher] setSentDataSelector:sentDataSel];
   }
 }
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setUploadProgressHandler:(GDataServiceUploadProgressHandler)block {
+  [uploadProgressBlock_ autorelease];
+  uploadProgressBlock_ = [block copy];
+
+  if (uploadProgressBlock_) {
+    // as above, we need the fetcher to call us back when bytes are sent
+    SEL sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
+    [[self objectFetcher] setSentDataSelector:sentDataSel];
+  }
+}
+
+- (GDataServiceUploadProgressHandler)uploadProgressHandler {
+  return uploadProgressBlock_;
+}
+#endif
 
 - (BOOL)shouldFollowNextLinks {
   return shouldFollowNextLinks_;

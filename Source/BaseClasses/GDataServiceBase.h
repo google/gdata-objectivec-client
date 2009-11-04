@@ -59,6 +59,28 @@ enum {
  kGDataCouldNotConstructObjectError = -100
 };
 
+@class GDataServiceTicketBase;
+
+// block types used for fetch callbacks
+//
+// these typedefs are not used in the header file method declarations
+// since it's more useful when code sense expansions show the argument
+// types rather than the typedefs
+
+#if NS_BLOCKS_AVAILABLE
+typedef void (^GDataServiceCompletionHandler)(GDataServiceTicketBase *ticket, id object, NSError *error);
+typedef void (^GDataServiceFeedBaseCompletionHandler)(GDataServiceTicketBase *ticket, GDataFeedBase *feed, NSError *error);
+typedef void (^GDataServiceEntryBaseCompletionHandler)(GDataServiceTicketBase *ticket, GDataEntryBase *entry, NSError *error);
+
+typedef void (^GDataServiceUploadProgressHandler)(GDataServiceTicketBase *ticket, unsigned long long numberOfBytesRead, unsigned long long dataLength);
+#else
+typedef void *GDataServiceCompletionHandler;
+typedef void *GDataServiceFeedBaseCompletionHandler;
+typedef void *GDataServiceEntryBaseCompletionHandler;
+
+typedef void *GDataServiceUploadProgressHandler;
+#endif // NS_BLOCKS_AVAILABLE
+
 @class GDataServiceBase;
 
 //
@@ -79,6 +101,14 @@ enum {
   BOOL isRetryEnabled_;
   SEL retrySEL_;
   NSTimeInterval maxRetryInterval_;
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceUploadProgressHandler uploadProgressBlock_;
+#elif !__LP64__
+  // placeholders: for 32-bit builds, keep the size of the object's ivar section
+  // the same with and without blocks
+  id uploadProgressPlaceholder_;
+#endif
 
   GDataObject *postedObject_;
   GDataObject *fetchedObject_;
@@ -122,6 +152,11 @@ enum {
 
 - (void)setUploadProgressSelector:(SEL)progressSelector;
 - (SEL)uploadProgressSelector;
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setUploadProgressHandler:(void (^) (GDataServiceTicketBase *ticket, unsigned long long numberOfBytesRead, unsigned long long dataLength))handler;
+- (GDataServiceUploadProgressHandler)uploadProgressHandler;
+#endif
 
 - (BOOL)shouldFollowNextLinks;
 - (void)setShouldFollowNextLinks:(BOOL)flag;
@@ -197,6 +232,14 @@ enum {
   BOOL shouldServiceFeedsIgnoreUnknowns_; // YES when feeds should ignore unknown XML
 
   SEL serviceUploadProgressSelector_; // optional
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceUploadProgressHandler serviceUploadProgressBlock_;
+#elif !__LP64__
+  // placeholders: for 32-bit builds, keep the size of the object's ivar section
+  // the same with and without blocks
+  id serviceUploadProgressPlaceholder_;
+#endif
 
   BOOL isServiceRetryEnabled_;      // user allows auto-retries
   SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
@@ -289,6 +332,24 @@ enum {
                                                 delegate:(id)delegate
                                        didFinishSelector:(SEL)finishedSelector;
 
+#if NS_BLOCKS_AVAILABLE
+- (GDataServiceTicketBase *)fetchPublicFeedWithURL:(NSURL *)feedURL
+                                         feedClass:(Class)feedClass
+                                 completionHandler:(void (^)(GDataServiceTicketBase *ticket, GDataFeedBase *feed, NSError *error))handler;
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithQuery:(GDataQuery *)query
+                                           feedClass:(Class)feedClass
+                                   completionHandler:(void (^)(GDataServiceTicketBase *ticket, GDataFeedBase *feed, NSError *error))handler;
+
+- (GDataServiceTicketBase *)fetchPublicEntryWithURL:(NSURL *)entryURL
+                                         entryClass:(Class)entryClass
+                                  completionHandler:(void (^)(GDataServiceTicketBase *ticket, GDataEntryBase *entry, NSError *error))handler;
+
+- (GDataServiceTicketBase *)fetchPublicFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                                              forFeedURL:(NSURL *)feedURL
+                                       completionHandler:(void (^)(GDataServiceTicketBase *ticket, GDataFeedBase *feed, NSError *error))handler;
+#endif
+
 // reset the last modified dates to avoid getting a Not Modified status
 // based on prior queries
 - (void)clearLastModifiedDates;
@@ -379,6 +440,11 @@ enum {
 //        ofTotalByteCount:(unsigned long long)dataLength;
 - (void)setServiceUploadProgressSelector:(SEL)progressSelector;
 - (SEL)serviceUploadProgressSelector;
+
+#if NS_BLOCKS_AVAILABLE
+- (void)setServiceUploadProgressHandler:(void (^) (GDataServiceTicketBase *ticket, unsigned long long numberOfBytesRead, unsigned long long dataLength))handler;
+- (GDataServiceUploadProgressHandler)serviceUploadProgressHandler;
+#endif
 
 
 // retrying; see comments on retry support at the top of GDataHTTPFetcher.

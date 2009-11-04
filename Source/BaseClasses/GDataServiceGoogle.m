@@ -31,7 +31,10 @@ static NSString* const kAuthDelegateKey = @"_delegate";
 static NSString* const kAuthSelectorKey = @"_sel";
 
 enum {
-  // indices of parameters for the post-authentication invocation
+  // indices of parameters for the post-authentication invocation,
+  // matching GDataServiceBase's method
+  // fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:completionHandler:retryInvocationValue:ticket:
+
   kInvocationObjectURLIndex = 2,
   kInvocationObjectClassIndex,
   kInvocationObjectToPostIndex,
@@ -39,6 +42,7 @@ enum {
   kInvocationHTTPMethodIndex,
   kInvocationDelegateIndex,
   kInvocationFinishedSelectorIndex,
+  kInvocationCompletionHandlerIndex,
   kInvocationRetryInvocationValueIndex,
   kInvocationTicketIndex
 };
@@ -174,18 +178,29 @@ enum {
 
     id delegate;
     SEL finishedSelector;
+
     [invocation getArgument:&delegate         atIndex:kInvocationDelegateIndex];
     [invocation getArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
 
-    if (finishedSelector) {
-      NSError *error = [self cannotCreateAuthFetcherError];
+    NSError *error = [self cannotCreateAuthFetcherError];
 
-      [GDataServiceBase invokeCallback:finishedSelector
-                                target:delegate
-                                ticket:ticket
-                                object:nil
-                                 error:error];
+    if (finishedSelector) {
+      [[self class] invokeCallback:finishedSelector
+                            target:delegate
+                            ticket:ticket
+                            object:nil
+                             error:error];
     }
+
+#if NS_BLOCKS_AVAILABLE
+    GDataServiceCompletionHandler completionHandler;
+    [invocation getArgument:&completionHandler
+                    atIndex:kInvocationCompletionHandlerIndex];
+
+    if (completionHandler) {
+      completionHandler(ticket, nil, error);
+    }
+#endif
 
     return nil;
   }
@@ -252,12 +267,22 @@ enum {
   [fetcher setProperties:nil];
 
   if (finishedSelector) {
-    [GDataServiceBase invokeCallback:finishedSelector
-                              target:delegate
-                              ticket:ticket
-                              object:nil
-                               error:error];
+    [[self class] invokeCallback:finishedSelector
+                          target:delegate
+                          ticket:ticket
+                          object:nil
+                           error:error];
   }
+
+#if NS_BLOCKS_AVAILABLE
+  GDataServiceCompletionHandler completionHandler;
+  [invocation getArgument:&completionHandler
+                  atIndex:kInvocationCompletionHandlerIndex];
+
+  if (completionHandler) {
+    completionHandler(ticket, nil, error);
+  }
+#endif
 
   [ticket setFetchError:error];
   [ticket setHasCalledCallback:YES];
@@ -347,27 +372,37 @@ enum {
                                                    ETag:(NSString *)etag
                                              httpMethod:(NSString *)httpMethod
                                                delegate:(id)delegate
-                                      didFinishSelector:(SEL)finishedSelector {
+                                      didFinishSelector:(SEL)finishedSelector
+                                      completionHandler:(GDataServiceCompletionHandler)completionHandler {
 
   // make an invocation for this call
   GDataServiceTicket *result = nil;
 
-  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:retryInvocationValue:ticket:);
+  SEL theSEL = @selector(fetchObjectWithURL:objectClass:objectToPost:ETag:httpMethod:delegate:didFinishSelector:completionHandler:retryInvocationValue:ticket:);
 
   GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
+
+#if NS_BLOCKS_AVAILABLE
+  if (completionHandler) {
+    // copy the completion handler to the heap now, before creating the
+    // invocation that will retain it
+    completionHandler = [[completionHandler copy] autorelease];
+  }
+#endif
 
   NSMethodSignature *signature = [self methodSignatureForSelector:theSEL];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
   [invocation setSelector:theSEL];
   [invocation setTarget:self];
-  [invocation setArgument:&objectURL        atIndex:kInvocationObjectURLIndex];
-  [invocation setArgument:&objectClass      atIndex:kInvocationObjectClassIndex];
-  [invocation setArgument:&objectToPost     atIndex:kInvocationObjectToPostIndex];
-  [invocation setArgument:&etag             atIndex:kInvocationObjectETagIndex];
-  [invocation setArgument:&httpMethod       atIndex:kInvocationHTTPMethodIndex];
-  [invocation setArgument:&delegate         atIndex:kInvocationDelegateIndex];
-  [invocation setArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
-  [invocation setArgument:&ticket           atIndex:kInvocationTicketIndex];
+  [invocation setArgument:&objectURL         atIndex:kInvocationObjectURLIndex];
+  [invocation setArgument:&objectClass       atIndex:kInvocationObjectClassIndex];
+  [invocation setArgument:&objectToPost      atIndex:kInvocationObjectToPostIndex];
+  [invocation setArgument:&etag              atIndex:kInvocationObjectETagIndex];
+  [invocation setArgument:&httpMethod        atIndex:kInvocationHTTPMethodIndex];
+  [invocation setArgument:&delegate          atIndex:kInvocationDelegateIndex];
+  [invocation setArgument:&finishedSelector  atIndex:kInvocationFinishedSelectorIndex];
+  [invocation setArgument:&completionHandler atIndex:kInvocationCompletionHandlerIndex];
+  [invocation setArgument:&ticket            atIndex:kInvocationTicketIndex];
 
   NSValue *noRetryInvocation = nil;
   [invocation setArgument:&noRetryInvocation atIndex:kInvocationRetryInvocationValueIndex];
@@ -560,7 +595,8 @@ enum {
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
-                             didFinishSelector:finishedSelector];
+                             didFinishSelector:finishedSelector
+                             completionHandler:NULL];
 }
 
 - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
@@ -584,7 +620,8 @@ enum {
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:delegate
-                             didFinishSelector:finishedSelector];
+                             didFinishSelector:finishedSelector
+                             completionHandler:NULL];
 }
 
 - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
@@ -603,7 +640,8 @@ enum {
                                           ETag:etag
                                     httpMethod:@"POST"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector];
+                             didFinishSelector:finishedSelector
+                             completionHandler:NULL];
 }
 
 
@@ -646,7 +684,8 @@ enum {
                                           ETag:[entryToUpdate ETag]
                                     httpMethod:@"PUT"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector];
+                             didFinishSelector:finishedSelector
+                             completionHandler:NULL];
 }
 
 - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
@@ -677,7 +716,8 @@ enum {
                                           ETag:etag
                                     httpMethod:@"DELETE"
                                       delegate:delegate
-                             didFinishSelector:finishedSelector];
+                             didFinishSelector:finishedSelector
+                             completionHandler:NULL];
 }
 
 - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
@@ -700,6 +740,118 @@ enum {
                        delegate:delegate
               didFinishSelector:finishedSelector];
 }
+
+#pragma mark -
+
+
+#if NS_BLOCKS_AVAILABLE
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                       completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+
+  return [self fetchAuthenticatedObjectWithURL:feedURL
+                                   objectClass:kGDataUseRegisteredClass
+                                  objectToPost:nil
+                                          ETag:nil
+                                    httpMethod:nil
+                                      delegate:nil
+                             didFinishSelector:NULL
+                             completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+- (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
+                       completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+  return [self fetchFeedWithURL:[query URL]
+              completionHandler:handler];
+}
+
+
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                        completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+
+  return [self fetchAuthenticatedObjectWithURL:entryURL
+                                   objectClass:kGDataUseRegisteredClass
+                                  objectToPost:nil
+                                          ETag:nil
+                                    httpMethod:nil
+                                      delegate:nil
+                             didFinishSelector:NULL
+                             completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+- (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
+                                        forFeedURL:(NSURL *)feedURL
+                                 completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+  NSString *etag = [entryToInsert ETag];
+
+  // objects being uploaded will always need some namespaces at the root level
+  [self addNamespacesIfNoneToObject:entryToInsert];
+
+  return [self fetchAuthenticatedObjectWithURL:feedURL
+                                   objectClass:[entryToInsert class]
+                                  objectToPost:entryToInsert
+                                          ETag:etag
+                                    httpMethod:@"POST"
+                                      delegate:nil
+                             didFinishSelector:NULL
+                             completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+  // Entries should be updated only if they contain copies of any unparsed XML
+  // (unknown children and attributes.)
+  //
+  // To update an entry that ignores unparsed XML, first fetch a complete copy
+  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
+  // the URL from the entry's selfLink.
+  //
+  // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
+  // information.
+
+  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
+               @"unsafe update of %@", [entryToUpdate class]);
+
+  // objects being uploaded will always need some namespaces at the root level
+  [self addNamespacesIfNoneToObject:entryToUpdate];
+
+  NSURL *editURL = [[entryToUpdate editLink] URL];
+
+  return [self fetchAuthenticatedObjectWithURL:editURL
+                                   objectClass:[entryToUpdate class]
+                                  objectToPost:entryToUpdate
+                                          ETag:[entryToUpdate ETag]
+                                    httpMethod:@"PUT"
+                                      delegate:nil
+                             didFinishSelector:NULL
+                             completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+- (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
+                  completionHandler:(GDataServiceCompletionHandler)handler {
+  NSString *etag = [entryToDelete ETag];
+  NSURL *editURL = [[entryToDelete editLink] URL];
+
+  return [self deleteResourceURL:editURL
+                            ETag:etag
+               completionHandler:handler];
+}
+
+- (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
+                                     ETag:(NSString *)etag
+                        completionHandler:(GDataServiceCompletionHandler)handler {
+  GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
+
+  return [self fetchAuthenticatedObjectWithURL:resourceEditURL
+                                   objectClass:nil
+                                  objectToPost:nil
+                                          ETag:etag
+                                    httpMethod:@"DELETE"
+                                      delegate:nil
+                             didFinishSelector:NULL
+                             completionHandler:(GDataServiceCompletionHandler)handler];
+}
+
+#endif // NS_BLOCKS_AVAILABLE
 
 // add namespaces to the object being uploaded, though only if it currently
 // lacks root-level namespaces
@@ -725,7 +877,11 @@ enum {
 - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
                                forBatchFeedURL:(NSURL *)feedURL
                                       delegate:(id)delegate
-                             didFinishSelector:(SEL)finishedSelector {
+                             didFinishSelector:(SEL)finishedSelector
+                             completionHandler:(GDataServiceCompletionHandler)completionHandler {
+  // internal routine, used for both callback and blocks style of batch feed
+  // fetches
+
   // add basic namespaces to feed, if needed
   if ([[batchFeed namespaces] objectForKey:kGDataNamespaceGDataPrefix] == nil) {
     [batchFeed addNamespaces:[GDataEntryBase baseGDataNamespaces]];
@@ -745,7 +901,8 @@ enum {
                                             ETag:nil
                                       httpMethod:nil
                                         delegate:delegate
-                               didFinishSelector:finishedSelector];
+                               didFinishSelector:finishedSelector
+                               completionHandler:completionHandler];
 
   // batch feeds never ignore unknowns, since they are intrinsically
   // used for updating so their entries need to include complete XML
@@ -753,6 +910,32 @@ enum {
 
   return ticket;
 }
+
+- (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                               forBatchFeedURL:(NSURL *)feedURL
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector {
+
+  return [self fetchFeedWithBatchFeed:batchFeed
+                      forBatchFeedURL:feedURL
+                             delegate:delegate
+                    didFinishSelector:finishedSelector
+                    completionHandler:NULL];
+}
+
+
+#if NS_BLOCKS_AVAILABLE
+- (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
+                               forBatchFeedURL:(NSURL *)feedURL
+                             completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler {
+  return [self fetchFeedWithBatchFeed:batchFeed
+                      forBatchFeedURL:feedURL
+                             delegate:nil
+                    didFinishSelector:NULL
+                    completionHandler:(GDataServiceCompletionHandler)handler];
+}
+#endif
+
 
 #pragma mark -
 
