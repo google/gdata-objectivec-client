@@ -759,7 +759,7 @@ enum {
 }
 
 - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
-                       completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+                         completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler {
   return [self fetchFeedWithURL:[query URL]
               completionHandler:handler];
 }
@@ -827,7 +827,7 @@ enum {
 }
 
 - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
-                  completionHandler:(GDataServiceCompletionHandler)handler {
+                  completionHandler:(void (^)(GDataServiceTicket *ticket, id nilObject, NSError *error))handler {
   NSString *etag = [entryToDelete ETag];
   NSURL *editURL = [[entryToDelete editLink] URL];
 
