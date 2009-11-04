@@ -6376,7 +6376,7 @@
 					"-framework",
 					SenTestingKit,
 				);
-				PRODUCT_NAME = GDataTouchUnitTests;
+				PRODUCT_NAME = GDataIPhoneUnitTests;
 				SDKROOT = macosx10.5;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
