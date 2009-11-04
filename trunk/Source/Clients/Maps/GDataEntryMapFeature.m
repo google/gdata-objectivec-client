@@ -148,6 +148,10 @@
   return obj;
 }
 
+- (GDataLink *)viewLink {
+  return [self linkWithRelAttributeValue:kGDataLinkMapView];
+}
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

@@ -55,6 +55,9 @@
         <atom:link
             href="http://maps.google.com/maps/feeds/features/2063624404192119555/0046a899354a8585d4d/full/00046a8a517c0be41833a"
             rel="edit" type="application/atom+xml"/>
+        <atom:link
+            rel="http://schemas.google.com/maps/2008#view" type="application/atom+xml"
+            href="http://maps.google.com/maps/feeds/features/206362440419211955506/000476f493e1e5147f8d7/view/00047730f33bb0097204c"/>
         <atom:author>
             <atom:name>Fred</atom:name>
         </atom:author>

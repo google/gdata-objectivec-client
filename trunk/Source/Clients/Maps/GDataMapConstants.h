@@ -43,6 +43,8 @@ _EXTERN NSString* const kGDataCategoryMap        _INITIALIZE_AS(@"http://schemas
 _EXTERN NSString* const kGDataCategoryMapFeature _INITIALIZE_AS(@"http://schemas.google.com/maps/2008#feature");
 _EXTERN NSString* const kGDataCategoryMapVersion _INITIALIZE_AS(@"http://schemas.google.com/maps/2008#version");
 
+_EXTERN NSString* const kGDataLinkMapView        _INITIALIZE_AS(@"http://schemas.google.com/maps/2008#view");
+
 @interface GDataMapConstants : NSObject
 + (NSDictionary *)mapsNamespaces;
 
