@@ -64,27 +64,18 @@ _EXTERN NSString* const kGDataBooksLabelsScheme    _INITIALIZE_AS(@"http://schem
 
 
 @interface GDataVolumeViewability : GDataValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
 @end
 
 @interface GDataVolumeEmbeddability : GDataValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
 @end
 
 @interface GDataVolumeOpenAccess : GDataValueConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
 @end
 
 @interface GDataVolumeReview : GDataTextConstruct <GDataExtension>
-+ (NSString *)extensionElementURI;
-+ (NSString *)extensionElementPrefix;
-+ (NSString *)extensionElementLocalName;
+@end
+
+@interface GDataVolumeReadingPosition : GDataValueConstruct <GDataExtension>
 @end
 
 @interface GDataEntryVolume : GDataEntryBase

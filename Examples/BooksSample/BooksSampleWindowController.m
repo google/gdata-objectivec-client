@@ -345,11 +345,11 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
   if ([mUserFeedTypeSegments selectedSegment] == kLibrarySegment) {
     // feed of user's library
-    feedURL = [NSURL URLWithString:kGDataGoogleBooksDefaultCollectionFeed];
+    feedURL = [GDataServiceGoogleBooks booksURLForCollectionID:kGDataGoogleBooksLibraryCollection];
     feedType = kLibraryFeedSource;
   } else {
     // feed of books annotated by the user
-    feedURL = [NSURL URLWithString:kGDataGoogleBooksDefaultVolumeFeed];
+    feedURL = [GDataServiceGoogleBooks booksURLForVolumeID:nil];
     feedType = kAnnotationsFeedSource;
   }
 

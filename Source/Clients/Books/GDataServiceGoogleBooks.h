@@ -34,12 +34,19 @@
 // feed for querying all volumes
 _EXTERN NSString* const kGDataGoogleBooksVolumeFeed _INITIALIZE_AS(@"http://books.google.com/books/feeds/volumes");
 
-// feeds for the authenticated user's annotations and collections
-_EXTERN NSString* const kGDataGoogleBooksDefaultVolumeFeed     _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/volumes");
-_EXTERN NSString* const kGDataGoogleBooksDefaultCollectionFeed _INITIALIZE_AS(@"http://www.google.com/books/feeds/users/me/collections/library/volumes");
-
+_EXTERN NSString* const kGDataGoogleBooksLibraryCollection _INITIALIZE_AS(@"library");
 
 @interface GDataServiceGoogleBooks : GDataServiceGoogle
+
+// feeds for the authenticated user's annotations and collections
+
+// pass nil as volume ID for the URL to the volumes feed
+// (previously kGDataGoogleBooksDefaultVolumeFeed)
++ (NSURL *)booksURLForVolumeID:(NSString *)volumeID;
+
+// pass kGDataGoogleBooksLibraryCollection for the default library
+// (previously kGDataGoogleBooksDefaultCollectionFeed)
++ (NSURL *)booksURLForCollectionID:(NSString *)collectionID;
 
 // clients may use these fetch methods of GDataServiceGoogle
 //
