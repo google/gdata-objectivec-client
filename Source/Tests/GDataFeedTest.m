@@ -2007,6 +2007,7 @@
 
     { @"entries.0.KMLValues.@count", @"1" },
     { @"entries.0.KMLValues.0.name", @"Placemark" },
+    { @"entries.0.viewLink.href", @"contains:view/00047730f33bb0097204c" },
 
     { @"entries.0.postalAddress.city", @"Anytown" },
 

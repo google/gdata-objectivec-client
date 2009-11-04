@@ -20,13 +20,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		4F081DAB109B77FC00C3B36C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */;
-			remoteInfo = GDataIPhoneUnitTests;
-		};
 		4FA1CB840C03C08C006D556A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
@@ -59,7 +52,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
 			remoteInfo = GDataTouchStaticLib;
 		};
 /* End PBXContainerItemProxy section */
@@ -198,7 +191,6 @@
 				4FA1CB850C03C08C006D556A /* GData.framework */,
 				4FA6F2961034AA9800C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FA1CB870C03C08C006D556A /* GDataUnitTests.octest */,
-				4F081DAC109B77FC00C3B36C /* GDataIPhoneUnitTests.octest */,
 				4FA1CB890C03C08C006D556A /* DevelopmentTestTool */,
 			);
 			name = Products;
@@ -262,13 +254,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		4F081DAC109B77FC00C3B36C /* GDataIPhoneUnitTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = GDataIPhoneUnitTests.octest;
-			remoteRef = 4F081DAB109B77FC00C3B36C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		4FA1CB850C03C08C006D556A /* GData.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
