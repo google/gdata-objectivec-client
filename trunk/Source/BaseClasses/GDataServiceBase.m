@@ -43,6 +43,7 @@ static NSString* const kFetcherStreamDataKey = @"_streamData";
 static NSString* const kFetcherParsedObjectKey = @"_parsedObject";
 static NSString* const kFetcherParseErrorKey = @"_parseError";
 static NSString* const kFetcherCallbackThreadKey = @"_callbackThread";
+static NSString* const kFetcherCallbackRunLoopModesKey = @"_runLoopModes";
 
 NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
@@ -611,6 +612,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [fetcher setProperty:[NSThread currentThread]
                 forKey:kFetcherCallbackThreadKey];
 
+  // copy the run loop modes, if any, so we don't need to access them
+  // from the parsing thread
+  [fetcher setProperty:[[[self runLoopModes] copy] autorelease]
+                forKey:kFetcherCallbackRunLoopModesKey];
+
   // we post parsing notifications now to ensure they're on caller's
   // original thread
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
@@ -629,6 +635,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                                                selector:parseSel
                                                  object:fetcher] autorelease];
     [operationQueue_ addOperation:op];
+    // the fetcher now belongs to the parsing thread
 #endif
   } else {
     // parse on the current thread, on Mac OS X 10.4 through 10.5.7
@@ -715,9 +722,13 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   SEL parseDoneSel = @selector(handleParsedObjectForFetcher:);
 
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-  NSThread *callbackThread = [fetcher propertyForKey:kFetcherCallbackThreadKey];
+  NSThread *callbackThread = [[[fetcher propertyForKey:kFetcherCallbackThreadKey] retain] autorelease];
 
-  NSArray *runLoopModes = [self runLoopModes];
+  // the callback thread is retaining the fetcher, so the fetcher shouldn't keep
+  // retaining the callback thread
+  [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
+
+  NSArray *runLoopModes = [fetcher propertyForKey:kFetcherCallbackRunLoopModesKey];
   if (runLoopModes) {
     [self performSelector:parseDoneSel
                  onThread:callbackThread
@@ -731,14 +742,12 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                withObject:fetcher
             waitUntilDone:NO];
   }
+  // the fetcher now belongs to the callback thread
 
-  // the thread is retaining the fetcher, so the fetcher shouldn't keep
-  // retaining the thread
-  [fetcher setProperty:nil forKey:@"_callbackThread"];
 #else
   // in 10.4, there's no performSelector:onThread:
   [self performSelector:parseDoneSel withObject:fetcher];
-  [fetcher setProperty:nil forKey:@"_callbackThread"];
+  [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
 #endif
 
   [pool release];
