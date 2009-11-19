@@ -76,6 +76,7 @@
    nil];
 }
 
+#if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
@@ -90,7 +91,7 @@
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
-
+#endif
 
 #pragma mark -
 
