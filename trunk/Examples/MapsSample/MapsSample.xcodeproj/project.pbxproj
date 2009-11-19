@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,11 +19,18 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		4F7AB07E10AB8E8A0075EB10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F85E018103B83B700B4C418;
+			remoteInfo = GDataIPhoneUnitTests;
+		};
 		4FA6F3CB1034AEB700C5DFA5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459;
 			remoteInfo = GDataTouchStaticLib;
 		};
 		4FAB41B20BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
@@ -187,6 +194,7 @@
 				4FAB41B30BAA215D00FBBDC9 /* GData.framework */,
 				4FA6F3CC1034AEB700C5DFA5 /* libGDataTouchStaticLib.a */,
 				4FAB41B50BAA215D00FBBDC9 /* GDataUnitTests.octest */,
+				4F7AB07F10AB8E8A0075EB10 /* GDataIPhoneUnitTests.octest */,
 				4FAB41B70BAA215D00FBBDC9 /* DevelopmentTestTool */,
 			);
 			name = Products;
@@ -232,7 +240,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MapsSample" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.0";
 			hasScannedForEncodings = 1;
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
 			projectDirPath = "";
@@ -250,6 +258,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		4F7AB07F10AB8E8A0075EB10 /* GDataIPhoneUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataIPhoneUnitTests.octest;
+			remoteRef = 4F7AB07E10AB8E8A0075EB10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4FA6F3CC1034AEB700C5DFA5 /* libGDataTouchStaticLib.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -425,7 +440,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DDEBUG=1";
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
@@ -441,7 +456,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
