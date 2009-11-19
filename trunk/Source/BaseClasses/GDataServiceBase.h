@@ -245,8 +245,7 @@ typedef void *GDataServiceUploadProgressHandler;
   SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
 
-  BOOL shouldCacheDatedData_;
-  NSUInteger datedDataCacheCapacity_;
+  NSInteger cookieStorageMethod_;   // constant GDataHTTPFetcher.h
   BOOL serviceShouldFollowNextLinks_;
 }
 
@@ -364,6 +363,19 @@ typedef void *GDataServiceUploadProgressHandler;
 // Default is 15MB for Mac and 1 MB for iPhone.
 - (void)setDatedDataCacheCapacity:(NSUInteger)totalBytes;
 - (NSUInteger)datedDataCacheCapacity;
+
+// Fetch history accessor, if necessary for sharing cookies and dated data
+// cache with standalone http fetchers
+- (void)setFetchHistory:(GDataHTTPFetchHistory *)obj;
+- (GDataHTTPFetchHistory *)fetchHistory;
+
+// Default storage for cookies is in the service object's fetchHistory.
+//
+// Apps that want to share cookies between all standalone fetchers and the
+// service object may specify static application-wide cookie storage,
+// kGDataHTTPFetcherCookieStorageMethodStatic.
+- (void)setCookieStorageMethod:(NSInteger)method;
+- (NSInteger)cookieStorageMethod;
 
 // For feed requests, where the feed requires following "next" links to retrieve
 // all entries, the service can optionally do the additional fetches using the
