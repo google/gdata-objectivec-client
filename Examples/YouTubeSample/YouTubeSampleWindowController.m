@@ -294,13 +294,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleYouTube alloc] init];
     
-    [service setUserAgent:@"MyCompany-SampleYouTubeApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
   }
 
   // update the username/password each time the service is requested

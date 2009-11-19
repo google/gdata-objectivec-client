@@ -262,17 +262,12 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
     
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
   }
 
   // username/password may change
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
   
-  [service setUserAgent:@"MyCompany-SampleFinanceApp-1.0"]; // set this to yourName-appName-appVersion
   [service setUserCredentialsWithUsername:username
                                  password:password];
   
