@@ -415,13 +415,7 @@ static GoogleBaseSampleWindowController* gGoogleBaseSampleWindowController = nil
   if (!service) {
     service = [[GDataServiceGoogleBase alloc] init];
     
-    [service setUserAgent:@"MyCompany-SampleGoogleBaseApp-1.0"]; // set this to yourName-appName-appVersion
-    
     [service setShouldCacheDatedData:YES];
-    
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
 
     // Note: Though this sample doesn't demonstrate it, GData responses are
     //       typically chunked, so check all returned feeds for "next" links

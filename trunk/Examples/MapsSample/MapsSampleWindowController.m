@@ -266,21 +266,14 @@
   if (!service) {
     service = [[GDataServiceGoogleMaps alloc] init];
 
-    // iPhone apps typically would not turn on the caching here
-    // to avoid the memory usage
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.    
   }
 
   // username/password may change
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
 
-  [service setUserAgent:@"MyCompany-SampleMapsApp-1.0"]; // set this to yourName-appName-appVersion
   [service setUserCredentialsWithUsername:username
                                  password:password];
 

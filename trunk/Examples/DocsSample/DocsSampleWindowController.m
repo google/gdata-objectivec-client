@@ -745,13 +745,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleDocs alloc] init];
     
-    [service setUserAgent:@"MyCompany-SampleDocsApp-1.0"]; // set this to yourName-appName-appVersion
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
   }
 
   // update the username/password each time the service is requested

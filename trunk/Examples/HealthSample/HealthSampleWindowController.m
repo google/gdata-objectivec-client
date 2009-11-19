@@ -261,14 +261,8 @@ static HealthSampleWindowController* gWindowController = nil;
     [service release];
     service = [[mServiceClass alloc] init];
 
-    [service setUserAgent:@"MyCompany-SampleHealthApp-1.0"]; // set this to yourName-appName-appVersion
-
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
   }
 
   // username/password may change

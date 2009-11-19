@@ -268,14 +268,8 @@
   if (!service) {
     service = [[GDataServiceGoogleBlogger alloc] init];
 
-    [service setUserAgent:@"MyCompany-SampleBloggerApp-1.0"]; // set this to yourName-appName-appVersion
-
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
   }
 
   // update the name/password each time the service is requested
