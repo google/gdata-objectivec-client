@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataQueryYouTube.m
@@ -31,7 +31,6 @@ static NSString *const kRestrictionParamName = @"restriction";
 static NSString *const kLanguageRestrictionParamName = @"lr";
 static NSString *const kLocationParamName = @"location";
 static NSString *const kLocationRadiusParamName = @"location-radius";
-static NSString *const kRacyParamName = @"racy";
 static NSString *const kUploaderParamName = @"uploader";
 
 @implementation GDataQueryYouTube
@@ -121,18 +120,6 @@ static NSString *const kUploaderParamName = @"uploader";
 
 - (NSString *)safeSearch {
   return [self valueForParameterWithName:kSafeSearchParamName];
-}
-
-// racy is deprecated for GData v2
-- (void)setAllowRacy:(BOOL)flag {
-    // adding nil removes the custom parameter
-  [self addCustomParameterWithName:kRacyParamName
-                             value:(flag ? @"include" : nil)];
-}
-
-- (BOOL)allowRacy {
-  NSString *str = [self valueForParameterWithName:kRacyParamName];
-  return ([str caseInsensitiveCompare:@"include"] == NSOrderedSame);
 }
 
 @end

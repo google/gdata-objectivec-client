@@ -48,8 +48,9 @@
 //  // optional post data
 //  [myFetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
 //
-//  // optional dictionary, for persisting modified-dates and local cookie storage
-//  [myFetcher setFetchHistory:myMutableDictionary];
+//  // optional fetch history, for persisting modified-dates and local cookie
+//  // storage
+//  [myFetcher setFetchHistory:myFetchHistory];
 //
 //  [myFetcher beginFetchWithDelegate:self
 //                  didFinishSelector:@selector(myFetcher:finishedWithData:)
@@ -245,11 +246,6 @@ _EXTERN NSString* const kGDataHTTPFetcherStatusDomain      _INITIALIZE_AS(@"com.
 _EXTERN NSString* const kGDataHTTPFetcherErrorChallengeKey _INITIALIZE_AS(@"challenge");
 _EXTERN NSString* const kGDataHTTPFetcherStatusDataKey     _INITIALIZE_AS(@"data");                        // data returned with a kGDataHTTPFetcherStatusDomain error
 
-
-// fetch history mutable dictionary keys
-_EXTERN NSString* const kGDataHTTPFetcherHistoryLastModifiedKey _INITIALIZE_AS(@"FetchHistoryLastModified");
-_EXTERN NSString* const kGDataHTTPFetcherHistoryDatedDataKey    _INITIALIZE_AS(@"FetchHistoryDatedDataCache");
-_EXTERN NSString* const kGDataHTTPFetcherHistoryCookiesKey      _INITIALIZE_AS(@"FetchHistoryCookies");
 
 enum {
   kGDataHTTPFetcherErrorDownloadFailed = -1,
