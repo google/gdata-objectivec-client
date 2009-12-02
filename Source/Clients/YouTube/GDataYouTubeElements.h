@@ -154,4 +154,9 @@
 @interface GDataYouTubeUploadedDate : GDataValueElementConstruct <GDataExtension>
 @end
 
+// element inside an app:control indicating an incompletely-defined video,
+// like <yt:incomplete/>
+@interface GDataYouTubeIncomplete : GDataImplicitValueConstruct <GDataExtension>
+@end
+
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

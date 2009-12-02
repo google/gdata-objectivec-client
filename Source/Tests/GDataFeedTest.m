@@ -1738,6 +1738,7 @@
     { @"entries.0.publicationState.reasonCode", @"32" },
     { @"entries.0.publicationState.helpURLString", @"http://www.youtube.com/" },
     { @"entries.0.publicationState.errorDescription", @"incorrect format" },
+    { @"entries.0.isIncomplete", @"1" },
     { @"entries.0.captionTracksLink.href", @"contains:GppRTi2JGQ8/captions" },
     { @"entries.0.videoResponsesLink.href", @"contains:Dl643JFJWig/responses" },
 

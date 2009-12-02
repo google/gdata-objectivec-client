@@ -77,6 +77,9 @@ _EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderat
 - (void)setLocationRadius:(NSString *)str;
 - (NSString *)locationRadius;
 
+- (void)setHasCaptions:(BOOL)flag;
+- (BOOL)hasCaptions;
+
 - (void)setUploader:(NSString *)str;
 - (NSString *)uploader;
 

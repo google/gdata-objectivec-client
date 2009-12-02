@@ -71,8 +71,12 @@
   
   // the publication state element is an extension to the Atom publishing
   // control element
-  [self addExtensionDeclarationForParentClass:[GDataAtomPubControl class]
-                                   childClass:[GDataYouTubePublicationState class]];
+  Class atomPubControlClass = [GDataAtomPubControl class];
+  [self addExtensionDeclarationForParentClass:atomPubControlClass
+                                 childClasses:
+   [GDataYouTubePublicationState class],
+   [GDataYouTubeIncomplete class],
+   nil];
 
   // the token element is an extension to the edit-media GDataLink
   [self addExtensionDeclarationForParentClass:[GDataLink class]
@@ -93,6 +97,8 @@
     { @"mediaGroup",        @"mediaGroup",       kGDataDescValueLabeled   },
     { @"geoLocation",       @"geoLocation",      kGDataDescValueLabeled   },
     { @"notEmbeddable",     nonEmbeddableValue,  kGDataDescValueIsKeyPath },
+    { @"pubState",          @"publicationState", kGDataDescValueLabeled   },
+    { @"incomplete",        @"isIncomplete",     kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
 
@@ -198,6 +204,33 @@
   }
   
   [atomPubControl setObject:obj forExtensionClass:[GDataYouTubePublicationState class]];
+}
+
+- (BOOL)isIncomplete {
+  // incomplete is an extension to the entry's atomPubControl
+  GDataAtomPubControl *atomPubControl = [self atomPubControl];
+
+  GDataYouTubeIncomplete *obj;
+  obj = [atomPubControl objectForExtensionClass:[GDataYouTubeIncomplete class]];
+  return (obj != nil);
+}
+
+- (void)setIsIncomplete:(BOOL)flag {
+
+  GDataAtomPubControl *atomPubControl = [self atomPubControl];
+  GDataYouTubeIncomplete *obj = nil;
+
+  if (flag) {
+    obj = [GDataYouTubeIncomplete implicitValue];
+
+    if (atomPubControl == nil) {
+      // to add the incomplete, we need to make an atomPubControl element
+      atomPubControl = [GDataAtomPubControl atomPubControl];
+    }
+  }
+
+  [atomPubControl setObject:obj
+          forExtensionClass:[GDataYouTubeIncomplete class]];
 }
 
 #pragma mark -

@@ -235,16 +235,24 @@
 
 // uploaded date for v2 feeds, like <yt:uploaded>2008-03-06T23:49:12.000Z</yt:uploaded>
 @implementation GDataYouTubeUploadedDate
-+ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
-+ (NSString *)extensionElementLocalName { return @"uploaded"; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube;       }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"uploaded";                  }
 @end
 
 // video ID for v2 feeds, like <yt:videoid>I-t-7lTw6mA</yt:videoid>
 @implementation GDataYouTubeVideoID
-+ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
-+ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"videoid"; }
+@end
+
+// element inside an app:control indicating an incompletely-defined video,
+// like <yt:incomplete/>
+@implementation GDataYouTubeIncomplete
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"incomplete"; }
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

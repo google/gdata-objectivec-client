@@ -106,6 +106,7 @@
         <yt:noembed/>
         <app:control>
           <yt:state name="rejected" reasonCode="32" helpUrl="http://www.youtube.com/">incorrect format</yt:state>
+          <yt:incomplete />
         </app:control>
     </entry>
 </feed>
