@@ -31,6 +31,7 @@ static NSString *const kRestrictionParamName = @"restriction";
 static NSString *const kLanguageRestrictionParamName = @"lr";
 static NSString *const kLocationParamName = @"location";
 static NSString *const kLocationRadiusParamName = @"location-radius";
+static NSString *const kCaptionParamName = @"caption";
 static NSString *const kUploaderParamName = @"uploader";
 
 @implementation GDataQueryYouTube
@@ -102,6 +103,17 @@ static NSString *const kUploaderParamName = @"uploader";
 
 - (NSString *)locationRadius {
   return [self valueForParameterWithName:kLocationRadiusParamName];
+}
+
+- (void)setHasCaptions:(BOOL)flag {
+  [self addCustomParameterWithName:kCaptionParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)hasCaptions {
+  return [self boolValueForParameterWithName:kCaptionParamName
+                                defaultValue:NO];
 }
 
 - (void)setUploader:(NSString *)str {

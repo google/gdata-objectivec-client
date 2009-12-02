@@ -23,6 +23,9 @@ Changes
 
 - Removed setUserAgent: calls from sample apps.
 
+- Added yt:incomplete element to app:control in YouTube video entries, and
+  caption query parameter
+
 Bugs Fixed
 
 - Fixed possible simultaneous access of fetcher properties from both
