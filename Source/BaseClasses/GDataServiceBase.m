@@ -333,11 +333,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                     httpMethod:(NSString *)httpMethod
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
-                             completionHandler:(GDataServiceCompletionHandler)completionHandler
+                             completionHandler:(id)completionHandler // GDataServiceCompletionHandler
                           retryInvocationValue:(NSValue *)retryInvocationValue
                                         ticket:(GDataServiceTicketBase *)ticket {
 
   AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), @encode(NSError *), 0);
+
+  // The completionHandler argument is declared as an id, not as a block
+  // pointer, so this can be built with the 10.6 SDK and still run on 10.5.
+  // If the argument were declared as a block pointer, the invocation for
+  // fetchObjectWithURL: created in GDataServiceGoogle would cause an exception
+  // since 10.5's NSInvocation cannot deal with encoding of block pointers.
 
   // if no URL was supplied, treat this as if the fetch failed (below)
   // and immediately return a nil ticket, skipping the callbacks
