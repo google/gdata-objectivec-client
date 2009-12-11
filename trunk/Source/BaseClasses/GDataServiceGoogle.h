@@ -57,12 +57,20 @@ enum {
 // Google authentication
 @interface GDataServiceTicket : GDataServiceTicketBase {
   GDataHTTPFetcher *authFetcher_;
+  NSString *authToken_;
+  NSDate *credentialDate_;
 }
 
 - (void)cancelTicket; // stops fetches in progress
 
 - (GDataHTTPFetcher *)authFetcher;
 - (void)setAuthFetcher:(GDataHTTPFetcher *)fetcher;
+
+- (NSString *)authToken;
+- (void)setAuthToken:(NSString *)str;
+
+- (NSDate *)credentialDate;
+- (void)setCredentialDate:(NSDate *)date;
 @end
 
 // GDataServiceGoogle is the version of the service class that supports
@@ -80,6 +88,10 @@ enum {
   NSString *signInDomain_;
 
   NSString *serviceID_; // typically supplied by the subclass overriding -serviceID
+
+  GDataHTTPFetcher *pendingAuthFetcher_;
+
+  NSDate *credentialDate_;
 
   BOOL shouldUseMethodOverrideHeader_;
 }
@@ -241,5 +253,12 @@ enum {
 // subclasses may specify what namespaces to attach to posted user entries
 // when the entries lack explicit root-level namespaces
 + (NSDictionary *)standardServiceNamespaces;
+
+- (GDataHTTPFetcher *)pendingAuthFetcher;
+- (void)setPendingAuthFetcher:(GDataHTTPFetcher *)fetcher;
+
+// the date the credentials were set
+- (NSDate *)credentialDate;
+- (void)setCredentialDate:(NSDate *)date;
 
 @end

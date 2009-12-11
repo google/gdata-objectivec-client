@@ -26,6 +26,7 @@ extern NSString* const kFetcherRetryInvocationKey;
 
 static NSString* const kCaptchaFullURLKey = @"CaptchaFullUrl";
 static NSString* const kFetcherTicketKey = @"_ticket"; // same as in GDataServiceBase
+static NSString* const kFetcherDependentInvocationsKey = @"_invocations";
 
 static NSString* const kAuthDelegateKey = @"_delegate";
 static NSString* const kAuthSelectorKey = @"_sel";
@@ -52,6 +53,8 @@ enum {
 - (GDataHTTPFetcher *)authenticationFetcher;
 - (NSError *)cannotCreateAuthFetcherError;
 
+- (GDataServiceTicket *)deferUntilAuthenticationForInvocation:(NSInvocation *)invocation;
+
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 - (NSError *)errorForAuthFetcherStatus:(NSInteger)status data:(NSData *)data;
 
@@ -63,11 +66,8 @@ enum {
 
 @implementation GDataServiceGoogle
 
-- (id)init {
-  self = [super init];
-  if (self) {
-  }
-  return self;
++ (Class)ticketClass {
+  return [GDataServiceTicket class];
 }
 
 - (void)dealloc {
@@ -78,6 +78,8 @@ enum {
   [accountType_ release];
   [signInDomain_ release];
   [serviceID_ release];
+  [pendingAuthFetcher_ release];
+  [credentialDate_ release];
   [super dealloc];
 }
 
@@ -143,9 +145,27 @@ enum {
   return error;
 }
 
-// This routine signs into the service defined by the subclass's serviceID
-// method, and if successful calls the invocation's finishedSelector.
+- (void)addDependentInvocation:(NSInvocation *)invocation
+                 toAuthFetcher:(GDataHTTPFetcher *)fetcher {
+  // add the invocation to the list in the fetcher's properties
+  NSMutableArray *array = [fetcher propertyForKey:kFetcherDependentInvocationsKey];
+  if (array == nil) {
+    array = [NSMutableArray arrayWithObject:invocation];
+    [fetcher setProperty:array
+                  forKey:kFetcherDependentInvocationsKey];
+  } else {
+    [array addObject:invocation];
+  }
+}
+
+// This routine creates a new auth fetcher, and saves the invocation in the
+// list of dependencies to call when the auth fetcher completes
 - (GDataServiceTicket *)authenticateThenInvoke:(NSInvocation *)invocation {
+
+  // this method always creates a new auth fetcher, so there should be none
+  // already pending
+  GDATA_DEBUG_ASSERT([self pendingAuthFetcher] == nil,
+                     @"unexpected auth fetcher");
 
   GDataServiceTicket *ticket;
   [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
@@ -153,7 +173,8 @@ enum {
   GDataHTTPFetcher *fetcher = [self authenticationFetcher];
   if (fetcher) {
 
-    [fetcher setUserData:invocation];
+    [self addDependentInvocation:invocation
+                   toAuthFetcher:fetcher];
 
     // store the ticket in the same property the base class uses when
     // fetching so that notification-time code can find the ticket easily
@@ -166,6 +187,8 @@ enum {
 
     [ticket setAuthFetcher:fetcher];
     [ticket setCurrentFetcher:fetcher];
+
+    [self setPendingAuthFetcher:fetcher];
 
     [fetcher beginFetchWithDelegate:self
                   didFinishSelector:@selector(authFetcher:finishedWithData:)
@@ -214,19 +237,29 @@ enum {
   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
   NSString *authToken = [responseDict objectForKey:kGDataServiceAuthTokenKey];
 
-  [self setAuthToken:authToken];
-
-  NSInvocation *invocation = [fetcher userData];
-
-  // set the currentFetcher to nil before we move on to doing an object fetch
-  GDataServiceTicket *ticket;
-
-  [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
-  [ticket setCurrentFetcher:nil];
+  // if this is the pending auth fetcher, save the token for future auths
+  if (fetcher == [self pendingAuthFetcher]) {
+    [self setAuthToken:authToken];
+    [self setPendingAuthFetcher:nil];
+  }
 
   if ([authToken length] > 0) {
-    // now invoke the actual fetch
-    [invocation invoke];
+    // there was an auth token, so iterate through the callbacks
+    NSArray *dependentInvocations = [fetcher propertyForKey:kFetcherDependentInvocationsKey];
+    NSInvocation *invocation;
+
+    GDATA_FOREACH(invocation, dependentInvocations) {
+      // set the ticket's currentFetcher to nil before we invoke the fetch of
+      // the GData object so the user won't mistakenly see indication that
+      // the auth fetch is still in progress
+      GDataServiceTicket *ticket;
+
+      [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
+      [ticket setCurrentFetcher:nil];
+      [ticket setAuthToken:authToken];
+
+      [invocation invoke];
+    }
   } else {
     // there was no auth token
     NSDictionary *userInfo;
@@ -239,13 +272,17 @@ enum {
     [self authFetcher:fetcher failedWithError:error];
   }
 
-  // the userData and properties contain the ticket which points to the
+  // the properties contain the ticket which points to the
   // fetcher; free those now to break the retain cycle
-  [fetcher setUserData:nil];
   [fetcher setProperties:nil];
 }
 
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+
+  if (fetcher == [self pendingAuthFetcher]) {
+    [self setAuthToken:nil];
+    [self setPendingAuthFetcher:nil];
+  }
 
   if ([[error domain] isEqual:kGDataHTTPFetcherStatusDomain]) {
     NSInteger status = [error code];
@@ -253,40 +290,43 @@ enum {
     error = [self errorForAuthFetcherStatus:status data:data];
   }
 
-  NSInvocation *invocation = [[[fetcher userData] retain] autorelease];
-
-  id delegate;
-  SEL finishedSelector;
-  GDataServiceTicket *ticket;
-
-  [invocation getArgument:&delegate         atIndex:kInvocationDelegateIndex];
-  [invocation getArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
-  [invocation getArgument:&ticket           atIndex:kInvocationTicketIndex];
-
-  [fetcher setUserData:nil];
+  // iterate through the callbacks to tell each that the fetch failed
+  NSArray *dependentInvocations = [[[fetcher propertyForKey:kFetcherDependentInvocationsKey] retain] autorelease];
   [fetcher setProperties:nil];
 
-  if (finishedSelector) {
-    [[self class] invokeCallback:finishedSelector
-                          target:delegate
-                          ticket:ticket
-                          object:nil
-                           error:error];
-  }
+  NSInvocation *invocation;
+  GDATA_FOREACH(invocation, dependentInvocations) {
+
+    id delegate;
+    SEL finishedSelector;
+    GDataServiceTicket *ticket;
+
+    [invocation getArgument:&delegate         atIndex:kInvocationDelegateIndex];
+    [invocation getArgument:&finishedSelector atIndex:kInvocationFinishedSelectorIndex];
+    [invocation getArgument:&ticket           atIndex:kInvocationTicketIndex];
+
+    if (finishedSelector) {
+      [[self class] invokeCallback:finishedSelector
+                            target:delegate
+                            ticket:ticket
+                            object:nil
+                             error:error];
+    }
 
 #if NS_BLOCKS_AVAILABLE
-  GDataServiceCompletionHandler completionHandler;
-  [invocation getArgument:&completionHandler
-                  atIndex:kInvocationCompletionHandlerIndex];
+    GDataServiceCompletionHandler completionHandler;
+    [invocation getArgument:&completionHandler
+                    atIndex:kInvocationCompletionHandlerIndex];
 
-  if (completionHandler) {
-    completionHandler(ticket, nil, error);
-  }
+    if (completionHandler) {
+      completionHandler(ticket, nil, error);
+    }
 #endif
 
-  [ticket setFetchError:error];
-  [ticket setHasCalledCallback:YES];
-  [ticket setCurrentFetcher:nil];
+    [ticket setFetchError:error];
+    [ticket setHasCalledCallback:YES];
+    [ticket setCurrentFetcher:nil];
+  }
 }
 
 - (NSError *)errorForAuthFetcherStatus:(NSInteger)status data:(NSData *)data {
@@ -340,25 +380,30 @@ enum {
 }
 
 // The auth fetcher may call into this retry method; this one invokes the
-// selector provided by the user.
+// first retry selector found among the tickets dependent on this auth fetcher
 - (BOOL)authFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
 
-  NSInvocation *invocation = [fetcher userData];
+  NSArray *dependentInvocations = [fetcher propertyForKey:kFetcherDependentInvocationsKey];
 
-  id delegate;
-  GDataServiceTicket *ticket;
+  NSInvocation *invocation;
+  GDATA_FOREACH(invocation, dependentInvocations) {
 
-  [invocation getArgument:&delegate atIndex:kInvocationDelegateIndex];
-  [invocation getArgument:&ticket   atIndex:kInvocationTicketIndex];
+    id delegate;
+    GDataServiceTicket *ticket;
 
-  SEL retrySelector = [ticket retrySelector];
-  if (retrySelector) {
+    [invocation getArgument:&delegate atIndex:kInvocationDelegateIndex];
+    [invocation getArgument:&ticket   atIndex:kInvocationTicketIndex];
 
-    willRetry = [self invokeRetrySelector:retrySelector
-                                 delegate:delegate
-                                   ticket:ticket
-                                willRetry:willRetry
-                                    error:error];
+    SEL retrySelector = [ticket retrySelector];
+    if (retrySelector) {
+
+      willRetry = [self invokeRetrySelector:retrySelector
+                                   delegate:delegate
+                                     ticket:ticket
+                                  willRetry:willRetry
+                                      error:error];
+      break;
+    }
   }
   return willRetry;
 }
@@ -415,7 +460,7 @@ enum {
     [invocation invoke];
     [invocation getReturnValue:&result];
 
-  } else if ([authToken_ length] > 0 || [authSubToken_ length] > 0) {
+  } else if ([[ticket authToken] length] > 0 || [authSubToken_ length] > 0) {
     // There is already an auth token.
     //
     // If the auth token has expired, we'll be retrying this same invocation
@@ -433,10 +478,31 @@ enum {
   } else {
     // we need to authenticate first.  We won't be retrying this invocation if
     // it fails.
-
-    result = [self authenticateThenInvoke:invocation];
+    result = [self deferUntilAuthenticationForInvocation:invocation];
   }
   return result;
+}
+
+- (GDataServiceTicket *)deferUntilAuthenticationForInvocation:(NSInvocation *)invocation {
+
+  GDataServiceTicket *ticket = nil;
+
+  GDataHTTPFetcher *pendingAuthFetcher = [self pendingAuthFetcher];
+  if (pendingAuthFetcher == nil) {
+    // there is no pending auth fetcher, so create a new one
+    ticket = [self authenticateThenInvoke:invocation];
+  } else {
+    // there is already an auth fetcher pending; make this fetch
+    // dependent on it
+    [self addDependentInvocation:invocation
+                   toAuthFetcher:pendingAuthFetcher];
+
+    [invocation getArgument:&ticket atIndex:kInvocationTicketIndex];
+
+    [ticket setAuthFetcher:pendingAuthFetcher];
+    [ticket setCurrentFetcher:pendingAuthFetcher];
+  }
+  return ticket;
 }
 
 // override the base class's failure handler to look for a session expired error
@@ -448,19 +514,63 @@ enum {
 
     NSInvocation *retryInvocation = [fetcher propertyForKey:kFetcherRetryInvocationKey];
     if (retryInvocation) {
+      // clear out the ticket's auth token
+      GDataServiceTicket *ticket = nil;
+      [retryInvocation getArgument:&ticket atIndex:kInvocationTicketIndex];
+      [ticket setAuthToken:nil];
 
       // avoid an infinite loop: remove the retry invocation before re-invoking
       NSValue *noRetryInvocation = nil;
       [retryInvocation setArgument:&noRetryInvocation
                            atIndex:kInvocationRetryInvocationValueIndex];
 
-      [self authenticateThenInvoke:retryInvocation];
-      return;
+      // if the credential has changed, we don't want to try reauthentication
+      // since it would be with a different username and password
+      if (AreEqualOrBothNil([self credentialDate], [ticket credentialDate])) {
+
+        [self deferUntilAuthenticationForInvocation:retryInvocation];
+        return;
+      }
     }
   }
 
   [super objectFetcher:fetcher failedWithStatus:status data:data];
 }
+
+- (void)stopAuthenticationForTicket:(GDataServiceTicket *)ticket {
+  // remove this ticket from the auth fetcher's list of ticket invocations
+  GDataHTTPFetcher *authFetcher = [ticket authFetcher];
+
+  // find this ticket's invocation in the auth fetcher's dependencies
+  NSMutableArray *dependentInvocations = [authFetcher propertyForKey:kFetcherDependentInvocationsKey];
+  NSInvocation *invocation;
+  GDATA_FOREACH(invocation, dependentInvocations) {
+    // get the ticket from the invocation's arguments
+    GDataServiceTicket *invTicket;
+    [invocation getArgument:&invTicket atIndex:kInvocationTicketIndex];
+
+    if (ticket == invTicket) {
+      // we found the desired ticket; remove it from the list of dependents
+      [dependentInvocations removeObject:invocation];
+      break;
+    }
+  }
+
+  if ([dependentInvocations count] == 0) {
+    // this was the only dependent invocation, so we can discard the auth
+    // fetcher
+    [authFetcher stopFetching];
+    [authFetcher setProperty:nil
+                      forKey:kFetcherDependentInvocationsKey];
+    if (authFetcher == [self pendingAuthFetcher]) {
+      [self setPendingAuthFetcher:nil];
+    }
+  }
+
+  // this ticket no longer has an associated auth fetcher
+  [ticket setAuthFetcher:nil];
+}
+
 
 #pragma mark -
 
@@ -473,6 +583,7 @@ enum {
                          didAuthenticateSelector:(SEL)authSelector {
   AssertSelectorNilOrImplementedWithArguments(delegate, authSelector, @encode(GDataServiceGoogle *), @encode(NSError *), 0);
 
+  // make a new auth fetcher
   GDataHTTPFetcher *fetcher = [self authenticationFetcher];
   if (fetcher) {
 
@@ -521,6 +632,7 @@ enum {
   [self setAuthToken:authToken];
 
   GDataServiceTicket *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+  [ticket setAuthToken:authToken];
 
   NSString *selStr = [fetcher propertyForKey:kAuthSelectorKey];
   id delegate = [fetcher propertyForKey:kAuthDelegateKey];
@@ -955,6 +1067,12 @@ enum {
     [self setAuthSubToken:nil];
 
     [self clearLastModifiedDates];
+
+    // we don't want to rely on any pending auth fetcher, but rather
+    // want to force creation of a new one
+    [self setPendingAuthFetcher:nil];
+
+    [self setCredentialDate:[NSDate date]];
   }
 
   [super setUserCredentialsWithUsername:username password:password];
@@ -990,11 +1108,13 @@ enum {
 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
-                            httpMethod:(NSString *)httpMethod {
+                            httpMethod:(NSString *)httpMethod
+                                ticket:(GDataServiceTicket *)ticket {
 
   NSMutableURLRequest *request = [super requestForURL:url
                                                  ETag:etag
-                                           httpMethod:httpMethod];
+                                           httpMethod:httpMethod
+                                               ticket:ticket];
 
   // if appropriate set the method override header
   if (shouldUseMethodOverrideHeader_) {
@@ -1006,10 +1126,19 @@ enum {
     }
   }
 
+  NSString *authToken;
+  if (ticket) {
+    authToken = [ticket authToken];
+  } else {
+    // no ticket was specified, so authenticate using the service object's
+    // existing token
+    authToken = authToken_;
+  }
+
   // add the auth token to the header
-  if ([authToken_ length] > 0) {
+  if ([authToken length] > 0) {
     NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@",
-      authToken_];
+      authToken];
     [request setValue:value forHTTPHeaderField: @"Authorization"];
   } else if ([authSubToken_ length] > 0) {
     NSString *value = [NSString stringWithFormat:@"AuthSub token=%@",
@@ -1076,13 +1205,42 @@ enum {
   shouldUseMethodOverrideHeader_ = flag;
 }
 
+- (GDataHTTPFetcher *)pendingAuthFetcher {
+  return pendingAuthFetcher_;
+}
+
+- (void)setPendingAuthFetcher:(GDataHTTPFetcher *)fetcher {
+  [pendingAuthFetcher_ autorelease];
+  pendingAuthFetcher_ = [fetcher retain];
+}
+
+- (NSDate *)credentialDate {
+  return credentialDate_;
+}
+
+- (void)setCredentialDate:(NSDate *)date {
+  [credentialDate_ autorelease];
+  credentialDate_ = [date retain];
+}
+
 @end
 
 
 @implementation GDataServiceTicket
 
+- (id)initWithService:(GDataServiceGoogle *)service {
+  self = [super initWithService:service];
+  if (self) {
+    [self setAuthToken:[service authToken]];
+    [self setCredentialDate:[service credentialDate]];
+  }
+  return self;
+}
+
 - (void)dealloc {
   [authFetcher_ release];
+  [authToken_ release];
+  [credentialDate_ release];
   [super dealloc];
 }
 
@@ -1093,8 +1251,8 @@ enum {
 }
 
 - (void)cancelTicket {
-  [authFetcher_ stopFetching];
-  [self setAuthFetcher:nil];
+  GDataServiceGoogle *service = [self service];
+  [service stopAuthenticationForTicket:self];
 
   [super cancelTicket];
 }
@@ -1106,6 +1264,24 @@ enum {
 - (void)setAuthFetcher:(GDataHTTPFetcher *)fetcher {
   [authFetcher_ autorelease];
   authFetcher_ = [fetcher retain];
+}
+
+- (NSString *)authToken {
+  return authToken_;
+}
+
+- (void)setAuthToken:(NSString *)str {
+  [authToken_ autorelease];
+  authToken_ = [str copy];
+}
+
+- (NSDate *)credentialDate {
+  return credentialDate_;
+}
+
+- (void)setCredentialDate:(NSDate *)date {
+  [credentialDate_ autorelease];
+  credentialDate_ = [date retain];
 }
 @end
 

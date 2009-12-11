@@ -275,6 +275,11 @@ typedef void *GDataServiceUploadProgressHandler;
                                   ETag:(NSString *)etag
                             httpMethod:(NSString *)httpMethod;
 
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod
+                                ticket:(GDataServiceTicketBase *)ticket;
+
 // objectRequestForURL returns an NSMutableURLRequest for an XML GData object
 //
 //
@@ -283,7 +288,8 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url
                                       object:(GDataObject *)object
                                         ETag:(NSString *)etag
-                                  httpMethod:(NSString *)httpMethod;
+                                  httpMethod:(NSString *)httpMethod
+                                      ticket:(GDataServiceTicketBase *)ticket;
 
 //
 // Fetch methods
@@ -526,4 +532,3 @@ typedef void *GDataServiceUploadProgressHandler;
 + (void)invokeCallback:(SEL)callbackSel target:(id)target ticket:(id)ticket object:(id)object error:(id)error;
 
 @end
-
