@@ -598,6 +598,53 @@ static int gFetchCounter = 0;
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   //
+  // test: repeat last authenticated download (which ended with a valid token),
+  // but make the auth token invalid and disallow a reauth by changing the
+  // credential date after the fetch starts
+  //
+
+  [self resetFetchResponse];
+
+  [service_ setAuthToken:@"bogus"];
+
+  ticket_ = [service_ fetchFeedWithURL:authFeedURL
+                             feedClass:kGDataUseRegisteredClass
+                              delegate:self
+                     didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+  [service_ setCredentialDate:[NSDate date]];
+
+  [self waitForFetch];
+
+  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  STAssertEquals([fetcherError_ code], (NSInteger)401,
+                 @"fetcherError_=%@", fetcherError_);
+
+  //
+  // test: do a valid fetch, but change the credential after the fetch begins
+  //
+
+  [self resetFetchResponse];
+
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"mypasword"];
+
+  ticket_ = [service_ fetchFeedWithURL:authFeedURL
+                             feedClass:kGDataUseRegisteredClass
+                              delegate:self
+                     didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"bad"];
+
+  [self waitForFetch];
+
+  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+                       sheetID, @"fetching %@", authFeedURL);
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+
+  //
   // test:  download feed only, unsuccessful auth
   //
   [self resetFetchResponse];
@@ -923,7 +970,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
   // an ".auth" extension tells the server to require the success auth token,
   // but the server will ignore the .auth extension when looking for the file
-  NSURL *authFeedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml?status=503"];
+  NSURL *feedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml?status=503"];
 
   [service_ setIsServiceRetryEnabled:YES];
 
@@ -935,7 +982,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [service_ setServiceRetrySelector:@selector(stopRetryTicket:willRetry:forError:)];
 
   ticket_ = (GDataServiceTicket *)
-    [service_ fetchPublicFeedWithURL:authFeedStatusURL
+    [service_ fetchPublicFeedWithURL:feedStatusURL
                            feedClass:kGDataUseRegisteredClass
                             delegate:self
                    didFinishSelector:@selector(ticket:finishedWithObject:error:)];
@@ -968,7 +1015,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [service_ setServiceRetrySelector:@selector(stopRetryTicket:willRetry:forError:)];
 
   ticket_ = (GDataServiceTicket *)
-    [service_ fetchPublicFeedWithURL:authFeedStatusURL
+    [service_ fetchPublicFeedWithURL:feedStatusURL
                      feedClass:kGDataUseRegisteredClass
                       delegate:self
              didFinishSelector:@selector(ticket:finishedWithObject:error:)];
@@ -996,7 +1043,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [service_ setServiceRetrySelector:@selector(fixRequestRetryTicket:willRetry:forError:)];
 
   ticket_ = (GDataServiceTicket *)
-    [service_ fetchPublicFeedWithURL:authFeedStatusURL
+    [service_ fetchPublicFeedWithURL:feedStatusURL
                            feedClass:kGDataUseRegisteredClass
                             delegate:self
                  didFinishSelector:@selector(ticket:finishedWithObject:error:)];
@@ -1011,8 +1058,33 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                  (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
   //
-  // test:  download feed only, no auth, surrogate feed class
+  // test:  retry, making the request succeed on the first retry
+  // by fixing the URL, and changing the credential before the retry,
+  // which should not affect the retry
   //
+  [self resetFetchResponse];
+
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"mypassword"];
+
+  NSURL *authStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml.auth?status=503"];
+
+  ticket_ = [service_ fetchFeedWithURL:authStatusURL
+                             feedClass:kGDataUseRegisteredClass
+                              delegate:self
+                     didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"bad"];
+  [self waitForFetch];
+
+  STAssertNotNil(fetchedObject_, @"should have obtained fetched object");
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 1,
+                 @"retry count should be 1, was %lu",
+                 (unsigned long) [[ticket_ objectFetcher] retryCount]);
+
   [self resetFetchResponse];
 }
 

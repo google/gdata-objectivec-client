@@ -87,6 +87,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 @implementation GDataServiceBase
 
++ (Class)ticketClass {
+  return [GDataServiceTicketBase class];
+}
+
 - (id)init {
   self = [super init];
   if (self) {
@@ -222,7 +226,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
-                            httpMethod:(NSString *)httpMethod {
+                            httpMethod:(NSString *)httpMethod
+                                ticket:(GDataServiceTicketBase *)ticket {
 
   // subclasses may add headers to this
   NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] initWithURL:url
@@ -284,6 +289,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   return request;
 }
 
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url
+                                  ETag:(NSString *)etag
+                            httpMethod:(NSString *)httpMethod {
+  // this public entry point authenticates from the service object but
+  // not from the auth token in the ticket
+  return [self requestForURL:url ETag:etag httpMethod:httpMethod ticket:nil];
+}
 
 // objectRequestForURL returns an NSMutableURLRequest for a GData object as XML
 //
@@ -293,7 +305,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (NSMutableURLRequest *)objectRequestForURL:(NSURL *)url
                                       object:(GDataObject *)object
                                         ETag:(NSString *)etag
-                                  httpMethod:(NSString *)httpMethod {
+                                  httpMethod:(NSString *)httpMethod
+                                      ticket:(GDataServiceTicketBase *)ticket {
 
   // if the object being sent has an etag, add it to the request header to
   // avoid retrieving a duplicate or to avoid writing over an updated
@@ -312,7 +325,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   NSMutableURLRequest *request = [self requestForURL:url
                                                 ETag:etag
-                                          httpMethod:httpMethod];
+                                          httpMethod:httpMethod
+                                              ticket:ticket];
 
   [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
 
@@ -353,16 +367,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   // returns errors depending on the specific usage
   if (feedURL == nil) return nil;
 
-  NSMutableURLRequest *request = [self objectRequestForURL:feedURL
-                                                    object:objectToPost
-                                                      ETag:etag
-                                                httpMethod:httpMethod];
-
   // we need to create a ticket unless one was created earlier (like during
   // authentication)
   if (!ticket) {
-    ticket = [GDataServiceTicketBase ticketForService:self];
+    ticket = [[[self class] ticketClass] ticketForService:self];
   }
+
+  NSMutableURLRequest *request = [self objectRequestForURL:feedURL
+                                                    object:objectToPost
+                                                      ETag:etag
+                                                httpMethod:httpMethod
+                                                    ticket:ticket];
 
   AssertSelectorNilOrImplementedWithArguments(delegate, [ticket uploadProgressSelector],
       @encode(GDataServiceTicketBase *), @encode(unsigned long long),
