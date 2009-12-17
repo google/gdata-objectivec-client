@@ -74,6 +74,9 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
 
+- (NSString *)kind;
+- (void)setKind:(NSString *)str;
+
 - (NSString *)resourceID;
 - (void)setResourceID:(NSString *)str;
 
@@ -194,6 +197,7 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 + (Class)entryClassForCategoryWithScheme:(NSString *)scheme
                                     term:(NSString *)term;
++ (Class)entryClassForKindAttributeValue:(NSString *)kind;
 
 // temporary bridge method
 + (void)registerEntryClass:(Class)theClass

@@ -45,6 +45,19 @@
   return nil;
 }
 
++ (NSString *)standardKindAttributeValue {
+
+  // overridden by feed subclasses
+  //
+  // Feeds and entries in core v2.1 and later have a kind attribute rather than
+  // kind categories
+  //
+  // Subclasses may override this method with the proper kind attribute string
+  // used to identify this class
+  //
+  return nil;
+}
+
 - (void)addExtensionDeclarations {
 
   [super addExtensionDeclarations];
@@ -88,6 +101,8 @@
   // Attributes
   [self addAttributeExtensionDeclarationForParentClass:feedClass
                                             childClass:[GDataETagAttribute class]];
+  [self addAttributeExtensionDeclarationForParentClass:feedClass
+                                            childClass:[GDataKindAttribute class]];
 }
 
 + (id)feedWithXMLData:(NSData *)data {
@@ -99,13 +114,18 @@
   if (self) {
     // if the subclass declares a kind, then add a category element for the
     // kind
-    NSString *kind = [[self class] standardFeedKind];
-    if (kind) {
+    NSString *categoryKind = [[self class] standardFeedKind];
+    if (categoryKind) {
       GDataCategory *category;
 
       category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                              term:kind];
+                                              term:categoryKind];
       [self addCategory:category];
+    }
+
+    NSString *attributeKind = [[self class] standardKindAttributeValue];
+    if (attributeKind) {
+      [self setKind:attributeKind];
     }
   }
   return self;
@@ -237,6 +257,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
     { @"v",                @"serviceVersion",          kGDataDescValueLabeled },
     { @"entries",          @"entries",                 kGDataDescArrayCount },
     { @"etag",             @"ETag",                    kGDataDescValueLabeled },
+    { @"kind",             @"kind",                    kGDataDescValueLabeled },
     { @"resourceID",       @"resourceID",              kGDataDescValueLabeled },
     { @"title",            @"title.stringValue",       kGDataDescValueLabeled },
     { @"subtitle",         @"subtitle.stringValue",    kGDataDescValueLabeled },
@@ -298,18 +319,28 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 // feed registration & lookup for dynamic object generation
 //
 
-static NSMutableDictionary *gFeedClassCategoryMap = nil;
+static NSMutableDictionary *gFeedClassKindMap = nil;
 
 + (void)registerFeedClass {
 
-  NSString *kind = [self standardFeedKind];
+  NSString *categoryKind = [self standardFeedKind];
+  if (categoryKind) {
+    [self registerClass:self
+                  inMap:&gFeedClassKindMap
+  forCategoryWithScheme:kGDataCategoryScheme
+                   term:categoryKind];
+  }
 
-  GDATA_DEBUG_ASSERT(kind != nil, @"cannot register feed without a kind");
+  NSString *attributeKind = [self standardKindAttributeValue];
+  if (attributeKind) {
+    [self registerClass:self
+                  inMap:&gFeedClassKindMap
+  forCategoryWithScheme:nil
+                   term:attributeKind];
+  }
 
-  [self registerClass:self
-                inMap:&gFeedClassCategoryMap
-forCategoryWithScheme:kGDataCategoryScheme
-                 term:kind];
+  GDATA_DEBUG_ASSERT(attributeKind != nil || categoryKind != nil,
+                     @"cannot register feed without a kind");
 }
 
 + (void)registerFeedClass:(Class)theClass
@@ -319,7 +350,7 @@ forCategoryWithScheme:kGDataCategoryScheme
   // temporary bridge method - will be removed when subclasses all call
   // -registerFeedClass
   [self registerClass:theClass
-                inMap:&gFeedClassCategoryMap
+                inMap:&gFeedClassKindMap
 forCategoryWithScheme:scheme
                  term:term];
 }
@@ -328,7 +359,13 @@ forCategoryWithScheme:scheme
                                    term:(NSString *)term {
   return [self classForCategoryWithScheme:scheme
                                      term:term
-                                  fromMap:gFeedClassCategoryMap];
+                                  fromMap:gFeedClassKindMap];
+}
+
++ (Class)feedClassForKindAttributeValue:(NSString *)kind {
+  return [self classForCategoryWithScheme:nil
+                                     term:kind
+                                  fromMap:gFeedClassKindMap];
 }
 
 #pragma mark Getters and Setters
@@ -541,6 +578,15 @@ forCategoryWithScheme:scheme
 
 - (void)setETag:(NSString *)str {
   [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
+}
+
+- (NSString *)kind {
+  NSString *str = [self attributeValueForExtensionClass:[GDataKindAttribute class]];
+  return str;
+}
+
+- (void)setKind:(NSString *)str {
+  [self setAttributeValue:str forExtensionClass:[GDataKindAttribute class]];
 }
 
 - (NSString *)resourceID {

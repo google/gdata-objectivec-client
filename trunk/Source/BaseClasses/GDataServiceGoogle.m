@@ -427,6 +427,12 @@ enum {
 
   GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
 
+  if (objectToPost) {
+    // be sure the postedObject is available to the callbacks even if we fail
+    // in authenticating, before getting around to trying to upload it
+    [ticket setPostedObject:objectToPost];
+  }
+
 #if NS_BLOCKS_AVAILABLE
   if (completionHandler) {
     // copy the completion handler to the heap now, before creating the
@@ -809,10 +815,17 @@ enum {
 
   GDATA_ASSERT(editURL != nil, @"deleting uneditable entry: %@", entryToDelete);
 
-  return [self deleteResourceURL:editURL
-                            ETag:etag
-                        delegate:delegate
-               didFinishSelector:finishedSelector];
+  GDataServiceTicket *ticket = [self deleteResourceURL:editURL
+                                                  ETag:etag
+                                              delegate:delegate
+                                     didFinishSelector:finishedSelector];
+
+  // we'll put the entry being deleted into the ticket's postedObject property
+  // as a convenience to the caller even though we're not really posting an
+  // object
+  [ticket setPostedObject:entryToDelete];
+
+  return ticket;
 }
 
 - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
