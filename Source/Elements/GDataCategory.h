@@ -67,4 +67,12 @@ _EXTERN NSString* const kGDataCategoryLabelViewed           _INITIALIZE_AS(@"vie
 
 + (NSArray *)categoryLabelsFromCategories:(NSArray *)array;
 + (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label;
+
+// this general search routine allows nil as "don't care" for scheme, term,
+// and label
++ (BOOL)categories:(NSArray *)array
+containsCategoryWithScheme:(NSString *)scheme
+              term:(NSString *)term
+             label:(NSString *)label;
+
 @end

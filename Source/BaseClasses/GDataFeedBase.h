@@ -117,6 +117,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
 
+- (NSString *)kind;
+- (void)setKind:(NSString *)str;
+
 - (NSString *)resourceID;
 - (void)setResourceID:(NSString *)str;
 
@@ -190,6 +193,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
 + (Class)feedClassForCategoryWithScheme:(NSString *)scheme
                                    term:(NSString *)term;
++ (Class)feedClassForKindAttributeValue:(NSString *)kind;
 
 // temporary bridge method
 + (void)registerFeedClass:(Class)theClass
@@ -199,5 +203,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 // subclasses override standardFeedKind to provide the term string for the
 // term attribute of their "kind" category element, if any
 + (NSString *)standardFeedKind;
+
+// subclasses override standardKindAttributeValue to provide the string for the
+// kind attribute identifying their class (for core protocol v2.1 and later)
++ (NSString *)standardKindAttributeValue;
 
 @end

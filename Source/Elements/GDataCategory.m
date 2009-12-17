@@ -146,10 +146,30 @@ static NSString* const kLangAttr = @"xml:lang";
   return labels;
 }
 
-+ (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label {
-  GDataCategory *category = [GDataCategory categoryWithLabel:label];
++ (BOOL)categories:(NSArray *)array
+containsCategoryWithScheme:(NSString *)scheme
+              term:(NSString *)term
+             label:(NSString *)label {
+  // nil argument means "don't care"
+  GDataCategory *category;
+  GDATA_FOREACH(category, array) {
+    if ((scheme == nil || AreEqualOrBothNil([category scheme], scheme))
+        && (term == nil || AreEqualOrBothNil([category term], term))
+        && (label == nil || AreEqualOrBothNil([category label], label))) {
+      return YES;
+    }
+  }
+  return NO;
+}
 
-  BOOL hasLabel = [array containsObject:category];
-  return hasLabel;
++ (BOOL)categories:(NSArray *)array containsCategoryWithLabel:(NSString *)label {
+  // to be rigorous, we'd construct a term string for comparison as done
+  // above in +categoryWithLabel: but that would make this a much more
+  // expensive routine to call
+  BOOL flag = [self categories:array
+    containsCategoryWithScheme:kGDataCategoryLabelScheme
+                          term:nil
+                         label:label];
+  return flag;
 }
 @end

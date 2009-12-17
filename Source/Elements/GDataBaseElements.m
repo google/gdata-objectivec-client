@@ -140,3 +140,9 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"etag"; }
 @end
+
+@implementation GDataKindAttribute
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"kind"; }
+@end

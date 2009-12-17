@@ -41,6 +41,19 @@
   return nil;
 }
 
++ (NSString *)standardKindAttributeValue {
+
+  // overridden by entry subclasses
+  //
+  // Feeds and entries in core v2.1 and later have a kind attribute rather than
+  // kind categories
+  //
+  // Subclasses may override this method with the proper kind attribute string
+  // used to identify this class
+  //
+  return nil;
+}
+
 + (NSDictionary *)baseGDataNamespaces {
   NSDictionary *namespaces = [NSDictionary dictionaryWithObjectsAndKeys:
     kGDataNamespaceAtom, @"",
@@ -95,20 +108,27 @@
 
   [self addAttributeExtensionDeclarationForParentClass:entryClass
                                             childClass:[GDataETagAttribute class]];
+  [self addAttributeExtensionDeclarationForParentClass:entryClass
+                                            childClass:[GDataKindAttribute class]];
 }
 
 - (id)init {
   self = [super init];
   if (self) {
-    // if the subclass declares a kind, then add a category element for the
-    // kind
-    NSString *kind = [[self class] standardEntryKind];
-    if (kind) {
+    // if the subclass declares a kind, then add a category element or
+    // a kind attribute
+    NSString *categoryKind = [[self class] standardEntryKind];
+    if (categoryKind) {
       GDataCategory *category;
 
       category = [GDataCategory categoryWithScheme:kGDataCategoryScheme
-                                              term:kind];
+                                              term:categoryKind];
       [self addCategory:category];
+    }
+
+    NSString *attributeKind = [[self class] standardKindAttributeValue];
+    if (attributeKind) {
+      [self setKind:attributeKind];
     }
   }
   return self;
@@ -159,6 +179,7 @@
     { @"content",          @"content.stringValue",      kGDataDescValueLabeled },
     { @"contentSrc",       @"content.sourceURI",        kGDataDescValueLabeled },
     { @"etag",             @"ETag",                     kGDataDescValueLabeled },
+    { @"kind",             @"kind",                     kGDataDescValueLabeled },
     { @"resourceID",       @"resourceID",               kGDataDescValueLabeled },
     { @"authors",          @"authors",                  kGDataDescArrayCount },
     { @"contributors",     @"contributors",             kGDataDescArrayCount },
@@ -201,7 +222,12 @@
   NSString *uploadMIMEType = [self uploadMIMEType];
   NSString *slug = [self uploadSlug];
 
-  if ([uploadData length] == 0 || [uploadMIMEType length] == 0) {
+  BOOL hasUploadData = ([uploadData length] > 0);
+  BOOL hasUploadMIMEType = ([uploadMIMEType length] > 0);
+  GDATA_DEBUG_ASSERT(hasUploadData == hasUploadMIMEType,
+                     @"upload data must be paired with MIME type");
+
+  if (!hasUploadData || !hasUploadMIMEType) {
 
     GDATA_DEBUG_ASSERT(![self shouldUploadDataOnly], @"missing data");
 
@@ -267,18 +293,28 @@
 // entry registration & lookup for dynamic object generation
 //
 
-static NSMutableDictionary *gEntryClassCategoryMap = nil;
+static NSMutableDictionary *gEntryClassKindMap = nil;
 
 + (void)registerEntryClass {
 
-  NSString *kind = [self standardEntryKind];
+  NSString *categoryKind = [self standardEntryKind];
+  if (categoryKind) {
+    [self registerClass:self
+                  inMap:&gEntryClassKindMap
+  forCategoryWithScheme:kGDataCategoryScheme
+                   term:categoryKind];
+  }
 
-  GDATA_DEBUG_ASSERT(kind != nil, @"cannot register entry without a kind");
+  NSString *attributeKind = [self standardKindAttributeValue];
+  if (attributeKind) {
+    [self registerClass:self
+                  inMap:&gEntryClassKindMap
+  forCategoryWithScheme:nil
+                   term:attributeKind];
+  }
 
-  [self registerClass:self
-                inMap:&gEntryClassCategoryMap
-forCategoryWithScheme:kGDataCategoryScheme
-                 term:kind];
+  GDATA_DEBUG_ASSERT(attributeKind != nil || categoryKind != nil,
+                     @"cannot register entry without a kind");
 }
 
 + (void)registerEntryClass:(Class)theClass
@@ -288,7 +324,7 @@ forCategoryWithScheme:kGDataCategoryScheme
   // temporary bridge method - will be removed when subclasses all call
   // -registerEntryClass
   [self registerClass:theClass
-                inMap:&gEntryClassCategoryMap
+                inMap:&gEntryClassKindMap
 forCategoryWithScheme:scheme
                  term:term];
 }
@@ -297,7 +333,13 @@ forCategoryWithScheme:scheme
                                     term:(NSString *)term {
   return [self classForCategoryWithScheme:scheme
                                      term:term
-                                  fromMap:gEntryClassCategoryMap];
+                                  fromMap:gEntryClassKindMap];
+}
+
++ (Class)entryClassForKindAttributeValue:(NSString *)kind {
+  return [self classForCategoryWithScheme:nil
+                                     term:kind
+                                  fromMap:gEntryClassKindMap];
 }
 
 #pragma mark Getters and Setters
@@ -309,6 +351,15 @@ forCategoryWithScheme:scheme
 
 - (void)setETag:(NSString *)str {
   [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
+}
+
+- (NSString *)kind {
+  NSString *str = [self attributeValueForExtensionClass:[GDataKindAttribute class]];
+  return str;
+}
+
+- (void)setKind:(NSString *)str {
+  [self setAttributeValue:str forExtensionClass:[GDataKindAttribute class]];
 }
 
 - (NSString *)resourceID {

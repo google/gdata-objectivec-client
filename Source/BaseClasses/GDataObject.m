@@ -32,7 +32,7 @@ static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   Class cls = NSClassFromString(@"NSGarbageCollector");
   if (cls) {
     id collector = [cls performSelector:@selector(defaultCollector)];
-    [collector performSelector:@selector(disableCollectorForPointer:) 
+    [collector performSelector:@selector(disableCollectorForPointer:)
                     withObject:dict];
   }
   return dict;
@@ -2543,7 +2543,7 @@ forCategoryWithScheme:(NSString *)scheme
                             fromMap:(NSDictionary *)map {
 
   // |scheme| and |term| are from the XML that we're using to look up
-  // a registered class.  The parameters should be non-nil,
+  // a registered class.  The |term| value should be non-nil,
   // though the values stored in the map may have nil scheme or term.
   //
   // if the registered scheme was nil or kGDataCategoryScheme then the key
@@ -2553,13 +2553,15 @@ forCategoryWithScheme:(NSString *)scheme
   Class class = [map objectForKey:key];
   if (class) return class;
 
-  key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
-  class = [map objectForKey:key];
-  if (class) return class;
+  if (scheme) {
+    key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
+    class = [map objectForKey:key];
+    if (class) return class;
 
-  key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
-  class = [map objectForKey:key];
-  if (class) return class;
+    key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
+    class = [map objectForKey:key];
+    if (class) return class;
+  }
 
   return nil;
 }
@@ -2613,47 +2615,62 @@ forCategoryWithScheme:(NSString *)scheme
   }
 
   if (isFeed || isEntry) {
+    Class foundClass = nil;
 
-    // step through the feed or entry's category elements, looking for one that
-    // matches a registered feed or entry class
-    //
-    // category elements look like <category scheme="blah" term="blahblah"/>
-    // and there may be more than one
-    //
-    // ? For feed elements, if there's no category, should we look into
-    // the entry elements for a category?  Some calendar feeds have
-    // lacked feed-level categories.
+    // get the kind attribute, and see if it matches a registered feed or entry
+    // class
+    NSXMLNode *kindAttr = [element attributeForLocalName:@"kind"
+                                                     URI:kGDataNamespaceGData];
+    NSString *kind = [kindAttr stringValue];
 
-
-    NSArray *categories = [element elementsForLocalName:@"category"
-                                                    URI:kGDataNamespaceAtom];
-    if ([categories count] == 0) {
-      NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
-      if ([atomPrefix length] == 0) {
-        categories = [element elementsForName:@"category"];
+    if (kind) {
+      if (isFeed) {
+        foundClass = [GDataFeedBase feedClassForKindAttributeValue:kind];
+      } else {
+        foundClass = [GDataEntryBase entryClassForKindAttributeValue:kind];
+      }
+      if (foundClass) {
+        result = foundClass;
       }
     }
 
-    NSXMLElement *categoryNode;
-    GDATA_FOREACH(categoryNode, categories) {
+    if (foundClass == nil) {
 
-      NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
-      NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
+      // step through the feed or entry's category elements, looking for one
+      // that matches a registered feed or entry class
+      //
+      // category elements look like <category scheme="blah" term="blahblah"/>
+      // and there may be more than one
 
-      if (scheme || term) {
-
-        // we have a scheme or a term, so look for a registered class
-        Class foundClass = nil;
-        if (isFeed) {
-          foundClass = [GDataFeedBase feedClassForCategoryWithScheme:scheme
-                                                                term:term];
-        } else {
-          foundClass = [GDataEntryBase entryClassForCategoryWithScheme:scheme
-                                                                  term:term];
+      NSArray *categories = [element elementsForLocalName:@"category"
+                                                      URI:kGDataNamespaceAtom];
+      if ([categories count] == 0) {
+        NSString *atomPrefix = [element resolvePrefixForNamespaceURI:kGDataNamespaceAtom];
+        if ([atomPrefix length] == 0) {
+          categories = [element elementsForName:@"category"];
         }
-        if (foundClass) {
-          result = foundClass;
-          break;
+      }
+
+      NSXMLElement *categoryNode;
+      GDATA_FOREACH(categoryNode, categories) {
+
+        NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
+        NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
+
+        if (scheme || term) {
+
+          // we have a scheme or a term, so look for a registered class
+          if (isFeed) {
+            foundClass = [GDataFeedBase feedClassForCategoryWithScheme:scheme
+                                                                  term:term];
+          } else {
+            foundClass = [GDataEntryBase entryClassForCategoryWithScheme:scheme
+                                                                    term:term];
+          }
+          if (foundClass) {
+            result = foundClass;
+            break;
+          }
         }
       }
     }
