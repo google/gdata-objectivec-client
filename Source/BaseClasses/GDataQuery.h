@@ -94,6 +94,9 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (BOOL)shouldShowDeleted;
 - (void)setShouldShowDeleted:(BOOL)flag;
 
+- (BOOL)shouldShowOnlyDeleted;
+- (void)setShouldShowOnlyDeleted:(BOOL)flag;
+
 - (BOOL)isStrict;
 - (void)setIsStrict:(BOOL)flag;
 
@@ -127,6 +130,7 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (NSArray *)categoryFilters;
 - (void)setCategoryFilters:(NSArray *)filters;
 - (void)addCategoryFilter:(GDataCategoryFilter *)filter;
+- (void)addCategoryFilterWithCategory:(GDataCategory *)category;
 - (void)addCategoryFilterWithScheme:(NSString *)scheme term:(NSString *)term;
 
 - (NSDictionary *)customParameters;

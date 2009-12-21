@@ -55,6 +55,7 @@
   [query2 setProtocolVersion:@"2.0"];
   [query2 setShouldPrettyPrint:YES];
   [query2 setShouldShowDeleted:YES];
+  [query2 setShouldShowOnlyDeleted:YES];
   [query2 setStartIndex:10];
   [query2 setPublishedMinDateTime:dateTime1];
   [query2 setPublishedMaxDateTime:dateTime2];
@@ -66,8 +67,8 @@
   NSURL* resultURL2 = [query2 URL];
   
   NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&orderby=random"
-    "&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
+    "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&onlydeleted=true"
+    "&orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
     "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true"
     "&sortorder=ascending&start-index=10&strict=true"
     "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
@@ -103,7 +104,7 @@
   NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/"
     "basic/-/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp%3A%2F%2F"
     "schemas.google.com%2Fg%2F2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/"
-    "Zonk4?author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&"
+    "Zonk4?author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&onlydeleted=true&"
     "orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z&"
     "published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true&"
     "sortorder=ascending&start-index=10&strict=true&"
@@ -469,7 +470,7 @@
   // URL 2
   GDataQuery *query2 = [GDataQuery queryWithFeedURL:url2];
   [query2 addCategoryFilter:categoryFilterA];
-  [query2 addCategoryFilter:categoryFilterB];
+  [query2 addCategoryFilterWithCategory:catB];
   [query2 setStartIndex:10];
 
   NSURL *resultURL2 = [query2 URL];
