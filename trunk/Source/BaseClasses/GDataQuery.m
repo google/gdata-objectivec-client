@@ -32,6 +32,7 @@ static NSString *const kProtocolVersionParamName  = @"v";
 static NSString *const kPublishedMaxParamName  = @"published-max";
 static NSString *const kPublishedMinParamName  = @"published-min";
 static NSString *const kShowDeletedParamName  = @"showdeleted";
+static NSString *const kOnlyDeletedParamName  = @"onlydeleted";
 static NSString *const kSortOrderParamName  = @"sortorder";
 static NSString *const kStartIndexParamName = @"start-index";
 static NSString *const kStrictParamName  = @"strict";
@@ -279,6 +280,17 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
                       defaultValue:NO];
 }
 
+- (BOOL)shouldShowOnlyDeleted {
+  return [self boolValueForParameterWithName:kOnlyDeletedParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldShowOnlyDeleted:(BOOL)flag {
+  [self addCustomParameterWithName:kOnlyDeletedParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
 - (BOOL)isStrict {
   return [self boolValueForParameterWithName:kStrictParamName
                                 defaultValue:NO];
@@ -391,6 +403,14 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   }
 
   [categoryFilters_ addObject:filter];
+}
+
+- (void)addCategoryFilterWithCategory:(GDataCategory *)category {
+
+  GDataCategoryFilter *filter = [GDataCategoryFilter categoryFilter];
+  [filter addCategory:category];
+
+  [self addCategoryFilter:filter];
 }
 
 - (void)addCategoryFilterWithScheme:(NSString *)scheme term:(NSString *)term {
