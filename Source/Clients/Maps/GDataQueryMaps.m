@@ -26,7 +26,7 @@ static NSString *const kPrevIDParamName = @"previd";
 static NSString *const kMQParamName = @"mq";
 static NSString *const kBoxParamName = @"box";
 static NSString *const kLatParamName = @"lat";
-static NSString *const kLonParamName = @"lon";
+static NSString *const kLonParamName = @"lng";
 static NSString *const kRadiusParamName = @"radius";
 static NSString *const kSortByParamName = @"sortby";
 
