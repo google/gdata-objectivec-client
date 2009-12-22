@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9 (516 classes) 2009-10-29 11:57:18 -0700
+// com.google.GDataFramework v. 1.9.1 (517 classes) 2009-12-21 16:41:59 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -288,6 +288,7 @@
   #define GDataIM                                 _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct             _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
   #define GDataInReplyTo                          _GDATA_NS_SYMBOL(GDataInReplyTo)
+  #define GDataKindAttribute                      _GDATA_NS_SYMBOL(GDataKindAttribute)
   #define GDataLastModifiedBy                     _GDATA_NS_SYMBOL(GDataLastModifiedBy)
   #define GDataLastViewed                         _GDATA_NS_SYMBOL(GDataLastViewed)
   #define GDataLink                               _GDATA_NS_SYMBOL(GDataLink)
@@ -397,7 +398,6 @@
   #define GDataQueryFinance                       _GDATA_NS_SYMBOL(GDataQueryFinance)
   #define GDataQueryGoogleBase                    _GDATA_NS_SYMBOL(GDataQueryGoogleBase)
   #define GDataQueryGoogleHealth                  _GDATA_NS_SYMBOL(GDataQueryGoogleHealth)
-  #define GDataQueryGoogleMaps                    _GDATA_NS_SYMBOL(GDataQueryGoogleMaps)
   #define GDataQueryGooglePhotos                  _GDATA_NS_SYMBOL(GDataQueryGooglePhotos)
   #define GDataQueryMaps                          _GDATA_NS_SYMBOL(GDataQueryMaps)
   #define GDataQuerySpreadsheet                   _GDATA_NS_SYMBOL(GDataQuerySpreadsheet)
@@ -516,6 +516,7 @@
   #define GDataYouTubeGender                      _GDATA_NS_SYMBOL(GDataYouTubeGender)
   #define GDataYouTubeHobbies                     _GDATA_NS_SYMBOL(GDataYouTubeHobbies)
   #define GDataYouTubeHometown                    _GDATA_NS_SYMBOL(GDataYouTubeHometown)
+  #define GDataYouTubeIncomplete                  _GDATA_NS_SYMBOL(GDataYouTubeIncomplete)
   #define GDataYouTubeLastName                    _GDATA_NS_SYMBOL(GDataYouTubeLastName)
   #define GDataYouTubeLocation                    _GDATA_NS_SYMBOL(GDataYouTubeLocation)
   #define GDataYouTubeMediaGroup                  _GDATA_NS_SYMBOL(GDataYouTubeMediaGroup)
