@@ -26,7 +26,7 @@ static NSString *const kPrevIDParamName = @"previd";
 static NSString *const kMQParamName = @"mq";
 static NSString *const kBoxParamName = @"box";
 static NSString *const kLatParamName = @"lat";
-static NSString *const kLonParamName = @"lng";
+static NSString *const kLngParamName = @"lng";
 static NSString *const kRadiusParamName = @"radius";
 static NSString *const kSortByParamName = @"sortby";
 
@@ -89,13 +89,13 @@ static NSString *const kSortByParamName = @"sortby";
 }
 
 - (double)longitude { // degrees
-  NSString *str = [self valueForParameterWithName:kLonParamName];
+  NSString *str = [self valueForParameterWithName:kLngParamName];
   return [str doubleValue];
 }
 
 - (void)setLongitude:(double)val {
   NSString *str = [NSString stringWithFormat:@"%f", val];
-  [self addCustomParameterWithName:kLonParamName
+  [self addCustomParameterWithName:kLngParamName
                              value:str];
 }
 

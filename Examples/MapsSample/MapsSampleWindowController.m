@@ -191,6 +191,10 @@
   [self fetchFeedOfMaps];
 }
 
+- (IBAction)spatialSearchClicked:(id)sender {
+  [self fetchFeaturesOfSelectedMap];
+}
+
 - (IBAction)addMapClicked:(id)sender {
   [self addAMap];
 }
@@ -359,14 +363,40 @@
     // fetch the feed of features
     NSURL *featuresFeedURL = [map featuresFeedURL];
     if (featuresFeedURL) {
+      GDataQueryMaps *query;
+
+      if ([mSpatialSearchCheckbox state] == NSOffState) {
+        // fetch all features of the selected map
+        query = [GDataQueryMaps mapsQueryWithFeedURL:featuresFeedURL];
+      } else {
+        // The "In circle:" checkbox is selected, so do a snippet query with
+        // the user's specified parameters
+
+        // The Maps API does not provide a clean way to get the URL for the
+        // snippets feed (bug 2335402)
+        NSString *featuresStr = [featuresFeedURL absoluteString];
+        NSString *snippetsStr = [featuresStr stringByReplacingOccurrencesOfString:@"/full"
+                                                                       withString:@"/snippet"];
+        NSURL *snippetsURL = [NSURL URLWithString:snippetsStr];
+        query = [GDataQueryMaps mapsQueryWithFeedURL:snippetsURL];
+
+        // put the user's spatial settings into the query
+        double lat = [mLatitudeField doubleValue];
+        double lon = [mLongitudeField doubleValue];
+        double radius = [mRadiusField doubleValue];
+
+        [query setLatitude:lat];
+        [query setLongitude:lon];
+        [query setRadius:radius];
+      }
 
       [self setFeatureFeed:nil];
       [self setFeatureFetchError:nil];
 
       GDataServiceTicket *ticket;
-      ticket = [service fetchFeedWithURL:featuresFeedURL
-                                delegate:self
-                       didFinishSelector:@selector(featuresTicket:finishedWithFeed:error:)];
+      ticket = [service fetchFeedWithQuery:query
+                                  delegate:self
+                         didFinishSelector:@selector(featuresTicket:finishedWithFeed:error:)];
       [self setFeatureFeedTicket:ticket];
     }
     [self updateUI];
@@ -732,7 +762,17 @@ objectValueForTableColumn:(NSTableColumn *)tableColumn
 
   GDataFeedBase *feed = [self feedForTableView:tableView];
   GDataEntryBase *entry = [feed entryAtIndex:row];
-  return [[entry title] stringValue];
+  NSString *title = [[entry title] stringValue];
+
+  if ([entry isKindOfClass:[GDataEntryMap class]]) {
+
+    BOOL isAPIVisible = [(GDataEntryMap *)entry isAPIVisible];
+    if (!isAPIVisible) {
+      title = [title stringByAppendingString:@" (not API visible)"];
+    }
+  }
+
+  return title;
 }
 
 #pragma mark Setters and Getters

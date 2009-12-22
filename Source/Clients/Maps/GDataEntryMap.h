@@ -36,6 +36,8 @@
 
 - (GDataCustomProperty *)customPropertyWithName:(NSString *)name;
 
+- (BOOL)isAPIVisible;
+
 - (GDataLink *)viewLink;
 
 @end

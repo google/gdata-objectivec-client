@@ -39,6 +39,11 @@
   IBOutlet NSProgressIndicator *mMapProgressIndicator;
   IBOutlet NSTextView *mMapResultTextField;
 
+  IBOutlet NSButton *mSpatialSearchCheckbox;
+  IBOutlet NSTextField *mLatitudeField;
+  IBOutlet NSTextField *mLongitudeField;
+  IBOutlet NSTextField *mRadiusField;
+
   IBOutlet NSTableView *mFeatureTable;
   IBOutlet NSProgressIndicator *mFeatureProgressIndicator;
   IBOutlet NSTextView *mFeatureResultTextField;
@@ -63,6 +68,8 @@
 - (IBAction)addMapClicked:(id)sender;
 - (IBAction)renameMapClicked:(id)sender;
 - (IBAction)deleteMapClicked:(id)sender;
+
+- (IBAction)spatialSearchClicked:(id)sender;
 
 - (IBAction)addFeatureClicked:(id)sender;
 - (IBAction)renameFeatureClicked:(id)sender;

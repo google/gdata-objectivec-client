@@ -282,7 +282,7 @@
   [mapsQuery1 setSortBy:@"distance"];
   NSURL *resultURL1 = [mapsQuery1 URL];
   NSString *expected1 = @"http://maps.google.com/maps/feeds/maps/default/full?"
-    "box=1%2C2%2C3%2C4&lat=12.300000&lon=23.400000&"
+    "box=1%2C2%2C3%2C4&lat=12.300000&lng=23.400000&"
     "mq=%5Bpool%3Atrue%5D%5Bprice%3Abudget%5D&previd=pid&"
     "radius=33.300000&sortby=distance";
   STAssertEqualObjects([resultURL1 absoluteString], expected1,
