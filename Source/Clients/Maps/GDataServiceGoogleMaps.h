@@ -38,10 +38,6 @@ _EXTERN NSString* const kGDataMapsProjectionOwned      _INITIALIZE_AS(@"owned");
 _EXTERN NSString* const kGDataMapsProjectionPublic     _INITIALIZE_AS(@"public");
 _EXTERN NSString* const kGDataMapsProjectionUnlisted   _INITIALIZE_AS(@"unlisted");
 
-// currently, no service-specific query parameters
-@interface GDataQueryGoogleMaps : GDataQuery
-@end
-
 
 @interface GDataServiceGoogleMaps : GDataServiceGoogle
 

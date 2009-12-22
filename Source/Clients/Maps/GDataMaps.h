@@ -29,3 +29,4 @@
 #import "GDataFeedMapFeature.h"
 #import "GDataFeedMapVersion.h"
 #import "GDataServiceGoogleMaps.h"
+#import "GDataQueryMaps.h"

@@ -30,6 +30,25 @@
 - (NSString *)prevID;
 - (void)setPrevID:(NSString *)str;
 
+- (NSString *)attributeQueryString; // "mq"
+- (void)setAttributeQueryString:(NSString *)str;
+
+- (NSString *)boxString;
+- (void)setBoxString:(NSString *)str;
+- (void)setBoxWithWest:(double)west south:(double)south east:(double)east north:(double)north;
+
+- (double)latitude; // degrees
+- (void)setLatitude:(double)val;
+
+- (double)longitude; // degrees
+- (void)setLongitude:(double)val;
+
+- (double)radius; // meters
+- (void)setRadius:(double)val;
+
+- (NSString *)sortBy;
+- (void)setSortBy:(NSString *)str;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE

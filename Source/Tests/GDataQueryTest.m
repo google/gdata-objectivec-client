@@ -267,6 +267,35 @@
                        @"PWA query 3 generation error");
 }
 
+- (void)testMapsQuery {
+  NSURL *feedURL = [GDataServiceGoogleMaps mapsFeedURLForUserID:kGDataServiceDefaultUser
+                                                     projection:kGDataMapsProjectionFull];
+  GDataQueryMaps *mapsQuery1, *mapsQuery2;
+
+  mapsQuery1 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
+  [mapsQuery1 setPrevID:@"pid"];
+  [mapsQuery1 setAttributeQueryString:@"[pool:true][price:budget]"];
+  [mapsQuery1 setBoxString:@"1,2,3,4"];
+  [mapsQuery1 setLatitude:12.3];
+  [mapsQuery1 setLongitude:23.4];
+  [mapsQuery1 setRadius:33.3];
+  [mapsQuery1 setSortBy:@"distance"];
+  NSURL *resultURL1 = [mapsQuery1 URL];
+  NSString *expected1 = @"http://maps.google.com/maps/feeds/maps/default/full?"
+    "box=1%2C2%2C3%2C4&lat=12.300000&lon=23.400000&"
+    "mq=%5Bpool%3Atrue%5D%5Bprice%3Abudget%5D&previd=pid&"
+    "radius=33.300000&sortby=distance";
+  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+                       @"Maps Query 1 generation error");
+
+  mapsQuery2 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
+  [mapsQuery2 setBoxWithWest:10 south:20 east:30 north:40];
+  NSURL *resultURL2 = [mapsQuery2 URL];
+  NSString *expected2 = @"http://maps.google.com/maps/feeds/maps/default/full?"
+    "box=10.000000%2C20.000000%2C30.000000%2C40.000000";
+  STAssertEqualObjects([resultURL2 absoluteString], expected2,
+                       @"Maps Query 2 generation error");
+}
 
 - (void)testYouTubeQuery {
   

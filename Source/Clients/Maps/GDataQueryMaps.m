@@ -23,6 +23,12 @@
 #import "GDataServiceGoogleMaps.h"
 
 static NSString *const kPrevIDParamName = @"previd";
+static NSString *const kMQParamName = @"mq";
+static NSString *const kBoxParamName = @"box";
+static NSString *const kLatParamName = @"lat";
+static NSString *const kLonParamName = @"lon";
+static NSString *const kRadiusParamName = @"radius";
+static NSString *const kSortByParamName = @"sortby";
 
 @implementation GDataQueryMaps
 
@@ -37,6 +43,80 @@ static NSString *const kPrevIDParamName = @"previd";
 
 - (void)setPrevID:(NSString *)str {
   [self addCustomParameterWithName:kPrevIDParamName
+                             value:str];
+}
+
+- (NSString *)attributeQueryString  {
+  NSString *str = [self valueForParameterWithName:kMQParamName];
+  return str;
+}
+
+- (void)setAttributeQueryString:(NSString *)str {
+  [self addCustomParameterWithName:kMQParamName
+                             value:str];
+}
+
+- (NSString *)boxString {
+  NSString *str = [self valueForParameterWithName:kBoxParamName];
+  return str;
+}
+
+- (void)setBoxString:(NSString *)str {
+  [self addCustomParameterWithName:kBoxParamName
+                             value:str];
+}
+
+- (void)setBoxWithWest:(double)west
+                 south:(double)south
+                  east:(double)east
+                 north:(double)north {
+  NSString *str = [NSString stringWithFormat:@"%f,%f,%f,%f",
+                   west, south, east, north];
+
+  [self addCustomParameterWithName:kBoxParamName
+                             value:str];
+}
+
+- (double)latitude { // degrees
+  NSString *str = [self valueForParameterWithName:kLatParamName];
+  return [str doubleValue];
+}
+
+- (void)setLatitude:(double)val {
+  NSString *str = [NSString stringWithFormat:@"%f", val];
+  [self addCustomParameterWithName:kLatParamName
+                             value:str];
+}
+
+- (double)longitude { // degrees
+  NSString *str = [self valueForParameterWithName:kLonParamName];
+  return [str doubleValue];
+}
+
+- (void)setLongitude:(double)val {
+  NSString *str = [NSString stringWithFormat:@"%f", val];
+  [self addCustomParameterWithName:kLonParamName
+                             value:str];
+}
+
+- (double)radius { // meters
+  NSString *str = [self valueForParameterWithName:kRadiusParamName];
+  return [str doubleValue];
+}
+
+- (void)setRadius:(double)val {
+  NSString *str = [NSString stringWithFormat:@"%f", val];
+  [self addCustomParameterWithName:kRadiusParamName
+                             value:str];
+}
+
+- (NSString *)sortBy {
+  NSString *str = [self valueForParameterWithName:kSortByParamName];
+  return str;
+}
+
+- (void)setSortBy:(NSString *)str {
+  [self addCustomParameterWithName:kSortByParamName
                              value:str];
 }
 
