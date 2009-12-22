@@ -103,6 +103,19 @@
   return obj;
 }
 
+- (BOOL)isAPIVisible {
+  BOOL isAPIVisible = YES;
+
+  GDataCustomProperty *prop;
+  prop = [self customPropertyWithName:kGDataMapPropertyAPIVisible];
+
+  if (prop != nil) {
+    NSString *value = [prop value];
+    isAPIVisible = ([value intValue] > 0);
+  }
+  return isAPIVisible;
+}
+
 - (GDataLink *)viewLink {
   return [self linkWithRelAttributeValue:kGDataLinkMapView];
 }
