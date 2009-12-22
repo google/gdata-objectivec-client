@@ -20,16 +20,10 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
 
 #define GDATASERVICEGOOGLEMAPS_DEFINE_GLOBALS 1
-
 #import "GDataServiceGoogleMaps.h"
 
 #import "GDataMapConstants.h"
-
 #import "GDataEntryMapFeature.h"
-
-// currently, no service-specific query parameters
-@implementation GDataQueryGoogleMaps
-@end
 
 @implementation GDataServiceGoogleMaps
 
