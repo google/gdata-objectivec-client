@@ -2210,16 +2210,21 @@ objectDescriptionIfNonNil:(id)obj
   [attributes_ setValue:str forKey:name];
 }
 
-- (void)setBoolValue:(BOOL)boolValue defaultValue:(BOOL)defaultVal forAttribute:(NSString *)name {
+- (void)setBoolValue:(BOOL)flag defaultValue:(BOOL)defaultVal forAttribute:(NSString *)name {
   NSString *str;
   if (defaultVal) {
     // default to true, so include attribute only if false
-    str = (boolValue ? nil : @"false");
+    str = (flag ? nil : @"false");
   } else {
     // default to false, so include attribute only if true
-    str = (boolValue ? @"true" : nil);
+    str = (flag ? @"true" : nil);
   }
   [self setStringValue:str forAttribute:name];
+}
+
+- (void)setExplicitBoolValue:(BOOL)flag forAttribute:(NSString *)name {
+  NSString *value = (flag ? @"true" : @"false");
+  [self setStringValue:value forAttribute:name];
 }
 
 - (void)setDecimalNumberValue:(NSDecimalNumber *)num forAttribute:(NSString *)name {
