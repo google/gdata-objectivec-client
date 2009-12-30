@@ -424,7 +424,8 @@ typedef struct GDataDescriptionRecord {
 
 // setting nil value for attribute removes it
 - (void)setStringValue:(NSString *)str forAttribute:(NSString *)name;
-- (void)setBoolValue:(BOOL)boolValue defaultValue:(BOOL)defaultVal forAttribute:(NSString *)name;
+- (void)setBoolValue:(BOOL)flag defaultValue:(BOOL)defaultVal forAttribute:(NSString *)name;
+- (void)setExplicitBoolValue:(BOOL)flag forAttribute:(NSString *)name;
 - (void)setDecimalNumberValue:(NSDecimalNumber *)num forAttribute:(NSString *)name;
 - (void)setDateTimeValue:(GDataDateTime *)cdate forAttribute:(NSString *)name;
 
