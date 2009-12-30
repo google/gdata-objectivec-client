@@ -284,6 +284,14 @@
 
     STAssertEquals((int)[nodes count], 4, @"XPath count for atom ns nodes");
     STAssertNil(error, @"XPath error");
+
+    // test an illegal path string
+    GDataXMLNode *emptyNode = [GDataXMLElement elementWithName:@"Abcde"];
+    nodes = [emptyNode nodesForXPath:@""
+                          namespaces:nsDict
+                               error:&error];
+    // libxml provides error code 1207 for this
+    STAssertEquals([error code], 1207, @"error on invalid XPath: %@", error);
   }
 }
 

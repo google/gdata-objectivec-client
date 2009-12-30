@@ -692,6 +692,8 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
                      error:(NSError **)error {
 
   NSMutableArray *array = nil;
+  NSInteger errorCode = -1;
+  NSDictionary *errorInfo = nil;
 
   // xmlXPathNewContext requires a doc for its context, but if our elements
   // are created from GDataXMLElement's initWithXMLString there may not be
@@ -796,25 +798,29 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
           }
         }
         xmlXPathFreeObject(xpathObj);
+      } else {
+        // provide an error for failed evaluation
+        const char *msg = xpathCtx->lastError.str1;
+        errorCode = xpathCtx->lastError.code;
+        if (msg) {
+          NSString *errStr = [NSString stringWithUTF8String:msg];
+          errorInfo = [NSDictionary dictionaryWithObject:errStr
+                                                  forKey:@"error"];
+        }
       }
+
       xmlXPathFreeContext(xpathCtx);
     }
+  } else {
+    // not a valid node for using XPath
+    errorInfo = [NSDictionary dictionaryWithObject:@"invalid node"
+                                            forKey:@"error"];
+  }
 
-    if (array == nil) {
-
-      // provide an error
-      //
-      // TODO(grobbins) obtain better xpath and libxml errors
-      const char *msg = xpathCtx->lastError.str1;
-      NSDictionary *userInfo = nil;
-      if (msg) {
-        userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:msg]
-                                               forKey:@"error"];
-      }
-      *error = [NSError errorWithDomain:@"com.google.GDataXML"
-                                   code:xpathCtx->lastError.code
-                               userInfo:userInfo];
-    }
+  if (array == nil && error != nil) {
+    *error = [NSError errorWithDomain:@"com.google.GDataXML"
+                                 code:errorCode
+                             userInfo:errorInfo];
   }
 
   if (tempDoc != NULL) {
