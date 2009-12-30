@@ -573,6 +573,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (void)setProperty:(id)obj forKey:(NSString *)key; // pass nil obj to remove property
 - (id)propertyForKey:(NSString *)key;
 
+- (void)addPropertiesFromDictionary:(NSDictionary *)dict;
+
 // using the fetcher while a modal dialog is displayed requires setting the
 // run-loop modes to include NSModalPanelRunLoopMode
 //

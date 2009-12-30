@@ -36,6 +36,8 @@ _EXTERN Class const kGDataUseRegisteredClass _INITIALIZE_AS(nil);
 
 _EXTERN NSString* const kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
 
+_EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(1000000);
+
 // we'll consistently store the server error string in the userInfo under
 // this key
 _EXTERN NSString* const kGDataServerErrorStringKey _INITIALIZE_AS(@"error");
@@ -56,7 +58,8 @@ _EXTERN NSString* const kGDataServiceTicketParsingStartedNotification _INITIALIZ
 _EXTERN NSString* const kGDataServiceTicketParsingStoppedNotification _INITIALIZE_AS(@"kGDataServiceTicketParsingStoppedNotification");
 
 enum {
- kGDataCouldNotConstructObjectError = -100
+  kGDataCouldNotConstructObjectError = -100,
+  kGDataCouldNotUploadChunkError = -101
 };
 
 @class GDataServiceTicketBase;
@@ -241,6 +244,8 @@ typedef void *GDataServiceUploadProgressHandler;
   id serviceUploadProgressPlaceholder_;
 #endif
 
+  NSUInteger uploadChunkSize_;      // zero when uploading via multi-part MIME http body
+
   BOOL isServiceRetryEnabled_;      // user allows auto-retries
   SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
@@ -396,6 +401,11 @@ typedef void *GDataServiceUploadProgressHandler;
 // Default value is NO.
 - (BOOL)serviceShouldFollowNextLinks;
 - (void)setServiceShouldFollowNextLinks:(BOOL)flag;
+
+// set a non-zero value to enable uploading via chunked fetches
+// (resumable uploads)
+- (NSUInteger)serviceUploadChunkSize;
+- (void)setServiceUploadChunkSize:(NSUInteger)val;
 
 // The service userData becomes the initial value for each future ticket's
 // userData.

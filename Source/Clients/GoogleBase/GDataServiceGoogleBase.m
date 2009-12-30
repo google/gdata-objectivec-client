@@ -81,11 +81,13 @@
 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
-                            httpMethod:(NSString *)httpMethod {
+                            httpMethod:(NSString *)httpMethod
+                                ticket:(GDataServiceTicketBase *)ticket {
 
   NSMutableURLRequest *request = [super requestForURL:url
                                                  ETag:etag
-                                           httpMethod:httpMethod];
+                                           httpMethod:httpMethod
+                                               ticket:ticket];
 
   // add the developer key to the header
   if ([developerKey_ length] > 0) {

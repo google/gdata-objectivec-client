@@ -124,13 +124,9 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (BOOL)shouldUploadDataOnly;
 - (void)setShouldUploadDataOnly:(BOOL)flag;
 
-- (NSString *)uploadSlug; // for http slug (filename) header when uploading
+// http slug (filename) header when uploading
+- (NSString *)uploadSlug;
 - (void)setUploadSlug:(NSString *)str;
-
-// MIMETypeForFileAtPath has been moved to GDataUtilities and will be
-// removed from GDataEntryBase in a future release
-+ (NSString *)MIMETypeForFileAtPath:(NSString *)path
-                    defaultMIMEType:(NSString *)defaultType;
 
 // extension for entries which may include deleted elements
 - (BOOL)isDeleted;

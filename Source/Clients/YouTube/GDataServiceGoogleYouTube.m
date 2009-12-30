@@ -145,12 +145,14 @@
 
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url 
                                   ETag:(NSString *)etag
-                            httpMethod:(NSString *)httpMethod {
+                            httpMethod:(NSString *)httpMethod
+                                ticket:(GDataServiceTicketBase *)ticket {
 
   // if the request is for posting, add the developer key, if it's known
   NSMutableURLRequest *request = [super requestForURL:url
                                                  ETag:etag
-                                           httpMethod:httpMethod];
+                                           httpMethod:httpMethod
+                                               ticket:ticket];
   
   // set the developer key, if any
   NSString *developerKey = [self youTubeDeveloperKey];

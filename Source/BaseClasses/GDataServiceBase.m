@@ -34,20 +34,29 @@
 
 static NSString *const kXMLErrorContentType = @"application/vnd.google.gdata.error+xml";
 
-static NSString* const kFetcherDelegateKey = @"_delegate";
-static NSString* const kFetcherObjectClassKey = @"_objectClass";
-static NSString* const kFetcherFinishedSelectorKey = @"_finishedSelector";
-static NSString* const kFetcherCompletionHandlerKey = @"_completionHandler";
-static NSString* const kFetcherTicketKey = @"_ticket";
-static NSString* const kFetcherStreamDataKey = @"_streamData";
-static NSString* const kFetcherParsedObjectKey = @"_parsedObject";
-static NSString* const kFetcherParseErrorKey = @"_parseError";
-static NSString* const kFetcherCallbackThreadKey = @"_callbackThread";
+static NSString* const kFetcherDelegateKey             = @"_delegate";
+static NSString* const kFetcherObjectClassKey          = @"_objectClass";
+static NSString* const kFetcherFinishedSelectorKey     = @"_finishedSelector";
+static NSString* const kFetcherCompletionHandlerKey    = @"_completionHandler";
+static NSString* const kFetcherTicketKey               = @"_ticket";
+static NSString* const kFetcherStreamDataKey           = @"_streamData";
+static NSString* const kFetcherParsedObjectKey         = @"_parsedObject";
+static NSString* const kFetcherParseErrorKey           = @"_parseError";
+static NSString* const kFetcherCallbackThreadKey       = @"_callbackThread";
 static NSString* const kFetcherCallbackRunLoopModesKey = @"_runLoopModes";
+
+static NSString* const kFetcherUploadChunkSizeKey       = @"_chunkSize";
+static NSString* const kFetcherUploadChunkNextOffsetKey = @"_chunkOffset";
+static NSString* const kFetcherUploadChunkURLKey        = @"_chunkURL";
+static NSString* const kFetcherUploadChunkMethodKey     = @"_chunkMethod";
+static NSString* const kFetcherUploadChunkDataKey       = @"_chunkData";
+static NSString* const kFetcherUploadChunkXMLRangeKey   = @"_chunkXMLRange";
 
 NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
 const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
+
+const NSUInteger kMinimumUploadChunkSize = 98304; // enforce 96K chunks minimum
 
 // XorPlainMutableData is a simple way to keep passwords held in heap objects
 // from being visible as plain-text
@@ -74,6 +83,8 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 
 @interface GDataServiceBase (PrivateMethods)
+
+- (void)uploadNextChunkWithFetcherProperties:(NSDictionary *)props;
 
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
@@ -385,24 +396,37 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   AssertSelectorNilOrImplementedWithArguments(delegate, [ticket retrySelector],
       @encode(GDataServiceTicketBase *), @encode(BOOL), @encode(NSError *), 0);
 
-  NSInputStream *uploadStream = nil;
-  SEL sentDataSel = NULL;
-  NSData *uploadData = nil;
-  NSData *dataToRetain = nil;
+  //
+  // package the object's XML and any upload data
+  //
+  SEL finishedSel = @selector(objectFetcher:finishedWithData:);
 
+  NSInputStream *streamToPost = nil;
+  NSData *dataToPost = nil;
+  SEL sentDataSel = NULL;
+
+  NSMutableDictionary *uploadProperties = nil;
   if (objectToPost) {
+
+    NSData *xmlData = nil;
 
     [ticket setPostedObject:objectToPost];
 
     // An upload object may provide a custom input stream, such as for
-    // multi-part MIME or media uploads.  If it lacks a custom stream,
-    // we'll make a stream from the XML data of the object.
-
+    // multi-part MIME or media uploads.
     NSInputStream *contentInputStream = nil;
     unsigned long long contentLength = 0;
     NSDictionary *contentHeaders = nil;
 
+    uploadProperties = [NSMutableDictionary dictionary];
+
     BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
+
+    BOOL shouldUploadDataChunked = ([self serviceUploadChunkSize] > 0);
+
+    BOOL shouldUploadDataOnly =
+      [objectToPost respondsToSelector:@selector(shouldUploadDataOnly)]
+      && [(GDataEntryBase *)objectToPost shouldUploadDataOnly];
 
     BOOL shouldReportUploadProgress;
 #if NS_BLOCKS_AVAILABLE
@@ -412,28 +436,30 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     shouldReportUploadProgress = ([ticket uploadProgressSelector] != NULL);
 #endif
 
-    if ([objectToPost generateContentInputStream:&contentInputStream
+    if ((!shouldUploadDataChunked) &&
+        [objectToPost generateContentInputStream:&contentInputStream
                                           length:&contentLength
                                          headers:&contentHeaders]) {
-      // there is a stream
+      // now we have a stream containing the XML and the upload data
 
-      // add the content-specific headers, if any
-      NSString *key;
-      GDATA_FOREACH_KEY(key, contentHeaders) {
-        NSString *value = [contentHeaders objectForKey:key];
-        [request setValue:value forHTTPHeaderField:key];
-      }
+    } else if (shouldUploadDataChunked && shouldUploadDataOnly) {
+      // no XML is needed since we're uploading data only, and there's no upload
+      // data for the first fetch because the data will be sent chunked later,
+      // so now we'll have an empty body with appropriate headers
+      contentHeaders = [objectToPost performSelector:@selector(contentHeaders)];
+      contentLength = 0;
 
     } else {
-
-      NSData* xmlData = [[objectToPost XMLDocument] XMLData];
+      // we're sending either just XML, or XML now with chunked upload data
+      // later
+      xmlData = [[objectToPost XMLDocument] XMLData];
       contentLength = [xmlData length];
 
       if (!shouldReportUploadProgress || doesSupportSentData) {
         // there is no progress selector, or the fetcher can call us back on
         // sent data; we can post plain NSData, which is simpler because it
         // survives http redirects
-        uploadData = xmlData;
+        dataToPost = xmlData;
 
       } else {
         // there is a progress selector and NSURLConnection won't call us back,
@@ -443,27 +469,36 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         contentInputStream = [NSInputStream inputStreamWithData:xmlData];
 
         // NSInputStream fails to retain or copy its data in 10.4, so we will
-        // retain it in the callback dictionary.  We won't use the data in the
-        // callbacks at all, but retaining it will ensure it's still around until
-        // the upload completes.
+        // retain it in the callback dictionary.  We won't use this property in
+        // the callbacks at all, but retaining it will ensure it's still around
+        // until the upload completes.
         //
         // If it weren't for this bug in NSInputStream, we could just have
         // GDataObject's -contentInputStream method create the input stream for
-        // us, so this service class wouldn't ever need to call XMLElement.
-        dataToRetain = xmlData;
+        // us, so this service class wouldn't ever need to have the plain XML.
+        [uploadProperties setObject:xmlData forKey:kFetcherStreamDataKey];
       }
     }
 
-    uploadStream = contentInputStream;
+    if (contentHeaders) {
+      // add the content-specific headers, if any
+      NSString *key;
+      GDATA_FOREACH_KEY(key, contentHeaders) {
+        NSString *value = [contentHeaders objectForKey:key];
+        [request setValue:value forHTTPHeaderField:key];
+      }
+    }
+
+    streamToPost = contentInputStream;
 
     NSNumber* num = [NSNumber numberWithUnsignedLongLong:contentLength];
     [request setValue:[num stringValue] forHTTPHeaderField:@"Content-Length"];
 
     if (shouldReportUploadProgress) {
       if (doesSupportSentData) {
-        // there is sentData callback support
+        // there is sentData callback support in NSURLConnection
         sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
-      } else {
+      } else if (contentInputStream != nil) {
         // there's no sentData callback support, so we need a monitored input
         // stream
         //
@@ -480,24 +515,48 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         [monitoredInputStream setMonitorSelector:sel];
         [monitoredInputStream setMonitorSource:ticket];
 
-        uploadStream = monitoredInputStream;
+        streamToPost = monitoredInputStream;
       }
+    }
+
+    // add the chunk upload information as fetcher properties
+    if (shouldUploadDataChunked) {
+
+      finishedSel = @selector(objectFetcher:finishedWithUploadLocationAndData:);
+
+      // hang on to the user's requested chunk size, and ensure it's not tiny
+      NSUInteger uploadChunkSize = [self serviceUploadChunkSize];
+      if (uploadChunkSize < kMinimumUploadChunkSize) {
+        uploadChunkSize = kMinimumUploadChunkSize;
+      }
+
+      NSNumber *sizeNum = [NSNumber numberWithUnsignedLongLong:uploadChunkSize];
+      [uploadProperties setObject:sizeNum
+                           forKey:kFetcherUploadChunkSizeKey];
+
+      // hang on to the data that we'll be uploading in chunks
+      NSData *uploadChunkData = [objectToPost performSelector:@selector(uploadData)];
+      [uploadProperties setObject:uploadChunkData
+                           forKey:kFetcherUploadChunkDataKey];
+
+      // hang on to the length of the XML data being uploaded right now so that
+      // callback progress monitoring is accurate (it should reflect the XML
+      // uploaded as well as the chunked data)
+      //
+      // We'll use a range where location is the amount of XML data sent, and
+      // length is total XML data size
+      NSRange xmlSentRange = NSMakeRange(0, [xmlData length]);
+      [uploadProperties setObject:[NSValue valueWithRange:xmlSentRange]
+                           forKey:kFetcherUploadChunkXMLRangeKey];
     }
   }
 
+  //
+  // now that we have all the request header info ready,
+  // create and set up the fetcher for this request
+  //
   GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-
   [fetcher setRunLoopModes:[self runLoopModes]];
-
-  if (uploadStream) {
-    [fetcher setPostStream:uploadStream];
-  } else if (uploadData) {
-    [fetcher setPostData:uploadData];
-  }
-
-  if (sentDataSel) {
-    [fetcher setSentDataSelector:sentDataSel];
-  }
 
   // add cookie and last-modified-since history
   [fetcher setFetchHistory:[self fetchHistory]];
@@ -508,11 +567,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     [fetcher setCookieStorageMethod:cookieStorageMethod];
   }
 
-  // when the server gives us a "Not Modified" error, have the fetcher
-  // just pass us the cached data from the previous call, if any
+  // with dated data caching enabled, when the server gives us a "Not Modified"
+  // error, have the fetcher just pass us the cached data from the previous
+  // call, if any
   [fetcher setShouldCacheDatedData:[self shouldCacheDatedData]];
 
-  // copy the service's retry settings into the ticket
+  // copy the ticket's retry settings into the fetcher
   [fetcher setIsRetryEnabled:[ticket isRetryEnabled]];
   [fetcher setMaxRetryInterval:[ticket maxRetryInterval]];
 
@@ -525,9 +585,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   [ticket setCurrentFetcher:fetcher];
 
   // add parameters used by the callbacks
-  //
-  // we want to add the invocation itself, not the value wrapper of it,
-  // to ensure the invocation is retained until the callback completes
 
   [fetcher setProperty:objectClass forKey:kFetcherObjectClassKey];
 
@@ -535,6 +592,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   [fetcher setProperty:NSStringFromSelector(finishedSelector)
                 forKey:kFetcherFinishedSelectorKey];
+
+  [fetcher setProperty:ticket
+                forKey:kFetcherTicketKey];
 
 #if NS_BLOCKS_AVAILABLE
   // copy the completion handler block to the heap; this does nothing if the
@@ -544,23 +604,26 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                 forKey:kFetcherCompletionHandlerKey];
 #endif
 
+  // we want to add the invocation itself, not the value wrapper of it,
+  // to ensure the invocation is retained until the callback completes
   NSInvocation *retryInvocation = [retryInvocationValue nonretainedObjectValue];
   [fetcher setProperty:retryInvocation
                 forKey:kFetcherRetryInvocationKey];
 
-  [fetcher setProperty:ticket
-                forKey:kFetcherTicketKey];
-
-  // the stream data is retained only because of an NSInputStream bug in
-  // 10.4, as described above
-  [fetcher setProperty:dataToRetain forKey:kFetcherStreamDataKey];
+  // set the upload data
+  GDATA_DEBUG_ASSERT(dataToPost == nil || streamToPost == nil,
+                     @"upload conflict");
+  [fetcher setPostData:dataToPost];
+  [fetcher setPostStream:streamToPost];
+  [fetcher setSentDataSelector:sentDataSel];
+  [fetcher addPropertiesFromDictionary:uploadProperties];
 
   // add username/password
   [self addAuthenticationToFetcher:fetcher];
 
   // failed fetches call the failure selector, which will delete the ticket
   BOOL didFetch = [fetcher beginFetchWithDelegate:self
-                                didFinishSelector:@selector(objectFetcher:finishedWithData:)
+                                didFinishSelector:finishedSel
                         didFailWithStatusSelector:@selector(objectFetcher:failedWithStatus:data:)
                          didFailWithErrorSelector:@selector(objectFetcher:failedWithNetworkError:)];
 
@@ -615,6 +678,26 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
+  // if there is chunked data being uploaded, adjust the progress callback to
+  // account for any initial XML and the current offset into the total
+  // upload data
+  NSValue *xmlSentVal = [fetcher propertyForKey:kFetcherUploadChunkXMLRangeKey];
+  if (xmlSentVal != nil) {
+    NSRange xmlSentRange = [xmlSentVal rangeValue];
+
+    NSData *uploadData = [fetcher propertyForKey:kFetcherUploadChunkDataKey];
+    NSUInteger dataLen = [uploadData length];
+    NSUInteger offsetIntoData = (NSUInteger) [[fetcher propertyForKey:kFetcherUploadChunkNextOffsetKey] unsignedLongLongValue];
+
+    // the actual total bytes sent include the initial XML sent, plus the
+    // offset into the batched data prior to this fetcher
+    totalBytesSent += xmlSentRange.location + offsetIntoData;
+
+    // the total bytes expected include the initial XML and the full chunked
+    // data, independent of how big this fetcher's chunk is
+    totalBytesExpected = xmlSentRange.length + dataLen;
+  }
+
   [self invokeProgressCallbackForTicket:ticket
                          deliveredBytes:(unsigned long long)totalBytesSent
                              totalBytes:(unsigned long long)totalBytesExpected];
@@ -624,12 +707,14 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 - (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
                  hasDeliveredBytes:(unsigned long long)numReadSoFar
                       ofTotalBytes:(unsigned long long)total {
-
-  id monitorSource = [stream monitorSource];
-
-  [self invokeProgressCallbackForTicket:(GDataServiceTicketBase *)monitorSource
-                         deliveredBytes:numReadSoFar
-                             totalBytes:total];
+  // send all progress callbacks through objectFetcher:didSendBytes:
+  // to make adjustments for chunked uploads
+  GDataServiceTicketBase *ticket = (GDataServiceTicketBase *) [stream monitorSource];
+  GDataHTTPFetcher *fetcher = [ticket objectFetcher];
+  [self objectFetcher:fetcher
+         didSendBytes:0
+       totalBytesSent:(NSInteger)numReadSoFar
+totalBytesExpectedToSend:(NSInteger)total];
 }
 
 - (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
@@ -1003,6 +1088,234 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [ticket setHasCalledCallback:YES];
   [ticket setCurrentFetcher:nil];
 }
+
+
+#pragma mark -
+
+//
+// callbacks for chunked (resumable) uploads
+//
+
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithUploadLocationAndData:(NSData *)data {
+  // we land here once the initial fetch sending the initial XML
+  // has completed
+  GDATA_DEBUG_ASSERT([data length] == 0, @"unexpected response data");
+
+  // we need to get the upload URL from the location header to continue
+  NSDictionary *responseHeaders = [fetcher responseHeaders];
+  NSString *locationURLStr = [responseHeaders objectForKey:@"Location"];
+  GDATA_DEBUG_ASSERT([locationURLStr length] > 0, @"need upload location hdr");
+
+  if ([locationURLStr length] == 0) {
+    // we'll consider it status 501 Not Implemented
+    [self objectFetcher:fetcher failedWithStatus:501 data:data];
+    return;
+  }
+
+  // save the upload parameters into properties of the fetcher
+  [fetcher setProperty:[NSNumber numberWithUnsignedLongLong:0]
+                forKey:kFetcherUploadChunkNextOffsetKey];
+  [fetcher setProperty:[NSURL URLWithString:locationURLStr]
+                forKey:kFetcherUploadChunkURLKey];
+
+  NSString *httpMethod = [[fetcher request] HTTPMethod];
+  [fetcher setProperty:httpMethod
+                forKey:kFetcherUploadChunkMethodKey];
+
+  // we're finished uploading the XML body of the POST, so store the XML's full
+  // length in the XML range property to keep progress callbacks accurate
+  NSValue *xmlSentVal = [fetcher propertyForKey:kFetcherUploadChunkXMLRangeKey];
+  if (xmlSentVal != nil) {
+    NSRange xmlSentRange = [xmlSentVal rangeValue];
+    xmlSentRange.location = xmlSentRange.length;
+    [fetcher setProperty:[NSValue valueWithRange:xmlSentRange]
+                  forKey:kFetcherUploadChunkXMLRangeKey];
+  }
+
+  NSDictionary *props = [fetcher properties];
+  [self uploadNextChunkWithFetcherProperties:props];
+}
+
+- (void)uploadNextChunkWithFetcherProperties:(NSDictionary *)props {
+
+  // upload another chunk
+  NSUInteger chunkSize = (NSUInteger) [[props objectForKey:kFetcherUploadChunkSizeKey] unsignedLongLongValue];
+  NSUInteger offset = (NSUInteger) [[props objectForKey:kFetcherUploadChunkNextOffsetKey] unsignedLongLongValue];
+
+  NSData *uploadData = [props objectForKey:kFetcherUploadChunkDataKey];
+  NSUInteger dataLen = [uploadData length];
+
+  GDATA_DEBUG_ASSERT(offset < dataLen, @"offset %lu exceeds data length %lu",
+                     offset, dataLen);
+
+  NSUInteger thisChunkSize = chunkSize;
+  if (thisChunkSize + offset > dataLen) {
+    // the chunk we're uploading this time is smaller since we're nearing the
+    // end of the data block
+    thisChunkSize = dataLen - offset;
+  }
+
+  NSRange newRange = NSMakeRange((NSUInteger)offset, (NSUInteger)thisChunkSize);
+  NSData *chunkData = [uploadData subdataWithRange:newRange];
+
+  // make the request for fetching
+  //
+  // the chunk upload URL requires no authentication header
+  NSURL *locURL = [props objectForKey:kFetcherUploadChunkURLKey];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:locURL];
+
+  NSString *httpMethod = [props objectForKey:kFetcherUploadChunkMethodKey];
+  [request setHTTPMethod:httpMethod];
+
+  NSString *requestUserAgent = [self requestUserAgent];
+  [request setValue:requestUserAgent forHTTPHeaderField:@"User-Agent"];
+
+  NSString *rangeStr = [NSString stringWithFormat:@"bytes %lu-%lu/%lu",
+                        offset, offset + thisChunkSize - 1, dataLen];
+  NSString *lengthStr = [NSString stringWithFormat:@"%lu", thisChunkSize];
+
+  [request setValue:rangeStr forHTTPHeaderField:@"Content-Range"];
+  [request setValue:lengthStr forHTTPHeaderField:@"Content-Length"];
+
+  // make a new fetcher
+  GDataHTTPFetcher *chunkFetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+  [chunkFetcher setRunLoopModes:[self runLoopModes]];
+
+  [chunkFetcher setProperties:props];
+  [chunkFetcher setPostData:chunkData];
+
+  // copy the ticket's retry and progress settings into the fetcher
+  GDataServiceTicketBase *ticket = [props objectForKey:kFetcherTicketKey];
+  [chunkFetcher setIsRetryEnabled:[ticket isRetryEnabled]];
+  [chunkFetcher setMaxRetryInterval:[ticket maxRetryInterval]];
+
+  if ([ticket retrySelector]) {
+    SEL retrySel = @selector(objectFetcher:willRetry:forError:);
+    [chunkFetcher setRetrySelector:retrySel];
+  }
+
+  BOOL shouldReportUploadProgress;
+#if NS_BLOCKS_AVAILABLE
+  shouldReportUploadProgress = ([ticket uploadProgressSelector] != NULL
+                                || [ticket uploadProgressHandler] != NULL);
+#else
+  shouldReportUploadProgress = ([ticket uploadProgressSelector] != NULL);
+#endif
+
+  BOOL needsManualProgress = ![GDataHTTPFetcher doesSupportSentDataCallback];
+  if (shouldReportUploadProgress && !needsManualProgress) {
+    // the fetcher can report progress for us
+    SEL progSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
+    [chunkFetcher setSentDataSelector:progSel];
+  }
+
+  [ticket setCurrentFetcher:chunkFetcher];
+  [ticket setObjectFetcher:chunkFetcher];
+
+  // when fetching chunks, a 308 status means "upload more chunks", but
+  // success (200 or 201 status) and other failures are no different than
+  // for the regular object fetchers
+  BOOL didFetch = [chunkFetcher beginFetchWithDelegate:self
+                                     didFinishSelector:@selector(chunkFetcher:finishedWithData:)
+                             didFailWithStatusSelector:@selector(chunkFetcher:failedWithStatus:data:)
+                              didFailWithErrorSelector:@selector(objectFetcher:failedWithNetworkError:)];
+  if (!didFetch) {
+    // something went horribly wrong, like the chunk upload URL is invalid
+    [ticket setCurrentFetcher:nil];
+    [chunkFetcher setProperties:nil];
+
+    NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
+                                code:kGDataCouldNotUploadChunkError
+                            userInfo:nil];
+    [self objectFetcher:chunkFetcher failedWithNetworkError:error];
+  }
+}
+
+- (void)reportProgressForChunkFetcher:(GDataHTTPFetcher *)chunkFetcher {
+  // reportProgressForChunkFetcher should be called only when there's no
+  // NSURLConnection support for sent data callbacks
+
+  // the user wants upload progress, and there's no support in NSURLConnection
+  // for it, so we'll provide it here after each chunk
+  //
+  // the progress will be based on the fetcher properties, so we can pass
+  // zeros
+  [self objectFetcher:chunkFetcher
+         didSendBytes:0
+       totalBytesSent:0
+totalBytesExpectedToSend:0];
+}
+
+- (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher finishedWithData:(NSData *)data {
+  // the final chunk has uploaded successfully
+  NSInteger status = [chunkFetcher statusCode];
+  GDATA_DEBUG_ASSERT(status == 200 || status == 201,
+                     @"unexpected chunks status %d", status);
+
+  BOOL needsManualProgress = ![GDataHTTPFetcher doesSupportSentDataCallback];
+  if (needsManualProgress) {
+    // do a final upload progress report, indicating all of the chunk data
+    // has been sent
+    NSData *uploadData = [chunkFetcher propertyForKey:kFetcherUploadChunkDataKey];
+    NSUInteger dataLen = [uploadData length];
+    [chunkFetcher setProperty:[NSNumber numberWithLongLong:dataLen]
+                       forKey:kFetcherUploadChunkNextOffsetKey];
+
+    [self reportProgressForChunkFetcher:chunkFetcher];
+  }
+
+  // we're done
+  [self objectFetcher:chunkFetcher finishedWithData:data];
+}
+
+- (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
+  // status 308 is "resume incomplete", meaning we should upload the next chunk
+  if (status != 308) {
+    // some unexpected status has occurred; handle it as we would a regular
+    // object fetcher failure
+    [self objectFetcher:chunkFetcher failedWithStatus:status data:data];
+    return;
+  }
+
+  // by default, the new chunk's offset follows the old one, though we'll parse
+  // the Range header too
+  NSUInteger chunkSize = [[chunkFetcher propertyForKey:kFetcherUploadChunkSizeKey] unsignedLongLongValue];
+  NSUInteger offset = [[chunkFetcher propertyForKey:kFetcherUploadChunkNextOffsetKey] unsignedLongLongValue];
+  NSUInteger newOffset = offset + chunkSize;
+
+  NSDictionary *responseHeaders = [chunkFetcher responseHeaders];
+
+  // if the response specifies a content range, our new offset follows that
+  // range
+  NSString *rangeStr = [responseHeaders objectForKey:@"Range"];
+  if (rangeStr) {
+    // parse a content-range, like "bytes=0-999", to find where our new
+    // offset for uploading from the data really is
+    NSScanner *scanner = [NSScanner scannerWithString:rangeStr];
+    long long rangeStart = 0, rangeEnd = 0;
+    if ([scanner scanString:@"bytes=" intoString:nil]
+        && [scanner scanLongLong:&rangeStart]
+        && [scanner scanString:@"-" intoString:nil]
+        && [scanner scanLongLong:&rangeEnd]) {
+      newOffset = rangeEnd + 1;
+    }
+  }
+
+  [chunkFetcher setProperty:[NSNumber numberWithUnsignedLongLong:newOffset]
+                     forKey:kFetcherUploadChunkNextOffsetKey];
+
+  // We may in the future handle Location, Retry-After and ETag headers per
+  // http://code.google.com/p/gears/wiki/ResumableHttpRequestsProposal
+  // but they are not currently sent by the upload server
+
+  BOOL needsManualProgress = ![GDataHTTPFetcher doesSupportSentDataCallback];
+  if (needsManualProgress) {
+    [self reportProgressForChunkFetcher:chunkFetcher];
+  }
+
+  [self uploadNextChunkWithFetcherProperties:[chunkFetcher properties]];
+}
+
 
 // create an error userInfo dictionary containing a useful reason string and,
 // for structured XML errors, a server error group object
@@ -1584,6 +1897,13 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 #endif
 
+- (NSUInteger)serviceUploadChunkSize {
+  return uploadChunkSize_;
+}
+
+- (void)setServiceUploadChunkSize:(NSUInteger)val {
+  uploadChunkSize_ = val;
+}
 
 // retrying; see comments on retry support at the top of GDataHTTPFetcher
 - (BOOL)isServiceRetryEnabled {
