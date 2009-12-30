@@ -213,6 +213,16 @@
 
 #pragma mark -
 
+- (NSDictionary *)contentHeaders {
+  // This is also called from GDataServiceBase so it knows what headers to use
+  // when uploading data chunked but without XML (so the body is empty.)
+  return  [NSDictionary dictionaryWithObjectsAndKeys:
+           [self uploadMIMEType], @"Content-Type",
+           @"1.0", @"MIME-Version",
+           [self uploadSlug], @"Slug", // slug may be nil
+           nil];
+}
+
 - (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
                             length:(unsigned long long *)outLength
                            headers:(NSDictionary **)outHeaders {
@@ -227,27 +237,26 @@
   GDATA_DEBUG_ASSERT(hasUploadData == hasUploadMIMEType,
                      @"upload data must be paired with MIME type");
 
+  BOOL shouldUploadDataOnly = [self shouldUploadDataOnly];
+  GDATA_DEBUG_ASSERT(!shouldUploadDataOnly
+                     || (hasUploadData && hasUploadMIMEType),
+                     @"missing data");
+
+  if (shouldUploadDataOnly && hasUploadData && hasUploadMIMEType) {
+    // we're not uploading the XML, so we don't need a multipart MIME document,
+    // just a stream with the upload data
+    *outInputStream = [NSInputStream inputStreamWithData:uploadData];
+    *outLength = [uploadData length];
+    *outHeaders = [self contentHeaders];
+    return YES;
+  }
+
   if (!hasUploadData || !hasUploadMIMEType) {
-
-    GDATA_DEBUG_ASSERT(![self shouldUploadDataOnly], @"missing data");
-
-    // if there's no upload data, just fall back on GDataObject's
-    // XML stream generation
+    // if there's no upload data, just fall back on the superclass since we
+    // don't need a stream
     return [super generateContentInputStream:outInputStream
                                       length:outLength
                                      headers:outHeaders];
-  }
-
-  if ([self shouldUploadDataOnly]) {
-    // we're not uploading the XML, so we don't need a multipart MIME document
-    *outInputStream = [NSInputStream inputStreamWithData:uploadData];
-    *outLength = [uploadData length];
-    *outHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
-                   uploadMIMEType, @"Content-Type",
-                   @"1.0", @"MIME-Version",
-                   slug, @"Slug", // slug may be nil
-                   nil];
-    return YES;
   }
 
   // make a MIME document with an XML part and a binary part
@@ -580,17 +589,6 @@ forCategoryWithScheme:scheme
 
 - (void)setShouldUploadDataOnly:(BOOL)flag {
   shouldUploadDataOnly_ = flag;
-}
-
-// utility routine to convert a file path to the file's MIME type using
-// Mac OS X's UTI database
-+ (NSString *)MIMETypeForFileAtPath:(NSString *)path
-                    defaultMIMEType:(NSString *)defaultType {
-
-  GDATA_DEBUG_ASSERT(0, @"MIMETypeForFileAtPath moved to GDataUtilities");
-
-  return [GDataUtilities MIMETypeForFileAtPath:path
-                               defaultMIMEType:defaultType];
 }
 
 // extension for deletion marking

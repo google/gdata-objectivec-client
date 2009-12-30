@@ -376,10 +376,12 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 #pragma mark Response-string helpers
 
-// convert responses of the form "a=foo \n b=bar"   to a dictionary
-+ (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString {
+// convert responses of the form "a=foo \n b=bar" to a dictionary
++ (NSDictionary *)dictionaryWithResponseString:(NSString *)str {
 
-  NSArray *allLines = [responseString componentsSeparatedByString:@"\n"];
+  if (str == nil) return nil;
+
+  NSArray *allLines = [str componentsSeparatedByString:@"\n"];
   NSMutableDictionary *responseDict;
 
   responseDict = [NSMutableDictionary dictionaryWithCapacity:[allLines count]];
@@ -398,6 +400,12 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
     }
   }
   return responseDict;
+}
+
++ (NSDictionary *)dictionaryWithResponseData:(NSData *)data {
+  NSString *str = [[[NSString alloc] initWithData:data
+                                         encoding:NSUTF8StringEncoding] autorelease];
+  return [self dictionaryWithResponseString:str];
 }
 
 #pragma mark Version helpers

@@ -46,13 +46,11 @@
 // and provide the callbacks, consistent with the GDataHTTPFetcher
 // conventions.
 //
-// The callback data may be parsed with +dictionaryWithResponseString
+// The callback data may be parsed with +dictionaryWithResponseData
 // from GDataUtilities, as in
 //
 // - (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-//   NSString *responseString = [[[NSString alloc] initWithData:data
-//                                                     encoding:NSUTF8StringEncoding] autorelease];
-//   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
+//   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
 //   ...
 //
 

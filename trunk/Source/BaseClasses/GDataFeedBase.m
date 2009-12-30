@@ -709,6 +709,10 @@ forCategoryWithScheme:scheme
   return [self linkWithRelAttributeValue:kGDataLinkRelPost];
 }
 
+- (GDataLink *)uploadLink {
+  return [self linkWithRelAttributeValue:kGDataLinkRelResumableCreate];
+}
+
 - (GDataLink *)batchLink {
   return [self linkWithRelAttributeValue:kGDataLinkRelBatch];
 }

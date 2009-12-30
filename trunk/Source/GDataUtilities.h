@@ -106,7 +106,8 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 //
 
 // convert responses of the form "a=foo \n b=bar"   to a dictionary
-+ (NSDictionary *)dictionaryWithResponseString:(NSString *)responseString;
++ (NSDictionary *)dictionaryWithResponseString:(NSString *)str;
++ (NSDictionary *)dictionaryWithResponseData:(NSData *)data;
 
 //
 // file type helpers

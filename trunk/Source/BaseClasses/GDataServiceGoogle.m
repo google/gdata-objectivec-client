@@ -232,9 +232,7 @@ enum {
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
 
   // authentication fetch completed
-  NSString* responseString = [[[NSString alloc] initWithData:data
-                                                    encoding:NSUTF8StringEncoding] autorelease];
-  NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
+  NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
   NSString *authToken = [responseDict objectForKey:kGDataServiceAuthTokenKey];
 
   // if this is the pending auth fetcher, save the token for future auths
@@ -334,42 +332,37 @@ enum {
   NSMutableDictionary *userInfo = nil;
   if ([data length] > 0) {
     // put user-readable error info into the error object
-    NSString *failureInfoStr = [[[NSString alloc] initWithData:data
-                                                      encoding:NSUTF8StringEncoding] autorelease];
-    if (failureInfoStr) {
-      // parse each line of x=y into an entry in a dictionary
-      NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseString:failureInfoStr];
-      userInfo = [NSMutableDictionary dictionaryWithDictionary:responseDict];
+    NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
+    userInfo = [NSMutableDictionary dictionaryWithDictionary:responseDict];
 
-      // look for the partial-path URL to a captch image (which the user
-      // can retrieve from the userInfo later with the -captchaURL method)
-      NSString *str = [userInfo objectForKey:@"CaptchaUrl"];
-      if ([str length] > 0) {
+    // look for the partial-path URL to a captch image (which the user
+    // can retrieve from the userInfo later with the -captchaURL method)
+    NSString *str = [userInfo objectForKey:@"CaptchaUrl"];
+    if ([str length] > 0) {
 
-        // since we know the sign-in domain now, make a string with the full URL
-        NSString *captchaURLString;
+      // since we know the sign-in domain now, make a string with the full URL
+      NSString *captchaURLString;
 
-        if ([str hasPrefix:@"http:"] || [str hasPrefix:@"https:"]) {
-          // the server gave us a full URL
-          captchaURLString = str;
-        } else {
-          // the server gave us a relative URL
-          captchaURLString = [NSString stringWithFormat:@"https://%@/accounts/%@",
-                              [self signInDomain], str];
-        }
-
-        [userInfo setObject:captchaURLString forKey:kCaptchaFullURLKey];
+      if ([str hasPrefix:@"http:"] || [str hasPrefix:@"https:"]) {
+        // the server gave us a full URL
+        captchaURLString = str;
+      } else {
+        // the server gave us a relative URL
+        captchaURLString = [NSString stringWithFormat:@"https://%@/accounts/%@",
+                            [self signInDomain], str];
       }
 
-      // The auth server returns errors as "Error" but generally the library
-      // provides errors in the userInfo as "error".  We'll copy over the
-      // auth server's error to "error" as a convenience to clients, and hope
-      // few are confused about why the error appears twice in the dictionary.
-      NSString *authErrStr = [userInfo authenticationError];
-      if (authErrStr != nil
-          && [userInfo objectForKey:kGDataServerErrorStringKey] == nil) {
-        [userInfo setObject:authErrStr forKey:kGDataServerErrorStringKey];
-      }
+      [userInfo setObject:captchaURLString forKey:kCaptchaFullURLKey];
+    }
+
+    // The auth server returns errors as "Error" but generally the library
+    // provides errors in the userInfo as "error".  We'll copy over the
+    // auth server's error to "error" as a convenience to clients, and hope
+    // few are confused about why the error appears twice in the dictionary.
+    NSString *authErrStr = [userInfo authenticationError];
+    if (authErrStr != nil
+        && [userInfo objectForKey:kGDataServerErrorStringKey] == nil) {
+      [userInfo setObject:authErrStr forKey:kGDataServerErrorStringKey];
     }
   }
 
@@ -626,11 +619,7 @@ enum {
 - (void)standaloneAuthFetcher:(GDataHTTPFetcher *)fetcher
              finishedWithData:(NSData *)data {
 
-  NSString* responseString;
-  responseString = [[[NSString alloc] initWithData:data
-                                          encoding:NSUTF8StringEncoding] autorelease];
-  NSDictionary *responseDict;
-  responseDict = [GDataUtilities dictionaryWithResponseString:responseString];
+  NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
 
   NSString *authToken = [responseDict objectForKey:kGDataServiceAuthTokenKey];
 

@@ -159,6 +159,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 - (GDataLink *)alternateLink;
 - (GDataLink *)relatedLink;
 - (GDataLink *)postLink;
+- (GDataLink *)uploadLink; // "resumable-create" link
 - (GDataLink *)batchLink;
 - (GDataLink *)selfLink;
 - (GDataLink *)nextLink;

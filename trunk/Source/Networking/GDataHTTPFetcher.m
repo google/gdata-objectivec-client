@@ -1349,6 +1349,14 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   return [properties_ objectForKey:key];
 }
 
+- (void)addPropertiesFromDictionary:(NSDictionary *)dict {
+  if (properties_ == nil && dict != nil) {
+    [self setProperties:dict];
+  } else {
+    [properties_ addEntriesFromDictionary:dict];
+  }
+}
+
 - (NSArray *)runLoopModes {
   return runLoopModes_;
 }
