@@ -1248,9 +1248,11 @@ totalBytesExpectedToSend:0];
 
 - (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher finishedWithData:(NSData *)data {
   // the final chunk has uploaded successfully
+#if DEBUG
   NSInteger status = [chunkFetcher statusCode];
   GDATA_DEBUG_ASSERT(status == 200 || status == 201,
                      @"unexpected chunks status %d", status);
+#endif
 
   BOOL needsManualProgress = ![GDataHTTPFetcher doesSupportSentDataCallback];
   if (needsManualProgress) {
