@@ -14,20 +14,28 @@
  */
 
 //
-//  GDataFeedAnalyticsAccount.h
+//  GDataAnalyticsCustomVariable.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
-#import "GDataFeedBase.h"
-#import "GDataAnalyticsSegment.h"
+#import "GDataObject.h"
 
-@interface GDataFeedAnalyticsAccount : GDataFeedBase
-+ (GDataFeedAnalyticsAccount *)accountFeed;
+// Custom variable, like
+//
+//    <ga:customVariable index='1' name='myVar' scope='visitor' />
 
-- (NSArray *)segments;
-- (void)setSegments:(NSArray *)array;
-- (void)addSegment:(GDataAnalyticsSegment *)obj;
+@interface GDataAnalyticsCustomVariable : GDataObject <GDataExtension>
+
+- (NSNumber *)index; // int
+- (void)setIndex:(NSNumber *)num;
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
+
+- (NSString *)scope;
+- (void)setScope:(NSString *)str;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

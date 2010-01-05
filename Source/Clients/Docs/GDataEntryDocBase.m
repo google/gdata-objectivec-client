@@ -20,11 +20,18 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataEntryDocBase.h"
+#import "GDataDocumentElements.h"
+
+@interface GDataLastViewed : GDataValueElementConstruct <GDataExtension>
+@end
 
 @implementation GDataLastViewed
 + (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"lastViewed"; }
+@end
+
+@interface GDataQuotaBytesUsed : GDataValueElementConstruct <GDataExtension>
 @end
 
 @implementation GDataQuotaBytesUsed
@@ -33,16 +40,13 @@
 + (NSString *)extensionElementLocalName { return @"quotaBytesUsed"; }
 @end
 
+@interface GDataWritersCanInvite : GDataBoolValueConstruct <GDataExtension>
+@end
+
 @implementation GDataWritersCanInvite
 + (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
 + (NSString *)extensionElementLocalName { return @"writersCanInvite"; }
-@end
-
-@implementation GDataLastModifiedBy
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
-+ (NSString *)extensionElementLocalName { return @"lastModifiedBy"; }
 @end
 
 

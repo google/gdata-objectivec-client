@@ -33,14 +33,13 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataAnalyticsDefaultServiceVersion _INITIALIZE_AS(@"2.0");
+_EXTERN NSString* const kGDataAnalyticsDefaultServiceVersion _INITIALIZE_AS(@"2.1");
 
-_EXTERN NSString* const kGDataNamespaceAnalytics       _INITIALIZE_AS(@"http://schemas.google.com/analytics/2009");
-_EXTERN NSString* const kGDataNamespaceAnalyticsPrefix _INITIALIZE_AS(@"dxp");
+_EXTERN NSString* const kGDataNamespaceAnalyticsDXP       _INITIALIZE_AS(@"http://schemas.google.com/analytics/2009");
+_EXTERN NSString* const kGDataNamespaceAnalyticsDXPPrefix _INITIALIZE_AS(@"dxp");
 
-// TODO check these once proper kind categories are added to the feeds
-_EXTERN NSString* const kGDataCategoryAnalyticsAccount  _INITIALIZE_AS(@"http://schemas.google.com/analytics/2009#account");
-_EXTERN NSString* const kGDataCategoryAnalyticsData     _INITIALIZE_AS(@"http://schemas.google.com/analytics/2009#data");
+_EXTERN NSString* const kGDataNamespaceAnalyticsGA        _INITIALIZE_AS(@"http://schemas.google.com/ga/2009");
+_EXTERN NSString* const kGDataNamespaceAnalyticsGAPrefix  _INITIALIZE_AS(@"ga");
 
 _EXTERN NSString* const kGDataMetricTypeCurrency   _INITIALIZE_AS(@"currency");
 _EXTERN NSString* const kGDataMetricTypeFloat      _INITIALIZE_AS(@"float");
@@ -48,6 +47,10 @@ _EXTERN NSString* const kGDataMetricTypeInteger    _INITIALIZE_AS(@"integer");
 _EXTERN NSString* const kGDataMetricTypePercent    _INITIALIZE_AS(@"percent");
 _EXTERN NSString* const kGDataMetricTypeTime       _INITIALIZE_AS(@"time");
 _EXTERN NSString* const kGDataMetricTypeUSCurrency _INITIALIZE_AS(@"us_currency");
+
+_EXTERN NSString* const kGDataMatchTypeExact       _INITIALIZE_AS(@"exact");
+_EXTERN NSString* const kGDataMatchTypeHead        _INITIALIZE_AS(@"head");
+_EXTERN NSString* const kGDataMatchTypeRegex       _INITIALIZE_AS(@"regex");
 
 
 @interface GDataAnalyticsConstants : NSObject

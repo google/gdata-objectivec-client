@@ -21,6 +21,15 @@
 
 #import "GDataEntryBase.h"
 
+@interface GDataDocPublish : GDataValueConstruct <GDataExtension>
+@end
+
+@interface GDataDocPublishAuto : GDataValueConstruct <GDataExtension>
+@end
+
+@interface GDataDocPublishOutsideDomain : GDataValueConstruct <GDataExtension>
+@end
+
 @interface GDataEntryDocRevision : GDataEntryBase
 
 + (id)revisionEntry;

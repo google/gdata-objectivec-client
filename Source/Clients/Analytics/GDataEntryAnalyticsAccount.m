@@ -37,8 +37,8 @@
 
 #pragma mark -
 
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryAnalyticsAccount;
++ (NSString *)standardKindAttributeValue {
+  return @"analytics#account";
 }
 
 + (void)load {
@@ -52,31 +52,17 @@
                                  childClasses:
    [GDataAnalyticsProperty class],
    [GDataAnalyticsTableID class],
+   [GDataAnalyticsGoal class],
+   [GDataAnalyticsCustomVariable class],
    nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  NSString *propsDescValue = nil;
-  NSMutableArray *propsDisplayArray = nil;
-  GDataAnalyticsProperty *prop;
-
-  // display properties as "(name=value, name2=value2)"
-
-  GDATA_FOREACH(prop, [self analyticsProperties]) {
-    NSString *propDisplay = [NSString stringWithFormat:@"%@=%@",
-                             [prop name], [prop stringValue]];
-    if (propsDisplayArray == nil) {
-      propsDisplayArray = [NSMutableArray array];
-    }
-    [propsDisplayArray addObject:propDisplay];
-  }
-
-  if (propsDisplayArray) {
-    propsDescValue = [NSString stringWithFormat:@"(%@)",
-                      [propsDisplayArray componentsJoinedByString:@", "]];
-  }
+  NSArray *props = [self analyticsProperties];
+  NSString *propsDescValue;
+  propsDescValue = [GDataAnalyticsProperty descriptionItemForProperties:props];
 
   struct GDataDescriptionRecord descRecs[] = {
     { @"tableID",    @"tableID",     kGDataDescValueLabeled   },
@@ -119,6 +105,41 @@
 
 - (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj {
   [self addObject:obj forExtensionClass:[GDataAnalyticsProperty class]];
+}
+
+
+- (NSArray *)goals {
+  return [self objectsForExtensionClass:[GDataAnalyticsGoal class]];
+}
+
+- (void)setGoals:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAnalyticsGoal class]];
+}
+
+- (void)addGoal:(GDataAnalyticsGoal *)obj {
+  [self addObject:obj forExtensionClass:[GDataAnalyticsGoal class]];
+}
+
+- (NSArray *)customVariables {
+  return [self objectsForExtensionClass:[GDataAnalyticsCustomVariable class]];
+}
+
+- (void)setCustomVariables:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAnalyticsCustomVariable class]];
+}
+
+- (void)addCustomVariable:(GDataAnalyticsCustomVariable *)obj {
+  [self addObject:obj forExtensionClass:[GDataAnalyticsCustomVariable class]];
+}
+
+#pragma mark -
+
+- (GDataAnalyticsProperty *)analyticsPropertyWithName:(NSString *)name {
+  NSArray *array = [self analyticsProperties];
+  GDataAnalyticsProperty *obj = [GDataUtilities firstObjectFromArray:array
+                                                           withValue:name
+                                                          forKeyPath:@"name"];
+  return obj;
 }
 
 @end

@@ -20,8 +20,9 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
 #import "GDataFeedBase.h"
-
-@class GDataAnalyticsAggregateGroup;
+#import "GDataAnalyticsAggregateGroup.h"
+#import "GDataAnalyticsDataSource.h"
+#import "GDataAnalyticsSegment.h"
 
 @interface GDataFeedAnalyticsData : GDataFeedBase
 + (GDataFeedAnalyticsData *)dataFeed;
@@ -31,12 +32,17 @@
 
 - (NSArray *)dataSources;
 - (void)setDataSources:(NSArray *)array;
+- (void)addDataSource:(GDataAnalyticsDataSource *)obj;
 
 - (NSString *)startDateString; // yyyy-mm-dd
 - (void)setStartDateString:(NSString *)str;
 
 - (NSString *)endDateString; // yyyy-mm-dd
 - (void)setEndDateString:(NSString *)str;
+
+- (NSArray *)segments;
+- (void)setSegments:(NSArray *)array;
+- (void)addSegment:(GDataAnalyticsSegment *)obj;
 
 @end
 

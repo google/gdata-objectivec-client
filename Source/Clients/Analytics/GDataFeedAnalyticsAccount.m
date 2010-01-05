@@ -23,7 +23,6 @@
 #import "GDataEntryAnalyticsAccount.h"
 #import "GDataAnalyticsConstants.h"
 
-
 @implementation GDataFeedAnalyticsAccount
 
 + (GDataFeedAnalyticsAccount *)accountFeed {
@@ -35,8 +34,8 @@
   return feed;
 }
 
-+ (NSString *)standardFeedKind {
-  return kGDataCategoryAnalyticsAccount;
++ (NSString *)standardKindAttributeValue {
+  return @"analytics#accounts";
 }
 
 + (void)load {
@@ -47,8 +46,43 @@
   return [GDataEntryAnalyticsAccount class];
 }
 
+- (void)addExtensionDeclarations {
+  [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataAnalyticsSegment class]];
+}
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+- (NSMutableArray *)itemsForDescription {
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"segments", @"segments", kGDataDescArrayDescs },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;
+}
+#endif
+
 + (NSString *)defaultServiceVersion {
   return kGDataAnalyticsDefaultServiceVersion;
+}
+
+#pragma mark -
+
+- (NSArray *)segments {
+  return [self objectsForExtensionClass:[GDataAnalyticsSegment class]];
+}
+
+- (void)setSegments:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAnalyticsSegment class]];
+}
+
+- (void)addSegment:(GDataAnalyticsSegment *)obj {
+  [self addObject:obj forExtensionClass:[GDataAnalyticsSegment class]];
 }
 
 @end

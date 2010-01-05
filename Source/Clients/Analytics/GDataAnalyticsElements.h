@@ -29,6 +29,9 @@
 // property name/value pair, like
 // <dxp:property name="ga:accountId" value="8925159"/>
 @interface GDataAnalyticsProperty : GDataNameValueConstruct <GDataExtension>
+#if !GDATA_SIMPLE_DESCRIPTIONS
++ (NSString *)descriptionItemForProperties:(NSArray *)array;
+#endif
 @end
 
 // start date, YYYY-MM-DD, like <dxp:startDate>2009-05-18</dxp:startDate>
@@ -45,6 +48,10 @@
 
 // table name, like <dxp:tableName>www.example.net</dxp:tableName>
 @interface GDataAnalyticsTableName : GDataValueElementConstruct <GDataExtension>
+@end
+
+// definition, like <dxp:definition>ga:visitorType==New Visitor</dxp:definition>
+@interface GDataAnalyticsDefinition : GDataValueElementConstruct <GDataExtension>
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

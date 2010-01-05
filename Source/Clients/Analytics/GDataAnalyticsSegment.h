@@ -14,40 +14,42 @@
  */
 
 //
-//  GDataEntryAnalyticsAccount.h
+//  GDataAnalyticsSegment.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
-#import "GDataEntryBase.h"
-#import "GDataAnalyticsGoal.h"
-#import "GDataAnalyticsCustomVariable.h"
+#import "GDataObject.h"
 #import "GDataAnalyticsElements.h"
 
+// Segment, like
+//
+//  <dxp:segment id='gaid::-2' name='New Visitors'>
+//    <dxp:definition>ga:visitorType==New Visitor</dxp:definition>
+//    <dxp:property name='ga:accountId' value='30481'/>
+//    <dxp:property name='ga:accountName' value='Google Store'/>
+//  </dxp:segment>
+//
+// http://code.google.com/apis/analytics/docs/gdata/gdataReferenceAccountFeed.html
 
-@interface GDataEntryAnalyticsAccount : GDataEntryBase
+@interface GDataAnalyticsSegment : GDataObject <GDataExtension>
 
-+ (GDataEntryAnalyticsAccount *)accountEntry;
+// Attributes
 
-// extensions
+- (NSString *)name;
+- (void)setName:(NSString *)str;
 
-- (NSString *)tableID;
-- (void)setTableID:(NSString *)str;
+- (NSString *)analyticsID;
+- (void)setAnalyticsID:(NSString *)str;
+
+// Extensions
+
+- (NSString *)definition;
+- (void)setDefinition:(NSString *)str;
 
 - (NSArray *)analyticsProperties;
 - (void)setAnalyticsProperties:(NSArray *)array;
 - (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj;
-
-- (NSArray *)goals;
-- (void)setGoals:(NSArray *)array;
-- (void)addGoal:(GDataAnalyticsGoal *)obj;
-
-- (NSArray *)customVariables;
-- (void)setCustomVariables:(NSArray *)array;
-- (void)addCustomVariable:(GDataAnalyticsCustomVariable *)obj;
-
-// convenience accessor
-- (GDataAnalyticsProperty *)analyticsPropertyWithName:(NSString *)name;
 
 @end
 

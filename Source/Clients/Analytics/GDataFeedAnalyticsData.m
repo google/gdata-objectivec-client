@@ -24,8 +24,6 @@
 
 #import "GDataAnalyticsConstants.h"
 #import "GDataAnalyticsElements.h"
-#import "GDataAnalyticsAggregateGroup.h"
-#import "GDataAnalyticsDataSource.h"
 
 @implementation GDataFeedAnalyticsData
 
@@ -38,8 +36,8 @@
   return feed;
 }
 
-+ (NSString *)standardFeedKind {
-  return kGDataCategoryAnalyticsData;
++ (NSString *)standardKindAttributeValue {
+  return @"analytics#data";
 }
 
 + (void)load {
@@ -55,6 +53,7 @@
    [GDataAnalyticsDataSource class],
    [GDataAnalyticsStartDate class],
    [GDataAnalyticsEndDate class],
+   [GDataAnalyticsSegment class],
    nil];
 }
 
@@ -66,6 +65,7 @@
     { @"end",         @"endDateString",   kGDataDescValueLabeled },
     { @"aggregates",  @"aggregateGroup",  kGDataDescValueLabeled },
     { @"dataSources", @"dataSources",     kGDataDescArrayDescs   },
+    { @"segments",    @"segments",        kGDataDescArrayDescs   },
     { nil, nil, 0 }
   };
 
@@ -94,12 +94,17 @@
   [self setObject:obj forExtensionClass:[GDataAnalyticsAggregateGroup class]];
 }
 
+
 - (NSArray *)dataSources {
   return [self objectsForExtensionClass:[GDataAnalyticsDataSource class]];
 }
 
 - (void)setDataSources:(NSArray *)array {
   [self setObjects:array forExtensionClass:[GDataAnalyticsDataSource class]];
+}
+
+- (void)addDataSource:(GDataAnalyticsDataSource *)obj {
+  [self addObject:obj forExtensionClass:[GDataAnalyticsDataSource class]];
 }
 
 - (NSString *)startDateString {
@@ -116,6 +121,7 @@
   [self setObject:obj forExtensionClass:[GDataAnalyticsStartDate class]];
 }
 
+
 - (NSString *)endDateString {
   GDataAnalyticsEndDate *obj;
   obj = [self objectForExtensionClass:[GDataAnalyticsEndDate class]];
@@ -128,6 +134,19 @@
   obj = [GDataAnalyticsEndDate valueWithString:str];
 
   [self setObject:obj forExtensionClass:[GDataAnalyticsEndDate class]];
+}
+
+
+- (NSArray *)segments {
+  return [self objectsForExtensionClass:[GDataAnalyticsSegment class]];
+}
+
+- (void)setSegments:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataAnalyticsSegment class]];
+}
+
+- (void)addSegment:(GDataAnalyticsSegment *)obj {
+  [self addObject:obj forExtensionClass:[GDataAnalyticsSegment class]];
 }
 
 @end

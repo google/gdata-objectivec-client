@@ -14,41 +14,51 @@
  */
 
 //
-//  GDataAnalyticsDataSource.m
+//  GDataAnalyticsSegment.m
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
-#import "GDataAnalyticsDataSource.h"
-
+#import "GDataAnalyticsSegment.h"
 #import "GDataAnalyticsConstants.h"
-#import "GDataAnalyticsElements.h"
-#import "GDataUtilities.h"
 
-@implementation GDataAnalyticsDataSource
+static NSString *const kNameAttr = @"name";
+static NSString *const kIDAttr = @"id";
+
+@implementation GDataAnalyticsSegment
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
-+ (NSString *)extensionElementLocalName { return @"dataSource"; }
++ (NSString *)extensionElementLocalName { return @"segment"; }
+
+- (void)addParseDeclarations {
+
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kNameAttr, kIDAttr, nil];
+
+  [self addLocalAttributeDeclarations:attrs];
+}
 
 - (void)addExtensionDeclarations {
   [super addExtensionDeclarations];
 
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
+   [GDataAnalyticsDefinition class],
    [GDataAnalyticsProperty class],
-   [GDataAnalyticsTableID class],
-   [GDataAnalyticsTableName class],
    nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  static struct GDataDescriptionRecord descRecs[] = {
-    { @"tableID",    @"tableID",    kGDataDescValueLabeled },
-    { @"tableName",  @"tableName",  kGDataDescValueLabeled },
-    { @"properties", @"properties", kGDataDescArrayDescs   },
+  NSArray *props = [self analyticsProperties];
+  NSString *propsDescValue;
+  propsDescValue = [GDataAnalyticsProperty descriptionItemForProperties:props];
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"definition", @"definition", kGDataDescValueLabeled },
+    { @"properties", propsDescValue, kGDataDescValueIsKeyPath },
     { nil, nil, 0 }
   };
 
@@ -60,31 +70,43 @@
 
 #pragma mark -
 
-- (NSString *)tableID {
-  GDataAnalyticsTableID *obj;
+// Attributes
 
-  obj = [self objectForExtensionClass:[GDataAnalyticsTableID class]];
+- (NSString *)name {
+  NSString *str = [self stringValueForAttribute:kNameAttr];
+  return str;
+}
+
+- (void)setName:(NSString *)str {
+  [self setStringValue:str forAttribute:kNameAttr];
+}
+
+- (NSString *)analyticsID {
+  NSString *str = [self stringValueForAttribute:kIDAttr];
+  return str;
+}
+
+- (void)setAnalyticsID:(NSString *)str {
+  [self setStringValue:str forAttribute:kIDAttr];
+}
+
+#pragma mark -
+
+// Extensions
+
+- (NSString *)definition {
+  GDataAnalyticsDefinition *obj;
+  obj = [self objectForExtensionClass:[GDataAnalyticsDefinition class]];
+
   return [obj stringValue];
 }
 
-- (void)setTableID:(NSString *)str {
-  GDataAnalyticsTableID *obj = [GDataAnalyticsTableID valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataAnalyticsTableID class]];
+- (void)setDefinition:(NSString *)str {
+  GDataAnalyticsDefinition *obj;
+  obj = [GDataAnalyticsDefinition valueWithString:str];
+
+  [self setObject:obj forExtensionClass:[GDataAnalyticsDefinition class]];
 }
-
-
-- (NSString *)tableName {
-  GDataAnalyticsTableName *obj;
-
-  obj = [self objectForExtensionClass:[GDataAnalyticsTableName class]];
-  return [obj stringValue];
-}
-
-- (void)setTableName:(NSString *)str {
-  GDataAnalyticsTableName *obj = [GDataAnalyticsTableName valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataAnalyticsTableName class]];
-}
-
 
 - (NSArray *)analyticsProperties {
   return [self objectsForExtensionClass:[GDataAnalyticsProperty class]];
@@ -96,16 +118,6 @@
 
 - (void)addAnalyticsProperty:(GDataAnalyticsProperty *)obj {
   [self addObject:obj forExtensionClass:[GDataAnalyticsProperty class]];
-}
-
-#pragma mark -
-
-- (GDataAnalyticsProperty *)analyticsPropertyWithName:(NSString *)name {
-  NSArray *array = [self analyticsProperties];
-  GDataAnalyticsProperty *obj = [GDataUtilities firstObjectFromArray:array
-                                                           withValue:name
-                                                          forKeyPath:@"name"];
-  return obj;
 }
 
 @end

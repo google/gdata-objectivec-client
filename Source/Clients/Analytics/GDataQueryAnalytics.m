@@ -28,6 +28,7 @@ static NSString *const kEndDateParamName    = @"end-date";
 static NSString *const kFiltersParamName    = @"filters";
 static NSString *const kIDsParamName        = @"ids";
 static NSString *const kSortParamName       = @"sort";
+static NSString *const kSegmentParamName    = @"segment";
 
 @implementation GDataQueryAnalytics
 
@@ -120,6 +121,16 @@ static NSString *const kSortParamName       = @"sort";
 
 - (NSString *)sort {
   NSString *str = [self valueForParameterWithName:kSortParamName];
+  return str;
+}
+
+- (void)setSegment:(NSString *)str {
+  [self addCustomParameterWithName:kSegmentParamName
+                             value:str];
+}
+
+- (NSString *)segment {
+  NSString *str = [self valueForParameterWithName:kSegmentParamName];
   return str;
 }
 

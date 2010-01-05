@@ -29,8 +29,10 @@
 + (NSDictionary *)analyticsNamespaces {
   NSMutableDictionary *namespaces;
 
-  namespaces = [NSMutableDictionary dictionaryWithObject:kGDataNamespaceAnalytics
-                                                  forKey:kGDataNamespaceAnalyticsPrefix];
+  namespaces = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                kGDataNamespaceAnalyticsDXP, kGDataNamespaceAnalyticsDXPPrefix,
+                kGDataNamespaceAnalyticsGA, kGDataNamespaceAnalyticsGAPrefix,
+                nil];
 
   [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
 

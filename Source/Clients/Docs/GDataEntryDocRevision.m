@@ -22,6 +22,24 @@
 #import "GDataEntryDocRevision.h"
 #import "GDataDocConstants.h"
 
+@implementation GDataDocPublish
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"publish"; }
+@end
+
+@implementation GDataDocPublishAuto
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"publishAuto"; }
+@end
+
+@implementation GDataDocPublishOutsideDomain
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"publishOutsideDomain"; }
+@end
+
 @implementation GDataEntryDocRevision
 
 + (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
@@ -42,7 +60,70 @@
   [obj setNamespaces:[GDataDocConstants baseDocumentNamespaces]];
 
   return obj;
+}
 
+- (void)addExtensionDeclarations {
+
+  [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                 childClasses:
+   [GDataDocPublish class],
+   [GDataDocPublishAuto class],
+   [GDataDocPublishOutsideDomain class],
+   nil];
+}
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+- (NSMutableArray *)itemsForDescription {
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"publish",             @"publish",             kGDataDescBooleanPresent },
+    { @"publishAuto",         @"publishAuto",         kGDataDescBooleanPresent },
+    { @"publishOusideDomain", @"publishOusideDomain", kGDataDescBooleanPresent },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
+  return items;
+}
+#endif
+
+#pragma mark -
+
+- (NSNumber *)publish { // BOOL
+  GDataDocPublish *obj = [self objectForExtensionClass:[GDataDocPublish class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPublish:(NSNumber *)num {
+  GDataDocPublish *obj = [GDataDocPublish valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataDocPublish class]];
+}
+
+- (NSNumber *)publishAuto { // BOOL
+  GDataDocPublishAuto *obj = [self objectForExtensionClass:[GDataDocPublishAuto class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPublishAuto:(NSNumber *)num {
+  GDataDocPublishAuto *obj = [GDataDocPublishAuto valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataDocPublishAuto class]];
+}
+
+- (NSNumber *)publishOutsideDomain { // BOOL
+  GDataDocPublishOutsideDomain *obj;
+
+  obj = [self objectForExtensionClass:[GDataDocPublishOutsideDomain class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPublishOutsideDomain:(NSNumber *)num {
+  GDataDocPublishOutsideDomain *obj;
+
+  obj = [GDataDocPublishOutsideDomain valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataDocPublishOutsideDomain class]];
 }
 
 #pragma mark -

@@ -439,13 +439,14 @@
   [query1 setMetrics:@"ga:pageviews"];
   [query1 setFilters:@"ga:country==United States,ga:country==Canada"];
   [query1 setSort:@"ga:browser,ga:pageviews"];
+  [query1 setSegment:@"gaid::3"];
 
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"https://www.google.com/analytics/feeds/data?"
     "dimensions=ga%3Abrowser%2Cga%3Acountry&end-date=2001-12-01&"
     "filters=ga%3Acountry%3D%3DUnited+States%2Cga%3Acountry%3D%3DCanada&"
-    "ids=9876&metrics=ga%3Apageviews&sort=ga%3Abrowser%2Cga%3Apageviews&"
-    "start-date=2001-01-01";
+    "ids=9876&metrics=ga%3Apageviews&segment=gaid%3A%3A3&"
+    "sort=ga%3Abrowser%2Cga%3Apageviews&start-date=2001-01-01";
   STAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Analytics query 1 generation error");
 }
