@@ -34,6 +34,15 @@
 
 + (id)revisionEntry;
 
+- (NSNumber *)publish; // BOOL
+- (void)setPublish:(NSNumber *)num;
+
+- (NSNumber *)publishAuto; // BOOL
+- (void)setPublishAuto:(NSNumber *)num;
+
+- (NSNumber *)publishOutsideDomain; // BOOL
+- (void)setPublishOutsideDomain:(NSNumber *)num;
+
 // convenience accessors
 - (GDataPerson *)modifyingUser;
 - (void)setModifyingUser:(GDataPerson *)obj;
