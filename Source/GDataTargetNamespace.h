@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (517 classes) 2009-12-21 16:41:59 -0800
+// com.google.GDataFramework v. 1.9.1 (527 classes) 2010-01-05 14:29:09 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -29,12 +29,19 @@
   #define GDataACLScope                           _GDATA_NS_SYMBOL(GDataACLScope)
   #define GDataAnalyticsAggregateGroup            _GDATA_NS_SYMBOL(GDataAnalyticsAggregateGroup)
   #define GDataAnalyticsConstants                 _GDATA_NS_SYMBOL(GDataAnalyticsConstants)
+  #define GDataAnalyticsCustomVariable            _GDATA_NS_SYMBOL(GDataAnalyticsCustomVariable)
   #define GDataAnalyticsDataSource                _GDATA_NS_SYMBOL(GDataAnalyticsDataSource)
+  #define GDataAnalyticsDefinition                _GDATA_NS_SYMBOL(GDataAnalyticsDefinition)
+  #define GDataAnalyticsDestination               _GDATA_NS_SYMBOL(GDataAnalyticsDestination)
   #define GDataAnalyticsDimension                 _GDATA_NS_SYMBOL(GDataAnalyticsDimension)
   #define GDataAnalyticsEndDate                   _GDATA_NS_SYMBOL(GDataAnalyticsEndDate)
+  #define GDataAnalyticsEngagement                _GDATA_NS_SYMBOL(GDataAnalyticsEngagement)
+  #define GDataAnalyticsGoal                      _GDATA_NS_SYMBOL(GDataAnalyticsGoal)
   #define GDataAnalyticsMetric                    _GDATA_NS_SYMBOL(GDataAnalyticsMetric)
   #define GDataAnalyticsProperty                  _GDATA_NS_SYMBOL(GDataAnalyticsProperty)
+  #define GDataAnalyticsSegment                   _GDATA_NS_SYMBOL(GDataAnalyticsSegment)
   #define GDataAnalyticsStartDate                 _GDATA_NS_SYMBOL(GDataAnalyticsStartDate)
+  #define GDataAnalyticsStep                      _GDATA_NS_SYMBOL(GDataAnalyticsStep)
   #define GDataAnalyticsTableID                   _GDATA_NS_SYMBOL(GDataAnalyticsTableID)
   #define GDataAnalyticsTableName                 _GDATA_NS_SYMBOL(GDataAnalyticsTableName)
   #define GDataAnyoneCanAddSelfProperty           _GDATA_NS_SYMBOL(GDataAnyoneCanAddSelfProperty)
@@ -123,6 +130,9 @@
   #define GDataDCTitle                            _GDATA_NS_SYMBOL(GDataDCTitle)
   #define GDataDeleted                            _GDATA_NS_SYMBOL(GDataDeleted)
   #define GDataDocConstants                       _GDATA_NS_SYMBOL(GDataDocConstants)
+  #define GDataDocPublish                         _GDATA_NS_SYMBOL(GDataDocPublish)
+  #define GDataDocPublishAuto                     _GDATA_NS_SYMBOL(GDataDocPublishAuto)
+  #define GDataDocPublishOutsideDomain            _GDATA_NS_SYMBOL(GDataDocPublishOutsideDomain)
   #define GDataEmail                              _GDATA_NS_SYMBOL(GDataEmail)
   #define GDataEntryACL                           _GDATA_NS_SYMBOL(GDataEntryACL)
   #define GDataEntryAnalyticsAccount              _GDATA_NS_SYMBOL(GDataEntryAnalyticsAccount)

@@ -1890,6 +1890,55 @@
 		4FBF38230F57419900E1EFD9 /* GDataEntryYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */; };
 		4FBF38240F57419900E1EFD9 /* GDataFeedYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381A0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.m */; };
 		4FBF38250F57419900E1EFD9 /* GDataEntryYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */; };
+		4FC2BE1710F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */; };
+		4FC2BE1810F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */; };
+		4FC2BE1910F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */; };
+		4FC2BE1A10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */; };
+		4FC2BE1B10F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */; };
+		4FC2BE1C10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */; };
+		4FC2BE1D10F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */; };
+		4FC2BE1E10F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */; };
+		4FC2BE1F10F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */; };
+		4FC2BE2010F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */; };
+		4FC2BE2110F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */; };
+		4FC2BE2210F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */; };
+		4FC2BE2310F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */; };
+		4FC2BE2410F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */; };
+		4FC2BE2510F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */; };
+		4FC2BE2610F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */; };
+		4FC2BE2710F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */; };
+		4FC2BE2810F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */; };
+		4FC2BE2910F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */; };
+		4FC2BE2A10F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */; };
+		4FC2BE2B10F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */; };
+		4FC2BE2C10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */; };
+		4FC2BE2D10F3F01B004BD81E /* GDataAnalyticsEngagement.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE0F10F3F01B004BD81E /* GDataAnalyticsEngagement.h */; };
+		4FC2BE2E10F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */; };
+		4FC2BE2F10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */; };
+		4FC2BE3010F3F01B004BD81E /* GDataAnalyticsCustomVariable.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1210F3F01B004BD81E /* GDataAnalyticsCustomVariable.h */; };
+		4FC2BE3110F3F01B004BD81E /* GDataAnalyticsSegment.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1310F3F01B004BD81E /* GDataAnalyticsSegment.h */; };
+		4FC2BE3210F3F01B004BD81E /* GDataAnalyticsGoal.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1410F3F01B004BD81E /* GDataAnalyticsGoal.h */; };
+		4FC2BE3310F3F01B004BD81E /* GDataAnalyticsStep.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1510F3F01B004BD81E /* GDataAnalyticsStep.h */; };
+		4FC2BE3410F3F01B004BD81E /* GDataAnalyticsDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1610F3F01B004BD81E /* GDataAnalyticsDestination.h */; };
+		4FC2BE3510F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */; };
+		4FC2BE3610F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */; };
+		4FC2BE3710F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */; };
+		4FC2BE3810F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */; };
+		4FC2BE3910F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */; };
+		4FC2BE3A10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */; };
+		4FC2BE3D10F3F032004BD81E /* GDataAnalyticsCustomVariable.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1210F3F01B004BD81E /* GDataAnalyticsCustomVariable.h */; };
+		4FC2BE3E10F3F032004BD81E /* GDataAnalyticsDestination.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1610F3F01B004BD81E /* GDataAnalyticsDestination.h */; };
+		4FC2BE3F10F3F032004BD81E /* GDataAnalyticsEngagement.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE0F10F3F01B004BD81E /* GDataAnalyticsEngagement.h */; };
+		4FC2BE4010F3F032004BD81E /* GDataAnalyticsGoal.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1410F3F01B004BD81E /* GDataAnalyticsGoal.h */; };
+		4FC2BE4110F3F032004BD81E /* GDataAnalyticsSegment.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1310F3F01B004BD81E /* GDataAnalyticsSegment.h */; };
+		4FC2BE4210F3F032004BD81E /* GDataAnalyticsStep.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE1510F3F01B004BD81E /* GDataAnalyticsStep.h */; };
+		4FC2BE4910F3F076004BD81E /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */; };
+		4FC2BE4A10F3F076004BD81E /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */; };
+		4FC2BE4B10F3F076004BD81E /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */; };
+		4FC2BE4C10F3F076004BD81E /* GDataDocumentElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE4710F3F076004BD81E /* GDataDocumentElements.h */; };
+		4FC2BE4D10F3F076004BD81E /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */; };
+		4FC2BE4E10F3F076004BD81E /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */; };
+		4FC2BE4F10F3F082004BD81E /* GDataDocumentElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BE4710F3F076004BD81E /* GDataDocumentElements.h */; };
 		4FD23A470B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */; };
 		4FD23A480B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */; };
 		4FD23A490B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */; };
@@ -2088,6 +2137,13 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FC2BE4F10F3F082004BD81E /* GDataDocumentElements.h in Copy Static Library Headers */,
+				4FC2BE3D10F3F032004BD81E /* GDataAnalyticsCustomVariable.h in Copy Static Library Headers */,
+				4FC2BE3E10F3F032004BD81E /* GDataAnalyticsDestination.h in Copy Static Library Headers */,
+				4FC2BE3F10F3F032004BD81E /* GDataAnalyticsEngagement.h in Copy Static Library Headers */,
+				4FC2BE4010F3F032004BD81E /* GDataAnalyticsGoal.h in Copy Static Library Headers */,
+				4FC2BE4110F3F032004BD81E /* GDataAnalyticsSegment.h in Copy Static Library Headers */,
+				4FC2BE4210F3F032004BD81E /* GDataAnalyticsStep.h in Copy Static Library Headers */,
 				4F6728D4103E16750064FB06 /* GDataHealthConstants.h in Copy Static Library Headers */,
 				4F48F028105AE3520053938E /* GDataEntryFileDoc.h in Copy Static Library Headers */,
 				4F1C70721027B53600B46459 /* GData.h in Copy Static Library Headers */,
@@ -2945,6 +3001,20 @@
 		4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeUserEvent.m; path = Clients/YouTube/GDataEntryYouTubeUserEvent.m; sourceTree = "<group>"; };
 		4FBF381D0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeUserEvent.h; path = Clients/YouTube/GDataEntryYouTubeUserEvent.h; sourceTree = "<group>"; };
 		4FBF38A80F5765A300E1EFD9 /* FeedYouTubeUserEventTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedYouTubeUserEventTest1.xml; path = Tests/FeedYouTubeUserEventTest1.xml; sourceTree = "<group>"; };
+		4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsStep.m; path = Clients/Analytics/GDataAnalyticsStep.m; sourceTree = "<group>"; };
+		4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsGoal.m; path = Clients/Analytics/GDataAnalyticsGoal.m; sourceTree = "<group>"; };
+		4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsEngagement.m; path = Clients/Analytics/GDataAnalyticsEngagement.m; sourceTree = "<group>"; };
+		4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsCustomVariable.m; path = Clients/Analytics/GDataAnalyticsCustomVariable.m; sourceTree = "<group>"; };
+		4FC2BE0F10F3F01B004BD81E /* GDataAnalyticsEngagement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsEngagement.h; path = Clients/Analytics/GDataAnalyticsEngagement.h; sourceTree = "<group>"; };
+		4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsSegment.m; path = Clients/Analytics/GDataAnalyticsSegment.m; sourceTree = "<group>"; };
+		4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsDestination.m; path = Clients/Analytics/GDataAnalyticsDestination.m; sourceTree = "<group>"; };
+		4FC2BE1210F3F01B004BD81E /* GDataAnalyticsCustomVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsCustomVariable.h; path = Clients/Analytics/GDataAnalyticsCustomVariable.h; sourceTree = "<group>"; };
+		4FC2BE1310F3F01B004BD81E /* GDataAnalyticsSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsSegment.h; path = Clients/Analytics/GDataAnalyticsSegment.h; sourceTree = "<group>"; };
+		4FC2BE1410F3F01B004BD81E /* GDataAnalyticsGoal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsGoal.h; path = Clients/Analytics/GDataAnalyticsGoal.h; sourceTree = "<group>"; };
+		4FC2BE1510F3F01B004BD81E /* GDataAnalyticsStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsStep.h; path = Clients/Analytics/GDataAnalyticsStep.h; sourceTree = "<group>"; };
+		4FC2BE1610F3F01B004BD81E /* GDataAnalyticsDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsDestination.h; path = Clients/Analytics/GDataAnalyticsDestination.h; sourceTree = "<group>"; };
+		4FC2BE4710F3F076004BD81E /* GDataDocumentElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocumentElements.h; path = Elements/GDataDocumentElements.h; sourceTree = "<group>"; };
+		4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocumentElements.m; path = Elements/GDataDocumentElements.m; sourceTree = "<group>"; };
 		4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseSnippetTest1.xml; path = Tests/FeedGoogleBaseSnippetTest1.xml; sourceTree = "<group>"; };
 		4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemTypesTest1.xml; path = Tests/FeedGoogleBaseItemTypesTest1.xml; sourceTree = "<group>"; };
 		4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemCountsTest1.xml; path = Tests/FeedGoogleBaseItemCountsTest1.xml; sourceTree = "<group>"; };
@@ -3332,6 +3402,8 @@
 				4F14AE4F0B12A7CA0072EBB8 /* GDataComment.m */,
 				4F2082090FC7464000F547BB /* GDataCustomProperty.h */,
 				4F2082080FC7464000F547BB /* GDataCustomProperty.m */,
+				4FC2BE4710F3F076004BD81E /* GDataDocumentElements.h */,
+				4FC2BE4810F3F076004BD81E /* GDataDocumentElements.m */,
 				4F14ADCF0B12A60A0072EBB8 /* GDataEntryLink.h */,
 				4F14ADD00B12A60A0072EBB8 /* GDataEntryLink.m */,
 				4F14AE130B12A73A0072EBB8 /* GDataFeedLink.h */,
@@ -3896,6 +3968,18 @@
 				4F91DAF30FC3410B008EA8A2 /* GDataAnalyticsAggregateGroup.m */,
 				4F91DAFE0FC3410B008EA8A2 /* GDataAnalyticsDataSource.h */,
 				4F91DAF50FC3410B008EA8A2 /* GDataAnalyticsDataSource.m */,
+				4FC2BE1210F3F01B004BD81E /* GDataAnalyticsCustomVariable.h */,
+				4FC2BE0E10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m */,
+				4FC2BE1610F3F01B004BD81E /* GDataAnalyticsDestination.h */,
+				4FC2BE1110F3F01B004BD81E /* GDataAnalyticsDestination.m */,
+				4FC2BE0F10F3F01B004BD81E /* GDataAnalyticsEngagement.h */,
+				4FC2BE0D10F3F01B004BD81E /* GDataAnalyticsEngagement.m */,
+				4FC2BE1410F3F01B004BD81E /* GDataAnalyticsGoal.h */,
+				4FC2BE0C10F3F01B004BD81E /* GDataAnalyticsGoal.m */,
+				4FC2BE1310F3F01B004BD81E /* GDataAnalyticsSegment.h */,
+				4FC2BE1010F3F01B004BD81E /* GDataAnalyticsSegment.m */,
+				4FC2BE1510F3F01B004BD81E /* GDataAnalyticsStep.h */,
+				4FC2BE0B10F3F01B004BD81E /* GDataAnalyticsStep.m */,
 				4F91DAF40FC3410B008EA8A2 /* GDataEntryAnalyticsData.h */,
 				4F91DAFD0FC3410B008EA8A2 /* GDataEntryAnalyticsData.m */,
 				4F91DAEF0FC3410B008EA8A2 /* GDataEntryAnalyticsAccount.h */,
@@ -4436,6 +4520,13 @@
 				4F61CB24103CAA1B00C0692E /* GDataEntryDocRevision.h in Headers */,
 				4F61CB26103CAA1B00C0692E /* GDataFeedDocRevision.h in Headers */,
 				4F48F01A105AE2920053938E /* GDataEntryFileDoc.h in Headers */,
+				4FC2BE2D10F3F01B004BD81E /* GDataAnalyticsEngagement.h in Headers */,
+				4FC2BE3010F3F01B004BD81E /* GDataAnalyticsCustomVariable.h in Headers */,
+				4FC2BE3110F3F01B004BD81E /* GDataAnalyticsSegment.h in Headers */,
+				4FC2BE3210F3F01B004BD81E /* GDataAnalyticsGoal.h in Headers */,
+				4FC2BE3310F3F01B004BD81E /* GDataAnalyticsStep.h in Headers */,
+				4FC2BE3410F3F01B004BD81E /* GDataAnalyticsDestination.h in Headers */,
+				4FC2BE4C10F3F076004BD81E /* GDataDocumentElements.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4931,6 +5022,13 @@
 				4F7B12CF1044C4EB00FD8F66 /* GDataFetcherTest.m in Sources */,
 				4F48F017105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
 				4F5764001083F76300F5E9F8 /* GDataHTTPFetcherTest.m in Sources */,
+				4FC2BE1710F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */,
+				4FC2BE1810F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */,
+				4FC2BE1910F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */,
+				4FC2BE1A10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */,
+				4FC2BE1B10F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */,
+				4FC2BE1C10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */,
+				4FC2BE4910F3F076004BD81E /* GDataDocumentElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5219,6 +5317,13 @@
 				4F61CB2B103CAA1B00C0692E /* GDataEntryDocRevision.m in Sources */,
 				4F61CB2C103CAA1B00C0692E /* GDataFeedDocRevision.m in Sources */,
 				4F48F01B105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
+				4FC2BE3510F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */,
+				4FC2BE3610F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */,
+				4FC2BE3710F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */,
+				4FC2BE3810F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */,
+				4FC2BE3910F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */,
+				4FC2BE3A10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */,
+				4FC2BE4E10F3F076004BD81E /* GDataDocumentElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5506,6 +5611,13 @@
 				4F61CB2A103CAA1B00C0692E /* GDataFeedDocRevision.m in Sources */,
 				4F48F018105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
 				4F49364C1096488600A142D4 /* GDataEntryHealthRegister.m in Sources */,
+				4FC2BE2310F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */,
+				4FC2BE2410F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */,
+				4FC2BE2510F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */,
+				4FC2BE2610F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */,
+				4FC2BE2710F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */,
+				4FC2BE2810F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */,
+				4FC2BE4B10F3F076004BD81E /* GDataDocumentElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5792,6 +5904,13 @@
 				4F61CB23103CAA1B00C0692E /* GDataEntryDocRevision.m in Sources */,
 				4F61CB25103CAA1B00C0692E /* GDataFeedDocRevision.m in Sources */,
 				4F48F019105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
+				4FC2BE2910F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */,
+				4FC2BE2A10F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */,
+				4FC2BE2B10F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */,
+				4FC2BE2C10F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */,
+				4FC2BE2E10F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */,
+				4FC2BE2F10F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */,
+				4FC2BE4D10F3F076004BD81E /* GDataDocumentElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6094,6 +6213,13 @@
 				4F7B12CE1044C4EB00FD8F66 /* GDataFetcherTest.m in Sources */,
 				4F48F016105AE2920053938E /* GDataEntryFileDoc.m in Sources */,
 				4F5763FF1083F76300F5E9F8 /* GDataHTTPFetcherTest.m in Sources */,
+				4FC2BE1D10F3F01B004BD81E /* GDataAnalyticsStep.m in Sources */,
+				4FC2BE1E10F3F01B004BD81E /* GDataAnalyticsGoal.m in Sources */,
+				4FC2BE1F10F3F01B004BD81E /* GDataAnalyticsEngagement.m in Sources */,
+				4FC2BE2010F3F01B004BD81E /* GDataAnalyticsCustomVariable.m in Sources */,
+				4FC2BE2110F3F01B004BD81E /* GDataAnalyticsSegment.m in Sources */,
+				4FC2BE2210F3F01B004BD81E /* GDataAnalyticsDestination.m in Sources */,
+				4FC2BE4A10F3F076004BD81E /* GDataDocumentElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
