@@ -268,10 +268,11 @@ static int kServerPortNumber = 54579;
     filePath = [filePath substringToIndex:range.location];
   }
 
-  // we exclude the ".auth" and ".authsub" extensions that would indicate
-  // that the URL should be tested with authentication
+  // we remove the extensions that would indicate special ways of
+  // testing the URL
   if ([[filePath pathExtension] isEqual:@"auth"] ||
-      [[filePath pathExtension] isEqual:@"authsub"]) {
+      [[filePath pathExtension] isEqual:@"authsub"] ||
+      [[filePath pathExtension] isEqual:@"location"]) {
     filePath = [filePath stringByDeletingPathExtension];
   }
 
@@ -1121,6 +1122,146 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [fetcher setRequest:[NSURLRequest requestWithURL:authFeedStatusURL]];
 
   return YES; // do the retry fetch; it should succeed now
+}
+
+
+#pragma mark Upload tests
+
+- (NSData *)generatedUploadDataWithLength:(NSUInteger)length {
+  // fill a data block with data
+  NSMutableData *data = [NSMutableData dataWithLength:length];
+
+  unsigned char *bytes = [data mutableBytes];
+  for (NSUInteger idx = 0; idx < length; idx++) {
+    bytes[idx] = ((idx + 1) % 256);
+  }
+
+  return data;
+}
+
+- (void)testChunkedUpload {
+
+  if (!isServerRunning_) return;
+
+  NSData *bigData = [self generatedUploadDataWithLength:199000];
+  NSData *smallData = [self generatedUploadDataWithLength:13];
+
+  [self resetFetchResponse];
+
+  [service_ setServiceUploadChunkSize:75000];
+
+  // with chunk size 75000, for a data block of 199000 bytes, we expect to send
+  // two 75000-byte chunks and then a 49000-byte final chunk
+
+  // a ".location" tells the server to return a "Location" header with the
+  // same path but an ".upload" suffix replacing the ".location" suffix
+  NSURL *uploadURL = [self fileURLToTestFileName:@"EntrySpreadsheetCellTest1.xml.location"];
+  [service_ setUserCredentialsWithUsername:@"myaccount@mydomain.com"
+                                  password:@"good"];
+
+  GDataEntrySpreadsheetCell *newEntry = [GDataEntrySpreadsheetCell entry];
+  [newEntry setUploadData:bigData];
+  [newEntry setUploadMIMEType:@"foo/bar"];
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+
+  // check that we got back the expected entry
+  NSString *entryID = @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1";
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  // check the request of the final object fetcher to be sure we were uploading
+  // chunks as expected
+  NSURLRequest *request = [[ticket_ objectFetcher] request];
+  NSDictionary *reqHdrs = [request allHTTPHeaderFields];
+
+  NSString *uploadReqURLStr = @"http://localhost:54579/EntrySpreadsheetCellTest1.xml.upload";
+  NSString *contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  NSString *contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"49000", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+
+  [self resetFetchResponse];
+
+  //
+  // repeat the previous upload, but uploading data only, without the entry XML
+  //
+
+  [newEntry setShouldUploadDataOnly:YES];
+  [newEntry setUploadSlug:@"filename slug.txt"];
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  request = [[ticket_ objectFetcher] request];
+  reqHdrs = [request allHTTPHeaderFields];
+
+  contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"49000", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+
+  [self resetFetchResponse];
+
+  //
+  // upload a small data block
+  //
+
+  [newEntry setUploadData:smallData];
+  [newEntry setShouldUploadDataOnly:NO];
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+
+  // check that we got back the expected entry
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  // check the request of the final (and only) object fetcher to be sure we
+  // were uploading chunks as expected
+  request = [[ticket_ objectFetcher] request];
+  reqHdrs = [request allHTTPHeaderFields];
+
+  contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"13", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 0-12/13", @"range");
+
+  [self resetFetchResponse];
+
+  [service_ setServiceUploadChunkSize:0];
 }
 
 #pragma mark Standalone auth tests

@@ -134,7 +134,7 @@ class SimpleServer(BaseHTTPRequestHandler):
       postString = self.rfile.read(postLength)
       
     ifModifiedSince = self.headers.getheader("If-Modified-Since", "");
-
+    
     # retrieve the auth header
     authorization = self.headers.getheader("Authorization", "")
     
@@ -161,6 +161,40 @@ class SimpleServer(BaseHTTPRequestHandler):
         self.send_error(401,"Unauthorized: %s" % self.path)
         return
       self.path = self.path[:-8] # remove the .authsub at the end
+    
+    # chunked (resumable) upload testing
+    if self.path.endswith(".location"):
+      # return a location header containing the request path with
+      # the ".location" suffix changed to ".upload"
+      host = self.headers.getheader("Host", "");
+      fullLocation = "http://%s%s.upload" % (host, self.path[:-9])
+      
+      self.send_response(200)
+      self.send_header("Location", fullLocation)
+      self.end_headers()
+      return
+    
+    if self.path.endswith(".upload"):
+      # if the contentRange indicates this is a middle chunk,
+      # return status 308 with a Range header; otherwise, strip
+      # the ".upload" and continue to return the file
+      #
+      # contentRange is like
+      #  Content-Range: bytes 0-49999/135681
+      contentRange = self.headers.getheader("Content-Range", "");
+      searchResult = re.search("(bytes )([0-9]+)(-)([0-9]+)(/)([0-9]+)",
+        contentRange)
+      if searchResult:
+        endRange = int(searchResult.group(4))
+        totalToUpload = int(searchResult.group(6))
+        if (endRange + 1) < totalToUpload:
+          # this is a middle chunk, so send a 308 status to ask for more chunks
+          self.send_response(308)
+          self.send_header("Range", "bytes=0-" + searchResult.group(4))
+          self.end_headers()
+          return
+        else:
+          self.path = self.path[:-7] # remove the .upload at the end
     
     overrideHeader = self.headers.getheader("X-HTTP-Method-Override", "")
     httpCommand = self.command
