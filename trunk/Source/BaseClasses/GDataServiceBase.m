@@ -56,7 +56,9 @@ NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
 const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
 
-const NSUInteger kMinimumUploadChunkSize = 98304; // enforce 96K chunks minimum
+// we'll enforce 50K chunks minimum just to avoid the server getting hit
+// with too many small upload chunks
+const NSUInteger kMinimumUploadChunkSize = 50000;
 
 // XorPlainMutableData is a simple way to keep passwords held in heap objects
 // from being visible as plain-text
@@ -1149,9 +1151,15 @@ totalBytesExpectedToSend:(NSInteger)total];
                      offset, dataLen);
 
   NSUInteger thisChunkSize = chunkSize;
-  if (thisChunkSize + offset > dataLen) {
-    // the chunk we're uploading this time is smaller since we're nearing the
-    // end of the data block
+
+  // if the chunk size is bigger than the remaining data, or else
+  // it's close enough in size to the remaining data that we'd rather
+  // avoid having a whole extra http fetch for the leftover bit, then make
+  // this chunk size exactly match the remaining data size
+  BOOL isChunkTooBig = (thisChunkSize + offset > dataLen);
+  BOOL isChunkAlmostBigEnough = (dataLen - offset < thisChunkSize + 2500);
+
+  if (isChunkTooBig || isChunkAlmostBigEnough) {
     thisChunkSize = dataLen - offset;
   }
 
@@ -1253,7 +1261,7 @@ totalBytesExpectedToSend:0];
   GDATA_DEBUG_ASSERT(status == 200 || status == 201,
                      @"unexpected chunks status %d", status);
 #endif
-
+  
   BOOL needsManualProgress = ![GDataHTTPFetcher doesSupportSentDataCallback];
   if (needsManualProgress) {
     // do a final upload progress report, indicating all of the chunk data

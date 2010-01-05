@@ -36,7 +36,14 @@ _EXTERN Class const kGDataUseRegisteredClass _INITIALIZE_AS(nil);
 
 _EXTERN NSString* const kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
 
+#if GDATA_IPHONE
+// reduce the memory buffer size used on iPhone
+_EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(250000);
+#else
+// about a megabyte works well for the server and is a reasonable limit to
+// put on NSURLConnection
 _EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(1000000);
+#endif
 
 // we'll consistently store the server error string in the userInfo under
 // this key
