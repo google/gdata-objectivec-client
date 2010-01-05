@@ -29,8 +29,8 @@ static NSString *const kValueAttr = @"value";
 
 @implementation GDataAnalyticsMetric
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"metric"; }
 
 - (void)addParseDeclarations {

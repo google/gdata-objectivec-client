@@ -14,20 +14,31 @@
  */
 
 //
-//  GDataFeedAnalyticsAccount.h
+//  GDataAnalyticsEngagement.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
-#import "GDataFeedBase.h"
-#import "GDataAnalyticsSegment.h"
+#import "GDataObject.h"
 
-@interface GDataFeedAnalyticsAccount : GDataFeedBase
-+ (GDataFeedAnalyticsAccount *)accountFeed;
+// Engagement, like
+//
+//   <ga:engagement comparison='&gt;' thresholdValue='300' type='timeOnSite'/>
 
-- (NSArray *)segments;
-- (void)setSegments:(NSArray *)array;
-- (void)addSegment:(GDataAnalyticsSegment *)obj;
+
+@interface GDataAnalyticsEngagement : GDataObject <GDataExtension>
+
+// Attributes
+
+- (NSString *)comparison;
+- (void)setComparison:(NSString *)str;
+
+- (NSNumber *)thresholdValue; // long long
+- (void)setThresholdValue:(NSNumber *)num;
+
+- (NSString *)type;
+- (void)setType:(NSString *)str;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

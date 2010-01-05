@@ -50,6 +50,9 @@
 - (void)setSort:(NSString *)str;
 - (NSString *)sort;
 
+- (void)setSegment:(NSString *)str;
+- (NSString *)segment;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

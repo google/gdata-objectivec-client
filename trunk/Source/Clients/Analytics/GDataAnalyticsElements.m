@@ -23,39 +23,73 @@
 #import "GDataAnalyticsElements.h"
 
 @implementation GDataAnalyticsDimension
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"dimension"; }
 @end
 
 @implementation GDataAnalyticsProperty
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"property"; }
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+// helper method for displaying descriptions of properties
++ (NSString *)descriptionItemForProperties:(NSArray *)array {
+
+  NSString *propsDescValue = nil;
+  NSMutableArray *propsDisplayArray = nil;
+  GDataAnalyticsProperty *prop;
+
+  // display properties as "(name=value, name2=value2)"
+
+  GDATA_FOREACH(prop, array) {
+    NSString *propDisplay = [NSString stringWithFormat:@"%@=%@",
+                             [prop name], [prop stringValue]];
+    if (propsDisplayArray == nil) {
+      propsDisplayArray = [NSMutableArray array];
+    }
+    [propsDisplayArray addObject:propDisplay];
+  }
+
+  if (propsDisplayArray) {
+    propsDescValue = [NSString stringWithFormat:@"(%@)",
+                      [propsDisplayArray componentsJoinedByString:@", "]];
+  }
+  return propsDescValue;
+}
+#endif
+
 @end
 
 @implementation GDataAnalyticsStartDate
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"startDate"; }
 @end
 
 @implementation GDataAnalyticsEndDate
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"endDate"; }
 @end
 
 @implementation GDataAnalyticsTableID
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"tableId"; }
 @end
 
 @implementation GDataAnalyticsTableName
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"tableName"; }
+@end
+
+@implementation GDataAnalyticsDefinition
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
++ (NSString *)extensionElementLocalName { return @"definition"; }
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

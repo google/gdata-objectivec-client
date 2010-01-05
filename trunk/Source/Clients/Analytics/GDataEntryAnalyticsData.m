@@ -38,8 +38,8 @@
 
 #pragma mark -
 
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryAnalyticsData;
++ (NSString *)standardKindAttributeValue {
+  return @"analytics#datarow";
 }
 
 + (void)load {

@@ -14,20 +14,30 @@
  */
 
 //
-//  GDataFeedAnalyticsAccount.h
+//  GDataAnalyticsStep.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
 
-#import "GDataFeedBase.h"
-#import "GDataAnalyticsSegment.h"
+#import "GDataObject.h"
 
-@interface GDataFeedAnalyticsAccount : GDataFeedBase
-+ (GDataFeedAnalyticsAccount *)accountFeed;
+// Step, like
+//
+//    <ga:step name='View Product Categories'
+//             number='1'
+//             path='/Apps|Accessories'/>
 
-- (NSArray *)segments;
-- (void)setSegments:(NSArray *)array;
-- (void)addSegment:(GDataAnalyticsSegment *)obj;
+@interface GDataAnalyticsStep : GDataObject <GDataExtension>
+
+- (NSString *)name;
+- (void)setName:(NSString *)str;
+
+- (NSNumber *)number; // int
+- (void)setNumber:(NSNumber *)num;
+
+- (NSString *)path;
+- (void)setPath:(NSString *)str;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE

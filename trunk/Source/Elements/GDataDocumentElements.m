@@ -14,20 +14,19 @@
  */
 
 //
-//  GDataFeedAnalyticsAccount.h
+// GDataDocumentElements.m
+//
+// Elements used by the Docs API and Translation Toolkit API
 //
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE
 
-#import "GDataFeedBase.h"
-#import "GDataAnalyticsSegment.h"
+#import "GDataDocumentElements.h"
 
-@interface GDataFeedAnalyticsAccount : GDataFeedBase
-+ (GDataFeedAnalyticsAccount *)accountFeed;
-
-- (NSArray *)segments;
-- (void)setSegments:(NSArray *)array;
-- (void)addSegment:(GDataAnalyticsSegment *)obj;
+@implementation GDataLastModifiedBy
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"lastModifiedBy"; }
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ANALYTICS_SERVICE
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE

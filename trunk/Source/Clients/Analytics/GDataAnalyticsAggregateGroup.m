@@ -26,8 +26,8 @@
 
 @implementation GDataAnalyticsAggregateGroup
 
-+ (NSString *)extensionElementURI       { return kGDataNamespaceAnalytics; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsPrefix; }
++ (NSString *)extensionElementURI       { return kGDataNamespaceAnalyticsDXP; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceAnalyticsDXPPrefix; }
 + (NSString *)extensionElementLocalName { return @"aggregates"; }
 
 - (void)addExtensionDeclarations {

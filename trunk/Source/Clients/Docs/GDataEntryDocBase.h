@@ -23,18 +23,6 @@
 #import "GDataFeedLink.h"
 #import "GDataDocConstants.h"
 
-@interface GDataLastViewed : GDataValueElementConstruct <GDataExtension>
-@end
-
-@interface GDataQuotaBytesUsed : GDataValueElementConstruct <GDataExtension>
-@end
-
-@interface GDataWritersCanInvite : GDataBoolValueConstruct <GDataExtension>
-@end
-
-@interface GDataLastModifiedBy : GDataPerson <GDataExtension>
-@end
-
 @interface GDataEntryDocBase : GDataEntryBase
 
 + (id)documentEntry;
