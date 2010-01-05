@@ -177,6 +177,7 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (GDataLink *)postLink;
 - (GDataLink *)selfLink;
 - (GDataLink *)HTMLLink;
+- (GDataLink *)uploadEditLink;
 
 - (BOOL)canEdit;
 

@@ -403,6 +403,15 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return NO;
 }
 
+- (NSData *)uploadData {
+  // subclasses may return data to be uploaded along with the object
+  return nil;
+}
+
+- (BOOL)shouldUploadDataOnly {
+  return NO;
+}
+
 #pragma mark -
 
 - (void)setElementName:(NSString *)name {

@@ -732,6 +732,10 @@ forCategoryWithScheme:scheme
                                     type:kGDataLinkTypeHTML];
 }
 
+- (GDataLink *)uploadEditLink {
+  return [self linkWithRelAttributeValue:kGDataLinkRelResumableEdit];
+}
+
 - (BOOL)canEdit {
   return ([self editLink] != nil);
 }

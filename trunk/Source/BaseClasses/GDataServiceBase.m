@@ -424,11 +424,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
 
+    NSData *uploadData = [objectToPost uploadData];
     BOOL shouldUploadDataChunked = ([self serviceUploadChunkSize] > 0);
-
-    BOOL shouldUploadDataOnly =
-      [objectToPost respondsToSelector:@selector(shouldUploadDataOnly)]
-      && [(GDataEntryBase *)objectToPost shouldUploadDataOnly];
+    BOOL shouldUploadDataOnly = [objectToPost shouldUploadDataOnly];
 
     BOOL shouldReportUploadProgress;
 #if NS_BLOCKS_AVAILABLE
@@ -522,9 +520,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     }
 
     // add the chunk upload information as fetcher properties
-    if (shouldUploadDataChunked) {
+    if (shouldUploadDataChunked && uploadData != nil) {
 
       finishedSel = @selector(objectFetcher:finishedWithUploadLocationAndData:);
+
+      // hang on to the data that we'll be uploading in chunks
+      [uploadProperties setObject:uploadData
+                           forKey:kFetcherUploadChunkDataKey];
 
       // hang on to the user's requested chunk size, and ensure it's not tiny
       NSUInteger uploadChunkSize = [self serviceUploadChunkSize];
@@ -535,11 +537,6 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       NSNumber *sizeNum = [NSNumber numberWithUnsignedLongLong:uploadChunkSize];
       [uploadProperties setObject:sizeNum
                            forKey:kFetcherUploadChunkSizeKey];
-
-      // hang on to the data that we'll be uploading in chunks
-      NSData *uploadChunkData = [objectToPost performSelector:@selector(uploadData)];
-      [uploadProperties setObject:uploadChunkData
-                           forKey:kFetcherUploadChunkDataKey];
 
       // hang on to the length of the XML data being uploaded right now so that
       // callback progress monitoring is accurate (it should reflect the XML
