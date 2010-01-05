@@ -359,15 +359,21 @@ typedef struct GDataDescriptionRecord {
               surrogates:(NSDictionary *)surrogates
     shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 
-- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
-                            length:(unsigned long long *)outLength
-                           headers:(NSDictionary **)outHeaders;
-
 - (void)addExtensionDeclarations; // subclasses may override this to declare extensions
 
 - (void)addParseDeclarations; // subclasses may override this to declare local attributes and content value
 
 - (void)clearExtensionDeclarationsCache; // used by GDataServiceBase and by subclasses
+
+// content stream and upload data: these always return NO/nil for objects
+// other than entries
+
+- (BOOL)generateContentInputStream:(NSInputStream **)outInputStream
+                            length:(unsigned long long *)outLength
+                           headers:(NSDictionary **)outHeaders;
+
+- (NSData *)uploadData;
+- (BOOL)shouldUploadDataOnly;
 
 //
 // Extensions
