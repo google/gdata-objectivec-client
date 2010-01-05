@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (527 classes) 2010-01-05 14:29:09 -0800
+// com.google.GDataFramework v. 1.9.1 (545 classes) 2010-01-05 14:42:27 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -188,6 +188,9 @@
   #define GDataEntrySpreadsheetRecord             _GDATA_NS_SYMBOL(GDataEntrySpreadsheetRecord)
   #define GDataEntrySpreadsheetTable              _GDATA_NS_SYMBOL(GDataEntrySpreadsheetTable)
   #define GDataEntryStandardDoc                   _GDATA_NS_SYMBOL(GDataEntryStandardDoc)
+  #define GDataEntryTranslationDocument           _GDATA_NS_SYMBOL(GDataEntryTranslationDocument)
+  #define GDataEntryTranslationGlossary           _GDATA_NS_SYMBOL(GDataEntryTranslationGlossary)
+  #define GDataEntryTranslationMemory             _GDATA_NS_SYMBOL(GDataEntryTranslationMemory)
   #define GDataEntryVolume                        _GDATA_NS_SYMBOL(GDataEntryVolume)
   #define GDataEntryWorksheet                     _GDATA_NS_SYMBOL(GDataEntryWorksheet)
   #define GDataEntryYouTubeCaptionTrack           _GDATA_NS_SYMBOL(GDataEntryYouTubeCaptionTrack)
@@ -254,6 +257,9 @@
   #define GDataFeedSpreadsheetList                _GDATA_NS_SYMBOL(GDataFeedSpreadsheetList)
   #define GDataFeedSpreadsheetRecord              _GDATA_NS_SYMBOL(GDataFeedSpreadsheetRecord)
   #define GDataFeedSpreadsheetTable               _GDATA_NS_SYMBOL(GDataFeedSpreadsheetTable)
+  #define GDataFeedTranslationDocument            _GDATA_NS_SYMBOL(GDataFeedTranslationDocument)
+  #define GDataFeedTranslationGlossary            _GDATA_NS_SYMBOL(GDataFeedTranslationGlossary)
+  #define GDataFeedTranslationMemory              _GDATA_NS_SYMBOL(GDataFeedTranslationMemory)
   #define GDataFeedVolume                         _GDATA_NS_SYMBOL(GDataFeedVolume)
   #define GDataFeedWorksheet                      _GDATA_NS_SYMBOL(GDataFeedWorksheet)
   #define GDataFeedYouTubeCaptionTrack            _GDATA_NS_SYMBOL(GDataFeedYouTubeCaptionTrack)
@@ -411,6 +417,7 @@
   #define GDataQueryGooglePhotos                  _GDATA_NS_SYMBOL(GDataQueryGooglePhotos)
   #define GDataQueryMaps                          _GDATA_NS_SYMBOL(GDataQueryMaps)
   #define GDataQuerySpreadsheet                   _GDATA_NS_SYMBOL(GDataQuerySpreadsheet)
+  #define GDataQueryTranslation                   _GDATA_NS_SYMBOL(GDataQueryTranslation)
   #define GDataQueryYouTube                       _GDATA_NS_SYMBOL(GDataQueryYouTube)
   #define GDataQuickAddProperty                   _GDATA_NS_SYMBOL(GDataQuickAddProperty)
   #define GDataQuotaBytesUsed                     _GDATA_NS_SYMBOL(GDataQuotaBytesUsed)
@@ -442,6 +449,7 @@
   #define GDataServiceGoogleMaps                  _GDATA_NS_SYMBOL(GDataServiceGoogleMaps)
   #define GDataServiceGooglePhotos                _GDATA_NS_SYMBOL(GDataServiceGooglePhotos)
   #define GDataServiceGoogleSpreadsheet           _GDATA_NS_SYMBOL(GDataServiceGoogleSpreadsheet)
+  #define GDataServiceGoogleTranslation           _GDATA_NS_SYMBOL(GDataServiceGoogleTranslation)
   #define GDataServiceGoogleWebmasterTools        _GDATA_NS_SYMBOL(GDataServiceGoogleWebmasterTools)
   #define GDataServiceGoogleYouTube               _GDATA_NS_SYMBOL(GDataServiceGoogleYouTube)
   #define GDataServiceTicket                      _GDATA_NS_SYMBOL(GDataServiceTicket)
@@ -493,6 +501,16 @@
   #define GDataThreadingUpdated                   _GDATA_NS_SYMBOL(GDataThreadingUpdated)
   #define GDataTimesCleanedProperty               _GDATA_NS_SYMBOL(GDataTimesCleanedProperty)
   #define GDataTimeZoneProperty                   _GDATA_NS_SYMBOL(GDataTimeZoneProperty)
+  #define GDataTranslationConstants               _GDATA_NS_SYMBOL(GDataTranslationConstants)
+  #define GDataTranslationDocumentSource          _GDATA_NS_SYMBOL(GDataTranslationDocumentSource)
+  #define GDataTranslationGlossary                _GDATA_NS_SYMBOL(GDataTranslationGlossary)
+  #define GDataTranslationLinks                   _GDATA_NS_SYMBOL(GDataTranslationLinks)
+  #define GDataTranslationMemory                  _GDATA_NS_SYMBOL(GDataTranslationMemory)
+  #define GDataTranslationNumberOfSourceWords     _GDATA_NS_SYMBOL(GDataTranslationNumberOfSourceWords)
+  #define GDataTranslationPercentComplete         _GDATA_NS_SYMBOL(GDataTranslationPercentComplete)
+  #define GDataTranslationScope                   _GDATA_NS_SYMBOL(GDataTranslationScope)
+  #define GDataTranslationSourceLanguage          _GDATA_NS_SYMBOL(GDataTranslationSourceLanguage)
+  #define GDataTranslationTargetLanguage          _GDATA_NS_SYMBOL(GDataTranslationTargetLanguage)
   #define GDataTransparency                       _GDATA_NS_SYMBOL(GDataTransparency)
   #define GDataURLCache                           _GDATA_NS_SYMBOL(GDataURLCache)
   #define GDataUtilities                          _GDATA_NS_SYMBOL(GDataUtilities)
