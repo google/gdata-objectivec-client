@@ -401,8 +401,11 @@ static NSString* gLoggingProcessName = nil;
   // each response's NSData goes into its own xml or txt file, though all
   // responses for this run of the app share a main html file.  This
   // counter tracks all fetch responses for this run of the app.
+  //
+  // we'll use a local variable since this routine may be reentered while
+  // waiting for XML formatting to be completed by an external task
   static int zResponseCounter = 0;
-  zResponseCounter++;
+  int responseCounter = ++zResponseCounter;
 
   // file name for the html file containing plain text in a <textarea>
   NSString *responseDataUnformattedFileName = nil;
@@ -432,7 +435,7 @@ static NSString* gLoggingProcessName = nil;
       format = @"%@_hr_%@_%d";
 #endif
       responseBaseName = [NSString stringWithFormat:format,
-        processName, dateStamp, zResponseCounter];
+        processName, dateStamp, responseCounter];
     }
 
     NSString *dataStr = [self formattedStringFromData:downloadedData_];
@@ -516,12 +519,12 @@ static NSString* gLoggingProcessName = nil;
   // we need file names for the various div's that we're going to show and hide,
   // names unique to this response's bundle of data, so we format our div
   // names with the counter that we incremented earlier
-  NSString *requestHeadersName = [NSString stringWithFormat:@"RequestHeaders%d", zResponseCounter];
-  NSString *postDataName = [NSString stringWithFormat:@"PostData%d", zResponseCounter];
+  NSString *requestHeadersName = [NSString stringWithFormat:@"RequestHeaders%d", responseCounter];
+  NSString *postDataName = [NSString stringWithFormat:@"PostData%d", responseCounter];
 
-  NSString *responseHeadersName = [NSString stringWithFormat:@"ResponseHeaders%d", zResponseCounter];
-  NSString *responseDataDivName = [NSString stringWithFormat:@"ResponseData%d", zResponseCounter];
-  NSString *dataIFrameID = [NSString stringWithFormat:@"DataIFrame%d", zResponseCounter];
+  NSString *responseHeadersName = [NSString stringWithFormat:@"ResponseHeaders%d", responseCounter];
+  NSString *responseDataDivName = [NSString stringWithFormat:@"ResponseData%d", responseCounter];
+  NSString *dataIFrameID = [NSString stringWithFormat:@"DataIFrame%d", responseCounter];
 
   // we need a header to say we'll have UTF-8 text
   if (!didFileExist) {
