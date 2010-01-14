@@ -426,6 +426,18 @@
     "opened-max=2006-03-30T07%3A35%3A59Z&opened-min=2006-03-29T07%3A35%3A59Z";
   STAssertEqualObjects([resultURL3 absoluteString], expected3,
                        @"Docs query 3 generation error");
+
+  GDataQueryDocs *query4 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
+  [query4 setShouldActuallyDelete:YES];
+  [query4 setShouldConvertUpload:NO];
+  [query4 setSourceLanguage:@"en"];
+  [query4 setTargetLanguage:@"de"];
+  [query4 setShouldOCRUpload:YES];
+  NSURL *resultURL4 = [query4 URL];
+  NSString *expected4 = @"https://docs.google.com/feeds/default/private/full?"
+    "convert=false&delete=true&ocr=true&sourceLanguage=en&targetLanguage=de";
+  STAssertEqualObjects([resultURL4 absoluteString], expected4,
+                       @"Docs query 4 generation error");
 }
 
 - (void)testAnalyticsQuery {
