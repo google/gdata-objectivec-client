@@ -81,6 +81,24 @@ _EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
 
 - (void)setEditedMaxDateTime:(GDataDateTime *)dateTime;
 - (GDataDateTime *)editedMaxDateTime;
+
+// delete a document when deleting (default is moving to the trash on deleting)
+- (void)setShouldActuallyDelete:(BOOL)flag;
+- (BOOL)shouldActuallyDelete;
+
+// uploading parameters
+- (void)setShouldConvertUpload:(BOOL)flag;
+- (BOOL)shouldConvertUpload;
+
+- (void)setShouldOCRUpload:(BOOL)flag;
+- (BOOL)shouldOCRUpload;
+
+- (NSString *)sourceLanguage;
+- (void)setSourceLanguage:(NSString *)str;
+
+- (NSString *)targetLanguage;
+- (void)setTargetLanguage:(NSString *)str;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

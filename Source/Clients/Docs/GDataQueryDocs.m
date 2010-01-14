@@ -22,28 +22,33 @@
 #define GDATAQUERYDOCS_DEFINE_GLOBALS 1
 #import "GDataQueryDocs.h"
 
-static NSString *const kTitleParamName = @"title";
-static NSString *const kExactTitleParamName = @"title-exact";
-static NSString *const kParentFolderParamName = @"folder";
-static NSString *const kShowFoldersParamName = @"showfolders";
-static NSString *const kOwnerParamName = @"owner";
-static NSString *const kReaderParamName = @"reader";
-static NSString *const kWriterParamName = @"writer";
-static NSString *const kOpenedMinParamName = @"opened-min";
-static NSString *const kOpenedMaxParamName = @"opened-max";
-static NSString *const kEditedMinParamName = @"edited-min";
-static NSString *const kEditedMaxParamName = @"edited-max";
+static NSString *const kTitleParamName          = @"title";
+static NSString *const kExactTitleParamName     = @"title-exact";
+static NSString *const kParentFolderParamName   = @"folder";
+static NSString *const kShowFoldersParamName    = @"showfolders";
+static NSString *const kOwnerParamName          = @"owner";
+static NSString *const kReaderParamName         = @"reader";
+static NSString *const kWriterParamName         = @"writer";
+static NSString *const kOpenedMinParamName      = @"opened-min";
+static NSString *const kOpenedMaxParamName      = @"opened-max";
+static NSString *const kEditedMinParamName      = @"edited-min";
+static NSString *const kEditedMaxParamName      = @"edited-max";
+static NSString *const kTargetLanguageParamName = @"targetLanguage";
+static NSString *const kSourceLanguageParamName = @"sourceLanguage";
+static NSString *const kDeleteParamName         = @"delete";
+static NSString *const kConvertParamName        = @"convert";
+static NSString *const kOCRParamName            = @"ocr";
 
 
 @implementation GDataQueryDocs
 
 + (GDataQueryDocs *)documentQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
 }
 
 - (NSString *)titleQuery {
   NSString *str = [self valueForParameterWithName:kTitleParamName];
-  return str;  
+  return str;
 }
 
 - (void)setTitleQuery:(NSString *)str {
@@ -143,6 +148,60 @@ static NSString *const kEditedMaxParamName = @"edited-max";
 - (GDataDateTime *)editedMaxDateTime {
   return [self dateTimeForParameterWithName:kEditedMaxParamName];
 }
+
+- (void)setShouldActuallyDelete:(BOOL)flag {
+  [self addCustomParameterWithName:kDeleteParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldActuallyDelete {
+  return [self boolValueForParameterWithName:kDeleteParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldConvertUpload:(BOOL)flag {
+  [self addCustomParameterWithName:kConvertParamName
+                         boolValue:flag
+                      defaultValue:YES];
+}
+
+- (BOOL)shouldConvertUpload {
+  return [self boolValueForParameterWithName:kConvertParamName
+                                defaultValue:YES];
+}
+
+- (void)setShouldOCRUpload:(BOOL)flag {
+  [self addCustomParameterWithName:kOCRParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldOCRUpload {
+  return [self boolValueForParameterWithName:kOCRParamName
+                                defaultValue:NO];
+}
+
+- (NSString *)sourceLanguage {
+  NSString *str = [self valueForParameterWithName:kSourceLanguageParamName];
+  return str;
+}
+
+- (void)setSourceLanguage:(NSString *)str {
+  [self addCustomParameterWithName:kSourceLanguageParamName
+                             value:str];
+}
+
+- (NSString *)targetLanguage {
+  NSString *str = [self valueForParameterWithName:kTargetLanguageParamName];
+  return str;
+}
+
+- (void)setTargetLanguage:(NSString *)str {
+  [self addCustomParameterWithName:kTargetLanguageParamName
+                             value:str];
+}
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

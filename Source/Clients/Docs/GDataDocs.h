@@ -27,6 +27,7 @@
 #import "GDataEntrySpreadsheetDoc.h"
 #import "GDataEntryPresentationDoc.h"
 #import "GDataEntryPDFDoc.h"
+#import "GDataEntryFileDoc.h"
 #import "GDataEntryFolderDoc.h"
 #import "GDataEntryDocRevision.h"
 #import "GDataFeedDocList.h"
