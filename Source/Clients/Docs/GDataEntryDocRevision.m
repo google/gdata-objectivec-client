@@ -78,9 +78,9 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"publish",             @"publish",             kGDataDescBooleanPresent },
-    { @"publishAuto",         @"publishAuto",         kGDataDescBooleanPresent },
-    { @"publishOusideDomain", @"publishOusideDomain", kGDataDescBooleanPresent },
+    { @"publish",              @"publish",              kGDataDescBooleanPresent },
+    { @"publishAuto",          @"publishAuto",          kGDataDescBooleanPresent },
+    { @"publishOutsideDomain", @"publishOutsideDomain", kGDataDescBooleanPresent },
     { nil, nil, 0 }
   };
 
@@ -98,7 +98,7 @@
 }
 
 - (void)setPublish:(NSNumber *)num {
-  GDataDocPublish *obj = [GDataDocPublish valueWithNumber:num];
+  GDataDocPublish *obj = [GDataDocPublish valueWithBool:[num boolValue]];
   [self setObject:obj forExtensionClass:[GDataDocPublish class]];
 }
 
@@ -108,7 +108,7 @@
 }
 
 - (void)setPublishAuto:(NSNumber *)num {
-  GDataDocPublishAuto *obj = [GDataDocPublishAuto valueWithNumber:num];
+  GDataDocPublishAuto *obj = [GDataDocPublishAuto valueWithBool:[num boolValue]];
   [self setObject:obj forExtensionClass:[GDataDocPublishAuto class]];
 }
 
@@ -122,7 +122,7 @@
 - (void)setPublishOutsideDomain:(NSNumber *)num {
   GDataDocPublishOutsideDomain *obj;
 
-  obj = [GDataDocPublishOutsideDomain valueWithNumber:num];
+  obj = [GDataDocPublishOutsideDomain valueWithBool:[num boolValue]];
   [self setObject:obj forExtensionClass:[GDataDocPublishOutsideDomain class]];
 }
 
