@@ -162,7 +162,7 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 @implementation GDataHTTPFetcher
 
 + (GDataHTTPFetcher *)httpFetcherWithRequest:(NSURLRequest *)request {
-  return [[[GDataHTTPFetcher alloc] initWithRequest:request] autorelease];
+  return [[[[self class] alloc] initWithRequest:request] autorelease];
 }
 
 + (void)initialize {
@@ -708,21 +708,67 @@ CannotBeginFetch:
   [self connection:connection didFailWithError:error];
 }
 
-- (void)connection:(NSURLConnection *)connection
+- (void)invokeSentDataCallback:(SEL)sel
+                        target:(id)target
    didSendBodyData:(NSInteger)bytesWritten
  totalBytesWritten:(NSInteger)totalBytesWritten
 totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
-  if (delegate_ && sentDataSEL_) {
-    NSMethodSignature *signature = [delegate_ methodSignatureForSelector:sentDataSEL_];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-    [invocation setSelector:sentDataSEL_];
-    [invocation setTarget:delegate_];
+  NSMethodSignature *sig = [target methodSignatureForSelector:sel];
+  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+  [invocation setSelector:sel];
+  [invocation setTarget:target];
     [invocation setArgument:&self atIndex:2];
     [invocation setArgument:&bytesWritten atIndex:3];
     [invocation setArgument:&totalBytesWritten atIndex:4];
     [invocation setArgument:&totalBytesExpectedToWrite atIndex:5];
     [invocation invoke];
+  }
+
+- (void)invokeStatusCallback:(SEL)sel
+                      target:(id)target
+                      status:(NSInteger)status
+                        data:(NSData *)data {
+
+  NSMethodSignature *signature = [delegate_ methodSignatureForSelector:sel];
+  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+  [invocation setSelector:statusFailedSEL_];
+  [invocation setTarget:target];
+  [invocation setArgument:&self atIndex:2];
+  [invocation setArgument:&status atIndex:3];
+  [invocation setArgument:&downloadedData_ atIndex:4];
+  [invocation invoke];
+}
+
+- (BOOL)invokeRetryCallback:(SEL)sel
+                     target:(id)target
+                  willRetry:(BOOL)willRetry
+                      error:(NSError *)error {
+  NSMethodSignature *sig = [target methodSignatureForSelector:sel];
+  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+  [invocation setSelector:sel];
+  [invocation setTarget:target];
+  [invocation setArgument:&self atIndex:2];
+  [invocation setArgument:&willRetry atIndex:3];
+  [invocation setArgument:&error atIndex:4];
+  [invocation invoke];
+
+  [invocation getReturnValue:&willRetry];
+  return willRetry;
+}
+
+- (void)connection:(NSURLConnection *)connection
+   didSendBodyData:(NSInteger)bytesWritten
+ totalBytesWritten:(NSInteger)totalBytesWritten
+totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+
+  SEL sel = [self sentDataSelector];
+  if (delegate_ && sel) {
+    [self invokeSentDataCallback:sel
+                          target:delegate_
+                 didSendBodyData:bytesWritten
+               totalBytesWritten:totalBytesWritten
+       totalBytesExpectedToWrite:totalBytesExpectedToWrite];
   }
 
 #if NS_BLOCKS_AVAILABLE
@@ -825,14 +871,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
     } else if (statusFailedSEL_) {
       // not retrying, call status failure callback
-      NSMethodSignature *signature = [delegate_ methodSignatureForSelector:statusFailedSEL_];
-      NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-      [invocation setSelector:statusFailedSEL_];
-      [invocation setTarget:delegate_];
-      [invocation setArgument:&self atIndex:2];
-      [invocation setArgument:&status atIndex:3];
-      [invocation setArgument:&downloadedData_ atIndex:4];
-      [invocation invoke];
+      [self invokeStatusCallback:statusFailedSEL_
+                          target:delegate_
+                          status:status
+                            data:downloadedData_];
     }
   } else {
     // successful http status (under 300)
@@ -957,16 +999,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
       BOOL willRetry = [self isRetryError:error];
 
       if (retrySEL_) {
-        NSMethodSignature *signature = [delegate_ methodSignatureForSelector:retrySEL_];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        [invocation setSelector:retrySEL_];
-        [invocation setTarget:delegate_];
-        [invocation setArgument:&self atIndex:2];
-        [invocation setArgument:&willRetry atIndex:3];
-        [invocation setArgument:&error atIndex:4];
-        [invocation invoke];
-
-        [invocation getReturnValue:&willRetry];
+        willRetry = [self invokeRetryCallback:retrySEL_
+                                       target:delegate_
+                                    willRetry:willRetry
+                                        error:error];
       }
 
 #if NS_BLOCKS_AVAILABLE

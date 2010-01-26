@@ -403,6 +403,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return NO;
 }
 
+- (NSString *)uploadMIMEType {
+  // subclasses may return the type of data to be uploaded
+  return nil;
+}
+
 - (NSData *)uploadData {
   // subclasses may return data to be uploaded along with the object
   return nil;

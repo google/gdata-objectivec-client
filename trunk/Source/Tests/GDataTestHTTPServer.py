@@ -181,7 +181,21 @@ class SimpleServer(BaseHTTPRequestHandler):
       #
       # contentRange is like
       #  Content-Range: bytes 0-49999/135681
+      # or
+      #  Content-Range: bytes */135681
       contentRange = self.headers.getheader("Content-Range", "");
+      searchResult = re.search("(bytes \*/)([0-9]+)",
+        contentRange)
+      if searchResult:
+        # this is a query for where to resume; we'll arbitrarily resume at
+        # half the total length of the upload
+        totalToUpload = int(searchResult.group(2))
+        resumeLocation = totalToUpload / 2
+        self.send_response(308)
+        self.send_header("Range", "bytes=0-%d" % resumeLocation)
+        self.end_headers()
+        return
+        
       searchResult = re.search("(bytes )([0-9]+)(-)([0-9]+)(/)([0-9]+)",
         contentRange)
       if searchResult:

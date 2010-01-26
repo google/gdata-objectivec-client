@@ -25,6 +25,7 @@
 #import "GDataDateTime.h"
 #import "GDataHTTPFetcher.h"
 #import "GDataHTTPFetcherLogging.h"
+#import "GDataHTTPUploadFetcher.h"
 #import "GDataProgressMonitorInputStream.h"
 #import "GDataGatherInputStream.h"
 #import "GDataMIMEDocument.h"

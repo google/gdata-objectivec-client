@@ -823,7 +823,7 @@ static int gFetchCounter = 0;
   [photoEntry setUploadSlug:@"unit test photo.tif"];
   [photoEntry setTitleWithString:@"Unit Test Photo"];
 
-  SEL progressSel = @selector(inputStream:hasDeliveredByteCount:ofTotalByteCount:);
+  SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
   [service_ setServiceUploadProgressSelector:progressSel];
 
   // note that the authEntryURL still points to a spreadsheet entry, so
@@ -955,7 +955,7 @@ static int gFetchCounter = 0;
   ++gFetchCounter;
 }
 
-- (void)inputStream:(GDataProgressMonitorInputStream *)stream
+- (void)ticket:(GDataServiceTicket *)ticket
 hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
      ofTotalByteCount:(unsigned long long)dataLength {
 
@@ -1124,7 +1124,6 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   return YES; // do the retry fetch; it should succeed now
 }
 
-
 #pragma mark Upload tests
 
 - (NSData *)generatedUploadDataWithLength:(NSUInteger)length {
@@ -1139,6 +1138,10 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   return data;
 }
 
+static NSString* const kPauseAtKey = @"pauseAt";
+static NSString* const kRetryAtKey = @"retryAt";
+static NSString* const kOriginalURLKey = @"origURL";
+
 - (void)testChunkedUpload {
 
   if (!isServerRunning_) return;
@@ -1146,9 +1149,20 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   NSData *bigData = [self generatedUploadDataWithLength:199000];
   NSData *smallData = [self generatedUploadDataWithLength:13];
 
+  SEL progressSel = @selector(uploadTicket:hasDeliveredByteCount:ofTotalByteCount:);
+  [service_ setServiceUploadProgressSelector:progressSel];
+
+  SEL retrySel = @selector(uploadRetryTicket:willRetry:forError:);
+  [service_ setServiceRetrySelector:retrySel];
+  [service_ setIsServiceRetryEnabled:YES];
+
   [self resetFetchResponse];
 
   [service_ setServiceUploadChunkSize:75000];
+
+  //
+  // test a big upload
+  //
 
   // with chunk size 75000, for a data block of 199000 bytes, we expect to send
   // two 75000-byte chunks and then a 49000-byte final chunk
@@ -1180,7 +1194,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
   // check the request of the final object fetcher to be sure we were uploading
   // chunks as expected
-  NSURLRequest *request = [[ticket_ objectFetcher] request];
+  GDataHTTPUploadFetcher *uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  GDataHTTPFetcher *fetcher = [uploadFetcher activeFetcher];
+  NSURLRequest *request = [fetcher request];
   NSDictionary *reqHdrs = [request allHTTPHeaderFields];
 
   NSString *uploadReqURLStr = @"http://localhost:54579/EntrySpreadsheetCellTest1.xml.upload";
@@ -1195,7 +1211,75 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [self resetFetchResponse];
 
   //
-  // repeat the previous upload, but uploading data only, without the entry XML
+  // repeat the previous upload, pausing after 20000 bytes
+  //
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  // add a property to the ticket that our progress callback will look for to
+  // know when to pause and resume the upload
+  [ticket_ setProperty:[NSNumber numberWithInt:20000]
+                forKey:kPauseAtKey];
+  [ticket_ retain];
+  [self waitForFetch];
+
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  fetcher = [uploadFetcher activeFetcher];
+  request = [fetcher request];
+  reqHdrs = [request allHTTPHeaderFields];
+
+  contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"24499", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
+
+  [self resetFetchResponse];
+
+  //
+  // repeat the first upload, and after sending 70000 bytes the progress
+  // callback will change the request URL for the next chunk fetch to make
+  // it fail with a retryable status error
+  //
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  // add a property to the ticket that our progress callback will use to
+  // force a retry after 70000 bytes are uploaded
+  [ticket_ setProperty:[NSNumber numberWithInt:70000]
+                forKey:kRetryAtKey];
+  [ticket_ retain];
+  [self waitForFetch];
+
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  fetcher = [uploadFetcher activeFetcher];
+  request = [fetcher request];
+  reqHdrs = [request allHTTPHeaderFields];
+
+  contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"24499", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
+
+  [self resetFetchResponse];
+
+  //
+  // repeat the first upload, but uploading data only, without the entry XML
   //
 
   [newEntry setShouldUploadDataOnly:YES];
@@ -1212,7 +1296,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
-  request = [[ticket_ objectFetcher] request];
+  uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  fetcher = [uploadFetcher activeFetcher];
+  request = [fetcher request];
   reqHdrs = [request allHTTPHeaderFields];
 
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
@@ -1248,7 +1334,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
   // check the request of the final (and only) object fetcher to be sure we
   // were uploading chunks as expected
-  request = [[ticket_ objectFetcher] request];
+  uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  fetcher = [uploadFetcher activeFetcher];
+  request = [fetcher request];
   reqHdrs = [request allHTTPHeaderFields];
 
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
@@ -1262,6 +1350,65 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   [self resetFetchResponse];
 
   [service_ setServiceUploadChunkSize:0];
+  [service_ setServiceUploadProgressSelector:NULL];
+  [service_ setServiceRetrySelector:NULL];
+}
+
+- (void)uploadTicket:(GDataServiceTicket *)ticket
+hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
+    ofTotalByteCount:(unsigned long long)dataLength {
+
+  lastProgressDeliveredCount_ = numberOfBytesRead;
+  lastProgressTotalCount_ = dataLength;
+
+  NSNumber *pauseAtNum = [ticket propertyForKey:kPauseAtKey];
+  if (pauseAtNum) {
+    int pauseAt = [pauseAtNum intValue];
+    if (pauseAt < numberOfBytesRead) {
+      // we won't be paused again
+      [ticket setProperty:nil forKey:kPauseAtKey];
+
+      // we've reached the point where we should pause
+      //
+      // use perform selector to avoid pausing immediately, as that would nuke
+      // the chunk upload fetcher that is calling us back now
+      [ticket performSelector:@selector(pauseUpload) withObject:nil afterDelay:0.0];
+
+      [ticket performSelector:@selector(resumeUpload) withObject:nil afterDelay:1.0];
+    }
+  }
+
+  NSNumber *retryAtNum = [ticket propertyForKey:kRetryAtKey];
+  if (retryAtNum) {
+    int retryAt = [retryAtNum intValue];
+    if (retryAt < numberOfBytesRead) {
+      // we won't be retrying again
+      [ticket setProperty:nil forKey:kRetryAtKey];
+
+      // save the current locationURL  before appending &status=503
+      GDataHTTPUploadFetcher *uploadFetcher = (GDataHTTPUploadFetcher *) [ticket objectFetcher];
+      NSURL *origURL = [uploadFetcher locationURL];
+      [ticket setProperty:origURL forKey:kOriginalURLKey];
+
+      NSString *newURLStr = [[origURL absoluteString] stringByAppendingString:@"?status=503"];
+      [uploadFetcher setLocationURL:[NSURL URLWithString:newURLStr]];
+    }
+  }
+}
+
+-(BOOL)uploadRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
+
+  // change this fetch's request (and future requests) to have the original URL,
+  // not the one with status=503 appended
+  NSURL *origURL = [ticket propertyForKey:kOriginalURLKey];
+  GDataHTTPUploadFetcher *uploadFetcher = (GDataHTTPUploadFetcher *) [ticket objectFetcher];
+
+  [[[uploadFetcher activeFetcher] request] setURL:origURL];
+  [uploadFetcher setLocationURL:origURL];
+
+  [ticket setProperty:nil forKey:kOriginalURLKey];
+
+  return suggestedWillRetry; // do the retry fetch; it should succeed now
 }
 
 #pragma mark Standalone auth tests

@@ -250,6 +250,7 @@ _EXTERN NSString* const kGDataHTTPFetcherStatusDataKey     _INITIALIZE_AS(@"data
 enum {
   kGDataHTTPFetcherErrorDownloadFailed = -1,
   kGDataHTTPFetcherErrorAuthenticationChallengeFailed = -2,
+  kGDataHTTPFetcherErrorChunkUploadFailed = -3,
 
   kGDataHTTPFetcherStatusNotModified = 304
 };

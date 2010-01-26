@@ -36,14 +36,7 @@ _EXTERN Class const kGDataUseRegisteredClass _INITIALIZE_AS(nil);
 
 _EXTERN NSString* const kGDataServiceErrorDomain _INITIALIZE_AS(@"com.google.GDataServiceDomain");
 
-#if GDATA_IPHONE
-// reduce the memory buffer size used on iPhone
-_EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(250000);
-#else
-// about a megabyte works well for the server and is a reasonable limit to
-// put on NSURLConnection
-_EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(1000000);
-#endif
+_EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(NSUIntegerMax);
 
 // we'll consistently store the server error string in the userInfo under
 // this key
@@ -66,7 +59,6 @@ _EXTERN NSString* const kGDataServiceTicketParsingStoppedNotification _INITIALIZ
 
 enum {
   kGDataCouldNotConstructObjectError = -100,
-  kGDataCouldNotUploadChunkError = -101
 };
 
 @class GDataServiceTicketBase;
@@ -136,6 +128,11 @@ typedef void *GDataServiceUploadProgressHandler;
 // the callbacks will not be called, and the ticket will no longer be useful
 // (though the client must still release the ticket if it retained the ticket)
 - (void)cancelTicket;
+
+// chunked upload tickets may be paused
+- (void)pauseUpload;
+- (void)resumeUpload;
+- (BOOL)isUploadPaused;
 
 - (id)service;
 
@@ -410,9 +407,13 @@ typedef void *GDataServiceUploadProgressHandler;
 - (void)setServiceShouldFollowNextLinks:(BOOL)flag;
 
 // set a non-zero value to enable uploading via chunked fetches
-// (resumable uploads)
+// (resumable uploads); typically this defaults to kGDataStandardUploadChunkSize
+// for service subclasses that support chunked uploads
 - (NSUInteger)serviceUploadChunkSize;
 - (void)setServiceUploadChunkSize:(NSUInteger)val;
+
+// service subclasses may specify their own default chunk size
++ (NSUInteger)defaultServiceUploadChunkSize;
 
 // The service userData becomes the initial value for each future ticket's
 // userData.
