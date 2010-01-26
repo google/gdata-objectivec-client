@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (545 classes) 2010-01-05 14:42:27 -0800
+// com.google.GDataFramework v. 1.9.1 (546 classes) 2010-01-26 11:27:56 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -300,6 +300,7 @@
   #define GDataHiddenProperty                     _GDATA_NS_SYMBOL(GDataHiddenProperty)
   #define GDataHTTPFetcher                        _GDATA_NS_SYMBOL(GDataHTTPFetcher)
   #define GDataHTTPFetchHistory                   _GDATA_NS_SYMBOL(GDataHTTPFetchHistory)
+  #define GDataHTTPUploadFetcher                  _GDATA_NS_SYMBOL(GDataHTTPUploadFetcher)
   #define GDataICalUIDProperty                    _GDATA_NS_SYMBOL(GDataICalUIDProperty)
   #define GDataIM                                 _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct             _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
