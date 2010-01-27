@@ -176,7 +176,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   [mUploadFileButton setEnabled:(canPostToFeed && !isUploading)];
   [mStopUploadButton setEnabled:isUploading];
+  [mPauseUploadButton setEnabled:isUploading];
   [mCreateFolderButton setEnabled:canPostToFeed];
+
+  BOOL isUploadPaused = [mUploadTicket isUploadPaused];
+  NSString *pauseTitle = (isUploadPaused ? @"Resume" : @"Pause");
+  [mPauseUploadButton setTitle:pauseTitle];
 
   // fill in the add-to-folder pop-up for the selected doc
   [self updateChangeFolderPopup];
@@ -478,15 +483,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
 
-  NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"docx",
-    @"ods", @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
-    @"xlsx", @"jpeg", @"jpg", @"bmp", @"gif", @"png", @"html", @"htm", @"tsv",
-    @"tab", @"pdf", nil];
-
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
   [openPanel beginSheetForDirectory:nil
                                file:nil
-                              types:extensions
+                              types:nil // upload any file type
                      modalForWindow:[self window]
                       modalDelegate:self
                      didEndSelector:endSel
@@ -504,6 +504,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                            withObject:[panel filename]
                         waitUntilDone:NO];
   }
+}
+
+- (IBAction)pauseUploadClicked:(id)sender {
+  if ([mUploadTicket isUploadPaused]) {
+    [mUploadTicket resumeUpload];
+  } else {
+    [mUploadTicket pauseUpload];
+  }
+  [self updateUI];
 }
 
 - (IBAction)stopUploadClicked:(id)sender {
@@ -747,6 +756,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+    [service setIsServiceRetryEnabled:YES];
   }
 
   // update the username/password each time the service is requested
@@ -935,8 +945,17 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [self getMIMEType:&mimeType andEntryClass:&entryClass forExtension:extn];
   
   if (!mimeType) {
+    // for other file types, see if we can get the type from the Mac OS
+    // and use a generic file document entry class
+    mimeType = [GDataUtilities MIMETypeForFileAtPath:path
+                                     defaultMIMEType:nil];
+    entryClass = [GDataEntryFileDoc class];
+  }
+
+  if (!mimeType) {
     errorMsg = [NSString stringWithFormat:@"need MIME type for file %@", path];
   }
+
   if (mimeType && entryClass) {
     
     GDataEntryDocBase *newEntry = [entryClass documentEntry];
@@ -954,58 +973,67 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
 
-      NSURL *postURL = [[mDocListFeed postLink] URL];
+      // the uploadLink has the "resumable upload" URL for initiating
+      // chunked uploads
+      NSURL *uploadURL = [[mDocListFeed uploadLink] URL];
+
+      // TODO: temporary; remove this once the Docs service starts respecting
+      // the X-Upload-Content-Type header and we can upload the entry's XML
+      // along with the document data
+      [newEntry setShouldUploadDataOnly:YES];
 
       // add the OCR or translation parameters, if the user set the pop-up
       // button appropriately
       int popupTag = [[mUploadPopup selectedItem] tag];
       if (popupTag != 0) {
-        NSString *paramName, *paramValue;
+        NSString *targetLanguage = nil;
+        BOOL shouldConvertToGoogleDoc = YES;
+        BOOL shouldOCR = NO;
+
         switch (popupTag) {
+            // upload original file
+          case 1: shouldConvertToGoogleDoc = NO; break;
+
             // OCR
-          case 1: paramName = @"ocr"; paramValue = @"true"; break;
+          case 2: shouldOCR = YES; break;
 
             // translation
-            //
+          case 3: targetLanguage = @"de"; break; // german
+          case 4: targetLanguage = @"ja"; break; // japanese
+          case 5: targetLanguage = @"en"; break; // english
+
+          default: break;
+        }
+
+        GDataQueryDocs *query = [GDataQueryDocs queryWithFeedURL:uploadURL];
+
+        [query setShouldConvertUpload:shouldConvertToGoogleDoc];
+        [query setShouldOCRUpload:shouldOCR];
+
             // we'll leave out the sourceLanguage parameter to get
             // auto-detection of the file's language
             //
             // language codes: http://www.loc.gov/standards/iso639-2/php/code_list.php
+        [query setTargetLanguage:targetLanguage];
 
-            // german
-          case 2: paramName = @"targetLanguage"; paramValue = @"de"; break;
-            // japanese
-          case 3: paramName = @"targetLanguage"; paramValue = @"ja"; break;
-            // english
-          case 4: paramName = @"targetLanguage"; paramValue = @"en"; break;
-
-          default: paramName = nil; paramValue = nil;
-        }
-
-        if (paramName) {
-          // use a GData query to conveniently append the new parameter
-          GDataQuery *query = [GDataQuery queryWithFeedURL:postURL];
-          [query addCustomParameterWithName:paramName
-                                      value:paramValue];
-          postURL = [query URL];
-        }
+        uploadURL = [query URL];
       }
 
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleDocs *service = [self docsService];
       
-      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
-      [service setServiceUploadProgressSelector:progressSel];
-
       // insert the entry into the docList feed
       GDataServiceTicket *ticket;
       ticket = [service fetchEntryByInsertingEntry:newEntry
-                                        forFeedURL:postURL
+                                        forFeedURL:uploadURL
                                           delegate:self
                                  didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
       
-      // we don't want future tickets to always use the upload progress selector
-      [service setServiceUploadProgressSelector:nil];
+      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
+      [ticket setUploadProgressSelector:progressSel];
+
+      // we turned automatic retry on when we allocated the service, but we
+      // could also turn it on just for this ticket
       
       [self setUploadTicket:ticket];
     }
