@@ -535,7 +535,7 @@
 						<object class="NSButton" id="411672952">
 							<reference key="NSNextResponder" ref="259934551"/>
 							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{332, 321}, {44, 16}}</string>
+							<string key="NSFrame">{{267, 321}, {44, 16}}</string>
 							<reference key="NSSuperview" ref="259934551"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSButtonCell" key="NSCell" id="327434100">
@@ -1046,7 +1046,7 @@
 								<int key="NSPeriodicInterval">75</int>
 								<object class="NSMenuItem" key="NSMenuItem" id="429073248">
 									<reference key="NSMenu" ref="950953520"/>
-									<string key="NSTitle">Upload as Google Doc</string>
+									<string key="NSTitle">Upload Unmodified</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSKeyEquivModMask">1048576</int>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -1062,18 +1062,6 @@
 									<object class="NSMutableArray" key="NSMenuItems">
 										<bool key="EncodedWithXMLCoder">YES</bool>
 										<reference ref="429073248"/>
-										<object class="NSMenuItem" id="535022633">
-											<reference key="NSMenu" ref="950953520"/>
-											<string key="NSTitle">Upload Original File</string>
-											<string key="NSKeyEquiv"/>
-											<int key="NSKeyEquivModMask">1048576</int>
-											<int key="NSMnemonicLoc">2147483647</int>
-											<reference key="NSOnImage" ref="325378697"/>
-											<reference key="NSMixedImage" ref="656571493"/>
-											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">1</int>
-											<reference key="NSTarget" ref="98832043"/>
-										</object>
 										<object class="NSMenuItem" id="705354384">
 											<reference key="NSMenu" ref="950953520"/>
 											<string key="NSTitle">OCR</string>
@@ -1083,7 +1071,7 @@
 											<reference key="NSOnImage" ref="325378697"/>
 											<reference key="NSMixedImage" ref="656571493"/>
 											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">2</int>
+											<int key="NSTag">1</int>
 											<reference key="NSTarget" ref="98832043"/>
 										</object>
 										<object class="NSMenuItem" id="930932014">
@@ -1095,7 +1083,7 @@
 											<reference key="NSOnImage" ref="325378697"/>
 											<reference key="NSMixedImage" ref="656571493"/>
 											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">3</int>
+											<int key="NSTag">2</int>
 											<reference key="NSTarget" ref="98832043"/>
 										</object>
 										<object class="NSMenuItem" id="142366230">
@@ -1107,7 +1095,7 @@
 											<reference key="NSOnImage" ref="325378697"/>
 											<reference key="NSMixedImage" ref="656571493"/>
 											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">4</int>
+											<int key="NSTag">3</int>
 											<reference key="NSTarget" ref="98832043"/>
 										</object>
 										<object class="NSMenuItem" id="439113000">
@@ -1119,7 +1107,7 @@
 											<reference key="NSOnImage" ref="325378697"/>
 											<reference key="NSMixedImage" ref="656571493"/>
 											<string key="NSAction">_popUpItemAction:</string>
-											<int key="NSTag">5</int>
+											<int key="NSTag">4</int>
 											<reference key="NSTarget" ref="98832043"/>
 										</object>
 									</object>
@@ -1128,29 +1116,6 @@
 								<bool key="NSUsesItemFromMenu">YES</bool>
 								<bool key="NSAltersState">YES</bool>
 								<int key="NSArrowPosition">2</int>
-							</object>
-						</object>
-						<object class="NSButton" id="576872375">
-							<reference key="NSNextResponder" ref="259934551"/>
-							<int key="NSvFlags">289</int>
-							<string key="NSFrame">{{267, 321}, {59, 16}}</string>
-							<reference key="NSSuperview" ref="259934551"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="168056378">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">134479872</int>
-								<string key="NSContents">Pause</string>
-								<reference key="NSSupport" ref="22"/>
-								<reference key="NSControlView" ref="576872375"/>
-								<int key="NSButtonFlags">-2038284033</int>
-								<int key="NSButtonFlags2">1</int>
-								<reference key="NSAlternateImage" ref="191347379"/>
-								<string key="NSAlternateContents"/>
-								<object class="NSMutableString" key="NSKeyEquivalent">
-									<characters key="NS.bytes"/>
-								</object>
-								<int key="NSPeriodicDelay">200</int>
-								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
 					</object>
@@ -1488,22 +1453,6 @@
 					</object>
 					<int key="connectionID">312</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">mPauseUploadButton</string>
-						<reference key="source" ref="920687348"/>
-						<reference key="destination" ref="576872375"/>
-					</object>
-					<int key="connectionID">315</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">pauseUploadClicked:</string>
-						<reference key="source" ref="920687348"/>
-						<reference key="destination" ref="576872375"/>
-					</object>
-					<int key="connectionID">316</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -1566,6 +1515,7 @@
 							<reference ref="958385951"/>
 							<reference ref="977001796"/>
 							<reference ref="132274812"/>
+							<reference ref="411672952"/>
 							<reference ref="649969711"/>
 							<reference ref="490585729"/>
 							<reference ref="1009485389"/>
@@ -1574,8 +1524,6 @@
 							<reference ref="769770917"/>
 							<reference ref="28171352"/>
 							<reference ref="566810299"/>
-							<reference ref="576872375"/>
-							<reference ref="411672952"/>
 							<reference ref="795395346"/>
 						</object>
 						<reference key="parent" ref="471987556"/>
@@ -2053,7 +2001,6 @@
 							<reference ref="930932014"/>
 							<reference ref="142366230"/>
 							<reference ref="439113000"/>
-							<reference ref="535022633"/>
 						</object>
 						<reference key="parent" ref="98832043"/>
 					</object>
@@ -2080,25 +2027,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">310</int>
 						<reference key="object" ref="439113000"/>
-						<reference key="parent" ref="950953520"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">313</int>
-						<reference key="object" ref="576872375"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="168056378"/>
-						</object>
-						<reference key="parent" ref="259934551"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">314</int>
-						<reference key="object" ref="168056378"/>
-						<reference key="parent" ref="576872375"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">317</int>
-						<reference key="object" ref="535022633"/>
 						<reference key="parent" ref="950953520"/>
 					</object>
 				</object>
@@ -2219,10 +2147,6 @@
 					<string>308.IBPluginDependency</string>
 					<string>309.IBPluginDependency</string>
 					<string>310.IBPluginDependency</string>
-					<string>313.IBPluginDependency</string>
-					<string>313.ImportedFromIB2</string>
-					<string>314.IBPluginDependency</string>
-					<string>317.IBPluginDependency</string>
 					<string>38.IBPluginDependency</string>
 					<string>38.ImportedFromIB2</string>
 					<string>40.IBPluginDependency</string>
@@ -2351,15 +2275,11 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{25, 722}, {156, 93}}</string>
+					<string>{{25, 737}, {153, 78}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<reference ref="5"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2411,7 +2331,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">317</int>
+			<int key="maxID">312</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2431,14 +2351,12 @@
 							<string>downloadSelectedRevisionClicked:</string>
 							<string>getDocListClicked:</string>
 							<string>loggingCheckboxClicked:</string>
-							<string>pauseUploadClicked:</string>
 							<string>stopUploadClicked:</string>
 							<string>uploadFileClicked:</string>
 							<string>viewSelectedDocClicked:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -2466,7 +2384,6 @@
 							<string>mDownloadSelectedRevisionButton</string>
 							<string>mFolderMembershipPopup</string>
 							<string>mPasswordField</string>
-							<string>mPauseUploadButton</string>
 							<string>mRevisionsCancelButton</string>
 							<string>mRevisionsProgressIndicator</string>
 							<string>mRevisionsResultTextField</string>
@@ -2491,7 +2408,6 @@
 							<string>NSButton</string>
 							<string>NSPopUpButton</string>
 							<string>NSSecureTextField</string>
-							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSProgressIndicator</string>
 							<string>NSTextView</string>
