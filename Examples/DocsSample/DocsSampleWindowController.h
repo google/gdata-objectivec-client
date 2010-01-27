@@ -47,7 +47,6 @@
 
   IBOutlet NSButton *mUploadFileButton;
   IBOutlet NSButton *mStopUploadButton;
-  IBOutlet NSButton *mPauseUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
   IBOutlet NSPopUpButton *mUploadPopup;
 
@@ -81,7 +80,6 @@
 
 - (IBAction)uploadFileClicked:(id)sender;
 - (IBAction)stopUploadClicked:(id)sender;
-- (IBAction)pauseUploadClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 @end
