@@ -116,10 +116,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
   // we don't support block callbacks since retaining them across pauses
   // would be messy
-#if NS_BLOCKS_AVAILABLE
-  GDATA_DEBUG_ASSERT(completionBlock_ == NULL && sentDataBlock_ == NULL
-                     && retryBlock_ == NULL && receivedDataBlock_ == NULL,
-                     @"block callbacks not supported by upload fetcher");
+#if DEBUG && NS_BLOCKS_AVAILABLE
+  NSAssert(completionBlock_ == NULL && sentDataBlock_ == NULL
+           && retryBlock_ == NULL && receivedDataBlock_ == NULL,
+           @"block callbacks not supported by upload fetcher");
 #endif
 
   // replace the finishedSEL with our own, since the initial finish callback
