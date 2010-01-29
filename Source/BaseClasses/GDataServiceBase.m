@@ -491,6 +491,13 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         // us, so this service class wouldn't ever need to have the plain XML.
         [uploadProperties setObject:xmlData forKey:kFetcherStreamDataKey];
       }
+
+      if ([objectToPost respondsToSelector:@selector(uploadSlug)]) {
+        NSString *slug = [objectToPost performSelector:@selector(uploadSlug)];
+        if ([slug length] > 0) {
+          [request setValue:slug forHTTPHeaderField:@"Slug"];
+        }
+      }
     }
 
     if (contentHeaders) {
@@ -542,11 +549,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   GDataHTTPFetcher* fetcher = nil;
 
   if (isUploadingDataChunked) {
-      // hang on to the user's requested chunk size, and ensure it's not tiny
-      NSUInteger uploadChunkSize = [self serviceUploadChunkSize];
-      if (uploadChunkSize < kMinimumUploadChunkSize) {
-        uploadChunkSize = kMinimumUploadChunkSize;
-      }
+    // hang on to the user's requested chunk size, and ensure it's not tiny
+    NSUInteger uploadChunkSize = [self serviceUploadChunkSize];
+    if (uploadChunkSize < kMinimumUploadChunkSize) {
+      uploadChunkSize = kMinimumUploadChunkSize;
+    }
 
     Class uploadClass = NSClassFromString(@"GDataHTTPUploadFetcher");
     GDATA_ASSERT(uploadClass != nil, @"GDataHTTPUploadFetcher needed");
