@@ -90,6 +90,9 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
     [mutableReq setValue:uploadMIMEType
       forHTTPHeaderField:@"X-Upload-Content-Type"];
+
+    // indicate that we've not yet determined the upload fetcher status
+    statusCode_ = -1;
   }
   return self;
 }
@@ -680,8 +683,13 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 }
 
 - (NSInteger)statusCode {
-  // overrides the superclass
-  return statusCode_;
+  if (statusCode_ != -1) {
+    // overrides the superclass to indicate status appropriate to the initial
+    // or latest chunk fetch
+    return statusCode_;
+  } else {
+    return [super statusCode]; 
+  }
 }
 
 - (void)setStatusCode:(NSInteger)val {

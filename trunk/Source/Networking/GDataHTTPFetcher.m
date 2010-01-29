@@ -710,20 +710,20 @@ CannotBeginFetch:
 
 - (void)invokeSentDataCallback:(SEL)sel
                         target:(id)target
-   didSendBodyData:(NSInteger)bytesWritten
- totalBytesWritten:(NSInteger)totalBytesWritten
-totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
+               didSendBodyData:(NSInteger)bytesWritten
+             totalBytesWritten:(NSInteger)totalBytesWritten
+     totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
   NSMethodSignature *sig = [target methodSignatureForSelector:sel];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
   [invocation setSelector:sel];
   [invocation setTarget:target];
-    [invocation setArgument:&self atIndex:2];
-    [invocation setArgument:&bytesWritten atIndex:3];
-    [invocation setArgument:&totalBytesWritten atIndex:4];
-    [invocation setArgument:&totalBytesExpectedToWrite atIndex:5];
-    [invocation invoke];
-  }
+  [invocation setArgument:&self atIndex:2];
+  [invocation setArgument:&bytesWritten atIndex:3];
+  [invocation setArgument:&totalBytesWritten atIndex:4];
+  [invocation setArgument:&totalBytesExpectedToWrite atIndex:5];
+  [invocation invoke];
+}
 
 - (void)invokeStatusCallback:(SEL)sel
                       target:(id)target
