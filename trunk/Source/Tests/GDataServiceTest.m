@@ -119,7 +119,7 @@ static int kServerPortNumber = 54579;
   isServerRunning_ = (server_ != nil);
 
   STAssertTrue(isServerRunning_,
-     @">>> Python http test server failed to launch; skipping service tests\n");
+               @">>> Python http test server failed to launch; skipping service tests\n");
 
   // create the GData service object, and set it to authenticate
   // from our own python http server
@@ -249,7 +249,7 @@ static int kServerPortNumber = 54579;
 
   // return a localhost:port URL for the test file
   NSString *urlString = [NSString stringWithFormat:@"http://localhost:%d/%@",
-    kServerPortNumber, name];
+                         kServerPortNumber, name];
 
   NSURL *url = [NSURL URLWithString:urlString];
 
@@ -348,7 +348,7 @@ static int gFetchCounter = 0;
   NSString *sheetID = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full";
 
   STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
-                     sheetID, @"fetching %@ error %@", feedURL, fetcherError_);
+                       sheetID, @"fetching %@ error %@", feedURL, fetcherError_);
   STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
   STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
   STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
@@ -367,7 +367,7 @@ static int gFetchCounter = 0;
   NSDictionary *responseHeaderFields = [(NSHTTPURLResponse *)response allHeaderFields];
   NSString *cookiesSetString = [responseHeaderFields objectForKey:@"Set-Cookie"];
   NSString *cookieExpected = [NSString stringWithFormat:@"TestCookie=%@",
-    [[feedURL path] lastPathComponent]];
+                              [[feedURL path] lastPathComponent]];
 
   STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
 
@@ -465,7 +465,7 @@ static int gFetchCounter = 0;
   // get the error group from the error's userInfo and test the main
   // error's fields
   GDataServerErrorGroup *errorGroup =
-    [[fetcherError_ userInfo] objectForKey:kGDataStructuredErrorsKey];
+  [[fetcherError_ userInfo] objectForKey:kGDataStructuredErrorsKey];
   STAssertNotNil(errorGroup, @"lacks error group");
 
   GDataServerError *serverError = [errorGroup mainError];
@@ -486,10 +486,10 @@ static int gFetchCounter = 0;
   [self resetFetchResponse];
 
   NSDictionary *surrogates = [NSDictionary dictionaryWithObjectsAndKeys:
-    [MyGDataFeedSpreadsheetSurrogate class], [GDataFeedSpreadsheet class],
-    [MyGDataEntrySpreadsheetSurrogate class], [GDataEntrySpreadsheet class],
-    [MyGDataLinkSurrogate class], [GDataLink class],
-    nil];
+                              [MyGDataFeedSpreadsheetSurrogate class], [GDataFeedSpreadsheet class],
+                              [MyGDataEntrySpreadsheetSurrogate class], [GDataEntrySpreadsheet class],
+                              [MyGDataLinkSurrogate class], [GDataLink class],
+                              nil];
   [service_ setServiceSurrogates:surrogates];
 
   ticket_ = (GDataServiceTicket *)
@@ -957,7 +957,7 @@ static int gFetchCounter = 0;
 
 - (void)ticket:(GDataServiceTicket *)ticket
 hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
-     ofTotalByteCount:(unsigned long long)dataLength {
+ofTotalByteCount:(unsigned long long)dataLength {
 
   lastProgressDeliveredCount_ = numberOfBytesRead;
   lastProgressTotalCount_ = dataLength;
@@ -997,8 +997,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   STAssertEquals([fetcherError_ code], (NSInteger)503,
                  @"fetcherError_ should be 503, was %@", fetcherError_);
   STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 3,
-               @"retry count should be 3, was %lu",
-               (unsigned long) [[ticket_ objectFetcher] retryCount]);
+                 @"retry count should be 3, was %lu",
+                 (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
   // check that the expected notifications happened for the object
   // fetches and the retries
@@ -1017,9 +1017,9 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 
   ticket_ = (GDataServiceTicket *)
     [service_ fetchPublicFeedWithURL:feedStatusURL
-                     feedClass:kGDataUseRegisteredClass
-                      delegate:self
-             didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+                           feedClass:kGDataUseRegisteredClass
+                            delegate:self
+                   didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   [ticket_ retain];
 
   // set userData to the number of retries allowed
@@ -1047,7 +1047,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     [service_ fetchPublicFeedWithURL:feedStatusURL
                            feedClass:kGDataUseRegisteredClass
                             delegate:self
-                 didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+                   didFinishSelector:@selector(ticket:finishedWithObject:error:)];
   [ticket_ retain];
 
   [self waitForFetch];
