@@ -30,6 +30,7 @@
 - (void)updateChangeFolderPopup;
 
 - (void)fetchDocList;
+- (void)fetchRevisionsForSelectedDoc;
 
 - (void)uploadFileAtPath:(NSString *)path;
 - (void)showDownloadPanelForEntry:(GDataEntryBase *)entry suggestedTitle:(NSString *)title;
@@ -44,7 +45,7 @@
 - (GDataFeedDocList *)docListFeed;
 - (void)setDocListFeed:(GDataFeedDocList *)feed;
 - (NSError *)docListFetchError;
-- (void)setDocListFetchError:(NSError *)error;  
+- (void)setDocListFetchError:(NSError *)error;
 - (GDataServiceTicket *)docListFetchTicket;
 - (void)setDocListFetchTicket:(GDataServiceTicket *)ticket;
 
@@ -64,10 +65,10 @@
 static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 + (DocsSampleWindowController *)sharedDocsSampleWindowController {
-  
+
   if (!gDocsSampleWindowController) {
     gDocsSampleWindowController = [[DocsSampleWindowController alloc] init];
-  }  
+  }
   return gDocsSampleWindowController;
 }
 
@@ -86,7 +87,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mDocListResultTextField setFont:resultTextFont];
-  
+
   [self updateUI];
 }
 
@@ -94,10 +95,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [mDocListFeed release];
   [mDocListFetchError release];
   [mDocListFetchTicket release];
-  
+
   [mUploadTicket cancelTicket];
   [mUploadTicket release];
-  
+
   [super dealloc];
 }
 
@@ -156,6 +157,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
   [mRevisionsResultTextField setString:revisionsResultStr];
 
+  BOOL isSelectedDocAStandardGDocsType =
+    [selectedDoc isKindOfClass:[GDataEntryStandardDoc class]]
+    || [selectedDoc isKindOfClass:[GDataEntrySpreadsheetDoc class]]
+    || [selectedDoc isKindOfClass:[GDataEntryPresentationDoc class]];
 
   // enable the button for viewing the selected doc in a browser
   BOOL doesDocHaveHTMLLink = ([selectedDoc HTMLLink] != nil);
@@ -170,13 +175,48 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   BOOL doesDocHaveEditLink = ([selectedDoc editLink] != nil);
   [mDeleteSelectedDocButton setEnabled:doesDocHaveEditLink];
 
+  [mDuplicateSelectedDocButton setEnabled:isSelectedDocAStandardGDocsType];
+
+  // enable the publishing checkboxes when a publishable revision is selected
+  BOOL isRevisionSelected = (selectedRevision != nil);
+  BOOL isRevisionPublishable = isRevisionSelected
+    && isSelectedDocAStandardGDocsType;
+
+  [mPublishCheckbox setEnabled:isRevisionPublishable];
+  [mAutoRepublishCheckbox setEnabled:isRevisionPublishable];
+  [mPublishOutsideDomainCheckbox setEnabled:isRevisionPublishable];
+
+  // enable the "Update Publishing" button when the selected revision is
+  // publishable and the checkbox settings differ from the current publishing
+  // setting for the selected revision
+  BOOL isPublished = [[selectedRevision publish] boolValue];
+  BOOL isPublishedChecked = ([mPublishCheckbox state] == NSOnState);
+
+  BOOL isAutoRepublished = [[selectedRevision publishAuto] boolValue];
+  BOOL isAutoRepublishedChecked = ([mAutoRepublishCheckbox state] == NSOnState);
+
+  BOOL isExternalPublished = [[selectedRevision publishOutsideDomain] boolValue];
+  BOOL isExternalPublishedChecked = ([mPublishOutsideDomainCheckbox state] == NSOnState);
+
+  BOOL canUpdatePublishing = isRevisionPublishable
+    && ((isPublished != isPublishedChecked)
+        || (isAutoRepublished != isAutoRepublishedChecked)
+        || (isExternalPublished != isExternalPublishedChecked));
+
+  [mUpdatePublishingButton setEnabled:canUpdatePublishing];
+
   // enable uploading buttons
   BOOL isUploading = (mUploadTicket != nil);
   BOOL canPostToFeed = ([mDocListFeed postLink] != nil);
 
   [mUploadFileButton setEnabled:(canPostToFeed && !isUploading)];
   [mStopUploadButton setEnabled:isUploading];
+  [mPauseUploadButton setEnabled:isUploading];
   [mCreateFolderButton setEnabled:canPostToFeed];
+
+  BOOL isUploadPaused = [mUploadTicket isUploadPaused];
+  NSString *pauseTitle = (isUploadPaused ? @"Resume" : @"Pause");
+  [mPauseUploadButton setTitle:pauseTitle];
 
   // fill in the add-to-folder pop-up for the selected doc
   [self updateChangeFolderPopup];
@@ -245,7 +285,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark IBActions
 
 - (IBAction)getDocListClicked:(id)sender {
-  
+
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
   NSString *username = [mUsernameField stringValue];
@@ -255,7 +295,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     // if no domain was supplied, add @gmail.com
     username = [username stringByAppendingString:@"@gmail.com"];
   }
-  
+
   [mUsernameField setStringValue:username];
 
   [self fetchDocList];
@@ -274,15 +314,17 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (IBAction)viewSelectedDocClicked:(id)sender {
-  
+
   NSURL *docURL = [[[self selectedDoc] HTMLLink] URL];
-  
+
   if (docURL) {
     [[NSWorkspace sharedWorkspace] openURL:docURL];
   } else {
-    NSBeep(); 
+    NSBeep();
   }
 }
+
+#pragma mark -
 
 - (IBAction)downloadSelectedDocClicked:(id)sender {
 
@@ -478,15 +520,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
 
-  NSArray *extensions = [NSArray arrayWithObjects:@"csv", @"doc", @"docx",
-    @"ods", @"odt", @"pps", @"ppt",  @"rtf", @"sxw", @"txt", @"xls",
-    @"xlsx", @"jpeg", @"jpg", @"bmp", @"gif", @"png", @"html", @"htm", @"tsv",
-    @"tab", @"pdf", nil];
-
   SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
   [openPanel beginSheetForDirectory:nil
                                file:nil
-                              types:extensions
+                              types:nil // upload any file type
                      modalForWindow:[self window]
                       modalDelegate:self
                      didEndSelector:endSel
@@ -494,7 +531,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+
   if (returnCode == NSOKButton) {
     // user chose a file and clicked OK
 
@@ -506,6 +543,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 }
 
+- (IBAction)pauseUploadClicked:(id)sender {
+  if ([mUploadTicket isUploadPaused]) {
+    [mUploadTicket resumeUpload];
+  } else {
+    [mUploadTicket pauseUpload];
+  }
+  [self updateUI];
+}
+
 - (IBAction)stopUploadClicked:(id)sender {
   [mUploadTicket cancelTicket];
   [self setUploadTicket:nil];
@@ -514,8 +560,54 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [self updateUI];
 }
 
-- (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+#pragma mark -
+
+- (IBAction)publishCheckboxClicked:(id)sender {
+  // enable or disable the Update Publishing button
+  [self updateUI];
+}
+
+- (IBAction)updatePublishingClicked:(id)sender {
+  GDataServiceGoogleDocs *service = [self docsService];
+
+  GDataEntryDocRevision *revisionEntry = [self selectedRevision];
+
+  // update the revision elements to match the checkboxes
+  //
+  // we'll modify a copy of the selected entry so we don't leave an inaccurate
+  // entry in the feed if our fetch fails
+  GDataEntryDocRevision *revisionCopy = [[revisionEntry copy] autorelease];
+
+  BOOL shouldPublish = ([mPublishCheckbox state] == NSOnState);
+  [revisionCopy setPublish:[NSNumber numberWithBool:shouldPublish]];
+
+  BOOL shouldAutoRepublish = ([mAutoRepublishCheckbox state] == NSOnState);
+  [revisionCopy setPublishAuto:[NSNumber numberWithBool:shouldAutoRepublish]];
+
+  BOOL shouldPublishExternally = ([mPublishOutsideDomainCheckbox state] == NSOnState);
+  [revisionCopy setPublishOutsideDomain:[NSNumber numberWithBool:shouldPublishExternally]];
+
+  [service fetchEntryByUpdatingEntry:revisionCopy
+                            delegate:self
+                   didFinishSelector:@selector(publishRevisionTicket:finishedWithEntry:error:)];
+}
+
+- (void)publishRevisionTicket:(GDataServiceTicket *)ticket
+            finishedWithEntry:(GDataEntryDocRevision *)entry
+                        error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Updated", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Updated publish status for \"%@\"",
+                      [[entry title] stringValue]);
+
+    // re-fetch the document list
+    [self fetchRevisionsForSelectedDoc];
+  } else {
+    NSBeginAlertSheet(@"Updated failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Failed to update publish status: %@", error);
+  }
 }
 
 #pragma mark -
@@ -611,6 +703,53 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 #pragma mark -
 
+- (IBAction)duplicateSelectedDocClicked:(id)sender {
+
+  GDataEntryDocBase *selectedDoc = [self selectedDoc];
+  if (selectedDoc) {
+    // make a new entry of the same class as the selected document entry,
+    // with just the title set and an identifier equal to the selected
+    // doc's resource ID
+    GDataEntryDocBase *newEntry = [[selectedDoc class] documentEntry];
+
+    [newEntry setIdentifier:[selectedDoc resourceID]];
+
+    NSString *oldTitle = [[selectedDoc title] stringValue];
+    NSString *newTitle = [oldTitle stringByAppendingString:@" copy"];
+    [newEntry setTitleWithString:newTitle];
+
+    GDataServiceGoogleDocs *service = [self docsService];
+    NSURL *postURL = [[mDocListFeed postLink] URL];
+
+    [service fetchEntryByInsertingEntry:newEntry
+                             forFeedURL:postURL
+                               delegate:self
+                      didFinishSelector:@selector(duplicateDocEntryTicket:finishedWithEntry:error:)];
+  }
+}
+
+// document copying callback
+- (void)duplicateDocEntryTicket:(GDataServiceTicket *)ticket
+              finishedWithEntry:(GDataEntryDocBase *)newEntry
+                       error:(NSError *)error {
+  if (error == nil) {
+    NSBeginAlertSheet(@"Copied Doc", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Document duplicate \"%@\" created",
+                      [[newEntry title] stringValue]);
+
+    // re-fetch the document list
+    [self fetchDocList];
+    [self updateUI];
+  } else {
+    NSBeginAlertSheet(@"Copy failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Document duplicate failed: %@", error);
+  }
+}
+
+#pragma mark -
+
 - (IBAction)changeFolderSelected:(id)sender {
 
   // the selected menu item represents a folder; fetch the folder's feed
@@ -628,7 +767,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     ticket = [service fetchFeedWithURL:folderFeedURL
                               delegate:self
                      didFinishSelector:@selector(fetchFolderTicket:finishedWithFeed:error:)];
-    
+
     // save the selected doc in the ticket's userData
     GDataEntryDocBase *doc = [self selectedDoc];
     [ticket setUserData:doc];
@@ -653,7 +792,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     //  foundEntry = [feed entryForIdentifier:[docEntry identifier]];
     // but currently the DocList server doesn't use consistent IDs for entries in
     // different feeds, so we'll look up the entry by etag instead.  (Bug 1498057)
-    
+
     GDataEntryDocBase *foundEntry;
 
     foundEntry = [GDataUtilities firstObjectFromArray:[feed entries]
@@ -681,7 +820,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
                       [self window], nil, nil,
                       nil, nil, @"Fetch of folder feed failed: %@", error);
-    
+
   }
 }
 
@@ -731,6 +870,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 #pragma mark -
 
+- (IBAction)loggingCheckboxClicked:(id)sender {
+  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+}
+
+#pragma mark -
+
 // get an docList service object with the current username/password
 //
 // A "service" object handles networking tasks.  Service objects
@@ -739,25 +884,21 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 // fetched data.)
 
 - (GDataServiceGoogleDocs *)docsService {
-  
+
   static GDataServiceGoogleDocs* service = nil;
-  
+
   if (!service) {
     service = [[GDataServiceGoogleDocs alloc] init];
-    
-    [service setUserAgent:@"MyCompany-SampleDocsApp-1.0"]; // set this to yourName-appName-appVersion
+
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
-
-    // iPhone apps will typically disable caching dated data or will call
-    // clearLastModifiedDates after done fetching to avoid wasting
-    // memory.
+    [service setIsServiceRetryEnabled:YES];
   }
 
   // update the username/password each time the service is requested
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
-  
+
   if ([username length] && [password length]) {
     [service setUserCredentialsWithUsername:username
                                    password:password];
@@ -765,7 +906,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [service setUserCredentialsWithUsername:nil
                                    password:nil];
   }
-  
+
   return service;
 }
 
@@ -795,7 +936,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 // begin retrieving the list of the user's docs
 - (void)fetchDocList {
-  
+
   [self setDocListFeed:nil];
   [self setDocListFetchError:nil];
   [self setDocListFetchTicket:nil];
@@ -807,19 +948,19 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // the feed's "next" link to get any more responses.  If we want more than 25
   // at a time, instead of calling fetchDocsFeedWithURL, we can create a
   // GDataQueryDocs object, as shown here.
-  
+
   NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
 
   GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query setMaxResults:1000];
   [query setShouldShowFolders:YES];
-    
+
   ticket = [service fetchFeedWithQuery:query
                               delegate:self
                      didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
-  
+
   [self setDocListFetchTicket:ticket];
-  
+
   [self updateUI];
 }
 
@@ -853,7 +994,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     ticket = [service fetchFeedWithURL:revisionFeedURL
                               delegate:self
                      didFinishSelector:@selector(revisionFetchTicket:finishedWithFeed:error:)];
-    
+
     [self setRevisionFetchTicket:ticket];
 
   }
@@ -876,16 +1017,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark Upload
 
 - (void)getMIMEType:(NSString **)mimeType andEntryClass:(Class *)class forExtension:(NSString *)extension {
-  
+
   // Mac OS X's UTI database doesn't know MIME types for .doc and .xls
   // so GDataEntryBase's MIMETypeForFileAtPath method isn't helpful here
-  
+
   struct MapEntry {
     NSString *extension;
     NSString *mimeType;
     NSString *className;
   };
-  
+
   static struct MapEntry sMap[] = {
     { @"csv", @"text/csv", @"GDataEntryStandardDoc" },
     { @"doc", @"application/msword", @"GDataEntryStandardDoc" },
@@ -908,12 +1049,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     { @"htm", @"text/html", @"GDataEntryStandardDoc" },
     { @"tsv", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
     { @"tab", @"text/tab-separated-values", @"GDataEntryStandardDoc" },
-    { @"pdf", @"application/pdf", @"GDataEntryPDFDoc" }, 
+    { @"pdf", @"application/pdf", @"GDataEntryPDFDoc" },
     { nil, nil, nil }
   };
-  
+
   NSString *lowerExtn = [extension lowercaseString];
-  
+
   for (int idx = 0; sMap[idx].extension != nil; idx++) {
     if ([lowerExtn isEqual:sMap[idx].extension]) {
       *mimeType = sMap[idx].mimeType;
@@ -921,101 +1062,114 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       return;
     }
   }
-  
+
   *mimeType = nil;
   *class = nil;
   return;
 }
 
 - (void)uploadFileAtPath:(NSString *)path {
-    
+
   NSString *errorMsg = nil;
-    
+
   // make a new entry for the file
-  
+
   NSString *mimeType = nil;
   Class entryClass = nil;
-  
+
   NSString *extn = [path pathExtension];
   [self getMIMEType:&mimeType andEntryClass:&entryClass forExtension:extn];
-  
+
+  if (!mimeType) {
+    // for other file types, see if we can get the type from the Mac OS
+    // and use a generic file document entry class
+    mimeType = [GDataUtilities MIMETypeForFileAtPath:path
+                                     defaultMIMEType:nil];
+    entryClass = [GDataEntryFileDoc class];
+  }
+
   if (!mimeType) {
     errorMsg = [NSString stringWithFormat:@"need MIME type for file %@", path];
   }
+
   if (mimeType && entryClass) {
-    
+
     GDataEntryDocBase *newEntry = [entryClass documentEntry];
-    
+
     NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
     [newEntry setTitleWithString:title];
-        
+
     NSData *uploadData = [NSData dataWithContentsOfFile:path];
     if (!uploadData) {
       errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
     }
-    
+
     if (uploadData) {
       [newEntry setUploadData:uploadData];
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
 
-      NSURL *postURL = [[mDocListFeed postLink] URL];
+      // the uploadLink has the "resumable upload" URL for initiating
+      // chunked uploads
+      NSURL *uploadURL = [[mDocListFeed uploadLink] URL];
 
       // add the OCR or translation parameters, if the user set the pop-up
       // button appropriately
       int popupTag = [[mUploadPopup selectedItem] tag];
       if (popupTag != 0) {
-        NSString *paramName, *paramValue;
+        NSString *targetLanguage = nil;
+        BOOL shouldConvertToGoogleDoc = YES;
+        BOOL shouldOCR = NO;
+
         switch (popupTag) {
+            // upload original file
+          case 1: shouldConvertToGoogleDoc = NO; break;
+
             // OCR
-          case 1: paramName = @"ocr"; paramValue = @"true"; break;
+          case 2: shouldOCR = YES; break;
 
             // translation
-            //
-            // we'll leave out the sourceLanguage parameter to get
-            // auto-detection of the file's language
-            //
-            // language codes: http://www.loc.gov/standards/iso639-2/php/code_list.php
+          case 3: targetLanguage = @"de"; break; // german
+          case 4: targetLanguage = @"ja"; break; // japanese
+          case 5: targetLanguage = @"en"; break; // english
 
-            // german
-          case 2: paramName = @"targetLanguage"; paramValue = @"de"; break;
-            // japanese
-          case 3: paramName = @"targetLanguage"; paramValue = @"ja"; break;
-            // english
-          case 4: paramName = @"targetLanguage"; paramValue = @"en"; break;
-
-          default: paramName = nil; paramValue = nil;
+          default: break;
         }
 
-        if (paramName) {
-          // use a GData query to conveniently append the new parameter
-          GDataQuery *query = [GDataQuery queryWithFeedURL:postURL];
-          [query addCustomParameterWithName:paramName
-                                      value:paramValue];
-          postURL = [query URL];
-        }
+        GDataQueryDocs *query = [GDataQueryDocs queryWithFeedURL:uploadURL];
+
+        [query setShouldConvertUpload:shouldConvertToGoogleDoc];
+        [query setShouldOCRUpload:shouldOCR];
+
+        // we'll leave out the sourceLanguage parameter to get
+        // auto-detection of the file's language
+        //
+        // language codes: http://www.loc.gov/standards/iso639-2/php/code_list.php
+        [query setTargetLanguage:targetLanguage];
+
+        uploadURL = [query URL];
       }
 
       // make service tickets call back into our upload progress selector
       GDataServiceGoogleDocs *service = [self docsService];
-      
-      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
-      [service setServiceUploadProgressSelector:progressSel];
 
       // insert the entry into the docList feed
       GDataServiceTicket *ticket;
       ticket = [service fetchEntryByInsertingEntry:newEntry
-                                        forFeedURL:postURL
+                                        forFeedURL:uploadURL
                                           delegate:self
                                  didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
-      
-      // we don't want future tickets to always use the upload progress selector
-      [service setServiceUploadProgressSelector:nil];
-      
+
+      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
+      [ticket setUploadProgressSelector:progressSel];
+
+      // we turned automatic retry on when we allocated the service, but we
+      // could also turn it on just for this ticket
+
       [self setUploadTicket:ticket];
     }
   }
-  
+
   if (errorMsg) {
     // we're currently in the middle of the file selection sheet, so defer our
     // error sheet
@@ -1026,12 +1180,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   [self updateUI];
 }
-  
+
 // progress callback
 - (void)ticket:(GDataServiceTicket *)ticket
-   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead 
+   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
    ofTotalByteCount:(unsigned long long)dataLength {
-  
+
   [mUploadProgressIndicator setMinValue:0.0];
   [mUploadProgressIndicator setMaxValue:(double)dataLength];
   [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
@@ -1041,7 +1195,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 - (void)uploadFileTicket:(GDataServiceTicket *)ticket
      finishedWithEntry:(GDataEntryDocBase *)entry
                    error:(NSError *)error {
-  
+
   [self setUploadTicket:nil];
   [mUploadProgressIndicator setDoubleValue:0.0];
 
@@ -1052,7 +1206,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     // tell the user that the add worked
     NSBeginAlertSheet(@"Uploaded file", nil, nil, nil,
                       [self window], nil, nil,
-                      nil, nil, @"File uploaded: %@", 
+                      nil, nil, @"File uploaded: %@",
                       [[entry title] stringValue]);
   } else {
     NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
@@ -1060,7 +1214,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                       nil, nil, @"File upload failed: %@", error);
   }
   [self updateUI];
-} 
+}
 
 #pragma mark TableView delegate methods
 
@@ -1069,11 +1223,25 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 //
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-  // the user clicked a document or a revision entry
   if ([notification object] == mDocListTable) {
-    // the user clicked a document entry, so fetch its revisions
+    // the user selected a document entry, so fetch its revisions
     [self fetchRevisionsForSelectedDoc];
   } else {
+    // the user selected a revision entry
+    //
+    // update the publishing checkboxes to match the newly-selected revision
+
+    GDataEntryDocRevision *selectedRevision = [self selectedRevision];
+
+    BOOL isPublished = [[selectedRevision publish] boolValue];
+    [mPublishCheckbox setState:(isPublished ? NSOnState : NSOffState)];
+
+    BOOL isAutoRepublished = [[selectedRevision publishAuto] boolValue];
+    [mAutoRepublishCheckbox setState:(isAutoRepublished ? NSOnState : NSOffState)];
+
+    BOOL isExternalPublished = [[selectedRevision publishOutsideDomain] boolValue];
+    [mPublishOutsideDomainCheckbox setState:(isExternalPublished ? NSOnState : NSOffState)];
+
     [self updateUI];
   }
 }
@@ -1135,7 +1303,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark Setters and Getters
 
 - (GDataFeedDocList *)docListFeed {
-  return mDocListFeed; 
+  return mDocListFeed;
 }
 
 - (void)setDocListFeed:(GDataFeedDocList *)feed {
@@ -1144,7 +1312,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (NSError *)docListFetchError {
-  return mDocListFetchError; 
+  return mDocListFetchError;
 }
 
 - (void)setDocListFetchError:(NSError *)error {
@@ -1153,7 +1321,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (GDataServiceTicket *)docListFetchTicket {
-  return mDocListFetchTicket; 
+  return mDocListFetchTicket;
 }
 
 - (void)setDocListFetchTicket:(GDataServiceTicket *)ticket {

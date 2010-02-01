@@ -47,6 +47,9 @@ static NSString* const kActivityFeed = @"activity";
 - (NSString *)entryImageURLString;
 - (void)setEntryImageURLString:(NSString *)str;
 
+- (GDataServiceTicket *)uploadTicket;
+- (void)setUploadTicket:(GDataServiceTicket *)ticket;
+
 - (GDataServiceGoogleYouTube *)youTubeService;
 
 - (void)fetchStandardCategories;
@@ -107,6 +110,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [mEntriesFetchError release];
   [mEntriesFetchTicket release];
   [mEntryImageURLString release];
+
+  [mUploadTicket release];
   
   [super dealloc];
 }
@@ -218,7 +223,15 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   BOOL canUpload = hasUsername && hasPassword && hasDevKey
     && hasClientID && hasTitle && hasDesc && hasKeywords && hasPath;
   
-  [mUploadButton setEnabled:canUpload];
+  BOOL isUploading = (mUploadTicket != nil);
+
+  [mUploadButton setEnabled:(canUpload && !isUploading)];
+  [mPauseUploadButton setEnabled:isUploading];
+  [mStopUploadButton setEnabled:isUploading];
+
+  BOOL isUploadPaused = [mUploadTicket isUploadPaused];
+  NSString *pauseTitle = (isUploadPaused ? @"Resume" : @"Pause");
+  [mPauseUploadButton setTitle:pauseTitle];
 }
 
 #pragma mark IBActions
@@ -278,6 +291,23 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [self uploadVideoFile];
 }
 
+- (IBAction)pauseUploadClicked:(id)sender {
+  if ([mUploadTicket isUploadPaused]) {
+    [mUploadTicket resumeUpload];
+  } else {
+    [mUploadTicket pauseUpload];
+  }
+  [self updateUI];
+}
+
+- (IBAction)stopUploadClicked:(id)sender {
+  [mUploadTicket cancelTicket];
+  [self setUploadTicket:nil];
+
+  [mUploadProgressIndicator setDoubleValue:0.0];
+  [self updateUI];
+}
+
 #pragma mark -
 
 // get a YouTube service object with the current username/password
@@ -296,6 +326,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     
     [service setShouldCacheDatedData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+    [service setIsServiceRetryEnabled:YES];
   }
 
   // update the username/password each time the service is requested
@@ -445,6 +476,9 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
                                            forFeedURL:url
                                              delegate:self
                              didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
+
+  [self setUploadTicket:ticket];
+  [self updateUI];
 }
 
 // progress callback
@@ -478,6 +512,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
                       nil, nil, @"Upload failed: %@", error);
   }
   [mUploadProgressIndicator setDoubleValue:0.0];
+
+  [self setUploadTicket:nil];
 }
 
 ////////////////////////////////////////////////////////
@@ -620,6 +656,15 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 - (void)setEntryImageURLString:(NSString *)str {
   [mEntryImageURLString autorelease];
   mEntryImageURLString = [str copy];
+}
+
+- (GDataServiceTicket *)uploadTicket {
+  return mUploadTicket;
+}
+
+- (void)setUploadTicket:(GDataServiceTicket *)ticket {
+  [mUploadTicket release];
+  mUploadTicket = [ticket retain];
 }
 
 @end

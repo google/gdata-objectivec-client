@@ -187,11 +187,15 @@
 }
 
 + (NSString *)serviceUploadRootURLString {
-  return @"http://uploads.gdata.youtube.com/feeds/";
+  return @"http://uploads.gdata.youtube.com/resumable/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {
   return kGDataYouTubeDefaultServiceVersion;
+}
+
++ (NSUInteger)defaultServiceUploadChunkSize {
+  return kGDataStandardUploadChunkSize;
 }
 
 + (NSDictionary *)standardServiceNamespaces {

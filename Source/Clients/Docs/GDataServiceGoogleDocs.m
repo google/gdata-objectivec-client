@@ -93,6 +93,34 @@
   return [NSURL URLWithString:urlStr];
 }
 
+#pragma mark -
+
+// updating a document entry with data requires the editMediaLink rather than
+// the editLink, per
+//
+// http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html#UpdatingContent
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                         delegate:(id)delegate
+                                didFinishSelector:(SEL)finishedSelector {
+  GDataLink *link;
+
+  if ([entryToUpdate uploadData] == nil) {
+    link = [entryToUpdate editLink];
+  } else {
+    link = [entryToUpdate uploadEditLink];
+  }
+
+  NSURL *editURL = [link URL];
+
+  return [self fetchEntryByUpdatingEntry:entryToUpdate
+                             forEntryURL:editURL
+                                delegate:delegate
+                       didFinishSelector:finishedSelector];
+}
+
+#pragma mark -
+
 + (NSString *)serviceRootURLString {
   return @"http://docs.google.com/feeds/";
 }
@@ -103,6 +131,10 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataDocsDefaultServiceVersion;
+}
+
++ (NSUInteger)defaultServiceUploadChunkSize {
+  return kGDataStandardUploadChunkSize;
 }
 
 + (NSDictionary *)standardServiceNamespaces {

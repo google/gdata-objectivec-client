@@ -47,12 +47,16 @@
   IBOutlet NSButton *mPrivateCheckbox;
   
   IBOutlet NSButton *mUploadButton;
+  IBOutlet NSButton *mPauseUploadButton;
+  IBOutlet NSButton *mStopUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
 
   GDataFeedYouTubeVideo *mEntriesFeed; // user feed of album entries
   GDataServiceTicket *mEntriesFetchTicket;
   NSError *mEntriesFetchError;
   NSString *mEntryImageURLString;
+
+  GDataServiceTicket *mUploadTicket;
 }
 
 + (YouTubeSampleWindowController *)sharedYouTubeSampleWindowController;
@@ -62,6 +66,8 @@
 
 - (IBAction)chooseFileClicked:(id)sender;
 - (IBAction)uploadClicked:(id)sender;
+- (IBAction)pauseUploadClicked:(id)sender;
+- (IBAction)stopUploadClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 @end

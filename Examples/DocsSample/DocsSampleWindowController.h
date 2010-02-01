@@ -39,6 +39,7 @@
   IBOutlet NSButton *mViewSelectedDocButton;
   IBOutlet NSButton *mDeleteSelectedDocButton;
   IBOutlet NSButton *mDownloadSelectedDocButton;
+  IBOutlet NSButton *mDuplicateSelectedDocButton;
   IBOutlet NSButton *mCreateFolderButton;
 
   IBOutlet NSButton *mDownloadSelectedRevisionButton;
@@ -47,10 +48,16 @@
 
   IBOutlet NSButton *mUploadFileButton;
   IBOutlet NSButton *mStopUploadButton;
+  IBOutlet NSButton *mPauseUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
   IBOutlet NSPopUpButton *mUploadPopup;
 
   IBOutlet NSTextField *mUploadingTextField;
+
+  IBOutlet NSButton *mPublishCheckbox;
+  IBOutlet NSButton *mAutoRepublishCheckbox;
+  IBOutlet NSButton *mPublishOutsideDomainCheckbox;
+  IBOutlet NSButton *mUpdatePublishingButton;
 
   GDataFeedDocList *mDocListFeed;
   GDataServiceTicket *mDocListFetchTicket;
@@ -71,6 +78,7 @@
 
 - (IBAction)viewSelectedDocClicked:(id)sender;
 - (IBAction)downloadSelectedDocClicked:(id)sender;
+- (IBAction)duplicateSelectedDocClicked:(id)sender;
 
 - (IBAction)downloadSelectedRevisionClicked:(id)sender;
 
@@ -80,6 +88,10 @@
 
 - (IBAction)uploadFileClicked:(id)sender;
 - (IBAction)stopUploadClicked:(id)sender;
+- (IBAction)pauseUploadClicked:(id)sender;
+
+- (IBAction)publishCheckboxClicked:(id)sender;
+- (IBAction)updatePublishingClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 @end
