@@ -69,6 +69,8 @@ _EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"
                  revisionID:(NSString *)revisionID
                    useHTTPS:(BOOL)shouldUseHTTPS;
 
++ (NSURL *)docsUploadURL;
+
 + (NSString *)serviceRootURLString;
 
 // clients may use these fetch methods of GDataServiceGoogle

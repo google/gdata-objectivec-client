@@ -1109,9 +1109,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
 
-      // the uploadLink has the "resumable upload" URL for initiating
-      // chunked uploads
-      NSURL *uploadURL = [[mDocListFeed uploadLink] URL];
+      NSURL *uploadURL = [GDataServiceGoogleDocs docsUploadURL];
 
       // add the OCR or translation parameters, if the user set the pop-up
       // button appropriately
