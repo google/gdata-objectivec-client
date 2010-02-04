@@ -62,9 +62,9 @@
                    useHTTPS:(BOOL)shouldUseHTTPS {
   // get the root URL, and fix the scheme
   NSString *rootURLStr = [self serviceRootURLString];
-  if (shouldUseHTTPS) {
-    rootURLStr = [NSString stringWithFormat:@"https:%@",
-                  [rootURLStr substringFromIndex:5]];
+  if (!shouldUseHTTPS) {
+    rootURLStr = [NSString stringWithFormat:@"http:%@",
+                  [rootURLStr substringFromIndex:6]];
   }
 
   if (projection == nil) {
@@ -91,6 +91,14 @@
   }
 
   return [NSURL URLWithString:urlStr];
+}
+
++ (NSURL *)docsUploadURL {
+  NSString *const kPath = @"upload/create-session/default/private/full";
+  NSString *root = [self serviceRootURLString];
+  NSString *urlString = [root stringByAppendingString:kPath];
+
+  return [NSURL URLWithString:urlString];
 }
 
 #pragma mark -
@@ -122,7 +130,7 @@
 #pragma mark -
 
 + (NSString *)serviceRootURLString {
-  return @"http://docs.google.com/feeds/";
+  return @"https://docs.google.com/feeds/";
 }
 
 + (NSString *)serviceID {
