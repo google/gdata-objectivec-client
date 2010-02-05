@@ -94,3 +94,9 @@ For example,
  Other C Flags: `-DGDATA_REQUIRE_SERVICE_INCLUDES=1 -DGDATA_INCLUDE_CONTACTS_SERVICE=1`
 
 Do remember to set build settings so they apply to both Debug _and_ Release configurations.
+
+There is a conditional set in the static library target as a reminder to developers to define the needed services.  For your project, replace or delete the definition
+{{{
+-DGDATA_INCLUDE_nameServiceHere_SERVICE=1
+}}}
+in the Other C Flags section of the static library target's Release configuration.
