@@ -113,18 +113,30 @@
                                 didFinishSelector:(SEL)finishedSelector {
   GDataLink *link;
 
-  if ([entryToUpdate uploadData] == nil) {
+  // temporary: use override header for chunked updates (bug 2433537)
+  BOOL wasUsingOverride = [self shouldUseMethodOverrideHeader];
+
+  if ([entryToUpdate uploadData] == nil || [self serviceUploadChunkSize] == 0) {
+    // not uploading document data, or else doing a multipart MIME upload
     link = [entryToUpdate editLink];
   } else {
+    // doing a chunked upload
     link = [entryToUpdate uploadEditLink];
+
+    // temporary; see above
+    [self setShouldUseMethodOverrideHeader:YES];
   }
 
   NSURL *editURL = [link URL];
 
-  return [self fetchEntryByUpdatingEntry:entryToUpdate
-                             forEntryURL:editURL
-                                delegate:delegate
-                       didFinishSelector:finishedSelector];
+  GDataServiceTicket *ticket = [self fetchEntryByUpdatingEntry:entryToUpdate
+                                                   forEntryURL:editURL
+                                                      delegate:delegate
+                                             didFinishSelector:finishedSelector];
+
+  // temporary; see above
+  [self setShouldUseMethodOverrideHeader:wasUsingOverride];
+  return ticket;
 }
 
 #pragma mark -
