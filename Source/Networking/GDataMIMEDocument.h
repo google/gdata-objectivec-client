@@ -31,6 +31,7 @@
 @interface GDataMIMEDocument : NSObject {
   NSMutableArray* parts_;         // Contains an ordered set of MimeParts
   unsigned long long length_;     // Length in bytes of the document.
+  u_int32_t randomSeed_;          // for testing
 }
 
 + (GDataMIMEDocument *)MIMEDocument;

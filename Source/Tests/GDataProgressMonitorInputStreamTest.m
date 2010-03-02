@@ -68,7 +68,7 @@
   while ([progressStream hasBytesAvailable]) {
     
     unsigned char buffer[101];
-    NSUInteger numBytesToRead = (random() % 100) + 1;
+    NSUInteger numBytesToRead = (arc4random() % 100) + 1;
     
     NSInteger numRead = [progressStream read:buffer maxLength:numBytesToRead];
     if (numRead == 0) break;

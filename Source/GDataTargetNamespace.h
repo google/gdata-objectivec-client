@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (546 classes) 2010-01-26 11:27:56 -0800
+// com.google.GDataFramework v. 1.9.1 (556 classes) 2010-03-02 12:38:05 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -130,9 +130,16 @@
   #define GDataDCTitle                            _GDATA_NS_SYMBOL(GDataDCTitle)
   #define GDataDeleted                            _GDATA_NS_SYMBOL(GDataDeleted)
   #define GDataDocConstants                       _GDATA_NS_SYMBOL(GDataDocConstants)
+  #define GDataDocExportFormat                    _GDATA_NS_SYMBOL(GDataDocExportFormat)
+  #define GDataDocFeature                         _GDATA_NS_SYMBOL(GDataDocFeature)
+  #define GDataDocFeatureName                     _GDATA_NS_SYMBOL(GDataDocFeatureName)
+  #define GDataDocFeatureRate                     _GDATA_NS_SYMBOL(GDataDocFeatureRate)
+  #define GDataDocImportFormat                    _GDATA_NS_SYMBOL(GDataDocImportFormat)
+  #define GDataDocMaxUploadSize                   _GDATA_NS_SYMBOL(GDataDocMaxUploadSize)
   #define GDataDocPublish                         _GDATA_NS_SYMBOL(GDataDocPublish)
   #define GDataDocPublishAuto                     _GDATA_NS_SYMBOL(GDataDocPublishAuto)
   #define GDataDocPublishOutsideDomain            _GDATA_NS_SYMBOL(GDataDocPublishOutsideDomain)
+  #define GDataDocTransferFormat                  _GDATA_NS_SYMBOL(GDataDocTransferFormat)
   #define GDataEmail                              _GDATA_NS_SYMBOL(GDataEmail)
   #define GDataEntryACL                           _GDATA_NS_SYMBOL(GDataEntryACL)
   #define GDataEntryAnalyticsAccount              _GDATA_NS_SYMBOL(GDataEntryAnalyticsAccount)
@@ -151,6 +158,7 @@
   #define GDataEntryContactProfile                _GDATA_NS_SYMBOL(GDataEntryContactProfile)
   #define GDataEntryContent                       _GDATA_NS_SYMBOL(GDataEntryContent)
   #define GDataEntryDocBase                       _GDATA_NS_SYMBOL(GDataEntryDocBase)
+  #define GDataEntryDocListMetadata               _GDATA_NS_SYMBOL(GDataEntryDocListMetadata)
   #define GDataEntryDocRevision                   _GDATA_NS_SYMBOL(GDataEntryDocRevision)
   #define GDataEntryEvent                         _GDATA_NS_SYMBOL(GDataEntryEvent)
   #define GDataEntryFileDoc                       _GDATA_NS_SYMBOL(GDataEntryFileDoc)
@@ -421,7 +429,9 @@
   #define GDataQueryTranslation                   _GDATA_NS_SYMBOL(GDataQueryTranslation)
   #define GDataQueryYouTube                       _GDATA_NS_SYMBOL(GDataQueryYouTube)
   #define GDataQuickAddProperty                   _GDATA_NS_SYMBOL(GDataQuickAddProperty)
+  #define GDataQuotaBytesTotal                    _GDATA_NS_SYMBOL(GDataQuotaBytesTotal)
   #define GDataQuotaBytesUsed                     _GDATA_NS_SYMBOL(GDataQuotaBytesUsed)
+  #define GDataQuotaBytesUsedInTrash              _GDATA_NS_SYMBOL(GDataQuotaBytesUsedInTrash)
   #define GDataRating                             _GDATA_NS_SYMBOL(GDataRating)
   #define GDataRecurrence                         _GDATA_NS_SYMBOL(GDataRecurrence)
   #define GDataRecurrenceException                _GDATA_NS_SYMBOL(GDataRecurrenceException)

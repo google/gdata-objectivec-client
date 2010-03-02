@@ -156,10 +156,17 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
 // For unit testing only, seeds the random number generator so that we will
 // have reproducible boundary strings.
 - (void)seedRandomWith:(unsigned int)seed {
-
-  srandom(seed);
+  randomSeed_ = seed;
 }
 
+- (u_int32_t)random {
+  if (randomSeed_) {
+    // for testing only
+    return randomSeed_++;
+  } else {
+    return arc4random();
+  }
+}
 
 // Computes the mime boundary to use.  This should only be called
 // after all the desired document parts have been added since it must compute
@@ -192,13 +199,14 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
     if (!didCollide) break; // we're fine, no more attempts needed
 
     // try again with a random number appended
-    boundary = [NSString stringWithFormat:@"%@_%08lx", kBaseBoundary, random()];
+    boundary = [NSString stringWithFormat:@"%@_%08lx", kBaseBoundary,
+                [self random]];
   }
 
   if (didCollide) {
     // fallback... two random numbers
     boundary = [NSString stringWithFormat:@"%08lx_tedborg_%08lx",
-                                          random(), random()];
+                                          [self random], [self random]];
   }
 
   return boundary;

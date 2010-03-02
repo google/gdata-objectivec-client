@@ -101,6 +101,17 @@
   return [NSURL URLWithString:urlString];
 }
 
++ (NSURL *)metadataEntryURLForUserID:(NSString *)userID {
+  NSString *encodedUser = [GDataUtilities stringByURLEncodingForURI:userID];
+  NSString *const kTemplate = @"%@metadata/%@";
+
+  NSString *root = [self serviceRootURLString];
+  NSString *urlString = [NSString stringWithFormat:kTemplate,
+                         root, encodedUser];
+
+  return [NSURL URLWithString:urlString];
+}
+
 #pragma mark -
 
 // updating a document entry with data requires the editMediaLink rather than

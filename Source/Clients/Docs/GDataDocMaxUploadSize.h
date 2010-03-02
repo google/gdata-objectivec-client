@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,25 +13,28 @@
  * limitations under the License.
  */
 
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
+
 //
-// GDataDocumentElements.m
-//
-// Elements used by the Docs API and Translation Toolkit API
+//  GDataDocMaxUploadSize.h
 //
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE
-
-#import "GDataPerson.h"
+#import "GDataObject.h"
 #import "GDataValueConstruct.h"
 
-@interface GDataLastModifiedBy : GDataPerson <GDataExtension>
+// an upload size, such as
+//
+//  <docs:maxUploadSize kind="spreadsheet">3124125</docs:maxUploadSize>
+
+@interface GDataDocMaxUploadSize : GDataValueElementConstruct <GDataExtension>
+// For the value, use
+//
+// - (NSNumber *)longLongNumberValue;
+// - (long long)longLongValue;
+// - (void)setLongLongValue:(long long)val;
+
+- (NSString *)uploadKind;
+- (void)setUploadKind:(NSString *)str;
 @end
 
-@interface GDataQuotaBytesTotal : GDataValueElementConstruct <GDataExtension>
-@end
-
-@interface GDataQuotaBytesUsed : GDataValueElementConstruct <GDataExtension>
-@end
-
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE
-
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

@@ -1877,6 +1877,34 @@
 		4FA9CB320B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB330B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */; };
 		4FA9CB370B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB71E9C113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */; };
+		4FB71E9D113DACC600169801 /* GDataDocTransferFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */; };
+		4FB71E9E113DACC600169801 /* GDataDocFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9A113DACC600169801 /* GDataDocFeature.m */; };
+		4FB71E9F113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */; };
+		4FB71EA0113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */; };
+		4FB71EA1113DACC600169801 /* GDataDocTransferFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */; };
+		4FB71EA2113DACC600169801 /* GDataDocFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9A113DACC600169801 /* GDataDocFeature.m */; };
+		4FB71EA3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */; };
+		4FB71EA4113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */; };
+		4FB71EA5113DACC600169801 /* GDataDocTransferFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */; };
+		4FB71EA6113DACC600169801 /* GDataDocFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9A113DACC600169801 /* GDataDocFeature.m */; };
+		4FB71EA7113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */; };
+		4FB71EA8113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */; };
+		4FB71EA9113DACC600169801 /* GDataDocTransferFormat.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E95113DACC600169801 /* GDataDocTransferFormat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB71EAA113DACC600169801 /* GDataDocTransferFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */; };
+		4FB71EAB113DACC600169801 /* GDataEntryDocListMetadata.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E97113DACC600169801 /* GDataEntryDocListMetadata.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB71EAC113DACC600169801 /* GDataDocFeature.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E98113DACC600169801 /* GDataDocFeature.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB71EAD113DACC600169801 /* GDataDocMaxUploadSize.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E99113DACC600169801 /* GDataDocMaxUploadSize.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FB71EAE113DACC600169801 /* GDataDocFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9A113DACC600169801 /* GDataDocFeature.m */; };
+		4FB71EAF113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */; };
+		4FB71EB0113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */; };
+		4FB71EB1113DACC600169801 /* GDataDocTransferFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */; };
+		4FB71EB2113DACC600169801 /* GDataDocFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9A113DACC600169801 /* GDataDocFeature.m */; };
+		4FB71EB3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */; };
+		4FB71EB7113DAD0B00169801 /* GDataEntryDocListMetadata.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E97113DACC600169801 /* GDataEntryDocListMetadata.h */; };
+		4FB71EB8113DAD0B00169801 /* GDataDocTransferFormat.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E95113DACC600169801 /* GDataDocTransferFormat.h */; };
+		4FB71EB9113DAD0B00169801 /* GDataDocFeature.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E98113DACC600169801 /* GDataDocFeature.h */; };
+		4FB71EBA113DAD0B00169801 /* GDataDocMaxUploadSize.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71E99113DACC600169801 /* GDataDocMaxUploadSize.h */; };
 		4FB730D50BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */; };
 		4FB730DC0BE27ABD000C493E /* GDataProgressMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */; };
 		4FB730DD0BE27ABD000C493E /* GDataProgressMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2223,6 +2251,10 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FB71EB7113DAD0B00169801 /* GDataEntryDocListMetadata.h in Copy Static Library Headers */,
+				4FB71EB8113DAD0B00169801 /* GDataDocTransferFormat.h in Copy Static Library Headers */,
+				4FB71EB9113DAD0B00169801 /* GDataDocFeature.h in Copy Static Library Headers */,
+				4FB71EBA113DAD0B00169801 /* GDataDocMaxUploadSize.h in Copy Static Library Headers */,
 				4FCEDC87110F773700B286FF /* GDataHTTPUploadFetcher.h in Copy Static Library Headers */,
 				4FC2BF0110F3F64D004BD81E /* GDataEntryTranslationDocument.h in Copy Static Library Headers */,
 				4FC2BF0210F3F64D004BD81E /* GDataEntryTranslationGlossary.h in Copy Static Library Headers */,
@@ -3092,6 +3124,15 @@
 		4FA9CB2F0B74354400DA5920 /* GDataGoogleBaseMetadataItemType.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseMetadataItemType.m; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.m; sourceTree = "<group>"; };
 		4FA9CB360B74355100DA5920 /* GDataGoogleBaseMetadataItemType.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGoogleBaseMetadataItemType.h; path = Clients/GoogleBase/GDataGoogleBaseMetadataItemType.h; sourceTree = "<group>"; };
 		4FAB12150F4E45900048BD55 /* FeedHealthProfile1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedHealthProfile1.xml; path = Tests/FeedHealthProfile1.xml; sourceTree = "<group>"; };
+		4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryDocListMetadata.m; path = Clients/Docs/GDataEntryDocListMetadata.m; sourceTree = "<group>"; };
+		4FB71E95113DACC600169801 /* GDataDocTransferFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocTransferFormat.h; path = Clients/Docs/GDataDocTransferFormat.h; sourceTree = "<group>"; };
+		4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocTransferFormat.m; path = Clients/Docs/GDataDocTransferFormat.m; sourceTree = "<group>"; };
+		4FB71E97113DACC600169801 /* GDataEntryDocListMetadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryDocListMetadata.h; path = Clients/Docs/GDataEntryDocListMetadata.h; sourceTree = "<group>"; };
+		4FB71E98113DACC600169801 /* GDataDocFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocFeature.h; path = Clients/Docs/GDataDocFeature.h; sourceTree = "<group>"; };
+		4FB71E99113DACC600169801 /* GDataDocMaxUploadSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocMaxUploadSize.h; path = Clients/Docs/GDataDocMaxUploadSize.h; sourceTree = "<group>"; };
+		4FB71E9A113DACC600169801 /* GDataDocFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocFeature.m; path = Clients/Docs/GDataDocFeature.m; sourceTree = "<group>"; };
+		4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocMaxUploadSize.m; path = Clients/Docs/GDataDocMaxUploadSize.m; sourceTree = "<group>"; };
+		4FB71EC5113DAE1400169801 /* EntryDocListMetadataTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = EntryDocListMetadataTest1.xml; path = Tests/EntryDocListMetadataTest1.xml; sourceTree = "<group>"; };
 		4FB730D40BE27A82000C493E /* GDataProgressMonitorInputStreamTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStreamTest.m; path = Tests/GDataProgressMonitorInputStreamTest.m; sourceTree = "<group>"; };
 		4FB730DA0BE27ABD000C493E /* GDataProgressMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataProgressMonitorInputStream.h; path = Networking/GDataProgressMonitorInputStream.h; sourceTree = "<group>"; };
 		4FB730DB0BE27ABD000C493E /* GDataProgressMonitorInputStream.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataProgressMonitorInputStream.m; path = Networking/GDataProgressMonitorInputStream.m; sourceTree = "<group>"; };
@@ -3915,12 +3956,20 @@
 				4FD66AA50EA53046001D365E /* GDataEntryFolderDoc.m */,
 				4F61CB20103CAA1B00C0692E /* GDataEntryDocRevision.h */,
 				4F61CB1F103CAA1B00C0692E /* GDataEntryDocRevision.m */,
+				4FB71E97113DACC600169801 /* GDataEntryDocListMetadata.h */,
+				4FB71E94113DACC600169801 /* GDataEntryDocListMetadata.m */,
 				4F4B943A0C5048430064B6F6 /* GDataFeedDocList.h */,
 				4F4B94390C5048430064B6F6 /* GDataFeedDocList.m */,
 				4F61CB22103CAA1B00C0692E /* GDataFeedDocRevision.h */,
 				4F61CB21103CAA1B00C0692E /* GDataFeedDocRevision.m */,
 				4F82A27F0FCCB70D00C477D4 /* GDataDocConstants.h */,
 				4F82A27E0FCCB70D00C477D4 /* GDataDocConstants.m */,
+				4FB71E95113DACC600169801 /* GDataDocTransferFormat.h */,
+				4FB71E96113DACC600169801 /* GDataDocTransferFormat.m */,
+				4FB71E98113DACC600169801 /* GDataDocFeature.h */,
+				4FB71E9A113DACC600169801 /* GDataDocFeature.m */,
+				4FB71E99113DACC600169801 /* GDataDocMaxUploadSize.h */,
+				4FB71E9B113DACC600169801 /* GDataDocMaxUploadSize.m */,
 				4F4B94690C504A870064B6F6 /* GDataServiceGoogleDocs.h */,
 				4F4B946A0C504A870064B6F6 /* GDataServiceGoogleDocs.m */,
 				4F4B94C20C514DE00064B6F6 /* GDataQueryDocs.m */,
@@ -4184,6 +4233,15 @@
 			name = "Test Tool";
 			sourceTree = "<group>";
 		};
+		4FB71EC7113DAE1800169801 /* Docs */ = {
+			isa = PBXGroup;
+			children = (
+				4FD66B3B0EA540EB001D365E /* FeedDocListTest1.xml */,
+				4FB71EC5113DAE1400169801 /* EntryDocListMetadataTest1.xml */,
+			);
+			name = Docs;
+			sourceTree = "<group>";
+		};
 		4FB730D70BE27A92000C493E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -4245,6 +4303,7 @@
 				4FA555DB0FD737B9006FDC8B /* Blogger */,
 				4F5651E20DFF4E5000975DBD /* Calendar */,
 				4F493DEF0FB90BA3003B3670 /* Contacts */,
+				4FB71EC7113DAE1800169801 /* Docs */,
 				4F5651E00DFF4E2A00975DBD /* Finance */,
 				4F5651E30DFF4E6400975DBD /* Google Base */,
 				4F022FD30D58FF4F00EE6862 /* Photos */,
@@ -4253,7 +4312,6 @@
 				4F45B0AD0D510A3100004F37 /* YouTube */,
 				4F10BBBB0F1E9AAE002AE29A /* ServiceDocuments */,
 				4F7003B00E1AED9400D8EFD6 /* FeedBooksVolumesTest1.xml */,
-				4FD66B3B0EA540EB001D365E /* FeedDocListTest1.xml */,
 				4F2083940FC7823300F547BB /* FeedMapFeaturesTest1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
 				4FAB12150F4E45900048BD55 /* FeedHealthProfile1.xml */,
@@ -4698,6 +4756,10 @@
 				4FC2BEEF10F3F609004BD81E /* GDataTranslationDocumentSource.h in Headers */,
 				4FC2BEF110F3F609004BD81E /* GDataTranslationElements.h in Headers */,
 				4FCEDC83110F771800B286FF /* GDataHTTPUploadFetcher.h in Headers */,
+				4FB71EA9113DACC600169801 /* GDataDocTransferFormat.h in Headers */,
+				4FB71EAB113DACC600169801 /* GDataEntryDocListMetadata.h in Headers */,
+				4FB71EAC113DACC600169801 /* GDataDocFeature.h in Headers */,
+				4FB71EAD113DACC600169801 /* GDataDocMaxUploadSize.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5212,6 +5274,10 @@
 				4FC2BEC410F3F609004BD81E /* GDataTranslationDocumentSource.m in Sources */,
 				4FC2BEC510F3F609004BD81E /* GDataTranslationElements.m in Sources */,
 				4FCEDC81110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */,
+				4FB71E9C113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */,
+				4FB71E9D113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
+				4FB71E9E113DACC600169801 /* GDataDocFeature.m in Sources */,
+				4FB71E9F113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5519,6 +5585,10 @@
 				4FC2BEFC10F3F609004BD81E /* GDataTranslationDocumentSource.m in Sources */,
 				4FC2BEFD10F3F609004BD81E /* GDataTranslationElements.m in Sources */,
 				4FCEDC86110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */,
+				4FB71EB0113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */,
+				4FB71EB1113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
+				4FB71EB2113DACC600169801 /* GDataDocFeature.m in Sources */,
+				4FB71EB3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5825,6 +5895,10 @@
 				4FC2BEDA10F3F609004BD81E /* GDataTranslationDocumentSource.m in Sources */,
 				4FC2BEDB10F3F609004BD81E /* GDataTranslationElements.m in Sources */,
 				4FCEDC84110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */,
+				4FB71EA4113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */,
+				4FB71EA5113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
+				4FB71EA6113DACC600169801 /* GDataDocFeature.m in Sources */,
+				4FB71EA7113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6130,6 +6204,10 @@
 				4FC2BEF010F3F609004BD81E /* GDataTranslationDocumentSource.m in Sources */,
 				4FC2BEF210F3F609004BD81E /* GDataTranslationElements.m in Sources */,
 				4FCEDC82110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */,
+				4FB71EA8113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */,
+				4FB71EAA113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
+				4FB71EAE113DACC600169801 /* GDataDocFeature.m in Sources */,
+				4FB71EAF113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6451,6 +6529,10 @@
 				4FC2BECF10F3F609004BD81E /* GDataTranslationDocumentSource.m in Sources */,
 				4FC2BED010F3F609004BD81E /* GDataTranslationElements.m in Sources */,
 				4FCEDC85110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */,
+				4FB71EA0113DACC600169801 /* GDataEntryDocListMetadata.m in Sources */,
+				4FB71EA1113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
+				4FB71EA2113DACC600169801 /* GDataDocFeature.m in Sources */,
+				4FB71EA3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

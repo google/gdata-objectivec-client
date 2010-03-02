@@ -1374,8 +1374,9 @@ objectDescriptionIfNonNil:(id)obj
 
     id obj = [[elementClass alloc] initWithXMLElement:objElement
                                                parent:self];
-    [pool release];
-    pool = nil;
+
+    // We drain here to keep the clang static analyzer quiet.
+    [pool drain];
 
     [obj autorelease];
 
@@ -2547,7 +2548,8 @@ forCategoryWithScheme:(NSString *)scheme
 
   [*map setValue:theClass forKey:key];
 
-  [pool release];
+  // We drain here to keep the clang static analyzer quiet.
+  [pool drain];
 }
 
 
