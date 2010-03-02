@@ -1580,12 +1580,36 @@
     { @"entries.0.unknownChildren.@count", @"0" },
 
     { @"", @"" }, // end of feed
-      
+
+    //
+    // DocList User Metadata Entry
+    //
+    { @"GDataEntryDocListMetadata", @"Tests/EntryDocListMetadataTest1.xml" },
+
+    { @"identifier", @"http://docs.google.com/feeds/metadata/fredflintstone%40example.net" },
+    { @"quotaBytesTotal", @"1073741824" },
+    { @"quotaBytesUsed", @"124432802" },
+    { @"quotaBytesUsedInTrash", @"89564924" },
+    { @"exportFormats.0.source", @"presentation" },
+    { @"exportFormats.0.target", @"text/plain" },
+    { @"importFormats.1.source", @"application/vnd.sun.xml.writer" },
+    { @"importFormats.1.target", @"document" },
+    { @"features.0.featureName", @"ocr" },
+    { @"features.0.featureRate", nil },
+    { @"features.1.featureName", @"translation" },
+    { @"features.1.featureRate", @"2.0" },
+    { @"maxUploadSizes.0.longLongNumberValue", @"512000" },
+    { @"maxUploadSizes.0.uploadKind", @"document" },
+    { @"maxUploadSizeForKindPDF.longLongNumberValue", @"1048571000" },
+    { @"featureForNameUploadAny.featureName", @"upload_any" },
+    { @"featureForNameUploadNone", nil },
+    { @"", @"" }, // end of feed
+
     { nil, nil } // end of test array
   };
   [self runTests:tests];
 };
-  
+
 - (void)testFinanceFeed {
   
   TestKeyPathValues tests[] =
@@ -2280,6 +2304,31 @@
 - (GDataCustomProperty *)customPropertyWithHeightName {
   return [self customPropertyWithName:@"height"];
 }
+@end
+
+//
+// DocList User Metadata
+//
+
+@interface GDataEntryDocListMetadata (TestHelperMethods)
+- (GDataDocMaxUploadSize *)maxUploadSizeForKindPDF;
+- (GDataDocFeature *)featureForNameUploadAny;
+- (GDataDocFeature *)featureForNameUploadNone;
+@end
+
+@implementation GDataEntryDocListMetadata (TestHelperMethods)
+- (GDataDocMaxUploadSize *)maxUploadSizeForKindPDF {
+  return [self maxUploadSizeForKind:@"pdf"];
+}
+
+- (GDataDocFeature *)featureForNameUploadAny {
+  return [self featureForName:@"upload_any"];
+}
+
+- (GDataDocFeature *)featureForNameUploadNone {
+  return [self featureForName:@"upload_none"];
+}
+
 @end
 
 //

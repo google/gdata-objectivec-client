@@ -1142,7 +1142,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     // set min interval to a random value between 1.0 and 2.0 seconds
     // so that if multiple clients start retrying at the same time, they'll
     // repeat at different times and avoid overloading the server
-    minRetryInterval_ = 1.0 + ((double)(random() & 0x0FFFF) / (double) 0x0FFFF);
+    minRetryInterval_ = 1.0 + ((double)(arc4random() & 0x0FFFF) / (double) 0x0FFFF);
   }
 }
 

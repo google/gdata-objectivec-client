@@ -29,4 +29,16 @@
 + (NSString *)extensionElementLocalName { return @"lastModifiedBy"; }
 @end
 
+@implementation GDataQuotaBytesTotal
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"quotaBytesTotal"; }
+@end
+
+@implementation GDataQuotaBytesUsed
++ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
++ (NSString *)extensionElementLocalName { return @"quotaBytesUsed"; }
+@end
+
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE

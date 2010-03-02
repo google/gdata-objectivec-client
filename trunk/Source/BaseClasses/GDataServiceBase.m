@@ -852,7 +852,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
 #endif
 
-  [pool release];
+  // We drain here to keep the clang static analyzer quiet.
+  [pool drain];
 }
 
 - (void)handleParsedObjectForFetcher:(GDataHTTPFetcher *)fetcher {

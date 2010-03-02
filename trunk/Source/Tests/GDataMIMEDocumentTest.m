@@ -214,7 +214,7 @@
                   boundary:&boundary];  
   
   // the second alternate boundary, given the random seed
-  boundary = @"END_OF_PART_327b23c6"; 
+  boundary = @"END_OF_PART_00000001";
   
   NSString* expectedResultString = [NSString stringWithFormat:
     @"\r\n--%@\r\n"

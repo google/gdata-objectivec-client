@@ -31,15 +31,6 @@
 + (NSString *)extensionElementLocalName { return @"lastViewed"; }
 @end
 
-@interface GDataQuotaBytesUsed : GDataValueElementConstruct <GDataExtension>
-@end
-
-@implementation GDataQuotaBytesUsed
-+ (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
-+ (NSString *)extensionElementLocalName { return @"quotaBytesUsed"; }
-@end
-
 @interface GDataWritersCanInvite : GDataBoolValueConstruct <GDataExtension>
 @end
 
