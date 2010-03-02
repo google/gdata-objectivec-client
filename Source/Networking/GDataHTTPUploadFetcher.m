@@ -295,11 +295,10 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
   NSURL *locURL = [self locationURL];
   NSMutableURLRequest *chunkRequest = [NSMutableURLRequest requestWithURL:locURL];
 
-  // copy the http method and user-agent from the original connection
-  NSURLRequest *origRequest = [self request];
-  NSString *httpMethod = [origRequest HTTPMethod];
-  [chunkRequest setHTTPMethod:httpMethod];
+  [chunkRequest setHTTPMethod:@"PUT"];
 
+  // copy the user-agent from the original connection
+  NSURLRequest *origRequest = [self request];
   NSString *userAgent = [origRequest valueForHTTPHeaderField:@"User-Agent"];
   if ([userAgent length] > 0) {
     [chunkRequest setValue:userAgent forHTTPHeaderField:@"User-Agent"];
