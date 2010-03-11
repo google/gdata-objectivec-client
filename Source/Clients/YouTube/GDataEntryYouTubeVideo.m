@@ -60,6 +60,7 @@
    [GDataYouTubeNonEmbeddable class],
    [GDataYouTubeLocation class],
    [GDataYouTubeRecordedDate class],
+   [GDataYouTubeAccessControl class],
    
    // YouTubeMediaGroup encapsulates YouTubeMediaContent
    [GDataYouTubeMediaGroup class],
@@ -98,7 +99,9 @@
     { @"geoLocation",       @"geoLocation",      kGDataDescValueLabeled   },
     { @"notEmbeddable",     nonEmbeddableValue,  kGDataDescValueIsKeyPath },
     { @"pubState",          @"publicationState", kGDataDescValueLabeled   },
+    { @"recorded",          @"recordedDate",     kGDataDescValueLabeled   },
     { @"incomplete",        @"isIncomplete",     kGDataDescBooleanPresent },
+    { @"accessControls",    @"accessControls",   kGDataDescArrayDescs     },
     { nil, nil, 0 }
   };
 
@@ -154,6 +157,18 @@
 
   obj = [GDataYouTubeRecordedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataYouTubeRecordedDate class]];
+}
+
+- (NSArray *)accessControls {
+  return [self objectsForExtensionClass:[GDataYouTubeAccessControl class]];
+}
+
+- (void)setAccessControls:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataYouTubeAccessControl class]];
+}
+
+- (void)addAccessControl:(GDataYouTubeAccessControl *)obj {
+  [self addObject:obj forExtensionClass:[GDataYouTubeAccessControl class]];
 }
 
 - (BOOL)isEmbeddable {

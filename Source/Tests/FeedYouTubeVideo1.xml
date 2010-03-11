@@ -99,6 +99,8 @@
             <media:rating yt:country="KR">1</media:rating>
         </media:group>
         <yt:statistics viewCount="177"/>
+        <yt:accessControl action='videoRespond' permission='denied'/>
+        <yt:accessControl action='comment' permission='allowed' type='group'>friends</yt:accessControl>
         <gd:rating average="3.00" max="5" min="1" numRaters="4" />
         <gd:comments>
             <gd:feedLink countHint="0" href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/comments"/>

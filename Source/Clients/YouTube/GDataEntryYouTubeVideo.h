@@ -23,6 +23,7 @@
 #import "GDataYouTubeMediaElements.h"
 #import "GDataYouTubeStatistics.h"
 #import "GDataYouTubePublicationState.h"
+#import "GDataYouTubeAccessControl.h"
 #import "GDataGeo.h"
 #import "GDataComment.h"
 #import "GDataRating.h"
@@ -49,6 +50,8 @@
 
 // setGeoLocation requires an instance of a subclass of GDataGeo, not an
 // instance of GDataGeo; see GDataGeo.h
+//
+// for YouTube, use GDataGeoRSSWhere for the geo location
 - (GDataGeo *)geoLocation;
 - (void)setGeoLocation:(GDataGeo *)geo;
 
@@ -60,6 +63,10 @@
 
 - (GDataDateTime *)recordedDate;
 - (void)setRecordedDate:(GDataDateTime *)dateTime;
+
+- (NSArray *)accessControls;
+- (void)setAccessControls:(NSArray *)array;
+- (void)addAccessControl:(GDataYouTubeAccessControl *)obj;
 
 // convenience accessors
 - (GDataLink *)videoResponsesLink;

@@ -341,10 +341,10 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     [service setUserCredentialsWithUsername:nil
                                    password:nil];
   }
-  
-  // Note: full authentication requires also calling setYouTubeDeveloperKey:
-  // as in the method -uploadVideoFile below.  Entries in feeds retrieved 
-  // without a developer key will not contain edit links.
+
+  NSString *devKey = [mDeveloperKeyField stringValue];
+  [service setYouTubeDeveloperKey:devKey];
+
   return service;
 }
 
@@ -376,6 +376,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   GDataServiceTicket *ticket;
   
   // feedID is uploads, favorites, etc
+  //
+  // note that activity feeds require a developer key
   NSString *feedID = [[mUserFeedPopup selectedItem] title];
   
   NSURL *feedURL;
@@ -385,13 +387,6 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   } else {
     feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:username
                                                   userFeedID:feedID];
-  }
-
-  if ([feedID isEqual:kGDataYouTubeUserFeedIDFriendsActivity]
-      || [feedID isEqual:kActivityFeed]) {
-    // activity feeds require a developer key
-    NSString *devKey = [mDeveloperKeyField stringValue];
-    [service setYouTubeDeveloperKey:devKey];
   }
   
   ticket = [service fetchFeedWithURL:feedURL
