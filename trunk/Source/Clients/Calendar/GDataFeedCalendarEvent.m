@@ -40,8 +40,8 @@
 
 #pragma mark -
 
-+ (NSString *)standardFeedKind {
-  return kGDataCategoryEvent;
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#eventFeed";
 }
 
 + (void)load {

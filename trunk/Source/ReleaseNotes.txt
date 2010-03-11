@@ -30,10 +30,14 @@ Additions
 - Added viewLink accessors to Maps entries, and new Maps spacial and attribute
   query parameters.
 
+- Added DocList user metadata entry
+
 - Added publish elements to Docs revision feed
 
 - Added yt:incomplete element to app:control in YouTube video entries,
   yt:accessControl to video entries, and caption query parameter.
+
+- Added revision publishing and doc duplication to Docs sample app.
 
 Changes
 

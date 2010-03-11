@@ -28,8 +28,8 @@
 
 @implementation GDataEntryCalendarSettings
 
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryCalendarSettings;
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#settings";
 }
 
 + (void)load {

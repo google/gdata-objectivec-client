@@ -25,8 +25,8 @@
 
 @implementation GDataFeedCalendarSettings
 
-+ (NSString *)standardFeedKind {
-  return kGDataCategoryCalendarSettings;
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#settingFeed";
 }
 
 + (void)load {
@@ -35,12 +35,6 @@
 
 + (NSString *)defaultServiceVersion {
   return kGDataCalendarDefaultServiceVersion;
-}
-
-- (Class)classForEntries {
-  // TODO - temporary; waiting for kind category elements per http://b/1694419
-  // so we can remove this method
-  return NSClassFromString(@"GDataEntryCalendarSettings");
 }
 
 @end

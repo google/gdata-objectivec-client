@@ -198,8 +198,8 @@
 
 #pragma mark -
 
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryEvent;
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#event";
 }
 
 + (void)load {
