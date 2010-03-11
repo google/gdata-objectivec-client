@@ -56,7 +56,11 @@
   NSUInteger initialBodySent_;
 
   NSURL *locationURL_;
+
+  // uploadData_ or uploadFileHandle_ may be set, but not both
   NSData *uploadData_;
+  NSFileHandle *uploadFileHandle_;
+  NSInteger uploadFileHandleLength_;
   NSString *uploadMIMEType_;
   NSUInteger chunkSize_;
   BOOL isPaused_;
@@ -76,8 +80,14 @@
                                       uploadMIMEType:(NSString *)uploadMIMEType
                                            chunkSize:(NSUInteger)chunkSize;
 
++ (GDataHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
+                                    uploadFileHandle:(NSFileHandle *)fileHandle
+                                      uploadMIMEType:(NSString *)uploadMIMEType
+                                           chunkSize:(NSUInteger)chunkSize;
+
 - (id)initWithRequest:(NSURLRequest *)request
            uploadData:(NSData *)data
+     uploadFileHandle:(NSFileHandle *)fileHandle
        uploadMIMEType:(NSString *)uploadMIMEType
             chunkSize:(NSUInteger)chunkSize;
 
@@ -90,6 +100,9 @@
 
 - (NSData *)uploadData;
 - (void)setUploadData:(NSData *)data;
+
+- (NSFileHandle *)uploadFileHandle;
+- (void)setUploadFileHandle:(NSFileHandle *)fileHandle;
 
 - (NSString *)uploadMIMEType;
 - (void)setUploadMIMEType:(NSString *)str;

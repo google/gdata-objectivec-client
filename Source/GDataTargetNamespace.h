@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (556 classes) 2010-03-02 12:38:05 -0800
+// com.google.GDataFramework v. 1.9.1 (557 classes) 2010-03-11 15:25:55 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -541,6 +541,7 @@
   #define GDataWorksheetName                      _GDATA_NS_SYMBOL(GDataWorksheetName)
   #define GDataWritersCanInvite                   _GDATA_NS_SYMBOL(GDataWritersCanInvite)
   #define GDataYouTubeAboutMe                     _GDATA_NS_SYMBOL(GDataYouTubeAboutMe)
+  #define GDataYouTubeAccessControl               _GDATA_NS_SYMBOL(GDataYouTubeAccessControl)
   #define GDataYouTubeAge                         _GDATA_NS_SYMBOL(GDataYouTubeAge)
   #define GDataYouTubeAspectRatio                 _GDATA_NS_SYMBOL(GDataYouTubeAspectRatio)
   #define GDataYouTubeBooks                       _GDATA_NS_SYMBOL(GDataYouTubeBooks)

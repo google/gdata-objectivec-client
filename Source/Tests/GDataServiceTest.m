@@ -1166,6 +1166,14 @@ static NSString* const kOriginalURLKey = @"origURL";
   NSData *bigData = [self generatedUploadDataWithLength:199000];
   NSData *smallData = [self generatedUploadDataWithLength:13];
 
+  // write the big data into a temp file
+  NSString *tempDir = NSTemporaryDirectory();
+  NSString *bigFileName = @"GDataServiceTest_BigFile";
+  NSString *bigFilePath = [tempDir stringByAppendingPathComponent:bigFileName];
+  [bigData writeToFile:bigFilePath atomically:NO];
+
+  NSFileHandle *bigFileHandle = [NSFileHandle fileHandleForReadingAtPath:bigFilePath];
+
   SEL progressSel = @selector(uploadTicket:hasDeliveredByteCount:ofTotalByteCount:);
   [service_ setServiceUploadProgressSelector:progressSel];
 
@@ -1178,7 +1186,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   [service_ setServiceUploadChunkSize:75000];
 
   //
-  // test a big upload
+  // test a big upload using an NSFileHandle
   //
 
   // with chunk size 75000, for a data block of 199000 bytes, we expect to send
@@ -1191,7 +1199,7 @@ static NSString* const kOriginalURLKey = @"origURL";
                                   password:@"good"];
 
   GDataEntrySpreadsheetCell *newEntry = [GDataEntrySpreadsheetCell entry];
-  [newEntry setUploadData:bigData];
+  [newEntry setUploadFileHandle:bigFileHandle];
   [newEntry setUploadMIMEType:@"foo/bar"];
 
   ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
@@ -1228,7 +1236,46 @@ static NSString* const kOriginalURLKey = @"origURL";
   [self resetFetchResponse];
 
   //
-  // repeat the previous upload, pausing after 20000 bytes
+  // repeat the previous upload, using NSData
+  //
+  [newEntry setUploadData:bigData];
+  [newEntry setUploadFileHandle:nil];
+
+  ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
+                                      forFeedURL:uploadURL
+                                        delegate:self
+                               didFinishSelector:@selector(ticket:finishedWithObject:error:)];
+  [ticket_ retain];
+
+  [self waitForFetch];
+
+  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+
+  // check that we got back the expected entry
+  entryID = @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1";
+  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+                       entryID, @"uploading %@", uploadURL);
+
+  // check the request of the final object fetcher to be sure we were uploading
+  // chunks as expected
+  uploadFetcher = (GDataHTTPUploadFetcher *) [ticket_ objectFetcher];
+  fetcher = [uploadFetcher activeFetcher];
+  request = [fetcher request];
+  reqHdrs = [request allHTTPHeaderFields];
+
+  uploadReqURLStr = @"http://localhost:54579/EntrySpreadsheetCellTest1.xml.upload";
+  contentLength = [reqHdrs objectForKey:@"Content-Length"];
+  contentRange = [reqHdrs objectForKey:@"Content-Range"];
+
+  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+                       @"upload request wrong");
+  STAssertEqualObjects(contentLength, @"49000", @"content length");
+  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+
+  [self resetFetchResponse];
+
+  //
+  // repeat the first upload, pausing after 20000 bytes
   //
 
   ticket_ = [service_ fetchEntryByInsertingEntry:newEntry
@@ -1369,6 +1416,8 @@ static NSString* const kOriginalURLKey = @"origURL";
   [service_ setServiceUploadChunkSize:0];
   [service_ setServiceUploadProgressSelector:NULL];
   [service_ setServiceRetrySelector:NULL];
+
+  [[NSFileManager defaultManager] removeFileAtPath:bigFilePath handler:NULL];
 }
 
 - (void)uploadTicket:(GDataServiceTicket *)ticket

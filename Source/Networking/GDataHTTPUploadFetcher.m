@@ -39,6 +39,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
 - (void)reportProgressManually;
 
+- (NSUInteger)fullUploadLength;
+
 // private methods of the superclass
 - (void)invokeSentDataCallback:(SEL)sel
                         target:(id)target
@@ -65,18 +67,37 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                                            chunkSize:(NSUInteger)chunkSize {
   return [[[self alloc] initWithRequest:request
                              uploadData:data
+                       uploadFileHandle:nil
+                         uploadMIMEType:uploadMIMEType
+                              chunkSize:chunkSize] autorelease];
+}
+
++ (GDataHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
+                                    uploadFileHandle:(NSFileHandle *)fileHandle
+                                      uploadMIMEType:(NSString *)uploadMIMEType
+                                           chunkSize:(NSUInteger)chunkSize {
+  return [[[self alloc] initWithRequest:request
+                             uploadData:nil
+                       uploadFileHandle:fileHandle
                          uploadMIMEType:uploadMIMEType
                               chunkSize:chunkSize] autorelease];
 }
 
 - (id)initWithRequest:(NSURLRequest *)request
            uploadData:(NSData *)data
+     uploadFileHandle:(NSFileHandle *)fileHandle
        uploadMIMEType:(NSString *)uploadMIMEType
             chunkSize:(NSUInteger)chunkSize {
 
   self = [super initWithRequest:request];
   if (self) {
+#if DEBUG
+    NSAssert((data == nil) != (fileHandle == nil),
+             @"upload data and fileHandle are mutually exclusive");
+#endif
+
     [self setUploadData:data];
+    [self setUploadFileHandle:fileHandle];
     [self setUploadMIMEType:uploadMIMEType];
     [self setChunkSize:chunkSize];
 
@@ -94,6 +115,9 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
     // indicate that we've not yet determined the upload fetcher status
     statusCode_ = -1;
+
+    // indicate that we've not yet determined the file handle's length
+    uploadFileHandleLength_ = -1;
   }
   return self;
 }
@@ -102,12 +126,45 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   [chunkFetcher_ release];
   [locationURL_ release];
   [uploadData_ release];
+  [uploadFileHandle_ release];
   [uploadMIMEType_ release];
   [responseHeaders_ release];
   [super dealloc];
 }
 
 #pragma mark -
+
+- (NSUInteger)fullUploadLength {
+  if (uploadData_) {
+    return [uploadData_ length];
+  } else {
+    if (uploadFileHandleLength_ == -1) {
+      // first time through, seek to end to determine file length
+      uploadFileHandleLength_ = (NSInteger) [uploadFileHandle_ seekToEndOfFile];
+    }
+    return uploadFileHandleLength_;
+  }
+}
+
+- (NSData *)uploadSubdataWithOffset:(NSUInteger)offset
+                             length:(NSUInteger)length {
+  NSData *resultData = nil;
+
+  if (uploadData_) {
+    NSRange range = NSMakeRange(offset, length);
+    resultData = [uploadData_ subdataWithRange:range];
+  } else {
+    @try {
+      [uploadFileHandle_ seekToFileOffset:offset];
+      resultData = [uploadFileHandle_ readDataOfLength:length];
+    }
+    @catch (NSException *exception) {
+      NSLog(@"uploadFileHandle exception: %@", exception);
+    }
+  }
+
+  return resultData;
+}
 
 #pragma mark Method overrides affecting the initial fetch only
 
@@ -246,8 +303,7 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
   NSString *rangeStr, *lengthStr;
   NSData *chunkData;
 
-  NSData *uploadData = [self uploadData];
-  NSUInteger dataLen = [uploadData length];
+  NSUInteger dataLen = [self fullUploadLength];
 
   if (offset == kQueryServerForOffset) {
     // resuming, so we'll initially send an empty data block and wait for the
@@ -276,8 +332,8 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
       thisChunkSize = dataLen - offset;
     }
 
-    NSRange newRange = NSMakeRange((NSUInteger)offset, (NSUInteger)thisChunkSize);
-    chunkData = [uploadData subdataWithRange:newRange];
+    chunkData = [self uploadSubdataWithOffset:offset
+                                       length:thisChunkSize];
 
     rangeStr = [NSString stringWithFormat:@"bytes %lu-%lu/%lu",
                           offset, offset + thisChunkSize - 1, dataLen];
@@ -395,8 +451,7 @@ totalBytesExpectedToSend:0];
   if (needsManualProgress_) {
     // do a final upload progress report, indicating all of the chunk data
     // has been sent
-    NSData *uploadData = [self uploadData];
-    NSUInteger fullDataLength = [uploadData length] + initialBodyLength_;
+    NSUInteger fullDataLength = [self fullUploadLength] + initialBodyLength_;
     [self setCurrentOffset:fullDataLength];
 
     [self reportProgressManually];
@@ -526,7 +581,7 @@ totalBytesExpectedToSend:0];
     // tell us where to resume
     NSMutableURLRequest *chunkRequest = [chunkFetcher request];
 
-    NSUInteger dataLen = [[self uploadData] length];
+    NSUInteger dataLen = [self fullUploadLength];
     NSString *rangeStr = [NSString stringWithFormat:@"bytes */%lu", dataLen];
 
     [chunkRequest setValue:rangeStr forHTTPHeaderField:@"Content-Range"];
@@ -560,7 +615,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
     // the total bytes expected include the initial XML and the full chunked
     // data, independent of how big this fetcher's chunk is
-    totalBytesExpected = initialBodyLength_ + [uploadData_ length];
+    totalBytesExpected = initialBodyLength_ + [self fullUploadLength];
 
     [self invokeSentDataCallback:delegateSentDataSEL_
                           target:delegate_
@@ -630,6 +685,15 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   uploadData_ = [data retain];
 }
 
+- (NSFileHandle *)uploadFileHandle {
+  return uploadFileHandle_;
+}
+
+- (void)setUploadFileHandle:(NSFileHandle *)fileHandle {
+  [uploadFileHandle_ autorelease];
+  uploadFileHandle_ = [fileHandle retain];
+}
+
 - (NSString *)uploadMIMEType {
   return uploadMIMEType_;
 }
@@ -688,7 +752,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     // or latest chunk fetch
     return statusCode_;
   } else {
-    return [super statusCode]; 
+    return [super statusCode];
   }
 }
 

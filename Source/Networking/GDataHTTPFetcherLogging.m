@@ -15,6 +15,9 @@
 
 #if !STRIP_GDATA_FETCH_LOGGING
 
+#include <sys/stat.h>
+#include <unistd.h>
+
 #import "GDataHTTPFetcherLogging.h"
 
 // If GDataProgressMonitorInputStream is available, it can be used for
@@ -28,25 +31,17 @@
 - (void)setMonitorDelegate:(id)monitorDelegate;
 - (void)setMonitorSelector:(SEL)monitorSelector;
 - (void)setReadSelector:(SEL)readSelector;
+- (void)setRunLoopModes:(NSArray *)modes;
 @end
 
-// We don't invoke Leopard methods on 10.4, because we check if the methods are
-// implemented before invoking it, but we need to be able to compile without
-// warnings.
-// These declarations mean if you target <=10.4, the methods will compile
-// without complaint in this source, so you must test with
-// -respondsToSelector:, too.
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-@interface NSFileManager (LeopardMethodsOnTigerBuilds)
-- (BOOL)removeItemAtPath:(NSString *)path error:(NSError **)error;
-- (BOOL)createSymbolicLinkAtPath:(NSString *)path
-             withDestinationPath:(NSString *)destPath error:(NSError **)error;
-- (BOOL)createDirectoryAtPath:(NSString *)path
-  withIntermediateDirectories:(BOOL)createIntermediates
-                   attributes:(NSDictionary *)attributes
-                        error:(NSError **)error;
+@interface GDataHTTPFetcher (GDataHTTPFetcherLoggingInternal)
+// internal file utilities for logging
++ (BOOL)fileOrDirExistsAtPath:(NSString *)path;
++ (BOOL)makeDirectoryUpToPath:(NSString *)path;
++ (BOOL)removeItemAtPath:(NSString *)path;
++ (BOOL)createSymbolicLinkAtPath:(NSString *)newPath
+             withDestinationPath:(NSString *)targetPath;
 @end
-#endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
 
 @implementation GDataHTTPFetcher (GDataHTTPFetcherLogging)
 
@@ -86,33 +81,11 @@ static NSString* gLoggingProcessName = nil;
       NSString *desktopPath = [arr objectAtIndex:0];
       NSString *logsFolderPath = [desktopPath stringByAppendingPathComponent:kGDataLogFolderName];
 
-      BOOL doesFolderExist;
-      BOOL isDir = NO;
-      NSFileManager *fileManager = [NSFileManager defaultManager];
-      doesFolderExist = [fileManager fileExistsAtPath:logsFolderPath
-                                          isDirectory:&isDir];
+      BOOL doesFolderExist = [[self class] fileOrDirExistsAtPath:logsFolderPath];
 
       if (!doesFolderExist) {
         // make the directory
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-        // Compiling for 10.5 or later, just use the new api
-        doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath
-                                 withIntermediateDirectories:YES
-                                                  attributes:nil
-                                                       error:NULL];
-#else
-        // Check at runtime if we have the newer api and use that, otherwise, just
-        // use the older api (we avoid it to avoid console messages).
-        if ([fileManager respondsToSelector:@selector(createDirectoryAtPath:withIntermediateDirectories:attributes:error:)]) {
-          doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath
-                                   withIntermediateDirectories:YES
-                                                    attributes:nil
-                                                         error:NULL];
-        } else {
-          doesFolderExist = [fileManager createDirectoryAtPath:logsFolderPath
-                                                    attributes:nil];
-        }
-#endif
+        doesFolderExist = [self makeDirectoryUpToPath:logsFolderPath];
       }
 
       if (doesFolderExist) {
@@ -188,8 +161,7 @@ static NSString* gLoggingProcessName = nil;
   static BOOL isXMLLintAvailable;
 
   if (!hasCheckedAvailability) {
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    isXMLLintAvailable = [fileManager fileExistsAtPath:kXMLLintPath];
+    isXMLLintAvailable = [[self class] fileOrDirExistsAtPath:kXMLLintPath];
     hasCheckedAvailability = YES;
   }
 
@@ -390,8 +362,6 @@ static NSString* gLoggingProcessName = nil;
 
   if (![[self class] isLoggingEnabled]) return;
 
-  NSFileManager *fileManager = [NSFileManager defaultManager];
-
   // TODO: (grobbins)  add Javascript to display response data formatted in hex
 
   NSString *logDirectory = [[self class] loggingDirectory];
@@ -511,7 +481,7 @@ static NSString* gLoggingProcessName = nil;
 
   // if the html file exists (from logging previous fetches) we don't need
   // to re-write the header or the scripts
-  BOOL didFileExist = [fileManager fileExistsAtPath:htmlPath];
+  BOOL didFileExist = [[self class] fileOrDirExistsAtPath:htmlPath];
 
   NSMutableString* outputHTML = [NSMutableString string];
   NSURLRequest *request = [self request];
@@ -754,28 +724,9 @@ static NSString* gLoggingProcessName = nil;
     processName];
   NSString *symlinkPath = [logDirectory stringByAppendingPathComponent:symlinkName];
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
-  // Compiling for 10.5 or later, just use the new apis
-  [fileManager removeItemAtPath:symlinkPath error:NULL];
-  [fileManager createSymbolicLinkAtPath:symlinkPath
-                    withDestinationPath:htmlPath
-                                  error:NULL];
-#else
-  // Check at runtime if we have the newer api and use that, otherwise, just
-  // use the older api (we avoid it to avoid console messages).
-  if ([fileManager respondsToSelector:@selector(removeItemAtPath:error:)]) {
-    [fileManager removeItemAtPath:symlinkPath error:NULL];
-  } else {
-    [fileManager removeFileAtPath:symlinkPath handler:nil];
-  }
-  if ([fileManager respondsToSelector:@selector(createSymbolicLinkAtPath:withDestinationPath:error:)]) {
-    [fileManager createSymbolicLinkAtPath:symlinkPath
-                      withDestinationPath:htmlPath
-                                    error:NULL];
-  } else {
-    [fileManager createSymbolicLinkAtPath:symlinkPath pathContent:htmlPath];
-  }
-#endif
+  [[self class] removeItemAtPath:symlinkPath];
+  [[self class] createSymbolicLinkAtPath:symlinkPath
+                     withDestinationPath:htmlPath];
 }
 
 - (BOOL)logCapturePostStream {
@@ -798,6 +749,7 @@ static NSString* gLoggingProcessName = nil;
   [postStream_ retain];
 
   [(GDataProgressMonitorInputStream *)postStream_ setMonitorDelegate:self];
+  [(GDataProgressMonitorInputStream *)postStream_ setRunLoopModes:[self runLoopModes]];
 
   SEL readSel = @selector(inputStream:readIntoBuffer:length:);
   [(GDataProgressMonitorInputStream *)postStream_ setReadSelector:readSel];
@@ -812,6 +764,45 @@ static NSString* gLoggingProcessName = nil;
              length:(unsigned long long)length {
   // append the captured data
   [loggedStreamData_ appendBytes:buffer length:length];
+}
+
+#pragma mark Internal file routines
+
+// we implement plain Unix versions of NSFileManager methods to avoid
+// NSFileManager's issues with being used from multiple threads
+
++ (BOOL)fileOrDirExistsAtPath:(NSString *)path {
+  struct stat buffer;
+  int result = stat([path fileSystemRepresentation], &buffer);
+  return (result == 0);
+}
+
++ (BOOL)makeDirectoryUpToPath:(NSString *)path {
+  int result = 0;
+
+  // recursively create the parent directory of the requested path
+  NSString *parent = [path stringByDeletingLastPathComponent];
+  if (![self fileOrDirExistsAtPath:parent]) {
+    result = [self makeDirectoryUpToPath:parent];
+  }
+
+  // make the leaf directory
+  if (result == 0 && ![self fileOrDirExistsAtPath:path]) {
+    result = mkdir([path fileSystemRepresentation], S_IRWXU); // RWX for owner
+  }
+  return (result == 0);
+}
+
++ (BOOL)removeItemAtPath:(NSString *)path {
+  int result = unlink([path fileSystemRepresentation]);
+  return (result == 0);
+}
+
++ (BOOL)createSymbolicLinkAtPath:(NSString *)newPath
+             withDestinationPath:(NSString *)targetPath {
+  int result = symlink([targetPath fileSystemRepresentation],
+                       [newPath fileSystemRepresentation]);
+  return (result = 0);
 }
 
 @end

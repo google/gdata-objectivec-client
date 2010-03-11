@@ -11,7 +11,9 @@ Additions
 
 - Added support for Google Analytics v2.1 API
 
-- Added support for chunked uploads
+- Added support for chunked uploads, uploads from a file handle, and upload
+  pause/resume to Docs and YouTube APIs, and updated Docs and YouTube sample
+  apps to demonstrate pause/resume
 
 - Added block completion handler support to GData service class fetch APIs
 
@@ -54,6 +56,11 @@ Changes
 - Update sample app projects to Xcode 3 format.
 
 - Removed setUserAgent: calls from sample apps.
+
+- Changed random to arc4random and add pool drain calls to quiet the clang
+  static analyzer.
+
+- Improved thread-safety of progress monitoring and fetcher logging.
 
 Bugs Fixed
 
