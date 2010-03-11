@@ -88,7 +88,9 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 
 + (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID;
 
-// a developer key is required for uploading, and for updating or deleting
+// Note:
+//
+// A developer key is required for uploading, and for updating or deleting
 // videos.  Entries in feeds retrieved without a developer key will 
 // not have edit links. 
 - (NSString *)youTubeDeveloperKey;

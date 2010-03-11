@@ -30,8 +30,8 @@ Additions
 
 - Added publish elements to Docs revision feed
 
-- Added yt:incomplete element to app:control in YouTube video entries, and
-  caption query parameter
+- Added yt:incomplete element to app:control in YouTube video entries,
+  yt:accessControl to video entries, and caption query parameter.
 
 Changes
 

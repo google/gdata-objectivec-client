@@ -81,6 +81,13 @@
 		4F10BBAF0F1E9A07002AE29A /* GDataAtomCategoryGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F10BB9F0F1E9A07002AE29A /* GDataAtomCategoryGroup.m */; };
 		4F10BD6F0F1FEEF5002AE29A /* GDataServiceIntrospection.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F10BD6E0F1FEEF5002AE29A /* GDataServiceIntrospection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F117DB9109A205100FBF198 /* GDataAuthenticationFetcher.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F0935131030D682004C7DC1 /* GDataAuthenticationFetcher.h */; };
+		4F138B081149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */; };
+		4F138B0A1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */; };
+		4F138B0B1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */; };
+		4F138B0C1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */; };
+		4F138B0D1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */; };
+		4F138B121149A8CE005C3893 /* GDataYouTubeAccessControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F138B111149A8CE005C3893 /* GDataYouTubeAccessControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F138B131149A8E8005C3893 /* GDataYouTubeAccessControl.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F138B111149A8CE005C3893 /* GDataYouTubeAccessControl.h */; };
 		4F14A9E70B1277290072EBB8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
 		4F14ABEE0B12897B0072EBB8 /* GDataLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEB0B12897B0072EBB8 /* GDataLink.m */; };
 		4F14ABEF0B12897B0072EBB8 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
@@ -2251,6 +2258,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4F138B131149A8E8005C3893 /* GDataYouTubeAccessControl.h in Copy Static Library Headers */,
 				4FB71EB7113DAD0B00169801 /* GDataEntryDocListMetadata.h in Copy Static Library Headers */,
 				4FB71EB8113DAD0B00169801 /* GDataDocTransferFormat.h in Copy Static Library Headers */,
 				4FB71EB9113DAD0B00169801 /* GDataDocFeature.h in Copy Static Library Headers */,
@@ -2629,6 +2637,8 @@
 		4F10BBB50F1E9AAA002AE29A /* FeedServiceDocTest2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedServiceDocTest2.xml; path = Tests/FeedServiceDocTest2.xml; sourceTree = "<group>"; };
 		4F10BBB60F1E9AAA002AE29A /* FeedServiceDocTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedServiceDocTest1.xml; path = Tests/FeedServiceDocTest1.xml; sourceTree = "<group>"; };
 		4F10BD6E0F1FEEF5002AE29A /* GDataServiceIntrospection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceIntrospection.h; path = Introspection/GDataServiceIntrospection.h; sourceTree = "<group>"; };
+		4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataYouTubeAccessControl.m; path = Clients/YouTube/GDataYouTubeAccessControl.m; sourceTree = "<group>"; };
+		4F138B111149A8CE005C3893 /* GDataYouTubeAccessControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataYouTubeAccessControl.h; path = Clients/YouTube/GDataYouTubeAccessControl.h; sourceTree = "<group>"; };
 		4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GDataUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDateTime.h; path = Elements/GDataDateTime.h; sourceTree = "<group>"; };
@@ -4102,6 +4112,8 @@
 				4F36ED210FFD742800980D30 /* GDataYouTubeConstants.m */,
 				4F69E5730D4A96A80084991B /* GDataYouTubeElements.h */,
 				4F69E5750D4A96B00084991B /* GDataYouTubeElements.m */,
+				4F138B111149A8CE005C3893 /* GDataYouTubeAccessControl.h */,
+				4F138B061149A89C005C3893 /* GDataYouTubeAccessControl.m */,
 				4F0236270D5A7F8A00EE6862 /* GDataYouTubePublicationState.h */,
 				4F02361F0D5A7F7A00EE6862 /* GDataYouTubePublicationState.m */,
 				4F45B3100D51422400004F37 /* GDataYouTubeMediaElements.h */,
@@ -4760,6 +4772,7 @@
 				4FB71EAB113DACC600169801 /* GDataEntryDocListMetadata.h in Headers */,
 				4FB71EAC113DACC600169801 /* GDataDocFeature.h in Headers */,
 				4FB71EAD113DACC600169801 /* GDataDocMaxUploadSize.h in Headers */,
+				4F138B121149A8CE005C3893 /* GDataYouTubeAccessControl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5278,6 +5291,7 @@
 				4FB71E9D113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
 				4FB71E9E113DACC600169801 /* GDataDocFeature.m in Sources */,
 				4FB71E9F113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
+				4F138B0B1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5589,6 +5603,7 @@
 				4FB71EB1113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
 				4FB71EB2113DACC600169801 /* GDataDocFeature.m in Sources */,
 				4FB71EB3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
+				4F138B0D1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5899,6 +5914,7 @@
 				4FB71EA5113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
 				4FB71EA6113DACC600169801 /* GDataDocFeature.m in Sources */,
 				4FB71EA7113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
+				4F138B0A1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6208,6 +6224,7 @@
 				4FB71EAA113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
 				4FB71EAE113DACC600169801 /* GDataDocFeature.m in Sources */,
 				4FB71EAF113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
+				4F138B081149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6533,6 +6550,7 @@
 				4FB71EA1113DACC600169801 /* GDataDocTransferFormat.m in Sources */,
 				4FB71EA2113DACC600169801 /* GDataDocFeature.m in Sources */,
 				4FB71EA3113DACC600169801 /* GDataDocMaxUploadSize.m in Sources */,
+				4F138B0C1149A89C005C3893 /* GDataYouTubeAccessControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

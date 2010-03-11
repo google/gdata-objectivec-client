@@ -1765,6 +1765,12 @@
     { @"entries.0.isIncomplete", @"1" },
     { @"entries.0.captionTracksLink.href", @"contains:GppRTi2JGQ8/captions" },
     { @"entries.0.videoResponsesLink.href", @"contains:Dl643JFJWig/responses" },
+    { @"entries.0.accessControls.0.action", kGDataYouTubeAccessControlVideoRespond },
+    { @"entries.0.accessControls.0.permission", kGDataYouTubeAccessControlPermissionDenied },
+    { @"entries.0.accessControls.1.action", kGDataYouTubeAccessControlComment },
+    { @"entries.0.accessControls.1.permission", kGDataYouTubeAccessControlPermissionAllowed },
+    { @"entries.0.accessControls.1.type", @"group" },
+    { @"entries.0.accessControls.1.value", @"friends" },
 
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
