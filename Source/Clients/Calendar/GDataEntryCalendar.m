@@ -95,8 +95,8 @@
 
 #pragma mark -
 
-+ (NSString *)standardEntryKind {
-  return kGDataCategoryCalendar;
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#calendar";
 }
 
 + (void)load {
