@@ -127,7 +127,9 @@
   // temporary: use override header for chunked updates (bug 2433537)
   BOOL wasUsingOverride = [self shouldUseMethodOverrideHeader];
 
-  if ([entryToUpdate uploadData] == nil || [self serviceUploadChunkSize] == 0) {
+  if (([entryToUpdate uploadData] == nil
+         && [entryToUpdate uploadFileHandle] == nil)
+      || [self serviceUploadChunkSize] == 0) {
     // not uploading document data, or else doing a multipart MIME upload
     link = [entryToUpdate editLink];
   } else {

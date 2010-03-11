@@ -75,6 +75,7 @@ enum {
   [captchaAnswer_ release];
   [authToken_ release];
   [authSubToken_ release];
+  [authorizer_ release];
   [accountType_ release];
   [signInDomain_ release];
   [serviceID_ release];
@@ -687,6 +688,7 @@ enum {
 
   return [self fetchFeedWithURL:feedURL
                       feedClass:kGDataUseRegisteredClass
+                           ETag:nil
                        delegate:delegate
               didFinishSelector:finishedSelector];
 }
@@ -696,10 +698,23 @@ enum {
                                 delegate:(id)delegate
                        didFinishSelector:(SEL)finishedSelector {
 
+  return [self fetchFeedWithURL:feedURL
+                      feedClass:feedClass
+                           ETag:nil
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                               feedClass:(Class)feedClass
+                                    ETag:(NSString *)etag
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector {
+
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:feedClass
                                   objectToPost:nil
-                                          ETag:nil
+                                          ETag:etag
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -712,6 +727,7 @@ enum {
 
   return [self fetchEntryWithURL:entryURL
                       entryClass:kGDataUseRegisteredClass
+                            ETag:nil
                         delegate:delegate
                didFinishSelector:finishedSelector];
 }
@@ -721,10 +737,23 @@ enum {
                                  delegate:(id)delegate
                         didFinishSelector:(SEL)finishedSelector {
 
+  return [self fetchEntryWithURL:entryURL
+                      entryClass:entryClass
+                            ETag:nil
+                        delegate:delegate
+               didFinishSelector:finishedSelector];
+}
+
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
+                                     ETag:(NSString *)etag
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector {
+
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:entryClass
                                   objectToPost:nil
-                                          ETag:nil
+                                          ETag:etag
                                     httpMethod:nil
                                       delegate:delegate
                              didFinishSelector:finishedSelector
@@ -1108,6 +1137,33 @@ enum {
   authSubToken_ = [str copy];
 }
 
+- (id)authorizer {
+  return authorizer_;
+}
+
+- (void)setAuthorizer:(id)obj {
+  [authorizer_ autorelease];
+  authorizer_ = [obj retain];
+
+  GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:)]
+                     || obj == nil, @"invalid authorization object");
+}
+
++ (NSString *)authorizationScope {
+  // typically, the subclass's root URL string is the auth scope
+  //
+  // subclasses may override for custom scopes
+  NSString *scope = [self serviceRootURLString];
+
+  GDATA_DEBUG_ASSERT([scope length] > 0, @"Scope undefined for service");
+  return scope;
+}
+
++ (NSString *)serviceRootURLString {
+  // subclasses should override
+  return nil;
+}
+
 - (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
                             httpMethod:(NSString *)httpMethod
@@ -1128,24 +1184,37 @@ enum {
     }
   }
 
-  NSString *authToken;
-  if (ticket) {
-    authToken = [ticket authToken];
-  } else {
-    // no ticket was specified, so authenticate using the service object's
-    // existing token
-    authToken = authToken_;
+  // use the ticket's authorization callback, if any, else use the service's
+  // authorization callback, if any
+  id authorizer = [ticket authorizer];
+  if (authorizer == nil) {
+    authorizer = authorizer_;
   }
 
-  // add the auth token to the header
-  if ([authToken length] > 0) {
-    NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@",
-      authToken];
-    [request setValue:value forHTTPHeaderField: @"Authorization"];
-  } else if ([authSubToken_ length] > 0) {
-    NSString *value = [NSString stringWithFormat:@"AuthSub token=%@",
-      authSubToken_];
-    [request setValue:value forHTTPHeaderField: @"Authorization"];
+  if (authorizer) {
+    [authorizer performSelector:@selector(authorizeRequest:)
+                     withObject:request];
+  } else {
+    // fall back on a stored auth token
+    NSString *authToken;
+    if (ticket) {
+      authToken = [ticket authToken];
+    } else {
+      // no ticket was specified, so authenticate using the service object's
+      // existing token
+      authToken = authToken_;
+    }
+
+    // add the auth token to the header
+    if ([authToken length] > 0) {
+      NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@",
+        authToken];
+      [request setValue:value forHTTPHeaderField: @"Authorization"];
+    } else if ([authSubToken_ length] > 0) {
+      NSString *value = [NSString stringWithFormat:@"AuthSub token=%@",
+        authSubToken_];
+      [request setValue:value forHTTPHeaderField: @"Authorization"];
+    }
   }
   return request;
 }
@@ -1235,6 +1304,7 @@ enum {
   if (self) {
     [self setAuthToken:[service authToken]];
     [self setCredentialDate:[service credentialDate]];
+    [self setAuthorizer:[service authorizer]];
   }
   return self;
 }
@@ -1243,13 +1313,20 @@ enum {
   [authFetcher_ release];
   [authToken_ release];
   [credentialDate_ release];
+  [authorizer_ release];
   [super dealloc];
 }
 
 - (NSString *)description {
-  NSString *template = @"%@ %p: {service:%@ objectFetcher:%@ authFetcher:%@ userData:%@}";
-  return [NSString stringWithFormat:template,
-    [self class], self, service_, objectFetcher_, authFetcher_, userData_];
+  if (authorizer_) {
+    NSString *template = @"%@ %p: {service:%@ objectFetcher:%@ authorizer:%@}";
+    return [NSString stringWithFormat:template,
+            [self class], self, service_, objectFetcher_, authorizer_];
+  } else {
+    NSString *template = @"%@ %p: {service:%@ objectFetcher:%@ authFetcher:%@}";
+    return [NSString stringWithFormat:template,
+      [self class], self, service_, objectFetcher_, authFetcher_];
+  }
 }
 
 - (void)cancelTicket {
@@ -1285,6 +1362,20 @@ enum {
   [credentialDate_ autorelease];
   credentialDate_ = [date retain];
 }
+
+// OAuth support
+- (id)authorizer {
+  return authorizer_;
+}
+
+- (void)setAuthorizer:(id)obj {
+  [authorizer_ autorelease];
+  authorizer_ = [obj retain];
+
+  GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:)]
+                     || obj == nil, @"invalid authorization object");
+}
+
 @end
 
 @implementation NSDictionary (GDataServiceGoogleAdditions)

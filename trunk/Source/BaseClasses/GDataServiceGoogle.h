@@ -59,10 +59,13 @@ enum {
   GDataHTTPFetcher *authFetcher_;
   NSString *authToken_;
   NSDate *credentialDate_;
+
+  id authorizer_;
 }
 
 - (void)cancelTicket; // stops fetches in progress
 
+// ClientLogin support
 - (GDataHTTPFetcher *)authFetcher;
 - (void)setAuthFetcher:(GDataHTTPFetcher *)fetcher;
 
@@ -71,17 +74,27 @@ enum {
 
 - (NSDate *)credentialDate;
 - (void)setCredentialDate:(NSDate *)date;
+
+// OAuth support
+- (id)authorizer;
+- (void)setAuthorizer:(id)obj;
 @end
 
 // GDataServiceGoogle is the version of the service class that supports
 // Google authentication.
 @interface GDataServiceGoogle : GDataServiceBase {
 
+  // ClientLogin support
   NSString *captchaToken_;
   NSString *captchaAnswer_;
 
   NSString *authToken_;
+
+  // AuthSub support
   NSString *authSubToken_;
+
+  // OAuth support
+  id authorizer_;
 
   NSString *accountType_; // hosted or google
 
@@ -115,6 +128,12 @@ enum {
                                 delegate:(id)delegate
                        didFinishSelector:(SEL)finishedSelector;
 
+- (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
+                               feedClass:(Class)feedClass
+                                    ETag:(NSString *)etag
+                                delegate:(id)delegate
+                       didFinishSelector:(SEL)finishedSelector;
+
 // fetch a query, authenticated
 - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
                                   delegate:(id)delegate
@@ -132,6 +151,12 @@ enum {
 
 - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
                                entryClass:(Class)entryClass
+                                 delegate:(id)delegate
+                        didFinishSelector:(SEL)finishedSelector;
+
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
+                                     ETag:(NSString *)etag
                                  delegate:(id)delegate
                         didFinishSelector:(SEL)finishedSelector;
 
@@ -183,7 +208,7 @@ enum {
 
 // fetch an entry, authenticated
  - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
-                        completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+                         completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
 
 // insert an entry, authenticated
 - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
@@ -201,7 +226,7 @@ enum {
 
 - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
                                      ETag:(NSString *)etag
-                  completionHandler:(void (^)(GDataServiceTicket *ticket, id nilObject, NSError *error))handler;
+                        completionHandler:(void (^)(GDataServiceTicket *ticket, id nilObject, NSError *error))handler;
 
 // fetch a batch feed, authenticated
 - (GDataServiceTicket *)fetchFeedWithBatchFeed:(GDataFeedBase *)batchFeed
@@ -231,6 +256,13 @@ enum {
 - (NSString *)authSubToken;
 - (void)setAuthSubToken:(NSString *)str;
 
+// the authorizer object must implement
+// - (void)authorizeRequest:(NSMutableURLRequest *)request
+- (id)authorizer;
+- (void)setAuthorizer:(id)obj;
+
++ (NSString *)authorizationScope;
+
 // default account type is HOSTED_OR_GOOGLE
 - (NSString *)accountType;
 - (void)setAccountType:(NSString *)str;
@@ -249,6 +281,8 @@ enum {
 
 - (void)setServiceID:(NSString *)str; // call only if not using a subclass
 - (NSString *)serviceID;
+
++ (NSString *)serviceRootURLString;
 
 // subclasses may specify what namespaces to attach to posted user entries
 // when the entries lack explicit root-level namespaces

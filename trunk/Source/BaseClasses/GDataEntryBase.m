@@ -136,6 +136,7 @@
 
 - (void)dealloc {
   [uploadData_ release];
+  [uploadFileHandle_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
 
@@ -157,6 +158,7 @@
   GDataEntryBase* newEntry = [super copyWithZone:zone];
 
   [newEntry setUploadData:[self uploadData]];
+  [newEntry setUploadFileHandle:[self uploadFileHandle]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
   [newEntry setShouldUploadDataOnly:[self shouldUploadDataOnly]];
@@ -229,6 +231,16 @@
 
   // check if a subclass is providing data
   NSData *uploadData = [self uploadData];
+
+  if (uploadData == nil) {
+    // read from the file handle, if one was provided
+    NSFileHandle *fileHandle = [self uploadFileHandle];
+    if (fileHandle) {
+      [fileHandle seekToFileOffset:0];
+      uploadData = [fileHandle readDataToEndOfFile];
+    }
+  }
+
   NSString *uploadMIMEType = [self uploadMIMEType];
   NSString *slug = [self uploadSlug];
 
@@ -551,7 +563,7 @@ forCategoryWithScheme:scheme
   [self removeObject:obj forExtensionClass:[GDataCategory class]];
 }
 
-// Multipart MIME Uploading
+// File uploading
 
 - (NSData *)uploadData {
   return uploadData_;
@@ -560,6 +572,15 @@ forCategoryWithScheme:scheme
 - (void)setUploadData:(NSData *)data {
   [uploadData_ autorelease];
   uploadData_ = [data retain];
+}
+
+- (NSFileHandle *)uploadFileHandle {
+  return uploadFileHandle_;
+}
+
+- (void)setUploadFileHandle:(NSFileHandle *)data {
+  [uploadFileHandle_ autorelease];
+  uploadFileHandle_ = [data retain];
 }
 
 - (NSString *)uploadMIMEType {

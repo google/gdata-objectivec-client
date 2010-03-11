@@ -55,18 +55,20 @@
 
     inputStream_ = [input retain];
     dataSize_ = length;
+
+    thread_ = [[NSThread currentThread] retain];
   }
   return self;
 }
 
 - (id)init {
-  if ((self = [super init])) {
-  }
-  return self;
+  return [self initWithStream:nil length:0];
 }
 
 - (void)dealloc {
   [inputStream_ release];
+  [thread_ release];
+  [runLoopModes_ release];
   [super dealloc];
 }
 
@@ -80,6 +82,16 @@
 
     numBytesRead_ += numRead;
 
+    // we can only call back on another thread on 10.5 and later
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+    SEL performSel = @selector(performSelector:onThread:withObject:waitUntilDone:);
+
+    BOOL isOnOriginalThread = [thread_ isEqual:[NSThread currentThread]]
+      || ![NSObject instancesRespondToSelector:performSel];
+#else
+    BOOL isOnOriginalThread = YES;
+#endif
+
     if (monitorDelegate_) {
 
       if (monitorSelector_) {
@@ -92,26 +104,74 @@
         [invocation setArgument:&self atIndex:2];
         [invocation setArgument:&numBytesRead_ atIndex:3];
         [invocation setArgument:&dataSize_ atIndex:4];
-        [invocation invoke];
+
+        if (isOnOriginalThread) {
+          [invocation invoke];
+        } else if (runLoopModes_) {
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+          [invocation performSelector:@selector(invoke)
+                             onThread:thread_
+                           withObject:nil
+                        waitUntilDone:NO
+                                modes:runLoopModes_];
+        } else {
+          [invocation performSelector:@selector(invoke)
+                             onThread:thread_
+                           withObject:nil
+                        waitUntilDone:NO];
+#endif
+        }
       }
 
       if (readSelector_) {
         // call the read selector with the buffer and number of bytes actually
         // read into it
-        unsigned long long length = numRead;
+        SEL sel = @selector(invokeReadSelectorWithBuffer:);
 
-        NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:readSelector_];
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-        [invocation setSelector:readSelector_];
-        [invocation setTarget:monitorDelegate_];
-        [invocation setArgument:&self atIndex:2];
-        [invocation setArgument:&buffer atIndex:3];
-        [invocation setArgument:&length atIndex:4];
-        [invocation invoke];
+        if (isOnOriginalThread) {
+          // invoke immediately
+          NSData *data = [NSData dataWithBytesNoCopy:buffer
+                                              length:numRead
+                                        freeWhenDone:NO];
+          [self performSelector:sel withObject:data];
+        } else {
+#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
+          // copy the buffer into an NSData to be retained by the
+          // performSelector, and invoke on the proper thread
+          NSData *data = [NSData dataWithBytes:buffer length:numRead];
+          if (runLoopModes_) {
+            [self performSelector:sel
+                         onThread:thread_
+                       withObject:data
+                    waitUntilDone:NO
+                            modes:runLoopModes_];
+          } else {
+            [self performSelector:sel
+                         onThread:thread_
+                       withObject:data
+                    waitUntilDone:NO];
+          }
+#endif
+        }
       }
     }
   }
+
   return numRead;
+}
+
+- (void)invokeReadSelectorWithBuffer:(NSData *)data {
+  const void *buffer = [data bytes];
+  unsigned long long length = [data length];
+
+  NSMethodSignature *signature = [monitorDelegate_ methodSignatureForSelector:readSelector_];
+  NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+  [invocation setSelector:readSelector_];
+  [invocation setTarget:monitorDelegate_];
+  [invocation setArgument:&self atIndex:2];
+  [invocation setArgument:&buffer atIndex:3];
+  [invocation setArgument:&length atIndex:4];
+  [invocation invoke];
 }
 
 - (BOOL)getBuffer:(uint8_t **)buffer length:(NSUInteger *)len {
@@ -198,6 +258,15 @@
 
 - (id)monitorSource {
   return monitorSource_;
+}
+
+- (NSArray *)runLoopModes {
+  return runLoopModes_;
+}
+
+- (void)setRunLoopModes:(NSArray *)modes {
+  [runLoopModes_ autorelease];
+  runLoopModes_ = [modes retain];
 }
 
 @end

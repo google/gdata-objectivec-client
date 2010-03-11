@@ -39,6 +39,9 @@
 
   NSInputStream *inputStream_; // encapsulated stream that does the work
 
+  NSThread *thread_;      // thread in which this object was created
+  NSArray *runLoopModes_; // modes for calling callbacks, when necessary
+
   unsigned long long dataSize_;     // size of data in the source
   unsigned long long numBytesRead_; // bytes read from the input stream so far
 
@@ -84,5 +87,9 @@
 
 - (void)setReadSelector:(SEL)readSelector;
 - (SEL)readSelector;
+
+// Modes for invoking callbacks, when necessary
+- (NSArray *)runLoopModes;
+- (void)setRunLoopModes:(NSArray *)modes;
 
 @end

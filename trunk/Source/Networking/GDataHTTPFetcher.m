@@ -133,6 +133,7 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 @interface GDataHTTPFetchHistory (InternalMethods)
 - (NSString *)cachedLastModifiedStringForRequest:(NSURLRequest *)request;
 - (NSData *)cachedDataForRequest:(NSURLRequest *)request;
+- (void)removeCachedDataForRequest:(NSURLRequest *)request;
 - (void)updateFetchHistoryWithRequest:(NSURLRequest *)request
                              response:(NSURLResponse *)response
                        downloadedData:(NSData *)downloadedData;
@@ -337,18 +338,29 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
     // If this URL is in the history, set the Last-Modified header field
 
     // if we have a history, we're tracking across fetches, so we don't
-    // want to pull results from a cache
+    // want to pull results from any other cache
     [request_ setCachePolicy:NSURLRequestReloadIgnoringCacheData];
 
     if (isEffectiveHTTPGet) {
       // servers don't want if-modified-since on anything but GETs
 
-      // extract the last-modified date for this request from the fetch
-      // history
-      NSString *lastModifiedStr = [fetchHistory_ cachedLastModifiedStringForRequest:request_];
+      // we'll only add an If-Modified-Since header if there's no ETag
+      // specified, since the ETag is a more important overall criteria
+      NSString *etag = [request_ valueForHTTPHeaderField:@"If-None-Match"];
+      if (etag == nil) {
+        // no Etag: extract the last-modified date for this request from the
+        // fetch history, and add it to the request
+        NSString *lastModifiedStr = [fetchHistory_ cachedLastModifiedStringForRequest:request_];
 
-      if (lastModifiedStr != nil) {
-        [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
+        if (lastModifiedStr != nil) {
+          [request_ addValue:lastModifiedStr forHTTPHeaderField:kGDataIfModifiedSinceHeader];
+        }
+      } else {
+        // has an ETag: remove any stored response in the fetch history
+        // for this request, as the If-None-Match header could lead to
+        // a 304 Not Modified, and we want that error delivered to the user
+        // since they explicitly specified the ETag
+        [fetchHistory_ removeCachedDataForRequest:request_];
       }
     }
   }
@@ -1906,6 +1918,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   [cachedResponse setReservationDate:nil];
 
   return cachedData;
+}
+
+- (void)removeCachedDataForRequest:(NSURLRequest *)request {
+  [datedDataCache_ removeCachedResponseForRequest:request];
 }
 
 - (void)clearDatedDataCache {

@@ -47,8 +47,9 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 
 
 @interface GDataEntryBase : GDataObject <NSCopying> {
-
+  // either uploadData_ or uploadFileHandle_ may be set, but not both
   NSData *uploadData_;
+  NSFileHandle *uploadFileHandle_;
   NSString *uploadMIMEType_;
   NSString *uploadSlug_; // for http slug (filename) header when uploading
   BOOL shouldUploadDataOnly_;
@@ -113,9 +114,14 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (void)addCategory:(GDataCategory *)category;
 - (void)removeCategory:(GDataCategory *)category;
 
-// Multipart MIME Upload
+// File upload
+//
+// Either uploadData or uploadFileHandle should be set, but not both
 - (NSData *)uploadData;
 - (void)setUploadData:(NSData *)data;
+
+- (NSFileHandle *)uploadFileHandle;
+- (void)setUploadFileHandle:(NSFileHandle *)fileHandle;
 
 - (NSString *)uploadMIMEType;
 - (void)setUploadMIMEType:(NSString *)str;

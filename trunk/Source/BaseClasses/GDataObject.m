@@ -413,6 +413,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return nil;
 }
 
+- (NSFileHandle *)uploadFileHandle {
+  // subclasses may return a file handle to be uploaded along with the object
+  return nil;
+}
+
 - (BOOL)shouldUploadDataOnly {
   return NO;
 }

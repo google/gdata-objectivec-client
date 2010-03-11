@@ -85,6 +85,10 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                           uploadData:(NSData *)data
                                       uploadMIMEType:(NSString *)uploadMIMEType
                                            chunkSize:(NSUInteger)chunkSize;
++ (GDataHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
+                                    uploadFileHandle:(NSFileHandle *)uploadFileHandle
+                                      uploadMIMEType:(NSString *)uploadMIMEType
+                                           chunkSize:(NSUInteger)chunkSize;
 - (void)pauseFetching;
 - (void)resumeFetchingWithDelegate:(id)delegate;
 - (BOOL)isPaused;
@@ -415,6 +419,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
   NSData *dataToPost = nil;
   SEL sentDataSel = NULL;
   NSData *uploadData = nil;
+  NSFileHandle *uploadFileHandle = nil;
   BOOL shouldUploadDataChunked = ([self serviceUploadChunkSize] > 0);
   BOOL isUploadingDataChunked = NO;
 
@@ -436,7 +441,9 @@ static void XorPlainMutableData(NSMutableData *mutable) {
     BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
 
     uploadData = [objectToPost uploadData];
-    isUploadingDataChunked = (uploadData != nil && shouldUploadDataChunked);
+    uploadFileHandle = [objectToPost uploadFileHandle];
+    isUploadingDataChunked = ((uploadData != nil || uploadFileHandle != nil)
+                              && shouldUploadDataChunked);
     BOOL shouldUploadDataOnly = [objectToPost shouldUploadDataOnly];
 
     BOOL shouldReportUploadProgress;
@@ -536,6 +543,7 @@ static void XorPlainMutableData(NSMutableData *mutable) {
         [monitoredInputStream setMonitorDelegate:self];
         [monitoredInputStream setMonitorSelector:sel];
         [monitoredInputStream setMonitorSource:ticket];
+        [monitoredInputStream setRunLoopModes:[self runLoopModes]];
 
         streamToPost = monitoredInputStream;
       }
@@ -560,10 +568,17 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
     NSString *uploadMIMEType = [objectToPost uploadMIMEType];
 
-    fetcher = [uploadClass uploadFetcherWithRequest:request
-                                         uploadData:uploadData
-                                     uploadMIMEType:uploadMIMEType
-                                          chunkSize:uploadChunkSize];
+    if (uploadData) {
+      fetcher = [uploadClass uploadFetcherWithRequest:request
+                                           uploadData:uploadData
+                                       uploadMIMEType:uploadMIMEType
+                                            chunkSize:uploadChunkSize];
+    } else {
+      fetcher = [uploadClass uploadFetcherWithRequest:request
+                                     uploadFileHandle:uploadFileHandle
+                                       uploadMIMEType:uploadMIMEType
+                                            chunkSize:uploadChunkSize];
+    }
   } else {
     fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
   }

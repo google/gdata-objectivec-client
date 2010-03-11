@@ -27,8 +27,10 @@
 // unless another directory is specified with +setLoggingDirectory.
 //
 // In the iPhone simulator, the default logs location is the user's home
-// directory.  On the iPhone device, the default logs location is the
-// application's documents directory on the device.
+// directory in ~/Library/Application Support.  On the iPhone device, the
+// default logs location is the application's documents directory on the device.
+//
+// Tip: use the Finder's "Sort By Date" to find the most recent logs.
 //
 // Each run of an application gets a separate set of log files.  An html
 // file is generated to simplify browsing the run's http transactions.

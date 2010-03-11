@@ -374,6 +374,7 @@ typedef struct GDataDescriptionRecord {
 
 - (NSString *)uploadMIMEType;
 - (NSData *)uploadData;
+- (NSFileHandle *)uploadFileHandle;
 - (BOOL)shouldUploadDataOnly;
 
 //
