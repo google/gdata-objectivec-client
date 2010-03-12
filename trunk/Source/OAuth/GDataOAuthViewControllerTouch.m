@@ -180,31 +180,41 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   return @"GDataOAuthViewTouch";
 }
 
-+ (GDataOAuthAuthentication *)authForInstalledAppFromKeychainForApplicationServiceName:(NSString *)appServiceName {
++ (GDataOAuthAuthentication *)authForGoogleFromKeychainForName:(NSString *)appServiceName {
   GDataOAuthAuthentication *newAuth = [GDataOAuthAuthentication authForInstalledApp];
-  if (newAuth) {
-    GDataOAuthKeychain *keychain = [GDataOAuthKeychain defaultKeychain];
-    NSString *password = [keychain passwordForService:appServiceName
-                                              account:kGDataOAuthAccountName
-                                                error:nil];
-    if (password != nil) {
-      [newAuth setKeysForResponseString:password];
-      [newAuth setHasAccessToken:YES];
-    }
-  }
+  [self authorizeFromKeychainForName:appServiceName
+                      authentication:newAuth];
   return newAuth;
 }
 
-+ (BOOL)removeParamsFromKeychainForApplicationServiceName:(NSString *)appServiceName {
++ (BOOL)authorizeFromKeychainForName:(NSString *)appServiceName
+                      authentication:(GDataOAuthAuthentication *)newAuth {
+  [newAuth setToken:nil];
+  [newAuth setHasAccessToken:NO];
+
+  BOOL didGetTokens = NO;
+  GDataOAuthKeychain *keychain = [GDataOAuthKeychain defaultKeychain];
+  NSString *password = [keychain passwordForService:appServiceName
+                                            account:kGDataOAuthAccountName
+                                              error:nil];
+  if (password != nil) {
+    [newAuth setKeysForResponseString:password];
+    [newAuth setHasAccessToken:YES];
+    didGetTokens = YES;
+  }
+  return didGetTokens;
+}
+
++ (BOOL)removeParamsFromKeychainForName:(NSString *)appServiceName {
   GDataOAuthKeychain *keychain = [GDataOAuthKeychain defaultKeychain];
   return [keychain removePasswordForService:appServiceName
                                     account:kGDataOAuthAccountName
                                       error:nil];
 }
 
-+ (BOOL)saveParamsToKeychainForApplicationServiceName:(NSString *)appServiceName
-                                       authentication:(GDataOAuthAuthentication *)auth {
-  [self removeParamsFromKeychainForApplicationServiceName:appServiceName];
++ (BOOL)saveParamsToKeychainForName:(NSString *)appServiceName
+                     authentication:(GDataOAuthAuthentication *)auth {
+  [self removeParamsFromKeychainForName:appServiceName];
   // don't save unless we have a token that can really authorize requests
   if (![auth hasAccessToken]) return NO;
 
@@ -377,10 +387,10 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
         NSString *appServiceName = [self keychainApplicationServiceName];
         if ([auth canAuthorize]) {
           // save the auth params in the keychain
-          [[self class] saveParamsToKeychainForApplicationServiceName:appServiceName authentication:auth];
+          [[self class] saveParamsToKeychainForName:appServiceName authentication:auth];
         } else {
           // remove the auth params from the keychain
-          [[self class] removeParamsFromKeychainForApplicationServiceName:appServiceName];
+          [[self class] removeParamsFromKeychainForName:appServiceName];
         }
       }
     }
