@@ -50,7 +50,7 @@ windowController = [[[GDataOAuthWindowController alloc] initWithScope:scope
                                   delegate:self
                           finishedSelector:@selector(windowController:finishedWithAuth:error:)];
 }}}
-The “scope” is a string identifying what access is being requested. For access to more than one scopes, separate them with a space. Applications using the GData Objective-C Library can get scopes from the service classes; for example, the scope of the Contacts API shown above is available as
+The “scope” is a string identifying what access is being requested. For access to more than one scopes, separate them with a space. Applications using the Google Data APIs Objective-C Client Library can get scopes from the service classes; for example, the scope of the Contacts API shown above is available as
 {{{
  scope = [GDataServiceGoogleContacts authorizationScope];
 }}}
@@ -73,7 +73,7 @@ When the user signs in successfully or cancels signing in, the view or window co
 
 === Using the Authentication Tokens ===
 
-If authentication succeeds, the application should retain the authentication object. It can be either stored into a GData service object to authorize future GData requests:
+If authentication succeeds, the application should retain the authentication object. It can be either stored into a library service object to authorize future API requests:
 {{{
  [[self contactService] setAuthorizer:auth];
 }}}
