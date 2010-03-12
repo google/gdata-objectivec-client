@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (557 classes) 2010-03-11 15:25:55 -0800
+// com.google.GDataFramework v. 1.9.1 (560 classes) 2010-03-11 17:26:57 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -344,6 +344,9 @@
   #define GDataNameSuffix                         _GDATA_NS_SYMBOL(GDataNameSuffix)
   #define GDataNameValueConstruct                 _GDATA_NS_SYMBOL(GDataNameValueConstruct)
   #define GDataNormalPlayTime                     _GDATA_NS_SYMBOL(GDataNormalPlayTime)
+  #define GDataOAuthAuthentication                _GDATA_NS_SYMBOL(GDataOAuthAuthentication)
+  #define GDataOAuthSignIn                        _GDATA_NS_SYMBOL(GDataOAuthSignIn)
+  #define GDataOAuthWindowController              _GDATA_NS_SYMBOL(GDataOAuthWindowController)
   #define GDataObject                             _GDATA_NS_SYMBOL(GDataObject)
   #define GDataOpenSearchItemsPerPage             _GDATA_NS_SYMBOL(GDataOpenSearchItemsPerPage)
   #define GDataOpenSearchStartIndex               _GDATA_NS_SYMBOL(GDataOpenSearchStartIndex)

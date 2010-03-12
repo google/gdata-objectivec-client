@@ -888,6 +888,7 @@
 		4F2B94DE0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */; };
 		4F2B94DF0BFA61D700A70CB3 /* GDataGatherInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2B94DB0BFA61D700A70CB3 /* GDataGatherInputStream.m */; };
 		4F2ED9050C04C1A5007CD756 /* FeedPhotosUserEntry1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F2ED9040C04C1A5007CD756 /* FeedPhotosUserEntry1.xml */; };
+		4F3173231149CF4800D9E0E7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4106E41149C708009202D9 /* Security.framework */; };
 		4F31E9E50F81AAA100CC4EBC /* GDataEntryCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F31E9E00F81AAA100CC4EBC /* GDataEntryCalendarSettings.m */; };
 		4F31E9E60F81AAA100CC4EBC /* GDataFeedCalendarSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F31E9E20F81AAA100CC4EBC /* GDataFeedCalendarSettings.m */; };
 		4F31E9E70F81AAA100CC4EBC /* GDataCalendarSettingsProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F31E9E40F81AAA100CC4EBC /* GDataCalendarSettingsProperty.m */; };
@@ -3375,6 +3376,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F3173231149CF4800D9E0E7 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6662,7 +6664,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx*][arch=x86_64]" = 10.5;
 				OTHER_CFLAGS = "-DDEBUG=1";
 				WARNING_CFLAGS = (
@@ -6694,7 +6696,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
-				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				"MACOSX_DEPLOYMENT_TARGET[sdk=macosx*][arch=x86_64]" = 10.5;
 				WARNING_CFLAGS = (
 					"-Wall",
