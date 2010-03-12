@@ -75,6 +75,9 @@ _EXTERN NSString* const kGDataCategoryScheme _INITIALIZE_AS(@"http://schemas.goo
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
 
+- (NSString *)fieldSelection;
+- (void)setFieldSelection:(NSString *)str;
+
 - (NSString *)kind;
 - (void)setKind:(NSString *)str;
 

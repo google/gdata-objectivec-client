@@ -240,6 +240,7 @@
     { @"startIndex", @"1" },
     { @"itemsPerPage", @"3" },
     { @"ETag", @"Nofzeigeritznum" },
+    { @"fieldSelection", @"@gd:*,link" },
       
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
@@ -261,7 +262,9 @@
     { @"entries.0.accessLevel", kGDataCalendarAccessOwner},
     { @"entries.0.overrideName", @"over-ride-name" },
     { @"entries.0.ETag", @"W/C04EQXc6fCp7ImA9WxZbGUU." },
+    { @"entries.0.fieldSelection", @"@gd:*,title,gd:when" },
     { @"entries.1.locations.0", @"Joes Pub" },
+    { @"entries.1.fieldSelection", nil },
     { @"entries.2.isSelected", @"0" },
     { @"entries.2.isHidden", @"1" },
     

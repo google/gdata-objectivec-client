@@ -88,6 +88,8 @@
 @interface GDataETagAttribute : GDataAttribute <GDataExtension>
 @end
 
-@interface GDataKindAttribute : GDataAttribute <GDataExtension>
+@interface GDataFieldsAttribute : GDataAttribute <GDataExtension>
 @end
 
+@interface GDataKindAttribute : GDataAttribute <GDataExtension>
+@end

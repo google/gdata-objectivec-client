@@ -301,11 +301,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
       // one (unless the etag is weak and so shouldn't be a constraint at all)
       BOOL isWeakETag = [etag hasPrefix:@"W/"];
 
-      BOOL isDoingPutOrDelete =
+      BOOL isModifying =
         [httpMethod caseInsensitiveCompare:@"PUT"] == NSOrderedSame
-        || [httpMethod caseInsensitiveCompare:@"DELETE"] == NSOrderedSame;
+        || [httpMethod caseInsensitiveCompare:@"DELETE"] == NSOrderedSame
+        || [httpMethod caseInsensitiveCompare:@"PATCH"] == NSOrderedSame;
 
-      if (isDoingPutOrDelete && !isWeakETag) {
+      if (isModifying && !isWeakETag) {
         [request setValue:etag forHTTPHeaderField:@"If-Match"];
       }
     }
@@ -332,19 +333,26 @@ static void XorPlainMutableData(NSMutableData *mutable) {
                                         ETag:(NSString *)etag
                                   httpMethod:(NSString *)httpMethod
                                       ticket:(GDataServiceTicketBase *)ticket {
+  NSString *contentType = @"application/atom+xml; charset=utf-8";
 
-  // if the object being sent has an etag, add it to the request header to
-  // avoid retrieving a duplicate or to avoid writing over an updated
-  // version of the resource on the server
-  //
-  // Typically, delete requests will provide an explicit ETag parameter, and
-  // other requests will have the ETag carried inside the object being updated
+  if (object) {
+    // if the object being sent has an etag, add it to the request header to
+    // avoid retrieving a duplicate or to avoid writing over an updated
+    // version of the resource on the server
+    //
+    // Typically, delete requests will provide an explicit ETag parameter, and
+    // other requests will have the ETag carried inside the object being updated
+    if (etag == nil) {
+      SEL selEtag = @selector(ETag);
+      if ([object respondsToSelector:selEtag]) {
+        etag = [object performSelector:selEtag];
+      }
+    }
 
-  if (etag == nil) {
-    SEL selEtag = @selector(ETag);
-    if ([object respondsToSelector:selEtag]) {
-
-      etag = [object performSelector:selEtag];
+    if (httpMethod != nil
+        && [httpMethod caseInsensitiveCompare:@"PATCH"] == NSOrderedSame) {
+      // PATCH isn't part of Atom
+      contentType = @"application/xml; charset=utf-8";
     }
   }
 
@@ -355,13 +363,12 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
   [request setValue:@"application/atom+xml, text/xml" forHTTPHeaderField:@"Accept"];
 
-  [request setValue:@"application/atom+xml; charset=utf-8" forHTTPHeaderField:@"Content-Type"]; // header is authoritative for character set issues.
+  [request setValue:contentType forHTTPHeaderField:@"Content-Type"];
 
   [request setValue:@"no-cache" forHTTPHeaderField:@"Cache-Control"];
 
   return request;
 }
-
 
 #pragma mark -
 
