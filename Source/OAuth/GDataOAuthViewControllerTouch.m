@@ -529,6 +529,7 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *key = [self keyForService:service account:account];
     [defaults removeObjectForKey:key];
+    [defaults synchronize];
   } else if (error != NULL) {
     *error = [NSError errorWithDomain:kGDataOAuthKeychainErrorDomain
                                  code:kGDataOAuthKeychainErrorBadArguments
@@ -547,6 +548,7 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *key = [self keyForService:service account:account];
     [defaults setObject:password forKey:key];
+    [defaults synchronize];
     didSucceed = YES;
   } else if (error != NULL) {
     *error = [NSError errorWithDomain:kGDataOAuthKeychainErrorDomain
