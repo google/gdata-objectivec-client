@@ -39,7 +39,7 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
 - (void)awakeFromNib {
   // get the saved authentication, if any, from the keychain
   GDataOAuthAuthentication *auth;
-  auth = [GDataOAuthWindowController authForInstalledAppFromKeychainForApplicationServiceName:kAppServiceName];
+  auth = [GDataOAuthWindowController authForGoogleFromKeychainForName:kAppServiceName];
   [self setAuthentication:auth];
 
   // this is optional:
@@ -96,7 +96,7 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
 
 - (void)signOut {
   // remove the stored authentication from the keychain
-  [GDataOAuthWindowController removeParamsFromKeychainForApplicationServiceName:kAppServiceName];
+  [GDataOAuthWindowController removeParamsFromKeychainForName:kAppServiceName];
 
   [GDataOAuthWindowController revokeTokenForGoogleAuthentication:mAuth];
 

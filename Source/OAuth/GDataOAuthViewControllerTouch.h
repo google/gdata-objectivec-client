@@ -163,31 +163,36 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 // subclasses may override authNibName to specify a custom name
 + (NSString *)authNibName;
 
-// revocation of an authorized token from Google
-+ (void)revokeTokenForGoogleAuthentication:(GDataOAuthAuthentication *)auth;
-
 // If the nib is not found, this ViewwController calls this method to construct
 // the view.
 - (void)constructView;
 
+// revocation of an authorized token from Google
++ (void)revokeTokenForGoogleAuthentication:(GDataOAuthAuthentication *)auth;
 
 //
 // Keychain
 //
 
-// create an authentication object from the access token and secret stored in
-// the keychain; if no token is available, the return an unauthorized auth
-// object
-+ (GDataOAuthAuthentication *)authForInstalledAppFromKeychainForApplicationServiceName:(NSString *)appServiceName;
+// create an authentication object for Google services from the access
+// token and secret stored in the keychain; if no token is available, return
+// an unauthorized auth object
++ (GDataOAuthAuthentication *)authForGoogleFromKeychainForName:(NSString *)appServiceName;
+
+// add tokens from the keychain, if available, to the authentication object
+//
+// returns YES if the authentication object was authorized from the keychain
++ (BOOL)authorizeFromKeychainForName:(NSString *)appServiceName
+                      authentication:(GDataOAuthAuthentication *)auth;
 
 // method for deleting the stored access token and secret, useful for "signing
 // out"
-+ (BOOL)removeParamsFromKeychainForApplicationServiceName:(NSString *)appServiceName;
++ (BOOL)removeParamsFromKeychainForName:(NSString *)appServiceName;
 
 // method for saving the stored access token and secret; typically, this method
 // is used only by this.
-+ (BOOL)saveParamsToKeychainForApplicationServiceName:(NSString *)appServiceName
-                                       authentication:(GDataOAuthAuthentication *)auth;
++ (BOOL)saveParamsToKeychainForName:(NSString *)appServiceName
+                     authentication:(GDataOAuthAuthentication *)auth;
 
 @end
 

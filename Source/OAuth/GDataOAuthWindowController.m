@@ -263,11 +263,11 @@ const char *kKeychainAccountName = "OAuth";
 
         if (isKeychainChecked && canAuthorize) {
           // save the auth params in the keychain
-          [[self class] saveParamsToKeychainForApplicationServiceName:appServiceName
-                                                       authentication:auth];
+          [[self class] saveParamsToKeychainForName:appServiceName
+                                     authentication:auth];
         } else {
           // remove the auth params from the keychain
-          [[self class] removeParamsFromKeychainForApplicationServiceName:appServiceName];
+          [[self class] removeParamsFromKeychainForName:appServiceName];
         }
       }
     }
@@ -314,15 +314,15 @@ const char *kKeychainAccountName = "OAuth";
 
 #pragma mark Keychain support
 
-+ (NSString *)prefsKeyForApplicationServiceName:(NSString *)appServiceName {
++ (NSString *)prefsKeyForName:(NSString *)appServiceName {
   NSString *result = [@"OAuth: " stringByAppendingString:appServiceName];
   return result;
 }
 
-+ (BOOL)saveParamsToKeychainForApplicationServiceName:(NSString *)appServiceName
-                                       authentication:(GDataOAuthAuthentication *)auth {
++ (BOOL)saveParamsToKeychainForName:(NSString *)appServiceName
+                     authentication:(GDataOAuthAuthentication *)auth {
 
-  [self removeParamsFromKeychainForApplicationServiceName:appServiceName];
+  [self removeParamsFromKeychainForName:appServiceName];
 
   // don't save unless we have a token that can really authorize requests
   if (![auth hasAccessToken]) return NO;
@@ -344,7 +344,7 @@ const char *kKeychainAccountName = "OAuth";
   if (didSucceed) {
     // write to preferences that we have a keychain item (so we know later
     // that we can read from the keychain without raising a permissions dialog)
-    NSString *prefKey = [self prefsKeyForApplicationServiceName:appServiceName];
+    NSString *prefKey = [self prefsKeyForName:appServiceName];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:YES forKey:prefKey];
   }
@@ -352,7 +352,7 @@ const char *kKeychainAccountName = "OAuth";
   return didSucceed;
 }
 
-+ (BOOL)removeParamsFromKeychainForApplicationServiceName:(NSString *)appServiceName {
++ (BOOL)removeParamsFromKeychainForName:(NSString *)appServiceName {
 
   SecKeychainRef defaultKeychain = NULL;
   SecKeychainItemRef itemRef = NULL;
@@ -374,7 +374,7 @@ const char *kKeychainAccountName = "OAuth";
     CFRelease(itemRef);
 
     // remove our preference key
-    NSString *prefKey = [self prefsKeyForApplicationServiceName:appServiceName];
+    NSString *prefKey = [self prefsKeyForName:appServiceName];
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults removeObjectForKey:prefKey];
 
@@ -382,20 +382,29 @@ const char *kKeychainAccountName = "OAuth";
   }
 }
 
-+ (GDataOAuthAuthentication *)authForInstalledAppFromKeychainForApplicationServiceName:(NSString *)appServiceName {
-
++ (GDataOAuthAuthentication *)authForGoogleFromKeychainForName:(NSString *)appServiceName {
   GDataOAuthAuthentication *newAuth = [GDataOAuthAuthentication authForInstalledApp];
+  [self authorizeFromKeychainForName:appServiceName
+                      authentication:newAuth];
+  return newAuth;
+}
+
++ (BOOL)authorizeFromKeychainForName:(NSString *)appServiceName
+                      authentication:(GDataOAuthAuthentication *)newAuth {
+  [newAuth setToken:nil];
+  [newAuth setHasAccessToken:NO];
 
   // before accessing the keychain, check preferences to verify that we've
   // previously saved a token to the keychain (so we don't needlessly raise
   // a keychain access permission dialog)
-  NSString *prefKey = [self prefsKeyForApplicationServiceName:appServiceName];
+  NSString *prefKey = [self prefsKeyForName:appServiceName];
   NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
   BOOL flag = [defaults boolForKey:prefKey];
   if (!flag) {
-    // return a tokenless auth object
-    return newAuth;
+    return NO;
   }
+
+  BOOL didGetTokens = NO;
 
   SecKeychainRef defaultKeychain = NULL;
   const char *utf8ServiceName = [appServiceName UTF8String];
@@ -421,9 +430,10 @@ const char *kKeychainAccountName = "OAuth";
     if (password != nil) {
       [newAuth setKeysForResponseString:password];
       [newAuth setHasAccessToken:YES];
+      didGetTokens = YES;
     }
   }
-  return newAuth;
+  return didGetTokens;
 }
 
 #pragma mark Accessors

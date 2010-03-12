@@ -41,7 +41,7 @@ static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
 
   // Get the saved authentication, if any, from the keychain.
   GDataOAuthAuthentication *auth;
-  auth = [GDataOAuthViewControllerTouch authForInstalledAppFromKeychainForApplicationServiceName:kAppServiceName];
+  auth = [GDataOAuthViewControllerTouch authForGoogleFromKeychainForName:kAppServiceName];
   [self setAuthentication:auth];
 
   BOOL isRemembering = [self shouldSaveInKeychain];
@@ -93,7 +93,7 @@ static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
 
 - (void)signOut {
   // Remove the stored authentication from the keychain.
-  [GDataOAuthViewControllerTouch removeParamsFromKeychainForApplicationServiceName:kAppServiceName];
+  [GDataOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
 
   [GDataOAuthViewControllerTouch revokeTokenForGoogleAuthentication:mAuth];
 
