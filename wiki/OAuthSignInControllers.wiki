@@ -91,7 +91,7 @@ If your application saves the authorization to the keychain (by setting the cont
 
 {{{
 GDataOAuthAuthentication *auth;
-auth = [GDataOAuthViewControllerTouch authForInstalledAppFromKeychainForApplicationServiceName:kAppServiceName];
+auth = [GDataOAuthViewControllerTouch authForGoogleFromKeychainForName:kAppServiceName];
 }}}
 
 If no authorization was saved, then “auth” will still be a valid authorization object but will be unable to authorize requests:
@@ -104,7 +104,7 @@ If no authorization was saved, then “auth” will still be a valid authorizati
 
 To completely discard the user’s authorization, use these calls to remove the keychain entry and to ask the Google server to revoke the token:
 {{{
- [GDataOAuthViewControllerTouch removeParamsFromKeychainForApplicationServiceName:kAppServiceName];
+ [GDataOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
 
  [GDataOAuthViewControllerTouch revokeTokenForGoogleAuthentication:auth];
 }}}
