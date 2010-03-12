@@ -814,11 +814,14 @@ enum {
   // objects being uploaded will always need some namespaces at the root level
   [self addNamespacesIfNoneToObject:entryToUpdate];
 
+  NSString *fieldSelection = [entryToUpdate fieldSelection];
+  NSString *httpMethod = (fieldSelection == nil ? @"PUT" : @"PATCH");
+
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
                                           ETag:[entryToUpdate ETag]
-                                    httpMethod:@"PUT"
+                                    httpMethod:httpMethod
                                       delegate:delegate
                              didFinishSelector:finishedSelector
                              completionHandler:NULL];
@@ -959,11 +962,14 @@ enum {
 
   NSURL *editURL = [[entryToUpdate editLink] URL];
 
+  NSString *fieldSelection = [entryToUpdate fieldSelection];
+  NSString *httpMethod = (fieldSelection == nil ? @"PUT" : @"PATCH");
+
   return [self fetchAuthenticatedObjectWithURL:editURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
                                           ETag:[entryToUpdate ETag]
-                                    httpMethod:@"PUT"
+                                    httpMethod:httpMethod
                                       delegate:nil
                              didFinishSelector:NULL
                              completionHandler:(GDataServiceCompletionHandler)handler];

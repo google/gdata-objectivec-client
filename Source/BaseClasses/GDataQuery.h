@@ -79,6 +79,9 @@ _EXTERN NSString* const kGDataQueryResultServiceDocument _INITIALIZE_AS(@"atom-s
 - (NSInteger)maxResults;
 - (void)setMaxResults:(NSInteger)maxResults;
 
+- (NSString *)fieldSelection;
+- (void)setFieldSelection:(NSString *)str;
+
 - (NSString *)fullTextQueryString;
 - (void)setFullTextQueryString:(NSString *)str;
 

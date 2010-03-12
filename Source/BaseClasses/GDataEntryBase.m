@@ -109,6 +109,8 @@
   [self addAttributeExtensionDeclarationForParentClass:entryClass
                                             childClass:[GDataETagAttribute class]];
   [self addAttributeExtensionDeclarationForParentClass:entryClass
+                                            childClass:[GDataFieldsAttribute class]];
+  [self addAttributeExtensionDeclarationForParentClass:entryClass
                                             childClass:[GDataKindAttribute class]];
 }
 
@@ -182,6 +184,7 @@
     { @"contentSrc",       @"content.sourceURI",        kGDataDescValueLabeled },
     { @"etag",             @"ETag",                     kGDataDescValueLabeled },
     { @"kind",             @"kind",                     kGDataDescValueLabeled },
+    { @"fields",           @"fieldSelection",           kGDataDescValueLabeled },
     { @"resourceID",       @"resourceID",               kGDataDescValueLabeled },
     { @"authors",          @"authors",                  kGDataDescArrayCount },
     { @"contributors",     @"contributors",             kGDataDescArrayCount },
@@ -372,6 +375,15 @@ forCategoryWithScheme:scheme
 
 - (void)setETag:(NSString *)str {
   [self setAttributeValue:str forExtensionClass:[GDataETagAttribute class]];
+}
+
+- (NSString *)fieldSelection {
+  NSString *str = [self attributeValueForExtensionClass:[GDataFieldsAttribute class]];
+  return str;
+}
+
+- (void)setFieldSelection:(NSString *)str {
+  [self setAttributeValue:str forExtensionClass:[GDataFieldsAttribute class]];
 }
 
 - (NSString *)kind {

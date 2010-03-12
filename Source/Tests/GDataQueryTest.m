@@ -139,10 +139,12 @@
   [queryCal2 setShouldShowInlineComments:NO];
   [queryCal2 setShouldShowHiddenEvents:YES];
   [queryCal2 setShouldFormatErrorsAsXML:YES];
+  [queryCal2 setFieldSelection:@"entry(@gd:*,link,title)"];
 
   NSURL* resultURLC2 = [queryCal2 URL];
   NSString *expectedC2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
-    "ctz=America%2FLos_Angeles&err=xml&futureevents=true&"
+    "ctz=America%2FLos_Angeles&err=xml&"
+    "fields=entry%28%40gd%3A%2A%2Clink%2Ctitle%29&futureevents=true&"
     "recurrence-expansion-end=2006-03-29T07%3A35%3A59Z&"
     "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&"
     "showhidden=true&showinlinecomments=false&singleevents=true";

@@ -20,24 +20,25 @@
 #define GDATAQUERY_DEFINE_GLOBALS 1
 #import "GDataQuery.h"
 
-static NSString *const kAltParamName = @"alt";
-static NSString *const kAuthorParamName  = @"author";
-static NSString *const kErrorParamName  = @"err";
-static NSString *const kFullTextQueryStringParamName  = @"q";
-static NSString *const kLanguageParamName  = @"hl";
-static NSString *const kMaxResultsParamName = @"max-results";
-static NSString *const kOrderByParamName  = @"orderby";
-static NSString *const kPrettyPrintParamName  = @"prettyprint";
-static NSString *const kProtocolVersionParamName  = @"v";
-static NSString *const kPublishedMaxParamName  = @"published-max";
-static NSString *const kPublishedMinParamName  = @"published-min";
-static NSString *const kShowDeletedParamName  = @"showdeleted";
-static NSString *const kOnlyDeletedParamName  = @"onlydeleted";
-static NSString *const kSortOrderParamName  = @"sortorder";
-static NSString *const kStartIndexParamName = @"start-index";
-static NSString *const kStrictParamName  = @"strict";
-static NSString *const kUpdatedMaxParamName  = @"updated-max";
-static NSString *const kUpdatedMinParamName  = @"updated-min";
+static NSString *const kAltParamName                 = @"alt";
+static NSString *const kAuthorParamName              = @"author";
+static NSString *const kErrorParamName               = @"err";
+static NSString *const kFieldsParamName              = @"fields";
+static NSString *const kFullTextQueryStringParamName = @"q";
+static NSString *const kLanguageParamName            = @"hl";
+static NSString *const kMaxResultsParamName          = @"max-results";
+static NSString *const kOrderByParamName             = @"orderby";
+static NSString *const kPrettyPrintParamName         = @"prettyprint";
+static NSString *const kProtocolVersionParamName     = @"v";
+static NSString *const kPublishedMaxParamName        = @"published-max";
+static NSString *const kPublishedMinParamName        = @"published-min";
+static NSString *const kShowDeletedParamName         = @"showdeleted";
+static NSString *const kOnlyDeletedParamName         = @"onlydeleted";
+static NSString *const kSortOrderParamName           = @"sortorder";
+static NSString *const kStartIndexParamName          = @"start-index";
+static NSString *const kStrictParamName              = @"strict";
+static NSString *const kUpdatedMaxParamName          = @"updated-max";
+static NSString *const kUpdatedMinParamName          = @"updated-min";
 
 @implementation GDataCategoryFilter
 
@@ -219,6 +220,16 @@ static NSString *const kUpdatedMinParamName  = @"updated-min";
   [self addCustomParameterWithName:kMaxResultsParamName
                           intValue:maxResults
                     removeForValue:-1];
+}
+
+- (NSString *)fieldSelection {
+  NSString *str = [self valueForParameterWithName:kFieldsParamName];
+  return str;
+}
+
+- (void)setFieldSelection:(NSString *)str {
+  [self addCustomParameterWithName:kFieldsParamName
+                             value:str];
 }
 
 - (NSString *)fullTextQueryString {

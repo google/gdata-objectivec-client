@@ -117,6 +117,9 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns;
 - (NSString *)ETag;
 - (void)setETag:(NSString *)str;
 
+- (NSString *)fieldSelection;
+- (void)setFieldSelection:(NSString *)str;
+
 - (NSString *)kind;
 - (void)setKind:(NSString *)str;
 
