@@ -1,6 +1,6 @@
-#summary Google OAuth Controllers for iPhone and Mac Apps
+#summary OAuth Controllers for iPhone and Mac Apps
 
-= Google OAuth Controllers for iPhone and Mac Apps =
+= Using the OAuth Controllers =
 
 == Introduction ==
 
