@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (560 classes) 2010-03-11 17:26:57 -0800
+// com.google.GDataFramework v. 1.9.1 (561 classes) 2010-03-12 14:49:52 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -284,6 +284,7 @@
   #define GDataFeedYouTubeUserProfile             _GDATA_NS_SYMBOL(GDataFeedYouTubeUserProfile)
   #define GDataFeedYouTubeVideo                   _GDATA_NS_SYMBOL(GDataFeedYouTubeVideo)
   #define GDataFeedYouTubeVideoMessage            _GDATA_NS_SYMBOL(GDataFeedYouTubeVideoMessage)
+  #define GDataFieldsAttribute                    _GDATA_NS_SYMBOL(GDataFieldsAttribute)
   #define GDataFinanceSymbol                      _GDATA_NS_SYMBOL(GDataFinanceSymbol)
   #define GDataFinanceTransactionData             _GDATA_NS_SYMBOL(GDataFinanceTransactionData)
   #define GDataGain                               _GDATA_NS_SYMBOL(GDataGain)
