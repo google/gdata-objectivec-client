@@ -116,4 +116,4 @@ Finally, release the authorization object.
 
 == More Information ==
 
-You can learn more about the OAuth protocol for installed applications at [http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html Google's documentation].
+You can learn more about the OAuth protocol for desktop and mobile applications at [http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html Google's documentation].
