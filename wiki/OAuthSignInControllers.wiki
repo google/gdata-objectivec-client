@@ -2,6 +2,8 @@
 
 = Using the OAuth Controllers =
 
+<wiki:toc max_depth="3" />
+
 == Introduction ==
 
 [http://oauth.net/ OAuth] is a protocol allowing your application to obtain authorization to read or modify a user’s files or data on an external server.
@@ -111,3 +113,7 @@ To completely discard the user’s authorization, use these calls to remove the 
 }}}
 
 Finally, release the authorization object.
+
+== More Information ==
+
+You can learn more about the OAuth protocol for installed applications at [http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html Google's documentation].
