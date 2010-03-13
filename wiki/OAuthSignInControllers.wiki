@@ -8,7 +8,7 @@
 
 The server generates a web page for the user to sign in with her name and password, including a button explicitly granting access to some of her data. Upon successful authentication, the server gives tokens to your application representing the user's authorization.
 
-With the Objective-C OAuth controllers, the web page can be presented as an iPhone view or Mac sheet within your application. The controllers also provide authentication objects that simplify your application's future requests for the user's data.
+With the Objective-C OAuth controllers, the web page can be presented as an iPhone view or a Mac sheet within your application. The controllers also provide authentication objects that simplify your application's future requests for the user's data.
 
 == Using the iPhone and Mac OAuth Controllers ==
 
@@ -47,22 +47,23 @@ windowController = [[[GDataOAuthWindowController alloc] initWithScope:scope
                                                        appServiceName:kAppServiceName
                                                        resourceBundle:nil] autorelease];
 [windowController signInSheetModalForWindow:currentWindow
-                                  delegate:self
-                          finishedSelector:@selector(windowController:finishedWithAuth:error:)];
+                                   delegate:self
+                           finishedSelector:@selector(windowController:finishedWithAuth:error:)];
 }}}
-The “scope” is a string identifying what access is being requested. For access to more than one scope, separate them with a space. If your application uses the Google Data APIs Objective-C Client Library, it can get scopes from the service classes. For example, the scope of the Contacts API shown above is available as
+The “scope” is a string identifying what access is being requested. For access to more than one scope, separate the scopes with a space. 
+
+If your application uses the Google Data APIs Objective-C Client Library, it can get scopes from the service classes. For example, the scope of the Contacts API shown above is available as
 {{{
  scope = [GDataServiceGoogleContacts authorizationScope];
 }}}
-The “displayName” is shown to users in the web view when signing in, and is also displayed on the [http://google.com/accounts Google accounts page] that allows the user to later revoke their authorizations.
 
 The “application service name” is used to save the token on the user’s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
 
 When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelector’s method:
 {{{
 - (void)viewController:(GDataOAuthViewControllerTouch *)viewController
-     finishedWithAuth:(GDataOAuthAuthentication *)auth
-                error:(NSError *)error {
+      finishedWithAuth:(GDataOAuthAuthentication *)auth
+                 error:(NSError *)error {
  if (error != nil) {
    // Authentication failed
  } else {
@@ -87,7 +88,7 @@ or used directly to authorize NSMutableURLRequest objects:
 
 === Retrieving Authorization from the Keychain ===
 
-If your application saves the authorization to the keychain (by setting the controller's appServiceName), the authentication can be retrieved the next time the application launches:
+If your application saves the authorization to the keychain (by setting the controller's appServiceName), it can be retrieved the next time the application launches:
 
 {{{
 GDataOAuthAuthentication *auth;
