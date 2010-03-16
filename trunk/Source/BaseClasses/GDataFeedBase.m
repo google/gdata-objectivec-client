@@ -308,8 +308,14 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
 // subclasses may override this, and may return a specific entry class or
 // kUseRegisteredEntryClass
 - (Class)classForEntries {
-
   return kUseRegisteredEntryClass;
+}
+
+// subclasses may override this to specify a "generic" class for
+// the feed's entries, if not GDataEntryBase, mainly for when there
+// is no registered entry class found
++ (Class)defaultClassForEntries {
+  return [GDataEntryBase class];
 }
 
 - (BOOL)canPost {

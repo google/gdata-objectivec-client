@@ -1242,7 +1242,7 @@ objectDescriptionIfNonNil:(id)obj
     if (objectClass == nil) {
       // if the object is a feed or an entry, we might be able to determine the
       // type from the XML
-      objectClass = [GDataObject objectClassForXMLElement:element];
+      objectClass = [[self class] objectClassForXMLElement:element];
     }
 
     objectClass = [self classOrSurrogateForClass:objectClass];
@@ -1351,7 +1351,7 @@ objectDescriptionIfNonNil:(id)obj
     if (elementClass == nil) {
       // if the object is a feed or an entry, we might be able to determine the
       // type for this element from the XML
-      elementClass = [GDataObject objectClassForXMLElement:objElement];
+      elementClass = [[self class] objectClassForXMLElement:objElement];
 
       // if a base feed class doesn't specify entry class, and the entry object
       // class can't be determined by examining its XML, fall back on
@@ -2601,48 +2601,12 @@ forCategoryWithScheme:(NSString *)scheme
 // for entry elements.
 + (Class)objectClassForXMLElement:(NSXMLElement *)element {
 
-  Class result;
+  Class result = nil;
   NSString *elementName = [element localName];
   BOOL isFeed = [elementName isEqual:@"feed"];
   BOOL isEntry = [elementName isEqual:@"entry"];
 
-  if (isFeed) {
-
-    // default to returning a feed base class
-    result = [GDataFeedBase class];
-
-  } else if (isEntry) {
-
-    // default to returning an entry base class
-    result = [GDataEntryBase class];
-
-  } else if ([elementName isEqual:@"service"]) {
-
-    // introspection - return service document, if the class is available
-    NSString *serviceDocClassName = @"GDataAtomServiceDocument";
-
-#ifdef GDATA_TARGET_NAMESPACE
-    // prepend the class name prefix
-    serviceDocClassName = [NSString stringWithFormat:@"%s_%@",
-                           GDATA_TARGET_NAMESPACE_STRING, serviceDocClassName];
-#endif
-
-    Class serviceClass = NSClassFromString(serviceDocClassName);
-
-    GDATA_DEBUG_ASSERT(serviceClass != nil, @"service class %@ unavailable",
-                       serviceDocClassName);
-
-    result = serviceClass;
-
-  } else {
-    // we look only at feed and entry elements, and this is
-    // some other kind of element
-    result = nil;
-  }
-
   if (isFeed || isEntry) {
-    Class foundClass = nil;
-
     // get the kind attribute, and see if it matches a registered feed or entry
     // class
     NSXMLNode *kindAttr = [element attributeForLocalName:@"kind"
@@ -2651,17 +2615,13 @@ forCategoryWithScheme:(NSString *)scheme
 
     if (kind) {
       if (isFeed) {
-        foundClass = [GDataFeedBase feedClassForKindAttributeValue:kind];
+        result = [GDataFeedBase feedClassForKindAttributeValue:kind];
       } else {
-        foundClass = [GDataEntryBase entryClassForKindAttributeValue:kind];
-      }
-      if (foundClass) {
-        result = foundClass;
+        result = [GDataEntryBase entryClassForKindAttributeValue:kind];
       }
     }
 
-    if (foundClass == nil) {
-
+    if (result == nil) {
       // step through the feed or entry's category elements, looking for one
       // that matches a registered feed or entry class
       //
@@ -2684,21 +2644,49 @@ forCategoryWithScheme:(NSString *)scheme
         NSString *term = [[categoryNode attributeForName:@"term"] stringValue];
 
         if (scheme || term) {
-
           // we have a scheme or a term, so look for a registered class
           if (isFeed) {
-            foundClass = [GDataFeedBase feedClassForCategoryWithScheme:scheme
-                                                                  term:term];
+            result = [GDataFeedBase feedClassForCategoryWithScheme:scheme
+                                                              term:term];
           } else {
-            foundClass = [GDataEntryBase entryClassForCategoryWithScheme:scheme
+            result = [GDataEntryBase entryClassForCategoryWithScheme:scheme
                                                                     term:term];
           }
-          if (foundClass) {
-            result = foundClass;
+          if (result) {
             break;
           }
         }
       }
+    }
+  }
+
+  if (result == nil) {
+    if (isFeed) {
+      // default to returning a feed base class
+      result = [GDataFeedBase class];
+    } else if (isEntry) {
+      // default to returning this feed's entry base class
+      if ([self isSubclassOfClass:[GDataFeedBase class]]) {
+        result = [self performSelector:@selector(defaultClassForEntries)];
+      } else {
+        result = [GDataEntryBase class];
+      }
+    } else if ([elementName isEqual:@"service"]) {
+      // introspection - return service document, if the class is available
+      NSString *serviceDocClassName = @"GDataAtomServiceDocument";
+
+  #ifdef GDATA_TARGET_NAMESPACE
+      // prepend the class name prefix
+      serviceDocClassName = [NSString stringWithFormat:@"%s_%@",
+                            GDATA_TARGET_NAMESPACE_STRING, serviceDocClassName];
+  #endif
+
+      result = NSClassFromString(serviceDocClassName);
+
+      GDATA_DEBUG_ASSERT(result != nil, @"service class %@ unavailable",
+                         serviceDocClassName);
+    } else {
+      // this element is not a feed, entry, or service class; give up
     }
   }
 
