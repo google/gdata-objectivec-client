@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataPortfolioElements.m
@@ -63,7 +63,7 @@ static NSString *const kSharesAttr = @"shares";
 }
 
 - (NSString *)currencyCode {
-  return [self stringValueForAttribute:kCurrencyCodeAttr];  
+  return [self stringValueForAttribute:kCurrencyCodeAttr];
 }
 
 - (void)setCurrencyCode:(NSString *)str {
@@ -95,8 +95,8 @@ static NSString *const kSharesAttr = @"shares";
   [super addParseDeclarations];
 }
 
-- (NSNumber *)shares {
-  return [self doubleNumberForAttribute:kSharesAttr];  
+- (NSDecimalNumber *)shares {
+  return [self decimalNumberForAttribute:kSharesAttr];
 }
 
 - (void)setShares:(NSNumber *)num {
@@ -135,15 +135,17 @@ static NSString *const kSharesAttr = @"shares";
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  // extensions
-  [self addToArray:items objectDescriptionIfNonNil:[self costBasis] withName:@"costBasis"];
-  [self addToArray:items objectDescriptionIfNonNil:[self daysGain] withName:@"daysGain"];
-  [self addToArray:items objectDescriptionIfNonNil:[self gain] withName:@"gain"];
-  [self addToArray:items objectDescriptionIfNonNil:[self marketValue] withName:@"marketValue"];
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"costBasis", @"costBasis", kGDataDescValueLabeled },
+    { @"daysGain",  @"daysGain",  kGDataDescValueLabeled },
+    { @"gain",      @"gain",      kGDataDescValueLabeled },
+    { @"daysGain",  @"daysGain",  kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
@@ -151,71 +153,71 @@ static NSString *const kSharesAttr = @"shares";
 // common attributes
 
 - (NSNumber *)gainPercentage {
-  return [self doubleNumberForAttribute:kGainPercentageAttr];  
+  return [self doubleNumberForAttribute:kGainPercentageAttr];
 }
 
 - (void)setGainPercentage:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kGainPercentageAttr]; 
 }
 
-- (NSNumber *)return1w {
-  return [self doubleNumberForAttribute:kReturn1wAttr];  
+- (NSDecimalNumber *)return1w {
+  return [self decimalNumberForAttribute:kReturn1wAttr];
 }
 
 - (void)setReturn1w:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn1wAttr]; 
 }
 
-- (NSNumber *)return1y {
-  return [self doubleNumberForAttribute:kReturn1yAttr];  
+- (NSDecimalNumber *)return1y {
+  return [self decimalNumberForAttribute:kReturn1yAttr];
 }
 
 - (void)setReturn1y:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn1yAttr]; 
 }
 
-- (NSNumber *)return3m {
-  return [self doubleNumberForAttribute:kReturn3mAttr];  
+- (NSDecimalNumber *)return3m {
+  return [self decimalNumberForAttribute:kReturn3mAttr];
 }
 
 - (void)setReturn3m:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn3mAttr]; 
 }
 
-- (NSNumber *)return3y {
-  return [self doubleNumberForAttribute:kReturn3yAttr];  
+- (NSDecimalNumber *)return3y {
+  return [self decimalNumberForAttribute:kReturn3yAttr];
 }
 
 - (void)setReturn3y:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn3yAttr]; 
 }
 
-- (NSNumber *)return4w {
-  return [self doubleNumberForAttribute:kReturn4wAttr];  
+- (NSDecimalNumber *)return4w {
+  return [self decimalNumberForAttribute:kReturn4wAttr];
 }
 
 - (void)setReturn4w:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn4wAttr]; 
 }
 
-- (NSNumber *)return5y {
-  return [self doubleNumberForAttribute:kReturn5yAttr];  
+- (NSDecimalNumber *)return5y {
+  return [self decimalNumberForAttribute:kReturn5yAttr];
 }
 
 - (void)setReturn5y:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturn5yAttr]; 
 }
 
-- (NSNumber *)returnOverall {
-  return [self doubleNumberForAttribute:kReturnOverallAttr];  
+- (NSDecimalNumber *)returnOverall {
+  return [self decimalNumberForAttribute:kReturnOverallAttr];
 }
 
 - (void)setReturnOverall:(NSNumber *)num {
   [self setStringValue:[num stringValue] forAttribute:kReturnOverallAttr]; 
 }
 
-- (NSNumber *)returnYTD {
-  return [self doubleNumberForAttribute:kReturnYTDAttr];  
+- (NSDecimalNumber *)returnYTD {
+  return [self decimalNumberForAttribute:kReturnYTDAttr];
 }
 
 - (void)setReturnYTD:(NSNumber *)num {
@@ -249,7 +251,7 @@ static NSString *const kSharesAttr = @"shares";
 }
 
 - (GDataMarketValue *)marketValue {
-  return [self objectForExtensionClass:[GDataMarketValue class]];  
+  return [self objectForExtensionClass:[GDataMarketValue class]];
 }
 
 - (void)setMarketValue:(GDataMarketValue *)obj {

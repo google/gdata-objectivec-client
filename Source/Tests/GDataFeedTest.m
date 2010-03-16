@@ -1656,10 +1656,10 @@
     
     { @"entries.0.positionData.shares", @"2" },
     { @"entries.0.positionData.gainPercentage", @"1.3" },
-    { @"entries.0.positionData.return1w", @"0" },
+    { @"entries.0.positionData.return1w", @"0.07" },
     { @"entries.0.positionData.return1y", @"-10" },
     { @"entries.0.positionData.return3m", @"172.1" },
-    { @"entries.0.positionData.return3y", @"5" },
+    { @"entries.0.positionData.return3y", @"5.4" },
     { @"entries.0.positionData.return4w", @"-4" },
     { @"entries.0.positionData.return5y", @"11" },
     { @"entries.0.positionData.returnOverall", @"12" },

@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataFinanceTransactionData.m
@@ -56,32 +56,35 @@ static NSString* const kNotesAttr = @"notes";
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataCommission class]];  
-  [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataPrice class]];  
+                                 childClasses:
+   [GDataCommission class],
+   [GDataPrice class],
+   nil];
 }
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kTypeAttr, kSharesAttr, kDateAttr, kNotesAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-    
-  // add description for extensions
-  [self addToArray:items objectDescriptionIfNonNil:[self price] withName:@"price"];
-  [self addToArray:items objectDescriptionIfNonNil:[self commission] withName:@"commission"];
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"price",      @"price",      kGDataDescValueLabeled },
+    { @"commission", @"commission", kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
@@ -104,8 +107,8 @@ static NSString* const kNotesAttr = @"notes";
   [self setStringValue:[date RFC3339String] forAttribute:kDateAttr];
 }
 
-- (NSNumber *)shares {
-  return [self doubleNumberForAttribute:kSharesAttr]; 
+- (NSDecimalNumber *)shares {
+  return [self decimalNumberForAttribute:kSharesAttr];
 }
 
 - (void)setShares:(NSNumber *)num {
