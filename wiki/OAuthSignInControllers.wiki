@@ -16,8 +16,16 @@ With the Objective-C OAuth controllers, the web page can be presented as an iPho
 
 The OAuth controllers are part of the Google Data APIs Objective-C Client Library, but you can easily use them independent of the library as well. You can also use them for authenticating via OAuth to servers and services other than Google's.
 
-There are example iPhone and Mac applications using the OAuth controllers in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Examples Examples directory], and a project for building an iPhone static library is included in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source Source directory].
+There are example iPhone and Mac applications using the OAuth controllers in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Examples Examples directory].
 
+For iPhone developers, there is also a project for building a static library in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source Source directory].
+
+The source files required are:
+
+|| _iPhone and Mac_ || _iPhone || _Mac_ ||
+||GDataOAuthAuthentication.h/m<br>GDataOAuthSignIn.h/m<br>GDataHTTPFetcher.h/m||GDataOAuthViewControllerTouch.h/m<br>GDataOAuthViewTouch.xib (optional)||GDataOAuthWindowController.h/m<br>GDataOAuthWindow.xib||
+
+ 
 === Signing In ===
 
 To display a sign-in view, your iPhone application makes these calls to push the view:
