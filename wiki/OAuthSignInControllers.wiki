@@ -18,7 +18,7 @@ The OAuth controllers are part of the Google Data APIs Objective-C Client Librar
 
 There are example iPhone and Mac applications using the OAuth controllers in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Examples Examples directory].
 
-For iPhone developers, there is also a project for building a static library in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source Source directory].
+For iPhone developers, there is also a project for building a static library, called GDataOAuthTouchStaticLibrary.xcodeproj
 
 The source files required are:
 
