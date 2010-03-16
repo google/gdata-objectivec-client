@@ -453,7 +453,7 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
   BOOL value = YES;
-  if (! isInsideShouldAutorotateToInterfaceOrientation_) {
+  if (!isInsideShouldAutorotateToInterfaceOrientation_) {
     isInsideShouldAutorotateToInterfaceOrientation_ = YES;
     UIViewController *navigationController = [self navigationController];
     if (navigationController != nil) {
@@ -494,10 +494,10 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   return [NSString stringWithFormat:@"com.google.GDataOAuth.%@%@", service, account];
 }
 
-// The Keychain API isn't available on the iPhone simulator, so, on the
-// simulator we use a fake API, that just writes, unencrypted, to
+// The Keychain API isn't available on the iPhone simulator in SDKs before 3.0,
+// so, on early simulators we use a fake API, that just writes, unencrypted, to
 // NSUserDefaults.
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_IPHONE_SIMULATOR && __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
 #pragma mark Simulator
 
 // Simulator - just simulated, not secure.
