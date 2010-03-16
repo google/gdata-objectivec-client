@@ -35,7 +35,7 @@ To display a sign-in view, your iPhone application makes these calls to push the
 
 static NSString *const kAppServiceName = @”My Application: Google Contacts”;
 
-NSString *scope = @"http://www.google.com/m8/feeds/";
+NSString *scope = @"http://www.google.com/m8/feeds/"; // scope for Google Contacts API
 
 GDataOAuthViewControllerTouch *viewController;
 viewController = [[[GDataOAuthViewControllerTouch alloc] initWithScope:scope
