@@ -83,6 +83,8 @@ When the user signs in successfully or cancels signing in, the view or window co
 }
 }}}
 
+If `[error code]` is kGDataOAuthErrorWindowClosed (-1000), then the user closed the sign-in view before completing authorization. Otherwise, any error reflects the server response in validating the user's access.
+
 === Using the Authentication Tokens ===
 
 If authentication succeeds, your application should retain the authentication object. It can be either stored into a library service object to authorize future API requests:
