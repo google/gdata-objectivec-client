@@ -21,6 +21,7 @@
 
 #import "GDataFeedDocList.h"
 #import "GDataDocConstants.h"
+#import "GDataEntryDocBase.h"
 
 @implementation GDataFeedDocList
 
@@ -30,6 +31,14 @@
 
 + (NSString *)standardFeedKind {
   return kGDataCategoryDocItem;
+}
+
++ (void)load {
+  [self registerFeedClass];
+}
+
++ (Class)defaultClassForEntries {
+  return [GDataEntryDocBase class];
 }
 
 + (NSString *)defaultServiceVersion {

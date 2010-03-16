@@ -33,6 +33,10 @@
   return kGDataCategoryDocRevision;
 }
 
++ (void)load {
+  [self registerFeedClass];
+}
+
 + (NSString *)defaultServiceVersion {
   return kGDataDocsDefaultServiceVersion;
 }
