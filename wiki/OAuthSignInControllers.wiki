@@ -22,7 +22,7 @@ For iPhone developers, there is also a project for building a static library, ca
 
 The source files required are:
 
-|| _iPhone and Mac_ || _iPhone || _Mac_ ||
+||_iPhone and Mac_||_iPhone_||_Mac_||
 ||GDataOAuthAuthentication.h/m<br>GDataOAuthSignIn.h/m<br>GDataHTTPFetcher.h/m||GDataOAuthViewControllerTouch.h/m<br>GDataOAuthViewTouch.xib (optional)||GDataOAuthWindowController.h/m<br>GDataOAuthWindow.xib||
 
 These source files are in the OAuth and Networking groups of the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source/ Source directory].
