@@ -959,7 +959,7 @@ enum {
 
   NSString *fieldSelection = [entryToUpdate fieldSelection];
 
-  GDATA_ASSERT(fieldSelected != nil || ![entryToUpdate shouldIgnoreUnknowns],
+  GDATA_ASSERT(fieldSelection != nil || ![entryToUpdate shouldIgnoreUnknowns],
                @"unsafe update of %@", [entryToUpdate class]);
 
   // objects being uploaded will always need some namespaces at the root level
