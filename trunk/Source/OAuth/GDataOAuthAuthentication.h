@@ -81,6 +81,8 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
   // flag indicating if the token in paramValues is a request token or an
   // access token
   BOOL hasAccessToken_;
+
+  id userData_;
 }
 
 // OAuth protocol parameters
@@ -113,6 +115,9 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 
 // property for using a previously-authorized access token
 @property (nonatomic, copy) NSString *accessToken;
+
+// userData is retained for the convenience of the caller
+@property (nonatomic, retain) NSString *userData;
 
 
 // Create an authentication object, with hardcoded values for installed apps
