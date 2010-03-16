@@ -799,22 +799,24 @@ enum {
                                 didFinishSelector:(SEL)finishedSelector {
 
   // Entries should be updated only if they contain copies of any unparsed XML
-  // (unknown children and attributes.)
+  // (unknown children and attributes) or if fields to update are explicitly
+  // specified in the gd:field attribute.
   //
-  // To update an entry that ignores unparsed XML, first fetch a complete copy
-  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
-  // the URL from the entry's selfLink.
+  // To update all fields of an entry that ignores unparsed XML, first fetch a
+  // complete copy with fetchEntryWithURL: (or a service-specific entry fetch
+  // method) using the URL from the entry's selfLink.
   //
   // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
   // information.
 
-  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
+  NSString *fieldSelection = [entryToUpdate fieldSelection];
+
+  GDATA_ASSERT(fieldSelection != nil || ![entryToUpdate shouldIgnoreUnknowns],
                @"unsafe update of %@", [entryToUpdate class]);
 
   // objects being uploaded will always need some namespaces at the root level
   [self addNamespacesIfNoneToObject:entryToUpdate];
 
-  NSString *fieldSelection = [entryToUpdate fieldSelection];
   NSString *httpMethod = (fieldSelection == nil ? @"PUT" : @"PATCH");
 
   return [self fetchAuthenticatedObjectWithURL:entryURL
@@ -945,16 +947,19 @@ enum {
 - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                 completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
   // Entries should be updated only if they contain copies of any unparsed XML
-  // (unknown children and attributes.)
+  // (unknown children and attributes) or if fields to update are explicitly
+  // specified in the gd:field attribute.
   //
-  // To update an entry that ignores unparsed XML, first fetch a complete copy
-  // with fetchEntryWithURL: (or a service-specific entry fetch method) using
-  // the URL from the entry's selfLink.
+  // To update all fields of an entry that ignores unparsed XML, first fetch a
+  // complete copy with fetchEntryWithURL: (or a service-specific entry fetch
+  // method) using the URL from the entry's selfLink.
   //
   // See setShouldServiceFeedsIgnoreUnknowns in GDataServiceBase.h for more
   // information.
 
-  GDATA_ASSERT(![entryToUpdate shouldIgnoreUnknowns],
+  NSString *fieldSelection = [entryToUpdate fieldSelection];
+
+  GDATA_ASSERT(fieldSelected != nil || ![entryToUpdate shouldIgnoreUnknowns],
                @"unsafe update of %@", [entryToUpdate class]);
 
   // objects being uploaded will always need some namespaces at the root level
@@ -962,7 +967,6 @@ enum {
 
   NSURL *editURL = [[entryToUpdate editLink] URL];
 
-  NSString *fieldSelection = [entryToUpdate fieldSelection];
   NSString *httpMethod = (fieldSelection == nil ? @"PUT" : @"PATCH");
 
   return [self fetchAuthenticatedObjectWithURL:editURL
