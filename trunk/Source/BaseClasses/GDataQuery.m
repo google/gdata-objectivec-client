@@ -228,6 +228,22 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
 }
 
 - (void)setFieldSelection:(NSString *)str {
+  // the library needs gd:kind attributes in feeds and entries during parsing of
+  // the fetched XML, so field selection queries should always include those
+  //
+  // There may be other valid ways to specify a field selection that includes
+  // the gd:kind attribute (in which case this conditional should be improved)
+  // but hopefully this will minimize the time developers spend wondering
+  // why the returned XML isn't instantiating the expected classes.
+#if DEBUG
+  if (str != nil
+      && [str rangeOfString:@"@gd:kind"].location == NSNotFound
+      && [str rangeOfString:@"@gd:*"].location == NSNotFound) {
+    GDATA_DEBUG_LOG(@"query field selection \"%@\" needs @gd:* or @gd:kind",
+                    str);
+  }
+#endif
+
   [self addCustomParameterWithName:kFieldsParamName
                              value:str];
 }
