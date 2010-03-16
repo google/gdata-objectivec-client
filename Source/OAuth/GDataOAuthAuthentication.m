@@ -102,6 +102,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 @synthesize realm = realm_;
 @synthesize privateKey = privateKey_;
 @synthesize serviceProvider = serviceProvider_;
+@synthesize userData = userData_;
 
 // create an authentication object, with hardcoded values for installed apps
 // of HMAC-SHA1 as signature method, and "anonymous" as the consumer key and
@@ -143,6 +144,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   [serviceProvider_ release];
   [timestamp_ release];
   [nonce_ release];
+  [userData_ release];
   [super dealloc];
 }
 
