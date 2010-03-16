@@ -25,6 +25,7 @@ The source files required are:
 || _iPhone and Mac_ || _iPhone || _Mac_ ||
 ||GDataOAuthAuthentication.h/m<br>GDataOAuthSignIn.h/m<br>GDataHTTPFetcher.h/m||GDataOAuthViewControllerTouch.h/m<br>GDataOAuthViewTouch.xib (optional)||GDataOAuthWindowController.h/m<br>GDataOAuthWindow.xib||
 
+These source files are in the OAuth and Networking groups of the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source/ Source directory.]
  
 === Signing In ===
 
@@ -60,14 +61,14 @@ windowController = [[[GDataOAuthWindowController alloc] initWithScope:scope
                                    delegate:self
                            finishedSelector:@selector(windowController:finishedWithAuth:error:)];
 }}}
-The “scope” is a string identifying what access is being requested. For access to more than one scope, separate the scopes with a space. 
+The *scope* is a string identifying what access is being requested. For access to more than one scope, separate the scopes with a space. 
 
-If your application uses the Google Data APIs Objective-C Client Library, it can get scopes from the service classes. For example, the scope of the Contacts API shown above is available as
+If your application uses the Google Data APIs Objective-C Client Library, it should get scopes from the service classes. For example, the scope of the Contacts API shown above is available as
 {{{
  scope = [GDataServiceGoogleContacts authorizationScope];
 }}}
 
-The “application service name” is used to save the token on the user’s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
+The *application service name* is used to save the token on the user’s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
 
 When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelector’s method:
 {{{
@@ -113,7 +114,7 @@ If no authorization was saved, then “auth” will still be a valid authorizati
 
 === Signing Out ===
 
-To completely discard the user’s authorization, use these calls to remove the keychain entry and to ask the Google server to revoke the token:
+To completely discard the user’s authorization, use the view or window controller calls to remove the keychain entry and to ask the Google server to revoke the token:
 {{{
  [GDataOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
 
