@@ -26,6 +26,10 @@ The source files required are:
 ||GDataOAuthAuthentication.h/m<br>GDataOAuthSignIn.h/m<br>GDataHTTPFetcher.h/m||GDataOAuthViewControllerTouch.h/m<br>GDataOAuthViewTouch.xib (optional)||GDataOAuthWindowController.h/m<br>GDataOAuthWindow.xib||
 
 These source files are in the OAuth and Networking groups of the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source/ Source directory].
+
+=== System Requirements ===
+
+The Mac controller is compatible with Mac OS X 10.5 and later. The iPhone controller is compatible with iPhone OS 2 and later.
  
 === Signing In ===
 
