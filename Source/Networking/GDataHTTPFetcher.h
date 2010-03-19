@@ -330,6 +330,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableData *downloadedData_;
   NSURLCredential *credential_;     // username & password
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
+  NSError *challengeError_;         // error for pending auth challenge, if any
   NSData *postData_;
   NSInputStream *postStream_;
   NSMutableData *loggedStreamData_;
