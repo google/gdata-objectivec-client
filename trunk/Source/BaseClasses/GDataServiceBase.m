@@ -1521,8 +1521,10 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   [password_ release];
 
   if (password) {
-    password_ = [[NSMutableData alloc] initWithBytes:[password UTF8String]
-                                              length:strlen([password UTF8String])];
+    const char *utf8password = [password UTF8String];
+    size_t passwordLength = strlen(utf8password);
+    password_ = [[NSMutableData alloc] initWithBytes:utf8password
+                                              length:passwordLength];
     XorPlainMutableData(password_);
   } else {
     password_ = nil;

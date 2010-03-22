@@ -124,9 +124,6 @@
                                 didFinishSelector:(SEL)finishedSelector {
   GDataLink *link;
 
-  // temporary: use override header for chunked updates (bug 2433537)
-  BOOL wasUsingOverride = [self shouldUseMethodOverrideHeader];
-
   if (([entryToUpdate uploadData] == nil
          && [entryToUpdate uploadFileHandle] == nil)
       || [self serviceUploadChunkSize] == 0) {
@@ -135,9 +132,6 @@
   } else {
     // doing a chunked upload
     link = [entryToUpdate uploadEditLink];
-
-    // temporary; see above
-    [self setShouldUseMethodOverrideHeader:YES];
   }
 
   NSURL *editURL = [link URL];
@@ -147,8 +141,6 @@
                                                       delegate:delegate
                                              didFinishSelector:finishedSelector];
 
-  // temporary; see above
-  [self setShouldUseMethodOverrideHeader:wasUsingOverride];
   return ticket;
 }
 

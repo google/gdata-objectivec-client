@@ -1417,7 +1417,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   [service_ setServiceUploadProgressSelector:NULL];
   [service_ setServiceRetrySelector:NULL];
 
-  [[NSFileManager defaultManager] removeFileAtPath:bigFilePath handler:NULL];
+  [[NSFileManager defaultManager] removeItemAtPath:bigFilePath error:NULL];
 }
 
 - (void)uploadTicket:(GDataServiceTicket *)ticket
