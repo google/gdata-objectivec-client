@@ -1007,6 +1007,10 @@
     // GDataFeedAnalyticsAccount paths
     { @"authors.0.name", @"Google Analytics" },
     { @"title", @"Profile list for fredflintstone@example.com" },
+    { @"segments.0.name", @"All Visits" },
+    { @"segments.0.analyticsID", @"gaid::-1" },
+    { @"segments.0.definition", @"" },
+    { @"segments.1.definition", @"ga:visitorType==New Visitor" },
 
     // GDataEntryAnalyticsAccount paths
     { @"entries.0.tableID", @"ga:7966084" },
@@ -1014,6 +1018,21 @@
     { @"entries.0.analyticsProperties.0.stringValue", @"8925159" },
     { @"entries.0.analyticsProperties.1.name", @"ga:accountName" },
     { @"entries.0.analyticsProperties.1.stringValue", @"example" },
+    { @"entries.0.customVariables.0.index", @"3" },
+    { @"entries.0.customVariables.0.name", @"User" },
+    { @"entries.0.customVariables.0.scope", @"visitor" },
+    { @"entries.0.goals.0.isActive", @"1" },
+    { @"entries.0.goals.0.name", @"My Main Goal" },
+    { @"entries.0.goals.0.number", @"1" },
+    { @"entries.0.goals.0.value", @"1.100000023841858" },
+    { @"entries.0.goals.0.destination.isCaseSensitive", @"0" },
+    { @"entries.0.goals.0.destination.expression", @"/wiki/DocPage" },
+    { @"entries.0.goals.0.destination.matchType", @"head" },
+    { @"entries.0.goals.0.destination.isStep1Required", @"0" },
+    { @"entries.0.goals.0.destination.steps.0.name", @"Wiki step" },
+    { @"entries.0.goals.0.destination.steps.0.number", @"1" },
+    { @"entries.0.goals.0.destination.steps.0.path", @"/wiki" },
+    { @"entries.0.goals.0.engagement", nil },
 
     { @"", @"" }, // end of feed
 
@@ -1037,6 +1056,9 @@
     { @"dataSources.0.analyticsProperties.0.name", @"ga:profileId" },
     { @"dataSources.0.analyticsProperties.0.stringValue", @"7966084" },
     { @"dataSources.0.analyticsPropertyWithNameAccountName.stringValue", @"example" },
+    { @"segments.0.name", @"New Visitors" },
+    { @"segments.0.analyticsID", @"gaid::-2" },
+    { @"segments.0.definition", @"ga:visitorType==New Visitor" },
 
     // GDataEntryAnalyticsData paths
     { @"entries.0.title", @"ga:country=United States" },
@@ -1057,6 +1079,7 @@
 
   [self runTests:tests];
 }
+
 
 - (void)testCodeSearchFeed {
   

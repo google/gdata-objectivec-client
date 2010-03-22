@@ -29,6 +29,9 @@
         <dxp:property name="ga:webPropertyId" value="UA-8925159-1"/>
         <dxp:property name="ga:accountName" value="example"/>
     </dxp:dataSource>
+    <dxp:segment id="gaid::-2" name="New Visitors">
+      <dxp:definition>ga:visitorType==New Visitor</dxp:definition>
+    </dxp:segment>
     <entry gd:etag="W/&quot;DUEEQX47eSp7ImA9WxJRF0o.&quot;">
         <id>http://www.google.com/analytics/feeds/data?ids=ga:7966084&amp;ga:country=United%20States&amp;start-date=2009-05-18&amp;end-date=2009-05-20</id>
         <updated>2009-05-19T17:00:00.001-07:00</updated>
