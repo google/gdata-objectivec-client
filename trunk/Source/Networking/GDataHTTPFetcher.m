@@ -209,7 +209,6 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   [downloadedData_ release];
   [credential_ release];
   [proxyCredential_ release];
-  [challengeError_ release];
   [postData_ release];
   [postStream_ release];
   [loggedStreamData_ release];
@@ -702,29 +701,25 @@ CannotBeginFetch:
   // If we don't have credentials, or we've already failed auth 3x,
   // report the error, putting the challenge as a value in the userInfo
   // dictionary
-  //
-  // cancelAuthenticationChallenge seems to indirectly call
-  // connection:didFailWithError: now, though that isn't documented;
-  // if connection_ has already been set to nil, this next invocation
-  // of the failure method will be a no-op
-  //
-  // we'll use an ivar to make the proper error available to the
-  // failedWithError: delegate method
 #if DEBUG
-  NSAssert(challengeError_ == nil, @"challengeError unexpected");
+  NSAssert(!isCancellingChallenge_, @"isCancellingChallenge_ unexpected");
 #endif
   NSDictionary *userInfo = [NSDictionary dictionaryWithObject:challenge
                                                        forKey:kGDataHTTPFetcherErrorChallengeKey];
-  challengeError_ = [[NSError alloc] initWithDomain:kGDataHTTPFetcherErrorDomain
-                                               code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
-                                           userInfo:userInfo];
+  NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherErrorDomain
+                                       code:kGDataHTTPFetcherErrorAuthenticationChallengeFailed
+                                   userInfo:userInfo];
 
+  // cancelAuthenticationChallenge seems to indirectly call
+  // connection:didFailWithError: now, though that isn't documented
+  //
+  // we'll use an ivar to make the indirect invocation of the
+  // delegate method do nothing
+  isCancellingChallenge_ = YES;
   [[challenge sender] cancelAuthenticationChallenge:challenge];
+  isCancellingChallenge_ = NO;
 
-  [self connection:connection didFailWithError:challengeError_];
-
-  [challengeError_ release];
-  challengeError_ = nil;
+  [self connection:connection didFailWithError:error];
 }
 
 - (void)invokeSentDataCallback:(SEL)sel
@@ -922,11 +917,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   // implicit one when the retry occurs) will release the delegate
   if (connection_ == nil) return;
 
-  [self logNowWithError:error];
+  // if this method was invoked indirectly by cancellation of an authentication
+  // challenge, defer this until it is called again with the proper error object
+  if (isCancellingChallenge_) return;
 
-  // if this method was invoked indirectly by cancellation of a challenge
-  // error, then we want to report the challenge error now
-  if (challengeError_) error = challengeError_;
+  [self logNowWithError:error];
 
   // see comment about sendStopNotificationIfNeeded
   // in connectionDidFinishLoading:
