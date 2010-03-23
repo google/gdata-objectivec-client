@@ -330,7 +330,6 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableData *downloadedData_;
   NSURLCredential *credential_;     // username & password
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
-  NSError *challengeError_;         // error for pending auth challenge, if any
   NSData *postData_;
   NSInputStream *postStream_;
   NSMutableData *loggedStreamData_;
@@ -353,6 +352,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   id receivedDataPlaceholder_;
   id retryPlaceholder_;
 #endif
+  BOOL isCancellingChallenge_;      // set only when cancelling an auth challenge
   BOOL isStopNotificationNeeded_;   // set when start notification has been sent
   id userData_;                     // retained, if set by caller
   NSMutableDictionary *properties_; // more data retained for caller
