@@ -102,6 +102,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 @synthesize realm = realm_;
 @synthesize privateKey = privateKey_;
 @synthesize serviceProvider = serviceProvider_;
+@synthesize shouldUseParamsToAuthorize = shouldUseParamsToAuthorize_;
 @synthesize userData = userData_;
 
 // create an authentication object, with hardcoded values for installed apps
@@ -589,7 +590,11 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   if ([token length] == 0) {
     return NO;
   } else {
-    [self addResourceTokenHeaderToRequest:request];
+    if ([self shouldUseParamsToAuthorize]) {
+      [self addResourceTokenParamsToRequest:request];
+    } else {
+      [self addResourceTokenHeaderToRequest:request];
+    }
     return YES;
   }
 }
