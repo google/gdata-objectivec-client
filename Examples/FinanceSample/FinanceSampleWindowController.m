@@ -331,10 +331,14 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   mPortfolioFetchesPendingCount++;
   
   GDataServiceGoogleFinance *service = [self financeService];
+
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleFinanceDefaultPortfoliosFeed];
-  [service fetchFeedWithURL:feedURL
-                   delegate:self
-          didFinishSelector:@selector(portfolioFeedTicket:finishedWithFeed:error:)];
+  GDataQueryFinance *query = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
+  [query setShouldIncludeReturns:YES];
+
+  [service fetchFeedWithQuery:query
+                     delegate:self
+            didFinishSelector:@selector(portfolioFeedTicket:finishedWithFeed:error:)];
   
   [self updateUI];
 }
@@ -472,9 +476,13 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
       [self setTransactionFetchError:nil];
 
       GDataServiceGoogleFinance *service = [self financeService];
-      [service fetchFeedWithURL:feedURL
-                       delegate:self
-              didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:error:)];
+
+      GDataQueryFinance *query = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
+      [query setShouldIncludeReturns:YES];
+
+      [service fetchFeedWithQuery:query
+                         delegate:self
+                didFinishSelector:@selector(positionFeedTicket:finishedWithFeed:error:)];
     }
   }
 
