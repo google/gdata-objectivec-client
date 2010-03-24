@@ -25,6 +25,16 @@
 #import "GData/GDataEntryPresentationDoc.h"
 #import "GData/GDataEntryStandardDoc.h"
 
+enum {
+  // upload pop-up menu items
+  kUploadAsGoogleDoc = 0,
+  kUploadOriginal = 1,
+  kUploadOCR = 2,
+  kUploadDE = 3,
+  kUploadJA = 4,
+  kUploadEN = 5
+};
+
 @interface DocsSampleWindowController (PrivateMethods)
 - (void)updateUI;
 - (void)updateChangeFolderPopup;
@@ -55,6 +65,9 @@
 - (void)setRevisionFetchError:(NSError *)error;
 - (GDataServiceTicket *)revisionFetchTicket;
 - (void)setRevisionFetchTicket:(GDataServiceTicket *)ticket;
+
+- (GDataEntryDocListMetadata *)metadataEntry;
+- (void)setMetadataEntry:(GDataEntryDocListMetadata *)entry;
 
 - (GDataServiceTicket *)uploadTicket;
 - (void)setUploadTicket:(GDataServiceTicket *)ticket;
@@ -93,8 +106,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 - (void)dealloc {
   [mDocListFeed release];
-  [mDocListFetchError release];
   [mDocListFetchTicket release];
+  [mDocListFetchError release];
+
+  [mRevisionFeed release];
+  [mRevisionFetchTicket release];
+  [mRevisionFetchError release];
+
+  [mMetadataEntry release];
 
   [mUploadTicket cancelTicket];
   [mUploadTicket release];
@@ -217,6 +236,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   BOOL isUploadPaused = [mUploadTicket isUploadPaused];
   NSString *pauseTitle = (isUploadPaused ? @"Resume" : @"Pause");
   [mPauseUploadButton setTitle:pauseTitle];
+
+  // enable the "Upload Original Document" menu item only if the user metadata
+  // indicates support for generic file uploads
+  GDataDocFeature *feature = [mMetadataEntry featureForName:kGDataDocsFeatureNameUploadAny];
+  BOOL canUploadGenericDocs = (feature != nil);
+
+  NSMenuItem *genericMenuItem = [[mUploadPopup menu] itemWithTag:kUploadOriginal];
+  [genericMenuItem setEnabled:canUploadGenericDocs];
 
   // fill in the add-to-folder pop-up for the selected doc
   [self updateChangeFolderPopup];
@@ -787,19 +814,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     // if the entry is not in the folder's feed, insert it; otherwise, delete
     // it from the folder's feed
-    //
-    // We should be able to look up entries by ID
-    //  foundEntry = [feed entryForIdentifier:[docEntry identifier]];
-    // but currently the DocList server doesn't use consistent IDs for entries in
-    // different feeds, so we'll look up the entry by etag instead.  (Bug 1498057)
-
-    GDataEntryDocBase *foundEntry;
-
-    foundEntry = [GDataUtilities firstObjectFromArray:[feed entries]
-                                            withValue:[docEntry ETag]
-                                           forKeyPath:@"ETag"];
+    GDataEntryDocBase *foundEntry = [feed entryForIdentifier:[docEntry identifier]];
     if (foundEntry == nil) {
-      // the doc isn't in this folder's feed
+      // the doc isn't currently in this folder's feed
       //
       // post the doc to the folder's feed
       NSURL *postURL = [[feed postLink] URL];
@@ -810,6 +827,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                                   didFinishSelector:@selector(addToFolderTicket:finishedWithEntry:error:)];
       [ticket2 setUserData:feed];
     } else {
+      // the doc is alrady in the folder's feed, so remove it
       ticket2 = [service deleteEntry:foundEntry
                             delegate:self
                    didFinishSelector:@selector(removeFromFolderTicket:finishedWithEntry:error:)];
@@ -932,6 +950,31 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   return nil;
 }
 
+#pragma mark Fetch doc list user metadata
+
+- (void)fetchMetadataEntry {
+  [self setMetadataEntry:nil];
+
+  NSURL *entryURL = [GDataServiceGoogleDocs metadataEntryURLForUserID:kGDataServiceDefaultUser];
+  GDataServiceGoogleDocs *service = [self docsService];
+  [service fetchEntryWithURL:entryURL
+                    delegate:self
+           didFinishSelector:@selector(metadataTicket:finishedWithEntry:error:)];
+}
+
+- (void)metadataTicket:(GDataServiceTicket *)ticket
+     finishedWithEntry:(GDataEntryDocListMetadata *)entry
+                 error:(NSError *)error {
+  [self setMetadataEntry:entry];
+
+  // enable or disable features
+  [self updateUI];
+
+  if (error != nil) {
+    NSLog(@"Error fetching user metadata: %@", error);
+  }
+}
+
 #pragma mark Fetch doc list
 
 // begin retrieving the list of the user's docs
@@ -960,6 +1003,9 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                      didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
 
   [self setDocListFetchTicket:ticket];
+
+  // update our metadata entry for this user
+  [self fetchMetadataEntry];
 
   [self updateUI];
 }
@@ -1099,13 +1145,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
     [newEntry setTitleWithString:title];
 
-    NSData *uploadData = [NSData dataWithContentsOfFile:path];
-    if (!uploadData) {
+    NSFileHandle *uploadFileHandle = [NSFileHandle fileHandleForReadingAtPath:path];
+    if (!uploadFileHandle) {
       errorMsg = [NSString stringWithFormat:@"cannot read file %@", path];
     }
 
-    if (uploadData) {
-      [newEntry setUploadData:uploadData];
+    if (uploadFileHandle) {
+      [newEntry setUploadFileHandle:uploadFileHandle];
+
       [newEntry setUploadMIMEType:mimeType];
       [newEntry setUploadSlug:[path lastPathComponent]];
 
@@ -1121,15 +1168,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
         switch (popupTag) {
             // upload original file
-          case 1: shouldConvertToGoogleDoc = NO; break;
+          case kUploadOriginal: shouldConvertToGoogleDoc = NO; break;
 
             // OCR
-          case 2: shouldOCR = YES; break;
+          case kUploadOCR:      shouldOCR = YES; break;
 
             // translation
-          case 3: targetLanguage = @"de"; break; // german
-          case 4: targetLanguage = @"ja"; break; // japanese
-          case 5: targetLanguage = @"en"; break; // english
+          case kUploadDE:       targetLanguage = @"de"; break; // german
+          case kUploadJA:       targetLanguage = @"ja"; break; // japanese
+          case kUploadEN:       targetLanguage = @"en"; break; // english
 
           default: break;
         }
@@ -1157,7 +1204,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                                         forFeedURL:uploadURL
                                           delegate:self
                                  didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
-
       SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
       [ticket setUploadProgressSelector:progressSel];
 
@@ -1353,6 +1399,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 - (void)setRevisionFetchTicket:(GDataServiceTicket *)ticket {
   [mRevisionFetchTicket release];
   mRevisionFetchTicket = [ticket retain];
+}
+
+
+- (GDataEntryDocListMetadata *)metadataEntry {
+  return mMetadataEntry;
+}
+
+- (void)setMetadataEntry:(GDataEntryDocListMetadata *)entry {
+  [mMetadataEntry release];
+  mMetadataEntry = [entry retain];
 }
 
 

@@ -66,6 +66,8 @@
   GDataFeedDocRevision *mRevisionFeed;
   GDataServiceTicket *mRevisionFetchTicket;
   NSError *mRevisionFetchError;
+
+  GDataEntryDocListMetadata *mMetadataEntry;
   
   GDataServiceTicket *mUploadTicket;
 }
