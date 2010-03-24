@@ -21,8 +21,6 @@
 
 // Blogger
 
-#import "GDataBlogger.h"
-
 #import "GDataThreadingElements.h"
 #import "GDataBloggerConstants.h"
 #import "GDataEntryBlog.h"
