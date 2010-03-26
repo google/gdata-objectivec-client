@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.9.1 (561 classes) 2010-03-12 14:49:52 -0800
+// com.google.GDataFramework v. 1.9.1 (564 classes) 2010-03-25 18:32:35 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -74,6 +74,7 @@
   #define GDataBatchOperation                     _GDATA_NS_SYMBOL(GDataBatchOperation)
   #define GDataBatchStatus                        _GDATA_NS_SYMBOL(GDataBatchStatus)
   #define GDataBloggerConstants                   _GDATA_NS_SYMBOL(GDataBloggerConstants)
+  #define GDataBookConstants                      _GDATA_NS_SYMBOL(GDataBookConstants)
   #define GDataBoolValueConstruct                 _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
   #define GDataCachedURLResponse                  _GDATA_NS_SYMBOL(GDataCachedURLResponse)
   #define GDataCalendarSettingsProperty           _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
@@ -152,6 +153,7 @@
   #define GDataEntryCalendarEvent                 _GDATA_NS_SYMBOL(GDataEntryCalendarEvent)
   #define GDataEntryCalendarSettings              _GDATA_NS_SYMBOL(GDataEntryCalendarSettings)
   #define GDataEntryCodeSearch                    _GDATA_NS_SYMBOL(GDataEntryCodeSearch)
+  #define GDataEntryCollection                    _GDATA_NS_SYMBOL(GDataEntryCollection)
   #define GDataEntryContact                       _GDATA_NS_SYMBOL(GDataEntryContact)
   #define GDataEntryContactBase                   _GDATA_NS_SYMBOL(GDataEntryContactBase)
   #define GDataEntryContactGroup                  _GDATA_NS_SYMBOL(GDataEntryContactGroup)
@@ -234,6 +236,7 @@
   #define GDataFeedCalendarEvent                  _GDATA_NS_SYMBOL(GDataFeedCalendarEvent)
   #define GDataFeedCalendarSettings               _GDATA_NS_SYMBOL(GDataFeedCalendarSettings)
   #define GDataFeedCodeSearch                     _GDATA_NS_SYMBOL(GDataFeedCodeSearch)
+  #define GDataFeedCollection                     _GDATA_NS_SYMBOL(GDataFeedCollection)
   #define GDataFeedContact                        _GDATA_NS_SYMBOL(GDataFeedContact)
   #define GDataFeedContactGroup                   _GDATA_NS_SYMBOL(GDataFeedContactGroup)
   #define GDataFeedContactProfile                 _GDATA_NS_SYMBOL(GDataFeedContactProfile)
