@@ -17,7 +17,7 @@
     <openSearch:startIndex>1</openSearch:startIndex>
     <openSearch:itemsPerPage>2</openSearch:itemsPerPage>
     <dxp:segment id="gaid::-1" name="All Visits">
-      <dxp:definition> </dxp:definition>
+      <dxp:definition></dxp:definition>
     </dxp:segment>
     <dxp:segment id="gaid::-2" name="New Visitors">
       <dxp:definition>ga:visitorType==New Visitor</dxp:definition>
