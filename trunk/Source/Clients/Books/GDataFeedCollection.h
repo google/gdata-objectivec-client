@@ -1,4 +1,4 @@
-/* Copyright (c) 2008 Google Inc.
+/* Copyright (c) 2009 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,16 @@
  * limitations under the License.
  */
 
-// 
-// GDataBooks.h
+//
+//  GDataFeedCollection.h
 //
 
-#import "GDataElements.h"
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
 
-// Books
+#import "GDataFeedBase.h"
 
-#import "GDataBookConstants.h"
-#import "GDataDublinCore.h"
-#import "GDataEntryVolume.h"
-#import "GDataFeedVolume.h"
-#import "GDataEntryCollection.h"
-#import "GDataFeedCollection.h"
-#import "GDataServiceGoogleBooks.h"
-#import "GDataQueryBooks.h"
+@interface GDataFeedCollection : GDataFeedBase 
++ (GDataFeedCollection *)collectionFeed;
+@end
+
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE

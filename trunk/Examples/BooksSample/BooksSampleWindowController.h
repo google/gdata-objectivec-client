@@ -39,6 +39,8 @@
   IBOutlet NSImageView *mVolumeImageView;
 
   IBOutlet NSSegmentedControl *mUserFeedTypeSegments;
+  IBOutlet NSPopUpButton *mCollectionPopup;
+  IBOutlet NSProgressIndicator *mCollectionProgressIndicator;
 
   IBOutlet NSSegmentedControl *mWebViewSegments;
   IBOutlet WebView *mWebView;
@@ -59,6 +61,11 @@
   GDataServiceTicket *mVolumesFetchTicket;
   NSError *mVolumesFetchError;
 
+  // feed of user's collections
+  GDataFeedCollection *mCollectionsFeed;
+  GDataServiceTicket *mCollectionsFetchTicket;
+  NSError *mCollectionsFetchError;
+
   // the annotations fetch is for setting rating, review, or label
   // on a volume entry
   GDataServiceTicket *mAnnotationsFetchTicket;
@@ -73,6 +80,7 @@
 + (BooksSampleWindowController *)sharedBooksSampleWindowController;
 
 - (IBAction)getVolumesClicked:(id)sender;
+- (IBAction)collectionPopupClicked:(id)sender;
 - (IBAction)searchClicked:(id)sender;
 
 - (IBAction)cancelVolumeFetchClicked:(id)sender;

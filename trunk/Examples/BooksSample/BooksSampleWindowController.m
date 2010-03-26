@@ -22,6 +22,7 @@
 // segmented control indexes
 const int kLibrarySegment = 0;    // feed of books in user's library
 const int kAnnotationSegment = 1; // feed of books annotated by the user
+const int kCollectionSegment = 2; // feed of collections from user's library
 
 const int kPreviewSegment = 0;
 const int kInfoSegment = 1;
@@ -34,13 +35,14 @@ const int kFullViewability = 2;    // entire book must be viewable
 // feed properties indicating the source of the feed
 NSString *kSourceProperty = @"source";
 NSString *kSearchFeedSource = @"search";
-NSString *kLibraryFeedSource = @"library";
+NSString *kVolumesFeedSource = @"volumes";
 NSString *kAnnotationsFeedSource = @"annotations";
 
 @interface BooksSampleWindowController (PrivateMethods)
 - (void)updateUI;
 
 - (void)fetchVolumes;
+- (void)fetchCollections;
 - (void)searchNow;
 
 - (void)addLabelToSelectedVolume;
@@ -58,6 +60,15 @@ NSString *kAnnotationsFeedSource = @"annotations";
 
 - (NSError *)volumesFetchError;
 - (void)setVolumesFetchError:(NSError *)error;
+
+- (GDataFeedCollection *)collectionsFeed;
+- (void)setCollectionsFeed:(GDataFeedCollection *)feed;
+
+- (GDataServiceTicket *)collectionsFetchTicket;
+- (void)setCollectionsFetchTicket:(GDataServiceTicket *)ticket;
+
+- (NSError *)collectionsFetchError;
+- (void)setCollectionsFetchError:(NSError *)error;
 
 - (GDataServiceTicket *)annotationsFetchTicket;
 - (void)setAnnotationsFetchTicket:(GDataServiceTicket *)ticket;
@@ -134,6 +145,12 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     [mVolumesProgressIndicator stopAnimation:self];
   }
 
+  if (mCollectionsFetchTicket != nil) {
+    [mCollectionProgressIndicator startAnimation:self];
+  } else {
+    [mCollectionProgressIndicator stopAnimation:self];
+  }
+
   if (mAnnotationsFetchTicket != nil) {
     [mAnnotationsProgressIndicator startAnimation:self];
   } else {
@@ -171,6 +188,10 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
   BOOL hasSearchTerm = ([[mSearchField stringValue] length] > 0);
   [mSearchButton setEnabled:hasSearchTerm];
+
+  // enable/disable collection pop-up
+  BOOL hasCollections = ([[mCollectionsFeed entries] count] > 0);
+  [mCollectionPopup setEnabled:hasCollections];
 
   // enable/disable cancel buttons
   [mVolumesCancelButton setEnabled:(mVolumesFetchTicket != nil)];
@@ -226,11 +247,20 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
   [mUsernameField setStringValue:username];
 
-  [self fetchVolumes];
+  if ([mUserFeedTypeSegments selectedSegment] == kCollectionSegment
+      && mCollectionsFeed == nil) {
+    [self fetchCollections];
+  } else {
+    [self fetchVolumes];
+  }
+}
+
+- (IBAction)collectionPopupClicked:(id)sender {
+  [mUserFeedTypeSegments setSelectedSegment:kCollectionSegment];
+  [self getVolumesClicked:sender];
 }
 
 - (IBAction)searchClicked:(id)sender {
-
   [self searchNow];
 }
 
@@ -338,14 +368,20 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
   NSURL *feedURL;
   NSString *feedType;
 
-  if ([mUserFeedTypeSegments selectedSegment] == kLibrarySegment) {
+  NSInteger segmentIndex = [mUserFeedTypeSegments selectedSegment];
+  if (segmentIndex == kLibrarySegment) {
     // feed of user's library
     feedURL = [GDataServiceGoogleBooks booksURLForCollectionID:kGDataGoogleBooksLibraryCollection];
-    feedType = kLibraryFeedSource;
-  } else {
+    feedType = kVolumesFeedSource;
+  } else if (segmentIndex == kAnnotationSegment) {
     // feed of books annotated by the user
     feedURL = [GDataServiceGoogleBooks booksURLForVolumeID:nil];
     feedType = kAnnotationsFeedSource;
+  } else {
+    // collection from user's library
+    NSMenuItem *menuItem = [mCollectionPopup selectedItem];
+    feedURL = [menuItem representedObject];
+    feedType = kVolumesFeedSource;
   }
 
   ticket = [service fetchFeedWithURL:feedURL
@@ -353,6 +389,8 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
                    didFinishSelector:@selector(volumeListFetchTicket:finishedWithFeed:error:)];
   [self setVolumesFetchTicket:ticket];
 
+  // preserve the source of the feed
+  // (editable annotations vs read-only volumes)
   [ticket setProperty:feedType forKey:kSourceProperty];
 
   [self updateUI];
@@ -360,20 +398,77 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
 // fetched volume list callback
 - (void)volumeListFetchTicket:(GDataServiceTicket *)ticket
-             finishedWithFeed:(GDataFeedVolume *)object
+             finishedWithFeed:(GDataFeedVolume *)feed
                         error:(NSError *)error {
 
-  [self setVolumesFeed:object];
+  [self setVolumesFeed:feed];
   [self setVolumesFetchError:error];
   [self setVolumesFetchTicket:nil];
 
   // transfer the feed source to a property in the feed object
   if (error == nil) {
     NSString *sourceProp = [ticket propertyForKey:kSourceProperty];
-    [object setProperty:sourceProp forKey:kSourceProperty];
+    [feed setProperty:sourceProp forKey:kSourceProperty];
   }
 
   [self updateUI];
+}
+
+#pragma mark Fetch collections
+
+// begin retrieving the list of the user's collections
+- (void)fetchCollections {
+
+  [self setCollectionsFeed:nil];
+  [self setCollectionsFetchError:nil];
+  [self setCollectionsFetchTicket:nil];
+
+  GDataServiceGoogleBooks *service = [self booksService];
+  GDataServiceTicket *ticket;
+
+  NSURL *collectionsFeedURL = [GDataServiceGoogleBooks collectionsURL];
+  ticket = [service fetchFeedWithURL:collectionsFeedURL
+                            delegate:self
+                   didFinishSelector:@selector(collectionListFetchTicket:finishedWithFeed:error:)];
+  [self setCollectionsFetchTicket:ticket];
+
+  [self updateUI];
+}
+
+// fetched volume list callback
+- (void)collectionListFetchTicket:(GDataServiceTicket *)ticket
+                 finishedWithFeed:(GDataFeedCollection *)feed
+                            error:(NSError *)error {
+
+  [self setCollectionsFeed:feed];
+  [self setCollectionsFetchError:error];
+  [self setCollectionsFetchTicket:nil];
+
+  if (error == nil) {
+    // load the pop-up menu of collections
+    [mCollectionPopup removeAllItems];
+
+    GDataEntryCollection *entry;
+    GDATA_FOREACH(entry, [feed entries]) {
+      NSString *collectionName = [[entry title] stringValue];
+      NSMenuItem *newMenuItem = [[mCollectionPopup menu] addItemWithTitle:collectionName
+                                                                   action:NULL
+                                                            keyEquivalent:@""];
+      // have the menu item remember its feed's URL
+      NSURL *collectionFeedURL = [[entry feedLink] URL];
+      [newMenuItem setRepresentedObject:collectionFeedURL];
+    }
+  } else {
+    // failed to fetch collections
+    NSBeginAlertSheet(@"Error", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Error fetching collection list: %@",
+                      error);
+
+    [mUserFeedTypeSegments setSelectedSegment:kLibrarySegment];
+  }
+
+  [self fetchVolumes];
 }
 
 #pragma mark Search the query string
@@ -398,6 +493,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
   }
 
   NSString *searchTerm = [mSearchField stringValue];
+
   NSURL *feedURL = [NSURL URLWithString:kGDataGoogleBooksVolumeFeed];
 
   GDataQueryBooks *query = [GDataQueryBooks booksQueryWithFeedURL:feedURL];
@@ -563,7 +659,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)addLabelTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryVolume *)object
+     finishedWithEntry:(GDataEntryVolume *)entry
                  error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
@@ -575,7 +671,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
                       [self window], nil, nil,
                       nil, nil, @"Added label \"%@\" to volume %@",
                       label,
-                      [[object title] stringValue]);
+                      [[entry title] stringValue]);
 
     [self fetchVolumes];
   } else {
@@ -623,7 +719,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)setReviewTicket:(GDataServiceTicket *)ticket
-      finishedWithEntry:(GDataEntryVolume *)object
+      finishedWithEntry:(GDataEntryVolume *)entry
                   error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
@@ -632,7 +728,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     NSBeginAlertSheet(@"Review set", nil, nil, nil,
                       [self window], nil, nil,
                       nil, nil, @"Updated review for volume %@",
-                      [[object title] stringValue]);
+                      [[entry title] stringValue]);
 
     [self fetchVolumes];
   } else {
@@ -678,7 +774,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)setRatingTicket:(GDataServiceTicket *)ticket
-      finishedWithEntry:(GDataEntryVolume *)object
+      finishedWithEntry:(GDataEntryVolume *)entry
                   error:(NSError *)error {
 
   [self setAnnotationsFetchTicket:nil];
@@ -687,8 +783,8 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     NSBeginAlertSheet(@"Set rating", nil, nil, nil,
                       [self window], nil, nil,
                       nil, nil, @"Set rating \"%@\" to volume %@",
-                      [[object rating] value],
-                      [[object title] stringValue]);
+                      [[entry rating] value],
+                      [[entry title] stringValue]);
 
     [self fetchVolumes];
   } else {
@@ -784,6 +880,33 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 - (void)setVolumesFetchTicket:(GDataServiceTicket *)ticket {
   [mVolumesFetchTicket release];
   mVolumesFetchTicket = [ticket retain];
+}
+
+- (GDataFeedCollection *)collectionsFeed {
+  return mCollectionsFeed;
+}
+
+- (void)setCollectionsFeed:(GDataFeedCollection *)feed {
+  [mCollectionsFeed autorelease];
+  mCollectionsFeed = [feed retain];
+}
+
+- (NSError *)collectionsFetchError {
+  return mCollectionsFetchError;
+}
+
+- (void)setCollectionsFetchError:(NSError *)error {
+  [mCollectionsFetchError release];
+  mCollectionsFetchError = [error retain];
+}
+
+- (GDataServiceTicket *)collectionsFetchTicket {
+  return mCollectionsFetchTicket;
+}
+
+- (void)setCollectionsFetchTicket:(GDataServiceTicket *)ticket {
+  [mCollectionsFetchTicket release];
+  mCollectionsFetchTicket = [ticket retain];
 }
 
 - (GDataServiceTicket *)annotationsFetchTicket {

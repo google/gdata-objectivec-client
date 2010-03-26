@@ -24,7 +24,7 @@
 #import "GDataServiceGoogleBooks.h"
 #import "GDataQueryBooks.h"
 
-#import "GDataEntryVolume.h" // for namespaces
+#import "GDataBookConstants.h"
 
 
 @implementation GDataServiceGoogleBooks
@@ -57,6 +57,16 @@
   return [NSURL URLWithString:urlStr];
 }
 
++ (NSURL *)collectionsURL {
+  NSString *rootURLStr = [self serviceRootURLString];
+
+  NSString *template = @"%@users/me/collections";
+  NSString *urlStr = [NSString stringWithFormat:template,
+                      rootURLStr];
+
+  return [NSURL URLWithString:urlStr];
+}
+
 + (NSString *)serviceID {
   return @"print";
 }
@@ -70,7 +80,7 @@
 }
 
 + (NSDictionary *)standardServiceNamespaces {
-  return [GDataEntryVolume booksNamespaces];
+  return [GDataBookConstants booksNamespaces];
 }
 
 @end

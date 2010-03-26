@@ -1,17 +1,17 @@
 /* Copyright (c) 2008 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataEntryVolume.m
@@ -19,10 +19,8 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
 
-#define GDATAENTRYVOLUME_DEFINE_GLOBALS 1
-
 #import "GDataEntryVolume.h"
-
+#import "GDataBookConstants.h"
 #import "GDataComment.h"
 #import "GDataRating.h"
 
@@ -52,26 +50,12 @@
 
 @implementation GDataEntryVolume
 
-+ (NSDictionary *)booksNamespaces {
-  
-  NSMutableDictionary *namespaces;
-  
-  namespaces = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                kGDataNamespaceBooks, kGDataNamespaceBooksPrefix,
-                kGDataNamespaceDublinCore, kGDataNamespaceDublinCorePrefix,
-                nil];
-  
-  [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
-  
-  return namespaces;
-}
-
 + (GDataEntryVolume *)volumeEntry {
   
   GDataEntryVolume *obj;
   obj = [[[self alloc] init] autorelease];
   
-  [obj setNamespaces:[GDataEntryVolume booksNamespaces]];
+  [obj setNamespaces:[GDataBookConstants booksNamespaces]];
   
   return obj;
 }
@@ -111,25 +95,28 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self comment] withName:@"comment"];
-  [self addToArray:items objectDescriptionIfNonNil:[self creators] withName:@"creators"];
-  [self addToArray:items objectDescriptionIfNonNil:[self dates] withName:@"dates"];
-  [self addToArray:items objectDescriptionIfNonNil:[self volumeDescriptions] withName:@"descriptions"];
-  [self addToArray:items objectDescriptionIfNonNil:[self embeddability] withName:@"embeddability"];
-  [self addToArray:items objectDescriptionIfNonNil:[self openAccess] withName:@"openAccess"];
-  [self addToArray:items objectDescriptionIfNonNil:[self formats] withName:@"formats"];
-  [self addToArray:items objectDescriptionIfNonNil:[self volumeIdentifiers] withName:@"identifiers"];
-  [self addToArray:items objectDescriptionIfNonNil:[self languages] withName:@"languages"];
-  [self addToArray:items objectDescriptionIfNonNil:[self publishers] withName:@"publishers"];
-  [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
-  [self addToArray:items objectDescriptionIfNonNil:[self review] withName:@"review"];
-  [self addToArray:items objectDescriptionIfNonNil:[self subjects] withName:@"subjects"];
-  [self addToArray:items objectDescriptionIfNonNil:[self volumeTitles] withName:@"titles"];
-  [self addToArray:items objectDescriptionIfNonNil:[self viewability] withName:@"viewability"];
 
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"comment",       @"comment",            kGDataDescValueLabeled },
+    { @"creators",      @"creators",           kGDataDescValueLabeled },
+    { @"dates",         @"dates",              kGDataDescValueLabeled },
+    { @"descriptions",  @"volumeDescriptions", kGDataDescValueLabeled },
+    { @"embeddability", @"embeddability",      kGDataDescValueLabeled },
+    { @"openAccess",    @"openAccess",         kGDataDescValueLabeled },
+    { @"formats",       @"formats",            kGDataDescValueLabeled },
+    { @"identifiers",   @"volumeIdentifiers",  kGDataDescValueLabeled },
+    { @"languages",     @"languages",          kGDataDescValueLabeled },
+    { @"publishers",    @"publishers",         kGDataDescValueLabeled },
+    { @"rating",        @"rating",             kGDataDescValueLabeled },
+    { @"review",        @"review",             kGDataDescValueLabeled },
+    { @"subjects",      @"subjects",           kGDataDescValueLabeled },
+    { @"titles",        @"volumeTitles",       kGDataDescValueLabeled },
+    { @"viewability",   @"viewability",        kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
@@ -190,12 +177,7 @@
 }
 
 - (void)setEmbeddability:(NSString *)str {
-  GDataVolumeEmbeddability *obj = nil;
-  
-  if (str != nil) {
-    obj = [GDataVolumeEmbeddability valueWithString:str];
-  }
-  
+  GDataVolumeEmbeddability *obj = [GDataVolumeEmbeddability valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataVolumeEmbeddability class]];
 }
 
@@ -204,13 +186,8 @@
   return [obj stringValue];
 }
 
-- (void)setOpenAccess:(NSString *) str {
-  GDataVolumeOpenAccess *obj = nil;
-
-  if (str != nil) {
-    obj = [GDataVolumeOpenAccess valueWithString:str];
-  }
-
+- (void)setOpenAccess:(NSString *)str {
+  GDataVolumeOpenAccess *obj = [GDataVolumeOpenAccess valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataVolumeOpenAccess class]];
 }
 
@@ -308,12 +285,7 @@
 }
 
 - (void)setViewability:(NSString *)str {
-  GDataVolumeViewability *obj = nil;
-  
-  if (str != nil) {
-    obj = [GDataVolumeViewability valueWithString:str];
-  }
-  
+  GDataVolumeViewability *obj = [GDataVolumeViewability valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataVolumeViewability class]];
 }
 

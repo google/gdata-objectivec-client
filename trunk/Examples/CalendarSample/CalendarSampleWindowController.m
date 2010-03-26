@@ -1237,6 +1237,8 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 // submit a query about today's events in the selected calendar
+// NOTE: See GDataQueryCalendar.h for a warning about exceptions to recurring
+// events being returned twice for a query.
 - (void)queryTodaysEvents {
 
   GDataServiceGoogleCalendar *service = [self calendarService];
