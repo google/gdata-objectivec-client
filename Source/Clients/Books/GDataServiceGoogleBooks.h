@@ -44,9 +44,12 @@ _EXTERN NSString* const kGDataGoogleBooksLibraryCollection _INITIALIZE_AS(@"libr
 // (previously kGDataGoogleBooksDefaultVolumeFeed)
 + (NSURL *)booksURLForVolumeID:(NSString *)volumeID;
 
-// pass kGDataGoogleBooksLibraryCollection for the default library
+// pass kGDataGoogleBooksLibraryCollection for the default library's volumes
 // (previously kGDataGoogleBooksDefaultCollectionFeed)
 + (NSURL *)booksURLForCollectionID:(NSString *)collectionID;
+
+// URL for the feed of the user's collections
++ (NSURL *)collectionsURL;
 
 // clients may use these fetch methods of GDataServiceGoogle
 //

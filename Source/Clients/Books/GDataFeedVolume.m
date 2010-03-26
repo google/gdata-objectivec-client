@@ -21,6 +21,7 @@
 
 #import "GDataFeedVolume.h"
 #import "GDataEntryVolume.h"
+#import "GDataBookConstants.h"
 
 @implementation GDataFeedVolume
 
@@ -28,7 +29,7 @@
   
   GDataFeedVolume *feed = [[[self alloc] init] autorelease];
   
-  [feed setNamespaces:[GDataEntryVolume booksNamespaces]];
+  [feed setNamespaces:[GDataBookConstants booksNamespaces]];
   
   return feed;
 }
