@@ -58,6 +58,9 @@ _EXTERN NSString* const kGDataCategoryDocRevision       _INITIALIZE_AS(@"http://
 _EXTERN NSString* const kGDataDocsPublishedRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#publish");
 _EXTERN NSString* const kGDataDocsRevisionsRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/revisions");
 
+_EXTERN NSString* const kGDataDocsFeatureNameOCR         _INITIALIZE_AS(@"ocr");
+_EXTERN NSString* const kGDataDocsFeatureNameTranslation _INITIALIZE_AS(@"translation");
+_EXTERN NSString* const kGDataDocsFeatureNameUploadAny   _INITIALIZE_AS(@"upload_any");
 
 @interface GDataDocConstants : NSObject
 
