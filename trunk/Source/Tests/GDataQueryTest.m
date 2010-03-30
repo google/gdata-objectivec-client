@@ -192,7 +192,7 @@
   [query1 setShouldReturnEmpty:YES];
   
   NSURL* resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
+  NSString *expected1 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "max-col=12&max-row=7&min-col=2&min-row=3&range=A1%3AB2&return-empty=true";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Spreadsheet query 1 generation error");
@@ -204,7 +204,7 @@
   [query2 setIsReverseSort:YES];
   
   NSURL* resultURL2 = [query2 URL];
-  NSString *expected2 = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full?"
+  NSString *expected2 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "orderby=column%3Afoostuff&reverse=true&sq=ipm%3C4+and+hours%3E40";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Spreadsheet query 2 generation error");
