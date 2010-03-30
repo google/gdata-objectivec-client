@@ -42,6 +42,10 @@
   return [GDataSpreadsheetConstants spreadsheetNamespaces];
 }
 
++ (NSString *)serviceRootURLString {
+  return @"https://spreadsheets.google.com/feeds/";
+}
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_SPREADSHEET_SERVICE

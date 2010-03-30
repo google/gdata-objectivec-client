@@ -31,7 +31,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"http://spreadsheets.google.com/feeds/spreadsheets/private/full");
+_EXTERN NSString* const kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"https://spreadsheets.google.com/feeds/spreadsheets/private/full");
 
 
 @interface GDataServiceGoogleSpreadsheet : GDataServiceGoogle 
