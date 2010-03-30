@@ -250,9 +250,9 @@
                  @"image size error (2)");
   
   // test the generator for photo contact feed URLs
-  NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@gmail.com"];
+  NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@example.com"];
   NSString *contactsURLString = [contactsURL absoluteString];
-  NSString *expectedContactsURLString = @"http://photos.googleapis.com/data/feed/api/user/fred%40gmail.com/contacts?kind=user";
+  NSString *expectedContactsURLString = @"http://photos.googleapis.com/data/feed/api/user/fred%40example.com/contacts?kind=user";
   STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
                        @"contacts URL error");
 
@@ -332,19 +332,19 @@
 - (void)testContactQuery {
   
   GDataQueryContact *query1;
-  query1 = [GDataQueryContact contactQueryForUserID:@"user@gmail.com"];
+  query1 = [GDataQueryContact contactQueryForUserID:@"user@example.com"];
   
-  [query1 setGroupIdentifier:@"http://www.google.com/m8/feeds/groups/user%40gmail.com/base/6"];
+  [query1 setGroupIdentifier:@"http://www.google.com/m8/feeds/groups/user%40example.com/base/6"];
   
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://www.google.com/m8/feeds/contacts/user%40gmail.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540gmail.com%2Fbase%2F6";
+  NSString *expected1 = @"https://www.google.com/m8/feeds/contacts/user%40example.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540example.com%2Fbase%2F6";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Contacts query 1 generation error");
 }
 
 - (void)testFinanceQuery {
   
-  NSURL *feedURL = [GDataServiceGoogleFinance portfolioFeedURLForUserID:@"user@gmail.com"];
+  NSURL *feedURL = [GDataServiceGoogleFinance portfolioFeedURLForUserID:@"user@example.com"];
 
   GDataQueryFinance *query1;
   query1 = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
@@ -354,7 +354,7 @@
   [query1 setShouldIncludeTransactions:NO];
 
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://finance.google.com/finance/feeds/user%40gmail.com/portfolios";
+  NSString *expected1 = @"http://finance.google.com/finance/feeds/user%40example.com/portfolios";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Finance query 1 generation error");
   
@@ -366,7 +366,7 @@
   [query2 setShouldIncludeTransactions:YES];
   
   NSURL *resultURL2 = [query2 URL];
-  NSString *expected2 = @"http://finance.google.com/finance/feeds/user%40gmail.com/portfolios?positions=true&returns=true&transactions=true";
+  NSString *expected2 = @"http://finance.google.com/finance/feeds/user%40example.com/portfolios?positions=true&returns=true&transactions=true";
   
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Finance query 2 generation error");
