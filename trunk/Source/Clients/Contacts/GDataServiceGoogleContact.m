@@ -108,7 +108,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://www.google.com/m8/feeds/";
+  return @"https://www.google.com/m8/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {
