@@ -491,7 +491,7 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 @end
 
-// isEqual: has the fatal flaw that it doesn't deal well with the received
+// isEqual: has the fatal flaw that it doesn't deal well with the receiver
 // being nil. We'll use this utility instead.
 BOOL AreEqualOrBothNil(id obj1, id obj2) {
   if (obj1 == obj2) {
