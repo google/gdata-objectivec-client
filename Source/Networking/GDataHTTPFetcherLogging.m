@@ -802,7 +802,7 @@ static NSString* gLoggingProcessName = nil;
              withDestinationPath:(NSString *)targetPath {
   int result = symlink([targetPath fileSystemRepresentation],
                        [newPath fileSystemRepresentation]);
-  return (result = 0);
+  return (result == 0);
 }
 
 @end
