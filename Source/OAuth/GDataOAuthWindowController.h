@@ -72,10 +72,11 @@
 
 @interface GDataOAuthWindowController : NSWindowController {
  @private
-  IBOutlet NSButton *keychainCheckbox_;
-  IBOutlet WebView *webView_;
-  IBOutlet NSButton *webCloseButton_;
-  IBOutlet NSButton *webBackButton_;
+  // IBOutlets
+  NSButton *keychainCheckbox_;
+  WebView *webView_;
+  NSButton *webCloseButton_;
+  NSButton *webBackButton_;
 
   // the object responsible for the sign-in networking sequence; it holds
   // onto the authentication object as well
@@ -106,6 +107,11 @@
   // user-defined data
   id userData_;
 }
+
+@property (nonatomic, assign) IBOutlet NSButton *keychainCheckbox;
+@property (nonatomic, assign) IBOutlet WebView *webView;
+@property (nonatomic, assign) IBOutlet NSButton *webCloseButton;
+@property (nonatomic, assign) IBOutlet NSButton *webBackButton;
 
 @property (nonatomic, copy)   NSString *keychainApplicationServiceName;
 @property (nonatomic, copy)   NSString *displayName;

@@ -36,6 +36,13 @@ const char *kKeychainAccountName = "OAuth";
 
 @implementation GDataOAuthWindowController
 
+// IBOutlets
+@synthesize keychainCheckbox = keychainCheckbox_;
+@synthesize webView = webView_;
+@synthesize webCloseButton = webCloseButton_;
+@synthesize webBackButton = webBackButton_;
+
+// regular ivars
 @synthesize initialRequest = initialRequest_;
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
 @synthesize userData = userData_;
