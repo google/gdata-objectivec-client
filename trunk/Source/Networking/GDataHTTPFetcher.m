@@ -203,9 +203,12 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 #endif
 
 - (void)dealloc {
-  [self stopFetchReleasingBlocks:YES]; // releases connection_, destroys timers
+  // note: if a connection or a retry timer was pending, then this instance
+  // would be retained by those so it wouldn't be getting dealloc'd,
+  // hence we don't need to stopFetch here
 
   [request_ release];
+  [connection_ release];
   [downloadedData_ release];
   [credential_ release];
   [proxyCredential_ release];
@@ -213,11 +216,20 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   [postStream_ release];
   [loggedStreamData_ release];
   [response_ release];
+#if NS_BLOCKS_AVAILABLE
+  [completionBlock_ release];
+  [receivedDataBlock_ release];
+  [sentDataBlock_ release];
+  [retryBlock_ release];
+#endif
   [userData_ release];
   [properties_ release];
   [runLoopModes_ release];
   [fetchHistory_ release];
   [cookieStorage_ release];
+
+  [retryTimer_ invalidate];
+  [retryTimer_ release];
 
   [super dealloc];
 }
@@ -492,13 +504,17 @@ CannotBeginFetch:
 
 // Cancel the fetch of the URL that's currently in progress.
 - (void)stopFetchReleasingBlocks:(BOOL)shouldReleaseBlocks {
+  // if the connection or the retry timer is all that's retaining the fetcher,
+  // we want to be sure this instance survives stopping at least long enough for
+  // the stack to unwind
+  [[self retain] autorelease];
+
   [self destroyRetryTimer];
 
   if (connection_) {
     // in case cancelling the connection calls this recursively, we want
     // to ensure that we'll only release the connection and delegate once,
     // so first set connection_ to nil
-
     NSURLConnection* oldConnection = connection_;
     connection_ = nil;
 

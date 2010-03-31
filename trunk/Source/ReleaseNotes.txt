@@ -94,6 +94,8 @@ Bugs Fixed
 - Fixed propagation of proxy challenge errors upon fetch failure (thanks
   castelino & marali).
 
+- Fixed potential fetcher crash on explicit stopFetching call.
+
 
 Release 1.9.1
 30-October-2009
