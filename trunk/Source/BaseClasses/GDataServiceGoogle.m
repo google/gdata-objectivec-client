@@ -1114,6 +1114,11 @@ enum {
     [self setPendingAuthFetcher:nil];
 
     [self setCredentialDate:[NSDate date]];
+
+    if ([username length] > 0) {
+      // username/password auth will now take precendence
+      [self setAuthorizer:nil];
+    }
   }
 
   [super setUserCredentialsWithUsername:username password:password];
@@ -1152,11 +1157,21 @@ enum {
 }
 
 - (void)setAuthorizer:(id)obj {
-  [authorizer_ autorelease];
-  authorizer_ = [obj retain];
+  if (obj != nil) {
+    // clear any existing username/password
+    [self setUserCredentialsWithUsername:nil
+                                password:nil];
+  }
 
-  GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:)]
-                     || obj == nil, @"invalid authorization object");
+  if (obj != authorizer_) {
+    [self clearLastModifiedDates];
+
+    [authorizer_ autorelease];
+    authorizer_ = [obj retain];
+
+    GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:)]
+                       || obj == nil, @"invalid authorization object");
+  }
 }
 
 + (NSString *)authorizationScope {
