@@ -32,6 +32,9 @@ Additions
   postedObject.  The postedObject is also now available following authentication
   errors.
 
+- GDataServiceGoogle now has methods to fetch an entry or feed specifying an
+  ETag.
+
 - Added viewLink accessors to Maps entries, and new Maps spacial and attribute
   query parameters.
 
