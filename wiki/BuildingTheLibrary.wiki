@@ -21,7 +21,7 @@ or the header for a specific service, such as
 
 To facilitate debugging, you may choose to include the GData.xcodeproj project file directly in your application project as a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference].  The example applications show how to include a reference to the GData framework project file in an Xcode project.
 
-*_Tip_*: if Xcode's debugger is ignoring breakpoints set in the framework, turn off the [http://developer.apple.com/mac/library/documentation/DeveloperTools/Conceptual/XcodeDebugging/920-Debugging_Preferences/debugging_preferences.html "Load symbols lazily" option] in Xcode's Debugging preferences.
+*_Tip_*: if Xcode's debugger is ignoring breakpoints set in the framework, turn off the [http://developer.apple.com/mac/library/documentation/DeveloperTools/Conceptual/XcodeDebugging/150-Debugging_Preferences/debugging_preferences.html "Load symbols lazily" option] in Xcode's Debugging preferences.
 
 == Linking to the iPhone Static Library ==
 
