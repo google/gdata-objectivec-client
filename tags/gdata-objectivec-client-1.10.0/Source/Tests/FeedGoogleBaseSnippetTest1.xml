@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:app='http://www.w3.org/2007/app' xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/' xmlns:g='http://base.google.com/ns/1.0' xmlns:batch='http://schemas.google.com/gdata/batch'>
+<id>http://www.google.com/base/feeds/snippets</id>
+<updated>2007-01-31T21:46:25.796Z</updated>
+<title type='text'>Items matching query: digital camera</title>
+<link rel='alternate' type='text/html' href='http://base.google.com'>
+</link>
+<link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets'>
+</link>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets?bq=digital+camera'>
+</link>
+<link rel='next' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets?start-index=26&amp;max-results=25&amp;bq=digital+camera'>
+</link>
+<generator version='1.0' uri='http://base.google.com'>GoogleBase</generator>
+<openSearch:totalResults>2127556</openSearch:totalResults>
+<openSearch:startIndex>1</openSearch:startIndex>
+<openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+<batch:operation type="update"/>
+<app:control><app:draft>yes</app:draft></app:control>
+<entry>
+<id>http://www.google.com/base/feeds/snippets/13246453826751927533</id>
+<published>2007-01-31T02:36:40.000Z</published>
+<updated>2007-01-31T06:35:11.000Z</updated>
+<category scheme='http://base.google.com/categories/itemtypes' term='products'>
+</category>
+<title type='text'>Digital Camera Battery Notebook Computer 12v DC Power Cable - 5.5mm x 2.5mm (Center +) Camera Connecting Cables</title>
+<content type='html'>Notebook Computer 12v DC Power Cable - 5.5mm x 2.1mm (Center +) This connection cable will allow any Digital Pursuits battery pack to power portable computers that operate with 12v power and have a 2.1mm power connector (center +) Digital  ...</content>
+<link rel='alternate' type='text/html' href='http://www.bhphotovideo.com/bnh/controller/home?O=productlist&amp;A=details&amp;Q=&amp;sku=305668&amp;is=REG&amp;kw=DIDCB5092&amp;BI=583'>
+</link>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets/13246453826751927533'>
+</link>
+<author>
+<name>B&amp;H Photo-Video</name>
+<email>anon-szot0wdsq0at@base.google.com</email>
+</author>
+<g:condition type='text'>new<g:greg_rating>89</g:greg_rating></g:condition>
+<g:product_type type='text'>Digital Photography&gt;Camera Connecting Cables</g:product_type>
+<g:item_language type='text'>EN</g:item_language>
+<g:id type='text'>305668-REG</g:id>
+<g:accessory_for type='text'>digital book computer camera</g:accessory_for>
+<g:payment_notes type='text'>PayPal &amp; Bill Me Later credit available online only.</g:payment_notes>
+<g:expiration_date type='dateTime'>2007-03-02T02:36:40.000Z</g:expiration_date>
+<g:weight type='float'>1.0</g:weight>
+<g:image_link type='url'>http://base.google.com/base_image?q=http%3A%2F%2Fwww.bhphotovideo.com%2Fimages%2Fitems%2F305668.jpg&amp;dhm=ffffffff84c9a95e&amp;size=6</g:image_link>
+<g:customer_id type='int'>1172711</g:customer_id>
+<g:location type='location'>420 9th Ave. 10001</g:location>
+<g:target_country type='text'>US</g:target_country>
+<g:brand type='text'>Digital Camera Battery</g:brand>
+<g:price type='floatUnit'>34.95 usd</g:price>
+<g:item_type type='text'>Products</g:item_type>
+<g:manufacturer_id type='text'>DCB5092</g:manufacturer_id>
+<batch:id>BatchID 1</batch:id>
+<batch:operation type="insert"/>
+<batch:status code="201" reason="Created"/>
+<app:control><app:draft>yes</app:draft></app:control>
+</entry>
+<entry>
+<id>http://www.google.com/base/feeds/snippets/3128608193804768644</id>
+<published>2007-01-31T02:36:40.000Z</published>
+<updated>2007-01-31T15:24:40.000Z</updated>
+<category scheme='http://base.google.com/categories/itemtypes' term='products'>
+</category>
+<title type='text'>Digital Camera Battery Power Cable for Kodak 645 Pro-Back ProBack &amp; DCS-300 Series Camera Connecting Cables</title>
+<content type='html'>Camera Connection Cable - to Power Kodak 645 Pro-Back DCS-300 Series Digital Cameras This connection cable will allow any Digital Pursuits battery pack to power the following digital cameras: Kodak DCS Pro Back 645 DCS-300 series Digital Photography ...</content>
+<link rel='alternate' type='text/html' href='http://www.bhphotovideo.com/bnh/controller/home?O=productlist&amp;A=details&amp;Q=&amp;sku=305685&amp;is=REG&amp;kw=DIDCB6006&amp;BI=583'>
+</link>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets/3128608193804768644'>
+</link>
+<author>
+<name>B&amp;H Photo-Video</name>
+<email>anon-szot0wdsq0at@base.google.com</email>
+</author>
+<g:condition type='text'>new</g:condition>
+<g:product_type type='text'>Digital Photography&gt;Camera Connecting Cables</g:product_type>
+<g:weight type='float'>0.3</g:weight>
+<g:manufacturer_id type='text'>DCB6006</g:manufacturer_id>
+<g:item_language type='text'>EN</g:item_language>
+<g:payment_notes type='text'>PayPal &amp; Bill Me Later credit available online only.</g:payment_notes>
+<g:expiration_date type='dateTime'>2007-03-02T02:36:40.000Z</g:expiration_date>
+<g:customer_id type='int'>1172711</g:customer_id>
+<g:location type='location'>420 9th Ave. 10001</g:location>
+<g:id type='text'>305685-REG</g:id>
+<g:target_country type='text'>US</g:target_country>
+<g:accessory_for type='text'>digital kodak camera</g:accessory_for>
+<g:brand type='text'>Digital Camera Battery</g:brand>
+<g:price type='floatUnit'>34.95 usd</g:price>
+<g:item_type type='text'>Products</g:item_type>
+<g:image_link type='url'>http://base.google.com/base_image?q=http%3A%2F%2Fwww.bhphotovideo.com%2Fimages%2Fitems%2F305685.jpg&amp;dhm=72f0ca0a&amp;size=6</g:image_link>
+<app:control><app:draft>no</app:draft></app:control>
+</entry>
+<entry>
+<id>http://www.google.com/base/feeds/snippets/2926060659426905728</id>
+<published>2007-01-31T02:36:40.000Z</published>
+<updated>2007-01-31T15:24:40.000Z</updated>
+<category scheme='http://base.google.com/categories/itemtypes' term='products'>
+</category>
+<title type='text'>Digital Camera Battery Power Cable for Sony Digital Cameras (Replaces Sony AC-LS5) ACLS5) Camera Connecting Cables</title>
+<content type='html'>Power Cable for Sony Digital Cameras (Compatible with cameras that use Sony AC-LS5 AC Power Supply) This cable is compatible with Sony digital cameras that use the Sony AC-LS5 Power Supply and will power the following devices. DSC-F88 DSC-H1 DSC-L1  ...</content>
+<link rel='alternate' type='text/html' href='http://www.bhphotovideo.com/bnh/controller/home?O=productlist&amp;A=details&amp;Q=&amp;sku=413656&amp;is=REG&amp;kw=DIDCB6167&amp;BI=583'>
+</link>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/base/feeds/snippets/2926060659426905728'>
+</link>
+<author>
+<name>B&amp;H Photo-Video</name>
+<email>anon-szot0wdsq0at@base.google.com</email>
+</author>
+<g:image_link type='url'>http://base.google.com/base_image?q=http%3A%2F%2Fwww.bhphotovideo.com%2Fimages%2Fitems%2F413656.jpg&amp;dhm=ffffffffdfc42f5d&amp;size=6</g:image_link>
+<g:condition type='text'>new</g:condition>
+<g:product_type type='text'>Digital Photography&gt;Camera Connecting Cables</g:product_type>
+<g:accessory_for type='text'>digital cameras sony camera</g:accessory_for>
+<g:item_language type='text'>EN</g:item_language>
+<g:id type='text'>413656-REG</g:id>
+<g:pickup type='boolean'>true</g:pickup>
+<g:payment_notes type='text'>PayPal &amp; Bill Me Later credit available online only.</g:payment_notes>
+<g:expiration_date type='dateTime'>2007-03-02T02:36:40.000Z</g:expiration_date>
+<g:weight type='float'>0.25</g:weight>
+<g:upc type='text'>838098006167</g:upc>
+<g:customer_id type='int'>1172711</g:customer_id>
+<g:location type='location'>420 9th Ave. 10001</g:location>
+<g:manufacturer_id type='text'>DCB6167</g:manufacturer_id>
+<g:target_country type='text'>US</g:target_country>
+<g:brand type='text'>Digital Camera Battery</g:brand>
+<g:price type='floatUnit'>34.95 usd</g:price>
+<g:item_type type='text'>Products</g:item_type>
+<batch:interrupted reason="interruption reason" success="10" failures="5" parsed="15" />
+</entry>
+</feed>

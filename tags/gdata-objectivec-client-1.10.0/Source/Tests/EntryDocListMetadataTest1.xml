@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry gd:etag="W/&quot;CE4BQ3w6eit7ImA9WxBUFEQ.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:docs="http://schemas.google.com/docs/2007" xmlns:gd="http://schemas.google.com/g/2005">
+    <id>http://docs.google.com/feeds/metadata/fredflintstone%40example.net</id>
+    <updated>2010-03-02T01:22:32.212Z</updated>
+    <category label="metadata"
+        scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/docs/2007#metadata"/>
+    <title>Document List User Metadata</title>
+    <link
+        href="http://webdrive-api-canary.corp.google.com/feeds/metadata/fredflintstone%40example.net"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>fredflintstone</name>
+        <email>fredflintstone@example.net</email>
+    </author>
+    <gd:quotaBytesTotal>1073741824</gd:quotaBytesTotal>
+    <gd:quotaBytesUsed>124432802</gd:quotaBytesUsed>
+    <docs:quotaBytesUsedInTrash>89564924</docs:quotaBytesUsedInTrash>
+    <docs:importFormat source="application/vnd.oasis.opendocument.text" target="document"/>
+    <docs:importFormat source="application/vnd.sun.xml.writer" target="document"/>
+    <docs:importFormat
+        source="application/vnd.openxmlformats-officedocument.wordprocessingml.document" target="document"/>
+    <docs:importFormat source="application/vnd.ms-powerpoint" target="presentation"/>
+    <docs:importFormat source="image/jpeg" target="document"/>
+    <docs:importFormat source="image/png" target="document"/>
+    <docs:importFormat source="text/plain" target="document"/>
+    <docs:importFormat source="image/bmp" target="document"/>
+    <docs:importFormat source="image/gif" target="document"/>
+    <docs:importFormat source="application/msword" target="document"/>
+    <docs:importFormat source="text/html" target="document"/>
+    <docs:importFormat source="application/rtf" target="document"/>
+    <docs:importFormat source="application/pdf" target="document"/>
+    <docs:importFormat source="application/vnd.ms-excel" target="spreadsheet"/>
+    <docs:importFormat source="text/csv" target="spreadsheet"/>
+    <docs:importFormat source="text/tab-separated-values" target="spreadsheet"/>
+    <docs:importFormat
+        source="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" target="spreadsheet"/>
+    <docs:importFormat
+        source="application/x-vnd.oasis.opendocument.spreadsheet" target="spreadsheet"/>
+    <docs:exportFormat source="presentation" target="text/plain"/>
+    <docs:exportFormat source="presentation" target="application/vnd.ms-powerpoint"/>
+    <docs:exportFormat source="presentation" target="application/pdf"/>
+    <docs:exportFormat source="spreadsheet" target="application/vnd.ms-excel"/>
+    <docs:exportFormat source="spreadsheet" target="application/x-vnd.oasis.opendocument.spreadsheet"/>
+    <docs:exportFormat source="spreadsheet" target="application/pdf"/>
+    <docs:exportFormat source="document" target="application/vnd.oasis.opendocument.text"/>
+    <docs:exportFormat source="document" target="text/plain"/>
+    <docs:exportFormat source="document" target="text/rtf"/>
+    <docs:exportFormat source="document" target="application/msword"/>
+    <docs:exportFormat source="document" target="text/html"/>
+    <docs:exportFormat source="document" target="application/pdf"/>
+    <docs:feature>
+        <docs:featureName>ocr</docs:featureName>
+    </docs:feature>
+    <docs:feature>
+        <docs:featureName>translation</docs:featureName>
+        <docs:featureRate>2.0</docs:featureRate>
+    </docs:feature>
+    <docs:feature>
+        <docs:featureName>upload_any</docs:featureName>
+    </docs:feature>
+    <docs:maxUploadSize kind="document">512000</docs:maxUploadSize>
+    <docs:maxUploadSize kind="spreadsheet">1048576</docs:maxUploadSize>
+    <docs:maxUploadSize kind="presentation">10485760</docs:maxUploadSize>
+    <docs:maxUploadSize kind="pdf">1048571000</docs:maxUploadSize>
+    <docs:maxUploadSize kind="file">1048576000</docs:maxUploadSize>
+    <docs:maxUploadSize kind="audio">1048576000</docs:maxUploadSize>
+</entry>

@@ -1,0 +1,83 @@
+<?xml version="1.0" ?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:app="http://www.w3.org/2007/app"
+    xmlns:openSearchOne="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>http://gdata.youtube.com/feeds/api/users/TestAccount/playlists?start-index=1&amp;max-results=25</id>
+    <generator uri="http://gdata.youtube.com/" version="beta">YouTube data API</generator>
+    <title type="text">testaccount's Playlists</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/testaccount"
+        rel="related" type="application/atom+xml"/>
+    <link
+        href="http://www.youtube.com/profile_play_list?user=testaccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount/playlists"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount/playlists?start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>testaccount</name>
+        <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
+    </author>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#playlistLink"/>
+    <updated>2008-02-05T22:02:38Z</updated>
+    <openSearchOne:totalResults>2</openSearchOne:totalResults>
+    <openSearchOne:startIndex>1</openSearchOne:startIndex>
+    <openSearchOne:itemsPerPage>22</openSearchOne:itemsPerPage>
+    <entry>
+        <yt:countHint>10</yt:countHint>
+        <yt:private/>
+        <summary>This is an example of a playlist.</summary>
+        <id>http://gdata.youtube.com/feeds/api/users/testaccount/playlists/3459BD2D75D6ECA1</id>
+        <title type="text">Another playlist</title>
+        <content type="application/atom+xml" src="http://gdata.youtube.com/feeds/api/playlists/3459BD2D75D6ECA1" />
+        <published>2008-02-05T14:02:29-08:00</published>
+        <updated>2008-02-05T14:02:29-08:00</updated>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/testaccount"
+            rel="related" type="application/atom+xml"/>
+        <link
+            href="http://www.youtube.com/view_play_list?p=3459BD2D75D6ECA1"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/testaccount/playlists/3459BD2D75D6ECA1"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>testaccount</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
+        </author>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#playlistLink"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/tags.cat" term="moreplaylisttags"/>
+    </entry>
+    <entry>
+        <yt:countHint>10</yt:countHint>
+        <content type="application/atom+xml" src="http://gdata.youtube.com/feeds/api/playlists/BBA2B78EF2F08B10" />
+        <id>http://gdata.youtube.com/feeds/api/users/testaccount/playlists/BBA2B78EF2F08B10</id>
+        <title type="text">MyPlaylist</title>
+        <published>2008-01-29T16:28:14-08:00</published>
+        <summary>Another summary.</summary>
+        <updated>2008-02-05T14:01:39-08:00</updated>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/testaccount"
+            rel="related" type="application/atom+xml"/>
+        <link
+            href="http://www.youtube.com/view_play_list?p=BBA2B78EF2F08B10"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/testaccount/playlists/BBA2B78EF2F08B10"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>testaccount</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
+        </author>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/tags.cat" term="PlaylistTags"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#playlistLink"/>
+    </entry>
+</feed>
