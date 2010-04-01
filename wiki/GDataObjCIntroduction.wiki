@@ -17,7 +17,7 @@ The Google Data APIs Objective-C Client Library is a Cocoa framework that enable
 
 == Requirements ==
 
-The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 due to its use of NSXMLDocument.
+The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 or later due to its use of NSXMLDocument, or iPhone OS 2.0.
 
 == Example Applications ==
 
@@ -50,7 +50,7 @@ For example, here is how to use the Google Calendar service to retrieve a feed o
                             delegate:self
                    didFinishSelector:@selector(ticket:finishedWithFeed:error:)];
 }}}
-Service objects maintain cookies and track data modification dates to minimize server loads, so it's best to reuse a service object for sequences of server requests.
+Service objects maintain cookies and track data modification dates to minimize server load, so it's best to reuse a service object for sequences of server requests.
 
 The application may choose to retain the ticket following the fetch call so the user can cancel the service request.  The ticket is valid so long as the application retains it.
 To cancel a fetch in progress, call `[ticket cancelTicket]`.  Once the finished or failed callback has been called, the ticket is no longer useful and may be released.
@@ -64,9 +64,10 @@ finishedWithFeed:(GDataFeedCalendar *)feed
            error:(NSError *)error {
 
   if (error == nil) {  
-    if ([[feed entries] count] > 0) {
+    NSArray *entries = [feed entries];
+    if ([entries count] > 0) {
 
-      GDataEntryCalendar *firstCalendar = [[feed entries] objectAtIndex:0];
+      GDataEntryCalendar *firstCalendar = [entries objectAtIndex:0];
       GDataTextConstruct *titleTextConstruct = [firstCalendar title];
       NSString *title = [titleTextConstruct stringValue];
     
@@ -159,7 +160,7 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   [newEvent setSummaryWithString:@"Today's discussion"];
 
   GDataPerson *authorPerson = [GDataPerson personWithName:@"Fred Flintstone"
-                                                    email:@"fred.flinstone@spurious.xxx.com"];
+                                                    email:@"fred.flinstone@example.com"];
   [newEvent addAuthor:authorPerson];
   
   // start time now, end time in an hour
@@ -185,8 +186,8 @@ Typically GDataObjects are created by the framework from XML returned from a ser
   GDataServiceGoogleCalendar *service = [self calendarService];
   [service fetchEntryByInsertingEntry:newEvent
                            forFeedURL:feedURL
-                                     delegate:self
-                            didFinishSelector:@selector(addTicket:addedEntry:error:)];
+                             delegate:self
+                    didFinishSelector:@selector(addTicket:addedEntry:error:)];
 }
 }}}
 
