@@ -29,6 +29,33 @@ _New since release 1.8_: The accumulated cache data is limited in size (15 MB on
 
 Applications that do not expect to fetch again soon may explicitly clear the cache to free up memory by calling `[service clearLastModifiedDates]`.
 
+== Using Partial Responses and Updates ==
+
+Because the Atom protocol underlying Google Data APIs is verbose, entries often include far more elements than an application cares to use. This wastes time in transmission and parsing, and memory used by the GDataObjects.
+
+Some services (Calendar, Picasa Web Albums, and !YouTube) support *partial response* and *partial update*. To get a partial response, the application specifies just what elements it wants included in the feed or its entries. A subset of [http://www.zvon.org/xxl/XPathTutorial/General/examples.html XPath syntax] is used to select the fields of the feed and entries.
+
+For example, this code snippet retrieves calendar entries with only the `atom:title` and `gd:when` elements, and the standard `gd` attributes (`gd:etag`, `gd:kind`, `gd:fields`): 
+{{{
+GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
+[query setFieldSelection:@"entry(@gd:*,title,gd:when)"]; 
+}}}
+Partial responses can even specify which of many similar elements are desired. This query selection would retrieve a feed's entries with just the title and edit link of each entry, along with the standard `gd` attributes:
+{{{
+GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
+[query setFieldSelection:@"entry(@gd:*,title,link[@rel=\"edit\"])"]; 
+}}}
+
+Do always include the GData entry attributes ("`@gd:*`") in partial queries since the parser may need the `gd:kind` attributes to determine what class of entry to instantiate.
+
+To update just specific portions of an entry, add a field selection to the entry object. This example shows how to change only the title of a calendar entry, ignoring any other changes in the entry: 
+{{{
+[calendarEntry setTitleWithString:newName]; 
+[calendarEntry setFieldSelection:@"title"]; 
+[service fetchEntryByUpdatingEntry:calendarEntry ... 
+}}}
+Additional information about partial response and update support is available in [http://googlecode.blogspot.com/2010/03/making-apis-faster-introducing-partial.html this blog post].
+
 == Optimizations for iPhone Applications ==
 
 [GDataObjCIntroduction#Development_with_the_iPhone_SDK Development with the iPhone SDK] explains how to add the library to your iPhone application project.
@@ -43,9 +70,9 @@ iPhone applications can speed up parsing of feeds and reduce memory usage during
 
 After this call, the library will not attempt to retain the unexpected child elements and attributes for any parsed objects in a feed.  This improves parsing performance and reduces memory usage when parsing large feeds (such as feeds having over 100 entries.)  The benefit is not noticeable in desktop applications.
 
-The downside is that the entries in the feed fetched this way cannot be directly used for updates; attempting to update one will make the library throw an assert.
+The downside is that the full entries in the feed fetched this way cannot be directly used for updates (but may be used for partial updates, as described above.) Attempting to update a full entry retrieves when unknown elements were ignored will make the library throw an assert.
 
-To update an entry from a feed that ignores the unknown XML, fetch a complete copy of the entry using the self link before doing the update fetch. Here's how it might look to fetch a complete contact entry, given the entry from the feed.
+To update a full entry from a feed that ignores the unknown XML, fetch a complete copy of the entry using the self link before doing the update fetch. Here's how it might look to fetch a complete contact entry, given the entry from the feed.
 
 {{{
 - (void)retrieveCompleteEntryForEntry:(GDataEntryContact *)entry
