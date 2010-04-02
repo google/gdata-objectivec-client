@@ -40,7 +40,7 @@ For example, this code snippet retrieves calendar entries with only the `atom:ti
 GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
 [query setFieldSelection:@"entry(@gd:*,title,gd:when)"]; 
 }}}
-Partial responses can even specify which of many similar elements are desired. This query selection would retrieve a feed's entries with just the title and edit link of each entry, along with the standard `gd` attributes:
+Partial responses can even specify which of many similar elements are desired. This query selection would retrieve a feed's entries with just the title and the edit link of each entry, along with the standard `gd` attributes:
 {{{
 GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
 [query setFieldSelection:@"entry(@gd:*,title,link[@rel=\"edit\"])"]; 
