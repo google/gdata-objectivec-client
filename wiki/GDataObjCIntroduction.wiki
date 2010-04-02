@@ -345,9 +345,13 @@ The [http://code.google.com/apis/gdata/batch.html batch processing documentation
 
 == Uploading files ==
 
-Some services allow uploading of a file when inserting an entry into a feed.  Uploading requires setting the upload data and MIME type in the entry. Some services also require a *slug* as the file name.  
+Some services allow uploading of a file when inserting an entry into a feed.  Uploading requires setting the upload data and MIME type in the entry. Some services also require a *slug* be provided as the file name used to store the data on the server.  
 
-This snippet shows the basic steps for uploading a spreadsheet document.
+Some services just allow uploads to be done in a single fetch. Those use the URL of the feed's postLink for inserting a new entry and its data, and the URL of an entry's editLink or editMediaLink for replacing or deleting the data.
+
+Services that support uploads of very large files use a *chunked upload* protocol. Those services provide a separate uploadLink in feeds, and an uploadEditLink in entries, but otherwise use the same fetch calls for uploading files. In addition, chunked uploads may be paused and resumed by invoking the ticket's `pauseUpload` and `resumeUpload` methods.
+
+This snippet shows the basic steps for uploading a spreadsheet document using the Google Docs API.
 
 {{{
 GDataEntrySpreadsheetDoc *newEntry = [GDataEntrySpreadsheetDoc documentEntry];
@@ -364,13 +368,23 @@ if (data) {
   NSString *title = [[NSFileManager defaultManager] displayNameAtPath:path];
   [newEntry setTitleWithString:title];
   
-  NSURL *postURL = [[docListFeed postLink] URL];
+  NSURL *uploadURL = [GDataServiceGoogleDocs docsUploadURL];
+  // services without chunked upload support typically
+  // allow uploading to the feed's postLink, like
+  // NSURL *uploadURL = [[feed postLink] URL];
 
   ticket = [service fetchEntryByInsertingEntry:newEntry
                                     forFeedURL:postURL
                                       delegate:self
                              didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
 }
+}}}
+
+To avoid reading large files into memory during chunked uploads, uploading can also be done using NSFileHandle rather than NSData:
+
+{{{
+  NSFileHandle *bigFH = [NSFileHandle fileHandleForReadingAtPath:bigFilePath];
+  [newEntry setUploadFileHandle:bigFH];
 }}}
 
 === Upload progress monitoring ===
@@ -422,7 +436,7 @@ Your service delegate will see the "Not modified" response in its callback metho
 }
 }}}
 
-The service can optionally remember the dated responses in a cache and provide them to the application instead of calling the failure method.  To enable the caching, the application should call
+The service object can optionally remember the dated responses in a cache and provide them to the application instead of calling the failure method.  To enable the caching, the application should call
 {{{
 [service setShouldCacheDatedData:YES];
 }}}
@@ -470,16 +484,13 @@ To handle captchas, the fetch callback method might look something like this:
       NSString *authError = [userInfo authenticationError];
     
       if ([authError isEqual:kGDataServiceErrorCaptchaRequired]) {
-  
-      // URL for a captcha image (200x70 pixels)
-
+        // URL for a captcha image (200x70 pixels)
         NSURL *captchaURL = [userInfo captchaURL];
         NSString *captchaToken = [userInfo captchaToken];
       
         // a synchronous read of the image is simple, as shown here,
         // but to be nice to users, you can use GDataHTTPFetcher for
         // an easy asynchronous fetch of the data instead
-
         NSData *imageData = [NSData dataWithContentsOfURL:captchaURL];
         if (imageData) {
           NSImage *image = [[[NSImage alloc] initWithData:imageData] autorelease];
@@ -492,7 +503,7 @@ To handle captchas, the fetch callback method might look something like this:
           // prior to retrying the fetch
         }
       } else {
-      // invalid username or password
+        // invalid username or password
       }
     } else {
       // some other error authenticating or retrieving the GData object
@@ -511,7 +522,7 @@ Documentation on authentication for Google data APIs is available [http://code.g
 
 GData service classes and the GDataHTTPFetcher class provide a mechanism for automatic retry of a few common network and server errors, with appropriate increasing delays between each attempt.  You can turn on the automatic retry support for a GData service by calling `[service setIsServiceRetryEnabled:YES]`.  
 
-The default errors retried are http status 408 (request timeout), 503 (service unavailable), and 504 (gateway timeout), and NSURLErrorTimedOut and NSURLErrorNetworkConnectionLost.  You may specify a maximum retry interval other than the default of 10 minutes, and can provide an optional retry selector to customize the criteria for each retry attempt.
+The default errors retried are http status 408 (request timeout), 503 (service unavailable), and 504 (gateway timeout), and NSURLErrorTimedOut.  You may specify a maximum retry interval other than the default of 10 minutes, and can provide an optional retry selector to customize the criteria for each retry attempt.
 
 == Proxy Authentication ==
 
