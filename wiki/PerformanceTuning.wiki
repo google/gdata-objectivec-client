@@ -54,7 +54,7 @@ To update just specific portions of an entry, add a field selection to the entry
 [calendarEntry setFieldSelection:@"title"]; 
 [service fetchEntryByUpdatingEntry:calendarEntry ... 
 }}}
-Additional information about partial response and update support is available in [http://googlecode.blogspot.com/2010/03/making-apis-faster-introducing-partial.html this blog post].
+Additional information about partial response and update support is available in [http://code.google.com/apis/gdata/docs/2.0/reference.html#PartialResponse the protocol documentation].
 
 == Optimizations for iPhone Applications ==
 
