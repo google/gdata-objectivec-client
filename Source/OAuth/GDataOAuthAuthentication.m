@@ -198,22 +198,36 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   // look for a query like foo=cat&bar=dog
   NSString *query = [[request URL] query];
   if ([query length] > 0) {
-    // remove percent-escapes from the query components; they'll be
-    // added back by OAuthParameter
-    query = [[self class] unencodedOAuthParameterForString:query];
-
-    // separate and step through the assignments
+    // separate and step through the query parameter assignments
     NSArray *items = [query componentsSeparatedByString:@"&"];
 
     for (NSString *item in items) {
-      NSArray *components = [item componentsSeparatedByString:@"="];
-      if ([components count] == 2) {
-        NSString *name = [components objectAtIndex:0];
-        NSString *value = [components objectAtIndex:1];
+      NSString *name = nil;
+      NSString *value = @"";
 
-        [array addObject:[OAuthParameter parameterWithName:name
-                                                     value:value]];
+      NSRange equalsRange = [item rangeOfString:@"="];
+      if (equalsRange.location != NSNotFound) {
+        // the parameter has at least one '='
+        name = [item substringToIndex:equalsRange.location];
+
+        if (equalsRange.location + 1 < [item length]) {
+          // there are characters after the '='
+          value = [item substringFromIndex:(equalsRange.location + 1)];
+
+          // remove percent-escapes from the parameter value; they'll be
+          // added back by OAuthParameter
+          value = [[self class] unencodedOAuthParameterForString:value];
+        } else {
+          // no characters after the '='
+        }
+      } else {
+        // the parameter has no '='
+        name = item;
       }
+
+      OAuthParameter *param = [OAuthParameter parameterWithName:name
+                                                          value:value];
+      [array addObject:param];
     }
   }
 }
