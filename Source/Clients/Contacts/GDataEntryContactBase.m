@@ -77,12 +77,11 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"organization",      @"organizations",      kGDataDescArrayDescs },
+    { @"org",               @"organizations",      kGDataDescArrayDescs },
     { @"email",             @"emailAddresses",     kGDataDescArrayDescs },
     { @"phone",             @"phoneNumbers",       kGDataDescArrayDescs },
     { @"IM",                @"IMAddresses",        kGDataDescArrayDescs },
     { @"extProps",          @"extendedProperties", kGDataDescArrayDescs },
-    { @"org",               @"organizations",      kGDataDescArrayDescs },
     { @"version<=2:postal", @"postalAddresses",    kGDataDescArrayDescs },
     { nil, nil, 0 }
   };
