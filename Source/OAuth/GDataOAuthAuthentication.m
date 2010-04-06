@@ -328,14 +328,11 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   NSString *scheme = [[url scheme] lowercaseString];
   NSString *host = [[url host] lowercaseString];
   int port = [[url port] intValue];
-  NSString *path = [url path];
 
-  // NSURL's path changes %40 to @, which isn't what we want in the
-  // normalized string
-  //
-  // Open question: should this more generally percent-encode the path?
-  path = [path stringByReplacingOccurrencesOfString:@"@"
-                                         withString:@"%40"];
+  // NSURL's path method has an unfortunate side-effect of unescaping the path,
+  // but CFURLCopyPath does not
+  CFStringRef cfPath = CFURLCopyPath((CFURLRef)url);
+  NSString *path = [NSMakeCollectable(cfPath) autorelease];
 
   // include only non-standard ports for http or https
   NSString *portStr;
