@@ -54,11 +54,11 @@ _EXTERN NSString* const kGDataGoogleContactGroupsFeedName      _INITIALIZE_AS(@"
 _EXTERN NSString* const kGDataGoogleContactFullProjection _INITIALIZE_AS(@"full");
 _EXTERN NSString* const kGDataGoogleContactThinProjection _INITIALIZE_AS(@"thin");
 
-_EXTERN NSString* kGDataGoogleContactDefaultThinFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/thin");
-_EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/contacts/default/full");
+_EXTERN NSString* kGDataGoogleContactDefaultThinFeed _INITIALIZE_AS(@"https://www.google.com/m8/feeds/contacts/default/thin");
+_EXTERN NSString* kGDataGoogleContactDefaultFullFeed _INITIALIZE_AS(@"https://www.google.com/m8/feeds/contacts/default/full");
 
-_EXTERN NSString* kGDataGoogleContactGroupDefaultThinFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/groups/default/thin");
-_EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"http://www.google.com/m8/feeds/groups/default/full");
+_EXTERN NSString* kGDataGoogleContactGroupDefaultThinFeed _INITIALIZE_AS(@"https://www.google.com/m8/feeds/groups/default/thin");
+_EXTERN NSString* kGDataGoogleContactGroupDefaultFullFeed _INITIALIZE_AS(@"https://www.google.com/m8/feeds/groups/default/full");
 
 
 @interface GDataServiceGoogleContact : GDataServiceGoogle
