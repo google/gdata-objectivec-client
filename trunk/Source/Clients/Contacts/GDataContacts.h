@@ -32,7 +32,6 @@
 #import "GDataContacts.h"
 #import "GDataContactSensitivity.h"
 #import "GDataContactUserDefinedField.h"
-#import "GDataContactWebsite.h"
 #import "GDataGroupMembershipInfo.h"
 
 #import "GDataEntryContactBase.h"

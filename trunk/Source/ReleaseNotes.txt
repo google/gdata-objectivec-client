@@ -3,6 +3,19 @@ Objective-C GData Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.10.0
+
+Additions
+
+Changes
+
+- Removed unused class GDataContactWebsite
+
+Bugs Fixed
+
+- Fixed signing of OAuth paths with non-alphanumeric characters
+
+
 Release 1.10.0
 31-March-2010
 Changes since 1.9.1

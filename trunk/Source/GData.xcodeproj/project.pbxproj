@@ -163,16 +163,12 @@
 		4F175B3C0FB26FAF00FE3D7B /* GDataContactExternalID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B190FB26FAF00FE3D7B /* GDataContactExternalID.m */; };
 		4F175B3D0FB26FAF00FE3D7B /* GDataContactEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B1A0FB26FAF00FE3D7B /* GDataContactEvent.m */; };
 		4F175B3E0FB26FAF00FE3D7B /* GDataContactElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B1D0FB26FAF00FE3D7B /* GDataContactElements.m */; };
-		4F175B450FB26FF500FE3D7B /* GDataContactWebsite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */; };
 		4F175B460FB26FF500FE3D7B /* GDataContactUserDefinedField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */; };
 		4F175B470FB26FF500FE3D7B /* GDataContactSensitivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */; };
-		4F175B480FB26FF500FE3D7B /* GDataContactWebsite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */; };
-		4F175B490FB26FF600FE3D7B /* GDataContactWebsite.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F175B400FB26FF500FE3D7B /* GDataContactWebsite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F175B4A0FB26FF600FE3D7B /* GDataContactUserDefinedField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */; };
 		4F175B4B0FB26FF600FE3D7B /* GDataContactUserDefinedField.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F175B420FB26FF500FE3D7B /* GDataContactUserDefinedField.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F175B4C0FB26FF600FE3D7B /* GDataContactSensitivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */; };
 		4F175B4D0FB26FF600FE3D7B /* GDataContactSensitivity.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F175B440FB26FF500FE3D7B /* GDataContactSensitivity.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F175B4E0FB26FF600FE3D7B /* GDataContactWebsite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */; };
 		4F175B4F0FB26FF600FE3D7B /* GDataContactUserDefinedField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */; };
 		4F175B500FB26FF600FE3D7B /* GDataContactSensitivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */; };
 		4F175B9C0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B9A0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m */; };
@@ -278,7 +274,6 @@
 		4F1C6F7C1027B4B600B46459 /* GDataContactRelation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B0F0FB26FAF00FE3D7B /* GDataContactRelation.m */; };
 		4F1C6F7D1027B4B600B46459 /* GDataContactSensitivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */; };
 		4F1C6F7E1027B4B600B46459 /* GDataContactUserDefinedField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */; };
-		4F1C6F7F1027B4B600B46459 /* GDataContactWebsite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */; };
 		4F1C6F801027B4B600B46459 /* GDataCustomProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2082080FC7464000F547BB /* GDataCustomProperty.m */; };
 		4F1C6F811027B4B600B46459 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
 		4F1C6F821027B4B600B46459 /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
@@ -560,7 +555,6 @@
 		4F1C709A1027B53600B46459 /* GDataContacts.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F346E310D750365006033E0 /* GDataContacts.h */; };
 		4F1C709B1027B53600B46459 /* GDataContactSensitivity.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F175B440FB26FF500FE3D7B /* GDataContactSensitivity.h */; };
 		4F1C709C1027B53600B46459 /* GDataContactUserDefinedField.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F175B420FB26FF500FE3D7B /* GDataContactUserDefinedField.h */; };
-		4F1C709D1027B53600B46459 /* GDataContactWebsite.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F175B400FB26FF500FE3D7B /* GDataContactWebsite.h */; };
 		4F1C709E1027B53600B46459 /* GDataCustomProperty.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F2082090FC7464000F547BB /* GDataCustomProperty.h */; };
 		4F1C709F1027B53600B46459 /* GDataDateTime.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */; };
 		4F1C70A01027B53600B46459 /* GDataDefines.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F848C6D0D887A2A007ECFCD /* GDataDefines.h */; };
@@ -1690,7 +1684,6 @@
 		4F85DFD1103B83B700B4C418 /* GDataContactExternalID.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B190FB26FAF00FE3D7B /* GDataContactExternalID.m */; };
 		4F85DFD2103B83B700B4C418 /* GDataContactEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B1A0FB26FAF00FE3D7B /* GDataContactEvent.m */; };
 		4F85DFD3103B83B700B4C418 /* GDataContactElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B1D0FB26FAF00FE3D7B /* GDataContactElements.m */; };
-		4F85DFD4103B83B700B4C418 /* GDataContactWebsite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */; };
 		4F85DFD5103B83B700B4C418 /* GDataContactUserDefinedField.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */; };
 		4F85DFD6103B83B700B4C418 /* GDataContactSensitivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */; };
 		4F85DFD7103B83B700B4C418 /* GDataStructuredPostalAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F175B9A0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m */; };
@@ -2381,7 +2374,6 @@
 				4F1C709A1027B53600B46459 /* GDataContacts.h in Copy Static Library Headers */,
 				4F1C709B1027B53600B46459 /* GDataContactSensitivity.h in Copy Static Library Headers */,
 				4F1C709C1027B53600B46459 /* GDataContactUserDefinedField.h in Copy Static Library Headers */,
-				4F1C709D1027B53600B46459 /* GDataContactWebsite.h in Copy Static Library Headers */,
 				4F1C709E1027B53600B46459 /* GDataCustomProperty.h in Copy Static Library Headers */,
 				4F1C709F1027B53600B46459 /* GDataDateTime.h in Copy Static Library Headers */,
 				4F1C70A01027B53600B46459 /* GDataDefines.h in Copy Static Library Headers */,
@@ -2774,8 +2766,6 @@
 		4F175B1C0FB26FAF00FE3D7B /* GDataContactExternalID.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataContactExternalID.h; path = Clients/Contacts/GDataContactExternalID.h; sourceTree = "<group>"; };
 		4F175B1D0FB26FAF00FE3D7B /* GDataContactElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataContactElements.m; path = Clients/Contacts/GDataContactElements.m; sourceTree = "<group>"; };
 		4F175B1E0FB26FAF00FE3D7B /* GDataContactElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataContactElements.h; path = Clients/Contacts/GDataContactElements.h; sourceTree = "<group>"; };
-		4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataContactWebsite.m; path = Clients/Contacts/GDataContactWebsite.m; sourceTree = "<group>"; };
-		4F175B400FB26FF500FE3D7B /* GDataContactWebsite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataContactWebsite.h; path = Clients/Contacts/GDataContactWebsite.h; sourceTree = "<group>"; };
 		4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataContactUserDefinedField.m; path = Clients/Contacts/GDataContactUserDefinedField.m; sourceTree = "<group>"; };
 		4F175B420FB26FF500FE3D7B /* GDataContactUserDefinedField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataContactUserDefinedField.h; path = Clients/Contacts/GDataContactUserDefinedField.h; sourceTree = "<group>"; };
 		4F175B430FB26FF500FE3D7B /* GDataContactSensitivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataContactSensitivity.m; path = Clients/Contacts/GDataContactSensitivity.m; sourceTree = "<group>"; };
@@ -3869,8 +3859,6 @@
 				4F175B110FB26FAF00FE3D7B /* GDataContactPriority.m */,
 				4F175B100FB26FAF00FE3D7B /* GDataContactRelation.h */,
 				4F175B0F0FB26FAF00FE3D7B /* GDataContactRelation.m */,
-				4F175B400FB26FF500FE3D7B /* GDataContactWebsite.h */,
-				4F175B3F0FB26FF500FE3D7B /* GDataContactWebsite.m */,
 				4F175B420FB26FF500FE3D7B /* GDataContactUserDefinedField.h */,
 				4F175B410FB26FF500FE3D7B /* GDataContactUserDefinedField.m */,
 				4F175B440FB26FF500FE3D7B /* GDataContactSensitivity.h */,
@@ -4779,7 +4767,6 @@
 				4F175B330FB26FAF00FE3D7B /* GDataContactEvent.h in Headers */,
 				4F175B340FB26FAF00FE3D7B /* GDataContactExternalID.h in Headers */,
 				4F175B360FB26FAF00FE3D7B /* GDataContactElements.h in Headers */,
-				4F175B490FB26FF600FE3D7B /* GDataContactWebsite.h in Headers */,
 				4F175B4B0FB26FF600FE3D7B /* GDataContactUserDefinedField.h in Headers */,
 				4F175B4D0FB26FF600FE3D7B /* GDataContactSensitivity.h in Headers */,
 				4F175B9E0FB272AC00FE3D7B /* GDataStructuredPostalAddress.h in Headers */,
@@ -5305,7 +5292,6 @@
 				4F175B240FB26FAF00FE3D7B /* GDataContactExternalID.m in Sources */,
 				4F175B250FB26FAF00FE3D7B /* GDataContactEvent.m in Sources */,
 				4F175B260FB26FAF00FE3D7B /* GDataContactElements.m in Sources */,
-				4F175B450FB26FF500FE3D7B /* GDataContactWebsite.m in Sources */,
 				4F175B460FB26FF500FE3D7B /* GDataContactUserDefinedField.m in Sources */,
 				4F175B470FB26FF500FE3D7B /* GDataContactSensitivity.m in Sources */,
 				4F175B9C0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m in Sources */,
@@ -5625,7 +5611,6 @@
 				4F175B3C0FB26FAF00FE3D7B /* GDataContactExternalID.m in Sources */,
 				4F175B3D0FB26FAF00FE3D7B /* GDataContactEvent.m in Sources */,
 				4F175B3E0FB26FAF00FE3D7B /* GDataContactElements.m in Sources */,
-				4F175B4E0FB26FF600FE3D7B /* GDataContactWebsite.m in Sources */,
 				4F175B4F0FB26FF600FE3D7B /* GDataContactUserDefinedField.m in Sources */,
 				4F175B500FB26FF600FE3D7B /* GDataContactSensitivity.m in Sources */,
 				4F175B9F0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m in Sources */,
@@ -5763,7 +5748,6 @@
 				4F1C6F7C1027B4B600B46459 /* GDataContactRelation.m in Sources */,
 				4F1C6F7D1027B4B600B46459 /* GDataContactSensitivity.m in Sources */,
 				4F1C6F7E1027B4B600B46459 /* GDataContactUserDefinedField.m in Sources */,
-				4F1C6F7F1027B4B600B46459 /* GDataContactWebsite.m in Sources */,
 				4F1C6F801027B4B600B46459 /* GDataCustomProperty.m in Sources */,
 				4F1C6F811027B4B600B46459 /* GDataDateTime.m in Sources */,
 				4F1C6F821027B4B600B46459 /* GDataDeleted.m in Sources */,
@@ -6258,7 +6242,6 @@
 				4F175B310FB26FAF00FE3D7B /* GDataContactExternalID.m in Sources */,
 				4F175B320FB26FAF00FE3D7B /* GDataContactEvent.m in Sources */,
 				4F175B350FB26FAF00FE3D7B /* GDataContactElements.m in Sources */,
-				4F175B480FB26FF500FE3D7B /* GDataContactWebsite.m in Sources */,
 				4F175B4A0FB26FF600FE3D7B /* GDataContactUserDefinedField.m in Sources */,
 				4F175B4C0FB26FF600FE3D7B /* GDataContactSensitivity.m in Sources */,
 				4F175B9D0FB272AC00FE3D7B /* GDataStructuredPostalAddress.m in Sources */,
@@ -6588,7 +6571,6 @@
 				4F85DFD1103B83B700B4C418 /* GDataContactExternalID.m in Sources */,
 				4F85DFD2103B83B700B4C418 /* GDataContactEvent.m in Sources */,
 				4F85DFD3103B83B700B4C418 /* GDataContactElements.m in Sources */,
-				4F85DFD4103B83B700B4C418 /* GDataContactWebsite.m in Sources */,
 				4F85DFD5103B83B700B4C418 /* GDataContactUserDefinedField.m in Sources */,
 				4F85DFD6103B83B700B4C418 /* GDataContactSensitivity.m in Sources */,
 				4F85DFD7103B83B700B4C418 /* GDataStructuredPostalAddress.m in Sources */,
