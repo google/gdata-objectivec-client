@@ -47,6 +47,7 @@ _EXTERN NSString* kGDataContactWebsiteLinkBlog     _INITIALIZE_AS(@"blog");
 _EXTERN NSString* kGDataContactWebsiteLinkFTP      _INITIALIZE_AS(@"ftp");
 _EXTERN NSString* kGDataContactWebsiteLinkHome     _INITIALIZE_AS(@"home");
 _EXTERN NSString* kGDataContactWebsiteLinkHomePage _INITIALIZE_AS(@"home-page");
+_EXTERN NSString* kGDataContactWebsiteLinkOther    _INITIALIZE_AS(@"other");
 _EXTERN NSString* kGDataContactWebsiteLinkProfile  _INITIALIZE_AS(@"profile");
 _EXTERN NSString* kGDataContactWebsiteLinkWork     _INITIALIZE_AS(@"work");
 
