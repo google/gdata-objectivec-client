@@ -2168,35 +2168,43 @@
 - (void)testACLFeed {
   
   TestKeyPathValues tests[] =
-  { 
+  {
     //
     // ACL Feed
     //
     { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
-      
+
     // GDataFeedACL paths
     { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
     { @"links.0.rel", kGDataLinkRelControlledObject },
     { @"categories.0.term", kGDataCategoryACL },
     { @"categories.0.scheme", kGDataCategoryScheme },
-      
+
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
-      
+
     // GDataEntryACL paths (scope and role are the main elements)
     { @"entries.0.categories.0.term", kGDataCategoryACL },
     { @"entries.0.identifier", @"http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com" },
     { @"entries.0.content", @"" },
     { @"entries.0.links.1.rel", @"edit" },
     { @"entries.0.scope.type", @"user" },
-    { @"entries.0.scope.value", @"test@gmail.com" },
+    { @"entries.0.scope.value", @"test@example.com" },
     { @"entries.0.role.value", @"http://schemas.google.com/gCal/2005#owner" },
-      
+
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
-      
+
+    { @"entries.1.scope.type", @"user" },
+    { @"entries.1.scope.name", @"wilma" },
+    { @"entries.1.keyedRole.key", @"A123B" },
+    { @"entries.1.keyedRole.role.value", @"reader" },
+
+    { @"entries.1.unknownAttributes.@count", @"0" },
+    { @"entries.1.unknownChildren.@count", @"0" },
+
     { @"", @"" }, // end of feed
-      
+
     { nil, nil } // end of test array
   };
   

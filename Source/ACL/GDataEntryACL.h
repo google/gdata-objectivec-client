@@ -18,14 +18,14 @@
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
-  || GDATA_INCLUDE_CALENDAR_SERVICE
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataEntryBase.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAENTRYACL_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -42,6 +42,7 @@ _EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://sc
 
 @class GDataACLRole;
 @class GDataACLScope;
+@class GDataACLKeyedRole;
 
 #import "GDataCategory.h"
 
@@ -54,6 +55,9 @@ _EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://sc
 
 - (void)setRole:(GDataACLRole *)obj;
 - (GDataACLRole *)role;
+
+- (void)setKeyedRole:(GDataACLKeyedRole *)obj;
+- (GDataACLKeyedRole *)keyedRole;
 
 - (void)setScope:(GDataACLScope *)obj;
 - (GDataACLScope *)scope;

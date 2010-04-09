@@ -21,6 +21,7 @@
 
 #import "GDataACLScope.h"
 #import "GDataACLRole.h"
+#import "GDataACLKeyedRole.h"
 #import "GDataEntryACL.h"
 #import "GDataFeedACL.h"
 #import "GDataServiceACL.h"
