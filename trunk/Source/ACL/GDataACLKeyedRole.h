@@ -1,4 +1,4 @@
-/* Copyright (c) 2007 Google Inc.
+/* Copyright (c) 2010 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,42 +14,30 @@
  */
 
 //
-//  GDataFeedACL.m
+//  GDataKeyedRole.h
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
   || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_DOCS_SERVICE
 
-#import "GDataFeedACL.h"
+#import "GDataObject.h"
+#import "GDataACLRole.h"
 
-#import "GDataEntryACL.h"
+// a key which specifies a role, such as
+//
+//  <gAcl:withKey key="A123B">
+//    <gAcl:role value='owner'></gAcl:role>
+//  </gAcl:withKey>
 
-@implementation GDataFeedACL
+@interface GDataACLKeyedRole : GDataObject <GDataExtension>
++ (GDataACLKeyedRole *)keyedRoleWithKey:(NSString *)key
+                                  value:(NSString *)value;
 
-+ (id)ACLFeed {
-  GDataFeedACL *feed = [[[self alloc] init] autorelease];
-  
-  [feed setNamespaces:[GDataEntryACL ACLNamespaces]];
-  
-  return feed;
-}
+- (NSString *)key;
+- (void)setKey:(NSString *)str;
 
-+ (id)ACLFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
-}
-
-+ (NSString *)standardFeedKind {
-  return kGDataCategoryACL;
-}
-
-+ (void)load {
-  [self registerFeedClass];
-}
-
-- (Class)classForEntries {
-  return [GDataEntryACL class];
-}
-
+- (GDataACLRole *)role;
+- (void)setRole:(GDataACLRole *)obj;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

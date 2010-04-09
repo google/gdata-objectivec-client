@@ -34,9 +34,28 @@
             rel="edit" type="application/atom+xml"/>
         <author>
             <name>Fred Flintstone</name>
-            <email>test@gmail.com</email>
+            <email>test@example.com</email>
         </author>
-        <gAcl:scope type="user" value="test@gmail.com"/>
+        <gAcl:scope type="user" value="test@example.com"/>
         <gAcl:role value="http://schemas.google.com/gCal/2005#owner"/>
+    </entry>
+    <entry>
+        <id>http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2</id>
+        <updated>2007-05-04T20:50:43.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/acl/2007#accessRule"/>
+        <title type="text">reader</title>
+        <content type="text"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Wilma Flintstone</name>
+            <email>wilma@example.com</email>
+        </author>
+        <gAcl:scope type="user" value="wilma@example.com" name="wilma" />
+        <gAcl:withKey key="A123B"><gAcl:role value="reader"/></gAcl:withKey>
     </entry>
 </feed>

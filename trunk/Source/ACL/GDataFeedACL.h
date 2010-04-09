@@ -18,7 +18,7 @@
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
-  || GDATA_INCLUDE_CALENDAR_SERVICE
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataFeedBase.h"
 #import "GDataEntryACL.h"
@@ -28,8 +28,6 @@
 + (id)ACLFeed;
 
 + (id)ACLFeedWithXMLData:(NSData *)data;
-
-- (Class)classForEntries;
 
 @end
 

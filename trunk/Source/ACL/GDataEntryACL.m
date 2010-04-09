@@ -18,14 +18,14 @@
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_ACLS \
-  || GDATA_INCLUDE_CALENDAR_SERVICE
+  || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_DOCS_SERVICE
 
 #define GDATAENTRYACL_DEFINE_GLOBALS 1
 #import "GDataEntryACL.h"
 
 #import "GDataACLRole.h"
 #import "GDataACLScope.h"
-
+#import "GDataACLKeyedRole.h"
 
 @implementation GDataEntryACL
 
@@ -33,9 +33,9 @@
   NSMutableDictionary *namespaces;
   namespaces = [NSMutableDictionary dictionaryWithObject:kGDataNamespaceACL
                                                   forKey:kGDataNamespaceACLPrefix];
-  
+
   [namespaces addEntriesFromDictionary:[GDataEntryBase baseGDataNamespaces]];
-  
+
   return namespaces;
 }
 
@@ -58,28 +58,33 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // ACLEntry extensions
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataACLRole class],
    [GDataACLScope class],
+   [GDataACLKeyedRole class],
    nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"role",      @"role",      kGDataDescValueLabeled },
+    { @"keyedRole", @"keyedRole", kGDataDescValueLabeled },
+    { @"scope",     @"scope",     kGDataDescValueLabeled },
+    { nil, nil, 0 }
+  };
+
   NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self role] withName:@"role"];
-  [self addToArray:items objectDescriptionIfNonNil:[self scope] withName:@"scope"];
-  
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
@@ -87,32 +92,40 @@
 #pragma mark -
 
 - (void)setRole:(GDataACLRole *)obj {
-  [self setObject:obj forExtensionClass:[GDataACLRole class]];  
+  [self setObject:obj forExtensionClass:[GDataACLRole class]];
 }
 
 - (GDataACLRole *)role {
-  return (GDataACLRole *)[self objectForExtensionClass:[GDataACLRole class]]; 
+  return [self objectForExtensionClass:[GDataACLRole class]];
+}
+
+- (void)setKeyedRole:(GDataACLKeyedRole *)obj {
+  [self setObject:obj forExtensionClass:[GDataACLKeyedRole class]];
+}
+
+- (GDataACLKeyedRole *)keyedRole {
+  return [self objectForExtensionClass:[GDataACLKeyedRole class]];
 }
 
 - (void)setScope:(GDataACLScope *)obj {
-  [self setObject:obj forExtensionClass:[GDataACLScope class]];   
+  [self setObject:obj forExtensionClass:[GDataACLScope class]];
 }
 
 - (GDataACLScope *)scope {
-  return (GDataACLScope *)[self objectForExtensionClass:[GDataACLScope class]]; 
+  return [self objectForExtensionClass:[GDataACLScope class]];
 }
 
 #pragma mark -
 
 - (GDataLink *)controlledObjectLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelControlledObject]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelControlledObject];
 }
 
 @end
 
 @implementation GDataEntryBase (GDataACLLinks)
 - (GDataLink *)ACLLink {
-  return [self linkWithRelAttributeValue:kGDataLinkRelACL]; 
+  return [self linkWithRelAttributeValue:kGDataLinkRelACL];
 }
 
 @end
