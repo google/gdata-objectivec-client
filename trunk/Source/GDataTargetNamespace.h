@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.10.0 (564 classes) 2010-03-25 18:32:35 -0700
+// com.google.GDataFramework v. 1.10 (564 classes) 2010-04-09 12:35:17 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -25,6 +25,7 @@
   #define GDATA_TARGET_NAMESPACE_STRING _GDATA_NS_STRING_MIDDLE(GDATA_TARGET_NAMESPACE)
 
   #define GDataAccessLevelProperty                _GDATA_NS_SYMBOL(GDataAccessLevelProperty)
+  #define GDataACLKeyedRole                       _GDATA_NS_SYMBOL(GDataACLKeyedRole)
   #define GDataACLRole                            _GDATA_NS_SYMBOL(GDataACLRole)
   #define GDataACLScope                           _GDATA_NS_SYMBOL(GDataACLScope)
   #define GDataAnalyticsAggregateGroup            _GDATA_NS_SYMBOL(GDataAnalyticsAggregateGroup)
@@ -111,7 +112,6 @@
   #define GDataContactSubject                     _GDATA_NS_SYMBOL(GDataContactSubject)
   #define GDataContactSystemGroup                 _GDATA_NS_SYMBOL(GDataContactSystemGroup)
   #define GDataContactUserDefinedField            _GDATA_NS_SYMBOL(GDataContactUserDefinedField)
-  #define GDataContactWebsite                     _GDATA_NS_SYMBOL(GDataContactWebsite)
   #define GDataContactWebsiteLink                 _GDATA_NS_SYMBOL(GDataContactWebsiteLink)
   #define GDataContactYomiName                    _GDATA_NS_SYMBOL(GDataContactYomiName)
   #define GDataContinuityOfCareRecord             _GDATA_NS_SYMBOL(GDataContinuityOfCareRecord)
