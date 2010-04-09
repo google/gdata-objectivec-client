@@ -2206,6 +2206,13 @@
 		4FE8203F0B26104600D8C135 /* GDataQueryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8203E0B26104600D8C135 /* GDataQueryTest.m */; };
 		4FE8216F0B262DA000D8C135 /* GDataQueryCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8216E0B262DA000D8C135 /* GDataQueryCalendar.m */; };
 		4FE822E70B26594300D8C135 /* GDataServiceBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE822E60B26594300D8C135 /* GDataServiceBase.m */; };
+		4FEB9E03116FB29600F6037F /* GDataACLKeyedRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */; };
+		4FEB9E04116FB29600F6037F /* GDataACLKeyedRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */; };
+		4FEB9E05116FB29600F6037F /* GDataACLKeyedRole.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEB9E01116FB29600F6037F /* GDataACLKeyedRole.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FEB9E06116FB29600F6037F /* GDataACLKeyedRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */; };
+		4FEB9E07116FB29600F6037F /* GDataACLKeyedRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */; };
+		4FEB9E08116FB29600F6037F /* GDataACLKeyedRole.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */; };
+		4FEB9E09116FB2A700F6037F /* GDataACLKeyedRole.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEB9E01116FB29600F6037F /* GDataACLKeyedRole.h */; };
 		4FEBA6AE0BB362E5005710DA /* GDataEntrySpreadsheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBA6900BB362E5005710DA /* GDataEntrySpreadsheet.m */; };
 		4FEBA6AF0BB362E5005710DA /* GDataEntrySpreadsheetCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA6910BB362E5005710DA /* GDataEntrySpreadsheetCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FEBA6B00BB362E5005710DA /* GDataEntrySpreadsheetCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FEBA6920BB362E5005710DA /* GDataEntrySpreadsheetCell.m */; };
@@ -2297,6 +2304,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FEB9E09116FB2A700F6037F /* GDataACLKeyedRole.h in Copy Static Library Headers */,
 				4FC0CE0B115C36630061CBCA /* GDataBookConstants.h in Copy Static Library Headers */,
 				4FC0CE0C115C36630061CBCA /* GDataFeedCollection.h in Copy Static Library Headers */,
 				4FC0CE0D115C36630061CBCA /* GDataEntryCollection.h in Copy Static Library Headers */,
@@ -3322,6 +3330,9 @@
 		4FE8216E0B262DA000D8C135 /* GDataQueryCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryCalendar.m; path = Clients/Calendar/GDataQueryCalendar.m; sourceTree = "<group>"; };
 		4FE822E50B26594300D8C135 /* GDataServiceBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceBase.h; path = BaseClasses/GDataServiceBase.h; sourceTree = "<group>"; };
 		4FE822E60B26594300D8C135 /* GDataServiceBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceBase.m; path = BaseClasses/GDataServiceBase.m; sourceTree = "<group>"; };
+		4FEB9E01116FB29600F6037F /* GDataACLKeyedRole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataACLKeyedRole.h; path = ACL/GDataACLKeyedRole.h; sourceTree = "<group>"; };
+		4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataACLKeyedRole.m; path = ACL/GDataACLKeyedRole.m; sourceTree = "<group>"; };
+		4FEB9E1A116FB2E200F6037F /* FeedACLTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedACLTest1.xml; path = Tests/FeedACLTest1.xml; sourceTree = "<group>"; };
 		4FEBA6900BB362E5005710DA /* GDataEntrySpreadsheet.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GDataEntrySpreadsheet.m; sourceTree = "<group>"; };
 		4FEBA6910BB362E5005710DA /* GDataEntrySpreadsheetCell.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = GDataEntrySpreadsheetCell.h; sourceTree = "<group>"; };
 		4FEBA6920BB362E5005710DA /* GDataEntrySpreadsheetCell.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = GDataEntrySpreadsheetCell.m; sourceTree = "<group>"; };
@@ -3795,6 +3806,8 @@
 				4F25E9F90BE9667B007C0836 /* GDataACLScope.m */,
 				4F25E9FA0BE9667B007C0836 /* GDataACLRole.h */,
 				4F25E9FB0BE9667B007C0836 /* GDataACLRole.m */,
+				4FEB9E01116FB29600F6037F /* GDataACLKeyedRole.h */,
+				4FEB9E02116FB29600F6037F /* GDataACLKeyedRole.m */,
 				4F9044450F2694F7000097B1 /* GDataServiceACL.h */,
 				4F9044460F2694F7000097B1 /* GDataServiceACL.m */,
 			);
@@ -4409,6 +4422,7 @@
 				4F6F06B70E1438D1001F6A47 /* Webmaster Tools */,
 				4F45B0AD0D510A3100004F37 /* YouTube */,
 				4F10BBBB0F1E9AAE002AE29A /* ServiceDocuments */,
+				4FEB9E1A116FB2E200F6037F /* FeedACLTest1.xml */,
 				4F7003B00E1AED9400D8EFD6 /* FeedBooksVolumesTest1.xml */,
 				4F2083940FC7823300F547BB /* FeedMapFeaturesTest1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
@@ -4864,6 +4878,7 @@
 				4FC0CDFE115C35E60061CBCA /* GDataEntryCollection.h in Headers */,
 				4FC0CDFF115C35E60061CBCA /* GDataFeedCollection.h in Headers */,
 				4FC0CE00115C35E60061CBCA /* GDataBookConstants.h in Headers */,
+				4FEB9E05116FB29600F6037F /* GDataACLKeyedRole.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5388,6 +5403,7 @@
 				4FC0CDF8115C35E60061CBCA /* GDataEntryCollection.m in Sources */,
 				4FC0CDF9115C35E60061CBCA /* GDataBookConstants.m in Sources */,
 				4FC0CDFA115C35E60061CBCA /* GDataFeedCollection.m in Sources */,
+				4FEB9E03116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5705,6 +5721,7 @@
 				4FC0CE07115C35E60061CBCA /* GDataEntryCollection.m in Sources */,
 				4FC0CE08115C35E60061CBCA /* GDataBookConstants.m in Sources */,
 				4FC0CE09115C35E60061CBCA /* GDataFeedCollection.m in Sources */,
+				4FEB9E08116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6021,6 +6038,7 @@
 				4FC0CE04115C35E60061CBCA /* GDataEntryCollection.m in Sources */,
 				4FC0CE05115C35E60061CBCA /* GDataBookConstants.m in Sources */,
 				4FC0CE06115C35E60061CBCA /* GDataFeedCollection.m in Sources */,
+				4FEB9E07116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6336,6 +6354,7 @@
 				4FC0CE01115C35E60061CBCA /* GDataEntryCollection.m in Sources */,
 				4FC0CE02115C35E60061CBCA /* GDataBookConstants.m in Sources */,
 				4FC0CE03115C35E60061CBCA /* GDataFeedCollection.m in Sources */,
+				4FEB9E06116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6667,6 +6686,7 @@
 				4FC0CDFB115C35E60061CBCA /* GDataEntryCollection.m in Sources */,
 				4FC0CDFC115C35E60061CBCA /* GDataBookConstants.m in Sources */,
 				4FC0CDFD115C35E60061CBCA /* GDataFeedCollection.m in Sources */,
+				4FEB9E04116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
