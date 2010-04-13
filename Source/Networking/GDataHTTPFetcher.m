@@ -1461,6 +1461,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   gGDataFetcherConnectionClass = theClass;
 }
 
+#if STRIP_GDATA_FETCH_LOGGING
++ (void)setIsLoggingEnabled:(BOOL)flag {
+}
+#endif // STRIP_GDATA_FETCH_LOGGING
+
 @end
 
 @implementation GDataCookieStorage
