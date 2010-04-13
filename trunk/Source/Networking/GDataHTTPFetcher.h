@@ -595,4 +595,10 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 + (Class)connectionClass;
 + (void)setConnectionClass:(Class)theClass;
 
+#if STRIP_GDATA_FETCH_LOGGING
+// if logging is stripped, provide a stub for the main method
+// for controlling logging
++ (void)setIsLoggingEnabled:(BOOL)flag;
+#endif // STRIP_GDATA_FETCH_LOGGING
+
 @end
