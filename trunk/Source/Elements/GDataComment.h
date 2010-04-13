@@ -21,8 +21,7 @@
   || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataObject.h"
-
-@class GDataFeedLink;
+#import "GDataFeedLink.h"
 
 // a commments entry, as in
 // <gd:comments>

@@ -21,11 +21,7 @@
 
 #import "GDataEntryFinancePosition.h"
 
-#import "GDataPortfolioElements.h"
-
 #import "GDataEntryFinancePortfolio.h" // for namespace and constants
-#import "GDataFeedLink.h"
-#import "GDataFinanceSymbol.h"
 
 @implementation GDataEntryFinancePosition
 

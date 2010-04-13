@@ -21,9 +21,9 @@
 
 #import "GDataEntryBase.h"
 
-@class GDataPositionData;
-@class GDataFeedLink;
-@class GDataFinanceSymbol;
+#import "GDataPortfolioElements.h"
+#import "GDataFeedLink.h"
+#import "GDataFinanceSymbol.h"
 
 @interface GDataEntryFinancePosition : GDataEntryBase
 

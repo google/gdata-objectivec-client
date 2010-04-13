@@ -23,9 +23,6 @@
 
 #import "GDataEntryFinancePortfolio.h"
 
-#import "GDataPortfolioElements.h"
-#import "GDataFeedLink.h"
-
 @implementation GDataEntryFinancePortfolio
 
 + (NSDictionary *)financeNamespaces {
