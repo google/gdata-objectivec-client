@@ -22,8 +22,6 @@
 
 #import "GDataComment.h"
 
-#import "GDataFeedLink.h"
-
 static NSString* const kRelAttr = @"rel";
 
 @implementation GDataComment
