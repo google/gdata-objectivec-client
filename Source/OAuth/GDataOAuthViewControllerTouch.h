@@ -56,6 +56,10 @@
 //
 // To sign in to services other than Google, use the longer init method,
 // as shown in the sample application
+//
+// If the network connection is lost for more than 10 seconds while the sign-in
+// html is displayed, the view will be dismissed and the callback method
+// will be invoked with an error.
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_OAUTH
 
@@ -121,6 +125,11 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 @property (nonatomic, retain) IBOutlet UIButton *forwardButton;
 @property (nonatomic, retain) IBOutlet UIView *navButtonsView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *rightBarButtonItem;
+
+// the default timeout for an unreachable network during display of the
+// sign-in page is 10 seconds; set this to 0 to have no timeout
+@property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
+
 @property (nonatomic, retain) id userData;
 
 // init method for authenticating to Google services

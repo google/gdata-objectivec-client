@@ -337,6 +337,14 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   return auth;
 }
 
+- (void)setNetworkLossTimeoutInterval:(NSTimeInterval)val {
+  [signIn_ setNetworkLossTimeoutInterval:val];
+}
+
+- (NSTimeInterval)networkLossTimeoutInterval {
+  return [signIn_ networkLossTimeoutInterval];
+}
+
 - (BOOL)shouldUseKeychain {
   BOOL hasName = ([keychainApplicationServiceName_ length] > 0);
   return hasName;
