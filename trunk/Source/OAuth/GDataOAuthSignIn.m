@@ -20,6 +20,10 @@
 #define GDATAOAUTHSIGNIN_DEFINE_GLOBALS 1
 #import "GDataOAuthSignIn.h"
 
+// we'll default to timing out if the network becomes unreachable for more
+// than 10 seconds when the sign-in page is displayed
+const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 10.0;
+
 @interface GDataOAuthSignIn ()
 - (void)invokeFinalCallbackWithError:(NSError *)error;
 
@@ -27,6 +31,11 @@
 - (void)setPendingFetcher:(GDataHTTPFetcher *)obj fetchType:(NSString *)fetchType;
 
 - (void)closeTheWindow;
+
+- (void)startReachabilityCheck;
+- (void)stopReachabilityCheck;
+- (void)reachabilityTarget:(SCNetworkReachabilityRef)reachabilityRef
+              changedFlags:(SCNetworkConnectionFlags)flags;
 @end
 
 @implementation GDataOAuthSignIn
@@ -38,6 +47,8 @@
 @synthesize requestTokenURL = requestURL_;
 @synthesize authorizeTokenURL = authorizeURL_;
 @synthesize accessTokenURL = accessURL_;
+
+@synthesize networkLossTimeoutInterval = networkLossTimeoutInterval_;
 
 - (id)initWithGoogleAuthenticationForScope:(NSString *)scope
                                   language:(NSString *)language
@@ -102,11 +113,17 @@
     delegate_ = delegate;
     webRequestSelector_ = webRequestSelector;
     finishedSelector_ = finishedSelector;
+
+    // default timeout for a lost internet connection while the server
+    // UI is displayed is 10 seconds
+    networkLossTimeoutInterval_ = kDefaultNetworkLossTimeoutInterval;
   }
   return self;
 }
 
 - (void)dealloc {
+  [self stopReachabilityCheck];
+
   [auth_ release];
 
   [requestURL_ release];
@@ -172,6 +189,10 @@
     [delegate_ performSelector:webRequestSelector_
                     withObject:self
                     withObject:request];
+
+    // at this point, we're waiting on the server-driven html UI, so
+    // we want notification if we lose connectivity to the web server
+    [self startReachabilityCheck];
   }
 }
 
@@ -184,6 +205,8 @@
 // entry point for the window controller to tell us that the window
 // prematurely closed
 - (void)windowWasClosed {
+  [self stopReachabilityCheck];
+
   [pendingFetcher_ stopFetching];
   [self setPendingFetcher:nil fetchType:nil];
 
@@ -196,6 +219,8 @@
 
 // internal method to tell the window controller to close the window
 - (void)closeTheWindow {
+  [self stopReachabilityCheck];
+
   [delegate_ performSelector:webRequestSelector_
                   withObject:self
                   withObject:nil];
@@ -287,6 +312,102 @@
   [nc postNotificationName:name
                     object:self
                   userInfo:dict];
+}
+
+#pragma mark Reachability monitoring
+
+static void ReachabilityCallBack(SCNetworkReachabilityRef target,
+                                 SCNetworkConnectionFlags flags,
+                                 void *info) {
+  // pass the flags to the signIn object
+  GDataOAuthSignIn *signIn = (GDataOAuthSignIn *)info;
+
+  [signIn reachabilityTarget:target
+                changedFlags:flags];
+}
+
+- (void)startReachabilityCheck {
+  // the user may set the timeout to 0 to skip the reachability checking
+  // during display of the sign-in page
+  if (networkLossTimeoutInterval_ <= 0.0 || reachabilityRef_ != NULL) {
+    return;
+  }
+
+  // create a reachability target from the authorization URL, add our callback,
+  // and schedule it on the run loop so we'll be notified if the network drops
+  const char* host = [[authorizeURL_ host] UTF8String];
+  reachabilityRef_ = SCNetworkReachabilityCreateWithName(kCFAllocatorSystemDefault,
+                                                         host);
+  if (reachabilityRef_) {
+    BOOL isScheduled = NO;
+    SCNetworkReachabilityContext ctx = { 0, self, NULL, NULL, NULL };
+
+    if (SCNetworkReachabilitySetCallback(reachabilityRef_,
+                                         ReachabilityCallBack, &ctx)) {
+      if (SCNetworkReachabilityScheduleWithRunLoop(reachabilityRef_,
+                                                   CFRunLoopGetCurrent(),
+                                                   kCFRunLoopDefaultMode)) {
+        isScheduled = YES;
+      }
+    }
+
+    if (!isScheduled) {
+      CFRelease(reachabilityRef_);
+      reachabilityRef_ = NULL;
+    }
+  }
+}
+
+- (void)destroyUnreachabilityTimer {
+  [networkLossTimer_ invalidate];
+  [networkLossTimer_ autorelease];
+  networkLossTimer_ = nil;
+}
+
+- (void)reachabilityTarget:(SCNetworkReachabilityRef)reachabilityRef
+              changedFlags:(SCNetworkConnectionFlags)flags {
+  BOOL isConnected = (flags & kSCNetworkFlagsReachable) != 0
+    && (flags & kSCNetworkFlagsConnectionRequired) == 0;
+
+  if (isConnected) {
+    // server is again reachable
+    [self destroyUnreachabilityTimer];
+  } else {
+    // the server has become unreachable; start the timer, if necessary
+    if (networkLossTimer_ == nil && networkLossTimeoutInterval_ > 0) {
+      SEL sel = @selector(reachabilityTimerFired:);
+      networkLossTimer_ = [[NSTimer scheduledTimerWithTimeInterval:networkLossTimeoutInterval_
+                                                            target:self
+                                                          selector:sel
+                                                          userInfo:nil
+                                                           repeats:NO] retain];
+    }
+  }
+}
+
+- (void)reachabilityTimerFired:(NSTimer *)timer {
+  // cancelSigningIn closes the window, stops the reachability check,
+  // and destroys the timer
+  [self cancelSigningIn];
+
+  NSError *error = [NSError errorWithDomain:NSURLErrorKey
+                                       code:NSURLErrorNetworkConnectionLost
+                                   userInfo:nil];
+  [self invokeFinalCallbackWithError:error];
+}
+
+- (void)stopReachabilityCheck {
+  [self destroyUnreachabilityTimer];
+
+  if (reachabilityRef_) {
+    SCNetworkReachabilityUnscheduleFromRunLoop(reachabilityRef_,
+                                               CFRunLoopGetCurrent(),
+                                               kCFRunLoopDefaultMode);
+    SCNetworkReachabilitySetCallback(reachabilityRef_, NULL, NULL);
+
+    CFRelease(reachabilityRef_);
+    reachabilityRef_ = NULL;
+  }
 }
 
 #pragma mark Token Revocation

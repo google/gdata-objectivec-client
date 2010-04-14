@@ -46,11 +46,13 @@
 #if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
 
 #import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 
 #import "GDataOAuthAuthentication.h"
 #import "GDataHTTPFetcher.h"
 
 enum {
+  // error code indicating that the window was prematurely closed
   kGDataOAuthErrorWindowClosed = -1000
 };
 
@@ -68,6 +70,10 @@ enum {
 
   GDataHTTPFetcher *pendingFetcher_;
 
+  SCNetworkReachabilityRef reachabilityRef_;
+  NSTimer *networkLossTimer_;
+  NSTimeInterval networkLossTimeoutInterval_;
+
   id userData_;
 }
 
@@ -78,6 +84,10 @@ enum {
 @property (nonatomic, readonly) NSURL *requestTokenURL;
 @property (nonatomic, readonly) NSURL *authorizeTokenURL;
 @property (nonatomic, readonly) NSURL *accessTokenURL;
+
+// the default timeout for an unreachable network during display of the
+// sign-in page is 10 seconds; set this to 0 to have no timeout
+@property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
 
 // convenience entry point for accessing Google APIs; this creates the
 // authentication object, and uses standard URL endpoints for OAuth to

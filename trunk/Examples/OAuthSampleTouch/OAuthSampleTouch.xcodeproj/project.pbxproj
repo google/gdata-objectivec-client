@@ -20,6 +20,7 @@
 		4F41066A1149BCCF009202D9 /* GDataHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4106651149BCCF009202D9 /* GDataHTTPFetcher.m */; };
 		4F41066B1149BCCF009202D9 /* GDataOAuthViewTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F4106661149BCCF009202D9 /* GDataOAuthViewTouch.xib */; };
 		4FB6100E1145F06700A3DDD3 /* OAuthSampleMainTouch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FB6100D1145F06700A3DDD3 /* OAuthSampleMainTouch.xib */; };
+		4FF23F191176598F00E96C5A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23F181176598F00E96C5A /* SystemConfiguration.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		4F4106651149BCCF009202D9 /* GDataHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataHTTPFetcher.m; path = ../../Source/Networking/GDataHTTPFetcher.m; sourceTree = SOURCE_ROOT; };
 		4F4106661149BCCF009202D9 /* GDataOAuthViewTouch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GDataOAuthViewTouch.xib; path = ../../Source/OAuth/GDataOAuthViewTouch.xib; sourceTree = SOURCE_ROOT; };
 		4FB6100D1145F06700A3DDD3 /* OAuthSampleMainTouch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OAuthSampleMainTouch.xib; sourceTree = "<group>"; };
+		4FF23F181176598F00E96C5A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				2892E4100DC94CBA00A64D0F /* CoreGraphics.framework in Frameworks */,
 				1397AC511137075C00DE52FD /* Security.framework in Frameworks */,
+				4FF23F191176598F00E96C5A /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -117,6 +120,7 @@
 		29B97323FDCFA39411CA2CEA /* System Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FF23F181176598F00E96C5A /* SystemConfiguration.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				2892E40F0DC94CBA00A64D0F /* CoreGraphics.framework */,
 				1397AC501137075C00DE52FD /* Security.framework */,
