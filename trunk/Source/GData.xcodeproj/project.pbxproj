@@ -920,6 +920,10 @@
 		4F346E280D7502B0006033E0 /* GDataFeedContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F346E180D7502B0006033E0 /* GDataFeedContact.m */; };
 		4F346E290D7502B0006033E0 /* GDataServiceGoogleContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F346E190D7502B0006033E0 /* GDataServiceGoogleContact.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F346E320D750365006033E0 /* GDataContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F346E310D750365006033E0 /* GDataContacts.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F35D50811778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */; };
+		4F35D50911778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */; };
+		4F35D50A11778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */; };
+		4F35D50B11778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */; };
 		4F35DE590C023B770038AE68 /* GDataGeo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4B0C023B770038AE68 /* GDataGeo.m */; };
 		4F35DE5A0C023B770038AE68 /* GDataNormalPlayTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */; };
 		4F35DE5B0C023B770038AE68 /* GDataMediaThumbnail.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F35DE4F0C023B770038AE68 /* GDataMediaThumbnail.m */; };
@@ -2860,6 +2864,7 @@
 		4F346E190D7502B0006033E0 /* GDataServiceGoogleContact.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataServiceGoogleContact.h; path = Clients/Contacts/GDataServiceGoogleContact.h; sourceTree = "<group>"; };
 		4F346E310D750365006033E0 /* GDataContacts.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataContacts.h; path = Clients/Contacts/GDataContacts.h; sourceTree = "<group>"; };
 		4F346E500D7508AC006033E0 /* FeedContactTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedContactTest1.xml; path = Tests/FeedContactTest1.xml; sourceTree = "<group>"; };
+		4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		4F35DE4A0C023B770038AE68 /* GDataGeo.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataGeo.h; path = Geo/GDataGeo.h; sourceTree = "<group>"; };
 		4F35DE4B0C023B770038AE68 /* GDataGeo.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGeo.m; path = Geo/GDataGeo.m; sourceTree = "<group>"; };
 		4F35DE4D0C023B770038AE68 /* GDataNormalPlayTime.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataNormalPlayTime.m; path = Media/GDataNormalPlayTime.m; sourceTree = "<group>"; };
@@ -3384,6 +3389,7 @@
 			files = (
 				4F14A9E70B1277290072EBB8 /* SenTestingKit.framework in Frameworks */,
 				4F4106E51149C708009202D9 /* Security.framework in Frameworks */,
+				4F35D50811778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3393,6 +3399,7 @@
 			files = (
 				4F1ADAB10B7168F300DC0485 /* Cocoa.framework in Frameworks */,
 				4F4107351149C7E1009202D9 /* Security.framework in Frameworks */,
+				4F35D50B11778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3408,6 +3415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F3173231149CF4800D9E0E7 /* Security.framework in Frameworks */,
+				4F35D50911778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3417,6 +3425,7 @@
 			files = (
 				4F85E013103B83B700B4C418 /* SenTestingKit.framework in Frameworks */,
 				4F4106E61149C708009202D9 /* Security.framework in Frameworks */,
+				4F35D50A11778C8F00BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3458,6 +3467,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F35D50711778C8F00BDFA97 /* SystemConfiguration.framework */,
 				4F4106E41149C708009202D9 /* Security.framework */,
 				4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
