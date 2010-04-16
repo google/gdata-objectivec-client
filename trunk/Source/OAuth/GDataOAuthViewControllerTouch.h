@@ -176,6 +176,8 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 // the view.
 - (void)constructView;
 
+- (void)cancelSigningIn;
+
 // revocation of an authorized token from Google
 + (void)revokeTokenForGoogleAuthentication:(GDataOAuthAuthentication *)auth;
 

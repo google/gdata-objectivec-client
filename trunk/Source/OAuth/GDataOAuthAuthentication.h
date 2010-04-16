@@ -61,6 +61,10 @@ _EXTERN NSString* const kGDataOAuthFetchTypeKey     _INITIALIZE_AS(@"FetchType")
 _EXTERN NSString* const kGDataOAuthFetchTypeRequest _INITIALIZE_AS(@"request");
 _EXTERN NSString* const kGDataOAuthFetchTypeAccess  _INITIALIZE_AS(@"access");
 
+// notification for network loss during html sign-in display
+_EXTERN NSString* const kGDataOAuthNetworkLost  _INITIALIZE_AS(@"kGDataOAuthNetworkLost");
+_EXTERN NSString* const kGDataOAuthNetworkFound _INITIALIZE_AS(@"kGDataOAuthNetworkFound");
+
 
 #if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
 _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA-SHA1");

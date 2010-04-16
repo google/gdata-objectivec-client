@@ -21,8 +21,8 @@
 #import "GDataOAuthSignIn.h"
 
 // we'll default to timing out if the network becomes unreachable for more
-// than 10 seconds when the sign-in page is displayed
-const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 10.0;
+// than 30 seconds when the sign-in page is displayed
+const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 
 @interface GDataOAuthSignIn ()
 - (void)invokeFinalCallbackWithError:(NSError *)error;
@@ -115,7 +115,7 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 10.0;
     finishedSelector_ = finishedSelector;
 
     // default timeout for a lost internet connection while the server
-    // UI is displayed is 10 seconds
+    // UI is displayed is 30 seconds
     networkLossTimeoutInterval_ = kDefaultNetworkLossTimeoutInterval;
   }
   return self;
@@ -372,9 +372,20 @@ static void ReachabilityCallBack(SCNetworkReachabilityRef target,
   if (isConnected) {
     // server is again reachable
     [self destroyUnreachabilityTimer];
+
+    if (hasNotifiedNetworkLoss_) {
+      // tell the user that the network has been found
+      NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+      [nc postNotificationName:kGDataOAuthNetworkFound
+                        object:self
+                      userInfo:nil];
+      hasNotifiedNetworkLoss_ = NO;
+    }
   } else {
     // the server has become unreachable; start the timer, if necessary
-    if (networkLossTimer_ == nil && networkLossTimeoutInterval_ > 0) {
+    if (networkLossTimer_ == nil
+        && networkLossTimeoutInterval_ > 0
+        && !hasNotifiedNetworkLoss_) {
       SEL sel = @selector(reachabilityTimerFired:);
       networkLossTimer_ = [[NSTimer scheduledTimerWithTimeInterval:networkLossTimeoutInterval_
                                                             target:self
@@ -386,14 +397,17 @@ static void ReachabilityCallBack(SCNetworkReachabilityRef target,
 }
 
 - (void)reachabilityTimerFired:(NSTimer *)timer {
-  // cancelSigningIn closes the window, stops the reachability check,
-  // and destroys the timer
-  [self cancelSigningIn];
+  // the user may call [[notification object] cancelSigningIn] to
+  // dismiss the sign-in
+  if (!hasNotifiedNetworkLoss_) {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc postNotificationName:kGDataOAuthNetworkLost
+                      object:self
+                    userInfo:nil];
+    hasNotifiedNetworkLoss_ = YES;
+  }
 
-  NSError *error = [NSError errorWithDomain:NSURLErrorKey
-                                       code:NSURLErrorNetworkConnectionLost
-                                   userInfo:nil];
-  [self invokeFinalCallbackWithError:error];
+  [self destroyUnreachabilityTimer];
 }
 
 - (void)stopReachabilityCheck {

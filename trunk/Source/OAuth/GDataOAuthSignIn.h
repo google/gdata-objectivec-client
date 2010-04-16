@@ -73,6 +73,7 @@ enum {
   SCNetworkReachabilityRef reachabilityRef_;
   NSTimer *networkLossTimer_;
   NSTimeInterval networkLossTimeoutInterval_;
+  BOOL hasNotifiedNetworkLoss_;
 
   id userData_;
 }
@@ -86,7 +87,7 @@ enum {
 @property (nonatomic, readonly) NSURL *accessTokenURL;
 
 // the default timeout for an unreachable network during display of the
-// sign-in page is 10 seconds; set this to 0 to have no timeout
+// sign-in page is 30 seconds; set this to 0 to have no timeout
 @property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
 
 // convenience entry point for accessing Google APIs; this creates the

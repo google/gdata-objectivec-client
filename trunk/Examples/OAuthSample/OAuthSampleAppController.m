@@ -58,6 +58,10 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
          selector:@selector(signInFetchStateChanged:)
              name:kGDataOAuthFetchStopped
            object:nil];
+  [nc addObserver:self
+         selector:@selector(signInNetworkLost:)
+             name:kGDataOAuthNetworkLost
+           object:nil];
 
   [self updateUI];
 }
@@ -259,6 +263,16 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
   } else {
     [mSpinner stopAnimation:self];
   }
+}
+
+- (void)signInNetworkLost:(NSNotification *)note {
+  // the network dropped for 30 seconds
+  //
+  // we could alert the user and wait for notification that the network has
+  // has returned, or just cancel the sign-in sheet, as shown here
+  GDataOAuthSignIn *signIn = [note object];
+  GDataOAuthWindowController *controller = [signIn delegate];
+  [controller cancelSigningIn];
 }
 
 - (void)updateUI {
