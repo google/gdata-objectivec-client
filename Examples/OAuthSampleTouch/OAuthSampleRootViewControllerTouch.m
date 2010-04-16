@@ -38,6 +38,8 @@ static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self selector:@selector(incrementNetworkActivity:) name:kGDataOAuthFetchStarted object:nil];
   [nc addObserver:self selector:@selector(decrementNetworkActivity:) name:kGDataOAuthFetchStopped object:nil];
+  [nc addObserver:self selector:@selector(signInNetworkLostOrFound:) name:kGDataOAuthNetworkLost  object:nil];
+  [nc addObserver:self selector:@selector(signInNetworkLostOrFound:) name:kGDataOAuthNetworkFound object:nil];
 
   // Get the saved authentication, if any, from the keychain.
   GDataOAuthAuthentication *auth;
@@ -267,6 +269,16 @@ static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
   if (0 == mNetworkActivityCounter) {
     UIApplication *app = [UIApplication sharedApplication];
     [app setNetworkActivityIndicatorVisible:NO];
+  }
+}
+
+- (void)signInNetworkLostOrFound:(NSNotification *)notify {
+  if ([[notify name] isEqual:kGDataOAuthNetworkLost]) {
+    // network connection was lost; alert the user, or dismiss
+    // the sign-in view with
+    //   [[[notify object] delegate] cancelSigningIn];
+  } else {
+    // network connection was found again
   }
 }
 
