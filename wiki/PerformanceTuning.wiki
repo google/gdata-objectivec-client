@@ -38,12 +38,14 @@ Some services (Calendar, Picasa Web Albums, and !YouTube) support *partial respo
 For example, this code snippet retrieves calendar entries with only the `atom:title` and `gd:when` elements, and the standard `gd` attributes (`gd:etag`, `gd:kind`, `gd:fields`): 
 {{{
 GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
-[query setFieldSelection:@"entry(@gd:*,title,gd:when)"]; 
+[query setFieldSelection:@"entry(@gd:*,title,gd:when)"];
+[query fetchFeedWithQuery:query ...
 }}}
 Partial responses can even specify which of many similar elements are desired. This query selection would retrieve a feed's entries with just the title and the edit link of each entry, along with the standard `gd` attributes:
 {{{
 GDataQueryCalendar *query = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL]; 
 [query setFieldSelection:@"entry(@gd:*,title,link[@rel=\"edit\"])"]; 
+[query fetchFeedWithQuery:query ...
 }}}
 
 Do always include the GData entry attributes ("`@gd:*`") in partial queries since the parser may need the `gd:kind` attributes to determine what class of entry to instantiate.
