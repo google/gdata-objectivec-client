@@ -172,7 +172,13 @@ static BOOL IsTypeEqualToText(NSString *str) {
 - (NSMutableArray *)itemsForDescription {
 
   NSMutableArray *items = [super itemsForDescription];
-  [self addToArray:items objectDescriptionIfNonNil:[self stringValue] withName:@"content"];
+
+  // if the base class is not storing the content value, we must provide the
+  // description item here
+  if (![self hasDeclaredContentValue]) {
+    [self addToArray:items objectDescriptionIfNonNil:[self stringValue] withName:@"content"];
+  }
+
   [self addToArray:items objectDescriptionIfNonNil:[self XMLValues] withName:@"xml"];
 
   GDataObject *obj = [self childObject];
