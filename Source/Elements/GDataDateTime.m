@@ -198,7 +198,7 @@
       timeOffsetString = [NSString stringWithFormat:@"%@%02ld:%02ld",
         sign, (long)(offset/(60*60)) % 24, (long)(offset / 60) % 60];
     }
-    timeString = [NSString stringWithFormat:@"T%02ld:%02ld:%0l2d%@",
+    timeString = [NSString stringWithFormat:@"T%02ld:%02ld:%02ld%@",
       (long)[dateComponents hour], (long)[dateComponents minute],
       (long)[dateComponents second], timeOffsetString];
   }
