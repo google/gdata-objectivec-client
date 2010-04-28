@@ -93,6 +93,8 @@ So in either the project's settings for compile flags or in your project's confi
 For example,
  Other C Flags: `-DGDATA_REQUIRE_SERVICE_INCLUDES=1 -DGDATA_INCLUDE_CONTACTS_SERVICE=1`
 
+If your project compiles the OAuth classes for authentication, also define the conditional `-DGDATA_INCLUDE_OAUTH=1` in Other C Flags.
+
 Do remember to set build settings so they apply to both Debug _and_ Release configurations.
 
 There is a conditional set in the static library target as a reminder to developers to define the needed services.  For your project, replace or delete the definition
