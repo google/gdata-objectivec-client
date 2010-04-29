@@ -238,7 +238,7 @@ It is also often useful to pass an object to a callback. To retain an object fro
 
 {{{
 GDataServiceTicket *ticket = [service fetchFeedWithURL:...];
-[ticket setProperty:callbackData withKey:@"myCallbackData"];
+[ticket setProperty:callbackData forKey:@"myCallbackData"];
 }}}
 
 The callback can then access the data:
