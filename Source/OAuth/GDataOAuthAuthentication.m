@@ -62,22 +62,16 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 - (void)addParamsForKeys:(NSArray *)keys
                toRequest:(NSMutableURLRequest *)request;
 
-- (NSString *)normalizedRequestURLStringForRequest:(NSURLRequest *)request;
-
-- (NSString *)paramStringForParams:(NSArray *)params
++ (NSString *)paramStringForParams:(NSArray *)params
                             joiner:(NSString *)joiner
                        shouldQuote:(BOOL)shouldQuote
                         shouldSort:(BOOL)shouldSort;
 
+- (NSString *)normalizedRequestURLStringForRequest:(NSURLRequest *)request;
+
 - (NSString *)signatureForParams:(NSMutableArray *)params
                          request:(NSURLRequest *)request;
 
-#if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
-+ (NSString *)signedRSASHA1HashForString:(NSString *)source
-                     privateKeyPEMString:(NSString *)key;
-#endif
-
-+ (NSString *)HMACSHA1HashForKey:(NSString *)key body:(NSString *)body;
 @end
 
 // OAuthParameter is a local class that exists just to make it easier to
@@ -190,14 +184,18 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   return params;
 }
 
-- (void)addQueryFromRequest:(NSURLRequest *)request
-                   toParams:(NSMutableArray *)array {
-  // make param objects from the request's query parameters, and add them
++ (void)addQueryString:(NSString *)query
+              toParams:(NSMutableArray *)array {
+  // make param objects from the query parameters, and add them
   // to the supplied array
 
-  // look for a query like foo=cat&bar=dog
-  NSString *query = [[request URL] query];
+  // look for a query like foo=cat&bar=dog  
   if ([query length] > 0) {
+    // the standard test cases insist that + in the query string
+    // be encoded as " " - http://wiki.oauth.net/TestCases
+    query = [query stringByReplacingOccurrencesOfString:@"+"
+                                             withString:@" "];
+
     // separate and step through the query parameter assignments
     NSArray *items = [query componentsSeparatedByString:@"&"];
 
@@ -216,7 +214,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
           // remove percent-escapes from the parameter value; they'll be
           // added back by OAuthParameter
-          value = [[self class] unencodedOAuthParameterForString:value];
+          value = [self unencodedOAuthParameterForString:value];
         } else {
           // no characters after the '='
         }
@@ -225,11 +223,22 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
         name = item;
       }
 
+      // remove percent-escapes from the parameter name; they'll be
+      // added back by OAuthParameter
+      name = [self unencodedOAuthParameterForString:name];
+
       OAuthParameter *param = [OAuthParameter parameterWithName:name
                                                           value:value];
       [array addObject:param];
     }
   }
+}
+
++ (void)addQueryFromRequest:(NSURLRequest *)request
+                   toParams:(NSMutableArray *)array {
+  // get the query string from the request
+  NSString *query = [[request URL] query];
+  [self addQueryString:query toParams:array];
 }
 
 - (NSString *)signatureForParams:(NSMutableArray *)params
@@ -246,12 +255,12 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   NSMutableArray *signatureParams = [NSMutableArray arrayWithArray:params];
 
   // add request query parameters
-  [self addQueryFromRequest:request toParams:signatureParams];
+  [[self class] addQueryFromRequest:request toParams:signatureParams];
 
-  NSString *paramStr = [self paramStringForParams:signatureParams
-                                           joiner:@"&"
-                                      shouldQuote:NO
-                                       shouldSort:YES];
+  NSString *paramStr = [[self class] paramStringForParams:signatureParams
+                                                   joiner:@"&"
+                                              shouldQuote:NO
+                                               shouldSort:YES];
 
   // the base string includes the method, normalized request URL, and params
   NSString *requestURLStrEnc = [[self class] encodedOAuthParameterForString:requestURLStr];
@@ -271,15 +280,13 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
   if ([signatureMethod isEqual:kGDataOAuthSignatureMethodHMAC_SHA1]) {
     NSString *tokenSecret = [self tokenSecret];
-    NSString *encodedTokenSecret = [[self class] encodedOAuthParameterForString:tokenSecret];
-
-    NSString *secrets = [NSString stringWithFormat:@"%@&%@",
-                         privateKey ? privateKey : @"",
-                         encodedTokenSecret ? encodedTokenSecret : @""];
-    signature = [[self class] HMACSHA1HashForKey:secrets
-                                            body:sigBaseString];
+    signature = [[self class] HMACSHA1HashForConsumerSecret:privateKey
+                                                tokenSecret:tokenSecret
+                                                       body:sigBaseString];
 #if GDATA_DEBUG_OAUTH_SIGNING
-    NSLog(@"hashing: %@", secrets);
+    NSLog(@"hashing: %@%@",
+          privateKey ? privateKey : @"",
+          tokenSecret ? tokenSecret : @"");
     NSLog(@"base string: %@", sigBaseString);
     NSLog(@"signature: %@", signature);
 #endif
@@ -287,15 +294,15 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
 #if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
   else if ([signatureMethod isEqual:kGDataOAuthSignatureMethodRSA_SHA1]) {
-    signature = [[self class] signedRSASHA1HashForString:sigBaseString
-                                     privateKeyPEMString:privateKey];
+    signature = [[self class] RSASHA1HashForString:sigBaseString
+                               privateKeyPEMString:privateKey];
   }
 #endif
 
   return signature;
 }
 
-- (NSString *)paramStringForParams:(NSArray *)params
++ (NSString *)paramStringForParams:(NSArray *)params
                             joiner:(NSString *)joiner
                        shouldQuote:(BOOL)shouldQuote
                         shouldSort:(BOOL)shouldSort {
@@ -515,10 +522,10 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 //
 
 - (void)addParams:(NSArray *)params toRequest:(NSMutableURLRequest *)request {
-  NSString *paramStr = [self paramStringForParams:params
-                                           joiner:@"&"
-                                      shouldQuote:NO
-                                       shouldSort:NO];
+  NSString *paramStr = [[self class] paramStringForParams:params
+                                                   joiner:@"&"
+                                              shouldQuote:NO
+                                               shouldSort:NO];
   NSURL *oldURL = [request URL];
   NSString *query = [oldURL query];
   if ([query length] > 0) {
@@ -564,10 +571,10 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
     }
   }
 
-  NSString *paramStr = [self paramStringForParams:oauthParams
-                                           joiner:@", "
-                                      shouldQuote:YES
-                                       shouldSort:NO];
+  NSString *paramStr = [[self class] paramStringForParams:oauthParams
+                                                   joiner:@", "
+                                              shouldQuote:YES
+                                               shouldSort:NO];
 
   // include the realm string, if any, in the auth header
   // http://oauth.net/core/1.0a/#auth_header
@@ -881,10 +888,16 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   return dict;
 }
 
-#pragma mark -
+#pragma mark Signing Methods
 
-+ (NSString *)HMACSHA1HashForKey:(NSString *)key body:(NSString *)body {
-  if (key == nil || body == nil) return nil;
++ (NSString *)HMACSHA1HashForConsumerSecret:(NSString *)consumerSecret
+                                tokenSecret:(NSString *)tokenSecret
+                                       body:(NSString *)body {
+  NSString *encodedTokenSecret = [self encodedOAuthParameterForString:tokenSecret];
+
+  NSString *key = [NSString stringWithFormat:@"%@&%@",
+                   consumerSecret ? consumerSecret : @"",
+                   encodedTokenSecret ? encodedTokenSecret : @""];
 
   NSMutableData *sigData = [NSMutableData dataWithLength:CC_SHA1_DIGEST_LENGTH];
 
@@ -898,8 +911,8 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 }
 
 #if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
-+ (NSString *)signedRSASHA1HashForString:(NSString *)source
-                     privateKeyPEMString:(NSString *)key  {
++ (NSString *)RSASHA1HashForString:(NSString *)source
+               privateKeyPEMString:(NSString *)key  {
   if (source == nil || key == nil) return nil;
 
   OpenSSL_add_all_algorithms();
@@ -984,6 +997,23 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   return result;
 }
 
+#pragma mark Unit Test Entry Points
+
++ (NSString *)normalizeQueryString:(NSString *)str {
+  // unit testing method
+
+  // convert the string of parameters to sortable param objects
+  NSMutableArray *params = [NSMutableArray array];
+  [self addQueryString:str toParams:params];
+
+  // sort and join the param objects
+  NSString *paramStr = [self paramStringForParams:params
+                                           joiner:@"&"
+                                      shouldQuote:NO
+                                       shouldSort:YES];
+  return paramStr;
+}
+
 @end
 
 // This class represents key-value pairs so they can be sorted by both
@@ -1013,15 +1043,21 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   return result;
 }
 
+- (NSString *)encodedName {
+  NSString *name = [self name];
+  NSString *result = [GDataOAuthAuthentication encodedOAuthParameterForString:name];
+  return result;
+}
+
 - (NSString *)encodedParam {
   NSString *str = [NSString stringWithFormat:@"%@=%@",
-                   [self name], [self encodedValue]];
+                   [self encodedName], [self encodedValue]];
   return str;
 }
 
 - (NSString *)quotedEncodedParam {
   NSString *str = [NSString stringWithFormat:@"%@=\"%@\"",
-                   [self name], [self encodedValue]];
+                   [self encodedName], [self encodedValue]];
   return str;
 }
 

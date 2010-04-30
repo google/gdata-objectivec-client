@@ -181,6 +181,9 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 - (BOOL)hasAccessToken;
 - (void)setHasAccessToken:(BOOL)flag;
 
+// methods for unit testing
++ (NSString *)normalizeQueryString:(NSString *)str;
+
 //
 // utilities
 //
@@ -192,6 +195,15 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseStr;
 
 + (NSString *)stringWithBase64ForData:(NSData *)data;
+
++ (NSString *)HMACSHA1HashForConsumerSecret:(NSString *)consumerSecret
+                                tokenSecret:(NSString *)tokenSecret
+                                       body:(NSString *)body;
+
+#if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
++ (NSString *)RSASHA1HashForString:(NSString *)source
+               privateKeyPEMString:(NSString *)key;
+#endif
 
 @end
 
