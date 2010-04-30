@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataGeo.h
@@ -30,11 +30,12 @@
 // the unit test class GDataGeoTestClass.
 
 #import "GDataObject.h"
+#import "GDataValueConstruct.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAGEO_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN extern
@@ -49,6 +50,12 @@ _EXTERN NSString* const kGDataNamespaceGeoRSSPrefix _INITIALIZE_AS(@"georss");
 
 _EXTERN NSString* const kGDataNamespaceGeoGML       _INITIALIZE_AS(@"http://www.opengis.net/gml");
 _EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
+
+@interface GDataGeoRSSFeatureName : GDataValueElementConstruct
+@end
+
+@interface GDataGeoRSSRadius : GDataValueElementConstruct
+@end
 
 @interface GDataGeo : GDataObject <NSCopying> {
   NSArray *values_; // One or more pairs of doubles (NSNumbers)
@@ -94,7 +101,7 @@ _EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
 @end
 
 // We have subclasses to handle parsing and generation of XML for each
-// xml flavor of supported geo point. 
+// xml flavor of supported geo point.
 //
 // If a Geo point is created from scratch (not from XML) then it will
 // emit XML as a GeoRSS simple point, like
