@@ -75,6 +75,8 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 @property (nonatomic, copy) NSURLRequest *request;
 
+- (void)cancelSigningInInternal;
+
 - (void)popView;
 
 - (UIWebView *)webView;
@@ -310,10 +312,12 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 - (void)popView {
   if ([[self navigationController] topViewController] == self) {
-    [[self navigationController] popViewControllerAnimated:YES];
-    [[self view] setHidden:YES];
+    if (![[self view] isHidden]) {
+      [[self navigationController] popViewControllerAnimated:YES];
+      [[self view] setHidden:YES];
 
-    [self cancelSigningIn];
+      [self cancelSigningInInternal];
+    }
   }
 }
 
@@ -321,7 +325,10 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   // The user has explicitly asked us to cancel signing in
   // (so no further callback is required)
   hasCalledFinished_ = YES;
+  [self cancelSigningInInternal];
+}
 
+- (void)cancelSigningInInternal {
   // The signIn object's cancel method will close the window
   [signIn_ cancelSigningIn];
   hasDoneFinalRedirect_ = YES;
