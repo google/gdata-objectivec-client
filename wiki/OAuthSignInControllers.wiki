@@ -27,6 +27,8 @@ The source files required are:
 
 These source files are in the OAuth and Networking groups of the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source/ Source directory].
 
+*Note*: Because the OAuth classes were developed recently and are still being refined for compatibility with multiple services, applications should use the OAuth classes from the top-of-trunk sources, not from the 1.10 library release.
+
 === System Requirements ===
 
 The Mac controller is compatible with Mac OS X 10.5 and later. The iPhone controller is compatible with iPhone OS 2 and later.
