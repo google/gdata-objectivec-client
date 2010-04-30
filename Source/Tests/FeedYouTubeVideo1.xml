@@ -101,7 +101,7 @@
         <yt:statistics viewCount="177"/>
         <yt:accessControl action='videoRespond' permission='denied'/>
         <yt:accessControl action='comment' permission='allowed' type='group'>friends</yt:accessControl>
-        <gd:rating average="3.00" max="5" min="1" numRaters="4" />
+        <yt:rating numDislikes="25" numLikes="100"/>
         <gd:comments>
             <gd:feedLink countHint="0" href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/comments"/>
         </gd:comments>

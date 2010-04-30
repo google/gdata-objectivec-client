@@ -102,6 +102,10 @@ _EXTERN NSString* const kGDataYouTubeUserEventVideoCommented        _INITIALIZE_
 _EXTERN NSString* const kGDataYouTubeUserEventUserSubscriptionAdded _INITIALIZE_AS(@"user_subscription_added");
 _EXTERN NSString* const kGDataYouTubeUserEventFriendAdded           _INITIALIZE_AS(@"friend_added");
 
+// rating values
+_EXTERN NSString* const kGDataYouTubeRatingValueLike                _INITIALIZE_AS(@"like");
+_EXTERN NSString* const kGDataYouTubeRatingValueDislike             _INITIALIZE_AS(@"dislike");
+
 @interface GDataYouTubeConstants : NSObject
 
 + (NSDictionary *)youTubeNamespaces;

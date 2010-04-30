@@ -24,9 +24,9 @@
 #import "GDataYouTubeStatistics.h"
 #import "GDataYouTubePublicationState.h"
 #import "GDataYouTubeAccessControl.h"
+#import "GDataYouTubeRating.h"
 #import "GDataGeo.h"
 #import "GDataComment.h"
-#import "GDataRating.h"
 #import "GDataLink.h"
 
 @interface GDataEntryYouTubeVideo : GDataEntryBase
@@ -42,8 +42,10 @@
 - (BOOL)isEmbeddable;
 - (void)setIsEmbeddable:(BOOL)flag;
 
-- (GDataRating *)rating;
-- (void)setRating:(GDataRating *)obj;
+// rating previously was a GDataRating element <gd:rating> but has
+// changed to GDataYouTubeRating <yt:rating>
+- (GDataYouTubeRating *)rating;
+- (void)setRating:(GDataYouTubeRating *)obj;
 
 - (GDataYouTubeMediaGroup *)mediaGroup;
 - (void)setMediaGroup:(GDataYouTubeMediaGroup *)obj;

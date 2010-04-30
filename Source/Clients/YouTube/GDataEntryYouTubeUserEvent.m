@@ -22,7 +22,6 @@
 #import "GDataEntryYouTubeUserEvent.h"
 #import "GDataYouTubeConstants.h"
 #import "GDataYouTubeElements.h"
-#import "GDataRating.h"
 
 @implementation GDataEntryYouTubeUserEvent
 
@@ -54,18 +53,25 @@
    // YouTube element extensions
    [GDataYouTubeVideoID class],
    [GDataYouTubeUsername class],
-   [GDataRating class],
+   [GDataYouTubeRating class],
    nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  static struct GDataDescriptionRecord descRecs[] = {
-    { @"eventType", @"userEventType", kGDataDescValueLabeled }, // report the category's term
-    { @"videoID",   @"videoID",       kGDataDescValueLabeled },
-    { @"username",  @"username",      kGDataDescValueLabeled },
-    { @"rating",    @"rating",        kGDataDescValueLabeled },
+  GDataYouTubeRating *rating = [self rating];
+  NSString *ratingStr = nil;
+  if (rating) {
+    ratingStr = [NSString stringWithFormat:@"+%@/-%@",
+                 [rating numberOfLikes], [rating numberOfDislikes]];
+  }
+
+  struct GDataDescriptionRecord descRecs[] = {
+    { @"eventType", @"userEventType", kGDataDescValueLabeled   }, // report the category's term
+    { @"videoID",   @"videoID",       kGDataDescValueLabeled   },
+    { @"username",  @"username",      kGDataDescValueLabeled   },
+    { @"rating",    ratingStr,        kGDataDescValueIsKeyPath },
     { nil, nil, 0 }
   };
 
@@ -103,12 +109,12 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeUsername class]];
 }
 
-- (GDataRating *)rating {
-  return [self objectForExtensionClass:[GDataRating class]];
+- (GDataYouTubeRating *)rating {
+  return [self objectForExtensionClass:[GDataYouTubeRating class]];
 }
 
-- (void)setRating:(GDataRating *)obj {
-  [self setObject:obj forExtensionClass:[GDataRating class]];
+- (void)setRating:(GDataYouTubeRating *)obj {
+  [self setObject:obj forExtensionClass:[GDataYouTubeRating class]];
 }
 
 #pragma mark -

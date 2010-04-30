@@ -24,13 +24,10 @@
 
 @implementation GDataEntryYouTubeRating
 
-+ (GDataEntryYouTubeRating *)ratingEntryWithRating:(GDataRating *)rating {
-  
++ (GDataEntryYouTubeRating *)ratingEntryWithValue:(NSString *)value {
   GDataEntryYouTubeRating *entry = [[[self alloc] init] autorelease];
-
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  [entry setRating:rating];
-  
+  [entry setRating:[GDataYouTubeRating ratingWithValue:value]];
   return entry;
 }
 
@@ -52,7 +49,7 @@
 
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRating class]];
+                                   childClass:[GDataYouTubeRating class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -72,12 +69,12 @@
 
 #pragma mark -
 
-- (GDataRating *)rating {
-  return [self objectForExtensionClass:[GDataRating class]];
+- (GDataYouTubeRating *)rating {
+  return [self objectForExtensionClass:[GDataYouTubeRating class]];
 }
 
-- (void)setRating:(GDataRating *)obj {
-  [self setObject:obj forExtensionClass:[GDataRating class]]; 
+- (void)setRating:(GDataYouTubeRating *)obj {
+  [self setObject:obj forExtensionClass:[GDataYouTubeRating class]];
 }
 
 @end

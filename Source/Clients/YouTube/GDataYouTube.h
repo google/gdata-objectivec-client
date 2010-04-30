@@ -24,6 +24,7 @@
 #import "GDataYouTubeElements.h"
 #import "GDataYouTubeMediaElements.h"
 #import "GDataYouTubePublicationState.h"
+#import "GDataYouTubeRating.h"
 #import "GDataYouTubeStatistics.h"
 #import "GDataEntryYouTubeCaptionTrack.h"
 #import "GDataEntryYouTubeChannel.h"

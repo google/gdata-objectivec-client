@@ -117,7 +117,7 @@
                 url="http://i.ytimg.com/vi/I-t-7lTw6mA/0.jpg" width="320"/>
         </media:group>
         <yt:statistics favoriteCount="506" viewCount="53476"/>
-        <gd:rating average="4.85" max="5" min="1" numRaters="187"/>
+        <yt:rating numDislikes="10" numLikes="20"/>
         <yt:location>mountain view, ca</yt:location>
         <yt:recorded>2008-03-04</yt:recorded>
     </entry>

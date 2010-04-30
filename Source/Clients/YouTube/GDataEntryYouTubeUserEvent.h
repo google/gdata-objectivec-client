@@ -20,8 +20,7 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataEntryBase.h"
-
-@class GDataRating;
+#import "GDataYouTubeRating.h"
 
 @interface GDataEntryYouTubeUserEvent : GDataEntryBase
 
@@ -40,8 +39,10 @@
 - (NSString *)username;
 - (void)setUsername:(NSString *)str;
 
-- (GDataRating *)rating;
-- (void)setRating:(GDataRating *)obj;
+// rating previously was a GDataRating element <gd:rating> but has
+// changed to GDataYouTubeRating <yt:rating>
+- (GDataYouTubeRating *)rating;
+- (void)setRating:(GDataYouTubeRating *)obj;
 
 // convenience accessors
 
