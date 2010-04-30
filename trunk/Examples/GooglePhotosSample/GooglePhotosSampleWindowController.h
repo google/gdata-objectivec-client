@@ -50,6 +50,7 @@
   
   IBOutlet NSButton *mAddPhotoButton;
   IBOutlet NSButton *mDeletePhotoButton;
+  IBOutlet NSButton *mDownloadPhotoButton;
   IBOutlet NSPopUpButton *mChangeAlbumPopupButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
   
@@ -75,6 +76,7 @@
 
 - (IBAction)addClicked:(id)sender;
 - (IBAction)deleteClicked:(id)sender;
+- (IBAction)downloadClicked:(id)sender;
 
 - (IBAction)addTagClicked:(id)sender;
 - (IBAction)addCommentClicked:(id)sender;
