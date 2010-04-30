@@ -34,6 +34,7 @@
 - (void)createAnAlbum;
 - (void)addAPhoto;
 - (void)deleteSelectedPhoto;
+- (void)downloadSelectedPhoto;
 - (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry;
 
 - (void)addTagToSelectedPhoto;
@@ -245,17 +246,18 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   }
   
   // display photo entry fetch result or selected item
+  GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
+
   NSString *photoResultStr = @"";
   if (mPhotosFetchError) {
     photoResultStr = [mPhotosFetchError description];
     [self updateImageForPhoto:nil];
   } else {
-    GDataEntryPhoto *photo = [self selectedPhoto];
-    if (photo) {
-      photoResultStr = [photo description];
+    if (selectedPhoto) {
+      photoResultStr = [selectedPhoto description];
     }
     // fetch or clear the photo thumbnail
-    [self updateImageForPhoto:photo];
+    [self updateImageForPhoto:selectedPhoto];
   }
   [mPhotoResultTextField setString:photoResultStr];
   
@@ -266,15 +268,17 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   // enable/disable other buttons
   BOOL isAlbumSelected = ([self selectedAlbum] != nil);
   BOOL isPasswordProvided = ([[mPasswordField stringValue] length] > 0);
-
   [mAddPhotoButton setEnabled:(isAlbumSelected && isPasswordProvided)];
-  
-  BOOL isSelectedEntryEditable = ([[self selectedPhoto] editLink] != nil);
-  
+
+  BOOL isPhotoEntrySelected = (selectedPhoto != nil &&
+                               [selectedPhoto videoStatus] == nil);
+  [mDownloadPhotoButton setEnabled:isPhotoEntrySelected];
+
+  BOOL isSelectedEntryEditable = ([selectedPhoto editLink] != nil);
   [mDeletePhotoButton setEnabled:isSelectedEntryEditable];
   [mChangeAlbumPopupButton setEnabled:isSelectedEntryEditable];
   
-  BOOL hasPhotoFeed = ([[self selectedPhoto] feedLink] != nil);
+  BOOL hasPhotoFeed = ([selectedPhoto feedLink] != nil);
   
   BOOL isTagProvided = ([[mTagField stringValue] length] > 0);
   BOOL isCommentProvided = ([[mCommentField stringValue] length] > 0);
@@ -383,6 +387,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 - (IBAction)deleteClicked:(id)sender {
   [self deleteSelectedPhoto];
+}
+
+- (IBAction)downloadClicked:(id)sender {
+  [self downloadSelectedPhoto];
 }
 
 - (IBAction)addCommentClicked:(id)sender {
@@ -724,10 +732,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 #pragma mark Delete a photo
 
 - (void)deleteSelectedPhoto {
-
   GDataEntryPhoto *photo = [self selectedPhoto];
   if (photo) {
-
     // make the user confirm that the selected photo should be deleted
     NSBeginAlertSheet(@"Delete Photo", @"Delete", @"Cancel", nil,
                       [self window], self,
@@ -771,6 +777,137 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                       [self window], nil, nil,
                       nil, nil, @"Photo delete failed: %@", error);
   }
+}
+
+#pragma mark Download a photo
+
+- (void)downloadSelectedPhoto {
+  GDataEntryPhoto *photoEntry = [self selectedPhoto];
+  if (photoEntry) {
+    // display a save panel to let the user pick the directory and
+    // name for saving the image
+    NSSavePanel *savePanel = [NSSavePanel savePanel];
+    [savePanel beginSheetForDirectory:nil
+                                 file:[[photoEntry title] stringValue]
+                       modalForWindow:[self window]
+                        modalDelegate:self
+                       didEndSelector:@selector(saveSheetDidEnd:returnCode:contextInfo:)
+                          contextInfo:[photoEntry retain]];
+  }
+}
+
+- (void)saveSheetDidEnd:(NSOpenPanel *)panel
+             returnCode:(int)returnCode
+            contextInfo:(void *)contextInfo {
+  GDataEntryPhoto *photoEntry = [(GDataEntryPhoto *)contextInfo autorelease];
+
+  if (returnCode == NSOKButton) {
+    // the user clicked Save
+    //
+    // the feed may not have images in the original size, so we'll re-fetch the
+    // photo entry with a query specifying that we want the original size
+    // for downloading
+    NSString *savePath = [panel filename];
+
+    NSURL *entryURL = [[photoEntry selfLink] URL];
+
+    GDataQueryGooglePhotos *query;
+    query = [GDataQueryGooglePhotos photoQueryWithFeedURL:entryURL];
+
+    // this specifies "imgmax=d" as described at
+    // http://code.google.com/apis/picasaweb/docs/2.0/reference.html#Parameters
+    [query setImageSize:kGDataGooglePhotosImageSizeDownloadable];
+
+    GDataServiceGooglePhotos *service = [self googlePhotosService];
+    GDataServiceTicket *ticket;
+    ticket = [service fetchEntryWithURL:[query URL]
+                               delegate:self
+                      didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
+
+    [ticket setProperty:savePath forKey:@"save path"];
+  }
+}
+
+- (void)fetchEntryTicket:(GDataServiceTicket *)ticket
+       finishedWithEntry:(GDataEntryPhoto *)photoEntry
+                   error:(NSError *)error {
+  if (error == nil) {
+    // now download the uploaded photo data
+    NSString *savePath = [ticket propertyForKey:@"save path"];
+
+    // we'll search for the media content element with the medium attribute of
+    // "image" to find the download URL; there may be more than one
+    // media:content element
+    //
+    // http://code.google.com/apis/picasaweb/docs/2.0/reference.html#media_content
+    NSArray *mediaContents = [[photoEntry mediaGroup] mediaContents];
+    GDataMediaContent *imageContent;
+    imageContent = [GDataUtilities firstObjectFromArray:mediaContents
+                                              withValue:@"image"
+                                             forKeyPath:@"medium"];
+    if (imageContent) {
+      NSURL *downloadURL = [NSURL URLWithString:[imageContent URLString]];
+
+      // the service object creates an authenticated request for us
+      GDataServiceGooglePhotos *service = [self googlePhotosService];
+      NSMutableURLRequest *request = [service requestForURL:downloadURL
+                                                       ETag:nil
+                                                 httpMethod:nil];
+      // fetch the request
+      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      [fetcher beginFetchWithDelegate:self
+                    didFinishSelector:@selector(downloadFetcher:finishedWithData:)
+                      didFailSelector:@selector(downloadFetcher:failedWithError:)];
+
+      [fetcher setProperty:savePath forKey:@"save path"];
+      [fetcher setProperty:photoEntry forKey:@"photo entry"];
+    } else {
+      // no image content for this photo entry; this shouldn't happen for
+      // photos
+    }
+  } else {
+    NSBeginAlertSheet(@"Download failed", nil, nil, nil,
+                      [self window], nil, nil, nil, nil,
+                      @"Getting downloadable photo failed: %@", error);
+  }
+}
+
+- (void)downloadFetcher:(GDataHTTPFetcher *)fetcher
+       finishedWithData:(NSData *)data {
+  // successfully retrieved this photo's data; save it to disk
+  NSString *savePath = [fetcher propertyForKey:@"save path"];
+  GDataEntryPhoto *photoEntry = [fetcher propertyForKey:@"photo entry"];
+
+  NSError *error = nil;
+  BOOL didSave = [data writeToFile:savePath
+                           options:NSAtomicWrite
+                             error:&error];
+  if (didSave) {
+    // we'll set the file date to match the photo entry's date
+    NSDate *photoDate = [[photoEntry timestamp] dateValue];
+    if (photoDate) {
+      NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
+                            photoDate, NSFileCreationDate,
+                            photoDate, NSFileModificationDate, nil];
+      NSFileManager *fileMgr = [NSFileManager defaultManager];
+      [fileMgr changeFileAttributes:attr atPath:savePath];
+    }
+    NSBeginAlertSheet(@"Saved", nil, nil, nil,
+                      [self window], nil, nil, nil, nil,
+                      @"Saved photo: %@", savePath);
+  } else {
+    // error saving file.  Perhaps out of space?  Write permissions error?
+    NSBeginAlertSheet(@"Save failed", nil, nil, nil,
+                      [self window], nil, nil, nil, nil,
+                      @"Saving photo to disk failed: %@", error);
+  }
+}
+
+- (void)downloadFetcher:(GDataHTTPFetcher *)fetcher
+        failedWithError:(NSError *)error {
+  NSBeginAlertSheet(@"Download failed", nil, nil, nil,
+                    [self window], nil, nil, nil, nil,
+                    @"Downloading photo failed: %@", error);
 }
 
 #pragma mark Move a photo to another album
