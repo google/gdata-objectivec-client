@@ -11,7 +11,12 @@ Additions
 
 Changes
 
+- Deployment target for framework build is now 10.5
+
 - Removed unused class GDataContactWebsite
+
+- YouTube ratings are now yt:rating elements for like/dislike counts, not
+  gd:rating elements
 
 Bugs Fixed
 

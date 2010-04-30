@@ -53,7 +53,7 @@
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataComment class],
-   [GDataRating class],
+   [GDataYouTubeRating class],
    
    // YouTube element extensions
    [GDataYouTubeStatistics class],
@@ -90,9 +90,16 @@
   // report notEmbeddable since it's the unusual case
   NSString *nonEmbeddableValue = [self isEmbeddable] ? nil : @"YES";
 
+  GDataYouTubeRating *rating = [self rating];
+  NSString *ratingStr = nil;
+  if (rating) {
+    ratingStr = [NSString stringWithFormat:@"+%@/-%@",
+                 [rating numberOfLikes], [rating numberOfDislikes]];
+  }
+
   struct GDataDescriptionRecord descRecs[] = {
     { @"state",             @"publicationState", kGDataDescValueLabeled   },
-    { @"rating",            @"rating",           kGDataDescValueLabeled   },
+    { @"rating",            ratingStr,           kGDataDescValueIsKeyPath },
     { @"comment",           @"comment",          kGDataDescValueLabeled   },
     { @"stats",             @"statistics",       kGDataDescValueLabeled   },
     { @"mediaGroup",        @"mediaGroup",       kGDataDescValueLabeled   },
@@ -187,12 +194,12 @@
   }
 }
 
-- (GDataRating *)rating {
-  return [self objectForExtensionClass:[GDataRating class]];
+- (GDataYouTubeRating *)rating {
+  return [self objectForExtensionClass:[GDataYouTubeRating class]];
 }
 
-- (void)setRating:(GDataRating *)obj {
-  [self setObject:obj forExtensionClass:[GDataRating class]]; 
+- (void)setRating:(GDataYouTubeRating *)obj {
+  [self setObject:obj forExtensionClass:[GDataYouTubeRating class]];
 }
 
 - (GDataYouTubeMediaGroup *)mediaGroup {

@@ -20,15 +20,13 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 #import "GDataEntryBase.h"
-#import "GDataRating.h"
+#import "GDataYouTubeRating.h"
 
 @interface GDataEntryYouTubeRating : GDataEntryBase
++ (GDataEntryYouTubeRating *)ratingEntryWithValue:(NSString *)value;
 
-+ (GDataEntryYouTubeRating *)ratingEntryWithRating:(GDataRating *)rating;
-
-- (GDataRating *)rating;
-- (void)setRating:(GDataRating *)obj;
-
+- (GDataYouTubeRating *)rating;
+- (void)setRating:(GDataYouTubeRating *)obj;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
