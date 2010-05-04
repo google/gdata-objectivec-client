@@ -1168,7 +1168,37 @@ objectDescriptionIfNonNil:(id)obj
 
 - (NSString *)description {
 
-  NSArray *items = [self itemsForDescription];
+  NSMutableArray *items = [self itemsForDescription];
+
+#if !GDATA_SIMPLE_DESCRIPTIONS
+  // add names of unknown children and attributes to the descriptions
+  if ([unknownChildren_ count] > 0) {
+    // remove repeats and put the element names in < > so they are more
+    // readable
+    NSArray *names = [unknownChildren_ valueForKey:@"name"];
+    NSSet *namesSet = [NSSet setWithArray:names];
+    NSMutableArray *fmtNames = [NSMutableArray arrayWithCapacity:[namesSet count]];
+
+    NSString *name;
+    GDATA_FOREACH(name, namesSet) {
+      NSString *fmtName = [NSString stringWithFormat:@"<%@>", name];
+      [fmtNames addObject:fmtName];
+    }
+
+    // sort the names so the output is deterministic despite the set/array
+    // conversion
+    NSArray *sortedNames = [fmtNames sortedArrayUsingSelector:@selector(compare:)];
+    NSString *desc = [sortedNames componentsJoinedByString:@","];
+    [self addToArray:items objectDescriptionIfNonNil:desc withName:@"unparsed"];
+  }
+
+  if ([unknownAttributes_ count] > 0) {
+    NSArray *names = [unknownAttributes_ valueForKey:@"name"];
+    NSString *desc = [names componentsJoinedByString:@","];
+    [self addToArray:items objectDescriptionIfNonNil:desc withName:@"unparsedAttr"];
+  }
+#endif
+
   NSString *str = [self descriptionWithItems:items];
   return str;
 }
