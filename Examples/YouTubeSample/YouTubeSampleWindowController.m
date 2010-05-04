@@ -511,6 +511,26 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [self setUploadTicket:nil];
 }
 
+// Setting likes/dislikes
+//
+// To set the authenticated user's rating for a video entry, insert an entry
+// into the ratings feed for the video. The value may be
+// kGDataYouTubeRatingValueLike or kGDataYouTubeRatingValueDislike
+//
+// Example:
+//
+//  - (void)setLikesValue:(NSString *)value
+//          forVideoEntry:(GDataEntryYouTubeVideo *)videoEntry {
+//
+//    GDataEntryYouTubeRating *ratingEntry = [GDataEntryYouTubeRating ratingEntryWithValue:value];
+//
+//    GDataServiceGoogleYouTube *service = [self youTubeService];
+//    [service fetchEntryByInsertingEntry:ratingEntry
+//                             forFeedURL:[[videoEntry ratingsLink] URL]
+//                               delegate:self
+//                      didFinishSelector:@selector(likesTicket:finishedWithEntry:error:)];
+//  }
+
 ////////////////////////////////////////////////////////
 #pragma mark Text field delegate methods
 

@@ -13,6 +13,10 @@
  * limitations under the License.
  */
 
+// service tests are slow, so we might skip them when developing other
+// unit tests
+#if !GDATA_SKIPSERVICETEST
+
 #import <SenTestingKit/SenTestingKit.h>
 
 #import "GDataHTTPFetcher.h"
@@ -518,3 +522,4 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
 
 @end
 
+#endif // !GDATA_SKIPSERVICETEST
