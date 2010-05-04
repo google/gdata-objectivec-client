@@ -24,6 +24,8 @@
 
 - (void)doAnAuthenticatedAPIFetch;
 
+- (GDataOAuthAuthentication *)authForTwitter;
+
 - (void)updateUI;
 
 - (void)displayErrorThatTheCodeNeedsATwitterConsumerKeyAndSecret;
@@ -36,10 +38,36 @@
 
 static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
 
+static NSString *const kTwitterAppServiceName = @"OAuth Sample: Twitter";
+
+static NSString *const kTwitterServiceName = @"Twitter";
+
 - (void)awakeFromNib {
-  // get the saved authentication, if any, from the keychain
+  // first, we'll try to get the saved Google authentication, if any, from
+  // the keychain
   GDataOAuthAuthentication *auth;
   auth = [GDataOAuthWindowController authForGoogleFromKeychainForName:kAppServiceName];
+
+  if ([auth canAuthorize]) {
+    // select the Google radio button
+    [mRadioButtons selectCellWithTag:0];
+  } else {
+    // there is no saved Google authentication
+    //
+    // perhaps we have a saved authorization for Twitter instead; try getting
+    // that from the keychain
+    auth = [self authForTwitter];
+    if (auth) {
+      BOOL didAuth = [GDataOAuthWindowController authorizeFromKeychainForName:kTwitterAppServiceName
+                                                               authentication:auth];
+      if (didAuth) {
+        // select the Twitter radio button
+        [mRadioButtons selectCellWithTag:1];
+      }
+    }
+  }
+
+  // save the authentication object, which holds the auth tokens
   [self setAuthentication:auth];
 
   // this is optional:
@@ -99,10 +127,16 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
 }
 
 - (void)signOut {
-  // remove the stored authentication from the keychain
+  if ([[mAuth serviceProvider] isEqual:kGDataOAuthServiceProviderGoogle]) {
+    // remove the token from Google's servers
+    [GDataOAuthWindowController revokeTokenForGoogleAuthentication:mAuth];
+  }
+
+  // remove the stored Google authentication from the keychain, if any
   [GDataOAuthWindowController removeParamsFromKeychainForName:kAppServiceName];
 
-  [GDataOAuthWindowController revokeTokenForGoogleAuthentication:mAuth];
+  // remove the stored Twitter authentication from the keychain, if any
+  [GDataOAuthWindowController removeParamsFromKeychainForName:kTwitterAppServiceName];
 
   // discard our retains authentication object
   [self setAuthentication:nil];
@@ -121,14 +155,14 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
   GDataOAuthWindowController *windowController;
   windowController = [[[GDataOAuthWindowController alloc] initWithScope:scope
                                                                language:nil
-                                                         appServiceName:@"OAuth Sample: Google Contacts"
+                                                         appServiceName:kAppServiceName
                                                          resourceBundle:nil] autorelease];
   [windowController signInSheetModalForWindow:mMainWindow
                                      delegate:self
                              finishedSelector:@selector(windowController:finishedWithAuth:error:)];
-  }
+}
 
-- (void)signInToTwitter {
+- (GDataOAuthAuthentication *)authForTwitter {
   // Note: to use this sample, you need to fill in a valid consumer key and
   // consumer secret provided by Twitter for their API
   //
@@ -137,20 +171,39 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
   NSString *myConsumerSecret = @"";
 
   if ([myConsumerKey length] == 0 || [myConsumerSecret length] == 0) {
-    [self displayErrorThatTheCodeNeedsATwitterConsumerKeyAndSecret];
-    return;
+    return nil;
   }
-
-  [self signOut];
-  NSURL *requestURL = [NSURL URLWithString:@"http://twitter.com/oauth/request_token"];
-  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
-  NSURL *accessURL = [NSURL URLWithString:@"http://twitter.com/oauth/access_token"];
-  NSString *scope = @"http://api.twitter.com/";
 
   GDataOAuthAuthentication *auth;
   auth = [[[GDataOAuthAuthentication alloc] initWithSignatureMethod:kGDataOAuthSignatureMethodHMAC_SHA1
                                                         consumerKey:myConsumerKey
                                                          privateKey:myConsumerSecret] autorelease];
+
+  // setting the service name lets us inspect the auth object later to know
+  // what service it is for
+  [auth setServiceProvider:kTwitterServiceName];
+  return auth;
+}
+
+- (void)signInToTwitter {
+
+  [self signOut];
+
+  NSURL *requestURL = [NSURL URLWithString:@"http://twitter.com/oauth/request_token"];
+  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
+  NSURL *accessURL = [NSURL URLWithString:@"http://twitter.com/oauth/access_token"];
+  NSString *scope = @"http://api.twitter.com/";
+
+  GDataOAuthAuthentication *auth = [self authForTwitter];
+  if (!auth) {
+    [self displayErrorThatTheCodeNeedsATwitterConsumerKeyAndSecret];
+  }
+
+  // set the callback URL to which the site should redirect, and for which
+  // the OAuth controller should look to determine when sign-in has
+  // finished or been canceled
+  //
+  // This URL does not need to be for an actual web page
   [auth setCallback:@"http://www.google.com/OAuthCallback"];
 
   GDataOAuthWindowController *windowController;
@@ -160,7 +213,7 @@ static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
                                                       authorizeTokenURL:authorizeURL
                                                          accessTokenURL:accessURL
                                                          authentication:auth
-                                                         appServiceName:@"OAuth Sample: Twitter"
+                                                         appServiceName:kTwitterAppServiceName
                                                          resourceBundle:nil] autorelease];
   [windowController signInSheetModalForWindow:mMainWindow
                                      delegate:self
