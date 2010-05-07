@@ -15,11 +15,13 @@ The final section of this document examines the implementation of a single GData
 
 The Google Data APIs Objective-C Client Library is intended to make it easy for Cocoa applications to interact with Google services.
 
-The framework handles parsing and generation of XML, HTTP network transactions, and authentication (signing in to Google accounts).
+The library handles parsing and generation of XML, HTTP network transactions, and authentication (signing in to Google accounts).
 
-The framework does not provide any user interface, but the object interfaces should work smoothly with KVC and Cocoa bindings.
+The library does not provide any user interface (aside from optional !OAuth sign-in), but the object interfaces should work smoothly with KVC and Cocoa bindings.
 
-The framework relies on !AppKit's [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/ NSXMLDocument] for parsing and generating XML text. Internally, the framework builds GData objects from trees of NSXMLNodes, and generates trees of NSXMLNodes.
+On the Mac, the library relies on !AppKit's [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/ NSXMLDocument] for parsing and generating XML text. Internally, the framework builds GData objects from trees of NSXMLNodes, and generates trees of NSXMLNodes.
+
+On the iPhone, the library uses a wrapper, GDataXML, on top of libxml2, to simulate availability of NSXMLDocument and NSXMLNode.
 
 == Framework Objects ==
 
@@ -33,7 +35,7 @@ The framework defines these kinds of objects:
   * Data-type helpers, such as GDataDateTime
 
   * Services, which handle sign-in and networking
-    * Service objects maintain cookies, cache data, and preserve authentication state
+    * Service objects maintain cookies, cache data, and preserve ClientLogin authentication state
     * A service ticket is issued by a service object to the client for each separate fetch request
 
   * Queries, which provide a convenient way to create request URLs
@@ -80,8 +82,8 @@ Each GDataObject may have these properties:
   * Unknown elements and unknown attributes
   At the outset of parsing the XML tree, all of an element's child elements and attributes are added to lists of unknown XMLNodes.  The XMLNodes are removed from the lists of unknowns as they are parsed.  Any remaining NSXMLNodes remaining in the lists of unknowns are retained, and are re-added during XML generation. 
 
-  * User data
-  The userData field is available for client use.  It is retained by the GDataObject but otherwise ignored.
+  * User data and properties
+  A field for user data (an Objective-C `id`) and a mutable dictionary of user properties are available for client use.  It is retained by the GDataObject but otherwise ignored.
 
 The GDataObject base class includes a wide variety of methods for these tasks:
   * Typical NSObject methods (copyWithZone, isEqual, setters, getters, and so on)
@@ -91,7 +93,7 @@ The GDataObject base class includes a wide variety of methods for these tasks:
   * Dynamic object class identification (see "Dynamic Object Generation" below)
 
 == The Extension Model ==
-Extensions enable an element to contain children about which the element
+Extensions enable an element class to parse and generate attributes and children about which the element
 may know no details.
 
 Typically, entries add extensions to themselves. For example, during initialization, a calendar
@@ -104,17 +106,16 @@ This lets the base class handle much of the work of managing the child
 element.  The calendar entry can still provide accessor methods for the extension by calling into the base class, as shown here:
 {{{
 - (GDataColorProperty *)color {
-  return (GDataColorProperty *) 
-    [self objectForExtensionClass:[GDataColorProperty class]];
+  return [self objectForExtensionClass:[GDataColorProperty class]];
 }
 
 - (void)setColor:(GDataColorProperty *)val {
   [self setObject:val forExtensionClass:[GDataColorProperty class]];
 }
 }}}
-Typically, elements that declare extensions for themselves will also have accessors for those extensions, such as the `color:` and `setColor:` methods shown here.
+Normally, elements that declare extensions for themselves will also have accessors for those extensions, such as the `color:` and `setColor:` methods shown here.
 
-The real purpose of extensions is to allow elements to contain children
+The motivating purpose of extensions is to allow elements to parse and generate attributes and children
 they may not know about.  For example, links contained within calendar event entries may contain webContent elements, like this:
 {{{
 <link rel="http://schemas.google.com/gCal/2005/webContent" title="World Cup" 
@@ -150,24 +151,17 @@ For extensions declared for descendant objects, Objective-C categories are usefu
 @end
 }}}
 
-The GDataObject base class stores the parent for each object to enable it to search during parsing for extensions declared higher up the object tree.
+The GDataObject base class stores the parent for each object to enable it to search during parsing for extensions declared higher up the object tree. Entries often declare extensions to the various classes of elements that may be contained in the entries.
 
 == Dynamic Object Generation ==
 
-Parsing XML requires knowing what kind of objects to create for that XML.  Typically, the class of a feed object will be known by the service object fetching it.  For example, the calendar service class fetches a calendar by specifying the class of the feed, GDataFeedCalendar:
+Parsing XML requires knowing what kind of objects to create for that XML.  Typically, the class of a feed object will be known by the service object fetching it.  For example, a calendar app fetches a calendar by specifying the class of the feed, GDataFeedCalendar:
 
 {{{
-- (GDataServiceTicket *)fetchCalendarFeedWithURL:(NSURL *)feedURL
-                                        delegate:(id)delegate
-                               didFinishSelector:(SEL)finishedSelector
-                                 didFailSelector:(SEL)failedSelector {
-  
-  return [self fetchAuthenticatedFeedWithURL:feedURL 
-                                   feedClass:[GDataFeedCalendar class]
-                                    delegate:delegate
-                           didFinishSelector:finishedSelector
-                             didFailSelector:failedSelector];
-}
+  return [self fetchFeedWithURL:feedURL 
+                      feedClass:[GDataFeedCalendar class]
+                       delegate:delegate
+              didFinishSelector:finishedSelector];
 }}} 
 
 Similarly, the feed class will specify the class of the entries to be created for it. Naturally, the calendar feed class expects calendar entries:
@@ -180,29 +174,36 @@ Similarly, the feed class will specify the class of the entries to be created fo
 
 Sometimes, XML parsing is done without knowing in advance what the class of the XML object should be.  This happens when a service method may be used to retrieve multiple classes of objects, or when an XML feed or entry is embedded inside of an element.
 
-To identify dynamically what class to use to parse XML when no class is specified, GDataObject uses [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/Articles/QueryingXML.html XPath] to inspect [http://code.google.com/apis/gdata/elements.html#Introduction category child elements] in the XML. Feed and entry classes may register in their 
-+[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods the scheme and/or term attribute values identifying XML which can be parsed by the class. A spreadsheet cell class registers itself this way:
+To identify dynamically what class to use to parse XML when no class is specified, GDataObject uses [http://developer.apple.com/documentation/Cocoa/Conceptual/NSXML_Concepts/Articles/QueryingXML.html XPath] to inspect `gd:kind` attributes and [http://code.google.com/apis/gdata/elements.html#Introduction category child elements] in the XML of feeds and entries. Feed and entry classes may register in their 
++[http://developer.apple.com/documentation/Cocoa/Reference/Foundation/Classes/NSObject_Class/Reference/Reference.html#//apple_ref/occ/clm/NSObject/load load] methods the `gd:kind` or category attribute values identifying XML which can be parsed by the class. A ~YouTube video entry registers itself by category term attribute this way:
 {{{
++ (NSString *)standardEntryKind {
+  return kGDataCategoryYouTubeVideo;
+}
+
 + (void)load {
-  [GDataObject registerEntryClass:[self class]
-            forCategoryWithScheme:nil 
-                             term:@"http://schemas.google.com/spreadsheets/2006#cell"];
+  [self registerEntryClass];
 }
 }}}
 to match the cell's category element,
 {{{
-<category scheme="http://schemas.google.com/spreadsheets/2006" 
-          term="http://schemas.google.com/spreadsheets/2006#cell"/>
+<category scheme="http://schemas.google.com/g/2005#kind" 
+          term="http://gdata.youtube.com/schemas/2007#video"/>
 }}}
 
-A service fetch request may specify the object class as nil or kGDataUseRegisteredClass to allocate the object according to the returned XML's category:
-
+A calendar entry registers itself by `gd:kind` attribute value this way:
 {{{
-  ticket = [self fetchAuthenticatedFeedWithURL:feedURL 
-                                     feedClass:kGDataUseRegisteredClass
-                                      delegate:delegate
-                             didFinishSelector:finishedSelector
-                               didFailSelector:failedSelector];
++ (NSString *)standardKindAttributeValue {
+  return @"calendar#calendar";
+}
+
++ (void)load {
+  [self registerEntryClass];
+}
+}}}
+to match an entry beginning like
+{{{
+<entry gd:kind="calendar#calendar">
 }}}
 
 == Service Classes ==
@@ -457,6 +458,4 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
-
-
 
