@@ -214,9 +214,9 @@ From the application's perspective, the model should be simple:
   # Initiate a fetch via a URL or a query, receive a service ticket.
   # Wait for a callback with a GData object or an error, or else use the ticket to cancel the fetch.
 
-The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided by the base class.
+The base class, GDataServiceBase, does simple fetches to a URL, retrieves data, and if successful, constructs a GDataObject from the data. Authentication may be done with an HTTP credential, but no other sign-in steps are provided by the base class. A fetch and response sequence is called a "ticket."
 
-Authentication to Google services is implemented by the GDataServiceGoogle subclass.  An authenticated fetch handled by GDataServiceGoogle can be one of several kinds of sequences of HTTP transactions.  We call a sequence a "ticket."  For example, a ticket may include:
+Authentication to Google services via the ClientLogin (username/password) protocol is implemented by the GDataServiceGoogle subclass.  An authenticated fetch handled by GDataServiceGoogle can be one of several kinds of sequences of HTTP transactions. For example, a ticket for an authenticated fetch may include:
 
   * Authenticate the username and password with the auth server, get an auth token
   * Pass the auth token with the GData request to the service's server, get XML for a GDataObject
@@ -229,7 +229,7 @@ Or, a ticket may instead be this sequence:
 
 A GDataServiceTicket object retains pointers to the service that issued it, and to the GDataHTTPFetcher objects that carry out authentication and GData requests.  
 
-The service object _does not_ maintain pointers to GDataHTTPFetchers or tickets; those are just retained by the underlying NSURLConnections while they are pending (and may also be retained by the application, if it retains the ticket.)
+The service object _does not_ maintain pointers to GDataHTTPFetchers or tickets; those are just retained by the underlying NSURLConnections while they are pending (and may also be retained indirectly by the application, if it retains the ticket.)
 
 A service object _does_ retain references to data that applies to a series of tickets:
   * username and password
@@ -241,7 +241,7 @@ Because requests to the GData server may need to be reissued if a pre-existing t
 
 The base service class GDataServiceBase simply makes a request to a GData server, creates a GData object with the returned data, and calls back to the application.
 
-The authentication subclass, GDataServiceGoogle, makes requests to the authentication server, adds the authentication token to the requests created by the base class, and intercepts errors returns to the base class to handle invalid token errors.
+The authentication subclass, GDataServiceGoogle, makes ClientLogin requests to the authentication server, adds the authentication token to the requests created by the base class, and intercepts errors returns to the base class to handle invalid token errors.
 
 GData service-specific subclasses add type-appropriate interfaces for the individual services, but are otherwise shallow wrappers around GDataServiceGoogle.
 
@@ -458,4 +458,3 @@ Finally, elements provide KVC-compatible accessors to their data, using normal O
   type_ = [str copy];
 }
 }}}
-
