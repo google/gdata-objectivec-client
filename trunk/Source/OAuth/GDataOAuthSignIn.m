@@ -157,7 +157,12 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // the authentication object won't have an access token until the access
   // fetcher successfully finishes; any auth token held before then is a request
   // token
+  //
+  // we need to clear out the token secret as well so that the request fetch
+  // is signed correctly
   [auth_ setHasAccessToken:NO];
+  [auth_ setToken:nil];
+  [auth_ setTokenSecret:nil];
 
   // start fetching a request token
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL_];
