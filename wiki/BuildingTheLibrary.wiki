@@ -29,7 +29,7 @@ The library project includes a target for building a static library for iPhone a
 
 To build with the static library, drag the GData project file itself into an iPhone project to make a [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeProjectManagement/130-Files_in_Projects/project_files.html#//apple_ref/doc/uid/TP40002666-CJBJHJCJ cross-project reference], and add the GDataTouchStaticLib target as [http://developer.apple.com/IPhone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/100-Targets/bs_targets.html#//apple_ref/doc/uid/TP40002689-SW11 a dependency] for building the app.
 
-Drag the static library target from under the Xcode reference in the application project to the application target's "Link Binary With Libraries" [http://developer.apple.com/iphone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/200-Build_Phases/bs_build_phases.html build phase].
+Drag the static library target from under the GData.xcodeproj cross-project reference in the application project to the application target's "Link Binary With Libraries" [http://developer.apple.com/iphone/library/documentation/DeveloperTools/Conceptual/XcodeBuildSystem/200-Build_Phases/bs_build_phases.html build phase].
 
 Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC link option] to the application target's build settings, along with the libxml2 flag:
 
