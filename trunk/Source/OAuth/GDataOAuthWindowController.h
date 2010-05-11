@@ -107,23 +107,39 @@
   // keychain item
   NSString *keychainApplicationServiceName_;
 
+  // if non-nil, the html string to be displayed immediately upon opening
+  // of the web view
+  NSString *initialHTMLString_;
+
   // user-defined data
   id userData_;
 }
 
+// user interface elements
 @property (nonatomic, assign) IBOutlet NSButton *keychainCheckbox;
 @property (nonatomic, assign) IBOutlet WebView *webView;
 @property (nonatomic, assign) IBOutlet NSButton *webCloseButton;
 @property (nonatomic, assign) IBOutlet NSButton *webBackButton;
 
+// the application and service name to use for saving the auth tokens
+// to the keychain
 @property (nonatomic, copy)   NSString *keychainApplicationServiceName;
+
+// the application name to be displayed during sign-in
 @property (nonatomic, copy)   NSString *displayName;
+
+// optional html string displayed immediately upon opening the web view
+//
+// This string is visible just until the sign-in web page loads, and
+// may be used for a "Loading..." type of message
+@property (nonatomic, copy)   NSString *initialHTMLString;
 
 // the default timeout for an unreachable network during display of the
 // sign-in page is 30 seconds, after which the notification
 // kGDataOAuthNetworkLost is sent; set this to 0 to have no timeout
 @property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
 
+// any arbitrary data object the user would like the controller to retain
 @property (nonatomic, retain) id userData;
 
 - (IBAction)closeWindow:(id)sender;

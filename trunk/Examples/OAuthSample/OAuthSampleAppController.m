@@ -157,6 +157,11 @@ static NSString *const kTwitterServiceName = @"Twitter";
                                                                language:nil
                                                          appServiceName:kAppServiceName
                                                          resourceBundle:nil] autorelease];
+
+  // optional: display some html briefly before the sign-in page loads
+  NSString *html = @"<html><body><div align=center>Loading sign-in page...</div></body></html>";
+  [windowController setInitialHTMLString:html];
+
   [windowController signInSheetModalForWindow:mMainWindow
                                      delegate:self
                              finishedSelector:@selector(windowController:finishedWithAuth:error:)];

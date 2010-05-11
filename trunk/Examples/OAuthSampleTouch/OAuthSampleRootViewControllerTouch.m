@@ -163,6 +163,10 @@ static NSString *const kTwitterServiceName = @"Twitter";
 
   // You can set the title of the navigationItem of the controller here, if you want.
 
+  // Optional: display some html briefly before the sign-in page loads
+  NSString *html = @"<html><body bgcolor=silver><div align=center>Loading sign-in page...</div></body></html>";
+  [viewController setInitialHTMLString:html];
+
   [[self navigationController] pushViewController:viewController animated:YES];
 }
 

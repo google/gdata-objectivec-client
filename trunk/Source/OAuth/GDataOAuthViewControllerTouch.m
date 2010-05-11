@@ -25,7 +25,7 @@
 #if TARGET_OS_IPHONE
 
 // If you want to shave a few bytes, and you include GDataOAuthViewTouch.xib
-// in your project, then you can define this as 0 in your prefix file. 
+// in your project, then you can define this as 0 in your prefix file.
 #ifndef GDATA_CONSTRUCT_OAUTH_VIEWS_IN_SOURCE_CODE
 #define GDATA_CONSTRUCT_OAUTH_VIEWS_IN_SOURCE_CODE 1
 #endif
@@ -77,9 +77,11 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 - (void)cancelSigningInInternal;
 
-- (void)popView;
+- (BOOL)isNavigationBarTranslucent;
 
-- (UIWebView *)webView;
+- (void)moveWebViewFromUnderNavigationBar;
+
+- (void)popView;
 
 @end
 
@@ -91,7 +93,9 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 @synthesize navButtonsView = navButtonsView_;
 @synthesize rightBarButtonItem = rightBarButtonItem_;
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
+@synthesize initialHTMLString = initialHTMLString_;
 @synthesize userData = userData_;
+@synthesize webView = webView_;
 
 - (id)initWithScope:(NSString *)scope
            language:(NSString *)language
@@ -128,6 +132,8 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
     finishedSelector_ = finishedSelector;
 
     if (auth) {
+      [auth setScope:scope];
+
       // use the supplied auth and OAuth endpoint URLs
       signIn_ = [[GDataOAuthSignIn alloc] initWithAuthentication:auth
                                                  requestTokenURL:requestURL
@@ -173,7 +179,9 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   [signIn_ release];
   [request_ release];
   [keychainApplicationServiceName_ release];
+  [initialHTMLString_ release];
   [userData_ release];
+  [webView_ release];
   [super dealloc];
 }
 
@@ -234,7 +242,14 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 - (void)constructView {
 // If the Interface Builder .xib is compiled in to the app, it overrides this code.
 #if GDATA_CONSTRUCT_OAUTH_VIEWS_IN_SOURCE_CODE
-  CGRect webFrame = CGRectMake(0, 0, 320, 440);
+  CGRect webFrame = [[UIScreen mainScreen] applicationFrame];
+  UIView *view = [[[UIView  alloc] initWithFrame:webFrame] autorelease];
+  [view setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin |
+        UIViewAutoresizingFlexibleWidth |
+        UIViewAutoresizingFlexibleRightMargin |
+        UIViewAutoresizingFlexibleTopMargin |
+        UIViewAutoresizingFlexibleHeight |
+        UIViewAutoresizingFlexibleBottomMargin];
   UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
   [webView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin |
         UIViewAutoresizingFlexibleWidth |
@@ -242,7 +257,9 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
         UIViewAutoresizingFlexibleTopMargin |
         UIViewAutoresizingFlexibleHeight |
         UIViewAutoresizingFlexibleBottomMargin];
-  [self setView:webView];
+  [self setView:view];
+  [view addSubview:webView];
+  [self setWebView:webView];
   [webView setDelegate:self];
 
   UIColor *normalColor = [UIColor colorWithWhite:1.0 alpha:1.0];
@@ -306,6 +323,13 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 
 - (void)viewDidLoad {
+  // the app may prefer some html other than blank white to be displayed
+  // before the sign-in web page loads
+  NSString *html = [self initialHTMLString];
+  if ([html length] > 0) {
+    [[self webView] loadHTMLString:html baseURL:nil];
+  }
+
   [rightBarButtonItem_ setCustomView:navButtonsView_];
   [[self navigationItem] setRightBarButtonItem:rightBarButtonItem_];
 }
@@ -372,10 +396,6 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   return hasName;
 }
 
-- (UIWebView *)webView {
-  return (UIWebView *) [self view];
-}
-
 #pragma mark SignIn callbacks
 
 - (void)signIn:(GDataOAuthSignIn *)signIn displayRequest:(NSURLRequest *)request {
@@ -438,6 +458,24 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   }
 }
 
+- (void)moveWebViewFromUnderNavigationBar {
+  CGRect dontCare;
+  CGRect webFrame = [[self view] bounds];
+  UINavigationBar *navigationBar = [[self navigationController] navigationBar];
+  CGRectDivide(webFrame, &dontCare, &webFrame,
+    [navigationBar frame].size.height, CGRectMinYEdge);
+  [[self webView] setFrame:webFrame];
+}
+
+// isTranslucent is defined in iPhoneOS 3.0 on.
+- (BOOL)isNavigationBarTranslucent {
+  UINavigationBar *navigationBar = [[self navigationController] navigationBar];
+  BOOL isTranslucent =
+    ([navigationBar respondsToSelector:@selector(isTranslucent)] &&
+     [navigationBar isTranslucent]);
+  return isTranslucent;
+}
+
 #pragma mark -
 #pragma mark Protocol implementations
 
@@ -445,6 +483,9 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   [super viewWillAppear:animated];
   if (!isViewShown_) {
     isViewShown_ = YES;
+    if ([self isNavigationBarTranslucent]) {
+      [self moveWebViewFromUnderNavigationBar];
+    }
     if (![signIn_ startSigningIn]) {
       // Can't start signing in. We must pop our view.
       // UIWebview needs time to stabilize. Animations need time to complete.

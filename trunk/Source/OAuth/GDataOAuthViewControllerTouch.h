@@ -90,6 +90,7 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
   UIButton *forwardButton_;
   UIView *navButtonsView_;
   UIBarButtonItem *rightBarButtonItem_;
+  UIWebView *webView_;
   // The object responsible for the sign-in networking sequence; it holds
   // onto the authentication object as well.
   GDataOAuthSignIn *signIn_;
@@ -102,6 +103,11 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
   SEL finishedSelector_;
 
   NSString *keychainApplicationServiceName_;
+
+  // if non-nil, the html string to be displayed immediately upon opening
+  // of the web view
+  NSString *initialHTMLString_;
+
   id userData_;
 
   // We delegate the decision to our owning NavigationController (if any).
@@ -118,13 +124,31 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
   // Set in a webView callback.
   BOOL hasDoneFinalRedirect_;
 }
+
+// the application and service name to use for saving the auth tokens
+// to the keychain
 @property (nonatomic, copy) NSString *keychainApplicationServiceName;
+
+// the application name to be displayed during sign-in
 @property (nonatomic, copy) NSString *displayName;
+
+// optional html string displayed immediately upon opening the web view
+//
+// This string is visible just until the sign-in web page loads, and
+// may be used for a "Loading..." type of message or to set the
+// initial view color
+@property (nonatomic, copy) NSString *initialHTMLString;
+
+// the underlying object to hold authentication tokens and authorize http
+// requests
 @property (nonatomic, retain, readonly) GDataOAuthAuthentication *authentication;
+
+// user interface elements
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *forwardButton;
 @property (nonatomic, retain) IBOutlet UIView *navButtonsView;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *rightBarButtonItem;
+@property (nonatomic, retain) IBOutlet UIWebView *webView;
 
 // the default timeout for an unreachable network during display of the
 // sign-in page is 10 seconds; set this to 0 to have no timeout

@@ -45,6 +45,7 @@ const char *kKeychainAccountName = "OAuth";
 // regular ivars
 @synthesize initialRequest = initialRequest_;
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
+@synthesize initialHTMLString = initialHTMLString_;
 @synthesize userData = userData_;
 
 - (id)initWithScope:(NSString *)scope
@@ -81,6 +82,8 @@ const char *kKeychainAccountName = "OAuth";
                                 owner:self];
   if (self != nil) {
     if (auth) {
+      [auth setScope:scope];
+
       // use the supplied auth and OAuth endpoint URLs
       signIn_ =  [[GDataOAuthSignIn alloc] initWithAuthentication:auth
                                                   requestTokenURL:requestURL
@@ -128,6 +131,7 @@ const char *kKeychainAccountName = "OAuth";
   [initialRequest_ release];
   [sheetModalForWindow_ release];
   [keychainApplicationServiceName_ release];
+  [initialHTMLString_ release];
   [userData_ release];
   [super dealloc];
 }
@@ -135,7 +139,18 @@ const char *kKeychainAccountName = "OAuth";
 - (void)awakeFromNib {
   // load the requested initial sign-in page
   [webView_ setResourceLoadDelegate:self];
-  [[webView_ mainFrame] loadRequest:[self initialRequest]];
+
+  // the app may prefer some html other than blank white to be displayed
+  // before the sign-in web page loads
+  NSString *html = [self initialHTMLString];
+  if ([html length] > 0) {
+    [[webView_ mainFrame] loadHTMLString:html baseURL:nil];
+  }
+
+  // start the asynchronous load of the sign-in web page
+  [[webView_ mainFrame] performSelector:@selector(loadRequest:)
+                             withObject:[self initialRequest]
+                             afterDelay:0.01];
 
   // hide the keychain checkbox if we're not supporting keychain
   BOOL hideKeychainCheckbox = ![self shouldUseKeychain];
