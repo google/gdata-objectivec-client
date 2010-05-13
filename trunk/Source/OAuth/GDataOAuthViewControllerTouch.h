@@ -123,6 +123,9 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 
   // Set in a webView callback.
   BOOL hasDoneFinalRedirect_;
+
+  // Set during the pop initiated by the sign-in object
+  BOOL isPoppingSelf_;
 }
 
 // the application and service name to use for saving the auth tokens
