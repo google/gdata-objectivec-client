@@ -75,8 +75,6 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 @property (nonatomic, copy) NSURLRequest *request;
 
-- (void)cancelSigningInInternal;
-
 - (BOOL)isNavigationBarTranslucent;
 
 - (void)moveWebViewFromUnderNavigationBar;
@@ -337,23 +335,25 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 - (void)popView {
   if ([[self navigationController] topViewController] == self) {
     if (![[self view] isHidden]) {
+      // set the flag to our viewWillDisappear method so it knows
+      // this is a disappearance initiated by the sign-in object,
+      // not the user cancelling via the navigation controller
+      isPoppingSelf_ = YES;
+
       [[self navigationController] popViewControllerAnimated:YES];
       [[self view] setHidden:YES];
 
-      [self cancelSigningInInternal];
+      isPoppingSelf_ = NO;
     }
   }
 }
 
 - (void)cancelSigningIn {
-  // The user has explicitly asked us to cancel signing in
+  // The application has explicitly asked us to cancel signing in
   // (so no further callback is required)
   hasCalledFinished_ = YES;
-  [self cancelSigningInInternal];
-}
 
-- (void)cancelSigningInInternal {
-  // The signIn object's cancel method will close the window
+  // The sign-in object's cancel method will close the window
   [signIn_ cancelSigningIn];
   hasDoneFinalRedirect_ = YES;
 
@@ -493,6 +493,19 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
       [self performSelector:@selector(popView) withObject:nil afterDelay:0.5];
     }
   }
+  [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+  if (!isPoppingSelf_) {
+    // we are not popping ourselves, so presumably we are being popped by the
+    // navigation controller; tell the sign-in object to close up shop
+    //
+    // this will indirectly call our signIn:finishedWithAuth:error: method
+    // for us
+    [signIn_ windowWasClosed];
+  }
+  [super viewWillDisappear:animated];
 }
 
 - (BOOL)webView:(UIWebView *)webView
