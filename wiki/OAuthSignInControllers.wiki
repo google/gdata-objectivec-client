@@ -32,6 +32,8 @@ These source files are in the OAuth and Networking groups of the library's [http
 === System Requirements ===
 
 The Mac controller is compatible with Mac OS X 10.5 and later. The iPhone controller is compatible with iPhone OS 2 and later.
+
+The OAuth controllers require linking to the system frameworks Security.framework and SystemConfiguration.framework.
  
 === Signing In ===
 
