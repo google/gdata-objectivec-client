@@ -22,13 +22,14 @@
 //   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
 //        ofTotalByteCount:(unsigned long long)dataLength;
 
+// Define <NSStreamDelegate> only for Mac OS X 10.6+ or iPhone OS 4.0+.
 #undef GDATA_NSSTREAM_DELEGATE
-#if TARGET_OS_MAC && !TARGET_OS_IPHONE && (MAC_OS_X_VERSION_MAX_ALLOWED > 1050)
-#define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate>
+#if (TARGET_OS_MAC && !TARGET_OS_IPHONE && (MAC_OS_X_VERSION_MAX_ALLOWED >= 1060)) || \
+    (TARGET_OS_IPHONE && (__IPHONE_OS_VERSION_MAX_ALLOWED >= 40000))
+  #define GDATA_NSSTREAM_DELEGATE <NSStreamDelegate>
 #else
-#define GDATA_NSSTREAM_DELEGATE
+  #define GDATA_NSSTREAM_DELEGATE
 #endif
-
 
 #if (MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4) || defined(GDATA_TARGET_NAMESPACE)
   // we need NSInteger for the 10.4 SDK, or we're using target namespace macros
