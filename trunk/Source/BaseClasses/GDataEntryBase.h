@@ -30,7 +30,6 @@
 #import "GDataBatchStatus.h"
 #import "GDataBatchInterrupted.h"
 #import "GDataAtomPubControl.h"
-#import "GDataDateTime.h"
 #import "GDataLink.h"
 
 #undef _EXTERN
