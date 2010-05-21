@@ -216,12 +216,10 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   BOOL hasDevKey = [[mDeveloperKeyField stringValue] length] > 0;
   BOOL hasClientID = [[mClientIDField stringValue] length] > 0;
   BOOL hasTitle = [[mTitleField stringValue] length] > 0;
-  BOOL hasDesc = [[mDescriptionField stringValue] length] > 0;
-  BOOL hasKeywords = [[mKeywordsField stringValue] length] > 0;
   BOOL hasPath = [[mFilePathField stringValue] length] > 0;
   
   BOOL canUpload = hasUsername && hasPassword && hasDevKey
-    && hasClientID && hasTitle && hasDesc && hasKeywords && hasPath;
+    && hasClientID && hasTitle && hasPath;
   
   BOOL isUploading = (mUploadTicket != nil);
 
