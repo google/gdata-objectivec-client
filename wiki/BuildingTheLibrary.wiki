@@ -41,6 +41,7 @@ The static library build creates a directory of header files (in its build produ
 
 `#import "GDataCalendar.h"`
 
+*_Note:_* If you include the OAuth sign-in classes in the library, your application will need to link to Security.framework and SystemConfiguration.framework. To avoid including unneeded library code, see _Removing Unneeded Code_ below.
 
 == Compiling the Source Files Directly into a Mac or iPhone Application ==
 
