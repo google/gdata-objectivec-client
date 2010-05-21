@@ -80,6 +80,10 @@ _EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderat
 - (void)setHasCaptions:(BOOL)flag;
 - (BOOL)hasCaptions;
 
+// put video entries into link elements for activity feed entries
+- (void)setShouldInline:(BOOL)flag;
+- (BOOL)shouldInline;
+
 - (void)setUploader:(NSString *)str;
 - (NSString *)uploader;
 

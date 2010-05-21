@@ -32,6 +32,7 @@ static NSString *const kLanguageRestrictionParamName = @"lr";
 static NSString *const kLocationParamName = @"location";
 static NSString *const kLocationRadiusParamName = @"location-radius";
 static NSString *const kCaptionParamName = @"caption";
+static NSString *const kInlineParamName = @"inline";
 static NSString *const kUploaderParamName = @"uploader";
 
 @implementation GDataQueryYouTube
@@ -113,6 +114,17 @@ static NSString *const kUploaderParamName = @"uploader";
 
 - (BOOL)hasCaptions {
   return [self boolValueForParameterWithName:kCaptionParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldInline:(BOOL)flag {
+  [self addCustomParameterWithName:kInlineParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldInline {
+  return [self boolValueForParameterWithName:kInlineParamName
                                 defaultValue:NO];
 }
 
