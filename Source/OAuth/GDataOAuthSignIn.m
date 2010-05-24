@@ -27,6 +27,9 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 @interface GDataOAuthSignIn ()
 - (void)invokeFinalCallbackWithError:(NSError *)error;
 
+- (void)startWebRequest;
+- (void)fetchGoogleUserInfo;
+
 - (GDataHTTPFetcher *)pendingFetcher;
 - (void)setPendingFetcher:(GDataHTTPFetcher *)obj fetchType:(NSString *)fetchType;
 
@@ -48,6 +51,7 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 @synthesize authorizeTokenURL = authorizeURL_;
 @synthesize accessTokenURL = accessURL_;
 
+@synthesize shouldFetchGoogleUserInfo = shouldFetchGoogleUserInfo_;
 @synthesize networkLossTimeoutInterval = networkLossTimeoutInterval_;
 
 - (id)initWithGoogleAuthenticationForScope:(NSString *)scope
@@ -58,13 +62,11 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // standard Google OAuth endpoints
   //
   // http://code.google.com/apis/accounts/docs/OAuth_ref.html
-
   NSURL *requestURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthGetRequestToken"];
   NSURL *authorizeURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthAuthorizeToken"];
   NSURL *accessURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthGetAccessToken"];
 
   GDataOAuthAuthentication *auth = [GDataOAuthAuthentication authForInstalledApp];
-
   [auth setScope:scope];
   [auth setLanguage:language];
   [auth setServiceProvider:kGDataOAuthServiceProviderGoogle];
@@ -78,6 +80,10 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // we'll use a non-existent callback address, and close the window
   // immediately when it's requested
   [auth setCallback:@"http://www.google.com/OAuthCallback"];
+
+  // normally, for Google authentication, we want to automatically fetch
+  // user info
+  shouldFetchGoogleUserInfo_ = YES;
 
   return [self initWithAuthentication:auth
                       requestTokenURL:requestURL
@@ -157,12 +163,17 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // the authentication object won't have an access token until the access
   // fetcher successfully finishes; any auth token held before then is a request
   // token
-  //
-  // we need to clear out the token secret as well so that the request fetch
-  // is signed correctly
-  [auth_ setHasAccessToken:NO];
-  [auth_ setToken:nil];
-  [auth_ setTokenSecret:nil];
+  [auth_ reset];
+
+  // add the Google-specific scope for obtaining the authenticated user info
+  if (shouldFetchGoogleUserInfo_) {
+    NSString *uiScope = @"https://www.googleapis.com/auth/userinfo#email";
+    NSString *scope = [auth_ scope];
+    if ([scope rangeOfString:uiScope].location == NSNotFound) {
+      scope = [scope stringByAppendingFormat:@" %@", uiScope];
+      [auth_ setScope:scope];
+    }
+  }
 
   // start fetching a request token
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL_];
@@ -183,7 +194,16 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   [self setPendingFetcher:nil fetchType:nil];
 
   [auth_ setKeysForResponseData:data];
+  [self startWebRequest];
+}
 
+- (void)requestFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+  [self setPendingFetcher:nil fetchType:nil];
+
+  [self invokeFinalCallbackWithError:error];
+}
+
+- (void)startWebRequest {
   // if the auth object has a request token, we can proceed
   NSString *token = [auth_ token];
   if ([token length] > 0) {
@@ -199,12 +219,6 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
     // we want notification if we lose connectivity to the web server
     [self startReachabilityCheck];
   }
-}
-
-- (void)requestFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  [self setPendingFetcher:nil fetchType:nil];
-
-  [self invokeFinalCallbackWithError:error];
 }
 
 // entry point for the window controller to tell us that the window
@@ -240,6 +254,15 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // compare the callback URL, which tells us when the web sign-in is done,
   // to the actual redirect URL
   NSString *callback = [auth_ callback];
+  if (callback == nil) {
+    // with no callback specified for the auth, the window will never
+    // automatically close
+#if DEBUG
+    NSLog(@"GDataOAuthSignIn: No authentication callback specified");
+#endif
+    return NO;
+  }
+
   NSURL *callbackURL = [NSURL URLWithString:callback];
 
   NSURL *requestURL = [redirectedRequest URL];
@@ -277,16 +300,55 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 - (void)accessFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
   [self setPendingFetcher:nil fetchType:nil];
 
-  // if this fetch succeeds, we have an access token
+  // we have an access token
   [auth_ setKeysForResponseData:data];
   [auth_ setHasAccessToken:YES];
 
-  [self invokeFinalCallbackWithError:nil];
+  if (shouldFetchGoogleUserInfo_
+      && [[auth_ serviceProvider] isEqual:kGDataOAuthServiceProviderGoogle]) {
+    // fetch the user's information from the Google server
+    [self fetchGoogleUserInfo];
+  } else {
+    // we're not authorizing with Google, so we're done
+    [self invokeFinalCallbackWithError:nil];
+  }
 }
 
 - (void)accessFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+  // failed to get the access token
   [self setPendingFetcher:nil fetchType:nil];
+  [self invokeFinalCallbackWithError:error];
+}
 
+- (void)fetchGoogleUserInfo {
+  // fetch the additional user info
+  NSString *infoURLStr = @"https://www.googleapis.com/userinfo/email";
+  NSURL *infoURL = [NSURL URLWithString:infoURLStr];
+
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:infoURL];
+  [auth_ authorizeRequest:request];
+
+  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+  [fetcher beginFetchWithDelegate:self
+                didFinishSelector:@selector(infoFetcher:finishedWithData:)
+                  didFailSelector:@selector(infoFetcher:failedWithError:)];
+
+  [self setPendingFetcher:fetcher fetchType:kGDataOAuthFetchTypeUserInfo];
+}
+
+- (void)infoFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+  // we have the authenticated user's info
+  if (data) {
+    [auth_ setKeysForResponseData:data];
+  }
+
+  [self setPendingFetcher:nil fetchType:nil];
+  [self invokeFinalCallbackWithError:nil];
+}
+
+- (void)infoFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
+  // failed to get the authenticated user's info
+  [self setPendingFetcher:nil fetchType:nil];
   [self invokeFinalCallbackWithError:error];
 }
 

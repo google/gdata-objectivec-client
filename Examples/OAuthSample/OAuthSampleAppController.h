@@ -22,6 +22,7 @@
   IBOutlet NSWindow *mMainWindow;
   IBOutlet NSButton *mSignInOutButton;
   IBOutlet NSMatrix *mRadioButtons;
+  IBOutlet NSTextField *mUsernameField;
   IBOutlet NSTextField *mTokenField;
   IBOutlet NSProgressIndicator *mSpinner;
 

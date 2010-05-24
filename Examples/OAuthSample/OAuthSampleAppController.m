@@ -337,11 +337,25 @@ static NSString *const kTwitterServiceName = @"Twitter";
   // update the text showing the signed-in state and the button title
   if ([self isSignedIn]) {
     // signed in
-    [mTokenField setStringValue:[mAuth token]];
+    NSString *token = [mAuth token];
+    NSString *email = [mAuth userEmail];
+
+    BOOL isVerified = [[mAuth userEmailIsVerified] boolValue];
+    if (!isVerified) {
+      // email address is not verified
+      //
+      // The email address is listed with the account info on the server, but
+      // has not been confirmed as belonging to the owner of this account.
+      email = [email stringByAppendingString:@" (unverified)"];
+    }
+
+    [mTokenField setStringValue:(token ? token : @"")];
+    [mUsernameField setStringValue:(email ? email : @"")];
     [mSignInOutButton setTitle:@"Sign Out"];
   } else {
     // signed out
-    [mTokenField setStringValue:@"Not signed in"];
+    [mUsernameField setStringValue:@"-Not signed in-"];
+    [mTokenField setStringValue:@"-No token-"];
     [mSignInOutButton setTitle:@"Sign In..."];
   }
 }
