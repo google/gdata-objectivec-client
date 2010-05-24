@@ -1123,13 +1123,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
   if (flag && !isRetryEnabled_) {
     // We defer initializing these until the user calls setIsRetryEnabled
-    // to avoid seeding the random number generator if it's not needed.
-    // However, it means min and max intervals for this fetcher are reset
+    // to avoid using the random number generator if it's not needed.
+    // However, this means min and max intervals for this fetcher are reset
     // as a side effect of calling setIsRetryEnabled.
     //
-    // seed the random value, and make an initial retry interval
-    // random between 1.0 and 2.0 seconds
-    srandomdev();
+    // make an initial retry interval random between 1.0 and 2.0 seconds
     [self setMinRetryInterval:0.0];
     [self setMaxRetryInterval:kDefaultMaxRetryInterval];
     [self setRetryFactor:2.0];
