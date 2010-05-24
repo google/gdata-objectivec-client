@@ -107,6 +107,85 @@
   STAssertEqualObjects(result, expected, @"HMAC SHA-1 failed (full)");
 }
 
+- (void)testDictionaryWithResponseString {
+  NSString *testStr;
+  NSDictionary *result;
+  NSDictionary *expected;
+
+  // test empty string
+  testStr = nil;
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  STAssertNil(result, @"nil");
+
+  testStr = @"";
+  expected = [NSDictionary dictionary];
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  STAssertEqualObjects(result, expected, @"empty");
+
+  // test foo and foo=, which implicitly have empty values
+  testStr = @"foo";
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  expected = [NSDictionary dictionaryWithObjectsAndKeys:
+              @"", @"foo", nil];
+  STAssertEqualObjects(result, expected, @"half-item");
+
+  testStr = @"foo=";
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  expected = [NSDictionary dictionaryWithObjectsAndKeys:
+              @"", @"foo", nil];
+  STAssertEqualObjects(result, expected, @"half-item");
+
+  testStr = @"=foo&cat=dog&=bird";
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  expected = [NSDictionary dictionaryWithObjectsAndKeys:
+              @"dog", @"cat", nil];
+  STAssertEqualObjects(result, expected, @"other-half-item");
+
+  // test foo=bar, with percent encodings to spice it up
+  testStr = @"fr%2foz=%22hello%26hello%40example.com%22";
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  expected = [NSDictionary dictionaryWithObjectsAndKeys:
+              @"\"hello&hello@example.com\"", @"fr/oz", nil];
+  STAssertEqualObjects(result, expected, @"two items");
+
+  // test three pairs, including a value with an equals sign
+  testStr = @"foo=&baz=cat=dog&ski=jump";
+  result = [GDataOAuthAuthentication dictionaryWithResponseString:testStr];
+  expected = [NSDictionary dictionaryWithObjectsAndKeys:
+              @"", @"foo", @"cat=dog", @"baz", @"jump", @"ski", nil];
+  STAssertEqualObjects(result, expected, @"three items");
+}
+
+- (void)testPersistenceResponseString {
+  GDataOAuthAuthentication *auth;
+  NSString *result;
+  NSString *expected;
+
+  // nothing set
+  auth = [GDataOAuthAuthentication authForInstalledApp];
+  result = [auth persistenceResponseString];
+  expected = @"";
+  STAssertEqualObjects(result, expected, @"empty");
+
+  // token only set
+  [auth setToken:@"foo"];
+  result = [auth persistenceResponseString];
+  expected = @"oauth_token=foo";
+  STAssertEqualObjects(result, expected, @"one");
+
+  // everything set
+  [auth setToken:@"a/bc@de\"&fg"];
+  [auth setTokenSecret:@"hi mom"];
+  [auth setServiceProvider:@"Google"];
+  [auth setUserEmail:@"fredflintstone@example.com"];
+  [auth setUserEmailIsVerified:@"true"];
+  result = [auth persistenceResponseString];
+  expected = @"oauth_token=a%2Fbc%40de%22%26fg&oauth_token_secret=hi%20mom"
+    "&serviceProvider=Google&email=fredflintstone%40example.com"
+    "&isVerified=true";
+  STAssertEqualObjects(result, expected, @"full");
+}
+
 - (void)testFullAuthorizationWithHeader {
   // pack up an auth object ready to be used
   GDataOAuthAuthentication *auth = [GDataOAuthAuthentication authForInstalledApp];

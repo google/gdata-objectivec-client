@@ -48,12 +48,16 @@ static NSString *const kOAuthDisplayNameKey       = @"xoauth_displayname";
 static NSString *const kOAuthScopeKey             = @"scope";
 
 // AuthorizeToken extensions
+static NSString *const kOAuthDomainKey            = @"domain";
 static NSString *const kOAuthHostedDomainKey      = @"hd";
+static NSString *const kOAuthIconURLKey           = @"iconUrl";
 static NSString *const kOAuthLanguageKey          = @"hl";
 static NSString *const kOAuthMobileKey            = @"btmpl";
 
 // additional persistent keys
 static NSString *const kServiceProviderKey        = @"serviceProvider";
+static NSString *const kUserEmailKey              = @"email";
+static NSString *const kUserEmailIsVerifiedKey    = @"isVerified";
 
 @interface GDataOAuthAuthentication (PrivateMethods)
 
@@ -95,7 +99,6 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
 @synthesize realm = realm_;
 @synthesize privateKey = privateKey_;
-@synthesize serviceProvider = serviceProvider_;
 @synthesize shouldUseParamsToAuthorize = shouldUseParamsToAuthorize_;
 @synthesize userData = userData_;
 
@@ -136,7 +139,6 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   [paramValues_ release];
   [realm_ release];
   [privateKey_ release];
-  [serviceProvider_ release];
   [timestamp_ release];
   [nonce_ release];
   [userData_ release];
@@ -189,7 +191,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   // make param objects from the query parameters, and add them
   // to the supplied array
 
-  // look for a query like foo=cat&bar=dog  
+  // look for a query like foo=cat&bar=dog
   if ([query length] > 0) {
     // the standard test cases insist that + in the query string
     // be encoded as " " - http://wiki.oauth.net/TestCases
@@ -284,7 +286,7 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
                                                 tokenSecret:tokenSecret
                                                        body:sigBaseString];
 #if GDATA_DEBUG_OAUTH_SIGNING
-    NSLog(@"hashing: %@%@",
+    NSLog(@"hashing: %@&%@",
           privateKey ? privateKey : @"",
           tokenSecret ? tokenSecret : @"");
     NSLog(@"base string: %@", sigBaseString);
@@ -382,9 +384,11 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
   NSArray *keys = [NSArray arrayWithObjects:
                    kOAuthTokenKey,
                    // extensions
+                   kOAuthDomainKey,
                    kOAuthHostedDomainKey,
                    kOAuthLanguageKey,
                    kOAuthMobileKey,
+                   kOAuthScopeKey,
                    nil];
   return keys;
 }
@@ -422,14 +426,12 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 - (void)setKeysForResponseDictionary:(NSDictionary *)dict {
   NSString *token = [dict objectForKey:kOAuthTokenKey];
   if (token) {
-    NSString *plainToken = [[self class] unencodedOAuthParameterForString:token];
-    [self setToken:plainToken];
+    [self setToken:token];
   }
 
   NSString *secret = [dict objectForKey:kOAuthTokenSecretKey];
   if (secret) {
-    NSString *plainSecret = [[self class] unencodedOAuthParameterForString:secret];
-    [self setTokenSecret:plainSecret];
+    [self setTokenSecret:secret];
   }
 
   NSString *callbackConfirmed = [dict objectForKey:kOAuthCallbackConfirmedKey];
@@ -439,13 +441,22 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
   NSString *verifier = [dict objectForKey:kOAuthVerifierKey];
   if (verifier) {
-    NSString *plainVerifier = [[self class] unencodedOAuthParameterForString:verifier];
-    [self setVerifier:plainVerifier];
+    [self setVerifier:verifier];
   }
 
   NSString *provider = [dict objectForKey:kServiceProviderKey];
   if (provider) {
     [self setServiceProvider:provider];
+  }
+
+  NSString *email = [dict objectForKey:kUserEmailKey];
+  if (email) {
+    [self setUserEmail:email];
+  }
+
+  NSString *verified = [dict objectForKey:kUserEmailIsVerifiedKey];
+  if (verified) {
+    [self setUserEmailIsVerified:verified];
   }
 }
 
@@ -624,28 +635,39 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
 #pragma mark -
 
+- (void)setKeysForPersistenceResponseString:(NSString *)str {
+  // all persistence keys map directly to keys in paramValues_
+  [self setKeysForResponseString:str];
+}
+
 // this returns a "response string" that can be passed later to
 // setKeysForResponseString: to reuse an old access token in a new auth object
 - (NSString *)persistenceResponseString {
-  NSString *accessToken = [self accessToken];
-  NSString *tokenSecret = [self tokenSecret];
+  // make an array of OAuthParameters for the actual parameters we're
+  // persisting
+  NSArray *persistenceKeys = [NSArray arrayWithObjects:
+                              kOAuthTokenKey,
+                              kOAuthTokenSecretKey,
+                              kServiceProviderKey,
+                              kUserEmailKey,
+                              kUserEmailIsVerifiedKey,
+                              nil];
 
-  NSString *encodedToken = [GDataOAuthAuthentication encodedOAuthParameterForString:accessToken];
-  NSString *encodedTokenSecret = [GDataOAuthAuthentication encodedOAuthParameterForString:tokenSecret];
+  NSMutableArray *params = [self paramsForKeys:persistenceKeys request:nil];
 
-  NSString *responseStr = [NSString stringWithFormat:@"%@=%@&%@=%@",
-                           kOAuthTokenKey, encodedToken,
-                           kOAuthTokenSecretKey, encodedTokenSecret];
-
-  // we save the service provider too since knowing this is a Google auth token
-  // will let us know later that it can be revoked via AuthSubRevokeToken
-  NSString *provider = [self serviceProvider];
-  if ([provider length] > 0) {
-    responseStr = [responseStr stringByAppendingFormat:@"&%@=%@",
-                   kServiceProviderKey, provider];
-  }
-
+  NSString *responseStr = [[self class] paramStringForParams:params
+                                                      joiner:@"&"
+                                                 shouldQuote:NO
+                                                  shouldSort:NO];
   return responseStr;
+}
+
+- (void)reset {
+  [self setHasAccessToken:NO];
+  [self setToken:nil];
+  [self setTokenSecret:nil];
+  [self setUserEmail:nil];
+  [self setUserEmailIsVerified:nil];
 }
 
 #pragma mark Accessors
@@ -675,6 +697,24 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 - (void)setHostedDomain:(NSString *)str {
   [paramValues_ setValue:str
                   forKey:kOAuthHostedDomainKey];
+}
+
+- (NSString *)domain {
+  return [paramValues_ objectForKey:kOAuthDomainKey];
+}
+
+- (void)setDomain:(NSString *)str {
+  [paramValues_ setValue:str
+                  forKey:kOAuthDomainKey];
+}
+
+- (NSString *)iconURLString {
+  return [paramValues_ objectForKey:kOAuthIconURLKey];
+}
+
+- (void)setIconURLString:(NSString *)str {
+  [paramValues_ setValue:str
+                  forKey:kOAuthIconURLKey];
 }
 
 - (NSString *)language {
@@ -739,6 +779,33 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 - (void)setVerifier:(NSString *)str {
   [paramValues_ setValue:str
                   forKey:kOAuthVerifierKey];
+}
+
+- (NSString *)serviceProvider {
+  return [paramValues_ objectForKey:kServiceProviderKey];
+}
+
+- (void)setServiceProvider:(NSString *)str {
+  [paramValues_ setValue:str
+                  forKey:kServiceProviderKey];
+}
+
+- (NSString *)userEmail {
+  return [paramValues_ objectForKey:kUserEmailKey];
+}
+
+- (void)setUserEmail:(NSString *)str {
+  [paramValues_ setValue:str
+                  forKey:kUserEmailKey];
+}
+
+- (NSString *)userEmailIsVerified {
+  return [paramValues_ objectForKey:kUserEmailIsVerifiedKey];
+}
+
+- (void)setUserEmailIsVerified:(NSString *)str {
+  [paramValues_ setValue:str
+                  forKey:kUserEmailIsVerifiedKey];
 }
 
 - (NSString *)tokenSecret {
@@ -857,25 +924,30 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 
 + (NSDictionary *)dictionaryWithResponseString:(NSString *)responseStr {
   // build a dictionary from a response string of the form
-  //  "foo=cat&bar=dog"
-
+  // "foo=cat&bar=dog".  Missing or empty values are considered
+  // empty strings; keys and values are percent-decoded.
   if (responseStr == nil) return nil;
-
-  NSArray *items = [responseStr componentsSeparatedByString:@"&"];
 
   NSMutableDictionary *responseDict = [NSMutableDictionary dictionary];
 
+  NSArray *items = [responseStr componentsSeparatedByString:@"&"];
   for (NSString *item in items) {
     NSScanner *scanner = [NSScanner scannerWithString:item];
     NSString *key;
-    NSString *value;
 
     [scanner setCharactersToBeSkipped:nil];
-    if ([scanner scanUpToString:@"=" intoString:&key]
-        && [scanner scanString:@"=" intoString:nil]
-        && [scanner scanUpToString:@"&" intoString:&value]) {
+    if ([scanner scanUpToString:@"=" intoString:&key]) {
+      // if there's an "=", then scan the value, too, if any
+      NSString *value = @"";
+      if ([scanner scanString:@"=" intoString:nil]) {
+        // scan the rest of the string
+        [scanner scanUpToString:@"&" intoString:&value];
+      }
+      NSString *plainKey = [[self class] unencodedOAuthParameterForString:key];
+      NSString *plainValue = [[self class] unencodedOAuthParameterForString:value];
 
-      [responseDict setObject:value forKey:key];
+      [responseDict setObject:plainValue
+                       forKey:plainKey];
     }
   }
   return responseDict;
@@ -893,10 +965,11 @@ static NSString *const kServiceProviderKey        = @"serviceProvider";
 + (NSString *)HMACSHA1HashForConsumerSecret:(NSString *)consumerSecret
                                 tokenSecret:(NSString *)tokenSecret
                                        body:(NSString *)body {
+  NSString *encodedConsumerSecret = [self encodedOAuthParameterForString:consumerSecret];
   NSString *encodedTokenSecret = [self encodedOAuthParameterForString:tokenSecret];
 
   NSString *key = [NSString stringWithFormat:@"%@&%@",
-                   consumerSecret ? consumerSecret : @"",
+                   encodedConsumerSecret ? encodedConsumerSecret : @"",
                    encodedTokenSecret ? encodedTokenSecret : @""];
 
   NSMutableData *sigData = [NSMutableData dataWithLength:CC_SHA1_DIGEST_LENGTH];
