@@ -246,4 +246,37 @@
   NSString *authHdr = [headers objectForKey:@"Authorization"];
   STAssertNil(authHdr, @"auth header unexpected");
 }
+
+- (void)testFullAuthorizationWithBodyAndHeader {
+  // pack up an auth object ready to be used
+  GDataOAuthAuthentication *auth = [GDataOAuthAuthentication authForInstalledApp];
+
+  [auth setToken:@"1/Yqki9fVv6ZPlzXxhUPdZ6BRZ0uGZ3SbtSQXVao1lyFs"];
+  [auth setTokenSecret:@"G0W9NfgJSzR9hPNv3ZR13VJk"];
+  [auth setHasAccessToken:YES];
+  [auth setTimestamp:@"1274732913"];
+  [auth setNonce:@"4429455094440490103"];
+
+  // make and sign a request, and check the resulting Authorization header
+  NSString *urlStr = @"http://www.google.com/m8/feeds/contacts/default/thin";
+  NSURL *url = [NSURL URLWithString:urlStr];
+  NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+  NSString *body = @"zparam=foo&aparam=bar";
+  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+  [request setHTTPMethod:@"POST"];
+  [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+
+  [auth authorizeRequest:request];
+
+  NSDictionary *headers = [request allHTTPHeaderFields];
+  NSString *authHdr = [headers objectForKey:@"Authorization"];
+
+  NSString *expected = @"OAuth oauth_consumer_key=\"anonymous\", "
+    "oauth_token=\"1%2FYqki9fVv6ZPlzXxhUPdZ6BRZ0uGZ3SbtSQXVao1lyFs\", "
+    "oauth_signature_method=\"HMAC-SHA1\", oauth_version=\"1.0\", "
+    "oauth_nonce=\"4429455094440490103\", oauth_timestamp=\"1274732913\", "
+    "oauth_signature=\"l9M7sp2EwV7H%2FZ6VKsxOiMg%2Bcz4%3D\"";
+  STAssertEqualObjects(authHdr, expected, @"full auth with body");
+}
+
 @end
