@@ -57,14 +57,14 @@ _EXTERN NSString* const kGDataOAuthErrorDomain  _INITIALIZE_AS(@"com.google.GDat
 _EXTERN NSString* const kGDataOAuthFetchStarted _INITIALIZE_AS(@"kGDataOAuthFetchStarted");
 _EXTERN NSString* const kGDataOAuthFetchStopped _INITIALIZE_AS(@"kGDataOAuthFetchStopped");
 
-_EXTERN NSString* const kGDataOAuthFetchTypeKey     _INITIALIZE_AS(@"FetchType");
-_EXTERN NSString* const kGDataOAuthFetchTypeRequest _INITIALIZE_AS(@"request");
-_EXTERN NSString* const kGDataOAuthFetchTypeAccess  _INITIALIZE_AS(@"access");
+_EXTERN NSString* const kGDataOAuthFetchTypeKey      _INITIALIZE_AS(@"FetchType");
+_EXTERN NSString* const kGDataOAuthFetchTypeRequest  _INITIALIZE_AS(@"request");
+_EXTERN NSString* const kGDataOAuthFetchTypeAccess   _INITIALIZE_AS(@"access");
+_EXTERN NSString* const kGDataOAuthFetchTypeUserInfo _INITIALIZE_AS(@"userInfo");
 
 // notification for network loss during html sign-in display
-_EXTERN NSString* const kGDataOAuthNetworkLost  _INITIALIZE_AS(@"kGDataOAuthNetworkLost");
-_EXTERN NSString* const kGDataOAuthNetworkFound _INITIALIZE_AS(@"kGDataOAuthNetworkFound");
-
+_EXTERN NSString* const kGDataOAuthNetworkLost       _INITIALIZE_AS(@"kGDataOAuthNetworkLost");
+_EXTERN NSString* const kGDataOAuthNetworkFound      _INITIALIZE_AS(@"kGDataOAuthNetworkFound");
 
 #if GDATA_OAUTH_SUPPORTS_RSASHA1_SIGNING
 _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA-SHA1");
@@ -79,8 +79,6 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
   NSString *privateKey_;
   NSString *timestamp_; // set for testing only
   NSString *nonce_;     // set for testing only
-
-  NSString *serviceProvider_;
 
   // flag indicating if the token in paramValues is a request token or an
   // access token
@@ -97,9 +95,14 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 // timestamp (seconds since 1970) and nonce (random number) are generated
 // uniquely for each request, except during testing, when they may be set
 // explicitly
+//
+// Note: we're using "assign" for these since they're stored inside
+//       the dictionary of param values rather than retained by ivars.
 @property (nonatomic, assign) NSString *scope;
 @property (nonatomic, assign) NSString *displayName;
 @property (nonatomic, assign) NSString *hostedDomain;
+@property (nonatomic, assign) NSString *domain;
+@property (nonatomic, assign) NSString *iconURLString;
 @property (nonatomic, assign) NSString *language;
 @property (nonatomic, assign) NSString *mobile;
 @property (nonatomic, assign) NSString *consumerKey;
@@ -113,12 +116,20 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 @property (nonatomic, assign) NSString *timestamp;
 @property (nonatomic, assign) NSString *nonce;
 
-// other standard OAuth protocol properties
+// other standard non-parameter OAuth protocol properties
 @property (nonatomic, copy) NSString *realm;
 @property (nonatomic, copy) NSString *privateKey;
 
 // service identifier, like "Google"; not used for authentication or signing
-@property (nonatomic, copy) NSString *serviceProvider;
+@property (nonatomic, assign) NSString *serviceProvider;
+
+// user email and verified status; not used for authentication or signing
+//
+// The verified string can be checked with -boolValue. If the result is false,
+// then the email address is listed with the account on the server, but the
+// address has not been confirmed as belonging to the owner of the account.
+@property (nonatomic, assign) NSString *userEmail;
+@property (nonatomic, assign) NSString *userEmailIsVerified;
 
 // property for using a previously-authorized access token
 @property (nonatomic, copy) NSString *accessToken;
@@ -146,6 +157,9 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 - (id)initWithSignatureMethod:(NSString *)signatureMethod
                   consumerKey:(NSString *)consumerKey
                    privateKey:(NSString *)privateKey;
+
+// clear out any authentication values, prepare for a new request fetch
+- (void)reset;
 
 // authorization entry point for GData library
 - (BOOL)authorizeRequest:(NSMutableURLRequest *)request;
@@ -175,6 +189,7 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 // we'll use the format "oauth_token=foo&oauth_token_secret=bar" so we can
 // easily alter what portions of the auth data are stored
 - (NSString *)persistenceResponseString;
+- (void)setKeysForPersistenceResponseString:(NSString *)str;
 
 // method for distinguishing between the OAuth token being a request token and
 // an access token
