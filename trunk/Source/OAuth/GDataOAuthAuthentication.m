@@ -243,6 +243,25 @@ static NSString *const kUserEmailIsVerifiedKey    = @"isVerified";
   [self addQueryString:query toParams:array];
 }
 
++ (void)addBodyFromRequest:(NSURLRequest *)request
+                  toParams:(NSMutableArray *)array {
+  // add non-GET form parameters to the array of param objects
+  NSString *method = [request HTTPMethod];
+  if (method != nil && ![method isEqual:@"GET"]) {
+    NSString *type = [request valueForHTTPHeaderField:@"Content-Type"];
+    if ([type hasPrefix:@"application/x-www-form-urlencoded"]) {
+      NSData *data = [request HTTPBody];
+      if ([data length] > 0) {
+        NSString *str = [[[NSString alloc] initWithData:data
+                                                   encoding:NSUTF8StringEncoding] autorelease];
+        if ([str length] > 0) {
+          [[self class] addQueryString:str toParams:array];
+        }
+      }
+    }
+  }
+}
+
 - (NSString *)signatureForParams:(NSMutableArray *)params
                          request:(NSURLRequest *)request {
   // construct signature base string per
@@ -258,6 +277,9 @@ static NSString *const kUserEmailIsVerifiedKey    = @"isVerified";
 
   // add request query parameters
   [[self class] addQueryFromRequest:request toParams:signatureParams];
+
+  // add parameters from the POST body, if any
+  [[self class] addBodyFromRequest:request toParams:signatureParams];
 
   NSString *paramStr = [[self class] paramStringForParams:signatureParams
                                                    joiner:@"&"
@@ -1140,7 +1162,7 @@ static NSString *const kUserEmailIsVerifiedKey    = @"isVerified";
 
 + (NSArray *)sortDescriptors {
   // sort by name and value
-  SEL sel = @selector(caseInsensitiveCompare:);
+  SEL sel = @selector(compare:);
 
   NSSortDescriptor *desc1, *desc2;
   desc1 = [[[NSSortDescriptor alloc] initWithKey:@"name"
