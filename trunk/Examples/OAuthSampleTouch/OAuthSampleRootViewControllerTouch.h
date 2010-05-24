@@ -21,12 +21,14 @@
   UISegmentedControl *mServiceSegments;
   UIBarButtonItem *mSignInOutButton;
   int mNetworkActivityCounter;
+  UILabel *mEmailField;
   UILabel *mTokenField;
   GDataOAuthAuthentication *mAuth;
 }
 @property (nonatomic, retain) IBOutlet UISegmentedControl *serviceSegments;
 @property (nonatomic, retain) IBOutlet UISwitch *shouldSaveInKeychainSwitch;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *signInOutButton;
+@property (nonatomic, retain) IBOutlet UILabel *emailField;
 @property (nonatomic, retain) IBOutlet UILabel *tokenField;
 
 - (IBAction)signInOutClicked:(id)sender;

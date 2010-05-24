@@ -70,6 +70,8 @@ enum {
 
   GDataHTTPFetcher *pendingFetcher_;
 
+  BOOL shouldFetchGoogleUserInfo_;
+
   SCNetworkReachabilityRef reachabilityRef_;
   NSTimer *networkLossTimer_;
   NSTimeInterval networkLossTimeoutInterval_;
@@ -85,6 +87,8 @@ enum {
 @property (nonatomic, readonly) NSURL *requestTokenURL;
 @property (nonatomic, readonly) NSURL *authorizeTokenURL;
 @property (nonatomic, readonly) NSURL *accessTokenURL;
+
+@property (nonatomic, assign) BOOL shouldFetchGoogleUserInfo;
 
 // the default timeout for an unreachable network during display of the
 // sign-in page is 30 seconds; set this to 0 to have no timeout

@@ -16,7 +16,7 @@
 		4FDE353C1132197800700DC8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDE353B1132197800700DC8 /* Security.framework */; };
 		4FDE359711321E8A00700DC8 /* GDataOAuthWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FDE359611321E8A00700DC8 /* GDataOAuthWindow.xib */; };
 		4FDE359D11321EAA00700DC8 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDE359C11321EAA00700DC8 /* WebKit.framework */; };
-		4FF23EB31176595900E96C5A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23EB21176595900E96C5A /* SystemConfiguration.framework */; };
+		4FF23D5911753FA800E96C5A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FF23D5811753FA800E96C5A /* SystemConfiguration.framework */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
@@ -42,7 +42,7 @@
 		4FDE353B1132197800700DC8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
 		4FDE359611321E8A00700DC8 /* GDataOAuthWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GDataOAuthWindow.xib; path = ../../Source/OAuth/GDataOAuthWindow.xib; sourceTree = SOURCE_ROOT; };
 		4FDE359C11321EAA00700DC8 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
-		4FF23EB21176595900E96C5A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
+		4FF23D5811753FA800E96C5A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = /System/Library/Frameworks/SystemConfiguration.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* OAuthSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OAuthSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -55,7 +55,7 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				4FDE353C1132197800700DC8 /* Security.framework in Frameworks */,
 				4FDE359D11321EAA00700DC8 /* WebKit.framework in Frameworks */,
-				4FF23EB31176595900E96C5A /* SystemConfiguration.framework in Frameworks */,
+				4FF23D5911753FA800E96C5A /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,7 +74,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				4FF23EB21176595900E96C5A /* SystemConfiguration.framework */,
+				4FF23D5811753FA800E96C5A /* SystemConfiguration.framework */,
 				4FDE359C11321EAA00700DC8 /* WebKit.framework */,
 				4FDE353B1132197800700DC8 /* Security.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,

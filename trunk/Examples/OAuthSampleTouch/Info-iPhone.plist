@@ -26,7 +26,5 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>OAuthSampleMainTouch</string>
-	<key>NSMainNibFile~ipad</key>
-	<string>OAuthSampleMainiPad</string>
 </dict>
 </plist>

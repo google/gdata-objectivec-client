@@ -22,6 +22,9 @@ Bugs Fixed
 
 - Fixed signing of OAuth paths with non-alphanumeric characters
 
+- Fixed OAuth sign-in when using an authentication object with a prior
+  token secret (thanks ddickison)
+
 
 Release 1.10.0
 31-March-2010

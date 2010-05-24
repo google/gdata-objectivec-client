@@ -17,6 +17,10 @@
 #import "OAuthSampleRootViewControllerTouch.h"
 #import "GDataOAuthViewControllerTouch.h"
 
+#ifndef UI_USER_INTERFACE_IDIOM()
+#define UI_USER_INTERFACE_IDIOM() 0
+#endif
+
 static NSString *const kAppServiceName = @"OAuth Sample: Google Contacts";
 static NSString *const kShouldSaveInKeychainKey = @"shouldSaveInKeychain";
 
@@ -36,6 +40,7 @@ static NSString *const kTwitterServiceName = @"Twitter";
 @synthesize serviceSegments = mServiceSegments;
 @synthesize shouldSaveInKeychainSwitch = mShouldSaveInKeychainSwitch;
 @synthesize signInOutButton = mSignInOutButton;
+@synthesize emailField = mEmailField;
 @synthesize tokenField = mTokenField;
 
 - (void)awakeFromNib {
@@ -83,9 +88,18 @@ static NSString *const kTwitterServiceName = @"Twitter";
   [mSignInOutButton release];
   [mShouldSaveInKeychainSwitch release];
   [mServiceSegments release];
+  [mEmailField release];
   [mTokenField release];
   [mAuth release];
   [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation {
+  // Returns non-zero on iPad, but backward compatible to SDKs earlier than 3.2.
+  if (UI_USER_INTERFACE_IDIOM()) {
+    return YES;
+  }
+  return [super shouldAutorotateToInterfaceOrientation:orientation];
 }
 
 - (BOOL)isSignedIn {
@@ -345,11 +359,16 @@ static NSString *const kTwitterServiceName = @"Twitter";
   // A real program would use NSLocalizedString() for strings shown to the user.
   if ([self isSignedIn]) {
     // signed in
-    [mTokenField setText:[mAuth token]];
+    NSString *email = [mAuth userEmail];
+    NSString *token = [mAuth token];
+
+    [mEmailField setText:email];
+    [mTokenField setText:token];
     [mSignInOutButton setTitle:@"Sign Out"];
   } else {
     // signed out
-    [mTokenField setText:@"Not signed in"];
+    [mEmailField setText:@"Not signed in"];
+    [mTokenField setText:@"No authorization token"];
     [mSignInOutButton setTitle:@"Sign In..."];
   }
   BOOL isRemembering = [self shouldSaveInKeychain];
