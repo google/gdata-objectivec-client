@@ -58,6 +58,8 @@ To update just specific portions of an entry, add a field selection to the entry
 }}}
 Additional information about partial response and update support is available in [http://code.google.com/apis/gdata/docs/2.0/reference.html#PartialResponse the protocol documentation].
 
+*_Note:_* The Picasa Web Albums API does not yet support the `gd:kind` attribute, so partial queries should include the category element to enable the library to identify the class of feed or entry to instantiate, like `[query setFieldSelection:@"category,entry(@gd:*,category, ...`
+
 == Optimizations for iPhone Applications ==
 
 [GDataObjCIntroduction#Development_with_the_iPhone_SDK Development with the iPhone SDK] explains how to add the library to your iPhone application project.
