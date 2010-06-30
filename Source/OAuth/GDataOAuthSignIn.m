@@ -63,8 +63,8 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   //
   // http://code.google.com/apis/accounts/docs/OAuth_ref.html
   NSURL *requestURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthGetRequestToken"];
-  NSURL *authorizeURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthAuthorizeToken"];
   NSURL *accessURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthGetAccessToken"];
+  NSURL *authorizeURL = [NSURL URLWithString:@"https://www.google.com/accounts/OAuthAuthorizeToken"];
 
   GDataOAuthAuthentication *auth = [GDataOAuthAuthentication authForInstalledApp];
   [auth setScope:scope];
@@ -80,10 +80,6 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // we'll use a non-existent callback address, and close the window
   // immediately when it's requested
   [auth setCallback:@"http://www.google.com/OAuthCallback"];
-
-  // normally, for Google authentication, we want to automatically fetch
-  // user info
-  shouldFetchGoogleUserInfo_ = YES;
 
   return [self initWithAuthentication:auth
                       requestTokenURL:requestURL
@@ -119,6 +115,11 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
     delegate_ = delegate;
     webRequestSelector_ = webRequestSelector;
     finishedSelector_ = finishedSelector;
+
+    // for Google authentication, we want to automatically fetch user info
+    if ([[authorizeURL host] isEqual:@"www.google.com"]) {
+      shouldFetchGoogleUserInfo_ = YES;
+    }
 
     // default timeout for a lost internet connection while the server
     // UI is displayed is 30 seconds

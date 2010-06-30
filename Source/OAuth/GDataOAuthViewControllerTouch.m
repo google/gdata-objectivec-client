@@ -248,6 +248,7 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
         UIViewAutoresizingFlexibleTopMargin |
         UIViewAutoresizingFlexibleHeight |
         UIViewAutoresizingFlexibleBottomMargin];
+  webFrame.origin = CGPointZero;
   UIWebView *webView = [[[UIWebView alloc] initWithFrame:webFrame] autorelease];
   [webView setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin |
         UIViewAutoresizingFlexibleWidth |
@@ -271,9 +272,11 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   [backButton setTitleColor:normalColor forState:UIControlStateNormal];
   [backButton setTitleColor:dimColor forState:UIControlStateDisabled];
   [backButton oauthCompatibilitySetTitleShadowOffset:CGSizeMake(0, -2)];
-  NSString *backTriangle = [NSString stringWithFormat:@"%C", 0x25C0];
+  NSString *backTriangle = @"<";
   [backButton setTitle:backTriangle forState:UIControlStateNormal];
-  [backButton addTarget:webView action:@selector(goBack) forControlEvents:UIControlEventTouchUpInside];
+  [backButton addTarget:webView
+                 action:@selector(goBack)
+       forControlEvents:UIControlEventTouchUpInside];
   [backButton setEnabled:NO];
   [self setBackButton:backButton];
 
@@ -284,9 +287,11 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   [forwardButton setTitleColor:normalColor forState:UIControlStateNormal];
   [forwardButton setTitleColor:dimColor forState:UIControlStateDisabled];
   [forwardButton oauthCompatibilitySetTitleShadowOffset:CGSizeMake(0, -2)];
-  NSString *forwardTriangle = [NSString stringWithFormat:@"%C", 0x25B6];
+  NSString *forwardTriangle = @">";
   [forwardButton setTitle:forwardTriangle forState:UIControlStateNormal];
-  [forwardButton addTarget:webView action:@selector(goForward) forControlEvents:UIControlEventTouchUpInside];
+  [forwardButton addTarget:webView
+                    action:@selector(goForward)
+          forControlEvents:UIControlEventTouchUpInside];
   [forwardButton setEnabled:NO];
   [self setForwardButton:forwardButton];
 
@@ -297,8 +302,10 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
   [navButtonsView addSubview:forwardButton];
   [self setNavButtonsView:navButtonsView];
 
-  UIBarButtonItem *rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:nil] autorelease];
+  UIBarButtonItem *rightBarButtonItem =
+    [[[UIBarButtonItem alloc] initWithCustomView:navButtonsView] autorelease];
   [self setRightBarButtonItem:rightBarButtonItem];
+  [[self navigationItem] setRightBarButtonItem:rightBarButtonItem];
 #endif
 }
 

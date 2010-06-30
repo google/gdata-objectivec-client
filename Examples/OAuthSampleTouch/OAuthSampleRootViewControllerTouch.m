@@ -213,8 +213,8 @@ static NSString *const kTwitterServiceName = @"Twitter";
   [self signOut];
 
   NSURL *requestURL = [NSURL URLWithString:@"http://twitter.com/oauth/request_token"];
-  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
   NSURL *accessURL = [NSURL URLWithString:@"http://twitter.com/oauth/access_token"];
+  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
   NSString *scope = @"http://api.twitter.com/";
 
   GDataOAuthAuthentication *auth = [self authForTwitter];
