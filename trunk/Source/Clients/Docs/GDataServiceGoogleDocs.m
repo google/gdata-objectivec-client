@@ -37,7 +37,7 @@
                            resourceID:nil
                              feedType:nil
                            revisionID:nil
-                             useHTTPS:shouldUseHTTPS];
+                             useHTTPS:YES];
   return url;
 }
 
@@ -49,7 +49,7 @@
                            resourceID:resourceID
                              feedType:kGDataGoogleDocsFeedTypeFolderContents
                            revisionID:nil
-                             useHTTPS:shouldUseHTTPS];
+                             useHTTPS:YES];
   return url;
 }
 
@@ -60,12 +60,9 @@
                    feedType:(NSString *)feedType
                  revisionID:(NSString *)revisionID
                    useHTTPS:(BOOL)shouldUseHTTPS {
-  // get the root URL, and fix the scheme
+  // the Docs API server always redirects to https, so we ignore the
+  // https argument
   NSString *rootURLStr = [self serviceRootURLString];
-  if (!shouldUseHTTPS) {
-    rootURLStr = [NSString stringWithFormat:@"http:%@",
-                  [rootURLStr substringFromIndex:6]];
-  }
 
   if (projection == nil) {
     projection = @"full";
