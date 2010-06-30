@@ -195,8 +195,8 @@ static NSString *const kTwitterServiceName = @"Twitter";
   [self signOut];
 
   NSURL *requestURL = [NSURL URLWithString:@"http://twitter.com/oauth/request_token"];
-  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
   NSURL *accessURL = [NSURL URLWithString:@"http://twitter.com/oauth/access_token"];
+  NSURL *authorizeURL = [NSURL URLWithString:@"http://twitter.com/oauth/authorize"];
   NSString *scope = @"http://api.twitter.com/";
 
   GDataOAuthAuthentication *auth = [self authForTwitter];
@@ -349,8 +349,8 @@ static NSString *const kTwitterServiceName = @"Twitter";
       email = [email stringByAppendingString:@" (unverified)"];
     }
 
-    [mTokenField setStringValue:(token ? token : @"")];
-    [mUsernameField setStringValue:(email ? email : @"")];
+    [mTokenField setStringValue:(token != nil ? token : @"")];
+    [mUsernameField setStringValue:(email != nil ? email : @"")];
     [mSignInOutButton setTitle:@"Sign Out"];
   } else {
     // signed out
