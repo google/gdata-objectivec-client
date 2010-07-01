@@ -56,21 +56,16 @@ _EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"
 // utilities for making feed URLs
 //
 
-// Note: the https argument is ignored, as the Docs API server always redirects
-// requests to https
++ (NSURL *)docsFeedURL;
 
-+ (NSURL *)docsFeedURLUsingHTTPS:(BOOL)shouldUseHTTPS;
-
-+ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID
-                                   useHTTPS:(BOOL)shouldUseHTTPS;
++ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID;
 
 + (NSURL *)docsURLForUserID:(NSString *)userID
                  visibility:(NSString *)visibility
                  projection:(NSString *)projection
                  resourceID:(NSString *)resourceID
                    feedType:(NSString *)feedType
-                 revisionID:(NSString *)revisionID
-                   useHTTPS:(BOOL)shouldUseHTTPS;
+                 revisionID:(NSString *)revisionID;
 
 + (NSURL *)docsUploadURL;
 

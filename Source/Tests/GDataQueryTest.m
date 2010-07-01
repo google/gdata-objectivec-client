@@ -388,7 +388,7 @@
 }
 
 - (void)testDocsQuery {
-  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
+  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
   GDataQueryDocs *query1 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
 
   [query1 setTitleQuery:@"King Of Oceania"];

@@ -30,26 +30,23 @@
 
 @implementation GDataServiceGoogleDocs
 
-+ (NSURL *)docsFeedURLUsingHTTPS:(BOOL)shouldUseHTTPS {
++ (NSURL *)docsFeedURL {
   NSURL *url = [self docsURLForUserID:kGDataServiceDefaultUser
                            visibility:kGDataGoogleDocsVisibilityPrivate
                            projection:kGDataGoogleDocsProjectionFull
                            resourceID:nil
                              feedType:nil
-                           revisionID:nil
-                             useHTTPS:YES];
+                           revisionID:nil];
   return url;
 }
 
-+ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID
-                                   useHTTPS:(BOOL)shouldUseHTTPS {
++ (NSURL *)folderContentsFeedURLForFolderID:(NSString *)resourceID {
   NSURL *url = [self docsURLForUserID:kGDataServiceDefaultUser
                            visibility:kGDataGoogleDocsVisibilityPrivate
                            projection:kGDataGoogleDocsProjectionFull
                            resourceID:resourceID
                              feedType:kGDataGoogleDocsFeedTypeFolderContents
-                           revisionID:nil
-                             useHTTPS:YES];
+                           revisionID:nil];
   return url;
 }
 
@@ -58,10 +55,7 @@
                  projection:(NSString *)projection
                  resourceID:(NSString *)resourceID
                    feedType:(NSString *)feedType
-                 revisionID:(NSString *)revisionID
-                   useHTTPS:(BOOL)shouldUseHTTPS {
-  // the Docs API server always redirects to https, so we ignore the
-  // https argument
+                 revisionID:(NSString *)revisionID {
   NSString *rootURLStr = [self serviceRootURLString];
 
   if (projection == nil) {
