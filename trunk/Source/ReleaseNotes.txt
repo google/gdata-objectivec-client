@@ -15,8 +15,14 @@ Changes
 
 - Removed unused class GDataContactWebsite
 
+- Docs API no longer makes https optional
+
 - YouTube ratings are now yt:rating elements for like/dislike counts, not
   gd:rating elements
+
+- YouTube sample app has relaxed metadata requirements for uploading
+
+- YouTube API no longer uses client IDs
 
 Bugs Fixed
 

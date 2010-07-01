@@ -109,23 +109,20 @@
   return [NSURL URLWithString:urlString];
 }
 
-+ (NSURL *)youTubeUploadURLForUserID:(NSString *)userID
-                            clientID:(NSString *)clientID {
++ (NSURL *)youTubeUploadURLForUserID:(NSString *)userID {
   // Make a URL like
-  //   http://uploads.gdata.youtube.com/feeds/api/users/username/uploads?
-  //       client=clientID
+  //   http://uploads.gdata.youtube.com/feeds/api/users/username/uploads
   //
   // userID may be "default" to indicate the currently authenticated user
 
   NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
-  NSString *encodedClientID = [GDataUtilities stringByURLEncodingString:clientID];
 
   NSString *root = [self serviceUploadRootURLString];
 
-  NSString *template = @"%@api/users/%@/uploads?client=%@";
+  NSString *template = @"%@api/users/%@/uploads";
 
-  NSString *urlString = [NSString stringWithFormat:template, root,
-                         encodedUserID, encodedClientID];
+  NSString *urlString = [NSString stringWithFormat:template,
+                         root, encodedUserID];
 
   return [NSURL URLWithString:urlString];
 }

@@ -83,8 +83,7 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 + (NSURL *)youTubeURLForUserID:(NSString *)userID
                     userFeedID:(NSString *)feedID;
 
-+ (NSURL *)youTubeUploadURLForUserID:(NSString *)userID
-                            clientID:(NSString *)clientID;
++ (NSURL *)youTubeUploadURLForUserID:(NSString *)userID;
 
 + (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID;
 
