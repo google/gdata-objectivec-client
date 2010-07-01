@@ -39,7 +39,6 @@
   IBOutlet NSTextField *mFilePathField;
  
   IBOutlet NSTextField *mDeveloperKeyField;
-  IBOutlet NSTextField *mClientIDField;
   IBOutlet NSTextField *mTitleField;
   IBOutlet NSTextField *mDescriptionField;
   IBOutlet NSTextField *mKeywordsField;

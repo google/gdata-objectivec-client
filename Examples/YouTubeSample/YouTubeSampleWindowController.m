@@ -214,12 +214,11 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   BOOL hasUsername = [[mUsernameField stringValue] length] > 0;
   BOOL hasPassword = [[mPasswordField stringValue] length] > 0;
   BOOL hasDevKey = [[mDeveloperKeyField stringValue] length] > 0;
-  BOOL hasClientID = [[mClientIDField stringValue] length] > 0;
   BOOL hasTitle = [[mTitleField stringValue] length] > 0;
   BOOL hasPath = [[mFilePathField stringValue] length] > 0;
   
   BOOL canUpload = hasUsername && hasPassword && hasDevKey
-    && hasClientID && hasTitle && hasPath;
+    && hasTitle && hasPath;
   
   BOOL isUploading = (mUploadTicket != nil);
 
@@ -418,10 +417,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   [service setYouTubeDeveloperKey:devKey];
   
   NSString *username = [mUsernameField stringValue];
-  NSString *clientID = [mClientIDField stringValue];
   
-  NSURL *url = [GDataServiceGoogleYouTube youTubeUploadURLForUserID:username
-                                                           clientID:clientID];
+  NSURL *url = [GDataServiceGoogleYouTube youTubeUploadURLForUserID:username];
   
   // load the file data
   NSString *path = [mFilePathField stringValue];
