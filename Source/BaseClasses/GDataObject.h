@@ -132,11 +132,11 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 
 #define GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(versionString) \
   GDATA_DEBUG_ASSERT([self isServiceVersionAtLeast:versionString], \
-    @"%s requires newer version", _cmd)
+    @"%@ requires newer version", NSStringFromSelector(_cmd))
 
 #define GDATA_DEBUG_ASSERT_MAX_SERVICE_VERSION(versionString) \
   GDATA_DEBUG_ASSERT([self isServiceVersionAtMost:versionString], \
-    @"%s deprecated under v%@", _cmd, [self serviceVersion])
+    @"%@ deprecated under v%@", NSStringFromSelector(_cmd), [self serviceVersion])
 
 #define GDATA_DEBUG_ASSERT_MIN_SERVICE_V2() \
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(@"2.0")
