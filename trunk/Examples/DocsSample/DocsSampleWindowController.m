@@ -992,7 +992,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // at a time, instead of calling fetchDocsFeedWithURL, we can create a
   // GDataQueryDocs object, as shown here.
 
-  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURLUsingHTTPS:YES];
+  NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
 
   GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query setMaxResults:1000];
