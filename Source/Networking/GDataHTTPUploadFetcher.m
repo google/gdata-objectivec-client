@@ -57,6 +57,17 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                      target:(id)target
                   willRetry:(BOOL)willRetry
                       error:(NSError *)error;
+
+- (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher
+    finishedWithData:(NSData *)data;
+- (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher
+    failedWithStatus:(NSInteger)status
+                data:(NSData *)data;
+- (void)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher
+failedWithNetworkError:(NSError *)error;
+-(BOOL)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher
+          willRetry:(BOOL)willRetry
+           forError:(NSError *)error;
 @end
 
 @implementation GDataHTTPUploadFetcher

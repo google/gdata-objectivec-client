@@ -160,6 +160,15 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 - (void)retryFetch;
 @end
 
+
+// Private protocol for logging methods to silence -Wundeclared-selector when
+// building without logging code
+@protocol GDataHTTPFetcherLoggingPrivate
+- (void)setupStreamLogging;
+- (void)logFetchWithError:(NSError *)error;
+@end
+
+
 @implementation GDataHTTPFetcher
 
 + (GDataHTTPFetcher *)httpFetcherWithRequest:(NSURLRequest *)request {

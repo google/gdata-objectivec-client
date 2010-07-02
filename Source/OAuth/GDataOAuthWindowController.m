@@ -30,6 +30,9 @@
 - (void)destroyWindow;
 - (void)handlePrematureWindowClose;
 - (BOOL)shouldUseKeychain;
+- (void)signIn:(GDataOAuthSignIn *)signIn displayRequest:(NSURLRequest *)request;
+- (void)signIn:(GDataOAuthSignIn *)signIn finishedWithAuth:(GDataOAuthAuthentication *)auth error:(NSError *)error;
+- (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
 @end
 
 const char *kKeychainAccountName = "OAuth";
@@ -103,7 +106,6 @@ const char *kKeychainAccountName = "OAuth";
 
     // the display name defaults to the bundle's name, falling back on the
     // executable name
-    NSBundle *bundle = [NSBundle mainBundle];
     NSString *displayName = [bundle objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     if ([displayName length] == 0) {
       displayName = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
@@ -277,7 +279,6 @@ const char *kKeychainAccountName = "OAuth";
     if (error == nil) {
       BOOL shouldUseKeychain = [self shouldUseKeychain];
       if (shouldUseKeychain) {
-        GDataOAuthAuthentication *auth = [signIn_ authentication];
         BOOL canAuthorize = [auth canAuthorize];
         BOOL isKeychainChecked = ([keychainCheckbox_ state] == NSOnState);
 

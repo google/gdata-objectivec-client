@@ -41,6 +41,11 @@
 + (BOOL)removeItemAtPath:(NSString *)path;
 + (BOOL)createSymbolicLinkAtPath:(NSString *)newPath
              withDestinationPath:(NSString *)targetPath;
+
+// private methods of this category
+- (void)inputStream:(GDataProgressMonitorInputStream *)stream
+     readIntoBuffer:(void *)buffer
+             length:(unsigned long long)length;
 @end
 
 @implementation GDataHTTPFetcher (GDataHTTPFetcherLogging)

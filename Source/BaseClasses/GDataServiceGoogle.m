@@ -49,6 +49,23 @@ enum {
 };
 
 
+@protocol GDataAuthorizer
+- (BOOL)authorizeRequest:(NSMutableURLRequest *)request;
+@end
+
+@interface GDataServiceBase (ProtectedMethods)
+- (GDataServiceTicketBase *)fetchObjectWithURL:(NSURL *)feedURL
+                                   objectClass:(Class)objectClass
+                                  objectToPost:(GDataObject *)objectToPost
+                                          ETag:(NSString *)etag
+                                    httpMethod:(NSString *)httpMethod
+                                      delegate:(id)delegate
+                             didFinishSelector:(SEL)finishedSelector
+                             completionHandler:(id)completionHandler
+                          retryInvocationValue:(NSValue *)retryInvocationValue
+                                        ticket:(GDataServiceTicketBase *)ticket;
+@end
+
 @interface GDataServiceGoogle (PrivateMethods)
 - (GDataHTTPFetcher *)authenticationFetcher;
 - (NSError *)cannotCreateAuthFetcherError;
@@ -58,7 +75,12 @@ enum {
 - (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 - (NSError *)errorForAuthFetcherStatus:(NSInteger)status data:(NSData *)data;
 
+- (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)authFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+- (BOOL)authFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error;
+
 - (void)standaloneAuthFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+- (void)standaloneAuthFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
 
 - (void)addNamespacesIfNoneToObject:(GDataObject *)obj;
 @end

@@ -33,12 +33,22 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 - (GDataHTTPFetcher *)pendingFetcher;
 - (void)setPendingFetcher:(GDataHTTPFetcher *)obj fetchType:(NSString *)fetchType;
 
+- (void)requestFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)requestFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+
+- (void)accessFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)accessFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+
+- (void)infoFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)infoFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+
 - (void)closeTheWindow;
 
 - (void)startReachabilityCheck;
 - (void)stopReachabilityCheck;
 - (void)reachabilityTarget:(SCNetworkReachabilityRef)reachabilityRef
               changedFlags:(SCNetworkConnectionFlags)flags;
+- (void)reachabilityTimerFired:(NSTimer *)timer;
 @end
 
 @implementation GDataOAuthSignIn
