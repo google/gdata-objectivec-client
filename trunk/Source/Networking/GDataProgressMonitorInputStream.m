@@ -15,6 +15,9 @@
 
 #import "GDataProgressMonitorInputStream.h"
 
+@interface GDataProgressMonitorInputStream (PrivateMethods)
+- (void)invokeReadSelectorWithBuffer:(NSData *)data;
+@end
 
 @implementation GDataProgressMonitorInputStream
 

@@ -28,8 +28,12 @@ static NSString *const kTwitterAppServiceName = @"OAuth Sample: Twitter";
 static NSString *const kTwitterServiceName = @"Twitter";
 
 @interface OAuthSampleRootViewControllerTouch()
+- (void)viewController:(GDataOAuthViewControllerTouch *)viewController
+      finishedWithAuth:(GDataOAuthAuthentication *)auth
+                 error:(NSError *)error;  
 - (void)incrementNetworkActivity:(NSNotification *)notify;
 - (void)decrementNetworkActivity:(NSNotification *)notify;
+- (void)signInNetworkLostOrFound:(NSNotification *)notify;
 - (GDataOAuthAuthentication *)authForTwitter;
 - (void)doAnAuthenticatedAPIFetch;
 - (BOOL)shouldSaveInKeychain;

@@ -94,9 +94,11 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 - (BOOL)isPaused;
 @end
 
+@interface GDataEntryBase (PrivateMethods)
+- (NSDictionary *)contentHeaders;
+@end
 
 @interface GDataServiceBase (PrivateMethods)
-
 - (BOOL)fetchNextFeedWithURL:(NSURL *)nextFeedURL
                     delegate:(id)delegate
          didFinishedSelector:(SEL)finishedSelector
@@ -105,6 +107,27 @@ static void XorPlainMutableData(NSMutableData *mutable) {
 
 - (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
                                    contentType:(NSString *)contentType;
+
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+     finishedWithData:(NSData *)data;
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+     failedWithStatus:(NSInteger)status data:(NSData *)data;
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+failedWithNetworkError:(NSError *)error;
+- (BOOL)objectFetcher:(GDataHTTPFetcher *)fetcher
+            willRetry:(BOOL)willRetry
+             forError:(NSError *)error;
+- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+         didSendBytes:(NSInteger)bytesSent
+       totalBytesSent:(NSInteger)totalBytesSent
+totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
+
+- (void)parseObjectFromDataOfFetcher:(GDataHTTPFetcher *)fetcher;
+- (void)handleParsedObjectForFetcher:(GDataHTTPFetcher *)fetcher;
+
+- (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
+                 hasDeliveredBytes:(unsigned long long)numReadSoFar
+                      ofTotalBytes:(unsigned long long)total;
 @end
 
 @implementation GDataServiceBase

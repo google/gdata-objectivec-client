@@ -75,12 +75,13 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
 
 @property (nonatomic, copy) NSURLRequest *request;
 
+- (void)signIn:(GDataOAuthSignIn *)signIn displayRequest:(NSURLRequest *)request;
+- (void)signIn:(GDataOAuthSignIn *)signIn
+finishedWithAuth:(GDataOAuthAuthentication *)auth
+         error:(NSError *)error;  
 - (BOOL)isNavigationBarTranslucent;
-
 - (void)moveWebViewFromUnderNavigationBar;
-
 - (void)popView;
-
 @end
 
 @implementation GDataOAuthViewControllerTouch
@@ -440,7 +441,6 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
     if (error == nil) {
       BOOL shouldUseKeychain = [self shouldUseKeychain];
       if (shouldUseKeychain) {
-        GDataOAuthAuthentication *auth = [signIn_ authentication];
         NSString *appServiceName = [self keychainApplicationServiceName];
         if ([auth canAuthorize]) {
           // save the auth params in the keychain
@@ -678,8 +678,8 @@ static GDataOAuthKeychain* sDefaultKeychain = nil;
     [keychainQuery setObject:(id)kCFBooleanTrue forKey:(id)kSecReturnData];
     [keychainQuery setObject:(id)kSecMatchLimitOne forKey:(id)kSecMatchLimit];
 
-    OSStatus status = SecItemCopyMatching((CFDictionaryRef)keychainQuery,
-                                       (CFTypeRef *)&passwordData);
+    status = SecItemCopyMatching((CFDictionaryRef)keychainQuery,
+                                 (CFTypeRef *)&passwordData);
     if (status == noErr && 0 < [(NSData *)passwordData length]) {
       result = [[[NSString alloc] initWithData:(NSData *)passwordData
                                       encoding:NSUTF8StringEncoding] autorelease];

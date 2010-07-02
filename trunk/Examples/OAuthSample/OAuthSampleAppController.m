@@ -23,14 +23,16 @@
 - (BOOL)isSignedIn;
 
 - (void)doAnAuthenticatedAPIFetch;
-
 - (GDataOAuthAuthentication *)authForTwitter;
 
+- (void)windowController:(GDataOAuthWindowController *)windowController
+        finishedWithAuth:(GDataOAuthAuthentication *)auth
+                   error:(NSError *)error;
 - (void)updateUI;
-
 - (void)displayErrorThatTheCodeNeedsATwitterConsumerKeyAndSecret;
-
 - (void)setAuthentication:(GDataOAuthAuthentication *)auth;
+- (void)signInFetchStateChanged:(NSNotification *)note;
+- (void)signInNetworkLost:(NSNotification *)note;
 @end
 
 
