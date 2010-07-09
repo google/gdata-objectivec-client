@@ -760,10 +760,10 @@ forCategoryWithScheme:scheme
   return [self entryAtIndex:0];
 }
 
-- (id)entryAtIndex:(NSUInteger)index {
+- (id)entryAtIndex:(NSUInteger)idx {
   NSArray *entries = [self entries];
-  if ([entries count] > index) {
-    return [entries objectAtIndex:index];
+  if ([entries count] > idx) {
+    return [entries objectAtIndex:idx];
   }
   return nil;
 }
