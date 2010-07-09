@@ -57,9 +57,9 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceTranslationPrefix; }
 + (NSString *)extensionElementLocalName { return @"glossary"; }
 
-+ (GDataTranslationGlossary *)glossaryWithLink:(GDataLink *)link {
++ (GDataTranslationGlossary *)glossaryWithLink:(GDataLink *)translationLink {
   GDataTranslationGlossary *obj = [[[self alloc] init] autorelease];
-  [obj addLink:link];
+  [obj addLink:translationLink];
   return obj;
 }
 @end
@@ -69,9 +69,9 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceTranslationPrefix; }
 + (NSString *)extensionElementLocalName { return @"translationMemory"; }
 
-+ (GDataTranslationMemory *)memoryWithLink:(GDataLink *)link {
++ (GDataTranslationMemory *)memoryWithLink:(GDataLink *)translationLink {
   GDataTranslationMemory *obj = [[[self alloc] init] autorelease];
-  [obj addLink:link];
+  [obj addLink:translationLink];
   return obj;
 }
 @end

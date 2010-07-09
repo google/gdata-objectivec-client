@@ -466,8 +466,8 @@
 }
 
 - (GDataLink *)webContentLink {
-  GDataLink *link = [self linkWithRelAttributeValue:kGDataLinkRelWebContent];
-  return link;
+  GDataLink *obj = [self linkWithRelAttributeValue:kGDataLinkRelWebContent];
+  return obj;
 }
 
 - (GDataWebContent *)webContent {

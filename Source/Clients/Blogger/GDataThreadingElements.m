@@ -145,8 +145,8 @@ static NSString* const kTypeAttr = @"type";
                                               childClass:[GDataThreadingUpdated class]];
 }
 
-+ (NSNumber *)threadingCountForLink:(GDataLink *)link {
-  NSString *str = [link attributeValueForExtensionClass:[GDataThreadingCount class]];
++ (NSNumber *)threadingCountForLink:(GDataLink *)threadedLink {
+  NSString *str = [threadedLink attributeValueForExtensionClass:[GDataThreadingCount class]];
   if ([str length] > 0) {
     NSNumber *number = [NSNumber numberWithInt:[str intValue]];
     return number;
@@ -155,13 +155,13 @@ static NSString* const kTypeAttr = @"type";
 }
 
 + (void)setThreadingCount:(NSNumber *)number
-                  forLink:(GDataLink *)link {
-  [link setAttributeValue:[number stringValue]
-        forExtensionClass:[GDataThreadingCount class]];
+                  forLink:(GDataLink *)threadedLink {
+  [threadedLink setAttributeValue:[number stringValue]
+                forExtensionClass:[GDataThreadingCount class]];
 }
 
-+ (GDataDateTime *)threadingUpdatedDateForLink:(GDataLink *)link {
-  NSString *str = [link attributeValueForExtensionClass:[GDataThreadingUpdated class]];
++ (GDataDateTime *)threadingUpdatedDateForLink:(GDataLink *)threadedLink {
+  NSString *str = [threadedLink attributeValueForExtensionClass:[GDataThreadingUpdated class]];
   if ([str length] > 0) {
     GDataDateTime *dateTime = [GDataDateTime dateTimeWithRFC3339String:str];
     return dateTime;
@@ -170,9 +170,9 @@ static NSString* const kTypeAttr = @"type";
 }
 
 + (void)setThreadingUpdatedDate:(GDataDateTime *)dateTime
-                        forLink:(GDataLink *)link {
-  [link setAttributeValue:[dateTime RFC3339String]
-        forExtensionClass:[GDataThreadingUpdated class]];
+                        forLink:(GDataLink *)threadedLink {
+  [threadedLink setAttributeValue:[dateTime RFC3339String]
+                forExtensionClass:[GDataThreadingUpdated class]];
 }
 
 @end

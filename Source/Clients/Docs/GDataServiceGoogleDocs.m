@@ -113,19 +113,19 @@
 - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                          delegate:(id)delegate
                                 didFinishSelector:(SEL)finishedSelector {
-  GDataLink *link;
+  GDataLink *updateLink;
 
   if (([entryToUpdate uploadData] == nil
          && [entryToUpdate uploadFileHandle] == nil)
       || [self serviceUploadChunkSize] == 0) {
     // not uploading document data, or else doing a multipart MIME upload
-    link = [entryToUpdate editLink];
+    updateLink = [entryToUpdate editLink];
   } else {
     // doing a chunked upload
-    link = [entryToUpdate uploadEditLink];
+    updateLink = [entryToUpdate uploadEditLink];
   }
 
-  NSURL *editURL = [link URL];
+  NSURL *editURL = [updateLink URL];
 
   GDataServiceTicket *ticket = [self fetchEntryByUpdatingEntry:entryToUpdate
                                                    forEntryURL:editURL
