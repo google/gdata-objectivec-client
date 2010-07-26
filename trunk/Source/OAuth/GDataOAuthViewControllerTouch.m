@@ -241,6 +241,10 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
 - (void)constructView {
 // If the Interface Builder .xib is compiled in to the app, it overrides this code.
 #if GDATA_CONSTRUCT_OAUTH_VIEWS_IN_SOURCE_CODE
+  static const int kButtonFontHeight = 26;
+  static const int kButtonHeight = 30;
+  static const int kButtonXMargin = 6;
+  static const int kButtonWidth = 30;
   CGRect webFrame = [[UIScreen mainScreen] applicationFrame];
   UIView *view = [[[UIView  alloc] initWithFrame:webFrame] autorelease];
   [view setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin |
@@ -265,15 +269,15 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   UIColor *normalColor = [UIColor colorWithWhite:1.0 alpha:1.0];
   UIColor *dimColor = [UIColor colorWithRed:152./255. green:175./255. blue:243./255. alpha:0.6];
 
-  UIFont *buttonFont = [UIFont boldSystemFontOfSize:40];
-  CGRect backButtonFrame = CGRectMake(0, 0, 26, 40);
+  UIFont *buttonFont = [UIFont boldSystemFontOfSize:kButtonFontHeight];
+  CGRect backButtonFrame = CGRectMake(0, 0, kButtonWidth, kButtonHeight);
   UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [backButton setFrame:backButtonFrame];
   [backButton oauthCompatibilitySetFont:buttonFont];
   [backButton setTitleColor:normalColor forState:UIControlStateNormal];
   [backButton setTitleColor:dimColor forState:UIControlStateDisabled];
   [backButton oauthCompatibilitySetTitleShadowOffset:CGSizeMake(0, -2)];
-  NSString *backTriangle = @"<";
+  NSString *backTriangle = [NSString stringWithFormat:@"%C", 0x25C0];
   [backButton setTitle:backTriangle forState:UIControlStateNormal];
   [backButton addTarget:webView
                  action:@selector(goBack)
@@ -281,14 +285,15 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   [backButton setEnabled:NO];
   [self setBackButton:backButton];
 
-  CGRect forwardButtonFrame = CGRectMake(28, 0, 26, 40);
+  CGRect forwardButtonFrame =
+    CGRectMake(kButtonWidth+kButtonXMargin, 0, kButtonWidth, kButtonHeight);
   UIButton *forwardButton = [UIButton buttonWithType:UIButtonTypeCustom];
   [forwardButton setFrame:forwardButtonFrame];
   [forwardButton oauthCompatibilitySetFont:buttonFont];
   [forwardButton setTitleColor:normalColor forState:UIControlStateNormal];
   [forwardButton setTitleColor:dimColor forState:UIControlStateDisabled];
   [forwardButton oauthCompatibilitySetTitleShadowOffset:CGSizeMake(0, -2)];
-  NSString *forwardTriangle = @">";
+  NSString *forwardTriangle = [NSString stringWithFormat:@"%C", 0x25B6];
   [forwardButton setTitle:forwardTriangle forState:UIControlStateNormal];
   [forwardButton addTarget:webView
                     action:@selector(goForward)
@@ -296,9 +301,10 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   [forwardButton setEnabled:NO];
   [self setForwardButton:forwardButton];
 
-  CGRect navFrame = CGRectMake(0, 0, 58, 40);
+  CGRect navFrame =
+    CGRectMake(0, 0, kButtonXMargin + 2*kButtonWidth, kButtonHeight);
   UIView *navButtonsView = [[[UIView alloc] initWithFrame:navFrame] autorelease];
-  [navButtonsView setBackgroundColor:[UIColor colorWithWhite:0 alpha:0]];
+  [navButtonsView setBackgroundColor:[UIColor clearColor]];
   [navButtonsView addSubview:backButton];
   [navButtonsView addSubview:forwardButton];
   [self setNavButtonsView:navButtonsView];
