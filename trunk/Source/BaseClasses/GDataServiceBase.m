@@ -868,34 +868,36 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
   SEL parseDoneSel = @selector(handleParsedObjectForFetcher:);
 
+  if (operationQueue_ != nil) {
 #if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-  NSThread *callbackThread = [[[fetcher propertyForKey:kFetcherCallbackThreadKey] retain] autorelease];
+    // call back on the caller's original thread
+    NSThread *callbackThread = [[[fetcher propertyForKey:kFetcherCallbackThreadKey] retain] autorelease];
 
-  // the callback thread is retaining the fetcher, so the fetcher shouldn't keep
-  // retaining the callback thread
-  [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
+    // the callback thread is retaining the fetcher, so the fetcher shouldn't
+    // keep retaining the callback thread
+    [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
 
-  NSArray *runLoopModes = [fetcher propertyForKey:kFetcherCallbackRunLoopModesKey];
-  if (runLoopModes) {
-    [self performSelector:parseDoneSel
-                 onThread:callbackThread
-               withObject:fetcher
-            waitUntilDone:NO
-                    modes:runLoopModes];
-  } else {
-    // defaults to common modes
-    [self performSelector:parseDoneSel
-                 onThread:callbackThread
-               withObject:fetcher
-            waitUntilDone:NO];
-  }
-  // the fetcher now belongs to the callback thread
-
-#else
-  // in 10.4, there's no performSelector:onThread:
-  [self performSelector:parseDoneSel withObject:fetcher];
-  [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
+    NSArray *runLoopModes = [fetcher propertyForKey:kFetcherCallbackRunLoopModesKey];
+    if (runLoopModes) {
+      [self performSelector:parseDoneSel
+                   onThread:callbackThread
+                 withObject:fetcher
+              waitUntilDone:NO
+                      modes:runLoopModes];
+    } else {
+      // defaults to common modes
+      [self performSelector:parseDoneSel
+                   onThread:callbackThread
+                 withObject:fetcher
+              waitUntilDone:NO];
+    }
+    // the fetcher now belongs to the callback thread
 #endif
+  } else {
+    // in 10.4, there's no performSelector:onThread:
+    [self performSelector:parseDoneSel withObject:fetcher];
+    [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
+  }
 
   // We drain here to keep the clang static analyzer quiet.
   [pool drain];
