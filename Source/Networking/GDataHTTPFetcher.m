@@ -1071,6 +1071,15 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   [self primeRetryTimerWithNewTimeInterval:newInterval];
 }
 
+- (void)retryTimerFired:(NSTimer *)timer {
+
+  [self destroyRetryTimer];
+
+  retryCount_++;
+
+  [self retryFetch];
+}
+
 - (void)primeRetryTimerWithNewTimeInterval:(NSTimeInterval)secs {
 
   [self destroyRetryTimer];
@@ -1087,15 +1096,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
   [defaultNC postNotificationName:kGDataHTTPFetcherRetryDelayStartedNotification
                            object:self];
-}
-
-- (void)retryTimerFired:(NSTimer *)timer {
-
-  [self destroyRetryTimer];
-
-  retryCount_++;
-
-  [self retryFetch];
 }
 
 - (void)destroyRetryTimer {
