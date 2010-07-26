@@ -521,7 +521,7 @@ totalBytesExpectedToSend:0];
         && [scanner scanLongLong:&rangeStart]
         && [scanner scanString:@"-" intoString:nil]
         && [scanner scanLongLong:&rangeEnd]) {
-      newOffset = rangeEnd + 1;
+      newOffset = (NSUInteger)rangeEnd + 1;
     }
   }
 
