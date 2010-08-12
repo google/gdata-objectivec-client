@@ -251,6 +251,11 @@ static NSString *const kTwitterServiceName = @"Twitter";
                 delegate:self
         finishedSelector:@selector(viewController:finishedWithAuth:error:)] autorelease];
 
+  // We can set a URL for deleting the cookies after sign-in so the next time
+  // the user signs in, the browser does not assume the user is already signed
+  // in
+  [viewController setBrowserCookiesURL:[NSURL URLWithString:@"http://api.twitter.com/"]];
+
   // You can set the title of the navigationItem of the controller here, if you want.
 
   [[self navigationController] pushViewController:viewController animated:YES];

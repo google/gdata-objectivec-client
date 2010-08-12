@@ -82,6 +82,7 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
 - (BOOL)isNavigationBarTranslucent;
 - (void)moveWebViewFromUnderNavigationBar;
 - (void)popView;
+- (void)clearBrowserCookies;
 @end
 
 @implementation GDataOAuthViewControllerTouch
@@ -93,6 +94,7 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
 @synthesize rightBarButtonItem = rightBarButtonItem_;
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
 @synthesize initialHTMLString = initialHTMLString_;
+@synthesize browserCookiesURL = browserCookiesURL_;
 @synthesize userData = userData_;
 @synthesize webView = webView_;
 
@@ -160,6 +162,17 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
       }
     }
     [self setDisplayName:displayName];
+
+    // if the user is signing in to a Google service, we'll delete the
+    // Google authentication browser cookies upon completion
+    //
+    // for other service domains, or to disable clearing of the cookies,
+    // set the browserCookiesURL property explicitly
+    NSString *authorizationHost = [[signIn_ authorizeTokenURL] host];
+    if ([authorizationHost isEqual:@"www.google.com"]) {
+      NSURL *cookiesURL = [NSURL URLWithString:@"https://www.google.com/accounts"];
+      [self setBrowserCookiesURL:cookiesURL];
+    }
 
     // The UINavcontroller releases us before signIn call us back.
     // Let signIn_ retain us, so we'll live until signIn calls us.
@@ -381,6 +394,24 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   [GDataOAuthSignIn revokeTokenForGoogleAuthentication:auth];
 }
 
+#pragma mark Browser Cookies
+
+- (void)clearBrowserCookies {
+  // if browserCookiesURL is non-nil, then get cookies for that URL
+  // and delete them from the common application cookie storage
+  NSURL *cookiesURL = [self browserCookiesURL];
+  if (cookiesURL) {
+    NSHTTPCookieStorage *cookieStorage;
+
+    cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSArray *cookies =  [cookieStorage cookiesForURL:cookiesURL];
+
+    for (NSHTTPCookie *cookie in cookies) {
+      [cookieStorage deleteCookie:cookie];
+    }
+  }
+}
+
 #pragma mark Accessors
 
 - (void)setDisplayName:(NSString *)displayName {
@@ -518,6 +549,11 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
     // for us
     [signIn_ windowWasClosed];
   }
+
+  // prevent the next sign-in from showing in the WebView that the user is
+  // already signed in
+  [self clearBrowserCookies];
+
   [super viewWillDisappear:animated];
 }
 

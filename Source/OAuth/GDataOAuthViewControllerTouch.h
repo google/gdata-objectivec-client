@@ -108,6 +108,10 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
   // of the web view
   NSString *initialHTMLString_;
 
+  // if non-nil, the URL for which cookies will be deleted when the
+  // browser view is dismissed
+  NSURL *browserCookiesURL_;
+
   id userData_;
 
   // We delegate the decision to our owning NavigationController (if any).
@@ -156,6 +160,12 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 // the default timeout for an unreachable network during display of the
 // sign-in page is 10 seconds; set this to 0 to have no timeout
 @property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
+
+// if set, cookies are deleted for this URL when the view is hidden
+//
+// For Google sign-ins, this is set by default to https://google.com/accounts
+// but it may be explicitly set to nil to disable clearing of browser cookies
+@property (nonatomic, retain) NSURL *browserCookiesURL;
 
 @property (nonatomic, retain) id userData;
 

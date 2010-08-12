@@ -70,6 +70,7 @@
 #import <WebKit/WebKit.h>
 
 #import "GDataOAuthAuthentication.h"
+#import "GDataHTTPFetcher.h"
 
 @class GDataOAuthSignIn;
 
@@ -87,6 +88,9 @@
 
   // the page request to load when awakeFromNib occurs
   NSURLRequest *initialRequest_;
+
+  // local storage for WebKit cookies so they're not shared with Safari
+  GDataCookieStorage *cookieStorage_;
 
   // the user we're calling back
   __weak id delegate_;

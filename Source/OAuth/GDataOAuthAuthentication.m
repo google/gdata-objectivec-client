@@ -195,6 +195,9 @@ static NSString *const kUserEmailIsVerifiedKey    = @"isVerified";
   if ([query length] > 0) {
     // the standard test cases insist that + in the query string
     // be encoded as " " - http://wiki.oauth.net/TestCases
+    //
+    // related spec: http://tools.ietf.org/html/rfc5849#section-3.6
+
     query = [query stringByReplacingOccurrencesOfString:@"+"
                                              withString:@" "];
 
