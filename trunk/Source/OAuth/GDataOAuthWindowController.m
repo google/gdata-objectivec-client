@@ -33,6 +33,9 @@
 - (void)signIn:(GDataOAuthSignIn *)signIn displayRequest:(NSURLRequest *)request;
 - (void)signIn:(GDataOAuthSignIn *)signIn finishedWithAuth:(GDataOAuthAuthentication *)auth error:(NSError *)error;
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo;
+
+- (void)handleCookiesForResponse:(NSURLResponse *)response;
+- (NSURLRequest *)addCookiesToRequest:(NSURLRequest *)request;
 @end
 
 const char *kKeychainAccountName = "OAuth";
@@ -117,6 +120,9 @@ const char *kKeychainAccountName = "OAuth";
 
     [self setKeychainApplicationServiceName:keychainAppServiceName];
 
+    // create local, temporary storage for WebKit cookies
+    cookieStorage_ = [[GDataCookieStorage alloc] init];
+
     // to allow the user to autorelease this upon creation, the controller will
     // retain itself until after the controller calls back to the user, or is
     // explicitly cancelled
@@ -131,6 +137,7 @@ const char *kKeychainAccountName = "OAuth";
 - (void)dealloc {
   [signIn_ release];
   [initialRequest_ release];
+  [cookieStorage_ release];
   [sheetModalForWindow_ release];
   [keychainApplicationServiceName_ release];
   [initialHTMLString_ release];
@@ -321,6 +328,11 @@ const char *kKeychainAccountName = "OAuth";
 #pragma mark WebView methods
 
 - (NSURLRequest *)webView:(WebView *)sender resource:(id)identifier willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)redirectResponse fromDataSource:(WebDataSource *)dataSource {
+  // override WebKit's cookie storage with our own to avoid cookie persistence
+  // across sign-ins and interaction with the Safari browser's sign-in state
+  [self handleCookiesForResponse:redirectResponse];
+  request = [self addCookiesToRequest:request];
+
   if (!hasDoneFinalRedirect_) {
     hasDoneFinalRedirect_ = [signIn_ requestRedirectedToRequest:request];
     if (hasDoneFinalRedirect_) {
@@ -331,8 +343,53 @@ const char *kKeychainAccountName = "OAuth";
   return request;
 }
 
+- (void)webView:(WebView *)sender resource:(id)identifier didReceiveResponse:(NSURLResponse *)response fromDataSource:(WebDataSource *)dataSource {
+  // override WebKit's cookie storage with our own
+  [self handleCookiesForResponse:response];
+}
+
 - (void)windowWillClose:(NSNotification *)note {
   [self handlePrematureWindowClose];
+}
+
+#pragma mark Cookie management
+
+// Rather than let the WebView use Safari's default cookie storage, we intercept
+// requests and response to segregate and later discard cookies from signing in.
+//
+// This allows the application to actually sign out by discarding the auth token
+// rather than the user being kept signed in by the cookies.
+
+- (void)handleCookiesForResponse:(NSURLResponse *)response {
+  if ([response respondsToSelector:@selector(allHeaderFields)]) {
+    // grab the cookies from the header as NSHTTPCookies and store them locally
+    NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
+    if (headers) {
+      NSURL *url = [response URL];
+      NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:headers
+                                                                forURL:url];
+      if ([cookies count] > 0) {
+        [cookieStorage_ setCookies:cookies];
+      }
+    }
+  }
+}
+
+- (NSURLRequest *)addCookiesToRequest:(NSURLRequest *)request {
+  // override WebKit's usual automatic storage of cookies
+  NSMutableURLRequest *mutableRequest = [[request mutableCopy] autorelease];
+  [mutableRequest setHTTPShouldHandleCookies:NO];
+
+  // add our locally-stored cookies for this URL, if any
+  NSArray *cookies = [cookieStorage_ cookiesForURL:[request URL]];
+  if ([cookies count] > 0) {
+    NSDictionary *headers = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
+    NSString *cookieHeader = [headers objectForKey:@"Cookie"];
+    if (cookieHeader) {
+      [mutableRequest setValue:cookieHeader forHTTPHeaderField:@"Cookie"];
+    }
+  }
+  return mutableRequest;
 }
 
 #pragma mark Keychain support

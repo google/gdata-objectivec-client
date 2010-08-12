@@ -602,3 +602,35 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 #endif // STRIP_GDATA_FETCH_LOGGING
 
 @end
+
+@interface GDataCookieStorage : NSObject {
+  // The cookie storage object manages an array holding cookies, but the array
+  // is allocated externally (it may be in a fetcher object or the static
+  // fetcher cookie array.)  See the fetcher's setCookieStorageMethod:
+  // for allocation of this object and assignment of its cookies array.
+  NSMutableArray *cookies_;
+}
+
+// add all NSHTTPCookies in the supplied array to the storage array,
+// replacing cookies in the storage array as appropriate
+// Side effect: removes expired cookies from the storage array
+- (void)setCookies:(NSArray *)newCookies;
+
+// retrieve all cookies appropriate for the given URL, considering
+// domain, path, cookie name, expiration, security setting.
+// Side effect: removes expired cookies from the storage array
+- (NSArray *)cookiesForURL:(NSURL *)theURL;
+
+// return a cookie with the same name, domain, and path as the
+// given cookie, or else return nil if none found
+//
+// Both the cookie being tested and all stored cookies should
+// be valid (non-nil name, domains, paths)
+- (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie;
+
+// remove any expired cookies, excluding cookies with nil expirations
+- (void)removeExpiredCookies;
+
+- (void)removeAllCookies;
+
+@end
