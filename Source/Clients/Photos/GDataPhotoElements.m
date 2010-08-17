@@ -264,37 +264,4 @@
 + (NSString *)extensionElementLocalName { return @"truncated"; }
 @end
 
-
-//
-// V1 elements deprecated in V2
-//
-
-// URL-safe album name, like <gphoto:name>mytrip</gphoto:name>  
-@implementation GDataPhotoName
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"name"; }
-@end
-
-// photo position in album, like <gphoto:position>10</gphoto:position> 
-@implementation GDataPhotoPosition
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"position"; }
-@end
-
-// version string, like <gphoto:version>22838</gphoto:version> 
-@implementation GDataPhotoVersion
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"version"; }
-@end
-
-// client application name, like <gphoto:client>Picasa1.2</gphoto:client>
-@implementation GDataPhotoClient
-+ (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
-+ (NSString *)extensionElementLocalName { return @"client"; }
-@end
-
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

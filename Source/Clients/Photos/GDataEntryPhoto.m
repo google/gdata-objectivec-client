@@ -66,10 +66,6 @@
    [GDataPhotoSnippet class], [GDataPhotoSnippetType class],
    [GDataPhotoTruncated class], [GDataPhotoLocation class],
 
-   // V1 elements
-   [GDataPhotoVersion class],
-   [GDataPhotoClient class],
-   [GDataPhotoPosition class],
    nil];
 
   [GDataGeo addGeoExtensionDeclarationsToObject:self

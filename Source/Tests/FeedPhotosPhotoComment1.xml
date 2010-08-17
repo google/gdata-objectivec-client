@@ -21,7 +21,6 @@
     </exif:tags>
     <gphoto:checksum>23512309abbs298</gphoto:checksum>
     <gphoto:id>5067143579329304306</gphoto:id>
-    <gphoto:version>1179786875940336</gphoto:version>
     <gphoto:albumid>5067143575034336993</gphoto:albumid>
     <gphoto:commentCount>1</gphoto:commentCount>
     <gphoto:width>660</gphoto:width>
@@ -29,8 +28,6 @@
     <gphoto:height>433</gphoto:height>
     <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
     <gphoto:timestamp>1179786301000</gphoto:timestamp>
-	<gphoto:position>1.1</gphoto:position>
-	<gphoto:client>Picasa 2.6</gphoto:client>
     <id>http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306</id>
     <generator version="1.00" uri="http://photos.google.com/">Google Photos</generator>
     <title type="text">Car.jpg</title>

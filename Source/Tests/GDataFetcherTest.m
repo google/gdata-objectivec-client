@@ -48,14 +48,6 @@
 - (void)setReservationInterval:(NSTimeInterval)secs;
 @end
 
-@interface GDataCookieStorage : NSObject
-- (void)setCookies:(NSArray *)newCookies;
-- (NSArray *)cookiesForURL:(NSURL *)theURL;
-- (NSHTTPCookie *)cookieMatchingCookie:(NSHTTPCookie *)cookie;
-- (void)removeExpiredCookies;
-- (void)removeAllCookies;
-@end
-
 @interface GDataFetcherTest : SenTestCase
 @end
 

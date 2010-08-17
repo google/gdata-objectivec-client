@@ -47,9 +47,6 @@
 - (NSString *)location;
 - (void)setLocation:(NSString *)obj;
 
-- (NSString *)name;
-- (void)setName:(NSString *)obj;
-
 - (NSString *)nickname;
 - (void)setNickname:(NSString *)obj;
 
