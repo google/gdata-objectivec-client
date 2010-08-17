@@ -9,7 +9,6 @@
     xmlns:media="http://search.yahoo.com/mrss/"
     xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
     <gphoto:id>5067143575034336993</gphoto:id>
-    <gphoto:name>TestAlbM</gphoto:name>
     <gphoto:access>public</gphoto:access>
     <gphoto:numphotos>2</gphoto:numphotos>
     <gphoto:commentCount>0</gphoto:commentCount>
@@ -48,7 +47,6 @@
     <openSearch:startIndex>1</openSearch:startIndex>
     <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
     <entry>
-        <gphoto:position>1.1</gphoto:position>
         <exif:tags>
             <exif:fstop>5.3</exif:fstop>
             <exif:make>NIKON CORPORATION</exif:make>
@@ -62,11 +60,8 @@
             <exif:imageUniqueID>d8a9e8fd57a384d216f4b2a853d654fc</exif:imageUniqueID>
         </exif:tags>
         <gphoto:checksum>23512309abbs298</gphoto:checksum>
-        <gphoto:client>Picasa 2.6</gphoto:client>
         <gphoto:id>5067143579329304306</gphoto:id>
-        <gphoto:version>1179786875940336</gphoto:version>
         <gphoto:albumid>5067143575034336993</gphoto:albumid>
-        <gphoto:client/>
         <gphoto:width>660</gphoto:width>
         <gphoto:videostatus>ready</gphoto:videostatus>
         <gphoto:commentCount>1</gphoto:commentCount>
@@ -114,7 +109,6 @@
         <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
     </entry>
     <entry>
-        <gphoto:position>1.0</gphoto:position>
         <exif:tags>
             <exif:fstop>0.0</exif:fstop>
             <exif:distance>0.0</exif:distance>
@@ -126,9 +120,7 @@
         </exif:tags>
         <gphoto:checksum/>
         <gphoto:id>5067143583624271618</gphoto:id>
-        <gphoto:version>1179786302922281</gphoto:version>
         <gphoto:albumid>5067143575034336993</gphoto:albumid>
-        <gphoto:client/>
         <gphoto:width>576</gphoto:width>
         <gphoto:commentCount>0</gphoto:commentCount>
         <gphoto:size>21078</gphoto:size>

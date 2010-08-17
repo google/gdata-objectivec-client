@@ -45,12 +45,12 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // common photo extensions
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataPhotoAccess class], [GDataPhotoBytesUsed class],
@@ -58,9 +58,8 @@
    [GDataPhotoTimestamp class], [GDataPhotoNumberUsed class],
    [GDataPhotoNumberLeft class], [GDataPhotoBytesUsed class],
    [GDataPhotoUser class], [GDataPhotoNickname class],
-   [GDataPhotoName class], [GDataPhotoLocation class],
-   [GDataMediaGroup class], nil];  
-  
+   [GDataPhotoLocation class], [GDataMediaGroup class], nil];
+
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:entryClass];
 }
@@ -152,16 +151,6 @@
 - (void)setLocation:(NSString *)str {
   GDataPhotoLocation *obj = [GDataPhotoLocation valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataPhotoLocation class]];  
-}
-
-- (NSString *)name {
-  GDataPhotoName *obj = [self objectForExtensionClass:[GDataPhotoName class]];
-  return [obj stringValue];
-}
-
-- (void)setName:(NSString *)str {
-  GDataPhotoName *obj = [GDataPhotoName valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoName class]];  
 }
 
 - (NSString *)nickname {

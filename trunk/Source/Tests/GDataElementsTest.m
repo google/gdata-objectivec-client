@@ -1206,10 +1206,6 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"stringValue", @"Tokyo, Japan" },
     { @"", @"" },
       
-    { @"GDataPhotoName", @"<gphoto:name>mytrip</gphoto:name> " },
-    { @"stringValue", @"mytrip" },
-    { @"", @"" },
-      
     { @"GDataPhotoNumberUsed", @"<gphoto:numphotos>237</gphoto:numphotos>" },
     { @"intValue", @"237" },
     { @"", @"" },
@@ -1222,16 +1218,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"stringValue", @"987123" },
     { @"", @"" },
       
-    { @"GDataPhotoClient", @"<gphoto:client>Picasa1.2</gphoto:client>" },
-    { @"stringValue", @"Picasa1.2" },
-    { @"", @"" },
-      
     { @"GDataPhotoHeight", @"<gphoto:height>1200</gphoto:height>" },
     { @"longLongValue", @"1200" },
-    { @"", @"" },
-      
-    { @"GDataPhotoPosition", @"<gphoto:position>10</gphoto:position>" },
-    { @"intValue", @"10" },
     { @"", @"" },
       
     { @"GDataPhotoRotation", @"<gphoto:rotation>90</gphoto:rotation>" },
@@ -1244,10 +1232,6 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
       
     { @"GDataPhotoTimestamp", @"<gphoto:timestamp>1168640584000</gphoto:timestamp>" },
     { @"longLongValue", @"1168640584000" },
-    { @"", @"" },
-      
-    { @"GDataPhotoVersion", @"<gphoto:version>v22838</gphoto:version>" },
-    { @"stringValue", @"v22838" },
     { @"", @"" },
       
     { @"GDataPhotoWidth", @"<gphoto:width>1600</gphoto:width>" },

@@ -57,9 +57,6 @@
    [GDataPhotoNumberLeft class], [GDataPhotoBytesUsed class],
    [GDataPhotoUser class], [GDataPhotoNickname class],
    [GDataPhotoLocation class], [GDataMediaGroup class],
-
-   // version 1 extensions
-   [GDataPhotoName class],
    nil];
 
   [GDataGeo addGeoExtensionDeclarationsToObject:self

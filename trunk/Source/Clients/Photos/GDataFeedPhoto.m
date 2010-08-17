@@ -60,10 +60,6 @@
    [GDataMediaGroup class], [GDataEXIFTags class],
    [GDataPhotoVideoStatus class],
 
-   // V1 elements
-   [GDataPhotoVersion class],
-   [GDataPhotoClient class],
-   [GDataPhotoPosition class],
    nil];
 
   [GDataGeo addGeoExtensionDeclarationsToObject:self

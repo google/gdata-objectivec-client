@@ -1162,7 +1162,6 @@
     { @"entries.0.mediaGroup.mediaThumbnails.0.URLString", @"hasPrefix:http://lh5.google.com/image/TestdomainTestAccount" },
 
     { @"entries.0.GPhotoID", @"5067143575034336993" },
-    { @"entries.0.name", @"TestAlbM" },
     { @"entries.0.access", @"public" },
     { @"entries.0.photosUsed", @"2" },
     { @"entries.0.commentCount", @"0" },
