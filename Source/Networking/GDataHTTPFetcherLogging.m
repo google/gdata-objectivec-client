@@ -35,6 +35,8 @@
 @end
 
 @interface GDataHTTPFetcher (GDataHTTPFetcherLoggingInternal)
++ (NSString *)headersStringForDictionary:(NSDictionary *)dict;
+
 // internal file utilities for logging
 + (BOOL)fileOrDirExistsAtPath:(NSString *)path;
 + (BOOL)makeDirectoryUpToPath:(NSString *)path;
@@ -369,9 +371,16 @@ static NSString* gLoggingProcessName = nil;
 
   // TODO: (grobbins)  add Javascript to display response data formatted in hex
 
-  NSString *logDirectory = [[self class] loggingDirectory];
+  NSString *parentDir = [[self class] loggingDirectory];
   NSString *processName = [[self class] loggingProcessName];
   NSString *dateStamp = [[self class] loggingDateStamp];
+
+  // make a directory for this run's logs, like
+  //   SyncProto_logs_10-16_01-56-58PM
+  NSString *dirName = [NSString stringWithFormat:@"%@_log_%@",
+                       processName, dateStamp];
+  NSString *logDirectory = [parentDir stringByAppendingPathComponent:dirName];
+  if (![[self class] makeDirectoryUpToPath:logDirectory]) return;
 
   // each response's NSData goes into its own xml or txt file, though all
   // responses for this run of the app share a main html file.  This
@@ -390,35 +399,26 @@ static NSString* gLoggingProcessName = nil;
   NSUInteger responseDataLength = [downloadedData_ length];
 
   NSURLResponse *response = [self response];
+  NSDictionary *responseHeaders = [self responseHeaders];
+
   NSString *responseBaseName = nil;
+  NSString *responseDataStr = nil;
 
   // if there's response data, decide what kind of file to put it in based
   // on the first bytes of the file or on the mime type supplied by the server
   if (responseDataLength) {
     NSString *responseDataExtn = nil;
 
-    {
-      // generate a response file base name like
-      //   SyncProto_http_response_10-16_01-56-58PM_3
-      NSString *format = @"%@_http_response_%@_%d";
-#if GDATA_IPHONE && !TARGET_IPHONE_SIMULATOR
-      // iPhone needs a shorter string for Fetch Application Data in Organizer
-      // to work.
-      // TODO: a long process name can still cause this to exceed the maximum.
-      // We should check and truncate.
-      // TODO: We should file a bug with Apple about this.
-      format = @"%@_hr_%@_%d";
-#endif
-      responseBaseName = [NSString stringWithFormat:format,
-        processName, dateStamp, responseCounter];
-    }
+    // generate a response file base name like
+    responseBaseName = [NSString stringWithFormat:@"http_response_%d",
+                        responseCounter];
 
-    NSString *dataStr = [self formattedStringFromData:downloadedData_];
-    if (dataStr) {
+    responseDataStr = [self formattedStringFromData:downloadedData_];
+    if (responseDataStr) {
       // we were able to make a UTF-8 string from the response data
 
       NSCharacterSet *whitespaceSet = [NSCharacterSet whitespaceCharacterSet];
-      dataStr = [dataStr stringByTrimmingCharactersInSet:whitespaceSet];
+      responseDataStr = [responseDataStr stringByTrimmingCharactersInSet:whitespaceSet];
 
       // save a plain-text version of the response data in an html file
       // containing a wrapped, scrollable <textarea>
@@ -430,15 +430,15 @@ static NSString* gLoggingProcessName = nil;
 
       NSString* wrapFmt = @"<textarea rows=\"29\" cols=\"108\" readonly=true"
         " wrap=soft>\n%@\n</textarea>";
-      NSString* wrappedStr = [NSString stringWithFormat:wrapFmt, dataStr];
+      NSString* wrappedStr = [NSString stringWithFormat:wrapFmt, responseDataStr];
       {
         NSError *wrappedStrError = nil;
-        [wrappedStr writeToFile:textFilePath
-                     atomically:NO
-                       encoding:NSUTF8StringEncoding
-                          error:&wrappedStrError];
-        if (wrappedStrError) {
-          NSLog(@"%@ logging write error:%@", [self class], wrappedStrError);
+        if (![wrappedStr writeToFile:textFilePath
+                          atomically:NO
+                            encoding:NSUTF8StringEncoding
+                               error:&wrappedStrError]) {
+          NSLog(@"%@ logging write error:%@ (%@)",
+                [self class], wrappedStrError, responseDataUnformattedFileName);
         }
       }
 
@@ -447,9 +447,9 @@ static NSString* gLoggingProcessName = nil;
 
       // for known file types, we'll write the data to a file with the
       // appropriate extension
-      if ([dataStr hasPrefix:@"<?xml"]) {
+      if ([responseDataStr hasPrefix:@"<?xml"]) {
         responseDataExtn = @"xml";
-      } else if ([dataStr hasPrefix:@"<html"]) {
+      } else if ([responseDataStr hasPrefix:@"<html"]) {
         responseDataExtn = @"html";
       } else {
         // add more types of identifiable text here
@@ -472,16 +472,17 @@ static NSString* gLoggingProcessName = nil;
       NSString *formattedFilePath = [logDirectory stringByAppendingPathComponent:responseDataFormattedFileName];
 
       NSError *downloadedError = nil;
-      [downloadedData_ writeToFile:formattedFilePath options:0 error:&downloadedError];
-      if (downloadedError) {
-        NSLog(@"%@ logging write error:%@", [self class], downloadedError);
+      if (![downloadedData_ writeToFile:formattedFilePath
+                                options:0
+                                  error:&downloadedError]) {
+        NSLog(@"%@ logging write error:%@ (%@)",
+              [self class], downloadedError, responseDataFormattedFileName);
       }
     }
   }
 
   // we'll have one main html file per run of the app
-  NSString *htmlName = [NSString stringWithFormat:@"%@_http_log_%@.html",
-    processName, dateStamp];
+  NSString *htmlName = @"http_log.html";
   NSString *htmlPath =[logDirectory stringByAppendingPathComponent:htmlName];
 
   // if the html file exists (from logging previous fetches) we don't need
@@ -543,12 +544,19 @@ static NSString* gLoggingProcessName = nil;
 
   // now write the visible html elements
 
-  // write the date & time
-  [outputHTML appendFormat:@"<b>%@</b><br>", [[NSDate date] description]];
+  NSString *copyableFileName = [NSString stringWithFormat:@"copyable_%d.txt",
+                                responseCounter];
+
+  // write the date & time, and the link to the plain-text (copyable) log
+  NSString *dateLineFormat = @"<b>%@</b> &nbsp;&nbsp;&nbsp;&nbsp; "
+  "<a href='%@'><i>request/response</i></a><br>";
+  [outputHTML appendFormat:dateLineFormat, [NSDate date], copyableFileName];
 
   // write the request URL
-  [outputHTML appendFormat:@"<b>request:</b> %@ <i>URL:</i> <code>%@</code><br>\n",
-    [request HTTPMethod], [request URL]];
+  NSString *requestMethod = [request HTTPMethod];
+  NSURL *requestURL = [request URL];
+  [outputHTML appendFormat:@"<b>request:</b> %@ <i>URL:</i> "
+   "<code>%@</code><br>\n", requestMethod, requestURL];
 
   // write the request headers, toggleable
   NSDictionary *requestHeaders = [request allHTTPHeaderFields];
@@ -559,7 +567,7 @@ static NSString* gLoggingProcessName = nil;
       requestHeadersName, // layer name
       (int)[requestHeaders count],
       requestHeadersName,
-      [requestHeaders description]]; // description gives a human-readable dump
+     [[self class] headersStringForDictionary:requestHeaders]];
   } else {
     [outputHTML appendString:@"<i>Request headers: none</i><br>"];
   }
@@ -570,41 +578,44 @@ static NSString* gLoggingProcessName = nil;
     postData = loggedStreamData_;
   }
 
-  if ([postData length] > 0) {
+  NSString *postDataStr = nil;
+  NSUInteger postDataLength = [postData length];
+
+  if (postDataLength > 0) {
     NSString *postDataFormat = @"<a href=\"javascript:toggleLayer('%@');\">"
-      "posted data (%d bytes)</a><div id=\"%@\">%@</div><br>\n";
-    NSString *postDataStr = [self stringFromStreamData:postData];
+    "posted data (%d bytes)</a><div id=\"%@\">%@</div><br>\n";
+    postDataStr = [self stringFromStreamData:postData];
     if (postDataStr) {
       NSString *postDataTextAreaFmt = @"<pre>%@</pre>";
       if ([postDataStr rangeOfString:@"<"].location != NSNotFound) {
         postDataTextAreaFmt =  @"<textarea rows=\"15\" cols=\"100\""
-         " readonly=true wrap=soft>\n%@\n</textarea>";
+        " readonly=true wrap=soft>\n%@\n</textarea>";
       }
       NSString *cleanedPostData = [self cleanParameterFollowing:@"&Passwd="
                                                      fromString:postDataStr];
       NSString *postDataTextArea = [NSString stringWithFormat:
-        postDataTextAreaFmt,  cleanedPostData];
+                                    postDataTextAreaFmt,  cleanedPostData];
 
       [outputHTML appendFormat:postDataFormat,
-        postDataName, // layer name
-        [postData length],
-        postDataName,
-        postDataTextArea];
+       postDataName, // layer name
+       [postData length],
+       postDataName,
+       postDataTextArea];
     }
   } else {
     // no post data
   }
 
   // write the response status, MIME type, URL
+  NSInteger status = [self statusCode];
   if (response) {
     NSString *statusString = @"";
-    if ([response respondsToSelector:@selector(statusCode)]) {
-      NSInteger status = [(NSHTTPURLResponse *)response statusCode];
+    if (status != 0) {
       statusString = @"200";
       if (status != 200) {
-        // purple for errors
+        // purple for anything other than 200
         statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%ld</FONT>",
-          (long)status];
+                        (long)status];
       }
     }
 
@@ -616,19 +627,15 @@ static NSString* gLoggingProcessName = nil;
       NSString *responseURLFormat = @"<br><FONT COLOR=\"#FF00FF\">response URL:"
         "</FONT> <code>%@</code>";
       responseURLStr = [NSString stringWithFormat:responseURLFormat,
-        [responseURL absoluteString]];
+                        [responseURL absoluteString]];
     }
 
-    NSDictionary *responseHeaders = nil;
-    if ([response respondsToSelector:@selector(allHeaderFields)]) {
-      responseHeaders = [(NSHTTPURLResponse *)response allHeaderFields];
-    }
     [outputHTML appendFormat:@"<b>response:</b> <i>status:</i> %@ <i>  "
-        "&nbsp;&nbsp;&nbsp;MIMEType:</i><code> %@</code>%@<br>\n",
-      statusString,
-      [response MIMEType],
-      responseURLStr,
-      responseHeaders ? [responseHeaders description] : @""];
+       "&nbsp;&nbsp;&nbsp;MIMEType:</i><code> %@</code>%@<br>\n",
+     statusString,
+     [response MIMEType],
+     responseURLStr,
+     [[self class] headersStringForDictionary:responseHeaders]];
 
     // write the response headers, toggleable
     if ([responseHeaders count]) {
@@ -639,11 +646,11 @@ static NSString* gLoggingProcessName = nil;
         "'%@');\">response headers (%d)  %@</a><div id=\"%@\"><pre>%@</pre>"
         "</div><br>\n";
       [outputHTML appendFormat:responseHeadersFormat,
-        responseHeadersName,
-        (int)[responseHeaders count],
-        (cookiesSet ? @"<i>sets cookies</i>" : @""),
-        responseHeadersName,
-        [responseHeaders description]];
+       responseHeadersName,
+       (int)[responseHeaders count],
+       (cookiesSet ? @"<i>sets cookies</i>" : @""),
+       responseHeadersName,
+       [[self class] headersStringForDictionary:responseHeaders]];
 
     } else {
       [outputHTML appendString:@"<i>Response headers: none</i><br>\n"];
@@ -714,6 +721,57 @@ static NSString* gLoggingProcessName = nil;
       (int)responseDataLength];
   }
 
+  // make a single string of the request and response, suitable for copying
+  // to the clipboard and pasting into a bug report
+  NSMutableString *copyable = [NSMutableString stringWithFormat:@"%@\n",
+                               [NSDate date]];
+  [copyable appendFormat:@"Request: %@ %@\n", requestMethod, requestURL];
+  [copyable appendFormat:@"Request headers:\n%@\n",
+   [[self class] headersStringForDictionary:requestHeaders]];
+
+  if (postDataLength > 0) {
+    [copyable appendFormat:@"Request body: (%u bytes)\n",
+     (unsigned int) postDataLength];
+    if (postDataStr) {
+      [copyable appendFormat:@"%@\n\n", postDataStr];
+    }
+  }
+
+  if (response) {
+    [copyable appendFormat:@"Response: status %d\n", (int) status];
+    [copyable appendFormat:@"Response headers:\n%@\n",
+     [[self class] headersStringForDictionary:responseHeaders]];
+    [copyable appendFormat:@"Response body: (%u bytes)\n",
+     (unsigned int) responseDataLength];
+    if (responseDataLength > 0) {
+      [copyable appendFormat:@"%@\n", responseDataStr];
+    }
+  }
+
+  if (error) {
+    [copyable appendFormat:@"Error: %@\n", error];
+  }
+  [copyable appendString:@"-----------------------------------------------------------\n"];
+
+
+  // write the copyable version to another file (linked to at the top of the
+  // html file, above)
+  //
+  // ideally, something to just copy this to the clipboard like
+  //   <span onCopy='window.event.clipboardData.setData(\"Text\",
+  //   \"copyable stuff\");return false;'>Copy here.</span>"
+  // would work everywhere, but it only works in Safari as of 8/2010
+  NSString *copyablePath = [logDirectory stringByAppendingPathComponent:copyableFileName];
+  NSError *copyableError = nil;
+  if (![copyable writeToFile:copyablePath
+                  atomically:NO
+                    encoding:NSUTF8StringEncoding
+                       error:&copyableError]) {
+    // error writing to file
+    NSLog(@"%@ logging write error:%@ (%@)",
+          [self class], copyableError, copyablePath);
+  }
+
   [outputHTML appendString:@"<br><hr><p>"];
 
   // append the HTML to the main output file
@@ -725,9 +783,9 @@ static NSString* gLoggingProcessName = nil;
   [stream close];
 
   // make a symlink to the latest html
-  NSString *symlinkName = [NSString stringWithFormat:@"%@_http_log_newest.html",
+  NSString *symlinkName = [NSString stringWithFormat:@"%@_log_newest.html",
     processName];
-  NSString *symlinkPath = [logDirectory stringByAppendingPathComponent:symlinkName];
+  NSString *symlinkPath = [parentDir stringByAppendingPathComponent:symlinkName];
 
   [[self class] removeItemAtPath:symlinkPath];
   [[self class] createSymbolicLinkAtPath:symlinkPath
@@ -808,6 +866,28 @@ static NSString* gLoggingProcessName = nil;
   int result = symlink([targetPath fileSystemRepresentation],
                        [newPath fileSystemRepresentation]);
   return (result == 0);
+}
+
+#pragma mark Formatting utilities
+
++ (NSString *)headersStringForDictionary:(NSDictionary *)dict {
+  // format the dictionary in http header style, like
+  //   Accept:        application/json
+  //   Cache-Control: no-cache
+  //   Content-Type:  application/json; charset=utf-8
+  //
+  // pad the key names, but not beyond 16 chars, since long custom header
+  // keys just create too much whitespace
+  NSArray *keys = [[dict allKeys] sortedArrayUsingSelector:@selector(compare:)];
+  NSNumber *maxKeyNum = [keys valueForKeyPath:@"@max.length"];
+  NSUInteger maxKeyLen = [maxKeyNum unsignedIntValue];
+
+  NSMutableString *str = [NSMutableString string];
+  for (NSString *key in keys) {
+    NSString *value = [dict valueForKey:key];
+    [str appendFormat:@"%*s: %@\n", maxKeyLen, [key UTF8String], value];
+  }
+  return str;
 }
 
 @end
