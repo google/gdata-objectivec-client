@@ -95,6 +95,7 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
 @synthesize initialHTMLString = initialHTMLString_;
 @synthesize browserCookiesURL = browserCookiesURL_;
+@synthesize signIn = signIn_;
 @synthesize userData = userData_;
 @synthesize webView = webView_;
 

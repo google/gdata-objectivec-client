@@ -143,6 +143,13 @@
 // kGDataOAuthNetworkLost is sent; set this to 0 to have no timeout
 @property (nonatomic, assign) NSTimeInterval networkLossTimeoutInterval;
 
+// the underlying object to hold authentication tokens and authorize http
+// requests
+@property (nonatomic, retain, readonly) GDataOAuthAuthentication *authentication;
+
+// the underlying object which performs the sign-in networking sequence
+@property (nonatomic, retain, readonly) GDataOAuthSignIn *signIn;
+
 // any arbitrary data object the user would like the controller to retain
 @property (nonatomic, retain) id userData;
 
@@ -231,18 +238,6 @@
 // is used only by the window controller
 + (BOOL)saveParamsToKeychainForName:(NSString *)appServiceName
                      authentication:(GDataOAuthAuthentication *)auth;
-
-//
-// get the underlying authentication object
-//
-- (GDataOAuthAuthentication *)authentication;
-
-//
-// useful window elements
-//
-- (WebView *)webView;
-- (NSButton *)keychainCheckbox;
-
 @end
 
 #endif // #if MAC_OS_X_VERSION_MIN_REQUIRED

@@ -52,6 +52,7 @@ const char *kKeychainAccountName = "OAuth";
 @synthesize initialRequest = initialRequest_;
 @synthesize keychainApplicationServiceName = keychainApplicationServiceName_;
 @synthesize initialHTMLString = initialHTMLString_;
+@synthesize signIn = signIn_;
 @synthesize userData = userData_;
 
 - (id)initWithScope:(NSString *)scope
@@ -543,14 +544,6 @@ const char *kKeychainAccountName = "OAuth";
 - (BOOL)shouldUseKeychain {
   BOOL hasName = ([keychainApplicationServiceName_ length] > 0);
   return hasName;
-}
-
-- (WebView *)webView {
-  return webView_;
-}
-
-- (NSButton *)keychainCheckbox {
-  return keychainCheckbox_;
 }
 @end
 
