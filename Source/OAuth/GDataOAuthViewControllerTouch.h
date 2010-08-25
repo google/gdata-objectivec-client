@@ -150,6 +150,9 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 // requests
 @property (nonatomic, retain, readonly) GDataOAuthAuthentication *authentication;
 
+// the underlying object which performs the sign-in networking sequence
+@property (nonatomic, retain, readonly) GDataOAuthSignIn *signIn;
+
 // user interface elements
 @property (nonatomic, retain) IBOutlet UIButton *backButton;
 @property (nonatomic, retain) IBOutlet UIButton *forwardButton;
