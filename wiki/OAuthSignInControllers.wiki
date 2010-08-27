@@ -1,4 +1,4 @@
-#summary OAuth Controllers for iOS and Mac Apps
+#summary OAuth Controllers for iPhone and Mac Apps
 #labels Featured
 
 = Using the OAuth Controllers =
@@ -7,49 +7,51 @@
 
 == Introduction ==
 
-[http://oauth.net/ OAuth] is a protocol allowing your application to obtain authorization to read or modify a user’s files or data on an external server.
+[http://oauth.net/ OAuth] is a protocol allowing your application to obtain authorization to read or modify a userâ€™s files or data on an external server.
 
 The server generates a web page for the user to sign in with her name and password, including a button explicitly granting access to some of her data. Upon successful authentication, the server gives tokens to your application representing the user's authorization.
 
-With the Objective-C OAuth controllers, the web page can be presented as an iOS view or a Mac sheet within your application. The controllers also provide authentication objects that simplify your application's future requests for the user's data.
+With the Objective-C OAuth controllers, the web page can be presented as an iPhone view or a Mac sheet within your application. The controllers also provide authentication objects that simplify your application's future requests for the user's data.
 
-== Using the iOS and Mac OAuth Controllers ==
+== Using the iPhone and Mac OAuth Controllers ==
 
-The OAuth controllers are useful for authenticating both to Google services and to and services other than Google's.
+The OAuth controllers are part of the Google Data APIs Objective-C Client Library, but you can easily use them independent of the library as well. You can also use them for authenticating via OAuth to servers and services other than Google's.
 
-There are example iOS and Mac applications using the OAuth controllers in the library's [http://code.google.com/p/gtm-oauth/source/browse/#svn/trunk/Examples Examples directory].
+There are example iPhone and Mac applications using the OAuth controllers in the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Examples Examples directory].
 
-The project has targets for building a static library for iOS and a framework for Mac OS X. Alternatively, the source files and xibs may be dragged directly into your project file.
+For iPhone developers, there is also a project for building a static library, called GDataOAuthTouchStaticLibrary.xcodeproj
 
 The source files required are:
 
-||_iOS and Mac_||_iOS_||_Mac_||
-||GTMOAuthAuthentication.h/m<br>GTMOAuthSignIn.h/m<br>GTMHTTPFetcher.h/m||GTMOAuthViewControllerTouch.h/m<br>GTMOAuthViewTouch.xib (optional)||GTMOAuthWindowController.h/m<br>GTMOAuthWindow.xib||
+||_iPhone and Mac_||_iPhone_||_Mac_||
+||GDataOAuthAuthentication.h/m<br>GDataOAuthSignIn.h/m<br>GDataHTTPFetcher.h/m||GDataOAuthViewControllerTouch.h/m<br>GDataOAuthViewTouch.xib (optional)||GDataOAuthWindowController.h/m<br>GDataOAuthWindow.xib||
 
-These source files are in the [http://code.google.com/p/gtm-oauth/source/browse/#svn/trunk/Source/ OAuth] and [http://code.google.com/p/gtm-http-fetcher/source/browse/#svn/trunk/Source/ fetcher] projects. groups of the library's [Source directory].
+These source files are in the OAuth and Networking groups of the library's [http://code.google.com/p/gdata-objectivec-client/source/browse/#svn/trunk/Source/ Source directory].
+
+*Note*: Because the OAuth classes were developed recently and are still being refined for compatibility with multiple services, applications should use the OAuth classes from the top-of-trunk sources, not from the 1.10 library release.
 
 === System Requirements ===
 
-The Mac controller is compatible with Mac OS X 10.5 and later. The iOS controller is compatible with iPhone OS 3 and later.
+The Mac controller is compatible with Mac OS X 10.5 and later. The iPhone controller is compatible with iPhone OS 2 and later.
 
 The OAuth controllers require linking to the system frameworks Security.framework and SystemConfiguration.framework.
  
 === Signing In ===
 
-To display a sign-in view, your iOS application makes these calls to push the view:
+To display a sign-in view, your iPhone application makes these calls to push the view:
 {{{
-#import "GTMOAuthViewControllerTouch.h"
+#import "GDataOAuthViewControllerTouch.h"
 
-static NSString *const kAppServiceName = @”My Application: Google Contacts”;
+static NSString *const kAppServiceName = @â€My Application: Google Contactsâ€;
 
 NSString *scope = @"http://www.google.com/m8/feeds/"; // scope for Google Contacts API
 
-GTMOAuthViewControllerTouch *viewController;
-viewController = [[[GTMOAuthViewControllerTouch alloc] initWithScope:scope
-                                                            language:nil
-                                                      appServiceName:kAppServiceName
-                                                            delegate:self
-                           finishedSelector:@selector(viewController:finishedWithAuth:error:)] autorelease];
+GDataOAuthViewControllerTouch *viewController;
+viewController = [[[GDataOAuthViewControllerTouch alloc] initWithScope:scope
+                                                              language:nil
+                                                        appServiceName:kAppServiceName
+                                                              delegate:self
+                             finishedSelector:@selector(viewController:finishedWithAuth:error:)] autorelease];
                              
 [[self navigationController] pushViewController:viewController animated:YES];
 }}}
@@ -57,13 +59,13 @@ viewController = [[[GTMOAuthViewControllerTouch alloc] initWithScope:scope
 A Mac application would display sign-in as a sheet on the current window, like this:
 
 {{{
-#import "GTMOAuthWindowController.h"
+#import "GDataOAuthWindowController.h"
 
-GTMOAuthWindowController *windowController;
-windowController = [[[GTMOAuthWindowController alloc] initWithScope:scope
-                                                           language:nil
-                                                     appServiceName:kAppServiceName
-                                                     resourceBundle:nil] autorelease];
+GDataOAuthWindowController *windowController;
+windowController = [[[GDataOAuthWindowController alloc] initWithScope:scope
+                                                             language:nil
+                                                       appServiceName:kAppServiceName
+                                                       resourceBundle:nil] autorelease];
 [windowController signInSheetModalForWindow:currentWindow
                                    delegate:self
                            finishedSelector:@selector(windowController:finishedWithAuth:error:)];
@@ -72,15 +74,15 @@ The *scope* is a string identifying what access is being requested. For access t
 
 If your application uses the Google Data APIs Objective-C Client Library, it should get scopes from the service classes. For example, the scope of the Contacts API shown above is available as
 {{{
- scope = [GTMServiceGoogleContacts authorizationScope];
+ scope = [GDataServiceGoogleContacts authorizationScope];
 }}}
 
-The *application service name* is used to save the token on the user’s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
+The *application service name* is used to save the token on the userâ€™s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
 
-When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelector’s method:
+When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelectorâ€™s method:
 {{{
-- (void)viewController:(GTMOAuthViewControllerTouch *)viewController
-      finishedWithAuth:(GTMOAuthAuthentication *)auth
+- (void)viewController:(GDataOAuthViewControllerTouch *)viewController
+      finishedWithAuth:(GDataOAuthAuthentication *)auth
                  error:(NSError *)error {
  if (error != nil) {
    // Authentication failed
@@ -90,7 +92,7 @@ When the user signs in successfully or cancels signing in, the view or window co
 }
 }}}
 
-If `[error code]` is kGTMOAuthErrorWindowClosed (-1000), then the user closed the sign-in view before completing authorization. Otherwise, any error reflects the server response in validating the user's access.
+If `[error code]` is kGDataOAuthErrorWindowClosed (-1000), then the user closed the sign-in view before completing authorization. Otherwise, any error reflects the server response in validating the user's access.
 
 === Using the Authentication Tokens ===
 
@@ -111,11 +113,11 @@ or used directly to authorize NSMutableURLRequest objects:
 If your application saves the authorization to the keychain (by setting the controller's appServiceName), it can be retrieved the next time the application launches:
 
 {{{
-GTMOAuthAuthentication *auth;
-auth = [GTMOAuthViewControllerTouch authForGoogleFromKeychainForName:kAppServiceName];
+GDataOAuthAuthentication *auth;
+auth = [GDataOAuthViewControllerTouch authForGoogleFromKeychainForName:kAppServiceName];
 }}}
 
-If no authorization was saved, then “auth” will still be a valid authorization object but will be unable to authorize requests:
+If no authorization was saved, then â€œauthâ€ will still be a valid authorization object but will be unable to authorize requests:
 
 {{{
  BOOL isSignedIn = [auth canAuthorize]; // returns NO if auth cannot authorize requests
@@ -123,19 +125,15 @@ If no authorization was saved, then “auth” will still be a valid authorizati
 
 === Signing Out ===
 
-To completely discard the user’s authorization, use the view or window controller calls to remove the keychain entry and to ask the Google server to revoke the token:
+To completely discard the userâ€™s authorization, use the view or window controller calls to remove the keychain entry and to ask the Google server to revoke the token:
 {{{
- [GTMOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
+ [GDataOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
 
- [GTMOAuthViewControllerTouch revokeTokenForGoogleAuthentication:auth];
+ [GDataOAuthViewControllerTouch revokeTokenForGoogleAuthentication:auth];
 }}}
 
 Finally, release the authorization object.
 
-= Questions and Comments =
+== More Information ==
 
 You can learn more about the OAuth protocol for desktop and mobile applications at [http://code.google.com/apis/accounts/docs/OAuthForInstalledApps.html Google's documentation].
-
-Additional documentation is available in the header files.
-
-If you have any questions or comments about the library or this documentation, please join the [http://groups.google.com/group/google-toolbox-for-mac discussion group].
