@@ -2104,6 +2104,7 @@
 		4FC2BF0A10F3F64D004BD81E /* GDataTranslationConstants.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BEB510F3F609004BD81E /* GDataTranslationConstants.h */; };
 		4FC2BF0B10F3F64D004BD81E /* GDataTranslationDocumentSource.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BEB710F3F609004BD81E /* GDataTranslationDocumentSource.h */; };
 		4FC2BF0C10F3F64D004BD81E /* GDataTranslationElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BEB910F3F609004BD81E /* GDataTranslationElements.h */; };
+		4FC8CCC71234AF1E00939910 /* GDataYouTubeRating.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F8413AE118B71C90067A34B /* GDataYouTubeRating.h */; };
 		4FCEDC81110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEDC7F110F771800B286FF /* GDataHTTPUploadFetcher.m */; };
 		4FCEDC82110F771800B286FF /* GDataHTTPUploadFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FCEDC7F110F771800B286FF /* GDataHTTPUploadFetcher.m */; };
 		4FCEDC83110F771800B286FF /* GDataHTTPUploadFetcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FCEDC80110F771800B286FF /* GDataHTTPUploadFetcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2316,6 +2317,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FC8CCC71234AF1E00939910 /* GDataYouTubeRating.h in Copy Static Library Headers */,
 				4F1C70E51027B53600B46459 /* GDataEntryYouTubeUpload.h in Copy Static Library Headers */,
 				4FEB9E09116FB2A700F6037F /* GDataACLKeyedRole.h in Copy Static Library Headers */,
 				4FC0CE0B115C36630061CBCA /* GDataBookConstants.h in Copy Static Library Headers */,
