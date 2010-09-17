@@ -1937,7 +1937,7 @@
     { @"entries.0.content.sourceURI", @"http://www.youtube.com/v/I-t-7lTw6mA&f=gdata_user_favorites" },
 
     { @"entries.0.location", @"mountain view, ca" },
-    { @"entries.0.recordedDate", @"2008-03-04" },
+    { @"entries.0.recordedDateString", @"2008-03-04" },
 
     { @"entries.0.mediaGroup.mediaTitle", @"Authors@Google: Michael Pollan" },
     { @"entries.0.mediaGroup.mediaDescription", @"Michael Pollan visits Google" },

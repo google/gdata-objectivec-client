@@ -98,17 +98,17 @@
   }
 
   struct GDataDescriptionRecord descRecs[] = {
-    { @"state",             @"publicationState", kGDataDescValueLabeled   },
-    { @"rating",            ratingStr,           kGDataDescValueIsKeyPath },
-    { @"comment",           @"comment",          kGDataDescValueLabeled   },
-    { @"stats",             @"statistics",       kGDataDescValueLabeled   },
-    { @"mediaGroup",        @"mediaGroup",       kGDataDescValueLabeled   },
-    { @"geoLocation",       @"geoLocation",      kGDataDescValueLabeled   },
-    { @"notEmbeddable",     nonEmbeddableValue,  kGDataDescValueIsKeyPath },
-    { @"pubState",          @"publicationState", kGDataDescValueLabeled   },
-    { @"recorded",          @"recordedDate",     kGDataDescValueLabeled   },
-    { @"incomplete",        @"isIncomplete",     kGDataDescBooleanPresent },
-    { @"accessControls",    @"accessControls",   kGDataDescArrayDescs     },
+    { @"state",             @"publicationState",   kGDataDescValueLabeled   },
+    { @"rating",            ratingStr,             kGDataDescValueIsKeyPath },
+    { @"comment",           @"comment",            kGDataDescValueLabeled   },
+    { @"stats",             @"statistics",         kGDataDescValueLabeled   },
+    { @"mediaGroup",        @"mediaGroup",         kGDataDescValueLabeled   },
+    { @"geoLocation",       @"geoLocation",        kGDataDescValueLabeled   },
+    { @"notEmbeddable",     nonEmbeddableValue,    kGDataDescValueIsKeyPath },
+    { @"pubState",          @"publicationState",   kGDataDescValueLabeled   },
+    { @"recorded",          @"recordedDateString", kGDataDescValueLabeled   },
+    { @"incomplete",        @"isIncomplete",       kGDataDescBooleanPresent },
+    { @"accessControls",    @"accessControls",     kGDataDescArrayDescs     },
     { nil, nil, 0 }
   };
 
@@ -152,17 +152,17 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeLocation class]];
 }
 
-- (GDataDateTime *)recordedDate {
+- (NSString *)recordedDateString {
   GDataYouTubeRecordedDate *obj;
 
   obj = [self objectForExtensionClass:[GDataYouTubeRecordedDate class]];
-  return [obj dateTimeValue];
+  return [obj stringValue];
 }
 
-- (void)setRecordedDate:(GDataDateTime *)dateTime {
+- (void)setRecordedDateString:(NSString *)str {
   GDataYouTubeRecordedDate *obj;
 
-  obj = [GDataYouTubeRecordedDate valueWithDateTime:dateTime];
+  obj = [GDataYouTubeRecordedDate valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataYouTubeRecordedDate class]];
 }
 
