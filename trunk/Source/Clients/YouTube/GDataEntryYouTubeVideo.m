@@ -106,7 +106,7 @@
     { @"geoLocation",       @"geoLocation",        kGDataDescValueLabeled   },
     { @"notEmbeddable",     nonEmbeddableValue,    kGDataDescValueIsKeyPath },
     { @"pubState",          @"publicationState",   kGDataDescValueLabeled   },
-    { @"recorded",          @"recordedDateString", kGDataDescValueLabeled   },
+    { @"recorded",          @"recordedDate",       kGDataDescValueLabeled   },
     { @"incomplete",        @"isIncomplete",       kGDataDescBooleanPresent },
     { @"accessControls",    @"accessControls",     kGDataDescArrayDescs     },
     { nil, nil, 0 }
@@ -152,17 +152,20 @@
   [self setObject:obj forExtensionClass:[GDataYouTubeLocation class]];
 }
 
-- (NSString *)recordedDateString {
+- (GDataDateTime *)recordedDate {
   GDataYouTubeRecordedDate *obj;
 
   obj = [self objectForExtensionClass:[GDataYouTubeRecordedDate class]];
-  return [obj stringValue];
+  return [obj dateTimeValue];
 }
 
-- (void)setRecordedDateString:(NSString *)str {
+- (void)setRecordedDate:(GDataDateTime *)dateTime {
   GDataYouTubeRecordedDate *obj;
 
-  obj = [GDataYouTubeRecordedDate valueWithString:str];
+  // recordedDate is date only, no time
+  [dateTime setHasTime:NO];
+
+  obj = [GDataYouTubeRecordedDate valueWithDateTime:dateTime];
   [self setObject:obj forExtensionClass:[GDataYouTubeRecordedDate class]];
 }
 
