@@ -63,8 +63,8 @@
 - (NSString *)location; // yt:location
 - (void)setLocation:(NSString *)str;
 
-- (NSString *)recordedDateString; // date as a YYYY-MM-DD string
-- (void)setRecordedDateString:(NSString *)str;
+- (GDataDateTime *)recordedDate;
+- (void)setRecordedDate:(GDataDateTime *)dateTime;
 
 - (NSArray *)accessControls;
 - (void)setAccessControls:(NSArray *)array;
