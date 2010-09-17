@@ -31,6 +31,9 @@ Bugs Fixed
 - Fixed OAuth sign-in when using an authentication object with a prior
   token secret (thanks ddickison)
 
+- YouTube API recordedDate now returned as a string, rather than incorrectly as
+  a dateTime
+
 - Stop printing _cmd in a macro as a C-string to quiet a clang warning (thanks
   j abley)
 
