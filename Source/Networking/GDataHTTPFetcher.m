@@ -1122,7 +1122,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
 #if NS_BLOCKS_AVAILABLE
 - (void)setRetryBlock:(BOOL (^)(BOOL, NSError *))block {
-  [block autorelease];
+  [retryBlock_ autorelease];
   retryBlock_ = [block copy];
 }
 #endif
@@ -1288,12 +1288,12 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
 #if NS_BLOCKS_AVAILABLE
 - (void)setSentDataBlock:(void (^)(NSInteger, NSInteger, NSInteger))block {
-  [block autorelease];
+  [sentDataBlock_ autorelease];
   sentDataBlock_ = [block copy];
 }
 
 - (void)setReceivedDataBlock:(void (^)(NSData *))block {
-  [block autorelease];
+  [receivedDataBlock_ autorelease];
   receivedDataBlock_ = [block copy];
 }
 #endif
