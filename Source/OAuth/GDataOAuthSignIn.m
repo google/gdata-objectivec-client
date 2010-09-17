@@ -265,11 +265,11 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   // compare the callback URL, which tells us when the web sign-in is done,
   // to the actual redirect URL
   NSString *callback = [auth_ callback];
-  if (callback == nil) {
+  if ([callback length] == 0) {
     // with no callback specified for the auth, the window will never
     // automatically close
 #if DEBUG
-    NSLog(@"GDataOAuthSignIn: No authentication callback specified");
+    NSAssert(0, @"GTMOAuthSignIn: No authentication callback specified");
 #endif
     return NO;
   }
