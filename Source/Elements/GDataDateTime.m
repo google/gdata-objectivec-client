@@ -165,6 +165,31 @@
   NSCalendar *cal = [self calendar];
   NSDateComponents *dateComponents = [self dateComponents];
 
+  if (![self hasTime]) {
+    // we're not keeping track of a time, but NSDate always is based on
+    // an absolute time. We want to avoid returning an NSDate where the
+    // calendar date appears different from what was used to create our
+    // date-time object.
+    //
+    // We'll make a copy of the date components, setting the time on our
+    // copy to noon GMT, since that ensures the date renders correctly for
+    // any time zone
+    //
+    // Note that on 10.4 NSDateComponents does not implement NSCopying, so we'll
+    // assemble an NSDateComponents manually here
+    NSDateComponents *noonDateComponents = [[[NSDateComponents alloc] init] autorelease];
+    [noonDateComponents setYear:[dateComponents year]];
+    [noonDateComponents setMonth:[dateComponents month]];
+    [noonDateComponents setDay:[dateComponents day]];
+    [noonDateComponents setHour:12];
+    [noonDateComponents setMinute:0];
+    [noonDateComponents setSecond:0];
+    dateComponents = noonDateComponents;
+
+    NSTimeZone *gmt = [NSTimeZone timeZoneWithName:@"Universal"];
+    [cal setTimeZone:gmt];
+  }
+
   NSDate *date = [cal dateFromComponents:dateComponents];
   return date;
 }
