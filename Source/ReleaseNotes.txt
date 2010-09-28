@@ -24,6 +24,9 @@ Changes
 
 - YouTube API no longer uses client IDs
 
+- Contacts API setters now replace empty strings with nil, and birthday
+  now has an NSDate getter/setter
+
 Bugs Fixed
 
 - Fixed signing of OAuth paths with non-alphanumeric characters

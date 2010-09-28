@@ -106,6 +106,10 @@
 - (NSString *)birthday;
 - (void)setBirthday:(NSString *)str;
 
+// convenience birthday methods; the "undefined" year is considered year 1800
+- (NSDate *)birthdayDate;
+- (void)setBirthdayWithDate:(NSDate *)date;
+
 - (NSArray *)calendarLinks;
 - (void)setCalendarLinks:(NSArray *)array;
 - (void)addCalendarLink:(GDataContactCalendarLink *)obj;

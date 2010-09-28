@@ -374,6 +374,8 @@
 - (void)setBillingInformation:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactBillingInformation *obj;
   obj = [GDataContactBillingInformation valueWithString:str];
 
@@ -392,12 +394,64 @@
 - (void)setBirthday:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactBirthday *obj;
   obj = [GDataContactBirthday valueWithString:str];
 
   [self setObject:obj forExtensionClass:[GDataContactBirthday class]];
 }
 
+// Google Contacts allows birthdates with undefined years, like "--12-25"
+//
+// http://code.google.com/apis/contacts/docs/3.0/reference.html#gcBirthday
+//
+// We'll use 1800 for the year, making an obvious "unset" value to display
+// in Apple's UI
+
+- (NSDate *)birthdayDate {
+  // get the birthday string, like 1970-12-25 or --12-25
+  NSString *str = [self birthday];
+
+  // convert a leading "-" year to 1800
+  if ([str hasPrefix:@"--"] && [str length] > 2) {
+    NSString *monthDayString = [str substringFromIndex:2];
+    str = [NSString stringWithFormat:@"1800-%@", monthDayString];
+  }
+
+  // add a time string to make it noon UTC, avoiding the chance that
+  // a different time zone rendering would change the date
+  str = [str stringByAppendingString:@" 12:00:00 -0000"];
+
+  static NSDateFormatter *formatter = nil;
+  if (formatter == nil) {
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZ"];
+  }
+
+  NSDate *date = [formatter dateFromString:str];
+  return date;
+}
+
+- (void)setBirthdayWithDate:(NSDate *)date {
+  static NSDateFormatter *formatter = nil;
+  if (formatter == nil) {
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"Universal"]];
+  }
+
+  NSString *str = [formatter stringFromDate:date];
+
+  // convert a "1800" year to "-"
+  if ([str hasPrefix:@"1800-"] && [str length] > 5) {
+    NSString *monthDayString = [str substringFromIndex:5];
+    str = [NSString stringWithFormat:@"--%@", monthDayString];
+  }
+  [self setBirthday:str];
+}
 
 - (NSArray *)calendarLinks {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
@@ -447,6 +501,8 @@
 
 - (void)setDirectoryServer:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  if ([str length] == 0) str = nil;
 
   GDataContactDirectoryServer *obj;
   obj = [GDataContactDirectoryServer valueWithString:str];
@@ -503,6 +559,8 @@
 - (void)setGender:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactGender *obj;
   obj = [GDataContactGender valueWithString:str];
 
@@ -539,6 +597,8 @@
 
 - (void)setInitials:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  if ([str length] == 0) str = nil;
 
   GDataContactInitials *obj;
   obj = [GDataContactInitials valueWithString:str];
@@ -609,6 +669,8 @@
 - (void)setMaidenName:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactMaidenName *obj;
   obj = [GDataContactMaidenName valueWithString:str];
 
@@ -626,6 +688,8 @@
 
 - (void)setMileage:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  if ([str length] == 0) str = nil;
 
   GDataContactMileage *obj;
   obj = [GDataContactMileage valueWithString:str];
@@ -658,6 +722,8 @@
 - (void)setNickname:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactNickname *obj;
   obj = [GDataContactNickname valueWithString:str];
 
@@ -675,6 +741,8 @@
 
 - (void)setOccupation:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  if ([str length] == 0) str = nil;
 
   GDataContactOccupation *obj;
   obj = [GDataContactOccupation valueWithString:str];
@@ -750,6 +818,8 @@
 - (void)setShortName:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
+  if ([str length] == 0) str = nil;
+
   GDataContactShortName *obj;
   obj = [GDataContactShortName valueWithString:str];
 
@@ -805,6 +875,8 @@
 
 - (void)setSubject:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
+
+  if ([str length] == 0) str = nil;
 
   GDataContactSubject *obj;
   obj = [GDataContactSubject valueWithString:str];
