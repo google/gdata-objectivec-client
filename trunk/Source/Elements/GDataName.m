@@ -91,7 +91,9 @@
 static NSString* const kYomiAttr = @"yomi";
 
 + (id)nameElementWithString:(NSString *)str {
-
+  // the contacts API does not want empty name elements
+  if ([str length] == 0) return nil;
+  
   GDataNameElement *obj = [[[self alloc] init] autorelease];
   [obj setStringValue:str];
   return obj;
@@ -128,6 +130,9 @@ static NSString* const kYomiAttr = @"yomi";
 }
 
 - (void)setYomi:(NSString *)str {
+  // the contacts API does not want empty name elements
+  if ([str length] == 0) str = nil;
+
   [self setStringValue:str forAttribute:kYomiAttr];
 }
 
@@ -286,6 +291,9 @@ static NSString* const kYomiAttr = @"yomi";
 }
 
 - (void)setNamePrefix:(NSString *)str {
+  // the contacts API does not want empty name elements
+  if ([str length] == 0) str = nil;
+
   GDataNamePrefix *obj = [GDataNamePrefix valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataNamePrefix class]];
 }
@@ -299,6 +307,9 @@ static NSString* const kYomiAttr = @"yomi";
 }
 
 - (void)setNameSuffix:(NSString *)str {
+  // the contacts API does not want empty name elements
+  if ([str length] == 0) str = nil;
+
   GDataNameSuffix *obj = [GDataNameSuffix valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataNameSuffix class]];
 }

@@ -112,7 +112,10 @@
 - (void)setYomi:(NSString *)str {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_VERSION(kGDataContactServiceV3);
 
-  GDataContactYomiName *obj = [GDataContactYomiName valueWithString:str];
+  GDataContactYomiName *obj = nil;
+  if ([str length] > 0) {
+    obj = [GDataContactYomiName valueWithString:str];
+  }
   [self setObject:obj forExtensionClass:[GDataContactYomiName class]]; 
 }
 
