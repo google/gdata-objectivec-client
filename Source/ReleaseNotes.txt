@@ -9,6 +9,8 @@ Additions
 
 - Added keyed roles to ACLs
 
+- Added download to NSFileHandle in GDataHTTPFetcher
+
 Changes
 
 - Deployment target for framework build is now 10.5

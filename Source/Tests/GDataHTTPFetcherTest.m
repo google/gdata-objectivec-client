@@ -52,6 +52,7 @@ extern NSTask *StartHTTPServerTask(int portNumber);
                              retrySelector:(SEL)retrySel
                           maxRetryInterval:(NSTimeInterval)maxRetryInterval
                                 credential:(NSURLCredential *)credential
+                        downloadFileHandle:(NSFileHandle *)fileHandle
                                   userData:(id)userData;
 
 - (NSString *)fileURLStringToTestFileName:(NSString *)name;
@@ -216,6 +217,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                retrySelector:nil
             maxRetryInterval:0
                   credential:nil
+          downloadFileHandle:nil
                     userData:nil]; // should fail
 
   STAssertNil(fetchedData_, @"unexpected data");
@@ -236,6 +238,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                retrySelector:nil
             maxRetryInterval:0
                   credential:credential
+          downloadFileHandle:nil
                     userData:nil]; // should succeed
 
   STAssertNotNil(fetchedData_, @"failed to fetch data, status:%d error:%@, URL:%@",
@@ -247,6 +250,41 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                  fetchedStatus_, fetcherError_);
   STAssertNotNil(fetchedRequest_,
                  @"failed to get fetch request, URL %@", urlString);
+}
+
+- (void)testFetchToFileHandle {
+  if (!isServerRunning_) return;
+
+  // create an empty file from which we can make an NSFileHandle
+  NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"fhTest_%u",
+                    TickCount()];
+  [[NSData data] writeToFile:path atomically:YES];
+
+  NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:path];
+  STAssertNotNil(fileHandle, @"missing filehandle for %@", path);
+
+  // make the http request to our test server
+  NSString *urlString = [self fileURLStringToTestFileName:kValidFileName];
+
+  [self doFetchWithURLString:urlString
+            cachingDatedData:NO
+               retrySelector:nil
+            maxRetryInterval:0
+                  credential:nil
+          downloadFileHandle:fileHandle
+                    userData:nil];
+
+  STAssertNil(fetchedData_, @"unexpected data");
+  STAssertNil(fetcherError_, @"unexpected error");
+
+  NSString *fetchedContents = [NSString stringWithContentsOfFile:path
+                                                        encoding:NSUTF8StringEncoding
+                                                           error:NULL];
+  NSString *origPath = [NSString stringWithFormat:@"Tests/%@", kValidFileName];
+  NSString *origContents = [NSString stringWithContentsOfFile:origPath
+                                                     encoding:NSUTF8StringEncoding
+                                                        error:NULL];
+  STAssertEqualObjects(fetchedContents, origContents, @"fetch to FH error");
 }
 
 - (void)testWrongFetch {
@@ -313,6 +351,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                         retrySelector:countRetriesSel
                      maxRetryInterval:5.0 // retry intervals of 1, 2, 4
                            credential:nil
+                   downloadFileHandle:nil
                              userData:lotsOfRetriesNumber];
 
   STAssertNotNil(fetchedData_, @"error data is expected");
@@ -332,6 +371,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                         retrySelector:countRetriesSel
                      maxRetryInterval:10.0 // retry intervals of 1, 2, 4, 8
                            credential:nil
+                   downloadFileHandle:nil
                              userData:twoRetriesNumber];
 
   STAssertNotNil(fetchedData_, @"error data is expected");
@@ -351,6 +391,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                         retrySelector:fixRequestSel
                      maxRetryInterval:30.0 // should only retry once due to selector
                            credential:nil
+                   downloadFileHandle:nil
                              userData:lotsOfRetriesNumber];
 
   STAssertNotNil(fetchedData_, @"data is expected");
@@ -369,6 +410,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                       retrySelector:nil
                    maxRetryInterval:0
                          credential:nil
+                 downloadFileHandle:nil
                            userData:nil];
 }
 
@@ -377,6 +419,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
                              retrySelector:(SEL)retrySel
                           maxRetryInterval:(NSTimeInterval)maxRetryInterval
                                 credential:(NSURLCredential *)credential
+                        downloadFileHandle:(NSFileHandle *)fileHandle
                                   userData:(id)userData {
   
   NSURL *url = [NSURL URLWithString:urlString];
@@ -405,6 +448,7 @@ static NSString *const kBasicAuthFileName = @"FeedYouTubeVideo1.xml.authwww";
   }
 
   [fetcher setCredential:credential];
+  [fetcher setDownloadFileHandle:fileHandle];
 
   BOOL isFetching = [fetcher beginFetchWithDelegate:self
                                   didFinishSelector:@selector(testFetcher:finishedWithData:)

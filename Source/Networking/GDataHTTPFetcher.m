@@ -186,6 +186,7 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   [request_ release];
   [connection_ release];
   [downloadedData_ release];
+  [downloadFileHandle_ release];
   [credential_ release];
   [proxyCredential_ release];
   [postData_ release];
@@ -424,7 +425,12 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   // the -stopFetch method.
   [delegate_ retain];
 
-  downloadedData_ = [[NSMutableData alloc] init];
+  if (downloadFileHandle_ != nil) {
+    // downloading to a file, so downloadedData_ remains nil
+  } else {
+    downloadedData_ = [[NSMutableData alloc] init];
+  }
+
   return YES;
 
 CannotBeginFetch:
@@ -625,6 +631,7 @@ CannotBeginFetch:
   // it can be called multiple times, for example in the case of a
   // redirect, so each time we reset the data.
   [downloadedData_ setLength:0];
+  [downloadFileHandle_ truncateFileAtOffset:0];
 
   [self setResponse:response];
 
@@ -785,13 +792,25 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+#if DEBUG
+  // the download file handle should be set before the fetch is started, not
+  // after
+  NSAssert((downloadFileHandle_ == nil) != (downloadedData_ == nil),
+           @"received data accumulates as NSData or NSFileHandle, not both");
+#endif
 
-  [downloadedData_ appendData:data];
+  if (downloadFileHandle_ != nil) {
+    // append to file
+    [downloadFileHandle_ writeData:data];
+  } else {
+    // append to mutable data
+    [downloadedData_ appendData:data];
+  }
 
   if (receivedDataSEL_) {
-   [delegate_ performSelector:receivedDataSEL_
-                   withObject:self
-                   withObject:downloadedData_];
+    [delegate_ performSelector:receivedDataSEL_
+                    withObject:self
+                    withObject:downloadedData_];
   }
 
 #if NS_BLOCKS_AVAILABLE
@@ -802,9 +821,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 
-// for error 304's ("Not Modified") where we've cached the data, return status
+// For error 304's ("Not Modified") where we've cached the data, return status
 // 200 ("OK") to the caller (but leave the fetcher status as 304)
-// and copy the cached data to downloadedData_.
+// and copy the cached data.
+//
 // For other errors or if there's no cached data, just return the actual status.
 - (NSInteger)statusAfterHandlingNotModifiedError {
 
@@ -815,7 +835,16 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     NSData *cachedData = [fetchHistory_ cachedDataForRequest:request_];
     if (cachedData) {
       // copy our stored data, and forge the status to pass on to the delegate
-      [downloadedData_ setData:cachedData];
+      if (downloadFileHandle_ != nil) {
+        // Downloading to a file handle won't save to the cache (the data is
+        // likely inappropriately large for caching), but will still read from
+        // the cache, on the unlikely chance that the response was Not Modified
+        // and the URL response was indeed present in the cache.
+        [downloadFileHandle_ truncateFileAtOffset:0];
+        [downloadFileHandle_ writeData:cachedData];
+      } else {
+        [downloadedData_ setData:cachedData];
+      }
       status = 200;
     }
   }
@@ -823,10 +852,14 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-
-  [fetchHistory_ updateFetchHistoryWithRequest:request_
-                                      response:response_
-                                downloadedData:downloadedData_];
+// skip caching ETagged results when the data is being saved to a file
+  if (downloadFileHandle_ == nil) {
+    [fetchHistory_ updateFetchHistoryWithRequest:request_
+                                        response:response_
+                                  downloadedData:downloadedData_];
+  } else {
+    [fetchHistory_ removeCachedDataForRequest:request_];
+  }
 
   [[self retain] autorelease]; // in case the callback releases us
 
@@ -1300,6 +1333,15 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
 - (NSData *)downloadedData {
   return downloadedData_;
+}
+
+- (NSFileHandle *)downloadFileHandle {
+  return downloadFileHandle_;
+}
+
+- (void)setDownloadFileHandle:(NSFileHandle *)fileHandle {
+  [downloadFileHandle_ autorelease];
+  downloadFileHandle_ = [fileHandle retain];
 }
 
 - (NSURLResponse *)response {

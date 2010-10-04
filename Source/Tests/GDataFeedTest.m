@@ -577,6 +577,7 @@
     { @"entries.0.billingInformation", @"account overdue" },
 
     { @"entries.0.birthday", @"1990-12-01" },
+    { @"entries.0.birthdayDate.timeIntervalSince1970", @"660052800" },
 
     { @"entries.0.calendarLinks.0.rel", nil },
     { @"entries.0.calendarLinks.0.label", @"full calendar" },
