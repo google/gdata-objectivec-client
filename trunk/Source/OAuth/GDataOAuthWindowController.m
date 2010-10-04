@@ -139,6 +139,7 @@ const char *kKeychainAccountName = "OAuth";
   [signIn_ release];
   [initialRequest_ release];
   [cookieStorage_ release];
+  [delegate_ release];
   [sheetModalForWindow_ release];
   [keychainApplicationServiceName_ release];
   [initialHTMLString_ release];
@@ -182,7 +183,7 @@ const char *kKeychainAccountName = "OAuth";
     @encode(GDataOAuthWindowController *), @encode(GDataOAuthAuthentication *),
     @encode(NSError *), 0);
 
-  delegate_ = delegate;
+  delegate_ = [delegate retain];
   finishedSelector_ = finishedSelector;
   sheetModalForWindow_ = [parentWindowOrNil retain];
   hasDoneFinalRedirect_ = NO;
@@ -195,6 +196,9 @@ const char *kKeychainAccountName = "OAuth";
   // The user has explicitly asked us to cancel signing in
   // (so no further callback is required)
   hasCalledFinished_ = YES;
+
+  [delegate_ autorelease];
+  delegate_ = nil;
 
   // The signIn object's cancel method will close the window
   [signIn_ cancelSigningIn];
@@ -303,15 +307,20 @@ const char *kKeychainAccountName = "OAuth";
       }
     }
 
-    SEL sel = finishedSelector_;
-    NSMethodSignature *sig = [delegate_ methodSignatureForSelector:sel];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-    [invocation setSelector:sel];
-    [invocation setTarget:delegate_];
-    [invocation setArgument:&self atIndex:2];
-    [invocation setArgument:&auth atIndex:3];
-    [invocation setArgument:&error atIndex:4];
-    [invocation invoke];
+    if (delegate_ && finishedSelector_) {
+      SEL sel = finishedSelector_;
+      NSMethodSignature *sig = [delegate_ methodSignatureForSelector:sel];
+      NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+      [invocation setSelector:sel];
+      [invocation setTarget:delegate_];
+      [invocation setArgument:&self atIndex:2];
+      [invocation setArgument:&auth atIndex:3];
+      [invocation setArgument:&error atIndex:4];
+      [invocation invoke];
+    }
+
+    [delegate_ autorelease];
+    delegate_ = nil;
 
     // we no longer need to retain ourselves
     //

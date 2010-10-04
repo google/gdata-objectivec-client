@@ -130,7 +130,7 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
 
   self = [super initWithNibName:nibName bundle:nil];
   if (self != nil) {
-    delegate_ = delegate;
+    delegate_ = [delegate retain];
     finishedSelector_ = finishedSelector;
 
     if (auth) {
@@ -191,6 +191,7 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   [signIn_ setDelegate:nil];
   [signIn_ release];
   [request_ release];
+  [delegate_ release];
   [keychainApplicationServiceName_ release];
   [initialHTMLString_ release];
   [userData_ release];
@@ -381,6 +382,9 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   // (so no further callback is required)
   hasCalledFinished_ = YES;
 
+  [delegate_ autorelease];
+  delegate_ = nil;
+
   // The sign-in object's cancel method will close the window
   [signIn_ cancelSigningIn];
   hasDoneFinalRedirect_ = YES;
@@ -490,16 +494,21 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
       }
     }
 
-    SEL sel = finishedSelector_;
-    NSMethodSignature *sig = [delegate_ methodSignatureForSelector:sel];
-    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-    [invocation setSelector:sel];
-    [invocation setTarget:delegate_];
-    [invocation setArgument:&self atIndex:2];
-    [invocation setArgument:&auth atIndex:3];
-    [invocation setArgument:&error atIndex:4];
-    [invocation invoke];
-    [signIn_ setUserData:nil];
+    if (delegate_ && finishedSelector_) {
+      SEL sel = finishedSelector_;
+      NSMethodSignature *sig = [delegate_ methodSignatureForSelector:sel];
+      NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+      [invocation setSelector:sel];
+      [invocation setTarget:delegate_];
+      [invocation setArgument:&self atIndex:2];
+      [invocation setArgument:&auth atIndex:3];
+      [invocation setArgument:&error atIndex:4];
+      [invocation invoke];
+      [signIn_ setUserData:nil];
+    }
+
+    [delegate_ autorelease];
+    delegate_ = nil;
   }
 }
 

@@ -328,6 +328,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableURLRequest *request_;
   NSURLConnection *connection_;    // while connection_ is non-nil, delegate_ is retained
   NSMutableData *downloadedData_;
+  NSFileHandle *downloadFileHandle_;
   NSURLCredential *credential_;     // username & password
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
   NSData *postData_;
@@ -428,6 +429,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 
 // the delegate's optional receivedData selector has a signature like:
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
+//
+// the received data argument will be nil when downloading to a file handle
 - (SEL)receivedDataSelector;
 - (void)setReceivedDataSelector:(SEL)theSelector;
 
@@ -537,6 +540,14 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 
 // return the http headers from the response
 - (NSDictionary *)responseHeaders;
+
+// If downloadFileHandle is set, data received is immediately appended to
+// the file handle rather than being accumulated in the downloadedData
+//
+// The file handle supplied must allow writing and support seekToFileOffset:,
+// and must be set before downloading begins.
+- (NSFileHandle *)downloadFileHandle;
+- (void)setDownloadFileHandle:(NSFileHandle *)fileHandle;
 
 // the response, once it's been received
 - (NSURLResponse *)response;

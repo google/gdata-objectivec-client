@@ -93,7 +93,10 @@
   GDataCookieStorage *cookieStorage_;
 
   // the user we're calling back
-  __weak id delegate_;
+  //
+  // the delegate is retained only until the callback is invoked
+  // or the sign-in is canceled
+  id delegate_;
   SEL finishedSelector_;
 
   BOOL isWindowShown_;
@@ -201,6 +204,9 @@
 // or can be stored in a GData service object like
 //   GDataServiceGoogleContact *service = [self contactService];
 //   [service setAuthorizer:auth];
+//
+// the delegate is retained only until the finished selector is invoked or
+//   the sign-in is canceled
 - (void)signInSheetModalForWindow:(NSWindow *)parentWindowOrNil
                          delegate:(id)delegate
                  finishedSelector:(SEL)finishedSelector;

@@ -99,7 +99,10 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
   NSURLRequest *request_;
 
   // The user we're calling back
-  id delegate_; // WEAK
+  //
+  // The delegate is retained only until the callback is invoked
+  // or the sign-in is canceled
+  id delegate_;
   SEL finishedSelector_;
 
   NSString *keychainApplicationServiceName_;
@@ -182,6 +185,9 @@ _EXTERN NSString* const kGDataOAuthKeychainErrorDomain       _INITIALIZE_AS(@"co
 // keychain appServiceName is used for storing the token on the keychain,
 //   appServiceName should be like "My Application: Google Contacts"
 //   (or set to nil if no persistent keychain storage is desired)
+//
+// the delegate is retained only until the finished selector is invoked
+//   or the sign-in is canceled
 //
 // If you don't like the default nibName and bundle, you can change them
 // using the UIViewController properties once you've made one of these.
