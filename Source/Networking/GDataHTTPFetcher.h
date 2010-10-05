@@ -251,6 +251,7 @@ enum {
   kGDataHTTPFetcherErrorDownloadFailed = -1,
   kGDataHTTPFetcherErrorAuthenticationChallengeFailed = -2,
   kGDataHTTPFetcherErrorChunkUploadFailed = -3,
+  kGDataHTTPFetcherErrorFileHandleException = -4,
 
   kGDataHTTPFetcherStatusNotModified = 304
 };
