@@ -175,9 +175,6 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
       [self setBrowserCookiesURL:cookiesURL];
     }
 
-    // The UINavcontroller releases us before signIn call us back.
-    // Let signIn_ retain us, so we'll live until signIn calls us.
-    [signIn_ setUserData:self];
     [self setKeychainApplicationServiceName:keychainAppServiceName];
   }
   return self;
@@ -388,9 +385,6 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
   // The sign-in object's cancel method will close the window
   [signIn_ cancelSigningIn];
   hasDoneFinalRedirect_ = YES;
-
-  // stop the sign-in object from retaining us
-  [signIn_ setUserData:nil];
 }
 
 #pragma mark Token Revocation
@@ -504,7 +498,6 @@ finishedWithAuth:(GDataOAuthAuthentication *)auth
       [invocation setArgument:&auth atIndex:3];
       [invocation setArgument:&error atIndex:4];
       [invocation invoke];
-      [signIn_ setUserData:nil];
     }
 
     [delegate_ autorelease];
