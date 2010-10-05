@@ -465,34 +465,31 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                                 value:exportFormat];
     NSURL *downloadURL = [query URL];
 
-    // read the document's contents asynchronously from the network
-    //
-    NSURLRequest *request = [service requestForURL:downloadURL
-                                              ETag:nil
-                                        httpMethod:nil];
+    // create a file for saving the document
+    NSError *error = nil;
+    if ([[NSData data] writeToFile:savePath
+                           options:NSAtomicWrite
+                             error:&error]) {
+      NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:savePath];
 
-    GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-    [fetcher setUserData:savePath];
-    [fetcher beginFetchWithDelegate:self
-                  didFinishSelector:@selector(fetcher:finishedWithData:)
-                    didFailSelector:@selector(fetcher:failedWithError:)];
+      // read the document's contents asynchronously from the network
+      NSURLRequest *request = [service requestForURL:downloadURL
+                                                ETag:nil
+                                          httpMethod:nil];
+
+      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      [fetcher setDownloadFileHandle:fileHandle];
+      [fetcher beginFetchWithDelegate:self
+                    didFinishSelector:@selector(fetcher:finishedWithData:)
+                      didFailSelector:@selector(fetcher:failedWithError:)];
+    } else {
+      NSLog(@"Error creating file at %@: %@", savePath, error);
+    }
   }
 }
 
-
 - (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // save the file to the local path specified by the user
-  NSString *savePath = [fetcher userData];
-  NSError *error = nil;
-  BOOL didWrite = [data writeToFile:savePath
-                            options:NSAtomicWrite
-                              error:&error];
-  if (!didWrite) {
-    NSLog(@"Error saving file: %@", error);
-    NSBeep();
-  } else {
-    // successfully saved the document
-  }
+  // successfully saved the document
 }
 
 - (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
