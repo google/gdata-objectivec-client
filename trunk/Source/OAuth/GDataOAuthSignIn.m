@@ -122,7 +122,7 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
     authorizeURL_ = [authorizeURL retain];
     accessURL_ = [accessURL retain];
 
-    delegate_ = delegate;
+    delegate_ = [delegate retain];
     webRequestSelector_ = webRequestSelector;
     finishedSelector_ = finishedSelector;
 
@@ -141,6 +141,7 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
 - (void)dealloc {
   [self stopReachabilityCheck];
 
+  [delegate_ release];
   [auth_ release];
 
   [requestURL_ release];
@@ -161,6 +162,9 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   [self setPendingFetcher:nil fetchType:nil];
 
   [self closeTheWindow];
+
+  [delegate_ autorelease];
+  delegate_ = nil;
 }
 
 //
@@ -377,7 +381,8 @@ const NSTimeInterval kDefaultNetworkLossTimeoutInterval = 30.0;
   }
 
   // we'll no longer send messages to the delegate
-  [self setDelegate:nil];
+  [delegate_ autorelease];
+  delegate_ = nil;
 }
 
 - (void)notifyFetchIsRunning:(BOOL)isStarting

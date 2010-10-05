@@ -326,7 +326,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // async retrieval of an http get or post
 @interface GDataHTTPFetcher : NSObject {
   NSMutableURLRequest *request_;
-  NSURLConnection *connection_;    // while connection_ is non-nil, delegate_ is retained
+  NSURLConnection *connection_;
   NSMutableData *downloadedData_;
   NSFileHandle *downloadFileHandle_;
   NSURLCredential *credential_;     // username & password
@@ -335,7 +335,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSInputStream *postStream_;
   NSMutableData *loggedStreamData_;
   NSURLResponse *response_;         // set in connection:didReceiveResponse:
-  id delegate_;                     // WEAK (though retained during an open connection)
+  id delegate_;                     // retained during an open connection
   SEL finishedSEL_;                 // should by implemented by delegate
   SEL statusFailedSEL_;             // implemented by delegate if it needs separate network error callbacks
   SEL networkFailedSEL_;            // should be implemented by delegate
@@ -412,7 +412,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSInteger)cookieStorageMethod;
 - (void)setCookieStorageMethod:(NSInteger)method;
 
-// the delegate is not retained except during the connection
+// the delegate is retained during the connection
 - (id)delegate;
 - (void)setDelegate:(id)theDelegate;
 

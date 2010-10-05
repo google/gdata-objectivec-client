@@ -293,7 +293,6 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   [downloadedData_ release];
   downloadedData_ = nil;
 
-  [self setDelegate:delegate];
   finishedSEL_ = finishedSEL;
   networkFailedSEL_ = networkFailedSEL;
   statusFailedSEL_ = statusFailedSEL;
@@ -412,24 +411,22 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
     goto CannotBeginFetch;
   }
 
-  // once connection_ is non-nil we can send the start notification
-  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
-  [defaultNC postNotificationName:kGDataHTTPFetcherStartedNotification
-                           object:self];
-  isStopNotificationNeeded_ = YES;
-
   // we'll retain the delegate only during the outstanding connection (similar
   // to what Cocoa does with performSelectorOnMainThread:) since we'd crash
-  // if the delegate was released in the interim.  We don't retain the selector
-  // at other times, to avoid vicious retain loops.  This retain is balanced in
-  // the -stopFetch method.
-  [delegate_ retain];
+  // if the delegate was released in the interim.
+  [self setDelegate:delegate];
 
   if (downloadFileHandle_ != nil) {
     // downloading to a file, so downloadedData_ remains nil
   } else {
     downloadedData_ = [[NSMutableData alloc] init];
   }
+
+  // once connection_ is non-nil we can send the start notification
+  isStopNotificationNeeded_ = YES;
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+  [defaultNC postNotificationName:kGDataHTTPFetcherStartedNotification
+                           object:self];
 
   return YES;
 
@@ -508,7 +505,8 @@ CannotBeginFetch:
     [self sendStopNotificationIfNeeded];
 
     // balance the retain done when the connection was opened
-    [delegate_ release];
+    [delegate_ autorelease];
+    delegate_ = nil;
   }
 
 #if NS_BLOCKS_AVAILABLE
@@ -1100,13 +1098,13 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
 - (void)destroyRetryTimer {
   if (retryTimer_) {
-    NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
-    [defaultNC postNotificationName:kGDataHTTPFetcherRetryDelayStoppedNotification
-                             object:self];
-
     [retryTimer_ invalidate];
     [retryTimer_ autorelease];
     retryTimer_ = nil;
+
+    NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
+    [defaultNC postNotificationName:kGDataHTTPFetcherRetryDelayStoppedNotification
+                             object:self];
   }
 }
 
@@ -1279,14 +1277,8 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)setDelegate:(id)theDelegate {
-
-  // we retain delegate_ only during the life of the connection
-  if (connection_) {
-    [delegate_ autorelease];
-    delegate_ = [theDelegate retain];
-  } else {
-    delegate_ = theDelegate;
-  }
+  [delegate_ autorelease];
+  delegate_ = [theDelegate retain];
 }
 
 + (BOOL)doesSupportSentDataCallback {
