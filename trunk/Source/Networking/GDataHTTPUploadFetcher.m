@@ -27,7 +27,8 @@ static NSString* const kUploadFetcherRetainedDelegateKey =  @"_uploadDelegate";
 static NSUInteger const kQueryServerForOffset = NSUIntegerMax;
 
 @interface GDataHTTPUploadFetcher (InternalMethods)
-- (void)uploadNextChunkWithOffset:(NSUInteger)offset;
+- (void)uploadNextChunkWithOffset:(NSUInteger)offset
+                         delegate:(id)delegate;
 - (void)uploadNextChunkWithOffset:(NSUInteger)offset
                 fetcherProperties:(NSDictionary *)props;
 - (void)destroyChunkFetcher;
@@ -285,13 +286,15 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
 
   // just in case the user paused us during the initial fetch...
   if (![self isPaused]) {
-    [self uploadNextChunkWithOffset:0];
+    [self uploadNextChunkWithOffset:0
+                           delegate:uploadDelegate];
   }
 }
 
 #pragma mark Chunk fetching methods
 
-- (void)uploadNextChunkWithOffset:(NSUInteger)offset {
+- (void)uploadNextChunkWithOffset:(NSUInteger)offset
+                         delegate:(id)delegate {
   NSMutableDictionary *props;
 
   // we'll retain the delegate as part of the chunk fetcher properties;
@@ -299,8 +302,8 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
   // to be retaining the delegate since we won't be calling back into it
   props = [NSMutableDictionary dictionaryWithDictionary:[self properties]];
 
-  [props setObject:[self delegate]
-            forKey:kUploadFetcherRetainedDelegateKey];
+  [props setValue:delegate
+           forKey:kUploadFetcherRetainedDelegateKey];
 
   [self uploadNextChunkWithOffset:offset
                 fetcherProperties:props];
@@ -419,9 +422,10 @@ totalBytesExpectedToSend:totalBytesExpectedToWrite];
                                          code:kGDataHTTPFetcherErrorChunkUploadFailed
                                      userInfo:nil];
 
-    [[self delegate] performSelector:networkFailedSEL_
-                          withObject:self
-                          withObject:error];
+    id delegate = [props valueForKey:kUploadFetcherRetainedDelegateKey];
+    [delegate performSelector:networkFailedSEL_
+                   withObject:self
+                   withObject:error];
 
     [self destroyChunkFetcher];
   } else {
@@ -470,9 +474,10 @@ totalBytesExpectedToSend:0];
 
   // we're done
   if (delegateFinishedSEL_) {
-    [delegate_ performSelector:delegateFinishedSEL_
-                    withObject:self
-                    withObject:data];
+    id delegate = [chunkFetcher propertyForKey:kUploadFetcherRetainedDelegateKey];
+    [delegate performSelector:delegateFinishedSEL_
+                   withObject:self
+                   withObject:data];
   }
 
   [self destroyChunkFetcher];
@@ -492,8 +497,10 @@ totalBytesExpectedToSend:0];
     // object fetcher failure
     if (statusFailedSEL_) {
       // not retrying, call status failure callback
+      id delegate = [chunkFetcher propertyForKey:kUploadFetcherRetainedDelegateKey];
+
       [self invokeStatusCallback:statusFailedSEL_
-                          target:delegate_
+                          target:delegate
                           status:status
                             data:data];
 
@@ -560,9 +567,10 @@ totalBytesExpectedToSend:0];
   // this is fatal; handle the same as we would a failure of the original
   // object fetcher
   if (networkFailedSEL_) {
-    [delegate_ performSelector:networkFailedSEL_
-                    withObject:self
-                    withObject:error];
+    id delegate = [chunkFetcher propertyForKey:kUploadFetcherRetainedDelegateKey];
+    [delegate performSelector:networkFailedSEL_
+                   withObject:self
+                   withObject:error];
   }
 
   [self destroyChunkFetcher];
@@ -578,11 +586,12 @@ totalBytesExpectedToSend:0];
   }
 
   if (retrySEL_) {
-
     // call the client with the upload fetcher as the sender (not the chunk
     // fetcher) to find out if it wants to retry
+    id delegate = [chunkFetcher propertyForKey:kUploadFetcherRetainedDelegateKey];
+
     willRetry = [self invokeRetryCallback:retrySEL_
-                                   target:delegate_
+                                   target:delegate
                                 willRetry:willRetry
                                     error:error];
   }
@@ -619,7 +628,8 @@ totalBytesExpectedToSend:0];
        totalBytesSent:(NSInteger)totalBytesSent
 totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
-  if (delegate_ && delegateSentDataSEL_) {
+  id delegate = [fetcher propertyForKey:kUploadFetcherRetainedDelegateKey];
+  if (delegate && delegateSentDataSEL_) {
     // the actual total bytes sent include the initial XML sent, plus the
     // offset into the batched data prior to this fetcher
     totalBytesSent += initialBodySent_ + currentOffset_;
@@ -629,7 +639,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     totalBytesExpected = initialBodyLength_ + [self fullUploadLength];
 
     [self invokeSentDataCallback:delegateSentDataSEL_
-                          target:delegate_
+                          target:delegate
                  didSendBodyData:bytesSent
                totalBytesWritten:totalBytesSent
        totalBytesExpectedToWrite:totalBytesExpected];
@@ -660,12 +670,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   if (isPaused_) {
     isPaused_ = NO;
 
-    // since we'll be retaining the delegate when we start uploading,
-    // we require it as an argument to avoid relying on the unretained
-    // one we already have
-    [self setDelegate:delegate];
-
-    [self uploadNextChunkWithOffset:kQueryServerForOffset];
+    [self uploadNextChunkWithOffset:kQueryServerForOffset
+                           delegate:delegate];
   }
 }
 

@@ -799,7 +799,19 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
   if (downloadFileHandle_ != nil) {
     // append to file
-    [downloadFileHandle_ writeData:data];
+    @try {
+      [downloadFileHandle_ writeData:data];
+    }
+    @catch (NSException *exc) {
+      // couldn't write to file, probably due to a full disk
+      NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[exc reason]
+                                                           forKey:NSLocalizedDescriptionKey];
+      NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherStatusDomain
+                                           code:kGDataHTTPFetcherErrorFileHandleException
+                                       userInfo:userInfo];
+      [self connection:connection didFailWithError:error];
+      return;
+    }
   } else {
     // append to mutable data
     [downloadedData_ appendData:data];
@@ -832,18 +844,26 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 
     NSData *cachedData = [fetchHistory_ cachedDataForRequest:request_];
     if (cachedData) {
+      // forge the status to pass on to the delegate
+      status = 200;
+
       // copy our stored data, and forge the status to pass on to the delegate
       if (downloadFileHandle_ != nil) {
-        // Downloading to a file handle won't save to the cache (the data is
-        // likely inappropriately large for caching), but will still read from
-        // the cache, on the unlikely chance that the response was Not Modified
-        // and the URL response was indeed present in the cache.
-        [downloadFileHandle_ truncateFileAtOffset:0];
-        [downloadFileHandle_ writeData:cachedData];
+        @try {
+          // Downloading to a file handle won't save to the cache (the data is
+          // likely inappropriately large for caching), but will still read from
+          // the cache, on the unlikely chance that the response was Not Modified
+          // and the URL response was indeed present in the cache.
+          [downloadFileHandle_ truncateFileAtOffset:0];
+          [downloadFileHandle_ writeData:cachedData];
+        }
+        @catch (NSException * e) {
+          // Failed to write data, likely due to lack of disk space
+          status = kGDataHTTPFetcherErrorFileHandleException;
+        }
       } else {
         [downloadedData_ setData:cachedData];
       }
-      status = 200;
     }
   }
   return status;
@@ -877,7 +897,7 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   BOOL shouldStopFetching = YES;
 
   // if there's an error status, retry or notify the client
-  if (status >= 300) {
+  if (status < 0 || status >= 300) {
 
     if ([self shouldRetryNowForStatus:status error:nil]) {
       // retrying
