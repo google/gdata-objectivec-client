@@ -72,7 +72,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://www.google.com/calendar/feeds/"; 
+  return @"https://www.google.com/calendar/feeds/"; 
 }
 
 + (NSString *)defaultServiceVersion {

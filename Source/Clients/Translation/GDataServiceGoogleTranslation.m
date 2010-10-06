@@ -53,7 +53,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://translate.google.com/toolkit/feeds/";
+  return @"https://translate.google.com/toolkit/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {
