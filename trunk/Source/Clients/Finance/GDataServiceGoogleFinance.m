@@ -49,7 +49,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://finance.google.com/finance/feeds/"; 
+  return @"https://finance.google.com/finance/feeds/"; 
 }
 
 + (NSString *)defaultServiceVersion {

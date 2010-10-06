@@ -31,7 +31,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-_EXTERN NSString* const kGDataGoogleFinanceDefaultPortfoliosFeed _INITIALIZE_AS(@"http://finance.google.com/finance/feeds/default/portfolios");
+_EXTERN NSString* const kGDataGoogleFinanceDefaultPortfoliosFeed _INITIALIZE_AS(@"https://finance.google.com/finance/feeds/default/portfolios");
 
 @class GDataQueryFinance;
 

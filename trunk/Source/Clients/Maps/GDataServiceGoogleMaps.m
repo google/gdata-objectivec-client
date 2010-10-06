@@ -71,7 +71,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://maps.google.com/maps/feeds/";
+  return @"https://maps.google.com/maps/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {

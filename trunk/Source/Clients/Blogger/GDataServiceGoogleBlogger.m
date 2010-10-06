@@ -91,7 +91,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://www.blogger.com/feeds/";
+  return @"https://www.blogger.com/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {

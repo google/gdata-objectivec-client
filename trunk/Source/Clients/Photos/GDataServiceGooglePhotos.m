@@ -33,7 +33,7 @@
                          photoID:(NSString *)photoIDorNil
                             kind:(NSString *)feedKindOrNil
                           access:(NSString *)accessOrNil {
-  
+
   NSString *albumID = @"";
   if (albumIDorNil) {
     albumID = [NSString stringWithFormat:@"/albumid/%@",
@@ -50,38 +50,38 @@
   if (photoIDorNil) {
     photo = [NSString stringWithFormat:@"/photoid/%@", photoIDorNil];
   }
-  
+
   // make an array for the kind and access query params, and join the arra items
   // into a query string
   NSString *query = @"";
   NSMutableArray *queryItems = [NSMutableArray array];
   if (feedKindOrNil) {
     feedKindOrNil = [GDataUtilities stringByURLEncodingStringParameter:feedKindOrNil];
-    
+
     NSString *kindStr = [NSString stringWithFormat:@"kind=%@", feedKindOrNil];
     [queryItems addObject:kindStr];
   }
-  
+
   if (accessOrNil) {
     accessOrNil = [GDataUtilities stringByURLEncodingStringParameter:accessOrNil];
-    
+
     NSString *accessStr = [NSString stringWithFormat:@"access=%@", accessOrNil];
     [queryItems addObject:accessStr];
   }
-  
+
   if ([queryItems count]) {
     NSString *queryList = [queryItems componentsJoinedByString:@"&"];
-    
+
     query = [NSString stringWithFormat:@"?%@", queryList];
   }
-  
+
   NSString *root = [self serviceRootURLString];
-  
+
   NSString *template = @"%@feed/api/user/%@%@%@%@%@";
   NSString *urlString = [NSString stringWithFormat:template,
                          root, [GDataUtilities stringByURLEncodingForURI:userID],
                          albumID, albumName, photo, query];
-  
+
   return [NSURL URLWithString:urlString];
 }
 
@@ -104,7 +104,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://photos.googleapis.com/data/"; 
+  return @"https://photos.googleapis.com/data/";
 }
 
 + (NSString *)defaultServiceVersion {

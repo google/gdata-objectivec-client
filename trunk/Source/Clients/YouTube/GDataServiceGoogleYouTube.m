@@ -29,12 +29,12 @@
 @implementation GDataServiceGoogleYouTube
 
 - (void)dealloc {
-  [developerKey_ release]; 
+  [developerKey_ release];
   [super dealloc];
 }
 
 + (NSURL *)youTubeURLForFeedID:(NSString *)feedID {
-  
+
   // like
   //
   //   http://gdata.youtube.com/feeds/api/videos
@@ -44,21 +44,21 @@
   //   http://gdata.youtube.com/feeds/api/standardfeeds/feedid
   //
   // See http://code.google.com/apis/youtube/2.0/reference.html#Standard_feeds for feed IDs
-  
+
   NSString *endPart;
-  
+
   if (feedID == nil) {
     endPart = @"videos";
   } else {
-    endPart = [NSString stringWithFormat:@"standardfeeds/%@", feedID]; 
+    endPart = [NSString stringWithFormat:@"standardfeeds/%@", feedID];
   }
-  
+
   NSString *root = [self serviceRootURLString];
-  
+
   NSString *template = @"%@api/%@";
-  
+
   NSString *urlString = [NSString stringWithFormat:template, root, endPart];
-  
+
   return [NSURL URLWithString:urlString];
 }
 
@@ -71,21 +71,21 @@
 
   NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
   NSString *endPart;
-  
+
   if (feedID == nil) {
     endPart = @"";
   } else {
-    endPart = [NSString stringWithFormat:@"/%@", feedID]; 
+    endPart = [NSString stringWithFormat:@"/%@", feedID];
   }
-  
+
   NSString *root = [self serviceRootURLString];
-  
+
   NSString *template = @"%@api/users/%@%@";
-  
-  NSString *urlString = [NSString stringWithFormat:template, root, 
+
+  NSString *urlString = [NSString stringWithFormat:template, root,
     encodedUserID, endPart];
-  
-  return [NSURL URLWithString:urlString];  
+
+  return [NSURL URLWithString:urlString];
 }
 
 + (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID {
@@ -128,7 +128,7 @@
 }
 
 - (NSString *)youTubeDeveloperKey {
-  return developerKey_; 
+  return developerKey_;
 }
 
 - (void)setYouTubeDeveloperKey:(NSString *)str {
@@ -140,7 +140,7 @@
 
 // overrides of the superclass
 
-- (NSMutableURLRequest *)requestForURL:(NSURL *)url 
+- (NSMutableURLRequest *)requestForURL:(NSURL *)url
                                   ETag:(NSString *)etag
                             httpMethod:(NSString *)httpMethod
                                 ticket:(GDataServiceTicketBase *)ticket {
@@ -150,15 +150,15 @@
                                                  ETag:etag
                                            httpMethod:httpMethod
                                                ticket:ticket];
-  
+
   // set the developer key, if any
   NSString *developerKey = [self youTubeDeveloperKey];
   if ([developerKey length] > 0) {
-    
+
     NSString *value = [NSString stringWithFormat:@"key=%@", developerKey];
     [request setValue:value forHTTPHeaderField:@"X-GData-Key"];
   }
-  
+
   return request;
 }
 
@@ -170,7 +170,7 @@
 
 - (NSString *)signInDomain {
   if (signInDomain_) {
-    return signInDomain_; 
+    return signInDomain_;
   }
   return @"www.google.com/youtube";
 }
@@ -180,7 +180,7 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"http://gdata.youtube.com/feeds/"; 
+  return @"https://gdata.youtube.com/feeds/";
 }
 
 + (NSString *)serviceUploadRootURLString {
