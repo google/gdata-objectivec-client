@@ -18,7 +18,7 @@
 //
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE \
-     || GDATA_INCLUDE_PHOTOS_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
+  || GDATA_INCLUDE_PHOTOS_SERVICE || GDATA_INCLUDE_YOUTUBE_SERVICE
 
 // GDataGeo encapsulates three flavors of geo location in XML: W3X, GeoRSS,
 // and GeoGML.  Each flavor requires a separate subclass of GDataGeo for
@@ -51,10 +51,10 @@ _EXTERN NSString* const kGDataNamespaceGeoRSSPrefix _INITIALIZE_AS(@"georss");
 _EXTERN NSString* const kGDataNamespaceGeoGML       _INITIALIZE_AS(@"http://www.opengis.net/gml");
 _EXTERN NSString* const kGDataNamespaceGeoGMLPrefix _INITIALIZE_AS(@"gml");
 
-@interface GDataGeoRSSFeatureName : GDataValueElementConstruct
+@interface GDataGeoRSSFeatureName : GDataValueElementConstruct <GDataExtension>
 @end
 
-@interface GDataGeoRSSRadius : GDataValueElementConstruct
+@interface GDataGeoRSSRadius : GDataValueElementConstruct <GDataExtension>
 @end
 
 @interface GDataGeo : GDataObject <NSCopying> {
