@@ -405,6 +405,7 @@ const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
     }
     [connection_ start];
   }
+  hasConnectionEnded_ = NO;
 
   if (!connection_) {
     NSAssert(connection_ != nil, @"beginFetchWithDelegate could not create a connection");
@@ -497,8 +498,11 @@ CannotBeginFetch:
     NSURLConnection* oldConnection = connection_;
     connection_ = nil;
 
+    if (!hasConnectionEnded_) {
+      [oldConnection cancel];
+    }
+
     // this may be called in a callback from the connection, so use autorelease
-    [oldConnection cancel];
     [oldConnection autorelease];
 
     // send the stopped notification
@@ -870,7 +874,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-// skip caching ETagged results when the data is being saved to a file
+  hasConnectionEnded_ = YES;
+
+  // skip caching ETagged results when the data is being saved to a file
   if (downloadFileHandle_ == nil) {
     [fetchHistory_ updateFetchHistoryWithRequest:request_
                                         response:response_
@@ -954,7 +960,6 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-
   // prevent the failure callback from being called twice, since the stopFetch
   // call below (either the explicit one at the end of this method, or the
   // implicit one when the retry occurs) will release the delegate
@@ -963,6 +968,9 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   // if this method was invoked indirectly by cancellation of an authentication
   // challenge, defer this until it is called again with the proper error object
   if (isCancellingChallenge_) return;
+
+  // we no longer need to cancel the connection
+  hasConnectionEnded_ = YES;
 
   [self logNowWithError:error];
 
