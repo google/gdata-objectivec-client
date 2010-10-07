@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.10 (564 classes) 2010-04-09 12:35:17 -0700
+// com.google.GDataFramework v. 1.10 (563 classes) 2010-10-07 11:33:46 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -295,7 +295,9 @@
   #define GDataGenerator                          _GDATA_NS_SYMBOL(GDataGenerator)
   #define GDataGeo                                _GDATA_NS_SYMBOL(GDataGeo)
   #define GDataGeoPt                              _GDATA_NS_SYMBOL(GDataGeoPt)
+  #define GDataGeoRSSFeatureName                  _GDATA_NS_SYMBOL(GDataGeoRSSFeatureName)
   #define GDataGeoRSSPoint                        _GDATA_NS_SYMBOL(GDataGeoRSSPoint)
+  #define GDataGeoRSSRadius                       _GDATA_NS_SYMBOL(GDataGeoRSSRadius)
   #define GDataGeoRSSWhere                        _GDATA_NS_SYMBOL(GDataGeoRSSWhere)
   #define GDataGeoW3CPoint                        _GDATA_NS_SYMBOL(GDataGeoW3CPoint)
   #define GDataGoogleBaseAttribute                _GDATA_NS_SYMBOL(GDataGoogleBaseAttribute)
@@ -374,7 +376,6 @@
   #define GDataPhotoAlbumTitle                    _GDATA_NS_SYMBOL(GDataPhotoAlbumTitle)
   #define GDataPhotoBytesUsed                     _GDATA_NS_SYMBOL(GDataPhotoBytesUsed)
   #define GDataPhotoChecksum                      _GDATA_NS_SYMBOL(GDataPhotoChecksum)
-  #define GDataPhotoClient                        _GDATA_NS_SYMBOL(GDataPhotoClient)
   #define GDataPhotoCommentCount                  _GDATA_NS_SYMBOL(GDataPhotoCommentCount)
   #define GDataPhotoCommentingEnabled             _GDATA_NS_SYMBOL(GDataPhotoCommentingEnabled)
   #define GDataPhotoConstants                     _GDATA_NS_SYMBOL(GDataPhotoConstants)
@@ -382,12 +383,10 @@
   #define GDataPhotoHeight                        _GDATA_NS_SYMBOL(GDataPhotoHeight)
   #define GDataPhotoLocation                      _GDATA_NS_SYMBOL(GDataPhotoLocation)
   #define GDataPhotoMaxPhotosPerAlbum             _GDATA_NS_SYMBOL(GDataPhotoMaxPhotosPerAlbum)
-  #define GDataPhotoName                          _GDATA_NS_SYMBOL(GDataPhotoName)
   #define GDataPhotoNickname                      _GDATA_NS_SYMBOL(GDataPhotoNickname)
   #define GDataPhotoNumberLeft                    _GDATA_NS_SYMBOL(GDataPhotoNumberLeft)
   #define GDataPhotoNumberUsed                    _GDATA_NS_SYMBOL(GDataPhotoNumberUsed)
   #define GDataPhotoPhotoID                       _GDATA_NS_SYMBOL(GDataPhotoPhotoID)
-  #define GDataPhotoPosition                      _GDATA_NS_SYMBOL(GDataPhotoPosition)
   #define GDataPhotoQuotaLimit                    _GDATA_NS_SYMBOL(GDataPhotoQuotaLimit)
   #define GDataPhotoQuotaUsed                     _GDATA_NS_SYMBOL(GDataPhotoQuotaUsed)
   #define GDataPhotoRotation                      _GDATA_NS_SYMBOL(GDataPhotoRotation)
@@ -398,7 +397,6 @@
   #define GDataPhotoTimestamp                     _GDATA_NS_SYMBOL(GDataPhotoTimestamp)
   #define GDataPhotoTruncated                     _GDATA_NS_SYMBOL(GDataPhotoTruncated)
   #define GDataPhotoUser                          _GDATA_NS_SYMBOL(GDataPhotoUser)
-  #define GDataPhotoVersion                       _GDATA_NS_SYMBOL(GDataPhotoVersion)
   #define GDataPhotoVideoStatus                   _GDATA_NS_SYMBOL(GDataPhotoVideoStatus)
   #define GDataPhotoWeight                        _GDATA_NS_SYMBOL(GDataPhotoWeight)
   #define GDataPhotoWidth                         _GDATA_NS_SYMBOL(GDataPhotoWidth)
@@ -577,6 +575,7 @@
   #define GDataYouTubePrivate                     _GDATA_NS_SYMBOL(GDataYouTubePrivate)
   #define GDataYouTubePublicationState            _GDATA_NS_SYMBOL(GDataYouTubePublicationState)
   #define GDataYouTubeQueryString                 _GDATA_NS_SYMBOL(GDataYouTubeQueryString)
+  #define GDataYouTubeRating                      _GDATA_NS_SYMBOL(GDataYouTubeRating)
   #define GDataYouTubeRecordedDate                _GDATA_NS_SYMBOL(GDataYouTubeRecordedDate)
   #define GDataYouTubeRelationship                _GDATA_NS_SYMBOL(GDataYouTubeRelationship)
   #define GDataYouTubeSchool                      _GDATA_NS_SYMBOL(GDataYouTubeSchool)
