@@ -224,7 +224,7 @@
   [pwaQuery1 setTag:@"dog"];
   
   NSURL* resultURL1 = [pwaQuery1 URL];
-  NSString *expected1 = @"http://photos.googleapis.com/data/feed/api/"
+  NSString *expected1 = @"https://photos.googleapis.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
     "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
@@ -239,7 +239,7 @@
   [pwaQuery2 setImageSize:kGDataGooglePhotosImageSizeDownloadable];
   
   NSURL* resultURL2 = [pwaQuery2 URL];
-  NSString *expected2 = @"http://photos.googleapis.com/data/feed/api/user/"
+  NSString *expected2 = @"https://photos.googleapis.com/data/feed/api/user/"
     "fredflintstone/album/froggy%20photos?imgmax=d";
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"PWA query 2 generation error");
@@ -252,7 +252,7 @@
   // test the generator for photo contact feed URLs
   NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@example.com"];
   NSString *contactsURLString = [contactsURL absoluteString];
-  NSString *expectedContactsURLString = @"http://photos.googleapis.com/data/feed/api/user/fred%40example.com/contacts?kind=user";
+  NSString *expectedContactsURLString = @"https://photos.googleapis.com/data/feed/api/user/fred%40example.com/contacts?kind=user";
   STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
                        @"contacts URL error");
 
@@ -264,7 +264,7 @@
                                                   photoID:nil];
   [pwaQuery3 setResultFormat:kGDataQueryResultServiceDocument];
   NSURL *resultURL3 = [pwaQuery3 URL];
-  NSString *expected3 = @"http://photos.googleapis.com/data/feed/api/user/fredflintstone?alt=atom-service";
+  NSString *expected3 = @"https://photos.googleapis.com/data/feed/api/user/fredflintstone?alt=atom-service";
   STAssertEqualObjects([resultURL3 absoluteString], expected3,
                        @"PWA query 3 generation error");
 }
@@ -283,7 +283,7 @@
   [mapsQuery1 setRadius:33.3];
   [mapsQuery1 setSortBy:@"distance"];
   NSURL *resultURL1 = [mapsQuery1 URL];
-  NSString *expected1 = @"http://maps.google.com/maps/feeds/maps/default/full?"
+  NSString *expected1 = @"https://maps.google.com/maps/feeds/maps/default/full?"
     "box=1%2C2%2C3%2C4&lat=12.300000&lng=23.400000&"
     "mq=%5Bpool%3Atrue%5D%5Bprice%3Abudget%5D&previd=pid&"
     "radius=33.300000&sortby=distance";
@@ -293,7 +293,7 @@
   mapsQuery2 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
   [mapsQuery2 setBoxWithWest:10 south:20 east:30 north:40];
   NSURL *resultURL2 = [mapsQuery2 URL];
-  NSString *expected2 = @"http://maps.google.com/maps/feeds/maps/default/full?"
+  NSString *expected2 = @"https://maps.google.com/maps/feeds/maps/default/full?"
     "box=10.000000%2C20.000000%2C30.000000%2C40.000000";
   STAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"Maps Query 2 generation error");
@@ -321,7 +321,7 @@
   [ytQuery1 setUploader:@"foo"];
   
   NSURL* resultURL1 = [ytQuery1 URL];
-  NSString *expected1 = @"http://gdata.youtube.com/feeds/api/users/fred/"
+  NSString *expected1 = @"https://gdata.youtube.com/feeds/api/users/fred/"
     "favorites?caption=true&format=0%2C5%2C6&inline=true&location=Canada&"
     "location-radius=2km&lr=en&orderby=relevance&q=%22Fred+Flintstone%22&"
     "restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo";
@@ -355,7 +355,7 @@
   [query1 setShouldIncludeTransactions:NO];
 
   NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://finance.google.com/finance/feeds/user%40example.com/portfolios";
+  NSString *expected1 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios";
   STAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Finance query 1 generation error");
   
@@ -367,7 +367,7 @@
   [query2 setShouldIncludeTransactions:YES];
   
   NSURL *resultURL2 = [query2 URL];
-  NSString *expected2 = @"http://finance.google.com/finance/feeds/user%40example.com/portfolios?positions=true&returns=true&transactions=true";
+  NSString *expected2 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios?positions=true&returns=true&transactions=true";
   
   STAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Finance query 2 generation error");
