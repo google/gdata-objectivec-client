@@ -95,41 +95,38 @@ _EXTERN NSString* const kGDataOAuthSignatureMethodRSA_SHA1  _INITIALIZE_AS(@"RSA
 // timestamp (seconds since 1970) and nonce (random number) are generated
 // uniquely for each request, except during testing, when they may be set
 // explicitly
-//
-// Note: we're using "assign" for these since they're stored inside
-//       the dictionary of param values rather than retained by ivars.
-@property (nonatomic, assign) NSString *scope;
-@property (nonatomic, assign) NSString *displayName;
-@property (nonatomic, assign) NSString *hostedDomain;
-@property (nonatomic, assign) NSString *domain;
-@property (nonatomic, assign) NSString *iconURLString;
-@property (nonatomic, assign) NSString *language;
-@property (nonatomic, assign) NSString *mobile;
-@property (nonatomic, assign) NSString *consumerKey;
-@property (nonatomic, assign) NSString *signatureMethod;
-@property (nonatomic, assign) NSString *version;
-@property (nonatomic, assign) NSString *token;
-@property (nonatomic, assign) NSString *callback;
-@property (nonatomic, assign) NSString *verifier;
-@property (nonatomic, assign) NSString *tokenSecret;
-@property (nonatomic, assign) NSString *callbackConfirmed;
-@property (nonatomic, assign) NSString *timestamp;
-@property (nonatomic, assign) NSString *nonce;
+@property (nonatomic, copy) NSString *scope;
+@property (nonatomic, copy) NSString *displayName;
+@property (nonatomic, copy) NSString *hostedDomain;
+@property (nonatomic, copy) NSString *domain;
+@property (nonatomic, copy) NSString *iconURLString;
+@property (nonatomic, copy) NSString *language;
+@property (nonatomic, copy) NSString *mobile;
+@property (nonatomic, copy) NSString *consumerKey;
+@property (nonatomic, copy) NSString *signatureMethod;
+@property (nonatomic, copy) NSString *version;
+@property (nonatomic, copy) NSString *token;
+@property (nonatomic, copy) NSString *callback;
+@property (nonatomic, copy) NSString *verifier;
+@property (nonatomic, copy) NSString *tokenSecret;
+@property (nonatomic, copy) NSString *callbackConfirmed;
+@property (nonatomic, copy) NSString *timestamp;
+@property (nonatomic, copy) NSString *nonce;
 
 // other standard non-parameter OAuth protocol properties
 @property (nonatomic, copy) NSString *realm;
 @property (nonatomic, copy) NSString *privateKey;
 
 // service identifier, like "Google"; not used for authentication or signing
-@property (nonatomic, assign) NSString *serviceProvider;
+@property (nonatomic, copy) NSString *serviceProvider;
 
 // user email and verified status; not used for authentication or signing
 //
 // The verified string can be checked with -boolValue. If the result is false,
 // then the email address is listed with the account on the server, but the
 // address has not been confirmed as belonging to the owner of the account.
-@property (nonatomic, assign) NSString *userEmail;
-@property (nonatomic, assign) NSString *userEmailIsVerified;
+@property (nonatomic, copy) NSString *userEmail;
+@property (nonatomic, copy) NSString *userEmailIsVerified;
 
 // property for using a previously-authorized access token
 @property (nonatomic, copy) NSString *accessToken;
