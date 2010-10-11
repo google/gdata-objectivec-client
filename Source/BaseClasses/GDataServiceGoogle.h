@@ -41,7 +41,8 @@ _EXTERN NSString* const kGDataServiceDefaultUser _INITIALIZE_AS(@"default");
 _EXTERN NSString* const kGDataServiceAuthTokenKey _INITIALIZE_AS(@"Auth");
 
 enum {
-  kGDataBadAuthentication = 403
+  kGDataBadAuthentication = 403,
+  kGDataExpectationFailed = 417
 };
 
 @interface NSDictionary (GDataServiceGoogleAdditions)

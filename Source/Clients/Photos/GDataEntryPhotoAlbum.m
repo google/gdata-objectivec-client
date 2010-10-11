@@ -74,7 +74,6 @@
     { @"commentsEnabled", @"commentsEnabled", kGDataDescValueLabeled },
     { @"date",            @"timestamp",       kGDataDescValueLabeled },
     { @"location",        @"location",        kGDataDescValueLabeled },
-    { @"name",            @"name",            kGDataDescValueLabeled },
     { @"nickname",        @"nickname",        kGDataDescValueLabeled },
     { @"photosLeft",      @"photosLeft",      kGDataDescValueLabeled },
     { @"photosUsed",      @"photosUsed",      kGDataDescValueLabeled },
