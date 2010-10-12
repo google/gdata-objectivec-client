@@ -883,7 +883,9 @@ static NSString* gLoggingProcessName = nil;
   NSUInteger maxKeyLen = [maxKeyNum unsignedIntValue];
 
   NSMutableString *str = [NSMutableString string];
-  for (NSString *key in keys) {
+  NSEnumerator *keyEnum = [keys objectEnumerator];
+  NSString *key;
+  while ((key = [keyEnum nextObject]) != nil) {
     NSString *value = [dict valueForKey:key];
     [str appendFormat:@"%*s: %@\n", maxKeyLen, [key UTF8String], value];
   }
