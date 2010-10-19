@@ -913,9 +913,11 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     } else if (statusFailedSEL_ == kUnifiedFailureCallback) {
       // not retrying, and no separate status callback, so call the
       // sole failure selector or the completion block
-      NSDictionary *userInfo =
-        [NSDictionary dictionaryWithObject:downloadedData_
-                                    forKey:kGDataHTTPFetcherStatusDataKey];
+      NSDictionary *userInfo = nil;
+      if (downloadedData_) {
+        userInfo = [NSDictionary dictionaryWithObject:downloadedData_
+                                               forKey:kGDataHTTPFetcherStatusDataKey];
+      }
 
       NSError *error = [NSError errorWithDomain:kGDataHTTPFetcherStatusDomain
                                            code:status
