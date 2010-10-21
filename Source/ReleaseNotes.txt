@@ -29,6 +29,8 @@ Changes
 - Contacts API setters now replace empty strings with nil, and birthday
   now has an NSDate getter/setter
 
+- OAuth tokens are stripped from http fetcher logs
+
 Bugs Fixed
 
 - Fixed signing of OAuth paths with non-alphanumeric characters
