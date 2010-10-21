@@ -162,6 +162,7 @@ static NSString* gLoggingProcessName = nil;
 // formattedStringFromData returns a prettyprinted string for XML input,
 // and a plain string for other input data
 - (NSString *)formattedStringFromData:(NSData *)inputData {
+  if (inputData == nil) return nil;
 
 #if !GDATA_FOUNDATION_ONLY && !GDATA_SKIP_LOG_XMLFORMAT
   // verify that this data starts with the bytes indicating XML
@@ -361,7 +362,12 @@ static NSString* gLoggingProcessName = nil;
 
   // file name for the "formatted" (raw) data file
   NSString *responseDataFormattedFileName = nil;
-  NSUInteger responseDataLength = [downloadedData_ length];
+  NSUInteger responseDataLength;
+  if (downloadFileHandle_) {
+    responseDataLength = [downloadFileHandle_ offsetInFile];
+  } else {
+    responseDataLength = [downloadedData_ length];
+  }
 
   NSURLResponse *response = [self response];
   NSDictionary *responseHeaders = [self responseHeaders];
@@ -432,7 +438,7 @@ static NSString* gLoggingProcessName = nil;
 
     // if we have an extension, save the raw data in a file with that
     // extension to be our "formatted" display file
-    if (responseDataExtn) {
+    if (responseDataExtn && downloadedData_) {
       responseDataFormattedFileName = [responseBaseName stringByAppendingPathExtension:responseDataExtn];
       NSString *formattedFilePath = [logDirectory stringByAppendingPathComponent:responseDataFormattedFileName];
 
