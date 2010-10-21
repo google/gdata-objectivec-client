@@ -91,10 +91,6 @@
 }
 
 + (NSString *)serviceRootURLString {
-  return @"https://www.blogger.com/feeds/";
-}
-
-+ (NSString *)authorizationScope {
   // once the Blogger API returns https links for https feed requests,
   // we can remove this special auth scope (Google bug 3107203)
   return @"http://www.blogger.com/feeds/";
