@@ -397,12 +397,14 @@ childWithStringValueIfNonEmpty:valueListStr
     [object removeObject:oldGeo forExtensionClass:[oldGeo class]];
   }
 
-  // GDataGeo itself lacks support for the GDataExtension protocol;
-  // only instances of its subclasses can be used as extensions
-  GDATA_ASSERT(![geo isMemberOfClass:[GDataGeo class]],
-               @"setGeoLocation requires an instance of a subclass of GDataGeo");
+  if (geo) {
+    // GDataGeo itself lacks support for the GDataExtension protocol;
+    // only instances of its subclasses can be used as extensions
+    GDATA_ASSERT(![geo isMemberOfClass:[GDataGeo class]],
+              @"setGeoLocation requires an instance of a subclass of GDataGeo");
 
-  [object setObject:geo forExtensionClass:[geo class]];
+    [object setObject:geo forExtensionClass:[geo class]];
+  }
 }
 
 @end
