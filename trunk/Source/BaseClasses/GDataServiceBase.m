@@ -593,7 +593,13 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
       uploadChunkSize = kMinimumUploadChunkSize;
     }
 
+#ifdef GDATA_TARGET_NAMESPACE
+    // prepend the class name prefix
+    Class uploadClass = NSClassFromString(@GDATA_TARGET_NAMESPACE_STRING
+                                          "_GDataHTTPUploadFetcher");
+#else
     Class uploadClass = NSClassFromString(@"GDataHTTPUploadFetcher");
+#endif
     GDATA_ASSERT(uploadClass != nil, @"GDataHTTPUploadFetcher needed");
 
     NSString *uploadMIMEType = [objectToPost uploadMIMEType];
@@ -838,8 +844,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     // entries
     BOOL shouldIgnoreUnknowns = ([ticket shouldFeedsIgnoreUnknowns]
                                  && [objectClass isSubclassOfClass:[GDataFeedBase class]]);
-
-    // create a local pool to avoid buildup of objects from parsing feeds
 
     object = [[objectClass alloc] initWithXMLElement:root
                                               parent:nil

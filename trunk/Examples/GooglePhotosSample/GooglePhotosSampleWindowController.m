@@ -657,9 +657,12 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
                                                defaultMIMEType:@"image/jpeg"];
     [newEntry setPhotoMIMEType:mimeType];
 
-    // get the feed URL for the album we're inserting the photo into
-    GDataEntryPhotoAlbum *album = [self selectedAlbum];
-    NSURL *feedURL = [[album feedLink] URL];
+    // the slug is just the upload file's filename
+    [newEntry setUploadSlug:photoName];
+
+    // get the upload URL for the album we're inserting the photo into
+    GDataFeedPhotoAlbum *albumFeedOfPhotos = [self photoFeed];
+    NSURL *uploadURL = [[albumFeedOfPhotos uploadLink] URL];
 
     // to upload to the account's Drop Box, instead of using an album's
     // feedLink, insert directly to this URL:
@@ -679,7 +682,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // insert the entry into the album feed
     GDataServiceTicket *ticket;
     ticket = [service fetchEntryByInsertingEntry:newEntry
-                                      forFeedURL:feedURL
+                                      forFeedURL:uploadURL
                                         delegate:self
                                didFinishSelector:@selector(addPhotoTicket:finishedWithEntry:error:)];
 
