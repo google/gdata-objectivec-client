@@ -111,6 +111,10 @@
   return kGDataPhotosDefaultServiceVersion;
 }
 
++ (NSUInteger)defaultServiceUploadChunkSize {
+  return kGDataStandardUploadChunkSize;
+}
+
 + (NSDictionary *)standardServiceNamespaces {
   return [GDataPhotoConstants photoNamespaces];
 }
