@@ -22,7 +22,7 @@
 //
 // When would you use this instead of NSURLConnection?
 //
-// - When you just want the result from a GET or POST
+// - When you just want the result from a GET, POST, or PUT
 // - When you want the "standard" behavior for connections (redirection handling
 //   an so on)
 // - When you want to avoid cookie collisions with Safari and other applications
@@ -34,11 +34,11 @@
 // for a second fetch.
 //
 // The fetcher may be created auto-released, in which case it will release
-// itself after the fetch completion callback.  The fetcher
-// is implicitly retained as long as a connection is pending.
+// itself after the fetch completion callback.  The fetcher is implicitly
+// retained as long as a connection is pending.
 //
-// But if you may need to cancel the fetcher, allocate it with initWithRequest:
-// and have the delegate release the fetcher in the callbacks.
+// But if you may need to cancel the fetcher, retain it and have the delegate
+// release the fetcher in the callbacks.
 //
 // Sample usage:
 //
@@ -80,6 +80,20 @@
 //        kGDataHTTPFetcherStatusDomain and code set to the server status.
 //
 //        Status codes are at <http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html>
+//
+//
+// Downloading to disk:
+//
+// To have downloaded data saved directly to disk, specify either a path for the
+// downloadPath setter, or a file handle for the downloadFileHandle setter.
+// When downloading to disk, callbacks will be passed a nil for the NSData*
+// arguments.
+//
+//
+// HTTP methods and headers:
+//
+// Alternative HTTP methods, like PUT, and custom headers can be specified by
+// creating the fetcher with an appropriate NSMutableURLRequest
 //
 //
 // Proxies:
@@ -147,12 +161,13 @@
 //
 //  - (void)myFetcher:(GDataHTTPFetcher *)fetcher receivedData:(NSData *)dataReceivedSoFar;
 //
-// The bytes received so far are [dataReceivedSoFar length]. This number may go
-// down if a redirect causes the download to begin again from a new server.
+// The number bytes received so far is available as [fetcher downloadedLength].
+// This number may go down if a redirect causes the download to begin again from
+// a new server.
 //
-// If supplied by the server, the anticipated total download size is available as
-//    [[myFetcher response] expectedContentLength] (may be -1 for unknown
-//    download sizes.)
+// If supplied by the server, the anticipated total download size is available
+// as [[myFetcher response] expectedContentLength] (and may be -1 for unknown
+// download sizes.)
 //
 //
 // Automatic retrying of fetches
@@ -329,7 +344,10 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSMutableURLRequest *request_;
   NSURLConnection *connection_;
   NSMutableData *downloadedData_;
+  NSString *downloadPath_;
+  NSString *temporaryDownloadPath_;
   NSFileHandle *downloadFileHandle_;
+  unsigned long long downloadedLength_;
   NSURLCredential *credential_;     // username & password
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
   NSData *postData_;
@@ -543,17 +561,29 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // return the http headers from the response
 - (NSDictionary *)responseHeaders;
 
+// path in which to non-atomically create a file for storing the downloaded data
+//
+// The path must be set before fetching begins.  The download file handle
+// and must be set before fetching begins.  Setting a download path will
+// override the file handle property.
+- (NSString *)downloadPath;
+- (void)setDownloadPath:(NSString *)str;
+
 // If downloadFileHandle is set, data received is immediately appended to
 // the file handle rather than being accumulated in the downloadedData
 //
 // The file handle supplied must allow writing and support seekToFileOffset:,
-// and must be set before downloading begins.
+// and must be set before fetching begins.  Setting a download path will
+// override the file handle property.
 - (NSFileHandle *)downloadFileHandle;
 - (void)setDownloadFileHandle:(NSFileHandle *)fileHandle;
 
 // the response, once it's been received
 - (NSURLResponse *)response;
 - (void)setResponse:(NSURLResponse *)response;
+
+// bytes downloaded so far
+- (unsigned long long)downloadedLength;
 
 // buffer of currently-downloaded data
 - (NSData *)downloadedData;
@@ -607,6 +637,11 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 // NSURLConnection.
 + (Class)connectionClass;
 + (void)setConnectionClass:(Class)theClass;
+
+// Spin the run loop, discarding events, until the fetch has completed
+//
+// This is only for use in testing or in tools without a user interface.
+- (void)waitForCompletionWithTimeout:(NSTimeInterval)timeoutInSeconds;
 
 #if STRIP_GDATA_FETCH_LOGGING
 // if logging is stripped, provide a stub for the main method
