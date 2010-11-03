@@ -34,12 +34,11 @@
 #pragma mark -
 
 + (GDataEXIFTag *)tagWithName:(NSString *)name
-                            value:(NSString *)value {
-  GDataEXIFTag *obj = [[[GDataEXIFTag alloc] init] autorelease];
-  
+                        value:(NSString *)value {
+  GDataEXIFTag *obj = [GDataEXIFTag valueWithString:value];
+
   NSString *qualifiedName = [NSString stringWithFormat:@"%@:%@",
-    kGDataNamespacePhotosEXIFPrefix, name];
-  
+                             kGDataNamespacePhotosEXIFPrefix, name];
   [obj setElementName:qualifiedName];
   return obj;
 }
@@ -140,10 +139,10 @@
 
 - (GDataEXIFTag *)tagWithName:(NSString *)name {
   NSArray *tags = [self tags];
-  NSEnumerator *tagsEnum = [tags objectEnumerator];
-  GDataEXIFTag *tag = nil;
-  while ((tag = [tagsEnum nextObject]) != nil) {
-    if ([[tag name] isEqual:name]) {
+  GDataEXIFTag *tag;
+
+  GDATA_FOREACH(tag, tags) {
+    if (AreEqualOrBothNil([tag name], name)) {
       break;
     }
   }
@@ -162,12 +161,11 @@
 }
 
 - (void)setTagWithName:(NSString *)name
-                 textValue:(NSString *)value {
-  
+             textValue:(NSString *)value {
   [self removeTagWithName:name];
-  
+
   GDataEXIFTag *newTag = [GDataEXIFTag tagWithName:name value:value];
-  
+
   [self addObject:newTag forExtensionClass:[GDataEXIFTag class]];
 }
 
