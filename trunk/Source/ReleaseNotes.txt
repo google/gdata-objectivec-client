@@ -7,9 +7,15 @@ Changes since 1.10.0
 
 Additions
 
+- Added download to a file path or a file handle in GDataHTTPFetcher
+
+- Added support for chunked uploads to Picasa Web Albums
+
 - Added keyed roles to ACLs
 
-- Added download to NSFileHandle in GDataHTTPFetcher
+- Added channel standard feeds URL generator, caption track format query
+  parameter and caption track derived element, and totalUploadViews statistics
+  attribute for YouTube
 
 Changes
 
@@ -17,14 +23,14 @@ Changes
 
 - Removed unused class GDataContactWebsite
 
-- Docs API no longer makes https optional
+- Most APIs now use https URLs
 
 - YouTube ratings are now yt:rating elements for like/dislike counts, not
   gd:rating elements
 
 - YouTube sample app has relaxed metadata requirements for uploading
 
-- YouTube API no longer uses client IDs
+- YouTube API no longer uses client IDs, and no longer uses a custom auth URL
 
 - Contacts API setters now replace empty strings with nil, and birthday
   now has an NSDate getter/setter
@@ -40,6 +46,10 @@ Bugs Fixed
 
 - Stop printing _cmd in a macro as a C-string to quiet a clang warning (thanks
   j abley)
+
+- Fixed exception when setting geo location to nil (thanks Kazz)
+
+- Fixed GDataEXIFTag's +tagWithName:
 
 
 Release 1.10.0

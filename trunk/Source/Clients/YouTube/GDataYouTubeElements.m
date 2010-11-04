@@ -74,6 +74,13 @@
 + (NSString *)extensionElementLocalName { return @"countHint"; }
 @end
 
+// caption track derivation, like <yt:derived>speechRecognition</yt:derived>
+@implementation GDataYouTubeDerived
++ (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"derived"; }
+@end
+
 // user's hobbies, like <yt:hobbies>Reading, skiing</yt:hobbies>
 @implementation GDataYouTubeHobbies
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }

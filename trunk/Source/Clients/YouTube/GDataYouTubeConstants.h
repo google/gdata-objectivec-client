@@ -106,6 +106,9 @@ _EXTERN NSString* const kGDataYouTubeUserEventFriendAdded           _INITIALIZE_
 _EXTERN NSString* const kGDataYouTubeRatingValueLike                _INITIALIZE_AS(@"like");
 _EXTERN NSString* const kGDataYouTubeRatingValueDislike             _INITIALIZE_AS(@"dislike");
 
+// derivations
+_EXTERN NSString* const kGDataYouTubeDerivedSpeechRecogniion        _INITIALIZE_AS(@"speechRecognition");
+
 @interface GDataYouTubeConstants : NSObject
 
 + (NSDictionary *)youTubeNamespaces;

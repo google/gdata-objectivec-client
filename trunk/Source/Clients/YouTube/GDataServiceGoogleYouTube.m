@@ -62,6 +62,17 @@
   return [NSURL URLWithString:urlString];
 }
 
++ (NSURL *)youTubeURLForChannelStandardFeeds {
+  // feed counterpart to http://www.youtube.com/channels
+  NSString *root = [self serviceRootURLString];
+
+  NSString *template = @"%@api/channelstandardfeeds";
+
+  NSString *urlString = [NSString stringWithFormat:template, root];
+
+  return [NSURL URLWithString:urlString];
+}
+
 + (NSURL *)youTubeURLForUserID:(NSString *)userID
                     userFeedID:(NSString *)feedID {
   // Make a URL like
@@ -166,13 +177,6 @@
 - (NSDictionary *)customAuthenticationRequestHeaders {
   return [NSDictionary dictionaryWithObject:@"application/x-www-form-urlencoded"
                                      forKey:@"Content-Type"];
-}
-
-- (NSString *)signInDomain {
-  if (signInDomain_) {
-    return signInDomain_;
-  }
-  return @"www.google.com/youtube";
 }
 
 + (NSString *)serviceID {

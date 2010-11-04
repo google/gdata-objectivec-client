@@ -48,6 +48,8 @@
 - (GDataDateTime *)lastWebAccess;
 - (void)setLastWebAccess:(GDataDateTime *)dateTime;
 
+- (NSNumber *)totalUploadViews;
+- (void)setTotalUploadViews:(NSNumber *)num;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE

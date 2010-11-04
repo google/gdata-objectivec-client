@@ -27,6 +27,7 @@ static NSString* const kVideoWatchCountAttr = @"videoWatchCount";
 static NSString* const kSubscriberCountAttr = @"subscriberCount";
 static NSString* const kFavoriteCountAttr = @"favoriteCount";
 static NSString* const kLastWebAccessAttr = @"lastWebAccess";
+static NSString* const kTotalUploadViewsAttr = @"totalUploadViews";
 
 @implementation GDataYouTubeStatistics 
 // <yt:statistics viewCount="2" 
@@ -47,7 +48,7 @@ static NSString* const kLastWebAccessAttr = @"lastWebAccess";
   NSArray *attrs = [NSArray arrayWithObjects: 
                     kViewCountAttr, kVideoWatchCountAttr,
                     kSubscriberCountAttr, kFavoriteCountAttr,
-                    kLastWebAccessAttr, nil];
+                    kLastWebAccessAttr, kTotalUploadViewsAttr, nil];
   
   [self addLocalAttributeDeclarations:attrs];
 }
@@ -113,6 +114,14 @@ static NSString* const kLastWebAccessAttr = @"lastWebAccess";
 
 - (void)setLastWebAccess:(GDataDateTime *)dateTime {
   [self setDateTimeValue:dateTime forAttribute:kLastWebAccessAttr];
+}
+
+- (NSNumber *)totalUploadViews {
+  return [self longLongNumberForAttribute:kTotalUploadViewsAttr];
+}
+
+- (void)setTotalUploadViews:(NSNumber *)num {
+  [self setStringValue:[num stringValue] forAttribute:kTotalUploadViewsAttr];
 }
 
 @end
