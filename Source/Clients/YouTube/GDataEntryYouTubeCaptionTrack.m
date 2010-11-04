@@ -21,6 +21,7 @@
 
 #import "GDataEntryYouTubeCaptionTrack.h"
 #import "GDataYouTubeConstants.h"
+#import "GDataYouTubeElements.h"
 
 @implementation GDataEntryYouTubeCaptionTrack
 
@@ -46,6 +47,9 @@
 - (void)addExtensionDeclarations {
 
   [super addExtensionDeclarations];
+
+  [self addExtensionDeclarationForParentClass:[self class]
+                                   childClass:[GDataYouTubeDerived class]];
 
   // the publication state element is an extension to the Atom publishing
   // control element
@@ -90,6 +94,16 @@
 
   [atomPubControl setObject:obj
           forExtensionClass:[GDataYouTubePublicationState class]];
+}
+
+- (NSString *)derived {
+  GDataYouTubeDerived *obj = [self objectForExtensionClass:[GDataYouTubeDerived class]];
+  return [obj stringValue];
+}
+
+- (void)setDerived:(NSString *)str {
+  GDataYouTubeDerived *obj = [GDataYouTubeDerived valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataYouTubeDerived class]];
 }
 
 @end

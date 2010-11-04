@@ -29,6 +29,8 @@
 - (GDataYouTubePublicationState *)publicationState;
 - (void)setGDataYouTubePublicationState:(GDataYouTubePublicationState *)obj;
 
+- (NSString *)derived;
+- (void)setDerived:(NSString *)str;
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
