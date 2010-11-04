@@ -85,7 +85,7 @@
 // Downloading to disk:
 //
 // To have downloaded data saved directly to disk, specify either a path for the
-// downloadPath setter, or a file handle for the downloadFileHandle setter.
+// downloadPath property, or a file handle for the downloadFileHandle property.
 // When downloading to disk, callbacks will be passed a nil for the NSData*
 // arguments.
 //

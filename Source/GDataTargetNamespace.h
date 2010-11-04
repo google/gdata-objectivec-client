@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.10 (563 classes) 2010-10-07 11:33:46 -0700
+// com.google.GDataFramework v. 1.10 (564 classes) 2010-11-03 18:18:18 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -555,6 +555,7 @@
   #define GDataYouTubeConstants                   _GDATA_NS_SYMBOL(GDataYouTubeConstants)
   #define GDataYouTubeCountHint                   _GDATA_NS_SYMBOL(GDataYouTubeCountHint)
   #define GDataYouTubeCountryAttribute            _GDATA_NS_SYMBOL(GDataYouTubeCountryAttribute)
+  #define GDataYouTubeDerived                     _GDATA_NS_SYMBOL(GDataYouTubeDerived)
   #define GDataYouTubeDuration                    _GDATA_NS_SYMBOL(GDataYouTubeDuration)
   #define GDataYouTubeFirstName                   _GDATA_NS_SYMBOL(GDataYouTubeFirstName)
   #define GDataYouTubeFormatAttribute             _GDATA_NS_SYMBOL(GDataYouTubeFormatAttribute)
