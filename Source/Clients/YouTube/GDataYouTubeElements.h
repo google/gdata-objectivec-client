@@ -53,6 +53,10 @@
 @interface GDataYouTubeCountHint : GDataValueElementConstruct <GDataExtension>
 @end
 
+// caption track derivation, like <yt:derived>speechRecognition</yt:derived>
+@interface GDataYouTubeDerived : GDataValueElementConstruct <GDataExtension>
+@end
+
 // user's hobbies, like <yt:hobbies>Reading, skiing</yt:hobbies>
 @interface GDataYouTubeHobbies : GDataValueElementConstruct <GDataExtension>
 @end

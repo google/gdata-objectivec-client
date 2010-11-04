@@ -25,6 +25,7 @@
 #import "GData/GDataEntryYouTubeUpload.h"
 
 static NSString* const kActivityFeed = @"activity";
+static NSString* const kChannelsFeed = @"channels";
 
 @interface YouTubeSampleWindowController (PrivateMethods)
 - (void)updateUI;
@@ -82,6 +83,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   // load the user feed types into the pop-up menu, and default to showing
   // the feed of the user's uploads, as it's generally most interesting
   NSArray *userFeedTypes = [NSArray arrayWithObjects:
+    kChannelsFeed,
     kGDataYouTubeUserFeedIDContacts,
     kGDataYouTubeUserFeedIDFavorites,
     kGDataYouTubeUserFeedIDInbox,
@@ -381,6 +383,8 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   if ([feedID isEqual:kActivityFeed]) {
     // the activity feed uses a unique URL
     feedURL = [GDataServiceGoogleYouTube youTubeActivityFeedURLForUserID:username];
+  } else if ([feedID isEqual:kChannelsFeed]) {
+    feedURL = [GDataServiceGoogleYouTube youTubeURLForChannelStandardFeeds];
   } else {
     feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:username
                                                   userFeedID:feedID];

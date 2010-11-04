@@ -26,6 +26,7 @@
 
 static NSString *const kTimeParamName = @"time";
 static NSString *const kFormatParamName = @"format";
+static NSString *const kCaptionTrackFormatParamName = @"fmt";
 static NSString *const kSafeSearchParamName = @"safeSearch";
 static NSString *const kRestrictionParamName = @"restriction";
 static NSString *const kLanguageRestrictionParamName = @"lr";
@@ -59,6 +60,15 @@ static NSString *const kUploaderParamName = @"uploader";
 
 - (NSString *)format {
   return [self valueForParameterWithName:kFormatParamName];
+}
+
+- (void)setCaptionTrackFormat:(NSString *)str {
+  [self addCustomParameterWithName:kCaptionTrackFormatParamName
+                             value:str];
+}
+
+- (NSString *)captionTrackFormat {
+  return [self valueForParameterWithName:kCaptionTrackFormatParamName];
 }
 
 - (void)setTimePeriod:(NSString *)str {

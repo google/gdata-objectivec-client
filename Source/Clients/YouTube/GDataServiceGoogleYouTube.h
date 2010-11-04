@@ -42,7 +42,7 @@ _EXTERN NSString* const kGDataYouTubeFeedIDMostDiscussed             _INITIALIZE
 // _EXTERN NSString* const kGDataYouTubeFeedIDMostLinked                _INITIALIZE_AS(@"most_linked"); deprecated
 _EXTERN NSString* const kGDataYouTubeFeedIDMostResponded             _INITIALIZE_AS(@"most_responded");
 _EXTERN NSString* const kGDataYouTubeFeedIDRecentlyFeatured          _INITIALIZE_AS(@"recently_featured");
-_EXTERN NSString* const kGDataYouTubeFeedIDWatchOnMobile             _INITIALIZE_AS(@"watch_on_mobile");
+// _EXTERN NSString* const kGDataYouTubeFeedIDWatchOnMobile             _INITIALIZE_AS(@"watch_on_mobile");  deprecated
 
 // user feed IDs
 _EXTERN NSString* const kGDataYouTubeUserFeedIDProfile               _INITIALIZE_AS(nil);
@@ -86,6 +86,8 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 + (NSURL *)youTubeUploadURLForUserID:(NSString *)userID;
 
 + (NSURL *)youTubeActivityFeedURLForUserID:(NSString *)userID;
+
++ (NSURL *)youTubeURLForChannelStandardFeeds;
 
 // Note:
 //

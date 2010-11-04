@@ -41,7 +41,7 @@
     <yt:school>Wildwood Elementary</yt:school>
     <media:thumbnail url="http://i.ytimg.com/vi/Bkhnvn1PIHs/default.jpg"/>
     <yt:statistics lastWebAccess="2008-01-30T11:38:20.000-08:00"
-        videoWatchCount="1" viewCount="2" favoriteCount="7"/>
+        videoWatchCount="1" viewCount="2" favoriteCount="7" totalUploadViews="37"/>
     <gd:feedLink countHint="1"
         href="http://gdata.youtube.com/feeds/api/users/testaccount/favorites" rel="http://gdata.youtube.com/schemas/2007#user.favorites"/>
     <gd:feedLink countHint="1"

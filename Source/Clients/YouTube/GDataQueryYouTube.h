@@ -45,6 +45,8 @@ _EXTERN NSString* const kGDataYouTubeSafeSearchNone     _INITIALIZE_AS(@"none");
 _EXTERN NSString* const kGDataYouTubeSafeSearchStrict   _INITIALIZE_AS(@"strict");
 _EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderate");
 
+_EXTERN NSString* const kGDataYouTubeCaptionTrackFormatSubviewer  _INITIALIZE_AS(@"sbv");
+_EXTERN NSString* const kGDataYouTubeCaptionTrackFormatSubrip     _INITIALIZE_AS(@"srt");
 
 // http://code.google.com/apis/youtube/reference.html#Parameters
 
@@ -57,6 +59,9 @@ _EXTERN NSString* const kGDataYouTubeSafeSearchModerate _INITIALIZE_AS(@"moderat
 
 - (void)setFormat:(NSString *)str;
 - (NSString *)format;
+
+- (void)setCaptionTrackFormat:(NSString *)str;
+- (NSString *)captionTrackFormat;
 
 - (void)setTimePeriod:(NSString *)str;
 - (NSString *)timePeriod;
