@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.10 (564 classes) 2010-11-03 18:18:18 -0700
+// com.google.GDataFramework v. 1.10 (565 classes) 2010-11-04 11:13:45 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -162,6 +162,7 @@
   #define GDataEntryDocBase                       _GDATA_NS_SYMBOL(GDataEntryDocBase)
   #define GDataEntryDocListMetadata               _GDATA_NS_SYMBOL(GDataEntryDocListMetadata)
   #define GDataEntryDocRevision                   _GDATA_NS_SYMBOL(GDataEntryDocRevision)
+  #define GDataEntryDrawingDoc                    _GDATA_NS_SYMBOL(GDataEntryDrawingDoc)
   #define GDataEntryEvent                         _GDATA_NS_SYMBOL(GDataEntryEvent)
   #define GDataEntryFileDoc                       _GDATA_NS_SYMBOL(GDataEntryFileDoc)
   #define GDataEntryFinancePortfolio              _GDATA_NS_SYMBOL(GDataEntryFinancePortfolio)

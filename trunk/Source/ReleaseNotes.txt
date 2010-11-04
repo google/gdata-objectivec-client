@@ -17,6 +17,8 @@ Additions
   parameter and caption track derived element, and totalUploadViews statistics
   attribute for YouTube
 
+- Added drawings to DocList API
+
 Changes
 
 - Deployment target for framework build is now 10.5

@@ -18,12 +18,6 @@
 //
 
 #import "DocsSampleWindowController.h"
-#import "GData/GDataServiceGoogleDocs.h"
-#import "GData/GDataQueryDocs.h"
-#import "GData/GDataEntryDocBase.h"
-#import "GData/GDataEntrySpreadsheetDoc.h"
-#import "GData/GDataEntryPresentationDoc.h"
-#import "GData/GDataEntryStandardDoc.h"
 
 enum {
   // upload pop-up menu items
@@ -374,11 +368,11 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSString *saveTitle = [NSString stringWithFormat:@"%@ (%@)",
                          docName, revisionName];
 
-  // we need to record if the document being saved is really a spreadsheet, and
-  // the revision entry doesn't tell us, so we look at the selected doc entry
-  BOOL isSpreadsheet = [docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]];
-  [revisionEntry setProperty:[NSNumber numberWithBool:isSpreadsheet]
-                      forKey:@"is spreadsheet"];
+  // the revision entry doesn't tell us the kind of document being saved, so
+  // we'll explicitly put it into a property of the entry
+  Class documentClass = [docEntry class];
+  [revisionEntry setProperty:documentClass
+                      forKey:@"document class"];
 
   [self showDownloadPanelForEntry:revisionEntry
                    suggestedTitle:saveTitle];
@@ -389,8 +383,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSString *sourceURI = [[entry content] sourceURI];
   if (sourceURI) {
-
-    NSString *filename = [NSString stringWithFormat:@"%@.txt", title];
+    BOOL isDrawing = [entry isKindOfClass:[GDataEntryDrawingDoc class]];
+    NSString *fileExtension = (isDrawing ? @"pdf" : @"txt");
+    NSString *filename = [NSString stringWithFormat:@"%@.%@",
+                          title, fileExtension];
 
     SEL endSel = @selector(saveSheetDidEnd:returnCode:contextInfo:);
 
@@ -424,13 +420,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // downloading docs, per
   // http://code.google.com/apis/documents/docs/3.0/developers_guide_protocol.html#DownloadingDocs
 
-  BOOL isSpreadsheet = [docEntry isKindOfClass:[GDataEntrySpreadsheetDoc class]];
-  if (!isSpreadsheet) {
-    // in a revision entry, we've add a property above indicating if this is a
-    // spreadsheet revision
-    isSpreadsheet = [[docEntry propertyForKey:@"is spreadsheet"] boolValue];
+  // when downloading a revision entry, we've added a property above indicating
+  // the class of document for which this is a revision
+  Class classProperty = [docEntry propertyForKey:@"document class"];
+  if (!classProperty) {
+    classProperty = [docEntry class];
   }
 
+  BOOL isSpreadsheet = [classProperty isEqual:[GDataEntrySpreadsheetDoc class]];
   if (isSpreadsheet) {
     // to save a spreadsheet, we need to authenticate a spreadsheet service
     // object, and then download the spreadsheet file
@@ -442,9 +439,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     // to generate an NSURLRequest with the auth token in the header, and
     // then fetch that asynchronously.
     GDataServiceGoogleDocs *docsService = [self docsService];
+
+    BOOL isDrawing = [classProperty isEqual:[GDataEntryDrawingDoc class]];
+    NSString *exportFormat = (isDrawing ? @"pdf" : @"txt");
     [self saveDocEntry:docEntry
                 toPath:savePath
-          exportFormat:@"txt"
+          exportFormat:exportFormat
            authService:docsService];
   }
 }

@@ -19,8 +19,8 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "GData/GData.h"
-#import "GData/GDataFeedDocList.h"
+#import "GData/GDataDocs.h"
+#import "GData/GDataSpreadsheet.h"
 
 @interface DocsSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
