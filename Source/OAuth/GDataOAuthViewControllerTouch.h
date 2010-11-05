@@ -61,6 +61,8 @@
 // html is displayed, the view will be dismissed and the callback method
 // will be invoked with an error.
 
+#import <Foundation/Foundation.h>
+
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_OAUTH
 
 #if TARGET_OS_IPHONE

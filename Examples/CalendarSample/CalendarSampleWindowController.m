@@ -924,6 +924,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                                                       timeZone:[NSTimeZone systemTimeZone]];
   GDataReminder *reminder = [GDataReminder reminder];
   [reminder setMinutes:@"10"];
+  [reminder setMethod:kGDataReminderMethodEmail];
 
   GDataWhen *when = [GDataWhen whenWithStartTime:startDateTime
                                          endTime:endDateTime];
