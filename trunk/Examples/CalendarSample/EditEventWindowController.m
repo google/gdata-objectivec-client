@@ -46,11 +46,13 @@
     }
     
     NSString *reminderMinutesStr = nil;
+    NSString *reminderMethod = nil;
     NSArray *reminders = [when reminders];
 
     if ([reminders count] > 0) {
       GDataReminder *reminder = [reminders objectAtIndex:0];
       reminderMinutesStr = [reminder minutes]; // note: reminders may be stored other ways too
+      reminderMethod = [reminder method];
     }
     
     if (title) [mTitleField setStringValue:title];
@@ -64,7 +66,12 @@
       [mEndDatePicker setDateValue:[endTime date]];
       [mEndDatePicker setTimeZone:[endTime timeZone]];
     }
-    if (reminderMinutesStr) [mReminderMinutesField setStringValue:reminderMinutesStr];
+    if (reminderMinutesStr) {
+      [mReminderMinutesField setStringValue:reminderMinutesStr];
+    }
+    if (reminderMethod) {
+      [mReminderMethodPopup selectItemWithTitle:reminderMethod]; 
+    }
   }
 }
 
@@ -119,6 +126,7 @@
   NSString *title = [mTitleField stringValue];
   NSString *desc = [mDescriptionField stringValue];
   NSString *reminderMin = [mReminderMinutesField stringValue];
+  NSString *reminderMethod = [[mReminderMethodPopup selectedItem] title];
   
   GDataEntryCalendarEvent *newEvent;
   if (mEvent) {
@@ -141,16 +149,15 @@
   // reminders.  Reminders are inside the GDWhen (except for recurring events,
   // where they're inside the event itself)
   NSMutableArray *reminders = [NSMutableArray array];
-  if ([reminderMin length]) {
+  if (reminderMin || reminderMethod) {
     GDataReminder *reminder = [GDataReminder reminder];
     [reminder setMinutes:reminderMin];
+    [reminder setMethod:reminderMethod];
     [reminders addObject:reminder];
   }
   [when setReminders:reminders];
 
   [newEvent setTimes:[NSArray arrayWithObject:when]];
-  
-  
   return newEvent; 
 }
 

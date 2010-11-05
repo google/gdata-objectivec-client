@@ -25,10 +25,11 @@
   IBOutlet NSTextField *mTitleField;
   IBOutlet NSTextField *mDescriptionField;
   IBOutlet NSTextField *mReminderMinutesField;
+  IBOutlet NSPopUpButton *mReminderMethodPopup;
   IBOutlet NSDatePicker *mStartDatePicker;
   IBOutlet NSDatePicker *mEndDatePicker;
   
-  id mTarget; // WEAK 
+  __weak id mTarget;
   SEL mDoneSEL;
   GDataEntryCalendarEvent *mEvent;
   BOOL mWasSaveClicked;
