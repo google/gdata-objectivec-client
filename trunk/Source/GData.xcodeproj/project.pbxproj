@@ -1759,7 +1759,7 @@
 		4F85E011103B83B700B4C418 /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0935121030D682004C7DC1 /* GDataAuthenticationFetcher.m */; };
 		4F85E013103B83B700B4C418 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
 		4F8BB9AA12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BB9A912832E6600B2B4A4 /* GDataEntryDrawingDoc.m */; };
-		4F8BB9AB12832E6600B2B4A4 /* GDataEntryDrawingDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8BB9A812832E6600B2B4A4 /* GDataEntryDrawingDoc.h */; };
+		4F8BB9AB12832E6600B2B4A4 /* GDataEntryDrawingDoc.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8BB9A812832E6600B2B4A4 /* GDataEntryDrawingDoc.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F8BB9AC12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BB9A912832E6600B2B4A4 /* GDataEntryDrawingDoc.m */; };
 		4F8BB9AD12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BB9A912832E6600B2B4A4 /* GDataEntryDrawingDoc.m */; };
 		4F8BB9AE12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8BB9A912832E6600B2B4A4 /* GDataEntryDrawingDoc.m */; };
@@ -1826,6 +1826,7 @@
 		4F9D7A130DD5475B006EA4D5 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9D7A110DD5475B006EA4D5 /* GDataPortfolioElements.m */; };
 		4F9D7A140DD5475B006EA4D5 /* GDataPortfolioElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9D7A110DD5475B006EA4D5 /* GDataPortfolioElements.m */; };
 		4F9D7A160DD54765006EA4D5 /* GDataPortfolioElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9D7A150DD54765006EA4D5 /* GDataPortfolioElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4FA09E0E1287148000D007D7 /* GDataEntryDrawingDoc.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F8BB9A812832E6600B2B4A4 /* GDataEntryDrawingDoc.h */; };
 		4FA1C5C00C037446006D556A /* GDataEntryContent.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FA1C5BF0C037446006D556A /* GDataEntryContent.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FA1C5C20C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
 		4FA1C5C30C03744A006D556A /* GDataEntryContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FA1C5C10C03744A006D556A /* GDataEntryContent.m */; };
@@ -2323,6 +2324,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FA09E0E1287148000D007D7 /* GDataEntryDrawingDoc.h in Copy Static Library Headers */,
 				4FC8CCC71234AF1E00939910 /* GDataYouTubeRating.h in Copy Static Library Headers */,
 				4F1C70E51027B53600B46459 /* GDataEntryYouTubeUpload.h in Copy Static Library Headers */,
 				4FEB9E09116FB2A700F6037F /* GDataACLKeyedRole.h in Copy Static Library Headers */,
