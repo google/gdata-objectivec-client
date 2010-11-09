@@ -169,6 +169,7 @@ typedef NSUInteger GDataXMLNodeKind;
 - (void)setNamespaces:(NSArray *)namespaces;
 - (void)addNamespace:(GDataXMLNode *)aNamespace;
 
+// addChild adds a copy of the child node to the element
 - (void)addChild:(GDataXMLNode *)child;
 - (void)removeChild:(GDataXMLNode *)child;
 
@@ -191,6 +192,8 @@ typedef NSUInteger GDataXMLNodeKind;
 
 - (id)initWithXMLString:(NSString *)str options:(unsigned int)mask error:(NSError **)error;
 - (id)initWithData:(NSData *)data options:(unsigned int)mask error:(NSError **)error;
+
+// initWithRootElement uses a copy of the argument as the new document's root
 - (id)initWithRootElement:(GDataXMLElement *)element;
 
 - (GDataXMLElement *)rootElement;
