@@ -1,8 +1,11 @@
-Objective-C GData Framework Release Notes
+Google Data APIs Objective-C Client Library
+Framework Release Notes
 
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.11.0
+10-November-2010
 Changes since 1.10.0
 
 Additions
