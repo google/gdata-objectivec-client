@@ -30,6 +30,15 @@
 // extensions
 
 // CalendarEventEntry extensions
+@interface GDataAdditionalGuests : GDataValueConstruct <GDataExtension>
+@end
+
+@implementation GDataAdditionalGuests
++ (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
++ (NSString *)extensionElementLocalName { return @"additionalGuests"; }
+@end
+
 @interface GDataSendEventNotifications : GDataBoolValueConstruct <GDataExtension>
 @end
 
@@ -162,6 +171,17 @@
 - (void)addResourceProperty:(GDataResourceProperty *)obj {
   [self addObject:obj forExtensionClass:[GDataResourceProperty class]];
 }
+
+- (NSNumber *)numberOfAdditionalGuests {
+  GDataAdditionalGuests *obj;
+  obj = [self objectForExtensionClass:[GDataAdditionalGuests class]];
+  return [obj intNumberValue];
+}
+
+- (void)setNumberOfAdditionalGuests:(NSNumber *)num {
+  GDataAdditionalGuests *obj = [GDataAdditionalGuests valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataAdditionalGuests class]];
+}
 @end
 
 @implementation GDataLink (GDataCalendarEntryEventExtensions)
@@ -230,7 +250,10 @@
    nil];
   
   [self addExtensionDeclarationForParentClass:[GDataWho class]
-                                   childClass:[GDataResourceProperty class]];
+                                 childClasses:
+   [GDataResourceProperty class],
+   [GDataAdditionalGuests class],
+   nil];
   [self addExtensionDeclarationForParentClass:[GDataLink class]
                                    childClass:[GDataWebContent class]];
 

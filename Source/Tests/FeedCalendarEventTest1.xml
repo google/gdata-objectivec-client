@@ -59,6 +59,7 @@
 		</gd:who>
 		<gd:who email="FredFlintstone@google.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">
 			<gd:attendeeStatus value="http://schemas.google.com/g/2005#event.invited"/>
+			<gCal:additionalGuests value="5" />
 		</gd:who>
 		<gd:who email="freg@gmail.com" rel="http://schemas.google.com/g/2005#event.organizer" valueString="Fred Flintstone">
 			<gd:attendeeStatus value="http://schemas.google.com/g/2005#event.accepted"/>

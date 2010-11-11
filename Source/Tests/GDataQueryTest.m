@@ -309,6 +309,7 @@
   
   [ytQuery1 setVideoQuery:@"\"Fred Flintstone\""];
   [ytQuery1 setFormat:@"0,5,6"];
+  [ytQuery1 setCaptionTrackFormat:kGDataYouTubeCaptionTrackFormatSubviewer];
   [ytQuery1 setTimePeriod:kGDataYouTubePeriodThisWeek];
   [ytQuery1 setOrderBy:kGDataYouTubeOrderByRelevance];
   [ytQuery1 setRestriction:@"127.0.0.1"];
@@ -322,7 +323,7 @@
   
   NSURL* resultURL1 = [ytQuery1 URL];
   NSString *expected1 = @"https://gdata.youtube.com/feeds/api/users/fred/"
-    "favorites?caption=true&format=0%2C5%2C6&inline=true&location=Canada&"
+    "favorites?caption=true&fmt=sbv&format=0%2C5%2C6&inline=true&location=Canada&"
     "location-radius=2km&lr=en&orderby=relevance&q=%22Fred+Flintstone%22&"
     "restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo";
 

@@ -321,6 +321,7 @@
     { @"entries.0.participants.0.email", @"FredFlintstone@gmail.com" },
     { @"entries.0.participants.0.rel", kGDataWhoEventAttendee },
     { @"entries.0.participants.0.attendeeStatus", kGDataWhoAttendeeStatusDeclined },
+    { @"entries.0.participants.1.numberOfAdditionalGuests", @"5" },
     { @"entries.0.participants.1.email", @"FredFlintstone@google.com" },
     { @"entries.0.participants.2.email", @"freg@gmail.com" },
     { @"entries.0.times.0.endTime.RFC3339String", @"2006-11-16" },
@@ -1739,6 +1740,7 @@
     { @"statistics.videoWatchCount", @"1" },
     { @"statistics.viewCount", @"2" },
     { @"statistics.favoriteCount", @"7" },
+    { @"statistics.totalUploadViews", @"37" },
     
     { @"books", @"Booksz" },
     { @"aboutMe", @"Narf narf" },
@@ -1888,9 +1890,11 @@
 
     { @"entries.0.publicationState.state", @"failed" },
     { @"entries.0.publicationState.reasonCode", @"invalidFormat" },
+    { @"entries.0.derived", kGDataYouTubeDerivedSpeechRecogniion },
 
     { @"entries.0.unknownAttributes.@count", @"0" },
     { @"entries.0.unknownChildren.@count", @"0" },
+    { @"entries.0.unknownChildren", nil },
 
     { @"", @"" }, // end of feed
 
