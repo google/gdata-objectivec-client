@@ -16,9 +16,9 @@
 #include "GDataFramework.h"
 
 void GDataFrameworkVersion(NSUInteger* major, NSUInteger* minor, NSUInteger* release) {
-  // version 1.10
+  // version 1.11
   if (major)   *major = 1;
-  if (minor)   *minor = 10;
+  if (minor)   *minor = 11;
   if (release) *release = 0;
 }
 

@@ -53,6 +53,9 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 - (NSArray *)resourceProperties;
 - (void)setResourceProperties:(NSArray *)arr;
 - (void)addResourceProperty:(GDataResourceProperty *)obj;
+
+- (NSNumber *)numberOfAdditionalGuests; // int
+- (void)setNumberOfAdditionalGuests:(NSNumber *)num;
 @end
 
 @class GDataWebContent;

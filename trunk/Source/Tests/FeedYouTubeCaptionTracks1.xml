@@ -50,5 +50,6 @@
         <link
             href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captiondata/CiYLEO3ZhwUaHQiPsqTs4qmUzRoSAmVuGg1jYXB0cmFjayBuYW1lDA"
             rel="edit-media" type="application/vnd.youtube.timedtext"/>
+        <yt:derived>speechRecognition</yt:derived>
     </entry>
 </feed>
