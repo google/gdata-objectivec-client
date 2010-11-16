@@ -62,13 +62,25 @@
   return [NSURL URLWithString:urlString];
 }
 
-+ (NSURL *)youTubeURLForChannelStandardFeeds {
++ (NSURL *)youTubeURLForChannelsFeeds {
   // feed counterpart to http://www.youtube.com/channels
+  //
+  // this is most useful as part of a query searching for text
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/channelstandardfeeds";
+  NSString *template = @"%@api/channels";
 
   NSString *urlString = [NSString stringWithFormat:template, root];
+
+  return [NSURL URLWithString:urlString];
+}
+
++ (NSURL *)youTubeURLForChannelStandardFeedID:(NSString *)feedID {
+  NSString *root = [self serviceRootURLString];
+
+  NSString *template = @"%@api/channelstandardfeeds/%@";
+
+  NSString *urlString = [NSString stringWithFormat:template, root, feedID];
 
   return [NSURL URLWithString:urlString];
 }
