@@ -26,6 +26,7 @@
 
 static NSString* const kActivityFeed = @"activity";
 static NSString* const kChannelsFeed = @"channels";
+static NSString* const kMostPopularFeed = @"most popular";
 
 @interface YouTubeSampleWindowController (PrivateMethods)
 - (void)updateUI;
@@ -84,6 +85,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   // the feed of the user's uploads, as it's generally most interesting
   NSArray *userFeedTypes = [NSArray arrayWithObjects:
     kChannelsFeed,
+    kMostPopularFeed,
     kGDataYouTubeUserFeedIDContacts,
     kGDataYouTubeUserFeedIDFavorites,
     kGDataYouTubeUserFeedIDInbox,
@@ -384,7 +386,9 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
     // the activity feed uses a unique URL
     feedURL = [GDataServiceGoogleYouTube youTubeActivityFeedURLForUserID:username];
   } else if ([feedID isEqual:kChannelsFeed]) {
-    feedURL = [GDataServiceGoogleYouTube youTubeURLForChannelStandardFeeds];
+    feedURL = [GDataServiceGoogleYouTube youTubeURLForChannelsFeeds];
+  } else if ([feedID isEqual:kMostPopularFeed]) {
+    feedURL = [GDataServiceGoogleYouTube youTubeURLForFeedID:kGDataYouTubeFeedIDMostPopular];
   } else {
     feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:username
                                                   userFeedID:feedID];
@@ -393,6 +397,13 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   ticket = [service fetchFeedWithURL:feedURL
                             delegate:self
                    didFinishSelector:@selector(entryListFetchTicket:finishedWithFeed:error:)];
+
+  if ([feedID isEqual:kChannelsFeed] || [feedID isEqual:kMostPopularFeed]) {
+    // when using feeds which search all public videos, we don't want
+    // to follow the feed's next links, since there could be a huge
+    // number of pages of results
+    [ticket setShouldFollowNextLinks:NO];
+  }
 
   [self setEntriesFetchTicket:ticket];
   
