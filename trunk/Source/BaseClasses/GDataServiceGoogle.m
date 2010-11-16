@@ -213,6 +213,8 @@ enum {
 
     [self setPendingAuthFetcher:fetcher];
 
+    [fetcher setComment:@"API authentication"];
+
     [fetcher beginFetchWithDelegate:self
                   didFinishSelector:@selector(authFetcher:finishedWithData:)
                     didFailSelector:@selector(authFetcher:failedWithError:)];
@@ -616,6 +618,8 @@ enum {
     GDataServiceTicket *ticket = [GDataServiceTicket ticketForService:self];
     [ticket setAuthFetcher:fetcher];
     [fetcher setProperty:ticket forKey:kFetcherTicketKey];
+
+    [fetcher setComment:@"API authentication"];
 
     BOOL flag = [fetcher beginFetchWithDelegate:self
                               didFinishSelector:@selector(standaloneAuthFetcher:finishedWithData:)

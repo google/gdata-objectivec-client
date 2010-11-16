@@ -188,7 +188,6 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   // note: if a connection or a retry timer was pending, then this instance
   // would be retained by those so it wouldn't be getting dealloc'd,
   // hence we don't need to stopFetch here
-
   [request_ release];
   [connection_ release];
   [downloadedData_ release];
@@ -215,6 +214,8 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 
   [retryTimer_ invalidate];
   [retryTimer_ release];
+
+  [comment_ release];
 
   [super dealloc];
 }
@@ -1649,6 +1650,31 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   } else {
     [properties_ addEntriesFromDictionary:dict];
   }
+}
+
+- (NSString *)comment {
+  return comment_;
+}
+
+- (void)setCommentWithFormat:(id)format, ... {
+#if !STRIP_GDATA_FETCH_LOGGING
+  NSString *result = format;
+  if (format) {
+    va_list argList;
+    va_start(argList, format);
+    result = [[[NSString alloc] initWithFormat:format
+                                     arguments:argList] autorelease];
+    va_end(argList);
+  }
+  [self setComment:result];
+#endif
+}
+
+- (void)setComment:(NSString *)str {
+#if !STRIP_GDATA_FETCH_LOGGING
+  [comment_ autorelease];
+  comment_ = [str copy];
+#endif
 }
 
 - (NSArray *)runLoopModes {
