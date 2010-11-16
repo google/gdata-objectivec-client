@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (565 classes) 2010-11-10 14:36:18 -0800
+// com.google.GDataFramework v. 1.11 (566 classes) 2010-11-16 09:50:26 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -28,6 +28,7 @@
   #define GDataACLKeyedRole                       _GDATA_NS_SYMBOL(GDataACLKeyedRole)
   #define GDataACLRole                            _GDATA_NS_SYMBOL(GDataACLRole)
   #define GDataACLScope                           _GDATA_NS_SYMBOL(GDataACLScope)
+  #define GDataAdditionalGuests                   _GDATA_NS_SYMBOL(GDataAdditionalGuests)
   #define GDataAnalyticsAggregateGroup            _GDATA_NS_SYMBOL(GDataAnalyticsAggregateGroup)
   #define GDataAnalyticsConstants                 _GDATA_NS_SYMBOL(GDataAnalyticsConstants)
   #define GDataAnalyticsCustomVariable            _GDATA_NS_SYMBOL(GDataAnalyticsCustomVariable)
