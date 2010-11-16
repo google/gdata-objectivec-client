@@ -348,7 +348,7 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSString *temporaryDownloadPath_;
   NSFileHandle *downloadFileHandle_;
   unsigned long long downloadedLength_;
-  NSURLCredential *credential_;     // username & password
+  NSURLCredential *credential_;      // username & password
   NSURLCredential *proxyCredential_; // credential supplied to proxy servers
   NSData *postData_;
   NSInputStream *postStream_;
@@ -390,6 +390,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
   NSTimeInterval minRetryInterval_; // random between 1 and 2 seconds
   NSTimeInterval retryFactor_;      // default interval multiplier is 2
   NSTimeInterval lastRetryInterval_;
+
+  NSString *comment_;               // comment for log
 }
 
 // create a fetcher
@@ -619,6 +621,11 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (id)propertyForKey:(NSString *)key;
 
 - (void)addPropertiesFromDictionary:(NSDictionary *)dict;
+
+// comments are useful for logging
+- (NSString *)comment;
+- (void)setComment:(NSString *)str;
+- (void)setCommentWithFormat:(id)format, ...;
 
 // using the fetcher while a modal dialog is displayed requires setting the
 // run-loop modes to include NSModalPanelRunLoopMode

@@ -44,6 +44,10 @@
 //
 // For better viewing of XML logs, use Camino or Firefox rather than Safari.
 //
+// Each fetcher may be given a comment to be inserted as a label in the logs,
+// such as
+//   [fetcher setCommentWithFormat:@"retrieve item %@", itemName];
+//
 // Projects may define STRIP_GDATA_FETCH_LOGGING to remove logging code.
 
 #if !STRIP_GDATA_FETCH_LOGGING

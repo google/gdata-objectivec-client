@@ -684,6 +684,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   // add username/password
   [self addAuthenticationToFetcher:fetcher];
 
+  if (finishedSelector) {
+    [fetcher setComment:NSStringFromSelector(finishedSelector)];
+  }
+
   // failed fetches call the failure selector, which will delete the ticket
   BOOL didFetch = [fetcher beginFetchWithDelegate:self
                                 didFinishSelector:finishedSel
@@ -1728,31 +1732,37 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   if (val == kGDataStandardUploadChunkSize) {
     // determine an appropriate upload chunk size for the system
 
-    if (![GDataHTTPFetcher doesSupportSentDataCallback]) {
-      // for 10.4 and iPhone 2, we need a small upload chunk size so there
-      // are frequent intrachunk callbacks for progress monitoring
-      val = 75000;
-    } else {
 #if GDATA_IPHONE
-      val = 1000000;
-#else
-      if (NSFoundationVersionNumber >= 751.00) {
-        // Mac OS X 10.6
-        //
-        // we'll pick a huge upload chunk size, which minimizes http overhead
-        // and server effort, and we'll hope that NSURLConnection can finally
-        // handle big uploads reliably
-        val = 25000000;
-      } else {
-        // Mac OS X 10.5
-        //
-        // NSURLConnection is more reliable on POSTs in 10.5 than it was in
-        // 10.4, but it still fails mysteriously on big uploads on some
-        // systems, so we'll limit the chunks to a megabyte
-        val = 1000000;
-      }
-#endif
+    if (![GDataHTTPFetcher doesSupportSentDataCallback]) {
+      // for iPhone 2, we need a small upload chunk size so there
+      // are frequent intrachunk callbacks for progress monitoring
+      //
+      // Picasa Web Albums has a minimum 256K chunk size when uploading photos
+      val = 256*1024;
+    } else {
+      val = 1024*1024;
     }
+#else
+    if (NSFoundationVersionNumber >= 751.00) {
+      // Mac OS X 10.6
+      //
+      // we'll pick a huge upload chunk size, which minimizes http overhead
+      // and server effort, and we'll hope that NSURLConnection can finally
+      // handle big uploads reliably
+      val = 25*1024*1024;
+    } else if (NSFoundationVersionNumber >= 677.00) {
+      // Mac OS X 10.5
+      //
+      // NSURLConnection is more reliable on POSTs in 10.5 than it was in
+      // 10.4, but it still fails mysteriously on big uploads on some
+      // systems, so we'll limit the chunks to a megabyte
+      val = 1024*1024;
+    } else {
+      // Tiger cannot handle the upload protocol's 308 status responses;
+      // it just gives "redirected to nowhere" errors
+      val = 0;
+    }
+#endif
   }
   uploadChunkSize_ = val;
 }

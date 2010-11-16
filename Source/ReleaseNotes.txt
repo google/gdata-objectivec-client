@@ -12,6 +12,8 @@ Additions
 
 - Added download to a file path or a file handle in GDataHTTPFetcher
 
+- Added comments to http fetcher logging
+
 - Added support for chunked uploads to Picasa Web Albums
 
 - Added keyed roles to ACLs
