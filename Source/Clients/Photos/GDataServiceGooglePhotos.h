@@ -49,7 +49,8 @@ _EXTERN NSString* const kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
 
 // inserting a photo into the feed for the default user and default album ID
 // will post the photo into the user's "Drop Box" album
-_EXTERN NSString* const kGDataGooglePhotosDropBoxAlbumID _INITIALIZE_AS(@"default");
+_EXTERN NSString* const kGDataGooglePhotosDropBoxUploadURL _INITIALIZE_AS(@"https://photos.googleapis.com/data/upload/resumable/media/create-session/feed/api/user/default/albumid/default");
+_EXTERN NSString* const kGDataGooglePhotosDropBoxAlbumID   _INITIALIZE_AS(@"default");
 
 @interface GDataServiceGooglePhotos : GDataServiceGoogle 
 

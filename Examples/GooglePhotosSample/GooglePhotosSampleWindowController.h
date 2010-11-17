@@ -48,7 +48,8 @@
   IBOutlet NSButton *mAddCommentButton;
   IBOutlet NSTextField *mCommentField;
   
-  IBOutlet NSButton *mAddPhotoButton;
+  IBOutlet NSButton *mAddToAlbumButton;
+  IBOutlet NSButton *mAddToDropBoxButton;
   IBOutlet NSButton *mDeletePhotoButton;
   IBOutlet NSButton *mDownloadPhotoButton;
   IBOutlet NSPopUpButton *mChangeAlbumPopupButton;
@@ -74,7 +75,8 @@
 
 - (IBAction)createAlbumClicked:(id)sender;
 
-- (IBAction)addClicked:(id)sender;
+- (IBAction)addToAlbumClicked:(id)sender;
+- (IBAction)addToDropBoxClicked:(id)sender;
 - (IBAction)deleteClicked:(id)sender;
 - (IBAction)downloadClicked:(id)sender;
 

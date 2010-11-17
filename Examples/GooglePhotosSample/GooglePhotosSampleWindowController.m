@@ -29,10 +29,10 @@
 - (void)fetchAllAlbums;
 - (void)fetchSelectedAlbum;
 
-- (void)fetchURLString:(NSString *)urlString forImageView:(NSImageView *)view;
+- (void)fetchURLString:(NSString *)urlString forImageView:(NSImageView *)view title:(NSString *)title;
 
 - (void)createAnAlbum;
-- (void)addAPhoto;
+- (void)addAPhotoToUploadURL:(NSURL *)url;
 - (void)deleteSelectedPhoto;
 - (void)downloadSelectedPhoto;
 - (void)moveSelectedPhotoToAlbum:(GDataEntryPhotoAlbum *)albumEntry;
@@ -63,7 +63,7 @@
 - (NSString *)photoImageURLString;
 - (void)setPhotoImageURLString:(NSString *)str;
 
-- (void)uploadPhotoAtPath:(NSString *)photoPath;
+- (void)uploadPhotoAtPath:(NSString *)photoPath uploadURL:(NSURL *)uploadURL;
 @end
 
 @implementation GooglePhotosSampleWindowController
@@ -142,7 +142,9 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
         [mAlbumImageView setImage:nil];
 
         if (imageURLString) {
-          [self fetchURLString:imageURLString forImageView:mAlbumImageView];
+          [self fetchURLString:imageURLString
+                  forImageView:mAlbumImageView
+                         title:[[album title] stringValue]];
         }
       } 
     }
@@ -173,14 +175,18 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
         [mPhotoImageView setImage:nil];
         
         if (imageURLString) {
-          [self fetchURLString:imageURLString forImageView:mPhotoImageView];
+          [self fetchURLString:imageURLString
+                  forImageView:mPhotoImageView
+                         title:[[photo title] stringValue]];
         }
       } 
     }
   }
 }
 
-- (void)fetchURLString:(NSString *)urlString forImageView:(NSImageView *)view {
+- (void)fetchURLString:(NSString *)urlString
+          forImageView:(NSImageView *)view
+                 title:(NSString *)title {
   
   NSURL *imageURL = [NSURL URLWithString:urlString];
   NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
@@ -189,7 +195,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   // use the fetcher's userData to remember which image view we'll display
   // this in once the fetch completes
   [fetcher setUserData:view];
-  
+
+  // http logs are more readable when fetchers have comments
+  [fetcher setCommentWithFormat:@"thumbnail for %@", title];
+
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(imageFetcher:finishedWithData:)
                   didFailSelector:@selector(imageFetcher:failedWithError:)];
@@ -268,7 +277,8 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   // enable/disable other buttons
   BOOL isAlbumSelected = ([self selectedAlbum] != nil);
   BOOL isPasswordProvided = ([[mPasswordField stringValue] length] > 0);
-  [mAddPhotoButton setEnabled:(isAlbumSelected && isPasswordProvided)];
+  [mAddToDropBoxButton setEnabled:isPasswordProvided];
+  [mAddToAlbumButton setEnabled:(isAlbumSelected && isPasswordProvided)];
 
   BOOL isPhotoEntrySelected = (selectedPhoto != nil &&
                                [selectedPhoto videoStatus] == nil);
@@ -381,8 +391,16 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [self createAnAlbum];
 }
 
-- (IBAction)addClicked:(id)sender {
-  [self addAPhoto];
+- (IBAction)addToAlbumClicked:(id)sender {
+  // get the upload URL for the album we're inserting the photo into
+  GDataFeedPhotoAlbum *albumFeedOfPhotos = [self photoFeed];
+  NSURL *uploadURL = [[albumFeedOfPhotos uploadLink] URL];
+  [self addAPhotoToUploadURL:uploadURL];
+}
+
+- (IBAction)addToDropBoxClicked:(id)sender {
+  NSURL *uploadURL = [NSURL URLWithString:kGDataGooglePhotosDropBoxUploadURL];
+  [self addAPhotoToUploadURL:uploadURL];
 }
 
 - (IBAction)deleteClicked:(id)sender {
@@ -602,7 +620,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 #pragma mark Add a photo
 
-- (void)addAPhoto {
+- (void)addAPhotoToUploadURL:(NSURL *)uploadURL {
   
   // see the API documentation for the current list of file types accepted
   // for uploading
@@ -623,18 +641,23 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
                      modalForWindow:[self window]
                       modalDelegate:self
                      didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
-                        contextInfo:nil];
+                        contextInfo:[uploadURL retain]];
 }
 
 - (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
+  // balance the retain done when we called beginSheet
+  NSURL *uploadURL = (NSURL *)contextInfo;
+  [uploadURL autorelease];
+
   if (returnCode == NSOKButton) {
     // user chose a photo and clicked OK
-    [self uploadPhotoAtPath:[panel filename]];
+    [self uploadPhotoAtPath:[panel filename]
+                  uploadURL:uploadURL];
   }
 }
 
-- (void)uploadPhotoAtPath:(NSString *)photoPath {
+- (void)uploadPhotoAtPath:(NSString *)photoPath
+                uploadURL:(NSURL *)uploadURL {
 
   // get the path to the selected photo, and read it into an NSData
   NSString *photoName = [photoPath lastPathComponent];
@@ -659,19 +682,6 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
     // the slug is just the upload file's filename
     [newEntry setUploadSlug:photoName];
-
-    // get the upload URL for the album we're inserting the photo into
-    GDataFeedPhotoAlbum *albumFeedOfPhotos = [self photoFeed];
-    NSURL *uploadURL = [[albumFeedOfPhotos uploadLink] URL];
-
-    // to upload to the account's Drop Box, instead of using an album's
-    // feedLink, insert directly to this URL:
-    //  feedURL = [GDataServiceGooglePhotos photoFeedURLForUserID:kGDataServiceDefaultUser
-    //                                                    albumID:kGDataGooglePhotosDropBoxAlbumID
-    //                                                  albumName:nil
-    //                                                    photoID:nil
-    //                                                       kind:nil
-    //                                                     access:nil];
 
     // make service tickets call back into our upload progress selector
     GDataServiceGooglePhotos *service = [self googlePhotosService];
@@ -858,6 +868,11 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                                                  httpMethod:nil];
       // fetch the request
       GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+
+      // http logs are easier to read when fetchers have comments
+      [fetcher setCommentWithFormat:@"downloading %@",
+       [[photoEntry title] stringValue]];
+
       [fetcher beginFetchWithDelegate:self
                     didFinishSelector:@selector(downloadFetcher:finishedWithData:)
                       didFailSelector:@selector(downloadFetcher:failedWithError:)];
