@@ -5,7 +5,7 @@ Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
 Release 1.11.0
-10-November-2010
+1-December-2010
 Changes since 1.10.0
 
 Additions
