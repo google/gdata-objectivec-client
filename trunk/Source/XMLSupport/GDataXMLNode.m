@@ -1624,8 +1624,8 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
                                     code:-1
                                 userInfo:nil];
         // TODO(grobbins) use xmlSetGenericErrorFunc to capture error
-        [self release];
       }
+      [self release];
       return nil;
     } else {
       if (error) *error = NULL;
