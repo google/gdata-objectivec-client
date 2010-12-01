@@ -6908,7 +6908,7 @@
 					"-DGDATA_IPHONE=1",
 				);
 				PRODUCT_NAME = GDataTouchStaticLib;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Debug;
 		};
@@ -6925,7 +6925,7 @@
 					"-DGDATA_INCLUDE_nameServiceHere_SERVICE=1",
 				);
 				PRODUCT_NAME = GDataTouchStaticLib;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos3.2;
 			};
 			name = Release;
 		};
