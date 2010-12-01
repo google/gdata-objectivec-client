@@ -75,6 +75,12 @@
   return @"https://www.google.com/calendar/feeds/"; 
 }
 
++ (NSString *)authorizationScope {
+  // avoid Calendar's "Unknown authorization header" error by specifying a
+  // non-https scope
+  return @"http://www.google.com/calendar/feeds/"; 
+}
+
 + (NSString *)defaultServiceVersion {
   return kGDataCalendarDefaultServiceVersion;
 }
