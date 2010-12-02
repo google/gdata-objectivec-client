@@ -58,6 +58,8 @@ Bugs Fixed
 
 - Fixed GDataEXIFTag's +tagWithName:
 
+- Fixed release on failure to init a GDataXMLDocument (thanks Valentinians)
+
 
 Release 1.10.0
 31-March-2010
