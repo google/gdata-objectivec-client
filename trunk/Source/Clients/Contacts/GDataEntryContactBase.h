@@ -106,7 +106,7 @@
 - (NSString *)birthday;
 - (void)setBirthday:(NSString *)str;
 
-// convenience birthday methods; the "undefined" year is considered year 1800
+// convenience birthday methods; the "undefined" year is considered year 1804
 - (NSDate *)birthdayDate;
 - (void)setBirthdayWithDate:(NSDate *)date;
 

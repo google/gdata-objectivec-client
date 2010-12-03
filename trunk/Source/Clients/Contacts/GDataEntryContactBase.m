@@ -406,17 +406,18 @@
 //
 // http://code.google.com/apis/contacts/docs/3.0/reference.html#gcBirthday
 //
-// We'll use 1800 for the year, making an obvious "unset" value to display
+// We'll use 1804 for the year, making an obvious "unset" value to display
 // in Apple's UI
 
 - (NSDate *)birthdayDate {
   // get the birthday string, like 1970-12-25 or --12-25
   NSString *str = [self birthday];
 
-  // convert a leading "-" year to 1800
+  // convert a leading "-" year to 1804, since that's a clearly invalid
+  // year that allows February 29
   if ([str hasPrefix:@"--"] && [str length] > 2) {
     NSString *monthDayString = [str substringFromIndex:2];
-    str = [NSString stringWithFormat:@"1800-%@", monthDayString];
+    str = [NSString stringWithFormat:@"1804-%@", monthDayString];
   }
 
   // add a time string to make it noon UTC, avoiding the chance that
@@ -445,8 +446,8 @@
 
   NSString *str = [formatter stringFromDate:date];
 
-  // convert a "1800" year to "-"
-  if ([str hasPrefix:@"1800-"] && [str length] > 5) {
+  // convert a "1804" year to "-"
+  if ([str hasPrefix:@"1804-"] && [str length] > 5) {
     NSString *monthDayString = [str substringFromIndex:5];
     str = [NSString stringWithFormat:@"--%@", monthDayString];
   }
