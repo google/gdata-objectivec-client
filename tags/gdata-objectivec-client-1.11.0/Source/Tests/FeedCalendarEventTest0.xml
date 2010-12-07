@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gCal="http://schemas.google.com/gCal/2005"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full</id>
+    <updated>2006-11-03T21:17:40.000Z</updated>
+    <title type="text">Fred Flintstone</title>
+    <subtitle type="text">Fred Flintstone</subtitle>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full?max-results=100000"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Fred Flintstone</name>
+        <email>fred@gmail.com</email>
+    </author>
+    <generator uri="http://www.google.com/calendar" version="1.0">Google Calendar</generator>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>100000</openSearch:itemsPerPage>
+    <gCal:timezone value="America/Los_Angeles"/>
+    <gCal:timesCleaned value="7"/>
+</feed>

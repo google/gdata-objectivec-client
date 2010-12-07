@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:exif="http://schemas.google.com/photos/exif/2007"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:gphoto="http://schemas.google.com/photos/2007"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
+<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#user"/>
+<entry>
+    <gphoto:nickname>Greg</gphoto:nickname>
+    <gphoto:user>TestdomainTestAccount</gphoto:user>
+    <gphoto:thumbnail>http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo/AAAAAAAAAAA/LRLjNgdEmmU/TestdomainTestAccount.jpg?imgmax=64&amp;crop=1</gphoto:thumbnail>
+    <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount</id>
+    <title type="text">TestdomainTestAccount</title>
+    <summary type="text"/>
+    <published>2007-05-23T18:18:39Z</published>
+    <updated>2007-05-23T18:18:39Z</updated>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="http://photos.googleapis.com/TestdomainTestAccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Greg</name>
+        <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
+    </author>
+    <category scheme="http://schemas.google.com/g/2005#kind" 
+    	term="http://schemas.google.com/photos/2007#user"/>
+</entry>
+</feed>

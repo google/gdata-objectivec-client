@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:exif="http://schemas.google.com/photos/exif/2007"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:gphoto="http://schemas.google.com/photos/2007"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/" xmlns:photo="http://www.pheed.com/pheed/">
+    <exif:tags>
+        <exif:fstop>5.3</exif:fstop>
+        <exif:make>NIKON CORPORATION</exif:make>
+        <exif:model>NIKON D1 </exif:model>
+        <exif:distance>0.0</exif:distance>
+        <exif:exposure>0.0080</exif:exposure>
+        <exif:flash>true</exif:flash>
+        <exif:focallength>52.0</exif:focallength>
+        <exif:iso>0</exif:iso>
+        <exif:time>1019588479000</exif:time>
+        <exif:imageUniqueID>d8a9e8fd57a384d216f4b2a853d654fc</exif:imageUniqueID>
+    </exif:tags>
+    <gphoto:checksum>23512309abbs298</gphoto:checksum>
+    <gphoto:id>5067143579329304306</gphoto:id>
+    <gphoto:albumid>5067143575034336993</gphoto:albumid>
+    <gphoto:commentCount>1</gphoto:commentCount>
+    <gphoto:width>660</gphoto:width>
+    <gphoto:size>87225</gphoto:size>
+    <gphoto:height>433</gphoto:height>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:timestamp>1179786301000</gphoto:timestamp>
+    <id>http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306</id>
+    <generator version="1.00" uri="http://photos.google.com/">Google Photos</generator>
+    <title type="text">Car.jpg</title>
+    <subtitle type="text">Caption for the car ☸ photo</subtitle>
+    <icon>http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=288</icon>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993/photoid/5067143579329304306?start-index=1&amp;max-results=1000&amp;kind=comment"
+        rel="self" type="application/atom+xml"/>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
+    <updated>2007-05-21T22:34:35Z</updated>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+    <entry>
+        <gphoto:photoid>5067143579329304306</gphoto:photoid>
+        <gphoto:id>5067146044640532244</gphoto:id>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244</id>
+        <title type="text">Greg</title>
+        <summary type="text">Comment on the car headlight. Z☻☺m.</summary>
+        <published>2007-05-21T22:34:35Z</published>
+        <updated>2007-05-21T22:34:35Z</updated>
+        <link
+            href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/commentid/5067146044640532244"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Greg</name>
+            <uri>http://photos.googleapis.com/username</uri>
+        </author>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#comment"/>
+    </entry>
+</feed>

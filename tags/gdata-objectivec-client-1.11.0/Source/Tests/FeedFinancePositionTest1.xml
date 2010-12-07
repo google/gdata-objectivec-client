@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:gf="http://schemas.google.com/finance/2007" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://finance.google.com/finance/feeds/default/portfolios/1/positions</id>
+    <updated>2008-06-11T00:35:20.000Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/finance/2007#position"/>
+    <title type="text">My Portfolio</title>
+    <link
+        href="http://finance.google.com/finance/portfolio?action=view&amp;pid=1"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://finance.google.com/finance/feeds/default/portfolios/1/positions"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://finance.google.com/finance/feeds/default/portfolios/1/positions"
+        rel="self" type="application/atom+xml"/>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>2</openSearch:itemsPerPage>
+    <entry>
+        <id>http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ%3AGOOG</id>
+        <updated>2008-06-11T00:35:20.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/finance/2007#position"/>
+        <title type="text">Google Inc.</title>
+        <link
+            href="http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ%3AGOOG"
+            rel="self" type="application/atom+xml"/>
+        <gd:feedLink href="http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ:GOOG/transactions"/>
+        <gf:positionData gainPercentage="1.3" return1w="0.07"
+            return1y="-10" return3m="172.1" return3y="5.4" return4w="-4.0"
+            return5y="11.0" returnOverall="12.0" returnYTD="13.0" shares="2.0"/>
+        <gf:symbol exchange="NASDAQ" fullName="Google Inc." symbol="GOOG"/>
+    </entry>
+    <entry>
+        <id>http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ%3AAAPL</id>
+        <updated>2008-06-10T23:55:35.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/finance/2007#position"/>
+        <title type="text">Apple Inc.</title>
+        <link
+            href="http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ%3AAAPL"
+            rel="self" type="application/atom+xml"/>
+        <gd:feedLink href="http://finance.google.com/finance/feeds/default/portfolios/1/positions/NASDAQ:AAPL/transactions"/>
+        <gf:positionData gainPercentage="0.0" return1w="0.0"
+            return1y="0.0" return3m="0.0" return3y="0.0" return4w="0.0"
+            return5y="0.0" returnOverall="0.0" returnYTD="0.0" shares="100.0"/>
+        <gf:symbol exchange="NASDAQ" fullName="Apple Inc." symbol="AAPL"/>
+    </entry>
+</feed>

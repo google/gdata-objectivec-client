@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom" 
+    xmlns:gCal="http://schemas.google.com/gCal/2005"
+    xmlns:gd="http://schemas.google.com/g/2005" 
+    xmlns:app="http://www.w3.org/2007/app"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/"
+    gd:etag="Nofzeigeritznum"
+    gd:fields="@gd:*,link" >
+    
+	<id>http://www.google.com/calendar/feeds/test%40domain.net</id>
+	<updated>2006-11-14T00:03:38.535Z</updated>
+	<title type="text">Fred Flintstone&apos;s Calendar List</title>
+	<link href="http://www.google.com/calendar/feeds/test%40domain.net" rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+	<link href="http://www.google.com/calendar/feeds/test%40domain.net" rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+	<link href="http://www.google.com/calendar/feeds/test%40domain.net" rel="self" type="application/atom+xml"/>
+	<author>
+		<name>Fred Flintstone</name>
+		<email>fred@gmail.com</email>
+	</author>
+	<generator uri="http://www.google.com/calendar" version="1.0">Google Calendar</generator>
+	<openSearch:startIndex>1</openSearch:startIndex>
+	<openSearch:itemsPerPage>3</openSearch:itemsPerPage>
+	<entry gd:etag="W/C04EQXc6fCp7ImA9WxZbGUU." gd:fields="@gd:*,title,gd:when">
+		<id>http://www.google.com/calendar/feeds/test%40domain.net/test%40domain.net</id>
+		<published>2006-11-14T00:03:38Z</published>
+		<updated>2006-11-09T00:16:10.000Z</updated>
+		<app:edited>2006-11-09T00:16:15.000Z</app:edited>
+		<title type="text">Fred Flintstone</title>
+		<link href="http://www.google.com/calendar/feeds/test%40domain.net/private/full" rel="alternate" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40domain.net/test%40domain.net" rel="self" type="application/atom+xml"/>
+		<author>
+			<name>Fred Flintstone</name>
+			<email>fred@gmail.com</email>
+		</author>
+		<gCal:hidden value="false"/>
+		<gCal:timezone value="America/Los_Angeles"/>
+		<gCal:timesCleaned value="31"/>
+		<gCal:color value="#B1365F"/>
+		<gCal:accesslevel value="owner"/>
+		<gCal:overridename value="over-ride-name"/>
+	</entry>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40domain.net/c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com</id>
+		<published>2006-11-14T00:03:38.554Z</published>
+		<updated>2006-11-12T00:32:57.000Z</updated>
+		<title type="text">Google Doodles</title>
+		<summary type="text"/>
+		<link href="http://www.google.com/calendar/feeds/c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com/private/full" rel="alternate" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40domain.net/c4o4i7m2lbamc4k26sc2vokh5g%40group.calendar.google.com" rel="self" type="application/atom+xml"/>
+		<author>
+			<name>Google Doodles</name>
+		</author>
+		<gCal:hidden value="false"/>
+		<gCal:timezone value="America/Los_Angeles"/>
+		<gCal:color value="#2952A3"/>
+		<gCal:accesslevel value="read"/>
+		<gd:where valueString="Joes Pub"/>
+	</entry>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40domain.net/6ppaanupncov9schrjlg2cu988%40group.calendar.google.com</id>
+		<published>2006-11-14T00:03:38.554Z</published>
+		<updated>2006-10-02T09:09:08.000Z</updated>
+		<title type="text">Paramount Theater Seattle-nk</title>
+		<summary type="text">Paramount theater seattle show schedule</summary>
+		<link href="http://www.google.com/calendar/feeds/6ppaanupncov9schrjlg2cu988%40group.calendar.google.com/private/full" rel="alternate" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40domain.net/6ppaanupncov9schrjlg2cu988%40group.calendar.google.com" rel="self" type="application/atom+xml"/>
+		<author>
+			<name>Paramount Theater Seattle-nk</name>
+		</author>
+		<gCal:hidden value="true"/>
+		<gCal:timezone value="Etc/GMT"/>
+		<gCal:selected value="false"/>
+		<gCal:color value="#528800"/>
+		<gCal:accesslevel value="read"/>
+		<gd:where valueString="Seattle WA"/>
+	</entry>
+</feed>

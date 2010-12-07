@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;CU8CQ3o8cSp7ImA9WxJRGEk.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:dxp="http://schemas.google.com/analytics/2009"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://www.google.com/analytics/feeds/data?ids=ga:7966084&amp;dimensions=ga:country&amp;metrics=ga:pageviews&amp;start-date=2009-05-18&amp;end-date=2009-05-20</id>
+    <updated>2009-05-20T11:24:22.479-07:00</updated>
+    <title>Google Analytics Data for Profile 7966084</title>
+    <link
+        href="http://www.google.com/analytics/feeds/data?end-date=2009-05-20&amp;start-date=2009-05-18&amp;metrics=ga%3Apageviews&amp;ids=ga%3A7966084&amp;dimensions=ga%3Acountry"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Google Analytics</name>
+    </author>
+    <generator version="1.0">Google Analytics</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>1</openSearch:itemsPerPage>
+    <dxp:startDate>2009-05-18</dxp:startDate>
+    <dxp:endDate>2009-05-20</dxp:endDate>
+    <dxp:aggregates>
+        <dxp:metric confidenceInterval="0.0" name="ga:pageviews"
+            type="integer" value="12"/>
+    </dxp:aggregates>
+    <dxp:dataSource>
+        <dxp:tableId>ga:7966084</dxp:tableId>
+        <dxp:tableName>www.example.net</dxp:tableName>
+        <dxp:property name="ga:profileId" value="7966084"/>
+        <dxp:property name="ga:webPropertyId" value="UA-8925159-1"/>
+        <dxp:property name="ga:accountName" value="example"/>
+    </dxp:dataSource>
+    <dxp:segment id="gaid::-2" name="New Visitors">
+      <dxp:definition>ga:visitorType==New Visitor</dxp:definition>
+    </dxp:segment>
+    <entry gd:etag="W/&quot;DUEEQX47eSp7ImA9WxJRF0o.&quot;">
+        <id>http://www.google.com/analytics/feeds/data?ids=ga:7966084&amp;ga:country=United%20States&amp;start-date=2009-05-18&amp;end-date=2009-05-20</id>
+        <updated>2009-05-19T17:00:00.001-07:00</updated>
+        <title>ga:country=United States</title>
+        <link href="http://www.google.com/analytics" rel="alternate" type="text/html"/>
+        <dxp:dimension name="ga:country" value="United States"/>
+        <dxp:metric confidenceInterval="5.1" name="ga:pageviews"
+            type="integer" value="37"/>
+    </entry>
+</feed>

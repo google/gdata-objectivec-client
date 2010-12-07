@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:app="http://www.w3.org/2007/app"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>http://gdata.youtube.com/feeds/api/users/testaccount/favorites?start-index=1&amp;max-results=25</id>
+    <updated>2008-01-30T22:20:52.538Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#video"/>
+    <title type="text">Favorites of testaccount</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/testaccount"
+        rel="related" type="application/atom+xml"/>
+    <link
+        href="http://www.youtube.com/profile_favorites?user=testaccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/favorites"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/testaccount/favorites?start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>testaccount</name>
+        <uri>http://gdata.youtube.com/feeds/api/users/testaccount</uri>
+    </author>
+    <generator uri="http://gdata.youtube.com/" version="beta">YouTube data API</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry>
+        <id>http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig</id>
+        <published>2007-07-23T11:12:17.000-07:00</published>
+        <updated>2008-01-14T20:48:53.000-08:00</updated>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="avitzur"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="ron"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#video"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="graphing"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="apple"/>
+        <category label="Howto &amp; Style"
+            scheme="http://gdata.youtube.com/schemas/2007/categories.cat" term="Howto"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="calculator"/>
+        <title type="text">The Graphing Calculator Story</title>
+        <content type="text">Google TechTalks</content>
+        <link href="http://www.youtube.com/watch?v=Dl643JFJWig"
+            rel="alternate" type="text/html">
+            <yt:token>ZeeToken</yt:token>
+        </link>
+        <link
+          rel="http://gdata.youtube.com/schemas/2007#video.captionTracks" type="application/atom+xml"
+          href="http://gdata.youtube.com/feeds/api/videos/GppRTi2JGQ8/captions"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/responses"
+            rel="http://gdata.youtube.com/schemas/2007#video.responses" type="application/atom+xml"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/related"
+            rel="http://gdata.youtube.com/schemas/2007#video.related" type="application/atom+xml"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/testaccount/favorites/Dl643JFJWig"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>Google</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/google</uri>
+        </author>
+        <media:group>
+            <media:title type="plain">The Graphing Calculator Story</media:title>
+            <media:description type="plain">Google TechTalks</media:description>
+            <media:keywords>apple, avitzur, calculator, graphing, ron</media:keywords>
+            <yt:duration seconds="3266"/>
+            <yt:private/>
+            <media:category label="Howto &amp; Style" scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Howto</media:category>
+            <media:content duration="3266" expression="full"
+                isDefault="true" medium="video"
+                type="application/x-shockwave-flash"
+                url="http://www.youtube.com/v/Dl643JFJWig" yt:format="5"/>
+            <media:content duration="3266" expression="full"
+                medium="video" type="video/3gpp"
+                url="rtsp://rtsp2.youtube.com/ChoLENy73wIaEQkoWkmR3LheDhMYDSANFEgGDA==/0/0/0/video.3gp" yt:format="1"/>
+            <media:content duration="3266" expression="full"
+                medium="video" type="video/3gpp"
+                url="rtsp://rtsp2.youtube.com/ChoLENy73wIaEQkoWkmR3LheDhMYESARFEgGDA==/0/0/0/video.3gp" yt:format="6"/>
+            <media:player url="http://www.youtube.com/watch?v=Dl643JFJWig"/>
+            <media:thumbnail height="97" time="00:27:13"
+                url="http://img.youtube.com/vi/Dl643JFJWig/2.jpg" width="130"/>
+            <media:thumbnail height="97" time="00:13:36.500"
+                url="http://img.youtube.com/vi/Dl643JFJWig/1.jpg" width="130"/>
+            <media:thumbnail height="97" time="00:40:49.500"
+                url="http://img.youtube.com/vi/Dl643JFJWig/3.jpg" width="130"/>
+            <media:thumbnail height="240" time="00:27:13"
+                url="http://img.youtube.com/vi/Dl643JFJWig/0.jpg" width="320"/>
+            <media:rating yt:country="KR">1</media:rating>
+        </media:group>
+        <yt:statistics viewCount="177"/>
+        <yt:accessControl action='videoRespond' permission='denied'/>
+        <yt:accessControl action='comment' permission='allowed' type='group'>friends</yt:accessControl>
+        <yt:rating numDislikes="25" numLikes="100"/>
+        <gd:comments>
+            <gd:feedLink countHint="0" href="http://gdata.youtube.com/feeds/api/videos/Dl643JFJWig/comments"/>
+        </gd:comments>
+        <yt:noembed/>
+        <app:control>
+          <yt:state name="rejected" reasonCode="32" helpUrl="http://www.youtube.com/">incorrect format</yt:state>
+          <yt:incomplete />
+        </app:control>
+    </entry>
+</feed>

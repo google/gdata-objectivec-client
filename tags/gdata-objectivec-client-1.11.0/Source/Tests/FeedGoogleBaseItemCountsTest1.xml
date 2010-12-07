@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns='http://www.w3.org/2005/Atom' xmlns:openSearch='http://a9.com/-/spec/opensearch/1.1/' xmlns:gm='http://base.google.com/ns-metadata/1.0'>
+<id>http://www.google.com/base/feeds/attributes</id>
+<updated>2007-02-01T03:02:57.981Z</updated>
+<category scheme='http://base.google.com/categories/itemtypes' term='products'>
+</category>
+<category scheme='http://base.google.com/categories/itemtypes' term='produkte'>
+</category>
+<title type='text'>Attribute histogram for query: digital camera [brand:canon]</title>
+<link rel='alternate' type='text/html' href='http://base.google.com'>
+</link>
+<link rel='http://schemas.google.com/g/2005#feed' type='application/atom+xml' href='http://www.google.com/base/feeds/attributes'>
+</link>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/base/feeds/attributes?bq=digital+camera+%5Bbrand%3Acanon%5D&amp;max-values=5'>
+</link>
+<generator version='1.0' uri='http://base.google.com'>GoogleBase</generator>
+<openSearch:totalResults>11</openSearch:totalResults>
+<openSearch:startIndex>1</openSearch:startIndex>
+<openSearch:itemsPerPage>11</openSearch:itemsPerPage>
+
+<entry>
+<id>http://www.google.com/attributes/brand%28text%29?bq=digital+camera+%5Bbrand%3Acanon%5D</id>
+<updated>2007-02-01T03:02:58.126Z</updated>
+<title type='text'>brand(text)</title>
+<content type='text'>Attribute "brand" of type text in query: digital camera [brand:canon]</content>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/attributes/brand%28text%29?bq=digital+camera+%5Bbrand%3Acanon%5D'>
+</link>
+<gm:attribute name='brand' type='text' count='133144'>
+<gm:value count='96775'>canon</gm:value>
+</gm:attribute>
+</entry>
+
+<entry>
+<id>http://www.google.com/attributes/item+type%28text%29?bq=digital+camera+%5Bbrand%3Acanon%5D</id>
+<updated>2007-02-01T03:02:58.126Z</updated>
+<title type='text'>item type(text)</title>
+<content type='text'>Attribute "item type" of type text in query: digital camera [brand:canon]</content>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/attributes/item+type%28text%29?bq=digital+camera+%5Bbrand%3Acanon%5D'>
+</link>
+<gm:attribute name='item type' type='text' count='116353'>
+<gm:value count='87269'>products</gm:value>
+<gm:value count='2401'>produkte</gm:value>
+</gm:attribute>
+</entry>
+
+<entry>
+<id>http://www.google.com/attributes/price%28float+usd%29?bq=digital+camera+%5Bbrand%3Acanon%5D</id>
+<updated>2007-02-01T03:02:58.126Z</updated>
+<title type='text'>price(float usd)</title>
+<content type='text'>Attribute "price" of type floatUnit with unit "usd" in query: digital camera [brand:canon]</content>
+<link rel='self' type='application/atom+xml' href='http://www.google.com/attributes/price%28float+usd%29?bq=digital+camera+%5Bbrand%3Acanon%5D'>
+</link>
+<gm:attribute name='price' type='floatUnit' count='86797'>
+<gm:value count='2221'>59.95 usd</gm:value>
+<gm:value count='1777'>67.95 usd</gm:value>
+<gm:value count='975'>19.95 usd</gm:value>
+<gm:value count='965'>34.99 usd</gm:value>
+<gm:value count='606'>9.98 usd</gm:value>
+</gm:attribute>
+</entry>
+</feed>
