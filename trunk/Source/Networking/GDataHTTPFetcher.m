@@ -1592,6 +1592,10 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
   return cookieStorage_;
 }
 
++ (GDataCookieStorage *)staticCookieStorage {
+  return gGDataFetcherStaticCookieStorage;
+}
+
 - (void)setShouldCacheDatedData:(BOOL)flag {
   [fetchHistory_ setShouldCacheDatedData:flag];
 }

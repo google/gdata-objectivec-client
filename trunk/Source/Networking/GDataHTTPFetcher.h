@@ -434,6 +434,8 @@ void AssertSelectorNilOrImplementedWithArguments(id obj, SEL sel, ...);
 - (NSInteger)cookieStorageMethod;
 - (void)setCookieStorageMethod:(NSInteger)method;
 
++ (GDataCookieStorage *)staticCookieStorage;
+
 // the delegate is retained during the connection
 - (id)delegate;
 - (void)setDelegate:(id)theDelegate;

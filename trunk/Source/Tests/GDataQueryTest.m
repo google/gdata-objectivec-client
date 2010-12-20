@@ -55,6 +55,7 @@
   [query2 setProtocolVersion:@"2.0"];
   [query2 setShouldPrettyPrint:YES];
   [query2 setShouldShowDeleted:YES];
+  [query2 setShouldRequireAllDeleted:YES];
   [query2 setShouldShowOnlyDeleted:YES];
   [query2 setStartIndex:10];
   [query2 setPublishedMinDateTime:dateTime1];
@@ -69,7 +70,8 @@
   NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
     "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&onlydeleted=true"
     "&orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
-    "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true"
+    "&published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo"
+    "&requirealldeleted=true&showdeleted=true"
     "&sortorder=ascending&start-index=10&strict=true"
     "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
@@ -106,7 +108,8 @@
     "schemas.google.com%2Fg%2F2005%23event%7C%7BMyScheme2%7DMyTerm2%7C-MyTerm3/"
     "Zonk4?author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&onlydeleted=true&"
     "orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z&"
-    "published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&showdeleted=true&"
+    "published-min=2006-03-29T07%3A35%3A59Z&q=Darcy+Dingo&"
+    "requirealldeleted=true&showdeleted=true&"
     "sortorder=ascending&start-index=10&strict=true&"
     "updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";

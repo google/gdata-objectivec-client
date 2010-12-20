@@ -33,6 +33,7 @@ static NSString *const kProtocolVersionParamName     = @"v";
 static NSString *const kPublishedMaxParamName        = @"published-max";
 static NSString *const kPublishedMinParamName        = @"published-min";
 static NSString *const kShowDeletedParamName         = @"showdeleted";
+static NSString *const kRequireAllDeletedParamName   = @"requirealldeleted";
 static NSString *const kOnlyDeletedParamName         = @"onlydeleted";
 static NSString *const kSortOrderParamName           = @"sortorder";
 static NSString *const kStartIndexParamName          = @"start-index";
@@ -303,6 +304,17 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
 
 - (void)setShouldShowDeleted:(BOOL)flag {
   [self addCustomParameterWithName:kShowDeletedParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldRequireAllDeleted {
+  return [self boolValueForParameterWithName:kRequireAllDeletedParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldRequireAllDeleted:(BOOL)flag {
+  [self addCustomParameterWithName:kRequireAllDeletedParamName
                          boolValue:flag
                       defaultValue:NO];
 }
