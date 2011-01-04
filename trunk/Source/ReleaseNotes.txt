@@ -4,6 +4,24 @@ Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Changes since 1.11.0
+
+Additions
+
+- Added static cookie storage accessor to http fetcher
+
+- Added requirealldeleted query parameter
+
+
+Changes
+
+
+Bugs Fixed
+
+- Fixed leak in elements allocated with GDataXMLElement's initWithXMLString:
+  (thanks dshimshoni)
+
+
 Release 1.11.0
 1-December-2010
 Changes since 1.10.0

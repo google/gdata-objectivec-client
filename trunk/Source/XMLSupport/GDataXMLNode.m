@@ -378,6 +378,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
 
   if (xmlNode_ && shouldFreeXMLNode_) {
     xmlFreeNode(xmlNode_);
+    xmlNode_ = NULL;
   }
 
   [self releaseCachedValues];
@@ -918,6 +919,7 @@ static xmlChar *SplitQNameReverse(const xmlChar *qname, xmlChar **prefix) {
       xmlNodePtr root = xmlDocGetRootElement(doc);
       if (root) {
         xmlNode_ = xmlCopyNode(root, 1); // 1: recursive
+        shouldFreeXMLNode_ = YES;
       }
       xmlFreeDoc(doc);
     }
