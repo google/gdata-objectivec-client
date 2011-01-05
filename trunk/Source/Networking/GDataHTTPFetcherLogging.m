@@ -594,8 +594,9 @@ static NSString* gLoggingProcessName = nil;
   if (response) {
     NSString *statusString = @"";
     if (status != 0) {
-      statusString = @"200";
-      if (status != 200 && status != 201) {
+      if (status == 200 || status == 201) {
+        statusString = [NSString stringWithFormat:@"%ld", (long)status];
+      } else {
         // purple for anything other than 200 or 201
         statusString = [NSString stringWithFormat:@"<FONT COLOR=\"#FF00FF\">%ld</FONT>",
                         (long)status];
