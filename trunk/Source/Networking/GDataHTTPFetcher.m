@@ -854,7 +854,7 @@ CannotBeginFetch:
 
   NSMethodSignature *signature = [target methodSignatureForSelector:sel];
   NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
-  [invocation setSelector:statusFailedSEL_];
+  [invocation setSelector:sel];
   [invocation setTarget:target];
   [invocation setArgument:&self atIndex:2];
   [invocation setArgument:&status atIndex:3];
