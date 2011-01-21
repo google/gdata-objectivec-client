@@ -457,9 +457,13 @@ Setting the run loop modes will have no effect for service objects on Mac OS X 1
 
 == Authentication errors ==
 
-[http://code.google.com/apis/gdata/auth.html Authenticating] the user with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
+If your application authenticates the user via OAuthSignInControllers, then no additional handling of authentication errors is needed.
+
+[http://code.google.com/apis/gdata/auth.html Authentication] by asking the user for Google account username and password is called !ClientLogin. Authenticating the user via !ClientLogin with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
 
 The most common error during authentication is an invalid username or password.
+
+=== 2-step verification ===
 
 If a user's account requires [http://goo.gl/8bHWV 2-step verification], the user must supply an [http://goo.gl/bogZI application-specific password] rather than the account password. That case can be detected by inspecting the callback error:
 {{{
