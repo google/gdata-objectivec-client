@@ -455,13 +455,31 @@ NSArray *modes = [NSArray arrayWithObjects:
 
 Setting the run loop modes will have no effect for service objects on Mac OS X 10.4.
 
-== Authentication errors and captchas ==
+== Authentication errors ==
 
 [http://code.google.com/apis/gdata/auth.html Authenticating] the user with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
 
-The most common error during authentication is an invalid username or password.  Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle.
+The most common error during authentication is an invalid username or password.
 
-It is *optional* for your application to handle captcha requests. One easy way to handle them is to just open Google's unlock captcha web page in the user's web browser.
+If a user's account requires [http://goo.gl/8bHWV 2-step verification], the user must supply an [http://goo.gl/bogZI application-specific password] rather than the account password. That case can be detected by inspecting the callback error:
+{{{
+if ([[[error userInfo] authenticationInfo] isEqual:kGDataServerInfoInvalidSecondFactor]) {
+  // user provided account password but
+  // should provide application-specific password 
+}
+}}}
+
+With version 1.11 of the library and earlier, use this criteria instead:
+{{{
+if ([[[error userInfo] objectForKey:@"Info"] isEqual:@"InvalidSecondFactor"]) {
+  // user provided account password but
+  // should provide application-specific password 
+}
+}}}
+
+=== Captchas ===
+
+Occasionally, the servers may also request that the user solve a [http://www.captcha.net/ captcha], a visual puzzle. It is *optional* for your application to handle captcha requests. One easy way to handle them is to just open Google's unlock captcha web page in the user's web browser.
 
 {{{
 NSURL *captchaUnlockURL = [NSURL URLWithString:@"https://www.google.com/accounts/DisplayUnlockCaptcha"];
