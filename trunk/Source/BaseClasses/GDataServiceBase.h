@@ -40,7 +40,13 @@ _EXTERN NSUInteger const kGDataStandardUploadChunkSize _INITIALIZE_AS(NSUInteger
 
 // we'll consistently store the server error string in the userInfo under
 // this key
-_EXTERN NSString* const kGDataServerErrorStringKey _INITIALIZE_AS(@"error");
+_EXTERN NSString* const kGDataServerErrorStringKey     _INITIALIZE_AS(@"error");
+
+// additional server error info keys (capitalized to match the server's
+// response key)
+_EXTERN NSString* const kGDataServerInfoStringKey _INITIALIZE_AS(@"Info");
+
+_EXTERN NSString* const kGDataServerInfoInvalidSecondFactor _INITIALIZE_AS(@"InvalidSecondFactor");
 
 
 // when servers return us structured XML errors, the NSError will
