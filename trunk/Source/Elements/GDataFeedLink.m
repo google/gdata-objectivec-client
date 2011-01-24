@@ -94,7 +94,7 @@ static NSString *const kCountHintAttr = @"countHint";
     { @"countHint", @"countHint.stringValue", kGDataDescValueLabeled   },
     { @"feed",      @"feed",                  kGDataDescValueLabeled   },
     { @"rel",       @"rel",                   kGDataDescValueLabeled   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

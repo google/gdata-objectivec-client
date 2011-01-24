@@ -57,7 +57,7 @@
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"CCR", @"continuityOfCareRecord", kGDataDescLabelIfNonNil },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

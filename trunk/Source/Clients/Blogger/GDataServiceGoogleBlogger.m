@@ -29,11 +29,11 @@
 + (NSURL *)blogFeedURLForUserID:(NSString *)userID {
   NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
 
-  NSString *const template = @"%@%@/blogs";
+  NSString *const templateStr = @"%@%@/blogs";
 
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *urlString = [NSString stringWithFormat:template,
+  NSString *urlString = [NSString stringWithFormat:templateStr,
                          rootURLStr, encodedUserID];
 
   return [NSURL URLWithString:urlString];

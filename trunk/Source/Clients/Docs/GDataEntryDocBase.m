@@ -79,7 +79,7 @@
     { @"writersCanInvite", @"writersCanInvite", kGDataDescValueLabeled },
     { @"lastModifiedBy",   @"lastModifiedBy",   kGDataDescValueLabeled },
     { @"quotaUsed",        @"quotaBytesUsed",   kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

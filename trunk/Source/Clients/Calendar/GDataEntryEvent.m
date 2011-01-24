@@ -131,7 +131,7 @@
     { @"recExc",         @"recurrenceExceptions",   kGDataDescArrayCount },
     { @"reminders",      @"reminders",              kGDataDescArrayCount },
     { @"comment",        @"comment",                kGDataDescLabelIfNonNil },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

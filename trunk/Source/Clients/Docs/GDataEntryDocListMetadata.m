@@ -71,7 +71,7 @@
     { @"uploadSize",   @"maxUploadSizes",        kGDataDescValueLabeled },
     { @"export",       @"exportFormats",         kGDataDescArrayDescs   },
     { @"import",       @"importFormats",         kGDataDescArrayDescs   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

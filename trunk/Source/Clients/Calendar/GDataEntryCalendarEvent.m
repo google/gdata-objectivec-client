@@ -278,7 +278,7 @@
     { @"anyoneCanAddSelf",       @"canAnyoneAddSelf",               kGDataDescBooleanPresent },
     { @"suppressReplyTypes",     @"suppressReplyNotificationTypes", kGDataDescValueLabeled   },
     { @"geo",                    @"geoLocation.coordinateString",   kGDataDescValueLabeled   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

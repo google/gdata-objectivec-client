@@ -112,7 +112,7 @@ static NSString* const kChildXMLDeclarationMarker = @" __childXML";
 - (void)handleParsedElement:(NSXMLNode *)element;
 - (void)handleParsedElements:(NSArray *)array;
 
-- (NSString *)qualifiedNameForExtensionClass:(Class)class;
+- (NSString *)qualifiedNameForExtensionClass:(Class)theClass;
 
 + (Class)classForCategoryWithScheme:(NSString *)scheme
                                term:(NSString *)term
@@ -459,11 +459,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   if (parentNamespaces == nil) return ownNamespaces;
 
   // combine them, replacing parent-defined prefixes with own ones
-  NSMutableDictionary *mutable;
+  NSMutableDictionary *mutableDict;
 
-  mutable = [NSMutableDictionary dictionaryWithDictionary:parentNamespaces];
-  [mutable addEntriesFromDictionary:ownNamespaces];
-  return mutable;
+  mutableDict = [NSMutableDictionary dictionaryWithDictionary:parentNamespaces];
+  [mutableDict addEntriesFromDictionary:ownNamespaces];
+  return mutableDict;
 }
 
 - (void)pruneInheritedNamespaces {
@@ -988,7 +988,7 @@ attributeValueIfNonNil:str
 
   for (NSUInteger idx = 0; descRecordList[idx].label != nil; idx++) {
 
-    enum GDataDescRecTypes reportType = descRecordList[idx].reportType;
+    GDataDescRecTypes reportType = descRecordList[idx].reportType;
     NSString *label = descRecordList[idx].label;
     NSString *keyPath = descRecordList[idx].keyPath;
 
@@ -1244,7 +1244,7 @@ objectDescriptionIfNonNil:(id)obj
     // look for an object with a surrogates dict containing the standardClass
     NSDictionary *currentSurrogates = [currentObject surrogates];
 
-    Class surrogate = [currentSurrogates objectForKey:standardClass];
+    Class surrogate = (Class)[currentSurrogates objectForKey:standardClass];
     if (surrogate) return surrogate;
   }
   return standardClass;
@@ -1704,7 +1704,7 @@ objectDescriptionIfNonNil:(id)obj
                                  childClasses:(Class)firstChildClass, ... {
 
   // like the method above, but for a list of child classes
-  id nextClass;
+  Class nextClass;
   va_list argumentList;
 
   if (firstChildClass != nil) {
@@ -1713,7 +1713,7 @@ objectDescriptionIfNonNil:(id)obj
                                     isAttribute:NO];
 
     va_start(argumentList, firstChildClass);
-    while ((nextClass = va_arg(argumentList, Class)) != nil) {
+    while ((nextClass = (Class)va_arg(argumentList, Class)) != nil) {
 
       [self addExtensionDeclarationForParentClass:parentClass
                                        childClass:nextClass
@@ -1849,37 +1849,37 @@ objectDescriptionIfNonNil:(id)obj
 }
 
 // generate the qualified name for this extension's element
-- (NSString *)qualifiedNameForExtensionClass:(Class)class {
+- (NSString *)qualifiedNameForExtensionClass:(Class)theClass {
 
   NSString *name;
 
   @synchronized(gQualifiedNameMap) {
 
-    name = [gQualifiedNameMap objectForKey:class];
+    name = [gQualifiedNameMap objectForKey:theClass];
     if (name == nil) {
 
-      NSString *extensionURI = [class extensionElementURI];
+      NSString *extensionURI = [theClass extensionElementURI];
 
       if (extensionURI == nil || [extensionURI isEqual:kGDataNamespaceAtom]) {
-        name = [class extensionElementLocalName];
+        name = [theClass extensionElementLocalName];
       } else {
         name = [NSString stringWithFormat:@"%@:%@",
-                [class extensionElementPrefix],
-                [class extensionElementLocalName]];
+                [theClass extensionElementPrefix],
+                [theClass extensionElementLocalName]];
       }
 
-      [gQualifiedNameMap setObject:name forKey:class];
+      [gQualifiedNameMap setObject:name forKey:theClass];
     }
   }
   return name;
 }
 
-- (void)ensureObject:(GDataObject *)obj hasXMLNameForExtensionClass:(Class)class {
+- (void)ensureObject:(GDataObject *)obj hasXMLNameForExtensionClass:(Class)theClass {
   // utility routine for setObjects:forExtensionClass:
   if ([obj isKindOfClass:[GDataObject class]]
       && [[obj elementName] length] == 0) {
 
-    NSString *name = [self qualifiedNameForExtensionClass:class];
+    NSString *name = [self qualifiedNameForExtensionClass:theClass];
     [obj setElementName:name];
   }
 }
@@ -1888,7 +1888,7 @@ objectDescriptionIfNonNil:(id)obj
 //
 // this is typically called by the setter methods of subclasses
 
-- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)class {
+- (void)setObjects:(NSArray *)objects forExtensionClass:(Class)theClass {
 
   GDATA_DEBUG_ASSERT(objects == nil || [objects isKindOfClass:[NSArray class]],
                      @"array expected");
@@ -1901,11 +1901,11 @@ objectDescriptionIfNonNil:(id)obj
     // be sure each object has an element name so we can generate XML for it
     GDataObject *obj;
     GDATA_FOREACH(obj, objects) {
-      [self ensureObject:obj hasXMLNameForExtensionClass:class];
+      [self ensureObject:obj hasXMLNameForExtensionClass:theClass];
     }
-    [extensions_ setObject:objects forKey:class];
+    [extensions_ setObject:objects forKey:theClass];
   } else {
-    [extensions_ removeObjectForKey:class];
+    [extensions_ removeObjectForKey:theClass];
   }
 }
 
@@ -1913,7 +1913,7 @@ objectDescriptionIfNonNil:(id)obj
 //
 // this is typically called by the setter methods of subclasses
 
-- (void)setObject:(id)object forExtensionClass:(Class)class {
+- (void)setObject:(id)object forExtensionClass:(Class)theClass {
 
   GDATA_DEBUG_ASSERT(![object isKindOfClass:[NSArray class]], @"array unexpected");
 
@@ -1922,10 +1922,10 @@ objectDescriptionIfNonNil:(id)obj
   }
 
   if (object) {
-    [self ensureObject:object hasXMLNameForExtensionClass:class];
-    [extensions_ setObject:object forKey:class];
+    [self ensureObject:object hasXMLNameForExtensionClass:theClass];
+    [extensions_ setObject:object forKey:theClass];
   } else {
-    [extensions_ removeObjectForKey:class];
+    [extensions_ removeObjectForKey:theClass];
   }
 }
 
@@ -1933,17 +1933,17 @@ objectDescriptionIfNonNil:(id)obj
 //
 // this is typically called by addObject methods of subclasses
 
-- (void)addObject:(id)newObj forExtensionClass:(Class)class {
+- (void)addObject:(id)newObj forExtensionClass:(Class)theClass {
 
   if (newObj == nil) return;
 
-  id previousObjOrArray = [extensions_ objectForKey:class];
+  id previousObjOrArray = [extensions_ objectForKey:theClass];
   if (previousObjOrArray) {
 
     if ([previousObjOrArray isKindOfClass:[NSArray class]]) {
 
       // add to the existing array
-      [self ensureObject:newObj hasXMLNameForExtensionClass:class];
+      [self ensureObject:newObj hasXMLNameForExtensionClass:theClass];
       [previousObjOrArray addObject:newObj];
 
     } else {
@@ -1951,12 +1951,12 @@ objectDescriptionIfNonNil:(id)obj
       // create an array with the previous object and the new object
       NSMutableArray *array = [NSMutableArray arrayWithObjects:
                                previousObjOrArray, newObj, nil];
-      [extensions_ setObject:array forKey:class];
+      [extensions_ setObject:array forKey:theClass];
     }
   } else {
 
     // no previous object
-    [self setObject:newObj forExtensionClass:class];
+    [self setObject:newObj forExtensionClass:theClass];
   }
 }
 
@@ -1964,8 +1964,8 @@ objectDescriptionIfNonNil:(id)obj
 //
 // this is typically called by removeObject methods of subclasses
 
-- (void)removeObject:(id)object forExtensionClass:(Class)class {
-  id previousObjOrArray = [extensions_ objectForKey:class];
+- (void)removeObject:(id)object forExtensionClass:(Class)theClass {
+  id previousObjOrArray = [extensions_ objectForKey:theClass];
   if ([previousObjOrArray isKindOfClass:[NSArray class]]) {
 
     // remove from the array
@@ -1974,7 +1974,7 @@ objectDescriptionIfNonNil:(id)obj
   } else if ([object isEqual:previousObjOrArray]) {
 
     // no array, so remove if it matches the sole object
-    [extensions_ removeObjectForKey:class];
+    [extensions_ removeObjectForKey:theClass];
   }
 }
 
@@ -2606,17 +2606,17 @@ forCategoryWithScheme:(NSString *)scheme
   // is just the term value.
 
   NSString *key = term;
-  Class class = [map objectForKey:key];
-  if (class) return class;
+  Class result = (Class)[map objectForKey:key];
+  if (result) return result;
 
   if (scheme) {
     key = [NSString stringWithFormat:kCategoryTemplate, scheme, term];
-    class = [map objectForKey:key];
-    if (class) return class;
+    result = (Class)[map objectForKey:key];
+    if (result) return result;
 
     key = [NSString stringWithFormat:kCategoryTemplate, scheme, @""];
-    class = [map objectForKey:key];
-    if (class) return class;
+    result = (Class)[map objectForKey:key];
+    if (result) return result;
   }
 
   return nil;
@@ -2697,7 +2697,7 @@ forCategoryWithScheme:(NSString *)scheme
     } else if (isEntry) {
       // default to returning this feed's entry base class
       if ([self isSubclassOfClass:[GDataFeedBase class]]) {
-        result = [self performSelector:@selector(defaultClassForEntries)];
+        result = (Class)[self performSelector:@selector(defaultClassForEntries)];
       } else {
         result = [GDataEntryBase class];
       }
@@ -2786,8 +2786,8 @@ forCategoryWithScheme:(NSString *)scheme
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataExtensionDeclaration class]]) return NO;
 
-  return AreEqualOrBothNil([self parentClass], [other parentClass])
-    && AreEqualOrBothNil([self childClass], [other childClass])
+  return AreEqualOrBothNil((id)[self parentClass], (id)[other parentClass])
+    && AreEqualOrBothNil((id)[self childClass], (id)[other childClass])
     && [self isAttribute] == [other isAttribute];
 }
 

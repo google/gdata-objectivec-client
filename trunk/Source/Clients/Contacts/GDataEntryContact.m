@@ -87,7 +87,7 @@
   static struct GDataDescriptionRecord descRecs[] = {
     { @"group",           @"groupMembershipInfos", kGDataDescArrayDescs   },
     { @"version>=3:yomi", @"yomi",                 kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

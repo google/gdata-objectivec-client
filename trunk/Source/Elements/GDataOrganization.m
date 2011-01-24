@@ -128,7 +128,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
     { @"rel",         @"rel",               kGDataDescValueLabeled   },
     { @"label",       @"label",             kGDataDescValueLabeled   },
     { @"primary",     @"isPrimary",         kGDataDescBooleanPresent },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

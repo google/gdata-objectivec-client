@@ -95,7 +95,7 @@
     { @"snippetType",     @"snippetType",      kGDataDescValueLabeled },
     { @"truncated",       @"truncated",        kGDataDescValueLabeled },
     { @"location",        @"location",         kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

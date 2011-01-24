@@ -54,7 +54,7 @@
   static struct GDataDescriptionRecord descRecs[] = {
     { @"thumbnail",                @"thumbnail",          kGDataDescValueLabeled },
     { @"countHint",                @"countHint",          kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

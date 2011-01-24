@@ -108,7 +108,7 @@
 #define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
-#define _EXTERN extern
+#define _EXTERN GDATA_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
 
@@ -174,7 +174,7 @@ _EXTERN NSString* const kGDataNamespaceBatchPrefix _INITIALIZE_AS(@"batch");
 // and attributes of a GDataObject should be reported when -description
 // is called.
 
-enum GDataDescRecTypes {
+typedef enum GDataDescRecTypes {
   kGDataDescValueLabeled = 1,
   kGDataDescLabelIfNonNil,
   kGDataDescArrayCount,
@@ -183,12 +183,12 @@ enum GDataDescRecTypes {
   kGDataDescBooleanPresent,
   kGDataDescNonZeroLength,
   kGDataDescValueIsKeyPath
-};
+} GDataDescRecTypes;
 
 typedef struct GDataDescriptionRecord {
   NSString *label;
   NSString *keyPath;
-  enum GDataDescRecTypes reportType;
+  GDataDescRecTypes reportType;
 } GDataDescriptionRecord;
 
 

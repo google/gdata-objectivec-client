@@ -63,7 +63,7 @@ static NSString* const kFormulaAttr = @"formula";
     { @"index",   @"indexString", kGDataDescValueLabeled },
     { @"formula", @"formula",     kGDataDescValueLabeled },
     { @"value",   @"value",       kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

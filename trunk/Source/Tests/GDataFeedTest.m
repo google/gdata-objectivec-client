@@ -1124,8 +1124,8 @@
   
   // Test a non-ASCII character and some html characters in a TextConstruct.  
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
-  NSString *template = @"Test %C Alb%Cm";
-  NSString *photoAlbumName = [NSString stringWithFormat:template, 
+  NSString *templateStr = @"Test %C Alb%Cm";
+  NSString *photoAlbumName = [NSString stringWithFormat:templateStr, 
                               0x262F, 0x00FC]; // yin yang, u with umlaut
   
   // Non-ascii photo description, includes the Wheel of Dharma

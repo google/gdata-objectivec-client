@@ -132,7 +132,13 @@
   double val = [str doubleValue];
   NSNumber *number = [NSNumber numberWithDouble:val];
 
-  if (fpclassify(val) == FP_ZERO) {
+  // Incase fpclassify doesn't exist, default to always checking for INF.
+  BOOL checkForINF = YES;
+#if defined(fpclassify)
+  checkForINF = (fpclassify(val) == FP_ZERO);
+#endif
+
+  if (checkForINF) {
     if ([str caseInsensitiveCompare:@"INF"] == NSOrderedSame) {
       number = [NSNumber numberWithDouble:HUGE_VAL];
     } else if ([str caseInsensitiveCompare:@"-INF"] == NSOrderedSame) {

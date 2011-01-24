@@ -66,7 +66,7 @@
     { @"time",         @"time",         kGDataDescValueLabeled },
     { @"geoPt",        @"geoPt",        kGDataDescValueLabeled },
     { @"participants", @"participants", kGDataDescArrayCount },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

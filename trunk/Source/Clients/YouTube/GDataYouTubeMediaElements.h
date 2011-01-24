@@ -19,13 +19,15 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
+#import "GDataObject.h"
+
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAYOUTUBEMEDIAELEMENTS_DEFINE_GLOBALS
 #define _EXTERN 
 #define _INITIALIZE_AS(x) =x
 #else
-#define _EXTERN extern
+#define _EXTERN GDATA_EXTERN
 #define _INITIALIZE_AS(x)
 #endif
 
@@ -33,7 +35,6 @@ _EXTERN const int kGDataYouTubeMediaContentFormatRTSPStream       _INITIALIZE_AS
 _EXTERN const int kGDataYouTubeMediaContentFormatHTTPURL          _INITIALIZE_AS(5);
 _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS(6);
 
-#import "GDataObject.h"
 #import "GDataMedia.h"
 #import "GDataYouTubeElements.h"
 

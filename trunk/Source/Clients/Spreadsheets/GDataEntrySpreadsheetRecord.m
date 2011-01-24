@@ -58,7 +58,7 @@
 - (NSMutableArray *)itemsForDescription {
   static struct GDataDescriptionRecord descRecs[] = {
     { @"fields", @"fields", kGDataDescArrayCount },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

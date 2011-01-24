@@ -62,9 +62,9 @@
     projection = @"full";
   }
 
-  NSString *template = @"%@%@/%@/%@";
+  NSString *templateStr = @"%@%@/%@/%@";
   NSString *encodedUser = [GDataUtilities stringByURLEncodingForURI:userID];
-  NSString *urlStr = [NSString stringWithFormat:template,
+  NSString *urlStr = [NSString stringWithFormat:templateStr,
                       rootURLStr, encodedUser, visibility, projection];
 
   // now add the optional parts

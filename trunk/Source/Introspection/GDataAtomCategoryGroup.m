@@ -66,7 +66,7 @@ static NSString* const kFixedAttr = @"fixed";
     { @"href",       @"href",       kGDataDescValueLabeled },
     { @"scheme",     @"scheme",     kGDataDescValueLabeled },
     { @"categories", @"categories", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

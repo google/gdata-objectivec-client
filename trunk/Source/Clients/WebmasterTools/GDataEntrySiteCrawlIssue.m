@@ -124,7 +124,7 @@
     { @"issueType",  @"issueType",                 kGDataDescValueLabeled },
     { @"URL",        @"issueURLString",            kGDataDescValueLabeled },
     { @"linkedFrom", @"issueLinkedFromURLStrings", kGDataDescArrayDescs   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

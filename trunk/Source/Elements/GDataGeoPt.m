@@ -108,7 +108,7 @@
     { @"lon",   @"lon",              kGDataDescValueLabeled },
     { @"elev",  @"elev",             kGDataDescValueLabeled },
     { @"time",  @"time.stringValue", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

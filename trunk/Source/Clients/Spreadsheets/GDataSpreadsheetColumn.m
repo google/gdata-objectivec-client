@@ -58,7 +58,7 @@ static NSString* const kIndexAttr = @"index";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"name",    @"name",        kGDataDescValueLabeled },
     { @"index",   @"indexString", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

@@ -141,7 +141,7 @@ static NSString *const kSharesAttr = @"shares";
     { @"daysGain",  @"daysGain",  kGDataDescValueLabeled },
     { @"gain",      @"gain",      kGDataDescValueLabeled },
     { @"daysGain",  @"daysGain",  kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

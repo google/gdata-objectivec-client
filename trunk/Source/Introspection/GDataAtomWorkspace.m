@@ -48,7 +48,7 @@ static NSString *const kTitleAttr = @"title";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"title",       @"title.stringValue", kGDataDescValueLabeled },
     { @"collections", @"collections",       kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

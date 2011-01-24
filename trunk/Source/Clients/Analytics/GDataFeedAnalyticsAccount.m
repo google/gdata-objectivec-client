@@ -56,9 +56,9 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  struct GDataDescriptionRecord descRecs[] = {
+  static struct GDataDescriptionRecord descRecs[] = {
     { @"segments", @"segments", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

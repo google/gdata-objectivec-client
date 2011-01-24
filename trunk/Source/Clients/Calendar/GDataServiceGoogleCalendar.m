@@ -46,9 +46,9 @@
 
   NSString *rootURLString = [self serviceRootURLString];
 
-  NSString *template = @"%@%@/settings";
+  NSString *templateStr = @"%@%@/settings";
 
-  NSString *feedURLString = [NSString stringWithFormat:template,
+  NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              rootURLString, usernameEscaped];
 
   NSURL *url = [NSURL URLWithString:feedURLString];

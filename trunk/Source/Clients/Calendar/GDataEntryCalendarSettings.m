@@ -50,7 +50,7 @@
   static struct GDataDescriptionRecord descRecs[] = {
     { @"name",  @"settingsProperty.name",  kGDataDescValueLabeled },
     { @"value", @"settingsProperty.value", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

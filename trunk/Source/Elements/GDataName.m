@@ -200,7 +200,7 @@ static NSString* const kYomiAttr = @"yomi";
     { @"family",     @"familyName.stringValue",     kGDataDescValueLabeled },
     { @"suffix",     @"nameSuffix",                 kGDataDescValueLabeled },
     { @"full",       @"fullName.stringValue",       kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

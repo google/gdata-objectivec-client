@@ -54,7 +54,7 @@ static NSString *const kStep1RequiredAttr = @"step1Required";
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"steps", @"steps", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

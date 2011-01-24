@@ -140,15 +140,15 @@ static NSString *const kShowHiddenParamName = @"showhidden";
 - (void)setCurrentTimeZoneName:(NSString *)str {
   
   // replace underscores with spaces in the param value
-  NSMutableString *mutable = [NSMutableString stringWithString:str];
+  NSMutableString *mutableStr = [NSMutableString stringWithString:str];
   
-  [mutable replaceOccurrencesOfString:@" "
-                           withString:@"_"
-                              options:0
-                                range:NSMakeRange(0, [str length])];
-  
+  [mutableStr replaceOccurrencesOfString:@" "
+                              withString:@"_"
+                                 options:0
+                                   range:NSMakeRange(0, [str length])];
+
   [self addCustomParameterWithName:kCurrentTimeZoneParamName
-                             value:mutable];
+                             value:mutableStr];
 }
 
 @end

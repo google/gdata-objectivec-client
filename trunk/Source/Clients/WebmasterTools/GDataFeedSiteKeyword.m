@@ -54,7 +54,7 @@
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"keywords", @"keywords", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

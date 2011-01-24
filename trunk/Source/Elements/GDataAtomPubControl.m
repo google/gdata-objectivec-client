@@ -46,9 +46,9 @@
 
   // add the "app" namespace
   NSString *nsURI = [[self class] extensionElementURI];
-  NSDictionary *namespace = [NSDictionary dictionaryWithObject:nsURI
-                                                        forKey:kGDataNamespaceAtomPubPrefix];
-  [obj setNamespaces:namespace];
+  NSDictionary *namespaceDict = [NSDictionary dictionaryWithObject:nsURI
+                                                            forKey:kGDataNamespaceAtomPubPrefix];
+  [obj setNamespaces:namespaceDict];
 
   return obj;
 }

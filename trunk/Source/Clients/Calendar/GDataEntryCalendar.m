@@ -137,7 +137,7 @@
     { @"selected",     @"isSelected",                kGDataDescBooleanPresent },
     { @"whens",        @"whens",                     kGDataDescArrayCount },
     { @"hidden",       @"locations",                 kGDataDescArrayCount },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];
