@@ -153,7 +153,7 @@
     { @"verified",            @"isVerified",             kGDataDescBooleanLabeled },
     { @"enhancedImageSearch", @"hasEnhancedImageSearch", kGDataDescBooleanLabeled },
     { @"methods",             @"verificationMethods",    kGDataDescArrayDescs     },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

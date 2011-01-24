@@ -65,7 +65,7 @@ static NSString* const kKeyAttr = @"key";
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"role", @"role", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

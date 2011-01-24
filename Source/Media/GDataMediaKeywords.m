@@ -55,7 +55,7 @@
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"keywords", @"stringValue", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];
@@ -89,9 +89,9 @@
     } else {
       // check that this is not already in the array
       if (! [array containsObject:str]) {
-        NSMutableArray *mutable = [[array mutableCopy] autorelease];
-        [mutable addObject:str];
-        [self setKeywords:mutable];
+        NSMutableArray *mutableArray = [[array mutableCopy] autorelease];
+        [mutableArray addObject:str];
+        [self setKeywords:mutableArray];
       }
     }
   }

@@ -78,7 +78,7 @@
     { @"lastModifiedBy",  @"lastModifiedBy",          kGDataDescValueLabeled },
     { @"glossary",        @"glossary.links",          kGDataDescArrayCount   },
     { @"memory",          @"translationMemory.links", kGDataDescArrayCount   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

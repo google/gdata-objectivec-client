@@ -352,8 +352,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   
   // Test a non-ASCII character and some html characters in a TextConstruct.  
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
-  NSString *template = @"Test ellipsis (%C) and others \"<&>";
-  NSString *textConstructTestResult = [NSString stringWithFormat:template, 8230];
+  NSString *templateStr = @"Test ellipsis (%C) and others \"<&>";
+  NSString *textConstructTestResult = [NSString stringWithFormat:templateStr, 8230];
   
   // To test an inline feed, we'll read in the cells feed test file,
   // strip the <?xml...> prefix, and wrap it in a gd:feedLink
@@ -1350,8 +1350,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSString *value1 = @"horgood\nbatman";
 
   NSString *key2 = @"frubble map";
-  NSString *template = @"Ellipsis (%C) and other chars \"<&>";
-  NSString *value2 = [NSString stringWithFormat:template, 8230];
+  NSString *templateStr = @"Ellipsis (%C) and other chars \"<&>";
+  NSString *value2 = [NSString stringWithFormat:templateStr, 8230];
 
   GDataExtendedProperty *extProp;
   extProp = [GDataExtendedProperty propertyWithName:@"zum" value:nil];

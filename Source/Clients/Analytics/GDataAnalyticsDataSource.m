@@ -49,7 +49,7 @@
     { @"tableID",    @"tableID",    kGDataDescValueLabeled },
     { @"tableName",  @"tableName",  kGDataDescValueLabeled },
     { @"properties", @"properties", kGDataDescArrayDescs   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

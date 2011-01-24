@@ -179,7 +179,7 @@ static NSString* gLoggingProcessName = nil;
 
   if (isXMLLintAvailable
       && [inputData length] > 5
-      && strncmp([inputData bytes], "<?xml", 5) == 0) {
+      && strncmp((const char*)[inputData bytes], "<?xml", 5) == 0) {
 
     // call xmllint to format the data
     NSTask *task = [[[NSTask alloc] init] autorelease];
@@ -259,7 +259,7 @@ static NSString* gLoggingProcessName = nil;
   // and turn that munged buffer an NSString.  That gives us a string
   // we can use with NSScanner.
   NSMutableData *mutableData = [NSMutableData dataWithData:data];
-  unsigned char *bytes = [mutableData mutableBytes];
+  unsigned char *bytes = (unsigned char*)[mutableData mutableBytes];
 
   for (unsigned int idx = 0; idx < [mutableData length]; idx++) {
     if (bytes[idx] > 0x7F || bytes[idx] == 0) {

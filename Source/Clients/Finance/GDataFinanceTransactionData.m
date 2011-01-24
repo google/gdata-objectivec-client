@@ -80,7 +80,7 @@ static NSString* const kNotesAttr = @"notes";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"price",      @"price",      kGDataDescValueLabeled },
     { @"commission", @"commission", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

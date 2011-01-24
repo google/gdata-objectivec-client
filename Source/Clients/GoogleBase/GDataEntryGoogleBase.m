@@ -83,7 +83,7 @@
     { @"itemType",              @"metadataItemType",      kGDataDescValueLabeled },
     { @"metadataAttributes",    @"metadataAttributes",    kGDataDescArrayDescs },
     { @"metadataAttributeList", @"metadataAttributeList", kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

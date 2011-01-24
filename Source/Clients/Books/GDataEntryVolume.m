@@ -112,7 +112,7 @@
     { @"subjects",      @"subjects",           kGDataDescValueLabeled },
     { @"titles",        @"volumeTitles",       kGDataDescValueLabeled },
     { @"viewability",   @"viewability",        kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

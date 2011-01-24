@@ -50,7 +50,7 @@ static NSString* const kYomiAttr = @"yomi";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"value", @"stringValue", kGDataDescValueLabeled },
     { @"yomi",  @"yomi",        kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

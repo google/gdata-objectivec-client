@@ -115,7 +115,7 @@
     { @"language", @"language",                kGDataDescValueLabeled   },
     { @"read",     @"read",                    kGDataDescBooleanLabeled },
     { @"subject",  @"subject",                 kGDataDescValueLabeled   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

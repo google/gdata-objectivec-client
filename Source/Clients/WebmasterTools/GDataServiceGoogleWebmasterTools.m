@@ -32,11 +32,11 @@
   NSString *encodedSiteID;
   encodedSiteID = [GDataUtilities stringByURLEncodingForURI:siteID];
   
-  NSString *const template = @"%@%@/%@";
+  NSString *const templateStr = @"%@%@/%@";
   
   NSString *rootURLStr = [self serviceRootURLString];
   
-  NSString *urlString = [NSString stringWithFormat:template, 
+  NSString *urlString = [NSString stringWithFormat:templateStr, 
                          rootURLStr, encodedSiteID, feedType];
   
   return [NSURL URLWithString:urlString];

@@ -40,22 +40,22 @@
 
 + (NSURL *)profileListFeedURL {
 
-  NSString *const template = @"%@profile/list";
+  NSString *const templateStr = @"%@profile/list";
 
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *urlString = [NSString stringWithFormat:template, rootURLStr];
+  NSString *urlString = [NSString stringWithFormat:templateStr, rootURLStr];
 
   return [NSURL URLWithString:urlString];
 }
 
 + (NSURL *)profileFeedURLForProfileID:(NSString *)profileID {
 
-  NSString *const template = @"%@profile/ui/%@";
+  NSString *const templateStr = @"%@profile/ui/%@";
 
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *urlString = [NSString stringWithFormat:template, rootURLStr,
+  NSString *urlString = [NSString stringWithFormat:templateStr, rootURLStr,
                          profileID];
 
   return [NSURL URLWithString:urlString];
@@ -63,11 +63,11 @@
 
 + (NSURL *)registerFeedURLForProfileID:(NSString *)profileID {
 
-  NSString *const template = @"%@register/ui/%@";
+  NSString *const templateStr = @"%@register/ui/%@";
 
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *urlString = [NSString stringWithFormat:template, rootURLStr,
+  NSString *urlString = [NSString stringWithFormat:templateStr, rootURLStr,
                          profileID];
 
   return [NSURL URLWithString:urlString];

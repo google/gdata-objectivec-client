@@ -30,13 +30,13 @@
 
 + (NSURL *)portfolioFeedURLForUserID:(NSString *)userID {
     
-  NSString *const template = @"%@%@/portfolios";
+  NSString *const templateStr = @"%@%@/portfolios";
   
   NSString *encodedUserID = [GDataUtilities stringByURLEncodingForURI:userID];
   
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *urlString = [NSString stringWithFormat:template, 
+  NSString *urlString = [NSString stringWithFormat:templateStr, 
                            rootURLStr, encodedUserID];
   
   return [NSURL URLWithString:urlString];

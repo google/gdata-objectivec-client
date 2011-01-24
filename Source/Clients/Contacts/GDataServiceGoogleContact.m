@@ -35,9 +35,9 @@
 
   NSString *baseURLString = [self serviceRootURLString];
 
-  NSString *template = @"%@%@/%@/%@";
+  NSString *templateStr = @"%@%@/%@/%@";
 
-  NSString *feedURLString = [NSString stringWithFormat:template,
+  NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              baseURLString,
                              [GDataUtilities stringByURLEncodingForURI:feedName],
                              [GDataUtilities stringByURLEncodingForURI:userID],

@@ -42,7 +42,7 @@
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"metrics", @"metrics", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

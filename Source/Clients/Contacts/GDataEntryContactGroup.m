@@ -90,7 +90,7 @@
   static struct GDataDescriptionRecord descRecs[] = {
     { @"systemGroup", @"systemGroup.identifier", kGDataDescValueLabeled },
     { @"extProps",    @"extendedProperties",     kGDataDescArrayCount },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

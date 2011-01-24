@@ -70,7 +70,7 @@ static NSString *const kLangAttr = @"xml:lang";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"name", @"featureName",  kGDataDescValueLabeled },
     { @"rate", @"featureRate",  kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

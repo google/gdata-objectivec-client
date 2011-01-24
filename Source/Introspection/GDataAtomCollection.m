@@ -78,7 +78,7 @@ static NSString *const kTitleAttr = @"title";
     { @"href",          @"href",                 kGDataDescValueLabeled },
     { @"categoryGroup", @"categoryGroup",        kGDataDescValueLabeled },
     { @"accepts",       @"serviceAcceptStrings", kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

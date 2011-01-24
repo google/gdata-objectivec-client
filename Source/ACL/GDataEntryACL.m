@@ -80,7 +80,7 @@
     { @"role",      @"role",      kGDataDescValueLabeled },
     { @"keyedRole", @"keyedRole", kGDataDescValueLabeled },
     { @"scope",     @"scope",     kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

@@ -83,7 +83,7 @@
     { @"IM",                @"IMAddresses",        kGDataDescArrayDescs },
     { @"extProps",          @"extendedProperties", kGDataDescArrayDescs },
     { @"version<=2:postal", @"postalAddresses",    kGDataDescArrayDescs },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];
@@ -119,7 +119,7 @@
       { @"userDefd",     @"userDefinedFields",         kGDataDescArrayDescs   },
       { @"website",      @"websiteLinks",              kGDataDescArrayDescs   },
 
-      { nil, nil, 0 }
+      { nil, nil, (GDataDescRecTypes)0 }
     };
 
     [self addDescriptionRecords:descRecsV3 toItems:items];
@@ -157,9 +157,9 @@
 // routines to do the work for finding or setting the primary elements
 // of the different extension classes
 
-- (GDataObject *)primaryObjectForExtensionClass:(Class)class {
+- (GDataObject *)primaryObjectForExtensionClass:(Class)theClass {
 
-  NSArray *extns = [self objectsForExtensionClass:class];
+  NSArray *extns = [self objectsForExtensionClass:theClass];
 
   GDataObject *obj;
   GDATA_FOREACH(obj, extns) {
@@ -169,8 +169,8 @@
 }
 
 - (void)setPrimaryObject:(GDataObject *)newPrimaryObj
-       forExtensionClass:(Class)class {
-  NSArray *extns =  [self objectsForExtensionClass:class];
+       forExtensionClass:(Class)theClass {
+  NSArray *extns =  [self objectsForExtensionClass:theClass];
   GDataObject *obj;
 
   BOOL foundIt = NO;
@@ -184,7 +184,7 @@
   // if the object isn't already in the list, add it
   if (!foundIt && newPrimaryObj != nil) {
     [(id)newPrimaryObj setIsPrimary:YES];
-    [self addObject:newPrimaryObj forExtensionClass:class];
+    [self addObject:newPrimaryObj forExtensionClass:theClass];
   }
 }
 

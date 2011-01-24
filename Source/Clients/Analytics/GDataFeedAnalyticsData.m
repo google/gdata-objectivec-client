@@ -66,7 +66,7 @@
     { @"aggregates",  @"aggregateGroup",  kGDataDescValueLabeled },
     { @"dataSources", @"dataSources",     kGDataDescArrayDescs   },
     { @"segments",    @"segments",        kGDataDescArrayDescs   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

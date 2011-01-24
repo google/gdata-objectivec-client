@@ -2814,7 +2814,7 @@
 		4F1AD6540B7025B000DC0485 /* GDataGoogleBaseAttribute.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataGoogleBaseAttribute.m; path = Clients/GoogleBase/GDataGoogleBaseAttribute.m; sourceTree = "<group>"; };
 		4F1AD7200B71484F00DC0485 /* GDataEntryGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryGoogleBase.h; path = Clients/GoogleBase/GDataEntryGoogleBase.h; sourceTree = "<group>"; };
 		4F1AD7220B71485800DC0485 /* GDataEntryGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryGoogleBase.m; path = Clients/GoogleBase/GDataEntryGoogleBase.m; sourceTree = "<group>"; };
-		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1AD90C0B71607400DC0485 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Tests/main.m; sourceTree = "<group>"; };
 		4F1AD9830B71659E00DC0485 /* GDataFeedGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataFeedGoogleBase.m; path = Clients/GoogleBase/GDataFeedGoogleBase.m; sourceTree = "<group>"; };
 		4F1AD9870B7165A700DC0485 /* GDataFeedGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedGoogleBase.h; path = Clients/GoogleBase/GDataFeedGoogleBase.h; sourceTree = "<group>"; };
@@ -2930,7 +2930,7 @@
 		4F36EE8E0FFD7DAD00980D30 /* GDataFeedYouTubeCaptionTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeCaptionTrack.h; path = Clients/YouTube/GDataFeedYouTubeCaptionTrack.h; sourceTree = "<group>"; };
 		4F37E9F30B7972920019C173 /* GDataQueryGoogleBase.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryGoogleBase.h; path = Clients/GoogleBase/GDataQueryGoogleBase.h; sourceTree = "<group>"; };
 		4F37E9F40B7972920019C173 /* GDataQueryGoogleBase.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryGoogleBase.m; path = Clients/GoogleBase/GDataQueryGoogleBase.m; sourceTree = "<group>"; };
-		4F38F6A60B66E91D00B24B81 /* GData */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = GData; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F38F6A60B66E91D00B24B81 /* GData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F38F8520B66F98500B24B81 /* GDataWhen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataWhen.h; path = Elements/GDataWhen.h; sourceTree = "<group>"; };
 		4F3C881F0EC2469E009C18C4 /* GDataTargetNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTargetNamespace.h; sourceTree = "<group>"; };
 		4F4106AF1149C549009202D9 /* GDataOAuthAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataOAuthAuthentication.h; path = OAuth/GDataOAuthAuthentication.h; sourceTree = "<group>"; };
@@ -3501,7 +3501,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F38F6A60B66E91D00B24B81 /* GData */,
+				4F38F6A60B66E91D00B24B81 /* GData.framework */,
 				4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */,
 				4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */,
 				4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */,
@@ -4992,7 +4992,7 @@
 			);
 			name = GDataFramework;
 			productName = GDataFramework;
-			productReference = 4F38F6A60B66E91D00B24B81 /* GData */;
+			productReference = 4F38F6A60B66E91D00B24B81 /* GData.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		4F85DEE0103B83B700B4C418 /* GDataIPhoneUnitTests */ = {
@@ -5021,7 +5021,6 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
 			compatibilityVersion = "Xcode 2.4";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,

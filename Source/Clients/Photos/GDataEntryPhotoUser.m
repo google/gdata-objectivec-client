@@ -72,7 +72,7 @@
     { @"quotaUsed",         @"quotaUsed",         kGDataDescValueLabeled },
     { @"thumbnail",         @"thumbnail",         kGDataDescValueLabeled },
     { @"username",          @"username",          kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
   
   NSMutableArray *items = [super itemsForDescription];

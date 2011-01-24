@@ -202,7 +202,7 @@
     { @"uploadDataOnly",   @"shouldUploadDataOnly",     kGDataDescBooleanPresent },
     { @"UploadData",       @"uploadData",               kGDataDescNonZeroLength },
     { @"deleted",          @"isDeleted",                kGDataDescBooleanPresent },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

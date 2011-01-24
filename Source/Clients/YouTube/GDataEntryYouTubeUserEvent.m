@@ -72,7 +72,7 @@
     { @"videoID",   @"videoID",       kGDataDescValueLabeled   },
     { @"username",  @"username",      kGDataDescValueLabeled   },
     { @"rating",    ratingStr,        kGDataDescValueIsKeyPath },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

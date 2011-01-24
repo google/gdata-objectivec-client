@@ -106,8 +106,10 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
 
   // This uses custom memsrch() rather than strcpy because the encoded data may
   // contain null values.
-  return memsrch(bytes, length, [headerData_ bytes], [headerData_ length]) ||
-         memsrch(bytes, length, [bodyData_ bytes],   [bodyData_ length]);
+  return memsrch(bytes, length,
+                 (unsigned char*)[headerData_ bytes], [headerData_ length]) ||
+         memsrch(bytes, length,
+                 (unsigned char*)[bodyData_ bytes],   [bodyData_ length]);
 }
 
 - (NSData *)header {
@@ -192,7 +194,8 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needle_len,
     NSEnumerator* enumerator = [parts_ objectEnumerator];
 
     while ((part = [enumerator nextObject]) != nil) {
-      didCollide = [part containsBytes:[data bytes] length:[data length]];
+      didCollide = [part containsBytes:(const unsigned char*)[data bytes]
+                                length:[data length]];
       if (didCollide) break;
     }
 
@@ -272,7 +275,7 @@ static BOOL memsrch(const unsigned char* needle, NSUInteger needleLen,
   // starting from the next character in the haystack.
   const unsigned char* ptr = haystack;
   NSUInteger remain = haystackLen;
-  while ((ptr = memchr(ptr, needle[0], remain)) != 0) {
+  while ((ptr = (unsigned char*)memchr(ptr, needle[0], remain)) != 0) {
     remain = haystackLen - (ptr - haystack);
     if (remain < needleLen) {
       return NO;

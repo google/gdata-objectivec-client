@@ -219,7 +219,7 @@ static NSString* const kUsageAttr = @"usage";
     { @"region",       @"region",           kGDataDescValueLabeled },
     { @"street",       @"street",           kGDataDescValueLabeled },
     { @"subregion",    @"subregion",        kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

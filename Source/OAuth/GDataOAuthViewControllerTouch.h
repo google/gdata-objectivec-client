@@ -77,7 +77,11 @@
 #define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
+#if defined(__cplusplus)
+#define _EXTERN extern "C"
+#else
 #define _EXTERN extern
+#endif
 #define _INITIALIZE_AS(x)
 #endif
 

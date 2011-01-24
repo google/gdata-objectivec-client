@@ -27,9 +27,9 @@
 + (NSURL *)translationFeedURLForEntryType:(NSString *)entryType {
 
   NSString *rootURLStr = [self serviceRootURLString];
-  NSString *template = @"%@%@";
+  NSString *templateStr = @"%@%@";
 
-  NSString *urlStr = [NSString stringWithFormat:template,
+  NSString *urlStr = [NSString stringWithFormat:templateStr,
                       rootURLStr, entryType];
   return [NSURL URLWithString:urlStr];
 }

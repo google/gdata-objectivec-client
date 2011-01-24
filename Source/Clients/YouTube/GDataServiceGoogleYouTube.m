@@ -55,9 +55,9 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/%@";
+  NSString *templateStr = @"%@api/%@";
 
-  NSString *urlString = [NSString stringWithFormat:template, root, endPart];
+  NSString *urlString = [NSString stringWithFormat:templateStr, root, endPart];
 
   return [NSURL URLWithString:urlString];
 }
@@ -68,9 +68,9 @@
   // this is most useful as part of a query searching for text
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/channels";
+  NSString *templateStr = @"%@api/channels";
 
-  NSString *urlString = [NSString stringWithFormat:template, root];
+  NSString *urlString = [NSString stringWithFormat:templateStr, root];
 
   return [NSURL URLWithString:urlString];
 }
@@ -78,9 +78,9 @@
 + (NSURL *)youTubeURLForChannelStandardFeedID:(NSString *)feedID {
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/channelstandardfeeds/%@";
+  NSString *templateStr = @"%@api/channelstandardfeeds/%@";
 
-  NSString *urlString = [NSString stringWithFormat:template, root, feedID];
+  NSString *urlString = [NSString stringWithFormat:templateStr, root, feedID];
 
   return [NSURL URLWithString:urlString];
 }
@@ -103,9 +103,9 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/users/%@%@";
+  NSString *templateStr = @"%@api/users/%@%@";
 
-  NSString *urlString = [NSString stringWithFormat:template, root,
+  NSString *urlString = [NSString stringWithFormat:templateStr, root,
     encodedUserID, endPart];
 
   return [NSURL URLWithString:urlString];
@@ -124,9 +124,9 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@api/events?author=%@";
+  NSString *templateStr = @"%@api/events?author=%@";
 
-  NSString *urlString = [NSString stringWithFormat:template,
+  NSString *urlString = [NSString stringWithFormat:templateStr,
                          root, encodedUserID];
 
   return [NSURL URLWithString:urlString];
@@ -142,9 +142,9 @@
 
   NSString *root = [self serviceUploadRootURLString];
 
-  NSString *template = @"%@api/users/%@/uploads";
+  NSString *templateStr = @"%@api/users/%@/uploads";
 
-  NSString *urlString = [NSString stringWithFormat:template,
+  NSString *urlString = [NSString stringWithFormat:templateStr,
                          root, encodedUserID];
 
   return [NSURL URLWithString:urlString];

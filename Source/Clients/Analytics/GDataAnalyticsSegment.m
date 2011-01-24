@@ -59,7 +59,7 @@ static NSString *const kIDAttr = @"id";
   struct GDataDescriptionRecord descRecs[] = {
     { @"definition", @"definition", kGDataDescValueLabeled },
     { @"properties", propsDescValue, kGDataDescValueIsKeyPath },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

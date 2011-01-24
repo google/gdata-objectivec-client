@@ -290,6 +290,12 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   }
 
   NSError *error = nil;
+  NSString *effectiveHTTPMethod;
+  BOOL isEffectiveHTTPGet;
+  Class connectionClass = [[self class] connectionClass];
+  NSArray *runLoopModes = nil;
+
+  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
 
   if (connection_ != nil) {
     NSAssert1(connection_ != nil, @"fetch object %@ being reused; this should never happen", self);
@@ -310,11 +316,11 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
   networkFailedSEL_ = networkFailedSEL;
   statusFailedSEL_ = statusFailedSEL;
 
-  NSString *effectiveHTTPMethod = [request_ valueForHTTPHeaderField:@"X-HTTP-Method-Override"];
+  effectiveHTTPMethod = [request_ valueForHTTPHeaderField:@"X-HTTP-Method-Override"];
   if (effectiveHTTPMethod == nil) {
     effectiveHTTPMethod = [request_ HTTPMethod];
   }
-  BOOL isEffectiveHTTPGet = (effectiveHTTPMethod == nil
+  isEffectiveHTTPGet = (effectiveHTTPMethod == nil
                              || [effectiveHTTPMethod isEqual:@"GET"]);
 
   if (postData_ || postStream_) {
@@ -401,10 +407,6 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 
   // finally, start the connection
 
-  Class connectionClass = [[self class] connectionClass];
-
-  NSArray *runLoopModes = nil;
-
   if ([[self class] doesSupportRunLoopModes]) {
 
     // use the connection-specific run loop modes, if they were provided,
@@ -455,7 +457,6 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 
   // once connection_ is non-nil we can send the start notification
   isStopNotificationNeeded_ = YES;
-  NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
   [defaultNC postNotificationName:kGDataHTTPFetcherStartedNotification
                            object:self];
 
@@ -648,9 +649,9 @@ CannotBeginFetch:
   // the connection is no longer pending, or until the timeout has expired
   while ((!hasConnectionEnded_
 #if NS_BLOCKS_AVAILABLE
-          || completionBlock_ != nil
+          || completionBlock_
 #endif
-          || delegate_ != nil)
+          || delegate_)
          && [giveUpDate timeIntervalSinceNow] > 0) {
 
     // run the current run loop 1/1000 of a second to give the networking
@@ -753,6 +754,8 @@ CannotBeginFetch:
 // connection:willSendRequest:redirectResponse: and connection:didReceiveResponse:
 - (void)handleCookiesForResponse:(NSURLResponse *)response {
 
+#ifndef GDATA_SKIP_COOKIE_RESPONSES
+  
   if (cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodSystemDefault
     || cookieStorageMethod_ == kGDataHTTPFetcherCookieStorageMethodNone) {
 
@@ -774,6 +777,9 @@ CannotBeginFetch:
       }
     }
   }
+
+#endif  // GDATA_SKIP_COOKIE_RESPONSES
+
 }
 
 -(void)connection:(NSURLConnection *)connection

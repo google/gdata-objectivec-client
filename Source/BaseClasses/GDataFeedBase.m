@@ -271,7 +271,7 @@ shouldIgnoreUnknowns:(BOOL)shouldIgnoreUnknowns {
     { @"categories",       @"categories",              kGDataDescArrayCount },
     { @"links",            linksStr,                   kGDataDescValueIsKeyPath },
     { @"id",               @"identifier",              kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   // these are present but not very useful most of the time...

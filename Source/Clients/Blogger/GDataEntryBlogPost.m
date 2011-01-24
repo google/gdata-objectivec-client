@@ -59,10 +59,10 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
 
-  struct GDataDescriptionRecord descRecs[] = {
+  static struct GDataDescriptionRecord descRecs[] = {
     { @"thumbnail", @"thumbnail", kGDataDescValueLabeled },
     { @"total",     @"total",     kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

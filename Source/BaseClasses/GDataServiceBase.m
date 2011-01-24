@@ -55,13 +55,13 @@ const NSUInteger kMinimumUploadChunkSize = 50000;
 
 // XorPlainMutableData is a simple way to keep passwords held in heap objects
 // from being visible as plain-text
-static void XorPlainMutableData(NSMutableData *mutable) {
+static void XorPlainMutableData(NSMutableData *mutableData) {
 
   // this helps avoid storing passwords on the heap in plaintext
   const unsigned char theXORValue = 0x95; // 0x95 = 0xb10010101
 
-  unsigned char *dataPtr = [mutable mutableBytes];
-  NSUInteger length = [mutable length];
+  unsigned char *dataPtr = [mutableData mutableBytes];
+  NSUInteger length = [mutableData length];
 
   for (NSUInteger idx = 0; idx < length; idx++) {
     dataPtr[idx] ^= theXORValue;
@@ -815,7 +815,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSError *error = nil;
   GDataObject* object = nil;
 
-  Class objectClass = [fetcher propertyForKey:kFetcherObjectClassKey];
+  Class objectClass = (Class)[fetcher propertyForKey:kFetcherObjectClassKey];
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
   NSData *data = [fetcher downloadedData];
@@ -833,7 +833,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     // see if the top-level class for the XML is listed in the surrogates;
     // if so, instantiate the surrogate class instead
     NSDictionary *surrogates = [ticket surrogates];
-    Class baseSurrogate = [surrogates objectForKey:objectClass];
+    Class baseSurrogate = (Class)[surrogates objectForKey:objectClass];
     if (baseSurrogate) {
       objectClass = baseSurrogate;
     }
@@ -1891,8 +1891,8 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 
 - (NSString *)description {
-  NSString *template = @"%@ %p: {service:%@ currentFetcher:%@ userData:%@}";
-  return [NSString stringWithFormat:template,
+  NSString *templateStr = @"%@ %p: {service:%@ currentFetcher:%@ userData:%@}";
+  return [NSString stringWithFormat:templateStr,
     [self class], self, service_, currentFetcher_, userData_];
 }
 

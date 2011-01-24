@@ -77,8 +77,8 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@feed/api/user/%@%@%@%@%@";
-  NSString *urlString = [NSString stringWithFormat:template,
+  NSString *templateStr = @"%@feed/api/user/%@%@%@%@%@";
+  NSString *urlString = [NSString stringWithFormat:templateStr,
                          root, [GDataUtilities stringByURLEncodingForURI:userID],
                          albumID, albumName, photo, query];
 
@@ -89,9 +89,9 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *template = @"%@feed/api/user/%@/contacts?kind=user";
+  NSString *templateStr = @"%@feed/api/user/%@/contacts?kind=user";
 
-  NSString *urlString = [NSString stringWithFormat:template,
+  NSString *urlString = [NSString stringWithFormat:templateStr,
                        root, [GDataUtilities stringByURLEncodingForURI:userID]];
 
   return [NSURL URLWithString:urlString];

@@ -72,7 +72,7 @@ static NSString* const kStartRowAttr = @"startRow";
 
   static struct GDataDescriptionRecord descRecs[] = {
     { @"columns", @"columns", kGDataDescArrayCount   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

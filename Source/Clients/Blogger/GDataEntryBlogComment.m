@@ -54,9 +54,9 @@
 - (NSMutableArray *)itemsForDescription {
 
 
-  struct GDataDescriptionRecord descRecs[] = {
+  static struct GDataDescriptionRecord descRecs[] = {
     { @"inReplyTo", @"inReplyTo", kGDataDescValueLabeled   },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

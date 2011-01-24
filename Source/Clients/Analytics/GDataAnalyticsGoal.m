@@ -57,7 +57,7 @@ static NSString *const kValueAttr = @"value";
   static struct GDataDescriptionRecord descRecs[] = {
     { @"destination", @"destination", kGDataDescValueLabeled },
     { @"engagement",  @"engagement",  kGDataDescValueLabeled },
-    { nil, nil, 0 }
+    { nil, nil, (GDataDescRecTypes)0 }
   };
 
   NSMutableArray *items = [super itemsForDescription];

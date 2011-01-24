@@ -49,6 +49,13 @@
   #import "GDataTargetNamespace.h"
 #endif
 
+// Provide a common definition for externing constants/functions
+#if defined(__cplusplus)
+#define GDATA_EXTERN extern "C"
+#else
+#define GDATA_EXTERN extern
+#endif
+
 #if TARGET_OS_IPHONE // iPhone SDK
 
   #define GDATA_IPHONE 1
