@@ -220,7 +220,10 @@
 
 @implementation GDataNameValueConstruct // derives from GDataValueConstruct
 + (id)valueWithName:(NSString *)name stringValue:(NSString *)value {
-  GDataNameValueConstruct *obj = [self valueWithString:value];
+  if (name == nil && value == nil) return nil;
+
+  GDataNameValueConstruct* obj = [[[self alloc] init] autorelease];
+  [obj setStringValue:value];
   [obj setName:name];
   return obj;
 }
