@@ -211,6 +211,7 @@
     { @"entries.0.rating.value", @"3" },
     { @"entries.0.rating.average", @"2" },
     { @"entries.0.review", @"Ageless? No way." },
+    { @"entries.0.contentVersion", @"1.2beta5" },
     { @"", @"" },
 
     { nil, nil }

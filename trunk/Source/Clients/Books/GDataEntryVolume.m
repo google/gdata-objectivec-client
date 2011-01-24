@@ -24,6 +24,18 @@
 #import "GDataComment.h"
 #import "GDataRating.h"
 
+@interface GDataVolumeViewability : GDataValueConstruct <GDataExtension>
+@end
+
+@interface GDataVolumeEmbeddability : GDataValueConstruct <GDataExtension>
+@end
+
+@interface GDataVolumeOpenAccess : GDataValueConstruct <GDataExtension>
+@end
+
+@interface GDataVolumeContentVersion : GDataValueElementConstruct <GDataExtension>
+@end
+
 @implementation GDataVolumeViewability
 + (NSString *)extensionElementURI       { return kGDataNamespaceBooks; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceBooksPrefix; }
@@ -40,6 +52,12 @@
 + (NSString *)extensionElementURI       { return kGDataNamespaceBooks; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceBooksPrefix; }
 + (NSString *)extensionElementLocalName { return @"openAccess"; }
+@end
+
+@implementation GDataVolumeContentVersion
++ (NSString *)extensionElementURI       { return kGDataNamespaceBooks; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceBooksPrefix; }
++ (NSString *)extensionElementLocalName { return @"contentVersion"; }
 @end
 
 @implementation GDataVolumeReview
@@ -84,6 +102,7 @@
    // local extensions
    [GDataVolumeViewability class], [GDataVolumeEmbeddability class],
    [GDataVolumeReview class], [GDataVolumeOpenAccess class],
+   [GDataVolumeReadingPosition class], [GDataVolumeContentVersion class],
 
    // DublinCore extensions
    [GDataDCCreator class], [GDataDCDate class], [GDataDCDescription class],
@@ -109,6 +128,8 @@
     { @"publishers",    @"publishers",         kGDataDescValueLabeled },
     { @"rating",        @"rating",             kGDataDescValueLabeled },
     { @"review",        @"review",             kGDataDescValueLabeled },
+    { @"position",      @"readingPosition",    kGDataDescValueLabeled },
+    { @"version",       @"contentVersion",     kGDataDescValueLabeled },
     { @"subjects",      @"subjects",           kGDataDescValueLabeled },
     { @"titles",        @"volumeTitles",       kGDataDescValueLabeled },
     { @"viewability",   @"viewability",        kGDataDescValueLabeled },
@@ -227,6 +248,18 @@
   [self addObject:obj forExtensionClass:[GDataDCLanguage class]]; 
 }
 
+- (NSArray *)prices {
+  return [self objectsForExtensionClass:[GDataVolumePrice class]];
+}
+
+- (void)setPrices:(NSArray *)arr {
+  [self setObjects:arr forExtensionClass:[GDataVolumePrice class]];
+}
+
+- (void)addPrice:(GDataVolumePrice *)obj {
+  [self addObject:obj forExtensionClass:[GDataVolumePrice class]];
+}
+
 - (NSArray *)publishers {
   return [self objectsForExtensionClass:[GDataDCPublisher class]];
 }
@@ -253,6 +286,28 @@
 
 - (void)setReview:(GDataVolumeReview *)obj {
   [self setObject:obj forExtensionClass:[GDataVolumeReview class]]; 
+}
+
+- (GDataVolumeReadingPosition *)readingPosition {
+  return [self objectForExtensionClass:[GDataVolumeReadingPosition class]];
+}
+
+- (void)setReadingPosition:(GDataVolumeReadingPosition *)obj {
+  [self setObject:obj forExtensionClass:[GDataVolumeReadingPosition class]];
+}
+
+- (NSString *)contentVersion {
+  GDataVolumeContentVersion* obj;
+
+  obj = [self objectForExtensionClass:[GDataVolumeContentVersion class]];
+  return [obj stringValue];
+}
+
+- (void)setContentVersion:(NSString *)str {
+  GDataVolumeContentVersion *obj;
+
+  obj = [GDataVolumeContentVersion valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataVolumeContentVersion class]];
 }
 
 - (NSArray *)subjects {
@@ -307,10 +362,24 @@
   return [self linkWithRelAttributeValue:kGDataBooksAnnotationRel]; 
 }
 
+- (GDataLink *)buyLink {
+  return [self linkWithRelAttributeValue:kGDataBooksBuyLinkRel];
+}
+
 - (GDataLink *)EPubDownloadLink {
   return [self linkWithRelAttributeValue:kGDataBooksEPubDownloadRel];
 }
 
+- (GDataLink *)EPubTokenLink {
+  return [self linkWithRelAttributeValue:kGDataBooksEPubToken];
+}
+
+- (GDataVolumePrice *)priceForType:(NSString *)type {
+  GDataVolumePrice *obj = [GDataUtilities firstObjectFromArray:[self prices]
+                                                     withValue:type
+                                                    forKeyPath:@"type"];
+  return obj;
+}
 
 @end
 

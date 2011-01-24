@@ -22,6 +22,8 @@
 // Books
 
 #import "GDataBookConstants.h"
+#import "GDataVolumePrice.h"
+#import "GDataVolumeReadingPosition.h"
 #import "GDataDublinCore.h"
 #import "GDataEntryVolume.h"
 #import "GDataFeedVolume.h"
