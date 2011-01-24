@@ -2218,6 +2218,20 @@
 		4FDFC1B70DDB69E30089A011 /* GDataFinanceTransactionData.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FDFC1B40DDB69E30089A011 /* GDataFinanceTransactionData.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FDFC1B80DDB69E30089A011 /* GDataFinanceTransactionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDFC1B50DDB69E30089A011 /* GDataFinanceTransactionData.m */; };
 		4FDFC1B90DDB69E30089A011 /* GDataFinanceTransactionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FDFC1B50DDB69E30089A011 /* GDataFinanceTransactionData.m */; };
+		4FE1674312EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
+		4FE1674412EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
+		4FE1674512EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
+		4FE1674612EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
+		4FE1674712EE1E8F00E72C92 /* GDataVolumePrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */; };
+		4FE1674812EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
+		4FE1674912EE1E8F00E72C92 /* GDataVolumeReadingPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */; };
+		4FE1674A12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
+		4FE1674B12EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
+		4FE1674C12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
+		4FE1674D12EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
+		4FE1674E12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
+		4FE1674F12EE1EAE00E72C92 /* GDataVolumePrice.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */; };
+		4FE1675012EE1EAE00E72C92 /* GDataVolumeReadingPosition.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */; };
 		4FE289300C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
 		4FE289310C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
 		4FE289320C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
@@ -2324,6 +2338,8 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4FE1674F12EE1EAE00E72C92 /* GDataVolumePrice.h in Copy Static Library Headers */,
+				4FE1675012EE1EAE00E72C92 /* GDataVolumeReadingPosition.h in Copy Static Library Headers */,
 				4FA09E0E1287148000D007D7 /* GDataEntryDrawingDoc.h in Copy Static Library Headers */,
 				4FC8CCC71234AF1E00939910 /* GDataYouTubeRating.h in Copy Static Library Headers */,
 				4F1C70E51027B53600B46459 /* GDataEntryYouTubeUpload.h in Copy Static Library Headers */,
@@ -3349,6 +3365,10 @@
 		4FDFBE9B0DD922E80089A011 /* GDataFinance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFinance.h; path = Clients/Finance/GDataFinance.h; sourceTree = "<group>"; };
 		4FDFC1B40DDB69E30089A011 /* GDataFinanceTransactionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFinanceTransactionData.h; path = Clients/Finance/GDataFinanceTransactionData.h; sourceTree = "<group>"; };
 		4FDFC1B50DDB69E30089A011 /* GDataFinanceTransactionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFinanceTransactionData.m; path = Clients/Finance/GDataFinanceTransactionData.m; sourceTree = "<group>"; };
+		4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataVolumePrice.h; path = Clients/Books/GDataVolumePrice.h; sourceTree = "<group>"; };
+		4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataVolumePrice.m; path = Clients/Books/GDataVolumePrice.m; sourceTree = "<group>"; };
+		4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataVolumeReadingPosition.h; path = Clients/Books/GDataVolumeReadingPosition.h; sourceTree = "<group>"; };
+		4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataVolumeReadingPosition.m; path = Clients/Books/GDataVolumeReadingPosition.m; sourceTree = "<group>"; };
 		4FE2892F0C078E7200F12BDB /* GDataDeleted.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataDeleted.m; path = Elements/GDataDeleted.m; sourceTree = "<group>"; };
 		4FE289350C078E7C00F12BDB /* GDataDeleted.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDeleted.h; path = Elements/GDataDeleted.h; sourceTree = "<group>"; };
 		4FE81F6F0B250E8600D8C135 /* GDataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQuery.h; path = BaseClasses/GDataQuery.h; sourceTree = "<group>"; };
@@ -3561,6 +3581,10 @@
 				4FC0CDF7115C35E60061CBCA /* GDataFeedCollection.m */,
 				4FC0CDF2115C35E60061CBCA /* GDataEntryCollection.h */,
 				4FC0CDF5115C35E60061CBCA /* GDataEntryCollection.m */,
+				4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */,
+				4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */,
+				4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */,
+				4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */,
 				4F0D05910E19C10E009E0AC2 /* GDataDublinCore.h */,
 				4F0D058D0E19C0F1009E0AC2 /* GDataDublinCore.m */,
 				4F70035C0E1AD14100D8EFD6 /* GDataServiceGoogleBooks.h */,
@@ -4919,6 +4943,8 @@
 				4FEB9E05116FB29600F6037F /* GDataACLKeyedRole.h in Headers */,
 				4F8413B0118B71C90067A34B /* GDataYouTubeRating.h in Headers */,
 				4F8BB9AB12832E6600B2B4A4 /* GDataEntryDrawingDoc.h in Headers */,
+				4FE1674712EE1E8F00E72C92 /* GDataVolumePrice.h in Headers */,
+				4FE1674912EE1E8F00E72C92 /* GDataVolumeReadingPosition.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5453,6 +5479,8 @@
 				4F8413B3118B71C90067A34B /* GDataYouTubeRating.m in Sources */,
 				4F8413CD118B76AF0067A34B /* GDataOAuthTest.m in Sources */,
 				4F8BB9AA12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */,
+				4FE1674312EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */,
+				4FE1674412EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5773,6 +5801,8 @@
 				4FEB9E08116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 				4F8413B5118B71C90067A34B /* GDataYouTubeRating.m in Sources */,
 				4F8BB9AE12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */,
+				4FE1674D12EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */,
+				4FE1674E12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6092,6 +6122,8 @@
 				4FEB9E07116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 				4F8413B2118B71C90067A34B /* GDataYouTubeRating.m in Sources */,
 				4F8BB9AF12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */,
+				4FE1674512EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */,
+				4FE1674612EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6410,6 +6442,8 @@
 				4FEB9E06116FB29600F6037F /* GDataACLKeyedRole.m in Sources */,
 				4F8413B1118B71C90067A34B /* GDataYouTubeRating.m in Sources */,
 				4F8BB9AC12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */,
+				4FE1674812EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */,
+				4FE1674A12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6745,6 +6779,8 @@
 				4F8413B4118B71C90067A34B /* GDataYouTubeRating.m in Sources */,
 				4F8413CC118B76AF0067A34B /* GDataOAuthTest.m in Sources */,
 				4F8BB9AD12832E6600B2B4A4 /* GDataEntryDrawingDoc.m in Sources */,
+				4FE1674B12EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */,
+				4FE1674C12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

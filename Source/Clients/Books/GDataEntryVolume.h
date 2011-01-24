@@ -24,15 +24,8 @@
 #import "GDataRating.h"
 #import "GDataComment.h"
 #import "GDataDublinCore.h"
-
-@interface GDataVolumeViewability : GDataValueConstruct <GDataExtension>
-@end
-
-@interface GDataVolumeEmbeddability : GDataValueConstruct <GDataExtension>
-@end
-
-@interface GDataVolumeOpenAccess : GDataValueConstruct <GDataExtension>
-@end
+#import "GDataVolumePrice.h"
+#import "GDataVolumeReadingPosition.h"
 
 @interface GDataVolumeReview : GDataTextConstruct <GDataExtension>
 @end
@@ -76,6 +69,10 @@
 - (void)setLanguages:(NSArray *)arr;
 - (void)addLanguage:(GDataDCLanguage *)obj;
 
+- (NSArray *)prices;
+- (void)setPrices:(NSArray *)arr;
+- (void)addPrice:(GDataVolumePrice *)obj;
+
 - (NSArray *)publishers;
 - (void)setPublishers:(NSArray *)arr;
 - (void)addPublisher:(GDataDCPublisher *)obj;
@@ -85,6 +82,12 @@
 
 - (GDataVolumeReview *)review;
 - (void)setReview:(GDataVolumeReview *)obj;
+
+- (GDataVolumeReadingPosition *)readingPosition;
+- (void)setReadingPosition:(GDataVolumeReadingPosition *)obj;
+
+- (NSString *)contentVersion;
+- (void)setContentVersion:(NSString *)str;
 
 - (NSArray *)subjects;
 - (void)setSubjects:(NSArray *)arr;
@@ -102,7 +105,12 @@
 - (GDataLink *)previewLink;
 - (GDataLink *)infoLink;
 - (GDataLink *)annotationLink;
+- (GDataLink *)buyLink;
 - (GDataLink *)EPubDownloadLink;
+- (GDataLink *)EPubTokenLink;
+
+- (GDataVolumePrice *)priceForType:(NSString *)type;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_BOOKS_SERVICE
