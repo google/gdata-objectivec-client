@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (566 classes) 2010-11-16 09:50:26 -0800
+// com.google.GDataFramework v. 1.11 (570 classes) 2011-01-24 14:20:49 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -535,8 +535,12 @@
   #define GDataValueConstruct                     _GDATA_NS_SYMBOL(GDataValueConstruct)
   #define GDataValueElementConstruct              _GDATA_NS_SYMBOL(GDataValueElementConstruct)
   #define GDataVisibility                         _GDATA_NS_SYMBOL(GDataVisibility)
+  #define GDataVolumeContentVersion               _GDATA_NS_SYMBOL(GDataVolumeContentVersion)
   #define GDataVolumeEmbeddability                _GDATA_NS_SYMBOL(GDataVolumeEmbeddability)
   #define GDataVolumeOpenAccess                   _GDATA_NS_SYMBOL(GDataVolumeOpenAccess)
+  #define GDataVolumePrice                        _GDATA_NS_SYMBOL(GDataVolumePrice)
+  #define GDataVolumePromotion                    _GDATA_NS_SYMBOL(GDataVolumePromotion)
+  #define GDataVolumeReadingPosition              _GDATA_NS_SYMBOL(GDataVolumeReadingPosition)
   #define GDataVolumeReview                       _GDATA_NS_SYMBOL(GDataVolumeReview)
   #define GDataVolumeViewability                  _GDATA_NS_SYMBOL(GDataVolumeViewability)
   #define GDataWebContent                         _GDATA_NS_SYMBOL(GDataWebContent)

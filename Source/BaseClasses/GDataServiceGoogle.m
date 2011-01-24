@@ -389,6 +389,13 @@ enum {
         && [userInfo objectForKey:kGDataServerErrorStringKey] == nil) {
       [userInfo setObject:authErrStr forKey:kGDataServerErrorStringKey];
     }
+
+    // copy additional error info into the NSError key so it shows up in the
+    // error description string
+    NSString *authInfoStr = [userInfo objectForKey:kGDataServerInfoStringKey];
+    if (authInfoStr != nil) {
+      [userInfo setObject:authInfoStr forKey:NSLocalizedFailureReasonErrorKey];
+    }
   }
 
   NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
@@ -1433,6 +1440,13 @@ enum {
 // category to get authentication info from the callback error's userInfo
 - (NSString *)authenticationError {
   return [self objectForKey:@"Error"];
+}
+
+- (NSString *)authenticationInfo {
+  // if authenticationInfo is kGDataServerInfoInvalidSecondFactor the
+  // password should be an application-specific password, as described at
+  // http://goo.gl/bogZI
+  return [self objectForKey:kGDataServerInfoStringKey];
 }
 
 - (NSString *)captchaToken {
