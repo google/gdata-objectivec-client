@@ -1785,6 +1785,8 @@
     { @"entries.0.mediaGroup.mediaPlayers.0.URLString", @"http://www.youtube.com/watch?v=Dl643JFJWig" },
     { @"entries.0.mediaGroup.mediaRatings.0.stringValue", @"1" },
     { @"entries.0.mediaGroup.mediaRatings.0.youTubeCountry", @"KR" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.height", @"97" },
+    { @"entries.0.mediaGroup.mediaThumbnails.0.youTubeName", @"abc987" },
     { @"entries.0.publicationState.state", @"rejected" },
     { @"entries.0.publicationState.reasonCode", @"32" },
     { @"entries.0.publicationState.helpURLString", @"http://www.youtube.com/" },

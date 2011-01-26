@@ -23,6 +23,7 @@
 #import "GDataYouTubeMediaElements.h"
 #import "GDataYouTubeConstants.h"
 
+// yt:format attribute
 @interface GDataYouTubeFormatAttribute : GDataAttribute <GDataExtension>
 @end
 
@@ -31,7 +32,6 @@
 + (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"format"; }
 @end
-
 
 @implementation GDataMediaContent (YouTubeExtensions)
 
@@ -49,6 +49,32 @@
 
 @end
 
+// yt:name attribute
+@interface GDataYouTubeNameAttribute : GDataAttribute <GDataExtension>
+@end
+
+@implementation GDataYouTubeNameAttribute
++ (NSString *)extensionElementURI { return kGDataNamespaceYouTube; }
++ (NSString *)extensionElementPrefix { return kGDataNamespaceYouTubePrefix; }
++ (NSString *)extensionElementLocalName { return @"name"; }
+@end
+
+@implementation GDataMediaThumbnail (YouTubeExtensions)
+
+// media thumbnail with YouTube's addition of a name attribute,
+// like yt:name="default"
+- (NSString *)youTubeName {
+  NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeNameAttribute class]];
+  return str;
+}
+
+- (void)setYouTubeName:(NSString *)str {
+  [self setAttributeValue:str forExtensionClass:[GDataYouTubeNameAttribute class]];
+}
+
+@end
+
+// yt:country attribute
 @interface GDataYouTubeCountryAttribute : GDataAttribute <GDataExtension>
 @end
 
@@ -126,6 +152,10 @@
   // add the yt:type attribute to GDataMediaCredit
   [self addAttributeExtensionDeclarationForParentClass:[GDataMediaCredit class]
                                             childClass:[GDataYouTubeTypeAttribute class]];
+
+  // add the yt:name attribute to GDataMediaThumbnail
+  [self addAttributeExtensionDeclarationForParentClass:[GDataMediaThumbnail class]
+                                            childClass:[GDataYouTubeNameAttribute class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS

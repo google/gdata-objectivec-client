@@ -89,7 +89,8 @@
                 url="rtsp://rtsp2.youtube.com/ChoLENy73wIaEQkoWkmR3LheDhMYESARFEgGDA==/0/0/0/video.3gp" yt:format="6"/>
             <media:player url="http://www.youtube.com/watch?v=Dl643JFJWig"/>
             <media:thumbnail height="97" time="00:27:13"
-                url="http://img.youtube.com/vi/Dl643JFJWig/2.jpg" width="130"/>
+                url="http://img.youtube.com/vi/Dl643JFJWig/2.jpg" width="130"
+                yt:name="abc987" />
             <media:thumbnail height="97" time="00:13:36.500"
                 url="http://img.youtube.com/vi/Dl643JFJWig/1.jpg" width="130"/>
             <media:thumbnail height="97" time="00:40:49.500"
