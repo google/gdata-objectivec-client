@@ -40,6 +40,12 @@ _EXTERN NSString* const kGDataServiceDefaultUser _INITIALIZE_AS(@"default");
 // The Auth token is stored in the response dict under this key.
 _EXTERN NSString* const kGDataServiceAuthTokenKey _INITIALIZE_AS(@"Auth");
 
+// additional server error info keys (capitalized to match the server's
+// response key)
+_EXTERN NSString* const kGDataServerInfoStringKey _INITIALIZE_AS(@"Info");
+
+_EXTERN NSString* const kGDataServerInfoInvalidSecondFactor _INITIALIZE_AS(@"InvalidSecondFactor");
+
 enum {
   kGDataBadAuthentication = 403,
   kGDataExpectationFailed = 417
@@ -48,6 +54,7 @@ enum {
 @interface NSDictionary (GDataServiceGoogleAdditions)
 // category to get auth info from the callback error's userInfo
 - (NSString *)authenticationError;
+- (NSString *)authenticationInfo;
 - (NSString *)captchaToken;
 - (NSURL *)captchaURL;
 @end
