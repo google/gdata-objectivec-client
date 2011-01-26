@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (570 classes) 2011-01-24 14:20:49 -0800
+// com.google.GDataFramework v. 1.11 (571 classes) 2011-01-26 14:28:34 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -574,6 +574,7 @@
   #define GDataYouTubeMediaGroup                  _GDATA_NS_SYMBOL(GDataYouTubeMediaGroup)
   #define GDataYouTubeMovies                      _GDATA_NS_SYMBOL(GDataYouTubeMovies)
   #define GDataYouTubeMusic                       _GDATA_NS_SYMBOL(GDataYouTubeMusic)
+  #define GDataYouTubeNameAttribute               _GDATA_NS_SYMBOL(GDataYouTubeNameAttribute)
   #define GDataYouTubeNonEmbeddable               _GDATA_NS_SYMBOL(GDataYouTubeNonEmbeddable)
   #define GDataYouTubeOccupation                  _GDATA_NS_SYMBOL(GDataYouTubeOccupation)
   #define GDataYouTubePlaylistID                  _GDATA_NS_SYMBOL(GDataYouTubePlaylistID)
