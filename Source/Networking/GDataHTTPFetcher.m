@@ -114,6 +114,7 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
 @interface GDataHTTPFetcher (PrivateMethods)
 - (void)stopFetchReleasingBlocks:(BOOL)shouldReleaseBlocks;
 
+- (void)addCookiesToRequest:(NSMutableURLRequest *)request;
 - (void)handleCookiesForResponse:(NSURLResponse *)response;
 - (void)setCookieStorage:(GDataCookieStorage *)obj;
 
@@ -372,21 +373,7 @@ static const NSTimeInterval kCachedURLReservationInterval = 60.; // 1 minute
     }
   }
 
-  // get cookies for this URL from our storage array, if
-  // we have a storage array
-  if (cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodSystemDefault
-      && cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodNone) {
-
-    NSArray *cookies = [cookieStorage_ cookiesForURL:[request_ URL]];
-    if ([cookies count]) {
-
-      NSDictionary *headerFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
-      NSString *cookieHeader = [headerFields objectForKey:@"Cookie"]; // key used in header dictionary
-      if (cookieHeader) {
-        [request_ addValue:cookieHeader forHTTPHeaderField:@"Cookie"]; // header name
-      }
-    }
-  }
+  [self addCookiesToRequest:request_];
 
   if (downloadPath_ != nil) {
     // downloading to a path, so create a temporary file and a file handle for
@@ -559,6 +546,24 @@ CannotBeginFetch:
   return nil;
 }
 
+- (void)addCookiesToRequest:(NSMutableURLRequest *)request {
+  // get cookies for this URL from our storage array, if
+  // we have a storage array
+  if (cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodSystemDefault
+      && cookieStorageMethod_ != kGDataHTTPFetcherCookieStorageMethodNone) {
+
+    NSArray *cookies = [cookieStorage_ cookiesForURL:[request URL]];
+    if ([cookies count] > 0) {
+
+      NSDictionary *headerFields = [NSHTTPCookie requestHeaderFieldsWithCookies:cookies];
+      NSString *cookieHeader = [headerFields objectForKey:@"Cookie"]; // key used in header dictionary
+      if (cookieHeader) {
+        [request addValue:cookieHeader forHTTPHeaderField:@"Cookie"]; // header name
+      }
+    }
+  }
+}
+
 // Cancel the fetch of the URL that's currently in progress.
 - (void)stopFetchReleasingBlocks:(BOOL)shouldReleaseBlocks {
   // if the connection or the retry timer is all that's retaining the fetcher,
@@ -684,6 +689,9 @@ CannotBeginFetch:
             redirectResponse:(NSURLResponse *)redirectResponse {
 
   if (redirectRequest && redirectResponse) {
+    // save cookies from the response
+    [self handleCookiesForResponse:redirectResponse];
+
     NSMutableURLRequest *newRequest = [[request_ mutableCopy] autorelease];
     // copy the URL
     NSURL *redirectURL = [redirectRequest URL];
@@ -718,10 +726,10 @@ CannotBeginFetch:
         [newRequest setValue:value forHTTPHeaderField:key];
       }
     }
-    redirectRequest = newRequest;
 
-    // save cookies from the response
-    [self handleCookiesForResponse:redirectResponse];
+    [self addCookiesToRequest:newRequest];
+
+    redirectRequest = newRequest;
 
     // log the response we just received
     [self setResponse:redirectResponse];

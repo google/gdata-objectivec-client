@@ -21,6 +21,9 @@ Bugs Fixed
 - Fixed leak in elements allocated with GDataXMLElement's initWithXMLString:
   (thanks dshimshoni)
 
+- Made cookies set by a redirect immediately available in the new request
+  (thanks ehoracek)
+
 
 Release 1.11.0
 1-December-2010
