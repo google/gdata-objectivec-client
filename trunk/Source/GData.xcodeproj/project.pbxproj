@@ -2222,9 +2222,9 @@
 		4FE1674412EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
 		4FE1674512EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
 		4FE1674612EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
-		4FE1674712EE1E8F00E72C92 /* GDataVolumePrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */; };
+		4FE1674712EE1E8F00E72C92 /* GDataVolumePrice.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1673F12EE1E8F00E72C92 /* GDataVolumePrice.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE1674812EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
-		4FE1674912EE1E8F00E72C92 /* GDataVolumeReadingPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */; };
+		4FE1674912EE1E8F00E72C92 /* GDataVolumeReadingPosition.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE1674112EE1E8F00E72C92 /* GDataVolumeReadingPosition.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE1674A12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
 		4FE1674B12EE1E8F00E72C92 /* GDataVolumePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674012EE1E8F00E72C92 /* GDataVolumePrice.m */; };
 		4FE1674C12EE1E8F00E72C92 /* GDataVolumeReadingPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE1674212EE1E8F00E72C92 /* GDataVolumeReadingPosition.m */; };
