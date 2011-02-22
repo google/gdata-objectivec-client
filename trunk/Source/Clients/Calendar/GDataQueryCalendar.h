@@ -19,7 +19,7 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE
 
-// Calendar-specific query params, per 
+// Calendar-specific query params, per
 //   http://code.google.com/apis/calendar/reference.html#Parameters
 
 // NOTE: Events for a recurring event with recurrence exceptions (i.e. where
@@ -30,7 +30,7 @@
 
 #import "GDataQuery.h"
 
-@interface GDataQueryCalendar : GDataQuery 
+@interface GDataQueryCalendar : GDataQuery
 
 + (GDataQueryCalendar *)calendarQueryWithFeedURL:(NSURL *)feedURL;
 
@@ -62,7 +62,10 @@
 
 - (NSString *)currentTimeZoneName;
 - (void)setCurrentTimeZoneName:(NSString *)str;
-  
+
+- (NSInteger)maximumAttendees;
+- (void)setMaximumAttendees:(NSInteger)val;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

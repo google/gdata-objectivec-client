@@ -38,6 +38,7 @@
 - (void)deleteSelectedEvents;
 - (void)batchDeleteSelectedEvents;
 - (void)queryTodaysEvents;
+- (void)queryFreeBusy;
 
 - (void)fetchSelectedCalendarACLEntries;
 - (void)addAnACLEntry;
@@ -306,6 +307,11 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [mQueryTodayEventButton setEnabled:NO];
   }
 
+  GDataServiceGoogleCalendar *service = [self calendarService];
+  BOOL isSignedIn = ([[service username] length] > 0
+                     && [[service password] length] > 0);
+  [mQueryFreeBusyButton setEnabled:isSignedIn];
+
   // enable or disable the Events/ACL segment buttons
   [mEntrySegmentedControl setEnabled:isCalendarSelected
                           forSegment:kEventsSegment];
@@ -458,6 +464,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 - (IBAction)queryTodayClicked:(id)sender {
   [self queryTodaysEvents];
+}
+
+- (IBAction)queryFreeBusyClicked:(id)sender {
+  [self queryFreeBusy];
 }
 
 - (IBAction)entrySegmentClicked:(id)sender {
@@ -1290,6 +1300,73 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     NSBeginAlertSheet(@"Query ", nil, nil, nil,
                       [self window], nil, nil,
                       nil, nil, @"Query result: %@", resultStr);
+  } else {
+    // query failed
+    NSBeginAlertSheet(@"Query failed", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Query failed: %@", error);
+  }
+}
+
+#pragma mark Query free/busy times
+
+- (void)queryFreeBusy {
+  // make a start time for now, and an end time for 24 hours from now
+  NSDate *now = [NSDate date];
+  NSTimeInterval oneDayInSecs = 60 * 60 * 24;
+  NSDate *dayFromNow = [NSDate dateWithTimeIntervalSinceNow:oneDayInSecs];
+
+  GDataDateTime *nowDateTime = [GDataDateTime dateTimeWithDate:now
+                                                      timeZone:[NSTimeZone systemTimeZone]];
+  GDataDateTime *tomorrowDateTime = [GDataDateTime dateTimeWithDate:dayFromNow
+                                                           timeZone:[NSTimeZone systemTimeZone]];
+
+  // make the free/busy query
+  GDataServiceGoogleCalendar *service = [self calendarService];
+  NSString *username = [service username];
+  NSURL *feedURL = [GDataServiceGoogleCalendar freeBusyURLForUsername:username];
+
+  GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
+  [queryCal setMinimumStartTime:nowDateTime];
+  [queryCal setMaximumStartTime:tomorrowDateTime];
+
+  [service fetchFeedWithQuery:queryCal
+                     delegate:self
+            didFinishSelector:@selector(queryFreeBusyTicket:finishedWithEntry:error:)];
+}
+
+- (void)queryFreeBusyTicket:(GDataServiceTicket *)ticket
+          finishedWithEntry:(GDataEntryFreeBusy *)entry
+                      error:(NSError *)error {
+  if (error == nil) {
+    // query succeeded
+    //
+    // display the results as a list of start/end times
+    NSArray *busies = [entry busies];
+    NSMutableArray *periodStrings = [NSMutableArray array];
+
+    NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+    [formatter setDateStyle:NSDateFormatterNoStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setTimeZone:[NSTimeZone systemTimeZone]];
+
+    for (int idx = 0; idx < [busies count]; idx++) {
+      GDataCalendarBusy *busy = [busies objectAtIndex:idx];
+      GDataWhen *when = [busy when];
+      NSDate *startDate = [[when startTime] date];
+      NSDate *endDate = [[when endTime] date];
+
+      NSString *str = [NSString stringWithFormat:@"%@-%@",
+                       [formatter stringFromDate:startDate],
+                       [formatter stringFromDate:endDate]];
+      [periodStrings addObject:str];
+    }
+    NSString *resultStr = [periodStrings componentsJoinedByString:@", "];
+
+    NSBeginAlertSheet(@"Query ", nil, nil, nil,
+                      [self window], nil, nil,
+                      nil, nil, @"Busy times: %@", resultStr);
+
   } else {
     // query failed
     NSBeginAlertSheet(@"Query failed", nil, nil, nil,

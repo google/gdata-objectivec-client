@@ -46,6 +46,7 @@
   IBOutlet NSButton *mEditEventButton;
   IBOutlet NSButton *mMapEventButton;
   IBOutlet NSButton *mQueryTodayEventButton;
+  IBOutlet NSButton *mQueryFreeBusyButton;
   
   IBOutlet NSSegmentedControl *mEntrySegmentedControl;
   
@@ -83,6 +84,7 @@
 - (IBAction)deleteEventClicked:(id)sender;
 - (IBAction)mapEventClicked:(id)sender;
 - (IBAction)queryTodayClicked:(id)sender;
+- (IBAction)queryFreeBusyClicked:(id)sender;
 
 - (IBAction)entrySegmentClicked:(id)sender;
 

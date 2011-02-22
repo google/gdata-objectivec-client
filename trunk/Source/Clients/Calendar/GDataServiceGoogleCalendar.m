@@ -55,6 +55,36 @@
   return url;
 }
 
++ (NSURL *)freeBusyURLForUsername:(NSString *)username {
+
+  NSString *usernameEscaped = [GDataUtilities stringByURLEncodingForURI:username];
+
+  NSString *rootURLString = [self serviceRootURLString];
+
+  NSString *templateStr = @"%@default/freebusy/busy-times/%@";
+
+  NSString *feedURLString = [NSString stringWithFormat:templateStr,
+                             rootURLString, usernameEscaped];
+
+  NSURL *url = [NSURL URLWithString:feedURLString];
+  return url;
+}
+
++ (NSURL *)freeBusyURLForGroup:(NSString *)groupname {
+
+  NSString *nameEscaped = [GDataUtilities stringByURLEncodingForURI:groupname];
+
+  NSString *rootURLString = [self serviceRootURLString];
+
+  NSString *templateStr = @"%@default/freebusy/group/%@/busy-times";
+
+  NSString *feedURLString = [NSString stringWithFormat:templateStr,
+                             rootURLString, nameEscaped];
+
+  NSURL *url = [NSURL URLWithString:feedURLString];
+  return url;
+}
+
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector {

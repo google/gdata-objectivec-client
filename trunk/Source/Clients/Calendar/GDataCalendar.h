@@ -37,6 +37,8 @@
 #import "GDataFeedMessage.h"
 #import "GDataEntryCalendarSettings.h"
 #import "GDataFeedCalendarSettings.h"
+#import "GDataEntryFreeBusy.h"
+#import "GDataFeedFreeBusy.h"
 
 #import "GDataServiceGoogleCalendar.h"
 #import "GDataQueryCalendar.h"
