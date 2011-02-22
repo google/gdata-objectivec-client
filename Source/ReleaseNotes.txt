@@ -12,9 +12,15 @@ Additions
 
 - Added requirealldeleted query parameter
 
+- Added authenticationInfo accessor for fetch error userInfo
+
+- Added yt:name attribute to media:thumbnail
+
+- Added calendar max-attendees query parameter and free/busy feeds
 
 Changes
 
+- Tightened up syntax for use with c++ compilers
 
 Bugs Fixed
 

@@ -64,6 +64,10 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_A
 
 + (NSURL *)settingsFeedURLForUsername:(NSString *)username;
 
++ (NSURL *)freeBusyURLForUsername:(NSString *)username;
+
++ (NSURL *)freeBusyURLForGroup:(NSString *)groupname;
+
 - (GDataServiceTicket *)fetchCalendarFeedForUsername:(NSString *)username
                                             delegate:(id)delegate
                                    didFinishSelector:(SEL)finishedSelector;

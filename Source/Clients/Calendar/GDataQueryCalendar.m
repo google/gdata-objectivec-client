@@ -33,6 +33,7 @@ static NSString *const kSingleEventsParamName = @"singleevents";
 static NSString *const kCurrentTimeZoneParamName = @"ctz";
 static NSString *const kShowInlineCommentsParamName = @"showinlinecomments";
 static NSString *const kShowHiddenParamName = @"showhidden";
+static NSString *const kMaxAttendeesParamName = @"max-attendees";
 
 @implementation GDataQueryCalendar
 
@@ -149,6 +150,17 @@ static NSString *const kShowHiddenParamName = @"showhidden";
 
   [self addCustomParameterWithName:kCurrentTimeZoneParamName
                              value:mutableStr];
+}
+
+- (NSInteger)maximumAttendees {
+  return [self intValueForParameterWithName:kMaxAttendeesParamName
+                      missingParameterValue:-1];
+}
+
+- (void)setMaximumAttendees:(NSInteger)val {
+  [self addCustomParameterWithName:kMaxAttendeesParamName
+                          intValue:val
+                    removeForValue:-1];
 }
 
 @end

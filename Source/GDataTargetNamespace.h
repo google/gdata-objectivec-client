@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (571 classes) 2011-01-26 14:28:34 -0800
+// com.google.GDataFramework v. 1.11 (579 classes) 2011-02-22 12:33:20 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -79,7 +79,10 @@
   #define GDataBookConstants                      _GDATA_NS_SYMBOL(GDataBookConstants)
   #define GDataBoolValueConstruct                 _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
   #define GDataCachedURLResponse                  _GDATA_NS_SYMBOL(GDataCachedURLResponse)
+  #define GDataCalendarBusy                       _GDATA_NS_SYMBOL(GDataCalendarBusy)
   #define GDataCalendarSettingsProperty           _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
+  #define GDataCalendarTimeRange                  _GDATA_NS_SYMBOL(GDataCalendarTimeRange)
+  #define GDataCalendarWhen                       _GDATA_NS_SYMBOL(GDataCalendarWhen)
   #define GDataCategory                           _GDATA_NS_SYMBOL(GDataCategory)
   #define GDataCategoryFilter                     _GDATA_NS_SYMBOL(GDataCategoryFilter)
   #define GDataCodeSearchFile                     _GDATA_NS_SYMBOL(GDataCodeSearchFile)
@@ -170,7 +173,10 @@
   #define GDataEntryFinancePosition               _GDATA_NS_SYMBOL(GDataEntryFinancePosition)
   #define GDataEntryFinanceTransaction            _GDATA_NS_SYMBOL(GDataEntryFinanceTransaction)
   #define GDataEntryFolderDoc                     _GDATA_NS_SYMBOL(GDataEntryFolderDoc)
+  #define GDataEntryFreeBusy                      _GDATA_NS_SYMBOL(GDataEntryFreeBusy)
+  #define GDataEntryFreeBusyBase                  _GDATA_NS_SYMBOL(GDataEntryFreeBusyBase)
   #define GDataEntryGoogleBase                    _GDATA_NS_SYMBOL(GDataEntryGoogleBase)
+  #define GDataEntryGroupFreeBusy                 _GDATA_NS_SYMBOL(GDataEntryGroupFreeBusy)
   #define GDataEntryHealthProfile                 _GDATA_NS_SYMBOL(GDataEntryHealthProfile)
   #define GDataEntryHealthRegister                _GDATA_NS_SYMBOL(GDataEntryHealthRegister)
   #define GDataEntryLink                          _GDATA_NS_SYMBOL(GDataEntryLink)
@@ -248,7 +254,9 @@
   #define GDataFeedFinancePortfolio               _GDATA_NS_SYMBOL(GDataFeedFinancePortfolio)
   #define GDataFeedFinancePosition                _GDATA_NS_SYMBOL(GDataFeedFinancePosition)
   #define GDataFeedFinanceTransaction             _GDATA_NS_SYMBOL(GDataFeedFinanceTransaction)
+  #define GDataFeedFreeBusy                       _GDATA_NS_SYMBOL(GDataFeedFreeBusy)
   #define GDataFeedGoogleBase                     _GDATA_NS_SYMBOL(GDataFeedGoogleBase)
+  #define GDataFeedGroupFreeBusy                  _GDATA_NS_SYMBOL(GDataFeedGroupFreeBusy)
   #define GDataFeedHealthProfile                  _GDATA_NS_SYMBOL(GDataFeedHealthProfile)
   #define GDataFeedHealthRegister                 _GDATA_NS_SYMBOL(GDataFeedHealthRegister)
   #define GDataFeedLink                           _GDATA_NS_SYMBOL(GDataFeedLink)
