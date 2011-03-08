@@ -42,7 +42,7 @@ To display a sign-in view, your iPhone application makes these calls to push the
 {{{
 #import "GDataOAuthViewControllerTouch.h"
 
-static NSString *const kAppServiceName = @â€My Application: Google Contactsâ€;
+static NSString *const kAppServiceName = @"My Application: Google Contacts";
 
 NSString *scope = @"http://www.google.com/m8/feeds/"; // scope for Google Contacts API
 
@@ -77,9 +77,9 @@ If your application uses the Google Data APIs Objective-C Client Library, it sho
  scope = [GDataServiceGoogleContacts authorizationScope];
 }}}
 
-The *application service name* is used to save the token on the userâ€™s keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
+The *application service name* is used to save the token on the user's keychain, and should identify both your application name and the service name(s). If appServiceName is nil, the token will not be saved, and the user will have to sign in again the next time the application is run.
 
-When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelectorâ€™s method:
+When the user signs in successfully or cancels signing in, the view or window controller will invoke your finishedSelector's method:
 {{{
 - (void)viewController:(GDataOAuthViewControllerTouch *)viewController
       finishedWithAuth:(GDataOAuthAuthentication *)auth
@@ -117,7 +117,7 @@ GDataOAuthAuthentication *auth;
 auth = [GDataOAuthViewControllerTouch authForGoogleFromKeychainForName:kAppServiceName];
 }}}
 
-If no authorization was saved, then â€œauthâ€ will still be a valid authorization object but will be unable to authorize requests:
+If no authorization was saved, then `auth` will still be a valid authorization object but will be unable to authorize requests:
 
 {{{
  BOOL isSignedIn = [auth canAuthorize]; // returns NO if auth cannot authorize requests
@@ -125,7 +125,7 @@ If no authorization was saved, then â€œauthâ€ will still be a valid aut
 
 === Signing Out ===
 
-To completely discard the userâ€™s authorization, use the view or window controller calls to remove the keychain entry and to ask the Google server to revoke the token:
+To completely discard the user's authorization, use the view or window controller calls to remove the keychain entry and to ask the Google server to revoke the token:
 {{{
  [GDataOAuthViewControllerTouch removeParamsFromKeychainForName:kAppServiceName];
 
