@@ -7,7 +7,7 @@
 
 == Introduction ==
 
-[http://oauth.net/ OAuth] is a protocol allowing your application to obtain authorization to read or modify a userâ€™s files or data on an external server.
+[http://oauth.net/ OAuth] is a protocol allowing your application to obtain authorization to read or modify a user's files or data on an external server.
 
 The server generates a web page for the user to sign in with her name and password, including a button explicitly granting access to some of her data. Upon successful authentication, the server gives tokens to your application representing the user's authorization.
 
