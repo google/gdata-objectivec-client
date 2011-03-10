@@ -501,6 +501,11 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSTimeInterval)serviceMaxRetryInterval;
 - (void)setServiceMaxRetryInterval:(NSTimeInterval)secs;
 
+// access to the parsing operation queue, for clients wanting to manage the
+// queue explicitly
+- (id)operationQueue;
+- (void)setOperationQueue:(id)queue;
+
 // credentials
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password;
