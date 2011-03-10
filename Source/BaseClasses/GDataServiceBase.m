@@ -1792,6 +1792,15 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   serviceMaxRetryInterval_ = secs;
 }
 
+- (id)operationQueue {
+  return operationQueue_;
+}
+
+- (void)setOperationQueue:(id)queue {
+  [operationQueue_ autorelease];
+  operationQueue_ = [queue retain];
+}
+
 #pragma mark -
 
 // return a generic name and version for the current application; this avoids

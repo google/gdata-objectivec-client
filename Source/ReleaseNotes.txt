@@ -22,6 +22,9 @@ Changes
 
 - Tightened up syntax for use with c++ compilers
 
+- The operation queue used for parsing in the service class now has accessors
+  (thanks saggau)
+
 Bugs Fixed
 
 - Fixed leak in elements allocated with GDataXMLElement's initWithXMLString:
