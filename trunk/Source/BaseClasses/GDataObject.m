@@ -2561,11 +2561,14 @@ forCategoryWithScheme:(NSString *)scheme
   // ensure this is a unique registration
   GDATA_DEBUG_ASSERT(nil == [*map objectForKey:theClass],
                @"%@ already registered", theClass);
+
+#if !NS_BLOCK_ASSERTIONS
   Class prevClass = [self classForCategoryWithScheme:scheme
                                                 term:term
                                              fromMap:*map];
   GDATA_ASSERT(prevClass == nil, @"%@ registration conflicts with %@",
                theClass, prevClass);
+#endif
 
   // we have a map from the key "scheme:term" to the class
   //

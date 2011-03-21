@@ -634,9 +634,11 @@ forCategoryWithScheme:scheme
   // make each have this feed as parent
   GDataObject* entry;
   GDATA_FOREACH(entry, entries_) {
+#if !NS_BLOCK_ASSERTIONS
     GDataObject *oldParent = [entry parent];
     GDATA_ASSERT(oldParent == self || oldParent == nil,
                  @"Trying to replace existing feed parent; use setEntriesWithEntries: instead");
+#endif
     [entry setParent:self];
   }
 }
@@ -648,9 +650,11 @@ forCategoryWithScheme:scheme
   }
 
   // ensure the entry doesn't have another parent
+#if !NS_BLOCK_ASSERTIONS
   GDataObject *oldParent = [obj parent];
   GDATA_ASSERT(oldParent == self || oldParent == nil,
                @"Trying to replace existing feed parent; use addEntryWithEntry: instead");
+#endif
 
   [obj setParent:self];
   [entries_ addObject:obj];
