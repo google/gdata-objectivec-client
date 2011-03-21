@@ -63,6 +63,16 @@ static NSString* const kRealmAttr = @"realm";
   return obj;
 }
 
+- (id)init {
+  self = [super init];
+  if (self) {
+    if ([[self namespaces] objectForKey:@""] == nil) {
+      [self addEmptyDefaultNamespace];
+    }
+  }
+  return self;
+}
+
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent {
   self = [super initWithXMLElement:element
