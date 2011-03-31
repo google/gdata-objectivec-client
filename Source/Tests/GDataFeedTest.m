@@ -1581,6 +1581,7 @@
     { @"entries.0.writersCanInvite", @"1"},
     { @"entries.0.lastModifiedBy.name", @"Fred Flintstone"},
     { @"entries.0.quotaBytesUsed", @"12345"},
+    { @"entries.0.documentDescription", @"cherry soda"},
     { @"entries.0.isHidden", @"1"},
 
     { @"entries.1.className", @"GDataEntrySpreadsheetDoc" },

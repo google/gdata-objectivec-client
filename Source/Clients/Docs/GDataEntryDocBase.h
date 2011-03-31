@@ -40,6 +40,9 @@
 - (NSNumber *)quotaBytesUsed; // long long
 - (void)setQuotaBytesUsed:(NSNumber *)num;
 
+- (NSString *)documentDescription;
+- (void)setDocumentDescription:(NSString *)str;
+
 // categories
 - (BOOL)isStarred;
 - (void)setIsStarred:(BOOL)flag;

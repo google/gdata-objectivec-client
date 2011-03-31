@@ -40,6 +40,14 @@
 + (NSString *)extensionElementLocalName { return @"writersCanInvite"; }
 @end
 
+@interface GDataDocDescription : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataDocDescription
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"description"; }
+@end
 
 @implementation GDataEntryDocBase
 
@@ -68,6 +76,7 @@
    [GDataWritersCanInvite class],
    [GDataLastModifiedBy class],
    [GDataQuotaBytesUsed class],
+   [GDataDocDescription class],
    nil];
 }
 
@@ -127,6 +136,17 @@
 - (void)setQuotaBytesUsed:(NSNumber *)num {
   GDataQuotaBytesUsed *obj = [GDataQuotaBytesUsed valueWithNumber:num];
   [self setObject:obj forExtensionClass:[GDataQuotaBytesUsed class]];
+}
+
+- (NSString *)documentDescription {
+  GDataDocDescription *obj;
+  obj = [self objectForExtensionClass:[GDataDocDescription class]];
+  return [obj stringValue];
+}
+
+- (void)setDocumentDescription:(NSString *)str {
+  GDataDocDescription *obj = [GDataDocDescription valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataDocDescription class]];
 }
 
 #pragma mark -
