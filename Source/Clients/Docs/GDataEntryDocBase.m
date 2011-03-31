@@ -84,10 +84,11 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"lastViewed",       @"lastViewed",       kGDataDescValueLabeled },
-    { @"writersCanInvite", @"writersCanInvite", kGDataDescValueLabeled },
-    { @"lastModifiedBy",   @"lastModifiedBy",   kGDataDescValueLabeled },
-    { @"quotaUsed",        @"quotaBytesUsed",   kGDataDescValueLabeled },
+    { @"lastViewed",       @"lastViewed",          kGDataDescValueLabeled },
+    { @"writersCanInvite", @"writersCanInvite",    kGDataDescValueLabeled },
+    { @"lastModifiedBy",   @"lastModifiedBy",      kGDataDescValueLabeled },
+    { @"quotaUsed",        @"quotaBytesUsed",      kGDataDescValueLabeled },
+    { @"desc",             @"documentDescription", kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
