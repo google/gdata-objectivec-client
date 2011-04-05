@@ -6853,6 +6853,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = "-DDEBUG=1";
+				SDKROOT = macosx;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
@@ -6883,6 +6884,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
@@ -6913,7 +6915,6 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataUnitTests;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -6940,7 +6941,6 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataUnitTests;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -6980,7 +6980,7 @@
 					"-DGDATA_IPHONE=1",
 				);
 				PRODUCT_NAME = GDataTouchStaticLib;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -6997,7 +6997,7 @@
 					"-DGDATA_INCLUDE_nameServiceHere_SERVICE=1",
 				);
 				PRODUCT_NAME = GDataTouchStaticLib;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -7070,7 +7070,6 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataIPhoneUnitTests;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -7100,7 +7099,6 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataIPhoneUnitTests;
-				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
 				STRIP_STYLE = "non-global";
 				WRAPPER_EXTENSION = octest;
 			};
