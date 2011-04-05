@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (579 classes) 2011-02-22 12:33:20 -0800
+// com.google.GDataFramework v. 1.11 (580 classes) 2011-04-04 17:07:27 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -135,6 +135,7 @@
   #define GDataDCTitle                            _GDATA_NS_SYMBOL(GDataDCTitle)
   #define GDataDeleted                            _GDATA_NS_SYMBOL(GDataDeleted)
   #define GDataDocConstants                       _GDATA_NS_SYMBOL(GDataDocConstants)
+  #define GDataDocDescription                     _GDATA_NS_SYMBOL(GDataDocDescription)
   #define GDataDocExportFormat                    _GDATA_NS_SYMBOL(GDataDocExportFormat)
   #define GDataDocFeature                         _GDATA_NS_SYMBOL(GDataDocFeature)
   #define GDataDocFeatureName                     _GDATA_NS_SYMBOL(GDataDocFeatureName)
