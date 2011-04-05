@@ -18,12 +18,25 @@ Additions
 
 - Added calendar max-attendees query parameter and free/busy feeds
 
+- Added docs:documentDescription
+
 Changes
 
-- Tightened up syntax for use with c++ compilers
+- Tightened up syntax for use with C++ compilers
 
 - The operation queue used for parsing in the service class now has accessors
   (thanks saggau)
+
+- Project now uses latest SDKs rather than specific versions
+
+- NSURLErrorNetworkConnectionLost is now retryable by default for 10.5 and later
+  builds
+
+- For chunk uploads, status 502 is now retryable by default
+
+- Blogger now uses https
+
+- Removed Google Base support
 
 Bugs Fixed
 
