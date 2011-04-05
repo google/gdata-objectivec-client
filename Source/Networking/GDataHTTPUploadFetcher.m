@@ -584,11 +584,18 @@ totalBytesExpectedToSend:0];
 }
 
 -(BOOL)chunkFetcher:(GDataHTTPFetcher *)chunkFetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
-  if ([error code] == 308
+  NSInteger code = [error code];
+  if (code == 308
       && [[error domain] isEqual:kGDataHTTPFetcherStatusDomain]) {
-    // 308 is a normal chunk fethcher response, not an error
+    // 308 is a normal chunk fetcher response, not an error
     // that needs to be retried
     return NO;
+  }
+
+  if (code == 502) {
+    // For chunked uploads, 502 ("Bad gateway") is considered a retryable error,
+    // per Mike Yu
+    willRetry = YES;
   }
 
   if (retrySEL_) {

@@ -1200,16 +1200,18 @@ totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     int code;
   };
 
-  // Previously we also retried for
-  //   { NSURLErrorDomain, NSURLErrorNetworkConnectionLost }
-  // but at least on 10.4, once that happened, retries would keep failing
-  // with the same error.
 
   struct retryRecord retries[] = {
     { kGDataHTTPFetcherStatusDomain, 408 }, // request timeout
     { kGDataHTTPFetcherStatusDomain, 503 }, // service unavailable
     { kGDataHTTPFetcherStatusDomain, 504 }, // request timeout
     { NSURLErrorDomain, NSURLErrorTimedOut },
+#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
+    // Previously we always retried for NSURLErrorNetworkConnectionLost,
+    // but at least on 10.4, once that happened, retries would keep failing
+    // with the same error.
+    { NSURLErrorDomain, NSURLErrorNetworkConnectionLost },
+#endif
     { nil, 0 }
   };
 
