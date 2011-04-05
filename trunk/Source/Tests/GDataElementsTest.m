@@ -839,59 +839,6 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   [self runElementTests:tests];
 }
 
-- (void)testGoogleBaseElements {
-  
-  ElementTestKeyPathValues tests[] =
-  {     
-    { @"GDataGoogleBaseMetadataValue", @"<gm:value "
-        "count='87269'>product fluggy</gm:value>>" },
-    { @"count", @"87269" },
-    { @"contents", @"product fluggy" },
-    { @"", @"" },
-      
-    { @"GDataGoogleBaseMetadataAttribute", @"<gm:attribute "
-      "name='item type' type='text' count='116353'>"
-      "<gm:value count='87269'>products</gm:value> <gm:value count='2401'>produkte</gm:value> "
-      " </gm:attribute>" },
-    { @"type", @"text" },
-    { @"name", @"item type" },
-    { @"count", @"116353" },
-    { @"values.@count", @"2" },
-    { @"values.1.count", @"2401" },
-    { @"values.1.contents", @"produkte" },
-    { @"", @"" },
-      
-    { @"GDataGoogleBaseMetadataAttributeList", @"<gm:attributes "
-      "xmlns:gm='http://base.google.com/ns-metada/1.0'>"
-      "<gm:attribute name='location' type='location' />"
-      "<gm:attribute name='delivery radius' type='floatUnit' />"
-      "<gm:attribute name='payment' type='text' />       </gm:attributes>" },
-    { @"metadataAttributes.@count", @"3" },
-    { @"metadataAttributes.0.name", @"location" },
-    { @"metadataAttributes.2.type", @"text" },
-    { @"", @"" },
-      
-    { @"GDataGoogleBaseMetadataItemType", @"<gm:item_type "
-      "xmlns:gm='http://base.google.com/ns-metada/1.0'>"
-      "business locations</gm:item_type>" },
-    { @"value", @"business locations" },
-    { @"", @"" },
-      
-    { @"GDataGoogleBaseAttribute", @"<g:product_type type='text' "
-      "xmlns:g='http://base.google.com/ns/1.0'>Camera "
-      "Connecting Cable<g:product_model> 65-798M </g:product_model>"
-      "<g:product_revision> July06 </g:product_revision></g:product_type>" },
-    { @"name", @"product type" },
-    { @"textValue", @"Camera Connecting Cable" },
-    { @"", @"" },
-    
-    { nil, nil }
-  };
-  
-  [self runElementTests:tests];
-  
-}
-
 - (void)testSpreadsheetElements {
   
   ElementTestKeyPathValues tests[] =

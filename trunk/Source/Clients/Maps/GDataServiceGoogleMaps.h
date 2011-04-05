@@ -17,12 +17,6 @@
 //  GDataServiceGoogleMaps.h
 //
 
-//
-// NOTE: This API has been deprecated
-//
-// http://googlegeodevelopers.blogspot.com/2010/11/maps-data-api-deprecation-announcement.html
-//
-
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_MAPS_SERVICE
 

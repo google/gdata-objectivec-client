@@ -157,32 +157,6 @@
   
 }
 
-- (void)testGDataGoogleBaseQuery {
-  
-  NSURL* feedURL = [NSURL URLWithString:@"http://www.google.com/base/feeds/snippets/"];
-  
-  GDataQueryGoogleBase* queryGB1 = [GDataQueryGoogleBase googleBaseQueryWithFeedURL:feedURL];
-  [queryGB1 setIsAscendingOrder:YES];
-  [queryGB1 setOrderBy:@"modification_time"];
-  [queryGB1 setMaxValues:7];
-  
-  NSURL* resultURLGB1 = [queryGB1 URL];
-  NSString *expectedGB1 = @"http://www.google.com/base/feeds/snippets/?"
-    "max-values=7&orderby=modification_time&sortorder=ascending";
-  STAssertEqualObjects([resultURLGB1 absoluteString], expectedGB1, @"Google Base query 1 generation error");
-  
-  // Try a "bq" base query
-  
- GDataQueryGoogleBase* queryGB2 = [GDataQueryGoogleBase googleBaseQueryWithFeedURL:feedURL];
-  [queryGB2 setGoogleBaseQuery:@"digital camera"];
-  [queryGB2 setMaxResults:1];
-  
-  NSURL* resultURLGB2 = [queryGB2 URL];
-  NSString *expectedGB2 = @"http://www.google.com/base/feeds/snippets/?"
-    "bq=digital+camera&max-results=1";
-  STAssertEqualObjects([resultURLGB2 absoluteString], expectedGB2, @"Google Base query 2 generation error");
-}
-
 - (void)testGDataSpreadsheetsQuery {
   
   NSURL* feedURL = [NSURL URLWithString:kGDataGoogleSpreadsheetsPrivateFullFeed];

@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.11 (580 classes) 2011-04-04 17:07:27 -0700
+// com.google.GDataFramework v. 1.11 (571 classes) 2011-04-05 13:53:20 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -176,7 +176,6 @@
   #define GDataEntryFolderDoc                     _GDATA_NS_SYMBOL(GDataEntryFolderDoc)
   #define GDataEntryFreeBusy                      _GDATA_NS_SYMBOL(GDataEntryFreeBusy)
   #define GDataEntryFreeBusyBase                  _GDATA_NS_SYMBOL(GDataEntryFreeBusyBase)
-  #define GDataEntryGoogleBase                    _GDATA_NS_SYMBOL(GDataEntryGoogleBase)
   #define GDataEntryGroupFreeBusy                 _GDATA_NS_SYMBOL(GDataEntryGroupFreeBusy)
   #define GDataEntryHealthProfile                 _GDATA_NS_SYMBOL(GDataEntryHealthProfile)
   #define GDataEntryHealthRegister                _GDATA_NS_SYMBOL(GDataEntryHealthRegister)
@@ -256,7 +255,6 @@
   #define GDataFeedFinancePosition                _GDATA_NS_SYMBOL(GDataFeedFinancePosition)
   #define GDataFeedFinanceTransaction             _GDATA_NS_SYMBOL(GDataFeedFinanceTransaction)
   #define GDataFeedFreeBusy                       _GDATA_NS_SYMBOL(GDataFeedFreeBusy)
-  #define GDataFeedGoogleBase                     _GDATA_NS_SYMBOL(GDataFeedGoogleBase)
   #define GDataFeedGroupFreeBusy                  _GDATA_NS_SYMBOL(GDataFeedGroupFreeBusy)
   #define GDataFeedHealthProfile                  _GDATA_NS_SYMBOL(GDataFeedHealthProfile)
   #define GDataFeedHealthRegister                 _GDATA_NS_SYMBOL(GDataFeedHealthRegister)
@@ -311,11 +309,6 @@
   #define GDataGeoRSSRadius                       _GDATA_NS_SYMBOL(GDataGeoRSSRadius)
   #define GDataGeoRSSWhere                        _GDATA_NS_SYMBOL(GDataGeoRSSWhere)
   #define GDataGeoW3CPoint                        _GDATA_NS_SYMBOL(GDataGeoW3CPoint)
-  #define GDataGoogleBaseAttribute                _GDATA_NS_SYMBOL(GDataGoogleBaseAttribute)
-  #define GDataGoogleBaseMetadataAttribute        _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataAttribute)
-  #define GDataGoogleBaseMetadataAttributeList    _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataAttributeList)
-  #define GDataGoogleBaseMetadataItemType         _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataItemType)
-  #define GDataGoogleBaseMetadataValue            _GDATA_NS_SYMBOL(GDataGoogleBaseMetadataValue)
   #define GDataGroupMembershipInfo                _GDATA_NS_SYMBOL(GDataGroupMembershipInfo)
   #define GDataGuestsCanInviteOthersProperty      _GDATA_NS_SYMBOL(GDataGuestsCanInviteOthersProperty)
   #define GDataGuestsCanModifyProperty            _GDATA_NS_SYMBOL(GDataGuestsCanModifyProperty)
@@ -437,7 +430,6 @@
   #define GDataQueryContact                       _GDATA_NS_SYMBOL(GDataQueryContact)
   #define GDataQueryDocs                          _GDATA_NS_SYMBOL(GDataQueryDocs)
   #define GDataQueryFinance                       _GDATA_NS_SYMBOL(GDataQueryFinance)
-  #define GDataQueryGoogleBase                    _GDATA_NS_SYMBOL(GDataQueryGoogleBase)
   #define GDataQueryGoogleHealth                  _GDATA_NS_SYMBOL(GDataQueryGoogleHealth)
   #define GDataQueryGooglePhotos                  _GDATA_NS_SYMBOL(GDataQueryGooglePhotos)
   #define GDataQueryMaps                          _GDATA_NS_SYMBOL(GDataQueryMaps)
@@ -464,7 +456,6 @@
   #define GDataServiceBase                        _GDATA_NS_SYMBOL(GDataServiceBase)
   #define GDataServiceGoogle                      _GDATA_NS_SYMBOL(GDataServiceGoogle)
   #define GDataServiceGoogleAnalytics             _GDATA_NS_SYMBOL(GDataServiceGoogleAnalytics)
-  #define GDataServiceGoogleBase                  _GDATA_NS_SYMBOL(GDataServiceGoogleBase)
   #define GDataServiceGoogleBlogger               _GDATA_NS_SYMBOL(GDataServiceGoogleBlogger)
   #define GDataServiceGoogleBooks                 _GDATA_NS_SYMBOL(GDataServiceGoogleBooks)
   #define GDataServiceGoogleCalendar              _GDATA_NS_SYMBOL(GDataServiceGoogleCalendar)
