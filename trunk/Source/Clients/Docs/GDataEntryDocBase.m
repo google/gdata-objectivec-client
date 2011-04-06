@@ -195,6 +195,14 @@
   return parentLinks;
 }
 
+- (GDataLink *)thumbnailLink {
+  NSArray *links = [self links];
+  GDataLink *thumbnail = [GDataUtilities firstObjectFromArray:links
+                                                    withValue:kGDataDocsThumbnailRel
+                                                   forKeyPath:@"rel"];
+  return thumbnail;
+}
+
 - (GDataFeedLink *)feedLinkForRel:(NSString *)rel {
 
   NSArray *feedLinks = [self objectsForExtensionClass:[GDataFeedLink class]];

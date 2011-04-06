@@ -53,6 +53,8 @@
 // convenience accessors
 - (NSArray *)parentLinks;
 
+- (GDataLink *)thumbnailLink;
+
 - (GDataFeedLink *)ACLFeedLink;
 - (GDataFeedLink *)revisionFeedLink;
 

@@ -30,6 +30,7 @@
   IBOutlet NSProgressIndicator *mDocListProgressIndicator;
   IBOutlet NSTextView *mDocListResultTextField;
   IBOutlet NSButton *mDocListCancelButton;
+  IBOutlet NSImageView *mDocListImageView;
 
   IBOutlet NSTableView *mRevisionsTable;
   IBOutlet NSProgressIndicator *mRevisionsProgressIndicator;
