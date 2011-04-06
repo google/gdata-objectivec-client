@@ -18,7 +18,7 @@ Additions
 
 - Added calendar max-attendees query parameter and free/busy feeds
 
-- Added docs:documentDescription
+- Added docs:documentDescription and DocList thumbnailLink
 
 Changes
 
@@ -294,6 +294,8 @@ Changes
 
 - Renamed analyticsProperties to avoid conflict with properties of the
   GDataObject base class.
+
+- Removed GeoRSS locations from Calendar events
 
 Bugs Fixed
 
