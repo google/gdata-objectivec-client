@@ -4,6 +4,8 @@ Framework Release Notes
 Project site:     http://code.google.com/p/gdata-objectivec-client/
 Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
 
+Release 1.12.0
+8-April-2011
 Changes since 1.11.0
 
 Additions
