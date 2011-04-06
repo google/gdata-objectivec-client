@@ -23,7 +23,6 @@
 #import "GDataWho.h"
 #import "GDataLink.h"
 #import "GDataExtendedProperty.h"
-#import "GDataGeo.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -102,9 +101,6 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 
 - (BOOL)canAnyoneAddSelf; // default NO
 - (void)setCanAnyoneAddSelf:(BOOL)flag;
-
-- (GDataGeo *)geoLocation;
-- (void)setGeoLocation:(GDataGeo *)geo;
 
 - (NSNumber *)sequenceNumber; // int
 - (void)setSequenceNumber:(NSNumber *)num;
