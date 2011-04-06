@@ -32,6 +32,9 @@ enum {
 @interface DocsSampleWindowController (PrivateMethods)
 - (void)updateUI;
 - (void)updateChangeFolderPopup;
+- (void)updateSelectedDocumentThumbnailImage;
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
 
 - (void)fetchDocList;
 - (void)fetchRevisionsForSelectedDoc;
@@ -144,6 +147,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
   [mDocListResultTextField setString:docResultStr];
 
+  [self updateSelectedDocumentThumbnailImage];
 
   // revision list display
   [mRevisionsTable reloadData];
@@ -271,7 +275,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   // get hrefs of folders that already contain the selected doc
   GDataEntryDocBase *doc = [self selectedDoc];
-  NSArray *parentLinks = [doc linksWithRelAttributeValue:kGDataCategoryDocParent];
+  NSArray *parentLinks = [doc parentLinks];
   NSArray *parentHrefs = [parentLinks valueForKey:@"href"];
 
   // disable the pop-up if a folder entry is selected
@@ -301,6 +305,39 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       [item setState:shouldCheckItem];
     }
   }
+}
+
+- (void)updateSelectedDocumentThumbnailImage {
+  static NSString* priorImageURLStr = nil;
+
+  GDataEntryDocBase *doc = [self selectedDoc];
+  GDataLink *thumbnailLink = [doc thumbnailLink];
+  NSString *newImageURLStr = [thumbnailLink href];
+
+  if (!AreEqualOrBothNil(newImageURLStr, priorImageURLStr)) {
+    // the image has changed
+    priorImageURLStr = newImageURLStr;
+
+    [mDocListImageView setImage:nil];
+
+    NSURL *url = [NSURL URLWithString:newImageURLStr];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+    [fetcher beginFetchWithDelegate:self
+                  didFinishSelector:@selector(imageFetcher:finishedWithData:)
+                    didFailSelector:@selector(imageFetcher:failedWithError:)];
+  }
+}
+
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher
+    finishedWithData:(NSData *)data {
+  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+  [mDocListImageView setImage:image];
+}
+
+- (void)imageFetcher:(GDataHTTPFetcher *)fetcher
+     failedWithError:(NSError *)error {
+  NSLog(@"Error %@ loading image %@", error, [[fetcher request] URL]);
 }
 
 #pragma mark IBActions
