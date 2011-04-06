@@ -331,8 +331,6 @@
     { @"entries.0.locations.0.rel", nil },
     { @"entries.0.sequenceNumber", @"2" },
     { @"entries.0.iCalUID", @"4A24A0FF-EA3A-4839-AA09-F4283CB6D345" },
-    { @"entries.0.geoLocation.latitude", @"47.620973" },
-    { @"entries.0.geoLocation.longitude", @"-122.347276" },
     { @"entries.0.canGuestsModify", @"0" },
     { @"entries.0.canGuestsInviteOthers", @"0" },
     { @"entries.0.canGuestsSeeGuests", @"0" },

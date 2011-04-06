@@ -28,7 +28,6 @@
 #import "GDataWhen.h"
 #import "GDataWhere.h"
 #import "GDataEntryCalendarEvent.h"
-#import "GDataGeo.h"
 
 // CalendarEntry extensions
 @implementation GDataHiddenProperty 
@@ -81,8 +80,6 @@
 
   [namespaces setObject:kGDataNamespaceGCal forKey:kGDataNamespaceGCalPrefix];
   
-  [namespaces addEntriesFromDictionary:[GDataGeo geoNamespaces]]; // geo, georss, gml
-
   return namespaces;
 }
 

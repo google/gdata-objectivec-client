@@ -47,11 +47,6 @@
 		<gCal:sendEventNotifications value="false"/>
 		<gCal:sequence value="2"></gCal:sequence>
 		<gCal:uid value="4A24A0FF-EA3A-4839-AA09-F4283CB6D345"></gCal:uid>
-		<georss:where>
-				<gml:Point>
-						<gml:pos>47.620973 -122.347276</gml:pos>
-				</gml:Point>
-		</georss:where>
 		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
 		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
 		<gd:who email="FredFlintstone@gmail.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">
