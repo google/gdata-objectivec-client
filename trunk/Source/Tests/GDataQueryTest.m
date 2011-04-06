@@ -412,13 +412,15 @@
 
   GDataQueryDocs *query4 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
   [query4 setShouldActuallyDelete:YES];
+  [query4 setShouldShowRootParentLink:YES];
   [query4 setShouldConvertUpload:NO];
   [query4 setSourceLanguage:@"en"];
   [query4 setTargetLanguage:@"de"];
   [query4 setShouldOCRUpload:YES];
   NSURL *resultURL4 = [query4 URL];
   NSString *expected4 = @"https://docs.google.com/feeds/default/private/full?"
-    "convert=false&delete=true&ocr=true&sourceLanguage=en&targetLanguage=de";
+    "convert=false&delete=true&ocr=true&showroot=true&"
+    "sourceLanguage=en&targetLanguage=de";
   STAssertEqualObjects([resultURL4 absoluteString], expected4,
                        @"Docs query 4 generation error");
 }

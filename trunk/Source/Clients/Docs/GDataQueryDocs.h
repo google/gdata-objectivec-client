@@ -82,6 +82,9 @@ _EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
 - (void)setEditedMaxDateTime:(GDataDateTime *)dateTime;
 - (GDataDateTime *)editedMaxDateTime;
 
+- (void)setShouldShowRootParentLink:(BOOL)flag;
+- (BOOL)shouldShowRootParentLink;
+
 // delete a document when deleting (default is moving to the trash on deleting)
 - (void)setShouldActuallyDelete:(BOOL)flag;
 - (BOOL)shouldActuallyDelete;
