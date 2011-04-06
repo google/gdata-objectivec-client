@@ -33,6 +33,7 @@ static NSString *const kOpenedMinParamName      = @"opened-min";
 static NSString *const kOpenedMaxParamName      = @"opened-max";
 static NSString *const kEditedMinParamName      = @"edited-min";
 static NSString *const kEditedMaxParamName      = @"edited-max";
+static NSString *const kShowRootParamName       = @"showroot";
 static NSString *const kTargetLanguageParamName = @"targetLanguage";
 static NSString *const kSourceLanguageParamName = @"sourceLanguage";
 static NSString *const kDeleteParamName         = @"delete";
@@ -147,6 +148,17 @@ static NSString *const kOCRParamName            = @"ocr";
 
 - (GDataDateTime *)editedMaxDateTime {
   return [self dateTimeForParameterWithName:kEditedMaxParamName];
+}
+
+- (void)setShouldShowRootParentLink:(BOOL)flag {
+  [self addCustomParameterWithName:kShowRootParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldShowRootParentLink {
+  return [self boolValueForParameterWithName:kShowRootParamName
+                                defaultValue:NO];
 }
 
 - (void)setShouldActuallyDelete:(BOOL)flag {
