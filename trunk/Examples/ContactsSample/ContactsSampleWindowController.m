@@ -1308,7 +1308,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
 
     for (int idx = 0; idx < [batchResults count]; idx++) {
 
-      GDataEntryGoogleBase *entry = [batchResults objectAtIndex:idx];
+      GDataEntryBase *entry = [batchResults objectAtIndex:idx];
       GDataBatchID *batchID = [entry batchID];
 
       // report the batch ID and status for each item

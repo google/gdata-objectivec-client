@@ -320,12 +320,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     [mDocListImageView setImage:nil];
 
-    NSURL *url = [NSURL URLWithString:newImageURLStr];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-    [fetcher beginFetchWithDelegate:self
-                  didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                    didFailSelector:@selector(imageFetcher:failedWithError:)];
+    if ([newImageURLStr length] > 0) {
+      NSURL *url = [NSURL URLWithString:newImageURLStr];
+      NSURLRequest *request = [NSURLRequest requestWithURL:url];
+      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      [fetcher beginFetchWithDelegate:self
+                    didFinishSelector:@selector(imageFetcher:finishedWithData:)
+                      didFailSelector:@selector(imageFetcher:failedWithError:)];
+    }
   }
 }
 
