@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10F569</string>
-		<string key="IBDocument.InterfaceBuilderVersion">823</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
-		<string key="IBDocument.HIToolboxVersion">461.00</string>
+		<string key="IBDocument.SystemVersion">10J567</string>
+		<string key="IBDocument.InterfaceBuilderVersion">851</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
+		<string key="IBDocument.HIToolboxVersion">462.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">823</string>
+			<string key="NS.object.0">851</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1062,29 +1062,6 @@
 								<int key="NSPeriodicInterval">25</int>
 							</object>
 						</object>
-						<object class="NSButton" id="703146584">
-							<reference key="NSNextResponder" ref="1587035"/>
-							<int key="NSvFlags">256</int>
-							<string key="NSFrame">{{268, 40}, {79, 28}}</string>
-							<reference key="NSSuperview" ref="1587035"/>
-							<bool key="NSEnabled">YES</bool>
-							<object class="NSButtonCell" key="NSCell" id="684569803">
-								<int key="NSCellFlags">67239424</int>
-								<int key="NSCellFlags2">134348800</int>
-								<string key="NSContents">Map Entry</string>
-								<reference key="NSSupport" ref="26"/>
-								<reference key="NSControlView" ref="703146584"/>
-								<int key="NSButtonFlags">-2038284033</int>
-								<int key="NSButtonFlags2">1</int>
-								<reference key="NSAlternateImage" ref="771303626"/>
-								<string key="NSAlternateContents"/>
-								<object class="NSMutableString" key="NSKeyEquivalent">
-									<characters key="NS.bytes"/>
-								</object>
-								<int key="NSPeriodicDelay">200</int>
-								<int key="NSPeriodicInterval">25</int>
-							</object>
-						</object>
 						<object class="NSButton" id="355457629">
 							<reference key="NSNextResponder" ref="1587035"/>
 							<int key="NSvFlags">292</int>
@@ -1461,22 +1438,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">mMapEventButton</string>
-						<reference key="source" ref="264462168"/>
-						<reference key="destination" ref="703146584"/>
-					</object>
-					<int key="connectionID">167</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">mapEventClicked:</string>
-						<reference key="source" ref="264462168"/>
-						<reference key="destination" ref="703146584"/>
-					</object>
-					<int key="connectionID">168</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">mQueryFreeBusyButton</string>
 						<reference key="source" ref="264462168"/>
 						<reference key="destination" ref="355457629"/>
@@ -1561,7 +1522,6 @@
 							<reference ref="718521774"/>
 							<reference ref="858191726"/>
 							<reference ref="135078254"/>
-							<reference ref="703146584"/>
 							<reference ref="918698681"/>
 							<reference ref="789581799"/>
 							<reference ref="355457629"/>
@@ -1858,15 +1818,6 @@
 						<reference key="parent" ref="1587035"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">165</int>
-						<reference key="object" ref="703146584"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="684569803"/>
-						</object>
-						<reference key="parent" ref="1587035"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">44</int>
 						<reference key="object" ref="1046834869"/>
 						<reference key="parent" ref="0"/>
@@ -1978,11 +1929,6 @@
 						<reference key="parent" ref="789581799"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">192</int>
-						<reference key="object" ref="684569803"/>
-						<reference key="parent" ref="703146584"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">193</int>
 						<reference key="object" ref="376994564"/>
 						<reference key="parent" ref="287351469"/>
@@ -2078,8 +2024,6 @@
 					<string>14.CustomClassName</string>
 					<string>14.IBPluginDependency</string>
 					<string>14.ImportedFromIB2</string>
-					<string>165.IBPluginDependency</string>
-					<string>165.ImportedFromIB2</string>
 					<string>17.IBPluginDependency</string>
 					<string>17.ImportedFromIB2</string>
 					<string>171.IBPluginDependency</string>
@@ -2103,7 +2047,6 @@
 					<string>189.IBPluginDependency</string>
 					<string>190.IBPluginDependency</string>
 					<string>191.IBPluginDependency</string>
-					<string>192.IBPluginDependency</string>
 					<string>193.IBPluginDependency</string>
 					<string>193.IBShouldRemoveOnLegacySave</string>
 					<string>194.IBPluginDependency</string>
@@ -2214,9 +2157,6 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<boolean value="YES"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2488,7 +2428,6 @@
 							<string>mEventProgressIndicator</string>
 							<string>mEventResultTextField</string>
 							<string>mEventTable</string>
-							<string>mMapEventButton</string>
 							<string>mPasswordField</string>
 							<string>mQueryFreeBusyButton</string>
 							<string>mQueryTodayEventButton</string>
@@ -2513,7 +2452,6 @@
 							<string>NSProgressIndicator</string>
 							<string>NSTextView</string>
 							<string>NSTableView</string>
-							<string>NSButton</string>
 							<string>NSSecureTextField</string>
 							<string>NSButton</string>
 							<string>NSButton</string>
@@ -2541,7 +2479,6 @@
 							<string>mEventProgressIndicator</string>
 							<string>mEventResultTextField</string>
 							<string>mEventTable</string>
-							<string>mMapEventButton</string>
 							<string>mPasswordField</string>
 							<string>mQueryFreeBusyButton</string>
 							<string>mQueryTodayEventButton</string>
@@ -2613,10 +2550,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">mEventTable</string>
 								<string key="candidateClassName">NSTableView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">mMapEventButton</string>
-								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">mPasswordField</string>

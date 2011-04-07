@@ -254,8 +254,6 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   BOOL doesSelectedCalendarHaveACLFeed =
     ([[self selectedCalendar] ACLLink] != nil);
 
-  [mMapEventButton setEnabled:NO];
-
   if (isEventDisplay) {
 
     [mAddEventButton setEnabled:isCalendarSelected];
@@ -277,10 +275,6 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
       [mDeleteEventButton setEnabled:isSelectedEntryEditable];
       [mEditEventButton setEnabled:isSelectedEntryEditable];
-
-      BOOL hasEventLocation = ([event geoLocation] != nil);
-      [mMapEventButton setEnabled:hasEventLocation];
-
     } else {
       // zero or many selected events
       BOOL canBatchEdit = ([mEventFeed batchLink] != nil);
@@ -436,29 +430,6 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [self deleteSelectedEvents];
   } else {
     [self deleteSelectedACLEntry];
-  }
-}
-
-- (IBAction)mapEventClicked:(id)sender {
-  if ([self isEventsSegmentSelected]) {
-
-    // open Google Maps to the event's location, displaying the event title
-    GDataEntryCalendarEvent *event = [self singleSelectedEvent];
-    GDataGeo *geoLocation = [event geoLocation];
-    if (geoLocation) {
-
-      double latitude = [geoLocation latitude];
-      double longitude = [geoLocation longitude];
-
-      NSString *title = [[event title] stringValue];
-      NSString *titleParam = [GDataUtilities stringByURLEncodingStringParameter:title];
-
-      NSString *template = @"http://maps.google.com/maps?q=%f,+%f+(%@)";
-      NSString *urlStr = [NSString stringWithFormat:template,
-                          latitude, longitude, titleParam];
-
-      [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:urlStr]];
-    }
   }
 }
 
