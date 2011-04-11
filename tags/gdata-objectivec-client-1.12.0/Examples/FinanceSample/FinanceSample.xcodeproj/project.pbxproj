@@ -1,0 +1,493 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F0288980DFDDA9B00E60E15 /* FinanceSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */; };
+		4F0288990DFDDA9B00E60E15 /* FinanceSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */; };
+		4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
+		4FA6F33F1034AD7300C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */; };
+		4FA6F3401034AD7300C5DFA5 /* FinanceSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */; };
+		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4F7AB00410AB8C270075EB10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */;
+			remoteInfo = GDataIPhoneUnitTests;
+		};
+		4FA6F3371034AD5F00C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459;
+			remoteInfo = GDataTouchStaticLib;
+		};
+		4FAB41B20BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F38F6A60B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+		4FAB41B40BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F14A9DD0B1276B70072EBB8;
+			remoteInfo = GDataUnitTests;
+		};
+		4FAB41B60BAA215D00FBBDC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1AD9020B71603F00DC0485;
+			remoteInfo = DevelopmentTestTool;
+		};
+		4FAB41B80BAA217500FBBDC9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F38F8970B66FAB700B24B81 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4F1E6BC40BB6696B00D3BA50 /* GData.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceSampleAppController.m; sourceTree = "<group>"; };
+		4F0288950DFDDA9B00E60E15 /* FinanceSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSampleAppController.h; sourceTree = "<group>"; };
+		4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceSampleWindowController.m; sourceTree = "<group>"; };
+		4F0288970DFDDA9B00E60E15 /* FinanceSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSampleWindowController.h; sourceTree = "<group>"; };
+		4F02889A0DFDDAAD00E60E15 /* FinanceSample_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceSample_Prefix.pch; sourceTree = "<group>"; };
+		4FA6F33C1034AD7300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F33E1034AD7300C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/FinanceSampleWindow.xib; sourceTree = "<group>"; };
+		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4FD0F1D90CBC68F300059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
+		4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* FinanceSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				4F0288950DFDDA9B00E60E15 /* FinanceSampleAppController.h */,
+				4F0288940DFDDA9B00E60E15 /* FinanceSampleAppController.m */,
+				4F0288970DFDDA9B00E60E15 /* FinanceSampleWindowController.h */,
+				4F0288960DFDDA9B00E60E15 /* FinanceSampleWindowController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* FinanceSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CalendarSample */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				4FD0F1D80CBC68E100059DC1 /* Build Scripts */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CalendarSample;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4F02889A0DFDDAAD00E60E15 /* FinanceSample_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */,
+				4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4FAB41AD0BAA215D00FBBDC9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB41B30BAA215D00FBBDC9 /* GData.framework */,
+				4FA6F3381034AD5F00C5DFA5 /* libGDataTouchStaticLib.a */,
+				4FAB41B50BAA215D00FBBDC9 /* GDataUnitTests.octest */,
+				4F7AB00510AB8C270075EB10 /* GDataIPhoneUnitTests.octest */,
+				4FAB41B70BAA215D00FBBDC9 /* DevelopmentTestTool */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4FD0F1D80CBC68E100059DC1 /* Build Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4FD0F1D90CBC68F300059DC1 /* buildCopyScript */,
+				4FD0F1DA0CBC68F300059DC1 /* buildStripHeaders */,
+			);
+			name = "Build Scripts";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* FinanceSampleApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "FinanceSampleApp" */;
+			buildPhases = (
+				4FAB41C50BAA21B600FBBDC9 /* Copy GData.framework to BUILT_PRODUCTS_DIR */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				4F38F8970B66FAB700B24B81 /* CopyFiles */,
+				4FD0F1DB0CBC690400059DC1 /* Strip Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4FAB41B90BAA217500FBBDC9 /* PBXTargetDependency */,
+			);
+			name = FinanceSampleApp;
+			productInstallPath = "$(HOME)/Applications";
+			productName = CalendarSample;
+			productReference = 8D1107320486CEB800E47090 /* FinanceSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FinanceSample" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4FAB41AD0BAA215D00FBBDC9 /* Products */;
+					ProjectRef = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* FinanceSampleApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4F7AB00510AB8C270075EB10 /* GDataIPhoneUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataIPhoneUnitTests.octest;
+			remoteRef = 4F7AB00410AB8C270075EB10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FA6F3381034AD5F00C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F3371034AD5F00C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FAB41B30BAA215D00FBBDC9 /* GData.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GData.framework;
+			remoteRef = 4FAB41B20BAA215D00FBBDC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FAB41B50BAA215D00FBBDC9 /* GDataUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataUnitTests.octest;
+			remoteRef = 4FAB41B40BAA215D00FBBDC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FAB41B70BAA215D00FBBDC9 /* DevelopmentTestTool */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DevelopmentTestTool;
+			remoteRef = 4FAB41B60BAA215D00FBBDC9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				4FA6F33F1034AD7300C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F3401034AD7300C5DFA5 /* FinanceSampleWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4FAB41C50BAA21B600FBBDC9 /* Copy GData.framework to BUILT_PRODUCTS_DIR */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy GData.framework to BUILT_PRODUCTS_DIR";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildCopyScript;
+		};
+		4FD0F1DB0CBC690400059DC1 /* Strip Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildStripHeaders;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				4F0288980DFDDA9B00E60E15 /* FinanceSampleAppController.m in Sources */,
+				4F0288990DFDDA9B00E60E15 /* FinanceSampleWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4FAB41B90BAA217500FBBDC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GDataFramework;
+			targetProxy = 4FAB41B80BAA217500FBBDC9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4FA6F33B1034AD7300C5DFA5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F33C1034AD7300C5DFA5 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		4FA6F33D1034AD7300C5DFA5 /* FinanceSampleWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F33E1034AD7300C5DFA5 /* English */,
+			);
+			name = FinanceSampleWindow.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../Source/build/$(CONFIGURATION)/";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = FinanceSample;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../Source/build/$(CONFIGURATION)/";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = FinanceSample;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Werror",
+				);
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Werror",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "FinanceSampleApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "FinanceSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom" 
+    xmlns:gd="http://schemas.google.com/g/2005" 
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    
+	<updated>2006-11-14T00:03:38.535Z</updated>
+	<link rel='alternate' type='text/html' href='http://www.google.com/calendar/feeds/default/private/full/rs45qa5d44q5pdi4dknj5pai5o/comments' title='alternate'></link>
+
+  <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#message"/>
+	
+	<entry>
+	  <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#message"/>
+	  <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#message.sent"/>
+	  <author>
+		<name>Jo March</name>
+		<email>jo@example.com</email>
+	  </author>
+	  <id>http://mymail.example.com/feeds/jo/home/full/e1a2af06df8a563edf9d32ec9fd61e03f7f3b67b</id>
+	  <published>2006-01-18T21:00:00Z</published>
+	  <updated>2006-01-18T21:00:00Z</updated>
+	  <title>Re: Info?</title>
+	  <content>Hi, Fritz -- The information you're looking for is on p. 47.</content>
+	  <gd:who rel="http://schemas.google.com/g/2005#message.from">
+		<gd:entryLink href="http://contacts.example.com/jo/Jo"/>
+	  </gd:who>
+	  <gd:who rel="http://schemas.google.com/g/2005#message.to">
+		<gd:entryLink href="http://contacts.example.com/fritzb/FritzB"/>
+	  </gd:who>
+	</entry>
+</feed>

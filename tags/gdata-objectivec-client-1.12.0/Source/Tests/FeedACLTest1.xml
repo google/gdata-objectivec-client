@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gAcl="http://schemas.google.com/acl/2007" xmlns:openSearch="http://a9.com/-/spec/opensearchrss/1.0/">
+    <id>http://www.google.com/calendar/feeds/test%40gmail.com/acl/full</id>
+    <updated>2007-05-04T20:50:43.000Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/acl/2007#accessRule"/>
+    <title type="text">Fred Flintstone's access control list</title>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full"
+        rel="http://schemas.google.com/acl/2007#controlledObject" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full"
+        rel="self" type="application/atom+xml"/>
+    <generator uri="http://www.google.com/calendar" version="1.0">Google Calendar</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry>
+        <id>http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com</id>
+        <updated>2007-05-04T20:50:43.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/acl/2007#accessRule"/>
+        <title type="text">owner</title>
+        <content type="text"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Fred Flintstone</name>
+            <email>test@example.com</email>
+        </author>
+        <gAcl:scope type="user" value="test@example.com"/>
+        <gAcl:role value="http://schemas.google.com/gCal/2005#owner"/>
+    </entry>
+    <entry>
+        <id>http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2</id>
+        <updated>2007-05-04T20:50:43.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/acl/2007#accessRule"/>
+        <title type="text">reader</title>
+        <content type="text"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/calendar/feeds/test%40gmail.com/acl/full/user%3Atest%40gmail.com/2"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>Wilma Flintstone</name>
+            <email>wilma@example.com</email>
+        </author>
+        <gAcl:scope type="user" value="wilma@example.com" name="wilma" />
+        <gAcl:withKey key="A123B"><gAcl:role value="reader"/></gAcl:withKey>
+    </entry>
+</feed>

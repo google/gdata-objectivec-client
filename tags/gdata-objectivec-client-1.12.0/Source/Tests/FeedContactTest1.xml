@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gContact="http://schemas.google.com/contact/2008"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>user@gmail.com</id>
+    <updated>2008-02-26T20:42:39.993Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+    <title type="text">Contacts</title>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <author>
+        <name>Fred Flintstone</name>
+        <email>user@gmail.com</email>
+    </author>
+    <generator uri="http://www.google.com/m8/feeds" version="1.0">Contacts</generator>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>2500</openSearch:itemsPerPage>
+    <entry>
+        <id>http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/9cfaae9</id>
+        <updated>2008-02-26T20:31:51.809Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+        <title type="text">Foo Barz</title>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/9cfaae9"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/9cfaae9/1204057911809000"
+            rel="edit" type="application/atom+xml"/>
+        <gd:organization primary="true" rel="http://schemas.google.com/g/2005#other">
+            <gd:orgName>Le Company</gd:orgName>
+            <gd:orgTitle>Titularstuff</gd:orgTitle>
+        </gd:organization>
+        <gd:organization label="DAz">
+            <gd:orgName>Deadhead Associates</gd:orgName>
+            <gd:orgTitle>Groupie</gd:orgTitle>
+        </gd:organization>
+        <gd:email address="foo@bar.com" primary="true" rel="http://schemas.google.com/g/2005#home"/>
+        <gd:email address="2@bar.com" label="norzglie"/>
+        <gd:im primary="true" address="fooaimz" label="werkz" protocol="http://schemas.google.com/g/2005#AIM"/>
+        <gd:im address="foomsn"
+            protocol="http://schemas.google.com/g/2005#MSN" rel="http://schemas.google.com/g/2005#home"/>
+        <gd:im address="foo@gmail.com"
+            protocol="http://schemas.google.com/g/2005#GOOGLE_TALK" rel="http://schemas.google.com/g/2005#other"/>
+        <gd:im address="foo@jabber.org" label="jabz" protocol="http://schemas.google.com/g/2005#JABBER"/>
+        <gd:phoneNumber primary="true" rel="http://schemas.google.com/g/2005#mobile">123-4567</gd:phoneNumber>
+        <gd:phoneNumber label="shoefone">333-1414</gd:phoneNumber>
+        <gd:postalAddress primary="true" rel="http://schemas.google.com/g/2005#home">123 Lane St</gd:postalAddress>
+        <gd:extendedProperty name="com.mycompany.myprop" value="zoop" />
+        <gd:extendedProperty name="com.mycompany.myprop2"><myXML><myChild attr="nerf"/></myXML></gd:extendedProperty>
+        <gContact:groupMembershipInfo href="http://www.google.com/m8/feeds/contactGroups/user@gmail.com/full/2" deleted="true" />
+    </entry>
+    <entry>
+        <id>http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/b001135</id>
+        <updated>2008-02-08T21:20:15.384Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/contact/2008#contact"/>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/b001135"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/m8/feeds/contacts/user%40gmail.com/full/b001135/1202505615384000"
+            rel="edit" type="application/atom+xml"/>
+        <gd:deleted/>
+    </entry>
+</feed>

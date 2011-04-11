@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:exif="http://schemas.google.com/photos/exif/2007"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:gphoto="http://schemas.google.com/photos/2007"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
+    <gphoto:id>5067143575034336993</gphoto:id>
+    <gphoto:access>public</gphoto:access>
+    <gphoto:numphotos>2</gphoto:numphotos>
+    <gphoto:commentCount>0</gphoto:commentCount>
+    <gphoto:bytesUsed>108303</gphoto:bytesUsed>
+    <gphoto:nickname>Greg</gphoto:nickname>
+    <gphoto:numphotosremaining>498</gphoto:numphotosremaining>
+    <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+    <gphoto:location>Album Site</gphoto:location>
+    <gphoto:timestamp>1179730800000</gphoto:timestamp>
+    <gphoto:user>TestdomainTestAccount</gphoto:user>
+    <id>http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993</id>
+    <generator uri="http://photos.googleapis.com/" version="1.00">  </generator>
+    <title type="text">Test ☯ Albüm</title>
+    <subtitle type="text">Album description</subtitle>
+    <rights type="text">public</rights>
+    <icon>http://lh5.google.com/image/TestdomainTestAccount/RlIcPA_TFuE/AAAAAAAAAA4/mSkPsh-o3vw/TestAlbM.jpg?imgmax=160&amp;crop=1</icon>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link
+        href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net/albumid/5067143575034336993?start-index=1&amp;max-results=1000&amp;kind=photo"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Greg</name>
+        <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
+    </author>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#album"/>
+    <updated>2007-05-21T22:34:35Z</updated>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+    <entry>
+        <exif:tags>
+            <exif:fstop>5.3</exif:fstop>
+            <exif:make>NIKON CORPORATION</exif:make>
+            <exif:model>NIKON D1 </exif:model>
+            <exif:distance>0.0</exif:distance>
+            <exif:exposure>0.0080</exif:exposure>
+            <exif:flash>true</exif:flash>
+            <exif:focallength>52.0</exif:focallength>
+            <exif:iso>0</exif:iso>
+            <exif:time>1019588479000</exif:time>
+            <exif:imageUniqueID>d8a9e8fd57a384d216f4b2a853d654fc</exif:imageUniqueID>
+        </exif:tags>
+        <gphoto:checksum>23512309abbs298</gphoto:checksum>
+        <gphoto:id>5067143579329304306</gphoto:id>
+        <gphoto:albumid>5067143575034336993</gphoto:albumid>
+        <gphoto:width>660</gphoto:width>
+        <gphoto:videostatus>ready</gphoto:videostatus>
+        <gphoto:commentCount>1</gphoto:commentCount>
+        <gphoto:size>87225</gphoto:size>
+        <gphoto:height>433</gphoto:height>
+        <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+        <media:group>
+            <media:title type="plain">Car.jpg</media:title>
+            <media:description type="plain">Caption for the car ☸ photo</media:description>
+            <media:credit>Greg</media:credit>
+            <media:content height="433" medium="image" type="image/jpeg"
+                url="http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg" width="660"/>
+            <media:thumbnail height="47"
+                url="http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=72" width="72"/>
+            <media:thumbnail height="188"
+                url="http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg?imgmax=288" width="288"/>
+            <media:keywords>headlight, red car</media:keywords>
+        </media:group>
+        <gphoto:timestamp>1179786301000</gphoto:timestamp>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306</id>
+        <title type="text">Car.jpg</title>
+        <summary type="text">Caption for the car ☸ photo</summary>
+        <content
+            src="http://lh3.google.com/image/TestdomainTestAccount/RlIcPQ_TFvI/AAAAAAAAAAs/3fvWtQLN3KI/Car.jpg" type="image/jpeg"/>
+        <published>2007-05-21T22:25:01Z</published>
+        <updated>2007-05-21T22:34:35Z</updated>
+        <link
+            href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+            rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143579329304306"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/1179786875940336"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/data/media/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/1179786875940336"
+            rel="edit-media" type="image/jpeg"/>
+        <link
+            href="http://photos.googleapis.com/data/media/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143579329304306/1179786875940336"
+            rel="media-edit" type="image/jpeg"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
+    </entry>
+    <entry>
+        <exif:tags>
+            <exif:fstop>0.0</exif:fstop>
+            <exif:distance>0.0</exif:distance>
+            <exif:exposure>0.0</exif:exposure>
+            <exif:flash>true</exif:flash>
+            <exif:focallength>0.0</exif:focallength>
+            <exif:iso>0</exif:iso>
+            <exif:imageUniqueID>9fb07d7fdce3ab4321760a109000eceb</exif:imageUniqueID>
+        </exif:tags>
+        <gphoto:checksum/>
+        <gphoto:id>5067143583624271618</gphoto:id>
+        <gphoto:albumid>5067143575034336993</gphoto:albumid>
+        <gphoto:width>576</gphoto:width>
+        <gphoto:commentCount>0</gphoto:commentCount>
+        <gphoto:size>21078</gphoto:size>
+        <gphoto:height>432</gphoto:height>
+        <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+        <media:group>
+            <media:title type="plain">earth.jpg</media:title>
+            <media:description type="plain">Caption for the planet photo</media:description>
+            <media:credit>Greg</media:credit>
+            <media:content height="432" medium="image" type="image/jpeg"
+                url="http://lh4.google.com/image/TestdomainTestAccount/RlIcPg_TFwI/AAAAAAAAAA0/c44vof9_ceQ/earth.jpg" width="576"/>
+            <media:thumbnail height="54"
+                url="http://lh4.google.com/image/TestdomainTestAccount/RlIcPg_TFwI/AAAAAAAAAA0/c44vof9_ceQ/earth.jpg?imgmax=72" width="72"/>
+            <media:thumbnail height="216"
+                url="http://lh4.google.com/image/TestdomainTestAccount/RlIcPg_TFwI/AAAAAAAAAA0/c44vof9_ceQ/earth.jpg?imgmax=288" width="288"/>
+            <media:keywords/>
+        </media:group>
+        <gphoto:timestamp>1179786302000</gphoto:timestamp>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618</id>
+        <title type="text">earth.jpg</title>
+        <summary type="text">Caption for the planet photo</summary>
+        <content
+            src="http://lh4.google.com/image/TestdomainTestAccount/RlIcPg_TFwI/AAAAAAAAAA0/c44vof9_ceQ/earth.jpg" type="image/jpeg"/>
+        <published>2007-05-21T22:25:02Z</published>
+        <updated>2007-05-21T22:25:02Z</updated>
+        <link
+            href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618"
+            rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/TestdomainTestAccount/TestAlbM/photo#5067143583624271618"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618/1179786302922281"
+            rel="edit" type="application/atom+xml"/>
+        <link
+            href="http://photos.googleapis.com/data/media/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618/1179786302922281"
+            rel="edit-media" type="image/jpeg"/>
+        <link
+            href="http://photos.googleapis.com/data/media/api/user/TestdomainTestAccount/albumid/5067143575034336993/photoid/5067143583624271618/1179786302922281"
+            rel="media-edit" type="image/jpeg"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
+    </entry>
+</feed>

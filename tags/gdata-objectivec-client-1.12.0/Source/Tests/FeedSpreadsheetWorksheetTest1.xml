@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gs="http://schemas.google.com/spreadsheets/2006" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full</id>
+    <updated>2007-03-22T23:28:50.977Z</updated>
+    <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#worksheet"/>
+    <title type="text">My Test Spreadsheet</title>
+    <link
+        href="http://spreadsheets.google.com/ccc?key=o04181601172097104111.497668944883620000"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full?tfe="
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>test</name>
+        <email>test@foo.net</email>
+    </author>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry>
+        <id>http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full/od6</id>
+        <updated>2007-03-22T23:28:50.977Z</updated>
+        <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#worksheet"/>
+        <title type="text">Sheet1</title>
+        <content type="text">Sheet1</content>
+        <link
+            href="http://spreadsheets.google.com/feeds/list/o04181601172097104111.497668944883620000/od6/private/full"
+            rel="http://schemas.google.com/spreadsheets/2006#listfeed" type="application/atom+xml"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full"
+            rel="http://schemas.google.com/spreadsheets/2006#cellsfeed" type="application/atom+xml"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full/od6"
+            rel="self" type="application/atom+xml"/>
+        <gs:rowCount>100</gs:rowCount>
+        <gs:colCount>20</gs:colCount>
+    </entry>
+</feed>

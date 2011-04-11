@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;AkUBRH47eCp7ImA9WxVWFkU.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>tag:youtube.com,2008:events</id>
+    <updated>2009-02-26T22:44:15.000Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#userEvent"/>
+    <title>Activity of fredflintstone</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link href="http://gdata.youtube.com/feeds/api/events"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="http://gdata.youtube.com/feeds/api/events/batch"
+        rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/events?author=fredflintstone&amp;start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/events?alt=atom-service"
+        rel="service" type="application/atomsvc+xml"/>
+    <author>
+        <name>YouTube</name>
+        <uri>http://www.youtube.com/</uri>
+    </author>
+    <generator uri="http://gdata.youtube.com/" version="2.0">YouTube data API</generator>
+    <openSearch:totalResults>7</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry gd:etag="W/&quot;AkUBRH47eCp7ImA9WxVWFkU.&quot;">
+        <id>tag:youtube.com,2008:event:Z3JlZ3JvYmJpbnM3MTIzNTY4ODI1NUJlbGFuYXI%3D</id>
+        <updated>2009-02-26T22:44:15.000Z</updated>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/userevents.cat" term="friend_added"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#userEvent"/>
+        <title>fredflintstone has added a friend</title>
+        <link href="http://www.youtube.com" rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/events/Z3JlZ3JvYmJpbnM3MTIzNTY4ODI1NUJlbGFuYXI%3D"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>fredflintstone</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/fredflintstone</uri>
+        </author>
+        <yt:username>wilmaflintstone</yt:username>
+    </entry>
+    <entry gd:etag="W/&quot;D0UNRX47eCp7ImA9WxVXF0w.&quot;">
+        <id>tag:youtube.com,2008:event:Z3JlZ3JvYmJpbnMzMTIzNDcxNTI5NDI5NTYxODQzOA%3D%3D</id>
+        <updated>2009-02-15T16:28:14.000Z</updated>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/userevents.cat" term="video_favorited"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#userEvent"/>
+        <title>fredflintstone has favorited a video</title>
+        <link href="http://www.youtube.com" rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/videos/cxFfUsDgnaU"
+            rel="http://gdata.youtube.com/schemas/2007#video" type="application/atom+xml"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/events/Z3JlZ3JvYmJpbnMzMTIzNDcxNTI5NDI5NTYxODQzOA%3D%3D"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>fredflintstone</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/fredflintstone</uri>
+        </author>
+        <yt:videoid>cxFfUsDgnaU</yt:videoid>
+    </entry>
+</feed>

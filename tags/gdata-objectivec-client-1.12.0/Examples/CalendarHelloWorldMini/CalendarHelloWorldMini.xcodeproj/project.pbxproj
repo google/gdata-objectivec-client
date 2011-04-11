@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		63834E8A0C7102E40045E9E0 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63834E890C7102E40045E9E0 /* GData.framework */; };
+		8DD76F9A0486AA7600D96B5E /* CalendarHelloWorldMini.m in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* CalendarHelloWorldMini.m */; settings = {ATTRIBUTES = (); }; };
+		8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08FB779EFE84155DC02AAC07 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		63834D890C70F57D0045E9E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63834D830C70F57D0045E9E0 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F38F6A60B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+		63834D8B0C70F57D0045E9E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63834D830C70F57D0045E9E0 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F14A9DD0B1276B70072EBB8;
+			remoteInfo = GDataUnitTests;
+		};
+		63834D8D0C70F57D0045E9E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63834D830C70F57D0045E9E0 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1AD9020B71603F00DC0485;
+			remoteInfo = DevelopmentTestTool;
+		};
+		63834D8F0C70F5B00045E9E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 63834D830C70F57D0045E9E0 /* GData.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		08FB7796FE84155DC02AAC07 /* CalendarHelloWorldMini.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalendarHelloWorldMini.m; sourceTree = "<group>"; };
+		08FB779EFE84155DC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		32A70AAB03705E1F00C91783 /* CalendarHelloWorldMini_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CalendarHelloWorldMini_Prefix.pch; sourceTree = "<group>"; };
+		4F5BDD8B0D05F6660073E71E /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
+		63834D830C70F57D0045E9E0 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
+		63834E890C7102E40045E9E0 /* GData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GData.framework; path = build/Debug/GData.framework; sourceTree = "<group>"; };
+		8DD76FA10486AA7600D96B5E /* CalendarHelloWorldMini */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CalendarHelloWorldMini; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F9B0486AA7600D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9C0486AA7600D96B5E /* Foundation.framework in Frameworks */,
+				63834E8A0C7102E40045E9E0 /* GData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* CalendarHelloWorldMini */ = {
+			isa = PBXGroup;
+			children = (
+				63834D830C70F57D0045E9E0 /* GData.xcodeproj */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				4F5BDD8C0D05F6690073E71E /* Scripts */,
+				08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = CalendarHelloWorldMini;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				32A70AAB03705E1F00C91783 /* CalendarHelloWorldMini_Prefix.pch */,
+				08FB7796FE84155DC02AAC07 /* CalendarHelloWorldMini.m */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		08FB779DFE84155DC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				08FB779EFE84155DC02AAC07 /* Foundation.framework */,
+				63834E890C7102E40045E9E0 /* GData.framework */,
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76FA10486AA7600D96B5E /* CalendarHelloWorldMini */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4F5BDD8C0D05F6690073E71E /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4F5BDD8B0D05F6660073E71E /* buildCopyScript */,
+			);
+			name = Scripts;
+			sourceTree = "<group>";
+		};
+		63834D840C70F57D0045E9E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				63834D8A0C70F57D0045E9E0 /* GData.framework */,
+				63834D8C0C70F57D0045E9E0 /* GDataUnitTests.octest */,
+				63834D8E0C70F57D0045E9E0 /* DevelopmentTestTool */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F960486AA7600D96B5E /* CalendarHelloWorldMini */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "CalendarHelloWorldMini" */;
+			buildPhases = (
+				63834D940C70F5D00045E9E0 /* Copy GData framework to BUILT_PRODUCTS_DIR */,
+				8DD76F990486AA7600D96B5E /* Sources */,
+				8DD76F9B0486AA7600D96B5E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				63834D900C70F5B00045E9E0 /* PBXTargetDependency */,
+			);
+			name = CalendarHelloWorldMini;
+			productInstallPath = "$(HOME)/bin";
+			productName = CalendarHelloWorldMini;
+			productReference = 8DD76FA10486AA7600D96B5E /* CalendarHelloWorldMini */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CalendarHelloWorldMini" */;
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* CalendarHelloWorldMini */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 63834D840C70F57D0045E9E0 /* Products */;
+					ProjectRef = 63834D830C70F57D0045E9E0 /* GData.xcodeproj */;
+				},
+			);
+			targets = (
+				8DD76F960486AA7600D96B5E /* CalendarHelloWorldMini */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		63834D8A0C70F57D0045E9E0 /* GData.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GData.framework;
+			remoteRef = 63834D890C70F57D0045E9E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63834D8C0C70F57D0045E9E0 /* GDataUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataUnitTests.octest;
+			remoteRef = 63834D8B0C70F57D0045E9E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		63834D8E0C70F57D0045E9E0 /* DevelopmentTestTool */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DevelopmentTestTool;
+			remoteRef = 63834D8D0C70F57D0045E9E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		63834D940C70F5D00045E9E0 /* Copy GData framework to BUILT_PRODUCTS_DIR */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy GData framework to BUILT_PRODUCTS_DIR";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildCopyScript;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F990486AA7600D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F9A0486AA7600D96B5E /* CalendarHelloWorldMini.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		63834D900C70F5B00045E9E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GDataFramework;
+			targetProxy = 63834D8F0C70F5B00045E9E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB927508733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = CalendarHelloWorldMini_Prefix.pch;
+				INSTALL_PATH = "$(HOME)/bin";
+				PRODUCT_NAME = CalendarHelloWorldMini;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DEB927608733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = CalendarHelloWorldMini_Prefix.pch;
+				INSTALL_PATH = "$(HOME)/bin";
+				PRODUCT_NAME = CalendarHelloWorldMini;
+			};
+			name = Release;
+		};
+		1DEB927908733DD40010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Debug;
+		};
+		1DEB927A08733DD40010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB927408733DD40010E9CD /* Build configuration list for PBXNativeTarget "CalendarHelloWorldMini" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927508733DD40010E9CD /* Debug */,
+				1DEB927608733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB927808733DD40010E9CD /* Build configuration list for PBXProject "CalendarHelloWorldMini" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB927908733DD40010E9CD /* Debug */,
+				1DEB927A08733DD40010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

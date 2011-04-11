@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/terms"
+    xmlns:gbs="http://schemas.google.com/books/2008"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://www.google.com/books/feeds/users/1728172424007912469/volumes</id>
+    <updated>2008-10-13T22:08:00.000Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/books/2008#volume"/>
+    <title type="text"/>
+    <link href="http://books.google.com/books/uid=1728172424007912469"
+        rel="alternate" type="text/html"/>
+    <link href="http://www.google.com/books/feeds/users/me/volumes"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="http://www.google.com/books/feeds/users/me/volumes"
+        rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+    <link href="http://www.google.com/books/feeds/users/me/volumes"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>1728172424007912469</name>
+    </author>
+    <generator version="beta">Google Book Search data API</generator>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>20</openSearch:itemsPerPage>
+    <entry>
+        <id>http://www.google.com/books/feeds/users/1728172424007912469/volumes/_PRJAAAACAAJ</id>
+        <published>2008-10-11T00:34:50.000Z</published>
+        <updated>2008-10-13T22:08:00.000Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/books/2008#volume"/>
+        <title type="text">Garfield Pigs Out</title>
+        <link
+            href="http://bks2.books.google.com/books?id=_PRJAAAACAAJ&amp;printsec=frontcover&amp;img=1&amp;zoom=5&amp;sig=ACfU3U0DkFm309HCVknWDO2M00pnJ3KCBw&amp;source=gbs_gdata"
+            rel="http://schemas.google.com/books/2008/thumbnail" type="image/jpeg"/>
+        <link
+            href="http://books.google.com/books?id=_PRJAAAACAAJ&amp;ie=ISO-8859-1&amp;source=gbs_gdata"
+            rel="http://schemas.google.com/books/2008/info" type="text/html"/>
+        <link
+            href="http://books.google.com/books?id=_PRJAAAACAAJ&amp;ie=ISO-8859-1&amp;source=gbs_gdata"
+            rel="http://schemas.google.com/books/2008/preview" type="text/html"/>
+        <link href="http://www.google.com/books/feeds/users/me/volumes"
+            rel="http://schemas.google.com/books/2008/annotation" type="application/atom+xml"/>
+        <link
+            href="http://books.google.com/books?id=_PRJAAAACAAJ&amp;ie=ISO-8859-1"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://www.google.com/books/feeds/users/me/volumes/_PRJAAAACAAJ"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://www.google.com/books/feeds/users/me/volumes/_PRJAAAACAAJ"
+            rel="edit" type="application/atom+xml"/>
+        <author>
+            <name>1728172424007912469</name>
+        </author>
+        <gbs:embeddability value="http://schemas.google.com/books/2008#not_embeddable"/>
+        <gd:rating average="2.00" max="5" min="1" value="3" />
+        <gbs:review type="text">Ageless? No way.</gbs:review>
+        <gbs:contentVersion>1.2beta5</gbs:contentVersion>
+        <gbs:openAccess value="http://schemas.google.com/books/2008#enabled" />
+        <gbs:viewability value="http://schemas.google.com/books/2008#view_no_pages"/>
+        <dc:creator>Jim Davis</dc:creator>
+        <dc:date>2006-01-31</dc:date>
+        <dc:description>When in doubt, Pig Out! To eat is human; to pig out, divine! Garfield’s glorious, gluttonous philosophy is on full display in this new collection of comics.</dc:description>
+        <dc:format>93 pages</dc:format>
+        <dc:identifier>_PRJAAAACAAJ</dc:identifier>
+        <dc:identifier>ISBN:0345464664</dc:identifier>
+        <dc:publisher>Ballantine Books</dc:publisher>
+        <dc:subject>Humor</dc:subject>
+        <dc:title>Garfield Pigs Out</dc:title>
+    </entry>
+</feed>

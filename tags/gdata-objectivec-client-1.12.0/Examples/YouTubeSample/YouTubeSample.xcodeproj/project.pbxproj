@@ -1,0 +1,488 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F38C2670D63B6CB004AC922 /* YouTubeSampleAppController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F38C2630D63B6CB004AC922 /* YouTubeSampleAppController.h */; };
+		4F38C2680D63B6CB004AC922 /* YouTubeSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38C2640D63B6CB004AC922 /* YouTubeSampleAppController.m */; };
+		4F38C2690D63B6CB004AC922 /* YouTubeSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F38C2650D63B6CB004AC922 /* YouTubeSampleWindowController.m */; };
+		4F38C26A0D63B6CB004AC922 /* YouTubeSampleWindowController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F38C2660D63B6CB004AC922 /* YouTubeSampleWindowController.h */; };
+		4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
+		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
+		4FA6F4411034AFA000C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F43D1034AFA000C5DFA5 /* MainMenu.xib */; };
+		4FA6F4421034AFA000C5DFA5 /* YouTubeSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F43F1034AFA000C5DFA5 /* YouTubeSampleWindow.xib */; };
+		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
+		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4F7AB10B10AB90EB0075EB10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */;
+			remoteInfo = GDataIPhoneUnitTests;
+		};
+		4FA1CB840C03C08C006D556A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F38F6A60B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+		4FA1CB860C03C08C006D556A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F14A9DD0B1276B70072EBB8;
+			remoteInfo = GDataUnitTests;
+		};
+		4FA1CB880C03C08C006D556A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1AD9020B71603F00DC0485;
+			remoteInfo = DevelopmentTestTool;
+		};
+		4FA1CB8A0C03C097006D556A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4F38F6A50B66E91D00B24B81;
+			remoteInfo = GDataFramework;
+		};
+		4FA6F4391034AF9000C5DFA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4F1C6E0F1027B3CE00B46459;
+			remoteInfo = GDataTouchStaticLib;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F38F8970B66FAB700B24B81 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4FA1CBD00C03C0E3006D556A /* GData.framework in CopyFiles */,
+				4F38C2670D63B6CB004AC922 /* YouTubeSampleAppController.h in CopyFiles */,
+				4F38C26A0D63B6CB004AC922 /* YouTubeSampleWindowController.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4F2B95A90BFA7D6600A70CB3 /* YouTubeSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YouTubeSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F38C2630D63B6CB004AC922 /* YouTubeSampleAppController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = YouTubeSampleAppController.h; sourceTree = "<group>"; };
+		4F38C2640D63B6CB004AC922 /* YouTubeSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = YouTubeSampleAppController.m; sourceTree = "<group>"; };
+		4F38C2650D63B6CB004AC922 /* YouTubeSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = YouTubeSampleWindowController.m; sourceTree = "<group>"; };
+		4F38C2660D63B6CB004AC922 /* YouTubeSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = YouTubeSampleWindowController.h; sourceTree = "<group>"; };
+		4FA6F43E1034AFA000C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		4FA6F4401034AFA000C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/YouTubeSampleWindow.xib; sourceTree = "<group>"; };
+		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4FD0F1570CBC638E00059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		4FD0F1580CBC638E00059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				4F38C2630D63B6CB004AC922 /* YouTubeSampleAppController.h */,
+				4F38C2640D63B6CB004AC922 /* YouTubeSampleAppController.m */,
+				4F38C2660D63B6CB004AC922 /* YouTubeSampleWindowController.h */,
+				4F38C2650D63B6CB004AC922 /* YouTubeSampleWindowController.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4F2B95A90BFA7D6600A70CB3 /* YouTubeSample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CalendarSample */ = {
+			isa = PBXGroup;
+			children = (
+				4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				4FD0F1540CBC637D00059DC1 /* Build Scripts */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CalendarSample;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4FA6F43D1034AFA000C5DFA5 /* MainMenu.xib */,
+				4FA6F43F1034AFA000C5DFA5 /* YouTubeSampleWindow.xib */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4FA1CB7F0C03C08C006D556A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4FA1CB850C03C08C006D556A /* GData.framework */,
+				4FA6F43A1034AF9000C5DFA5 /* libGDataTouchStaticLib.a */,
+				4FA1CB870C03C08C006D556A /* GDataUnitTests.octest */,
+				4F7AB10C10AB90EB0075EB10 /* GDataIPhoneUnitTests.octest */,
+				4FA1CB890C03C08C006D556A /* DevelopmentTestTool */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4FD0F1540CBC637D00059DC1 /* Build Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				4FD0F1570CBC638E00059DC1 /* buildStripHeaders */,
+				4FD0F1580CBC638E00059DC1 /* buildCopyScript */,
+			);
+			name = "Build Scripts";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* YouTubeSample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "YouTubeSample" */;
+			buildPhases = (
+				4FAB41C50BAA21B600FBBDC9 /* Copy GData.framework to BUILT_PRODUCTS_DIR */,
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+				4F38F8970B66FAB700B24B81 /* CopyFiles */,
+				4FD0F1590CBC639A00059DC1 /* Strip Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4FA1CB8B0C03C097006D556A /* PBXTargetDependency */,
+			);
+			name = YouTubeSample;
+			productInstallPath = "$(HOME)/Applications";
+			productName = CalendarSample;
+			productReference = 4F2B95A90BFA7D6600A70CB3 /* YouTubeSample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "YouTubeSample" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4FA1CB7F0C03C08C006D556A /* Products */;
+					ProjectRef = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
+				},
+			);
+			targets = (
+				8D1107260486CEB800E47090 /* YouTubeSample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4F7AB10C10AB90EB0075EB10 /* GDataIPhoneUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataIPhoneUnitTests.octest;
+			remoteRef = 4F7AB10B10AB90EB0075EB10 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FA1CB850C03C08C006D556A /* GData.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = GData.framework;
+			remoteRef = 4FA1CB840C03C08C006D556A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FA1CB870C03C08C006D556A /* GDataUnitTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GDataUnitTests.octest;
+			remoteRef = 4FA1CB860C03C08C006D556A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FA1CB890C03C08C006D556A /* DevelopmentTestTool */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = DevelopmentTestTool;
+			remoteRef = 4FA1CB880C03C08C006D556A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4FA6F43A1034AF9000C5DFA5 /* libGDataTouchStaticLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGDataTouchStaticLib.a;
+			remoteRef = 4FA6F4391034AF9000C5DFA5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				4FA6F4411034AFA000C5DFA5 /* MainMenu.xib in Resources */,
+				4FA6F4421034AFA000C5DFA5 /* YouTubeSampleWindow.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4FAB41C50BAA21B600FBBDC9 /* Copy GData.framework to BUILT_PRODUCTS_DIR */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy GData.framework to BUILT_PRODUCTS_DIR";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildCopyScript;
+		};
+		4FD0F1590CBC639A00059DC1 /* Strip Headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = ./buildStripHeaders;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072D0486CEB800E47090 /* main.m in Sources */,
+				4F38C2680D63B6CB004AC922 /* YouTubeSampleAppController.m in Sources */,
+				4F38C2690D63B6CB004AC922 /* YouTubeSampleWindowController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4FA1CB8B0C03C097006D556A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GDataFramework;
+			targetProxy = 4FA1CB8A0C03C097006D556A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				089C165DFE840E0CC02AAC07 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		4FA6F43D1034AFA000C5DFA5 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F43E1034AFA000C5DFA5 /* English */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		4FA6F43F1034AFA000C5DFA5 /* YouTubeSampleWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				4FA6F4401034AFA000C5DFA5 /* English */,
+			);
+			name = YouTubeSampleWindow.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../Source/build/$(CONFIGURATION)/";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = YouTubeSample;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_1 = "\"$(SRCROOT)/../../Source/build/$(CONFIGURATION)/";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = YouTubeSample;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "YouTubeSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "YouTubeSample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

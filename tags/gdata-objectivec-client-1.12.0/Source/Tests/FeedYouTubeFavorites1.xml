@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;CUACQX47eCp7ImA9WxdSEkg.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>tag:youtube,2008:user:fredflintstone:favorites</id>
+    <updated>2008-05-20T03:22:40.000Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#favorite"/>
+    <title>Favorites of fredflintstone</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link
+        href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone"
+        rel="related" type="application/atom+xml"/>
+    <link
+        href="http://www.youtube.com/profile_favorites?user=fredflintstone"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone/favorites"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone/favorites/batch"
+        rel="http://schemas.google.com/g/2005#batch" type="application/atom+xml"/>
+    <link
+        href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone/favorites?start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone/favorites?alt=atom-service"
+        rel="service" type="application/atomsvc+xml"/>
+    <author>
+        <name>fredflintstone</name>
+        <uri>http://stage.gdata.youtube.com/feeds/api/users/fredflintstone</uri>
+    </author>
+    <generator uri="http://gdata.youtube.com/" version="2.0">YouTube data API</generator>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry gd:etag="W/&quot;CUACQX47eCp7ImA9WxdSEkg.&quot;">
+        <id>tag:youtube,2008:favorite:vjVQa1PpcFP8fBdcAc_YTSRHgC1CE_ageg03_RO2EVk</id>
+        <published>2008-05-20T03:22:40.000Z</published>
+        <updated>2008-05-20T03:22:40.000Z</updated>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Authors@Google"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="@Google"/>
+        <category label="Entertainment"
+            scheme="http://gdata.youtube.com/schemas/2007/categories.cat" term="Entertainment"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Pollan"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Food"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Michael"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="atgoogle"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Omnivore's"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Dilemma"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#favorite"/>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/keywords.cat" term="Nutrition"/>
+        <title>Authors@Google: Michael Pollan</title>
+        <content
+            src="http://www.youtube.com/v/I-t-7lTw6mA&amp;f=gdata_user_favorites" type="application/x-shockwave-flash"/>
+        <link href="http://www.youtube.com/watch?v=I-t-7lTw6mA"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://stage.gdata.youtube.com/feeds/api/videos/I-t-7lTw6mA/responses"
+            rel="http://gdata.youtube.com/schemas/2007#video.responses" type="application/atom+xml"/>
+        <link
+            href="http://stage.gdata.youtube.com/feeds/api/videos/I-t-7lTw6mA/related"
+            rel="http://gdata.youtube.com/schemas/2007#video.related" type="application/atom+xml"/>
+        <link href="http://m.youtube.com/details?v=I-t-7lTw6mA"
+            rel="http://gdata.youtube.com/schemas/2007#mobile" type="text/html"/>
+        <link
+            href="http://stage.gdata.youtube.com/feeds/api/videos/I-t-7lTw6mA"
+            rel="related" type="application/atom+xml"/>
+        <link
+            href="http://stage.gdata.youtube.com/feeds/api/users/fredflintstone/favorites/vjVQa1PpcFP8fBdcAc_YTSRHgC1CE_ageg03_RO2EVk"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>fredflintstone</name>
+            <uri>http://stage.gdata.youtube.com/feeds/api/users/fredflintstone</uri>
+        </author>
+        <media:group>
+            <media:title type="plain">Authors@Google: Michael Pollan</media:title>
+            <media:description type="plain">Michael Pollan visits Google</media:description>
+            <media:keywords>@Google, atgoogle, Authors@Google, Dilemma, Food, Michael, Nutrition, Omnivore's, Pollan</media:keywords>
+            <yt:duration seconds="3554"/>
+            <yt:videoid>I-t-7lTw6mA</yt:videoid>
+            <yt:aspectRatio>widescreen</yt:aspectRatio>
+            <yt:uploaded>2008-03-06T23:49:12.000Z</yt:uploaded>
+            <media:player url="http://www.youtube.com/watch?v=I-t-7lTw6mA"/>
+            <media:credit role="uploader" scheme="urn:youtube" yt:type="partner">AtGoogleTalks</media:credit>
+            <media:category label="Entertainment" scheme="http://gdata.youtube.com/schemas/2007/categories.cat">Entertainment</media:category>
+            <media:content duration="3554" expression="full"
+                isDefault="true" medium="video"
+                type="application/x-shockwave-flash"
+                url="http://www.youtube.com/v/I-t-7lTw6mA&amp;f=gdata_user_favorites" yt:format="5"/>
+            <media:content duration="3554" expression="full"
+                medium="video" type="video/3gpp"
+                url="rtsp://rtsp2.youtube.com/CjALENy73wIaJwlg6vBU7n7rIxMYDSANFEgGUhRnZGF0YV91c2VyX2Zhdm9yaXRlcww=/0/0/0/video.3gp" yt:format="1"/>
+            <media:content duration="3554" expression="full"
+                medium="video" type="video/3gpp"
+                url="rtsp://rtsp2.youtube.com/CjALENy73wIaJwlg6vBU7n7rIxMYESARFEgGUhRnZGF0YV91c2VyX2Zhdm9yaXRlcww=/0/0/0/video.3gp" yt:format="6"/>
+            <media:thumbnail height="97" time="00:29:37"
+                url="http://i.ytimg.com/vi/I-t-7lTw6mA/2.jpg" width="130"/>
+            <media:thumbnail height="97" time="00:14:48.500"
+                url="http://i.ytimg.com/vi/I-t-7lTw6mA/1.jpg" width="130"/>
+            <media:thumbnail height="97" time="00:44:25.500"
+                url="http://i.ytimg.com/vi/I-t-7lTw6mA/3.jpg" width="130"/>
+            <media:thumbnail height="240"
+                url="http://i.ytimg.com/vi/I-t-7lTw6mA/0.jpg" width="320"/>
+        </media:group>
+        <yt:statistics favoriteCount="506" viewCount="53476"/>
+        <yt:rating numDislikes="10" numLikes="20"/>
+        <yt:location>mountain view, ca</yt:location>
+        <yt:recorded>2008-03-04</yt:recorded>
+    </entry>
+   
+</feed>

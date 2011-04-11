@@ -1,0 +1,223 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4F74853D1145D6C900DD661A /* GDataHTTPFetcher.h in Copy Static Library Files */ = {isa = PBXBuildFile; fileRef = 4F9279481145C83F0072E0A0 /* GDataHTTPFetcher.h */; };
+		4F7485A31145D9A000DD661A /* GDataHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7485A21145D9A000DD661A /* GDataHTTPFetcher.m */; };
+		4F7485AF1145D9AE00DD661A /* GDataOAuthViewControllerTouch.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7485A71145D9AE00DD661A /* GDataOAuthViewControllerTouch.m */; };
+		4F7485B01145D9AE00DD661A /* GDataOAuthSignIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7485AA1145D9AE00DD661A /* GDataOAuthSignIn.m */; };
+		4F7485B11145D9AE00DD661A /* GDataOAuthAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F7485AC1145D9AE00DD661A /* GDataOAuthAuthentication.m */; };
+		4F7485B21145D9DA00DD661A /* GDataOAuthViewControllerTouch.h in Copy Static Library Files */ = {isa = PBXBuildFile; fileRef = 4F7485A51145D9AE00DD661A /* GDataOAuthViewControllerTouch.h */; };
+		4F7485B31145D9DA00DD661A /* GDataOAuthSignIn.h in Copy Static Library Files */ = {isa = PBXBuildFile; fileRef = 4F7485AB1145D9AE00DD661A /* GDataOAuthSignIn.h */; };
+		4F7485B41145D9DA00DD661A /* GDataOAuthAuthentication.h in Copy Static Library Files */ = {isa = PBXBuildFile; fileRef = 4F7485AD1145D9AE00DD661A /* GDataOAuthAuthentication.h */; };
+		4F7485B51145D9DA00DD661A /* GDataOAuthViewTouch.xib in Copy Static Library Files */ = {isa = PBXBuildFile; fileRef = 4F7485A91145D9AE00DD661A /* GDataOAuthViewTouch.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4F74854A1145D6DA00DD661A /* Copy Static Library Files */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = GDataOAuth;
+			dstSubfolderSpec = 16;
+			files = (
+				4F7485B21145D9DA00DD661A /* GDataOAuthViewControllerTouch.h in Copy Static Library Files */,
+				4F7485B31145D9DA00DD661A /* GDataOAuthSignIn.h in Copy Static Library Files */,
+				4F7485B41145D9DA00DD661A /* GDataOAuthAuthentication.h in Copy Static Library Files */,
+				4F74853D1145D6C900DD661A /* GDataHTTPFetcher.h in Copy Static Library Files */,
+				4F7485B51145D9DA00DD661A /* GDataOAuthViewTouch.xib in Copy Static Library Files */,
+			);
+			name = "Copy Static Library Files";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4F7485A21145D9A000DD661A /* GDataHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataHTTPFetcher.m; path = Networking/GDataHTTPFetcher.m; sourceTree = "<group>"; };
+		4F7485A51145D9AE00DD661A /* GDataOAuthViewControllerTouch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataOAuthViewControllerTouch.h; path = OAuth/GDataOAuthViewControllerTouch.h; sourceTree = "<group>"; };
+		4F7485A71145D9AE00DD661A /* GDataOAuthViewControllerTouch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataOAuthViewControllerTouch.m; path = OAuth/GDataOAuthViewControllerTouch.m; sourceTree = "<group>"; };
+		4F7485A91145D9AE00DD661A /* GDataOAuthViewTouch.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GDataOAuthViewTouch.xib; path = OAuth/GDataOAuthViewTouch.xib; sourceTree = "<group>"; };
+		4F7485AA1145D9AE00DD661A /* GDataOAuthSignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataOAuthSignIn.m; path = OAuth/GDataOAuthSignIn.m; sourceTree = "<group>"; };
+		4F7485AB1145D9AE00DD661A /* GDataOAuthSignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataOAuthSignIn.h; path = OAuth/GDataOAuthSignIn.h; sourceTree = "<group>"; };
+		4F7485AC1145D9AE00DD661A /* GDataOAuthAuthentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataOAuthAuthentication.m; path = OAuth/GDataOAuthAuthentication.m; sourceTree = "<group>"; };
+		4F7485AD1145D9AE00DD661A /* GDataOAuthAuthentication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataOAuthAuthentication.h; path = OAuth/GDataOAuthAuthentication.h; sourceTree = "<group>"; };
+		4F9279481145C83F0072E0A0 /* GDataHTTPFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataHTTPFetcher.h; path = Networking/GDataHTTPFetcher.h; sourceTree = "<group>"; };
+		D2AAC07E0554694100DB518D /* libOAuthTouch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOAuthTouch.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC07C0554694100DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC07E0554694100DB518D /* libOAuthTouch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* OAuthTouchStaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				4F7485A51145D9AE00DD661A /* GDataOAuthViewControllerTouch.h */,
+				4F7485A71145D9AE00DD661A /* GDataOAuthViewControllerTouch.m */,
+				4F7485AB1145D9AE00DD661A /* GDataOAuthSignIn.h */,
+				4F7485AA1145D9AE00DD661A /* GDataOAuthSignIn.m */,
+				4F7485AD1145D9AE00DD661A /* GDataOAuthAuthentication.h */,
+				4F7485AC1145D9AE00DD661A /* GDataOAuthAuthentication.m */,
+				4F9279481145C83F0072E0A0 /* GDataHTTPFetcher.h */,
+				4F7485A21145D9A000DD661A /* GDataHTTPFetcher.m */,
+				4F7485A91145D9AE00DD661A /* GDataOAuthViewTouch.xib */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = OAuthTouchStaticLibrary;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC07D0554694100DB518D /* OAuthTouch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "OAuthTouch" */;
+			buildPhases = (
+				4F74854A1145D6DA00DD661A /* Copy Static Library Files */,
+				D2AAC07B0554694100DB518D /* Sources */,
+				D2AAC07C0554694100DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OAuthTouch;
+			productName = OAuthTouchStaticLibrary;
+			productReference = D2AAC07E0554694100DB518D /* libOAuthTouch.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "GDataOAuthTouchStaticLibrary" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* OAuthTouchStaticLibrary */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC07D0554694100DB518D /* OAuthTouch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC07B0554694100DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F7485A31145D9A000DD661A /* GDataHTTPFetcher.m in Sources */,
+				4F7485AF1145D9AE00DD661A /* GDataOAuthViewControllerTouch.m in Sources */,
+				4F7485B01145D9AE00DD661A /* GDataOAuthSignIn.m in Sources */,
+				4F7485B11145D9AE00DD661A /* GDataOAuthAuthentication.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB921F08733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/OAuthTouchStaticLibrary.dst;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = OAuthTouch;
+			};
+			name = Debug;
+		};
+		1DEB922008733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/OAuthTouchStaticLibrary.dst;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = OAuthTouch;
+			};
+			name = Release;
+		};
+		1DEB922308733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DDEBUG=1";
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphonesimulator3.0;
+			};
+			name = Debug;
+		};
+		1DEB922408733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphonesimulator3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "OAuthTouch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB921F08733DC00010E9CD /* Debug */,
+				1DEB922008733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "GDataOAuthTouchStaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB922308733DC00010E9CD /* Debug */,
+				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

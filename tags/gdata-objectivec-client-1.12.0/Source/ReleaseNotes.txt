@@ -1,0 +1,935 @@
+Google Data APIs Objective-C Client Library
+Framework Release Notes
+
+Project site:     http://code.google.com/p/gdata-objectivec-client/
+Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
+
+Release 1.12.0
+8-April-2011
+Changes since 1.11.0
+
+Additions
+
+- Added static cookie storage accessor to http fetcher
+
+- Added requirealldeleted query parameter
+
+- Added authenticationInfo accessor for fetch error userInfo
+
+- Added yt:name attribute to media:thumbnail
+
+- Added calendar max-attendees query parameter and free/busy feeds
+
+- Added docs:documentDescription and DocList thumbnailLink
+
+Changes
+
+- Tightened up syntax for use with C++ compilers
+
+- The operation queue used for parsing in the service class now has accessors
+  (thanks saggau)
+
+- Project now uses latest SDKs rather than specific versions
+
+- NSURLErrorNetworkConnectionLost is now retryable by default for 10.5 and later
+  builds
+
+- For chunk uploads, status 502 is now retryable by default
+
+- Blogger now uses https
+
+- Removed Google Base support
+
+Bugs Fixed
+
+- Fixed leak in elements allocated with GDataXMLElement's initWithXMLString:
+  (thanks dshimshoni)
+
+- Made cookies set by a redirect immediately available in the new request
+  (thanks ehoracek)
+
+
+Release 1.11.0
+1-December-2010
+Changes since 1.10.0
+
+Additions
+
+- Added download to a file path or a file handle in GDataHTTPFetcher
+
+- Added comments to http fetcher logging
+
+- Added support for chunked uploads to Picasa Web Albums
+
+- Added keyed roles to ACLs
+
+- Added channel standard feeds URL generator, caption track format query
+  parameter and caption track derived element, and totalUploadViews statistics
+  attribute for YouTube
+
+- Added drawings to DocList API
+
+Changes
+
+- Deployment target for framework build is now 10.5
+
+- Removed unused class GDataContactWebsite
+
+- Most APIs now use https URLs
+
+- YouTube ratings are now yt:rating elements for like/dislike counts, not
+  gd:rating elements
+
+- YouTube sample app has relaxed metadata requirements for uploading
+
+- YouTube API no longer uses client IDs, and no longer uses a custom auth URL
+
+- Contacts API setters now replace empty strings with nil, and birthday
+  now has an NSDate getter/setter
+
+- OAuth tokens are stripped from http fetcher logs
+
+Bugs Fixed
+
+- Fixed signing of OAuth paths with non-alphanumeric characters
+
+- Fixed OAuth sign-in when using an authentication object with a prior
+  token secret (thanks ddickison)
+
+- Stop printing _cmd in a macro as a C-string to quiet a clang warning (thanks
+  j abley)
+
+- Fixed exception when setting geo location to nil (thanks Kazz)
+
+- Fixed GDataEXIFTag's +tagWithName:
+
+- Fixed release on failure to init a GDataXMLDocument (thanks Valentinians)
+
+
+Release 1.10.0
+31-March-2010
+Changes since 1.9.1
+
+Additions
+
+- Added support for Google Translator Toolkit API.
+
+- Added support for Google Analytics v2.1 API.
+
+- Added support for chunked uploads, uploads from a file handle, and upload
+  pause/resume to Docs and YouTube APIs, and updated Docs and YouTube sample
+  apps to demonstrate pause/resume.
+
+- Added fieldSelection support for partial responses and updates.
+
+- Added Objective-C block completion handler support to GData service class
+  fetch APIs.
+
+- Added addCategoryFilterWithCategory: to GDataQuery.
+
+- Added "onlydeleted" parameter for queries.
+
+- Added a faster category search routine, categories:containsCategoryWithScheme:
+
+- Deletion fetch callbacks can now get the deleted entry as the ticket's
+  postedObject.  The postedObject is also now available following authentication
+  errors.
+
+- GDataServiceGoogle now has methods to fetch an entry or feed specifying an
+  ETag.
+
+- Added viewLink accessors to Maps entries, and new Maps spacial and attribute
+  query parameters.
+
+- Added Docs user metadata entry support to the API and sample app.
+
+- Added publish elements to Docs revision feed.
+
+- Added revision publishing and doc duplication to Docs sample app.
+
+- Added yt:incomplete element to app:control in YouTube video entries,
+  yt:accessControl to video entries, and a caption query parameter.
+
+- Added collections support to Books API and sample app.
+
+- Added experimental OAuth sign-in classes.
+
+Changes
+
+- Service objects now allow static cookie storage, and provide
+  a getter for their fetchHistory in case separate fetcher objects
+  want to reuse the service's cookies and dated data cache.
+
+- When several fetches are done immediately and the first requires
+  authentication, the following fetches wait for the first's authentication
+  rather than attempt to authenticate individually.
+
+- Credentials and auth tokens used by fetches in progress are no longer affected
+  by a service credential (name/password) change after the fetch has begun.
+
+- GDataDocumentElements now contains the document classes common to Google Docs
+  API and Translator Toolkit API.
+
+- Books feed URLs are now generated by a service class method.
+
+- Sample app projects updated to Xcode 3 format.
+
+- Removed setUserAgent: calls from sample apps.
+
+- Changed random to arc4random and added pool drain calls to quiet the clang
+  static analyzer.
+
+- Improved thread-safety of progress monitoring and fetcher logging.
+
+- Changed Contacts API fetches to use https.
+
+- Changed constant Spreadsheet feed URL to use https.
+
+Bugs Fixed
+
+- Fixed possible simultaneous access of fetcher properties from both
+  the parsing thread and the callback thread (thanks istvan & matt).
+
+- Fixed iPhone unit test product names (thanks timac).
+
+- Fixed error generation for XPath expressions with libxml.
+
+- Fixed propagation of proxy challenge errors upon fetch failure (thanks
+  castelino & marali).
+
+- Fixed potential fetcher crash on explicit stopFetching call.
+
+
+Release 1.9.1
+30-October-2009
+Changes since 1.9.0
+
+Additions
+
+- Added GDataFrameworkVersionString function.
+
+Changes
+
+- GDataQueryYouTube's videoQuery now calls through to the base class
+  fullTextQuery. (thanks voxxar)
+
+Bugs Fixed
+
+- Fixed criteria for expecting new NSURLConnection callback support to
+  start at iPhone OS 3. (thanks christophvz)
+
+
+Release 1.9.0
+28-October-2009
+Changes since 1.8.0
+
+Additions
+
+- Added GDATA_INCLUDE compiler conditionals to specify which service's code
+  should be built.
+
+- Added iPhone static library build target to the project file.
+
+- Added service method to authenticate without fetching a feed or entry.
+
+- Added setShouldFormatErrorsAsXML: for queries to encourage older API servers
+  to return the structured versions of errors.
+
+- Added block callback support to GDataHTTPFetcher
+
+- Added sentData callback support to GDataHTTPFetcher on Snow Leopard and
+  iPhone 3.0
+
+- Added GDataAuthenticationFetcher, which can be used to create a fetcher
+  for Google ClientLogin authentication, depending only on GDataHTTPFetcher.
+
+- Added cookie storage method "none" to GDataHTTPFetcher to ignore all cookies.
+
+- Added Docs service v3 support, including the revision feed.
+
+- Added convenience method for creating CCR elements from NSXMLElements.
+
+- Added CCR extension support to Health register entry.
+
+- Added epub accessors to Books API.
+
+- Added YouTube convenience accessors highQualityThumbnail and
+  mediaContentWithFormatNumber:
+  
+- Added calendar query setShouldShowHiddenEvents: for displaying unanswered
+  calendar invitations.
+  
+- Added display attribute to Calendar WebContent element.
+
+- Added OCR and translation on upload to the DocsSample app.
+
+- Added uploading to the FinanceSample app.
+
+Changes
+
+- Parsing is now done asynchronously (on another thread, via NSOperationQueue)
+  and NSNotifications are sent when parsing begins and ends.
+
+- Removed support for version 1 of the core GData protocol.  (See the Google
+  Data APIs migration guide for core protocol version information.)
+
+- Batch fetches now always disable shouldIgnoreUnknownXML so that the results
+  in the batch feed can be used for updates.
+
+- The shouldIgnoreXML flag is now settable in individual tickets.
+
+- Made object properties dictionaries more KVO-compliant (thanks mtonkin.)
+
+- GDataHTTPFetcher dated data cache now is bounded in size (by default, 15 MB
+  for Mac, 1 MB for iPhones) making it suitable for use on iPhones
+
+- GDataHTTPFetcher now takes a GDataFetchHistory class rather than a mutable
+  dictionary as the optional fetch history
+
+- The service progress callback now takes a ticket as its first parameter
+  rather than a progress monitor input stream, as progress monitoring
+  no longer requires that input stream on iPhone 3.0 and Mac OS X 10.5.8
+  
+- Rather than warn about an omitted user agent, the library just quietly
+  defaults to the bundle ID instead.  Library users no longer need to call
+  setUserAgent:.
+
+- Renamed analyticsProperties to avoid conflict with properties of the
+  GDataObject base class.
+
+- Removed GeoRSS locations from Calendar events
+
+Bugs Fixed
+
+- Changing the service authentication now clears the dated data cache.
+
+- Fixed the atomPub URI when creating new objects with code protocol v2.
+
+- Fixed a bug causing the service's dated data cache to be cleared for every
+  call setDatedDataCache:NO
+
+- Setting the name of a Google Base attribute also now sets the XML element
+  local name.
+
+- Changed to stricter encoding of query category filter parameters
+  (thanks cnoble)
+
+
+Release 1.8.0
+24-July-2009
+Changes since 1.7.0
+
+Additions
+
+- Added support for Google Analytics API
+
+- Added support for Google Maps Data API
+
+- Added classes for Blogger Data API
+
+- Added support for Spreadsheets API version 3 with table and record feeds
+
+- Added support for Contacts API version 3
+
+- Added new classes for Webmaster Tools API
+
+- Added Geo accessor to Calendar API event entries
+
+- Added Calendar settings feed
+
+- Added YouTube CaptionTrack feed
+
+- Added Health example app
+
+- Added batch call to Docs API
+
+- Added "next" link and category accessors to Health profile entries
+
+- Added album creation to photos sample app
+
+- Added removeChild method to GDataXMLElement
+
+- Added query convenience method addCategoryFilterWithScheme:term: and
+  filter methods addCategoryWithScheme:term: and
+  addExcludeCategoryWithScheme:term:
+  
+- Added spam and aspectRatio elements to YouTube API
+
+- Added a nodesForXPath: method that allows explicit namespace declarations,
+  and provided access to the default namespace in XPath expressions
+  (thanks berbie)
+
+Changes
+
+- Fetch callbacks now have a single selector rather than separate success
+  and failure methods
+
+- Most service-specific fetch calls have been removed; clients should use
+  the fetch calls in GDataServiceGoogle and GDataServiceGoogleBase
+
+- Tightened URL encoding rules so portions of feed URLs are more strictly
+  percent-encoded
+  
+- Docs sample app now downloads docs by exporting as text files
+
+- Photos API now makes version 2 API requests
+
+- Renamed newSubscriptionVideosFeedLink to recentSubscriptionVideosFeedLink to
+  make the static analyzer happier
+  
+- Changed arguments and return types to use NSInteger/NSUInteger, and updated
+  print format strings to ensure fixed-size int specification (thanks dan94501)
+
+
+Bugs Fixed
+
+- Fixed compile on gcc 3.3.
+
+- Removed NSTask invocation for prettyprinting logs in the iPhone simulator
+  (thanks antitheos)
+  
+- Avoid a crash on authentication errors when the failure callback is nil.
+
+- Removed inappropriate override header on POSTs (thanks riggle)
+
+- Fixed initialization code path that could create a duplicate entry in a
+  single-entry feed (thanks drjpierce)
+
+
+Release 1.7.0
+12-March-2009
+Changes since 1.6.0
+
+Additions
+
+- Added Google Health classes
+
+- Added YouTube user event activity classes
+
+- Added Calendar guest elements and inlinecomments query parameter
+
+- Contacts sample updated to optionally fetch only the MyContacts group.
+
+Changes
+
+- Calendar now defaults to service version 2.1, which slightly changes
+  responses and response codes from 2.0.
+  http://code.google.com/apis/calendar/changelog.html
+
+- Release builds on iPhone now compile out the elaborate descriptions
+  for each GDataObject.  Developers can set GDATA_SIMPLE_DESCRIPTIONS
+  in their projects to control this behavior.
+
+- Release builds on iPhone now compile out the http logging code.
+  Developers can set STRIP_GDATA_FETCH_LOGGING in their projects to control
+  this behavior.
+  
+- The GDataXMLNode xml shim now registers the topmost namespaces for XPath
+  resolution.
+
+- Various internal refactoring for improved code readability and
+  maintainability.
+
+- For parsing performance, unknown elements and attributes are now removed from
+  GDataObjects by comparing only object pointers, not the underlying XML.
+
+- For parsing performance, GDataObject extension declarations are cached
+  rather than duplicated in each object.
+
+- To reduce memory usage, GDataObject extensions are stored in arrays only
+  when there is more than one instance of an extension class.
+
+- To reduce memory usage, GDataXMLNode now caches all generated NSStrings,
+  and returns nil instead of empty arrays on getters. This may deviate from
+  NSXML semantics of returning empty arrays.
+
+- GDataOrganization setters now filter out empty string org names and titles.
+
+Bugs Fixed
+
+- Fixed leak in -keepChildXMLElementsForElement (thanks alexkac)
+
+- GDataXMLNode now consistently returns cached copies of child elements
+  and attributes rather than duplicate copies.
+  
+- Fixed possibiilty of If-modified-since header being added to http deletes
+
+
+Release 1.6.0
+30-January-2009
+Changes since 1.5.0
+
+Additions
+
+- Added -setShouldServiceFeedsIgnoreUnknowns to service classes, allowing
+  for faster feed parsing on iPhone by ignoring unexpected XML, but requiring
+  that entries from such feeds must be individually fetched by the client 
+  before being updated.
+  
+- Added GDataServerError, representing error responses from services supporting
+  structured errors.  On feed and entry fetch errors, a GDataServerErrorGroup
+  will be available from the NSError object's userInfo dictionary
+  with the key kGDataStructuredErrorsKey.
+  
+- Added explanatory server error text as NSLocalizedFailureReasonErrorKey to
+  server-generated NSErrors so that logged errors are more useful.
+  
+- Added Optional group to project common sources to more easily identify
+  non-service specific sources which may be omitted. ACL classes are now
+  optional.  Media classes are now required only for YouTube and Photos classes.
+  
+- Added service document query parameter and classes for introspection
+  of feed capabilities
+
+- Added query parameters prettyprint, protocolVersion, language
+
+- Updated YouTube, DocList, and Spreadsheet APIs for GData v2, and Spreadsheet
+  and Contacts samples for v2 API changes
+
+- Added support for using GDataHTTPFetcher with a single failure selector rather
+  than separate status and network error selectors.
+
+- Added GDataTargetNamespace.h (and a tool to generate it) to allow plug-ins
+  to use the library with less risk of class name collision
+  
+- Added -responseHeaders getter for GDataHTTPFetcher
+
+- Added -fetchDocEntryWithURL for fetching a single doc entry
+
+- Added -entryForGPhotoID for finding a photo or album with the given ID
+
+- Added -entryForSystemGroupID for finding a contact group with the given
+  system group ID
+
+- Added feed method for finding feed entries of a single kind
+
+- Updated DocsSample with more folder support
+
+- Fetcher logging now uses xmllint to prettyprint XML for better readability
+  in Safari
+  
+- Added setNamespaces: to GDataXMLNode
+
+- Added openAccess element to books volume entry
+
+- Added new Docs query parameters and new category label constants
+
+- Builds for iPhone and requiring 10.5 and higher now take advantage of
+  fast enumeration
+  
+- Added realm attribute to GDataExtendedProperty element
+  
+- Added timesCleaned read-only property to calendar entries, added privateCopy
+  property to calendar event entries, and removed unsupported "contributor"
+  access role
+  
+- Added -userAgentStringForString to GDataUtilities, and moved
+  MIMETypeForFileAtPath to GDataUtilities
+
+Bugs Fixed
+
+- Moved some classes from common sources to Calendar folder
+
+- Added methods to fetch individual calendar, photo, and spreadsheet entries
+
+- Fixed query generation for URLs that already contain some parameters
+
+- Fixed GDataXMLElement's elementsForLocalName:URI: to find child elements with
+  prefixes dependent on their own namespace declarations
+
+- Fixed finance portfolio description method (thanks dujunfly)
+
+- Fixed books volume entry embeddability and viewability accessors
+
+- Renamed photos server and query classes, and changed photos feed domain
+
+- Removed some header files for unit test sources
+
+- Added a log message to indicate when an explicit user-agent is not provided
+
+- Fixed localhost cookie handling under 10.5.6
+
+
+Release 1.5.0
+23-October-2008
+Changes since 1.4.0
+
+Additions
+
+- Services and tickets now support properties to make it easier to pass
+  parameters to service callback methods.  Tickets inherit a copy of the
+  properties set in the service instance.
+  
+- Added Google Finance, Webmaster Tools, and Google Books classes.
+
+- Picasa Web class, method, and constant names changed to Google Photos
+
+- Added support for contact groups and extended properties, and a method
+  to generate contact feed URLs for projections.  Added methods to remove
+  contact properties. (thanks stevec)  Added a service method to fetch a 
+  contact entry given its URL.
+
+- Added GDataXMLNode, a shim layer used for GDATA_IPHONE builds
+
+- GDataObject extension mechanism now supports extensions for
+  attributes as well as for elements.
+  
+- GDataObject base class now handles parsing, generation, copying,
+  and comparison of local attributes.
+  
+- Added namespace utilities to GDataObject: completeNamespaces, 
+  which returns a union of an objects declared namespaces with those of its
+  parents, and pruneInheritedNamespaces, which removes an objects namespaces 
+  if they are also declared by its parents.
+
+- Added "strict" parameter to GDataQuery.
+
+- Made changes to support 64-bit builds on Leopard.
+
+- Added service support for Google AuthSub tokens.
+
+- Added service methods for fetching ACL feeds and entries.
+
+- Added a convenience routine for setting an entry's batch ID from a string.
+
+- Added YouTube "most_popular" feed ID, and query parameters for location
+  and language restriction.
+  
+- Moved array category method objectsWithValue:forKeyPath: to GDataUtilities
+
+- Added property methods to GDataHTTPFetcher.  These are convenient alternatives
+  to storing an NSDictionary in the userData.
+  
+- Added support for OpenSearch 1.1 elements in feeds.
+
+- Added deleteEntry methods to service classes, and changed deleteResorceURL
+  methods to require an ETag.
+  
+- Replaced Obj-C categories on NSArray (such as -editLink) with methods of
+  GDataObject classes to reduce the number of utility category names in
+  global namespace.
+  
+- Added more document type entry classes, and added more upload document types
+  to docs sample application.  Added folder document support to DocList APIs.
+  
+- Added -setShouldUploadDataOnly setting to entry base class, allowing clients 
+  to upload media data to servers without the XML of the GDataObject.
+
+
+Bugs fixed
+
+- Moved common attribute and element text parsing to GDataObject base class,
+  substantially reducing code in many classes derived from GDataObject.
+
+- Improved namespaced attribute support in GDataObject.
+
+- Improved parsing performance.
+
+- Fixed two ivar leaks in GDataServiceBase
+
+- GDataObject request generation refactored into its own routine in 
+  GDataServiceBase, allowing for authenticated non-XML requests.
+
+- No longer testing isPrimary in isEqual method in email, postal address, 
+  organization, IM, and phone elements.
+
+- Fixed typo in YouTube sample which passed password as client ID 
+  (thanks wshao99)
+
+- Contact feed class now registered so it can be found for XML feeds
+  with the proper category.
+
+- Extended property elements now explcitly declare that they have
+  no default namespace (xmlns="") to avoid child elements from
+  being interpreted as atom elements.
+
+- Fixed ContactsSample to check the photo edit link to determine if the
+  photo has changed on the server
+
+- HTTP logging now uses NSDateFormatter rather than NSCalendarDate.
+
+- Escaping of links now done in http logging.
+
+- Replaced NSDecimalSeparator use with NSLocale in parsing NSDecimalNumber.
+
+- Fixed a potential GDataHTTPFetcher crash on failed http authentication.
+
+- Properly encode slug header on uploads, per Atom RFC 5023
+
+- Reduced some potential leaks on 10.4 due to NSURLConnection bugs.
+
+- Fixed string leaks in GDataXMLNode (thanks ct)
+
+- XML INF/-INF now interpreted as infinity
+
+- Fixed some inner GDataObject data structures being improperly copied as
+  immutable
+
+
+Release 1.4.0
+19-March-2008
+Changes since 1.3.0
+
+Additions
+
+- Added YouTube and Contacts support and sample applications
+
+- Each client service now has a unique header which can be included by client
+  applications instead of the full header, such as 
+  #import "GData/GDataCalendar.h" rather than #import "GData/GData.h".
+
+- Run loop modes can be specified for services and http fetchers, allowing
+  networking during modal dialogs.
+  
+- Added GDataImplicitValueConstruct as base class for elements with no
+  children or attribtues
+  
+- Added GDATA_DEFINES header, GDATA_FOUNDATION_ONLY and GDATA_IPHONE conditional
+  compilation tests
+  
+- Added kUseRegisteredEntryClass constant instead of nil for specifying 
+  dynamic lookup of entry objects by "kind" category in classForEntries method
+  
+- Added rel attribute and URL accessor to GDataFeedLink, and relatedLink 
+  category on NSArray in GDataLink
+  
+- Added routine to generate URLs for Picasa Web Albums contact feeds
+
+- Added AreBoolsEqual() utility function
+
+- Added GDataUtilities class for general-purpose utility methods
+
+Bugs fixed
+
+- Google Docs sample now does authenticated document downloads.
+
+- Fixed potential crash when a previously-issued auth token becomes
+  invalid.
+
+- Fixed leak of category list in feed base class (thanks riggle)
+
+- Framework now built as garbage collection-compatible
+
+- Unit test failures during garbage collection fixed
+
+- Copy methods on GDataObjects now do deep copies
+
+- Added missing constant kGDataBatchOperationQuery (thanks riggle)
+
+- Non-whitespace control characters are now removed from all attribute values
+  and element text (thanks riggle)
+  
+- Render pre-11th century dates with a leading zero (thanks riggle)
+
+- Renamed "initExtensionDeclarations" as "addExtensionDeclarations" and similar
+
+- Unified itemsForDescription mechanism into the GDataObject base class
+
+- Unit tests now invoke stringValue whenever needed so they can be omitted
+  from key-value test paths
+
+- Added "charset=UTF-8" to the XML header and "Content-Transfer-Encoding=binary"
+  to binary header inside input stream MIME documents 
+  
+- GDataFeedBase now specifies that entry class should be looked up dynamically
+  rather than assuming they are of the class GDataEntryBase.
+  
+- Removed the deprecated, never-used gd:contactSection support
+
+
+Release 1.3.0
+5-December-2007
+Changes since 1.2.0
+
+Additions
+
+- Added kGDataLinkRelWebContent (thanks riggle)
+
+- Calendar events now have separate methods for recurrence and non-recurrence
+  reminders, and calling setRecurrence will move the reminders appropriately
+  
+- Added batch support for Calendar and Spreadsheet. Calendar sample app now
+  does batch delete of events when more than one event is selected.
+  
+- Added syncEvent, sequenceNumber, and iCalUID to Calendar event entries.
+
+- Added spreadsheet worksheet methods for setting row and column limits,
+  and default values for those in new spreadsheets.
+  
+- GDataService classes can now optionally follow "next" links when retrieving
+  feeds.  This must be enabled by calling setServiceShouldFollowNextLinks:
+  on the service object.
+  
+- GDataHTTPFetcher and services now optionally automatically retry fetches of
+  some errors.  Calling setIsServiceRetryEnabled: enables the retry behavior
+  for services.
+  
+- Feeds and entries now have methods for adding categories.
+
+- GDataCategory includes label convenience method categoryWithLabel: and
+  utility categories on arrays, containsCategoryWithLabel: and categoryLabels.
+  GDataCategory's isEqual: now compares label data as well.
+  
+- Docs sample app can now delete a document.
+
+- Picasa Web sample app now shows how to move a photo to another album.
+
+- Added MacOSX version to service request user agent, along with a gzip string
+  expected in the user agent by Google servers.
+
+- Added a very simple Calendar "Hello World" example tool by David Oster.
+
+  
+Bugs Fixed
+
+- Project settings have been adjusted to build on Leopard.
+
+- Framework is now built with install location of @loader_path/../Frameworks...
+  instead of @executable_path/../Frameworks/... so it can be loaded by other
+  bundles such as plug-ins.
+  
+- A specific format is now specified in the header for calling setUserAgent: 
+  (like [service setUserAgent:@"CompanyName-AppName-1.0"])
+  The library now will append the client library version to the user agent
+  string.
+  
+- GDataObject's isEqual: no longer compares local element names
+  
+- Fixed PicasaWeb feed URL parameter escaping.
+
+- Fixed GDataCategory's categoriesWithScheme: category on NSArray.
+
+- Now removes null characters from strings added to XML elements to avoid
+  XML that makes servers unhappy.
+  
+- Feed, entry, and service classes now call their own methods more reliably
+  to aid subclassing.
+  
+- Text constructs no longer specify "type=text" since that is implied according
+  to the Atom standard.
+  
+- Service unit tests now cover http cookies and caching.
+
+- HTTP cookies now work with server at localhost.
+
+- Now defining -hash on GDataObject for better Leopard compatibility.
+
+- Fixed setting the ticket error on authentication errors.
+
+
+Release 1.2.0
+15-August-2007
+Changes since 1.1.0
+
+Additions
+
+- Added support for Google Code Search
+
+- Added support for Google Docs document list
+
+- Added http logging (see GDataHTTPFetcherLogging.h)
+
+- Added ability to provide a connection class for GDataHTTPFetcher
+
+- Added routines to let library users override standard classes
+  with their own surrogate subclasses (see GDataServiceBase.h)
+  
+- Added setProperty:forKey: and propertyForKey: to GDataObject so users can
+  easily attach any data without subclassing
+  
+- The ticket now retains the posted object for the convenience of the callbacks
+  
+- Added convenience setters for methods that take GDataTextContruct.
+  For example, framework now supports setTitleWithString:.
+  
+- Added new PicasaWeb query parameters and all-photos feed URL string.
+
+- Added support for Calendar web content gadget preferences
+
+- Added support for add/update/remove calendars and calendar subscriptions
+
+- Added ascending order parameter to Query base class
+
+- Added more Calendar query parameters
+
+- Authentication errors are now also returned in the userInfo with the "error"
+  key (thanks ghulands)
+  
+- Add rel constants for GDataWhere (thanks riggle)
+
+- Added a call to clear the last-modified dates tracked by the service object
+
+- Added HTMLLink convenience accessor
+
+Bugs Fixed
+
+- Fixed escaping algorithm for query parameter generation.
+
+- Calendar sample app no longer attempts to set the author value for an event,
+  as the author is always the authenticated user
+  
+- Removed method for retrieving a calendar event feed for a username
+
+- Changed addReminders: to addReminder: (thanks riggle)
+
+- Return proper numeric types in GDataValueConstruct methods (thanks riggle)
+
+- Fixed bugs in finding the proper class to instantiate from a category in XML
+
+- Store cookies on redirects (thanks riggle)
+
+- Fixed some addExtension methods
+
+- Fixed extra retain on arguments during pre-authenticated fetches
+
+- Allow subclasses of GDataEntryPhoto to override photoData method
+
+- Ensure default application identifier is valid for an http useragent
+
+- When a service is asked to retrieve a feed and actually fetches an entry,
+  the service no longer creates a feed to contain the entry, so clients must
+  be explicit about whether a feed or an entry is expected
+
+- Fixed convenience method for GDataTextConstruct to return subclass type
+  (thanks ghulands)
+
+
+Release 1.1.0
+4-June-2007
+Changes since 1.0.0
+
+- Added photos, media, and geo data classes, and Picasa Web Albums service
+  classes
+
+- Interfaces now use proper subclasses of GDataValueConstruct to ensure
+  that XML element names are generated from objects created from scratch.  
+  
+- The XMLElement extension methods may now pass nil as default name to
+  their superclass to use the extension's defined default name.
+  
+- Added ACL feed support, and ACL display and editing in Calendar sample
+  
+- GDataAtomPubControl convenience creator adds the "app" namespace for the
+  element
+  
+- Fixed some incorrect selector signatures in the Blogger sample
+
+- Changed GDataHTTPFetcher to allow redirects from http to https
+
+- Upload of http data may now be monitored with progress callbacks
+
+- GData fetcher now can respond to proxy credential challenges
+
+- Entry content is now a GDataEntryContent object rather than a text construct
+  
+- Add accidentally omitted extendedProperty interfaces to 
+  GDataEntryCalendarEvent and fix extendedProperty default element
+  name (thanks iwankerl)
+   
+   
+Release 1.0.0
+16-April-2007
+
+Initial public release.  Includes standard base elements, entry, feed,
+service, and query classes, and unit tests.  Includes classes for
+Calendar, Google Base, Spreadsheets.

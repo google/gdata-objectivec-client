@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:yt="http://gdata.youtube.com/schemas/2007">
+    <id>http://gdata.youtube.com/feeds/api/users/testaccount/subscriptions?start-index=1&amp;max-results=25</id>
+    <updated>2008-02-06T00:50:52.603Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#subscription"/>
+    <title type="text">TestAccount's Subscriptions</title>
+    <logo>http://www.youtube.com/img/pic_youtubelogo_123x63.gif</logo>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount"
+        rel="related" type="application/atom+xml"/>
+    <link
+        href="http://www.youtube.com/profile_subscriptions?user=TestAccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions?start-index=1&amp;max-results=25"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>TestAccount</name>
+        <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
+    </author>
+    <generator uri="http://gdata.youtube.com/" version="beta">YouTube data API</generator>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>25</openSearch:itemsPerPage>
+    <entry>
+        <yt:countHint>2</yt:countHint>
+        <id>http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/bce51d3be347600a</id>
+        <published>2008-01-29T16:29:11.000-08:00</published>
+        <updated>2008-01-29T16:29:11.000-08:00</updated>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/subscriptiontypes.cat" term="channel"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#subscription"/>
+        <title type="text">Videos published by : googletechtalks</title>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/TestAccount"
+            rel="related" type="application/atom+xml"/>
+        <link
+            href="http://www.youtube.com/profile_videos?user=googletechtalks"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/bce51d3be347600a"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>TestAccount</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
+        </author>
+        <yt:username>googletechtalks</yt:username>
+        <content src="http://gdata.youtube.com/feeds/api/users/googletechtalks/uploads" 
+          type="application/atom+xml"/>
+    </entry>
+    <entry>
+        <id>http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/396213cdaa07d677</id>
+        <published>2008-02-05T16:49:41.000-08:00</published>
+        <updated>2008-02-05T16:49:41.000-08:00</updated>
+        <yt:countHint>3</yt:countHint>
+        <category
+            scheme="http://gdata.youtube.com/schemas/2007/subscriptiontypes.cat" term="query"/>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://gdata.youtube.com/schemas/2007#subscription"/>
+        <title type="text">Videos matching : cute dogs</title>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/TestAccount"
+            rel="related" type="application/atom+xml"/>
+        <link
+            href="http://www.youtube.com/results?search_query=cute+dogs"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://gdata.youtube.com/feeds/api/users/TestAccount/subscriptions/396213cdaa07d677"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>TestAccount</name>
+            <uri>http://gdata.youtube.com/feeds/api/users/TestAccount</uri>
+        </author>
+        <yt:queryString>cute dogs</yt:queryString>
+        <yt:playlistId>1sbd45</yt:playlistId>
+        <yt:playlistTitle>Dog Playlist</yt:playlistTitle>
+        <content src="http://gdata.youtube.com/feeds/api/videos?vq=cute+dogs" 
+                  type="application/atom+xml"/>
+    </entry>
+</feed>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;DE4CR3c8eip7ImA9WxJUEEU.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:exif="http://schemas.google.com/photos/exif/2007"
+    xmlns:gd="http://schemas.google.com/g/2005"
+    xmlns:gphoto="http://schemas.google.com/photos/2007"
+    xmlns:media="http://search.yahoo.com/mrss/" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://picasaweb.google.com/data/feed/all</id>
+    <updated>2009-07-08T21:02:46.972Z</updated>
+    <title>Search Results</title>
+    <link href="http://picasaweb.google.com/data/feed/api/all?v=2"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://picasaweb.google.com/data/feed/api/all?q=puppy&amp;start-index=1&amp;max-results=10&amp;v=2"
+        rel="self" type="application/atom+xml"/>
+    <link
+        href="http://picasaweb.google.com/data/feed/api/all?q=puppy&amp;start-index=11&amp;max-results=10&amp;v=2"
+        rel="next" type="application/atom+xml"/>
+    <generator uri="http://picasaweb.google.com/" version="1.00">Picasaweb</generator>
+    <openSearch:totalResults>1224151</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>2</openSearch:itemsPerPage>
+    <gphoto:crowded_length>100</gphoto:crowded_length>
+    <entry gd:etag="W/&quot;DE8MQ3w-cSp7ImA9WxJUEEU.&quot;">
+        <id>http://picasaweb.google.com/data/entry/user/leangipima/albumid/5310242183362606433/photoid/5310251879415742162</id>
+        <published>2009-03-07T01:29:23.000Z</published>
+        <updated>2009-07-08T21:01:22.259Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
+        <title>Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg</title>
+        <summary>Leangi Pima Shetland Sheepdog 3 days old girl 2</summary>
+        <content
+            src="http://lh5.ggpht.com/_QGFHG3wSwFw/SbHN8wxs_tI/AAAAAAAAE0Q/Wz-cIjMoEB0/Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" type="image/jpeg"/>
+        <link
+            href="http://picasaweb.google.com/data/feed/api/user/leangipima/albumid/5310242183362606433/photoid/5310251879415742162?v=2"
+            rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+        <link
+            href="http://picasaweb.google.com/leangipima/ShetlandSheepdogBLitterBelindaMaliZmajMarvithallSherwood#5310251879415742162"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://picasaweb.google.com/lh/photo/Y-7h4lYqSG6HJKrZdqGLhQ"
+            rel="http://schemas.google.com/photos/2007#canonical" type="text/html"/>
+        <link
+            href="http://picasaweb.google.com/data/entry/api/user/leangipima/albumid/5310242183362606433/photoid/5310251879415742162?v=2"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://picasaweb.google.com/lh/reportAbuse?uname=leangipima&amp;aid=5310242183362606433&amp;iid=5310251879415742162"
+            rel="http://schemas.google.com/photos/2007#report" type="text/html"/>
+        <author>
+            <name>Leangi Pima</name>
+            <uri>http://picasaweb.google.com/leangipima</uri>
+            <email>leangipima</email>
+            <gphoto:user>leangipima</gphoto:user>
+            <gphoto:nickname>Leangi Pima</gphoto:nickname>
+            <gphoto:thumbnail>http://lh5.ggpht.com/_QGFHG3wSwFw/AAAAnnz9V-s/AAAAAAAAAAA/CBUJRErBX4E/s48-c/leangipima.jpg</gphoto:thumbnail>
+        </author>
+        <gphoto:id>5310251879415742162</gphoto:id>
+        <gphoto:albumid>5310242183362606433</gphoto:albumid>
+        <gphoto:access>public</gphoto:access>
+        <gphoto:width>640</gphoto:width>
+        <gphoto:height>480</gphoto:height>
+        <gphoto:size>327045</gphoto:size>
+        <gphoto:checksum>49b69ff8</gphoto:checksum>
+        <gphoto:timestamp>1232748148000</gphoto:timestamp>
+        <gphoto:imageVersion>4932</gphoto:imageVersion>
+        <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+        <gphoto:commentCount>0</gphoto:commentCount>
+        <exif:tags>
+            <exif:fstop>2.8</exif:fstop>
+            <exif:make>Canon</exif:make>
+            <exif:model>Canon PowerShot A610</exif:model>
+            <exif:exposure>0.016666668</exif:exposure>
+            <exif:flash>true</exif:flash>
+            <exif:focallength>7.3</exif:focallength>
+            <exif:time>1232748148000</exif:time>
+            <exif:imageUniqueID>61dc3494f74a8d6769710f0281dc32d3</exif:imageUniqueID>
+        </exif:tags>
+        <media:group>
+            <media:content height="480" medium="image" type="image/jpeg"
+                url="http://lh5.ggpht.com/_QGFHG3wSwFw/SbHN8wxs_tI/AAAAAAAAE0Q/Wz-cIjMoEB0/Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" width="640"/>
+            <media:credit>Leangi Pima</media:credit>
+            <media:description type="plain">Leangi Pima Shetland Sheepdog 3 days old girl 2</media:description>
+            <media:keywords>Belinda Mali Zmaj, Leangi Pima, leangipima, litter, Marvithall Sherwood, puppies, puppy, selti, setlandski ovcar, Sheltie, Shetland Sheepdog</media:keywords>
+            <media:thumbnail height="54"
+                url="http://lh5.ggpht.com/_QGFHG3wSwFw/SbHN8wxs_tI/AAAAAAAAE0Q/Wz-cIjMoEB0/s72/Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" width="72"/>
+            <media:thumbnail height="108"
+                url="http://lh5.ggpht.com/_QGFHG3wSwFw/SbHN8wxs_tI/AAAAAAAAE0Q/Wz-cIjMoEB0/s144/Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" width="144"/>
+            <media:thumbnail height="216"
+                url="http://lh5.ggpht.com/_QGFHG3wSwFw/SbHN8wxs_tI/AAAAAAAAE0Q/Wz-cIjMoEB0/s288/Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg" width="288"/>
+            <media:title type="plain">Leangi_Pima_Shetland_Sheepdog_puppies_f2_3d_4.jpg</media:title>
+        </media:group>
+        <gphoto:albumtitle>Shetland Sheepdog - B-litter - Belinda Mali Zmaj &amp; Marvithall Sherwood</gphoto:albumtitle>
+        <gphoto:albumdesc>Leangi Pima Shetland Sheepdog puppies</gphoto:albumdesc>
+        <gphoto:location>Belgrade, Serbia, Leangi Pima kennel</gphoto:location>
+        <gphoto:snippet>... &lt;b&gt;puppies&lt;/b&gt; ...</gphoto:snippet>
+        <gphoto:snippettype>PHOTO_TAGS</gphoto:snippettype>
+        <gphoto:truncated>0</gphoto:truncated>
+    </entry>
+    <entry gd:etag="W/&quot;DkMNSHg4cSp7ImA9WxJSEk8.&quot;">
+        <id>http://picasaweb.google.com/data/entry/user/electrocities/albumid/5331006915336232689/photoid/5331008741353131138</id>
+        <published>2009-05-01T23:56:36.000Z</published>
+        <updated>2009-05-02T00:34:59.639Z</updated>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#photo"/>
+        <title>2008-0430 (663).jpg</title>
+        <summary/>
+        <content
+            src="http://lh3.ggpht.com/_1luuXbVWKhw/SfuMNJLbDII/AAAAAAAAb5o/v9AjPY0o9xg/2008-0430%20%28663%29.jpg" type="image/jpeg"/>
+        <link
+            href="http://picasaweb.google.com/data/feed/api/user/electrocities/albumid/5331006915336232689/photoid/5331008741353131138?v=2"
+            rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+        <link
+            href="http://picasaweb.google.com/electrocities/Puppies#5331008741353131138"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://picasaweb.google.com/lh/photo/jxEFDvb7p-GAxlrmJu6jew"
+            rel="http://schemas.google.com/photos/2007#canonical" type="text/html"/>
+        <link
+            href="http://picasaweb.google.com/data/entry/api/user/electrocities/albumid/5331006915336232689/photoid/5331008741353131138?v=2"
+            rel="self" type="application/atom+xml"/>
+        <link
+            href="http://picasaweb.google.com/lh/reportAbuse?uname=electrocities&amp;aid=5331006915336232689&amp;iid=5331008741353131138"
+            rel="http://schemas.google.com/photos/2007#report" type="text/html"/>
+        <author>
+            <name>cwalkerphoto</name>
+            <uri>http://picasaweb.google.com/electrocities</uri>
+            <email>electrocities</email>
+            <gphoto:user>electrocities</gphoto:user>
+            <gphoto:nickname>cwalkerphoto</gphoto:nickname>
+            <gphoto:thumbnail>http://lh4.ggpht.com/_1luuXbVWKhw/AAAA5Ob4CpE/AAAAAAAAAAA/czofjQdTvdU/s48-c/electrocities.jpg</gphoto:thumbnail>
+        </author>
+        <gphoto:id>5331008741353131138</gphoto:id>
+        <gphoto:albumid>5331006915336232689</gphoto:albumid>
+        <gphoto:access>public</gphoto:access>
+        <gphoto:width>1024</gphoto:width>
+        <gphoto:height>731</gphoto:height>
+        <gphoto:size>123130</gphoto:size>
+        <gphoto:checksum>82cd4001</gphoto:checksum>
+        <gphoto:timestamp>1241123621000</gphoto:timestamp>
+        <gphoto:imageVersion>28570</gphoto:imageVersion>
+        <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
+        <gphoto:commentCount>0</gphoto:commentCount>
+        <exif:tags>
+            <exif:fstop>5.6</exif:fstop>
+            <exif:make>NIKON CORPORATION</exif:make>
+            <exif:model>NIKON D90</exif:model>
+            <exif:exposure>0.0080</exif:exposure>
+            <exif:flash>true</exif:flash>
+            <exif:focallength>26.0</exif:focallength>
+            <exif:iso>200</exif:iso>
+            <exif:time>1241123621000</exif:time>
+            <exif:imageUniqueID>de10d7427f9fe25fa86cf489e79f992c</exif:imageUniqueID>
+        </exif:tags>
+        <media:group>
+            <media:content height="731" medium="image" type="image/jpeg"
+                url="http://lh3.ggpht.com/_1luuXbVWKhw/SfuMNJLbDII/AAAAAAAAb5o/v9AjPY0o9xg/2008-0430%20%28663%29.jpg" width="1024"/>
+            <media:credit>cwalkerphoto</media:credit>
+            <media:description type="plain"/>
+            <media:keywords>beth green, canine, dog, gcc, golden, golden retiever puppy puppies gcc studio, puppies, retiever, service, studio</media:keywords>
+            <media:thumbnail height="52"
+                url="http://lh3.ggpht.com/_1luuXbVWKhw/SfuMNJLbDII/AAAAAAAAb5o/v9AjPY0o9xg/s72/2008-0430%20%28663%29.jpg" width="72"/>
+            <media:thumbnail height="103"
+                url="http://lh3.ggpht.com/_1luuXbVWKhw/SfuMNJLbDII/AAAAAAAAb5o/v9AjPY0o9xg/s144/2008-0430%20%28663%29.jpg" width="144"/>
+            <media:thumbnail height="206"
+                url="http://lh3.ggpht.com/_1luuXbVWKhw/SfuMNJLbDII/AAAAAAAAb5o/v9AjPY0o9xg/s288/2008-0430%20%28663%29.jpg" width="288"/>
+            <media:title type="plain">2008-0430 (663).jpg</media:title>
+        </media:group>
+        <gphoto:albumtitle>Puppies</gphoto:albumtitle>
+        <gphoto:albumdesc/>
+        <gphoto:location/>
+        <gphoto:snippet>... &lt;b&gt;puppy puppies&lt;/b&gt; ...</gphoto:snippet>
+        <gphoto:snippettype>PHOTO_TAGS</gphoto:snippettype>
+        <gphoto:truncated>0</gphoto:truncated>
+    </entry>
+</feed>
