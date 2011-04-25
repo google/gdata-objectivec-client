@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:gs="http://schemas.google.com/spreadsheets/2006">
+	<id>http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1</id>
+	<updated>2007-03-22T23:28:50.977Z</updated>
+	<category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#cell"/>
+	<title type="text">A1</title>
+	<content type="text">Fred</content>
+	<link
+		href="http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1"
+		rel="self" type="application/atom+xml"/>
+	<link
+		href="http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1/b9ax7"
+		rel="edit" type="application/atom+xml"/>
+	<gs:cell col="1" inputValue="Fred" row="1">Fred</gs:cell>
+</entry>

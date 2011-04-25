@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" 
+    xmlns:gCal="http://schemas.google.com/gCal/2005" 
+    xmlns:gd="http://schemas.google.com/g/2005" 
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:georss="http://www.georss.org/georss" 
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    
+	<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full</id>
+	<updated>2006-11-03T21:17:40.000Z</updated>
+	<title type="text">Fred Flintstone</title>
+	<subtitle type="text">Fred Flintstone</subtitle>
+	<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full" rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+	<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full" rel="http://schemas.google.com/g/2005#post" type="application/atom+xml"/>
+	<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full?max-results=100000" rel="self" type="application/atom+xml"/>
+	<author>
+		<name>Fred Flintstone</name>
+		<email>fred@gmail.com</email>
+	</author>
+	<generator uri="http://www.google.com/calendar" version="1.0">Google Calendar</generator>
+	<openSearch:startIndex>1</openSearch:startIndex>
+	<openSearch:itemsPerPage>100000</openSearch:itemsPerPage>
+	<gCal:timezone value="America/Los_Angeles"/>
+	<gCal:timesCleaned value="7"/>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908</id>
+		<published>2006-10-27T22:48:14.000Z</published>
+		<updated>2006-11-03T21:17:40.000Z</updated>
+		<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#event"/>
+		<title type="text">3 days</title>
+		<content type="text">The description field</content>
+		<link href="http://www.google.com/calendar/event?eid=aTEyZDRhdmllanUwdm9nY2dhNzJhajM5MDggdGVzdEBjb2xkbm9zZS5uZXQ" rel="alternate" title="alternate" type="text/html"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908" rel="self" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908/63298271860" rel="edit" type="application/atom+xml"/>
+		<author>
+			<name>Fred Flintstone</name>
+			<email>fred@gmail.com</email>
+		</author>
+		<gd:visibility value="http://schemas.google.com/g/2005#event.default"/>
+		<gd:comments>
+			<gd:feedLink href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/i12d4avieju0vogcga72aj3908/comments"/>
+		</gd:comments>
+		<gCal:guestsCanModify value="false"/>
+		<gCal:guestsCanInviteOthers value="false"/>
+		<gCal:guestsCanSeeGuests value="false"/>
+		<gCal:anyoneCanAddSelf value="false"/>
+		<gCal:sendEventNotifications value="false"/>
+		<gCal:sequence value="2"></gCal:sequence>
+		<gCal:uid value="4A24A0FF-EA3A-4839-AA09-F4283CB6D345"></gCal:uid>
+		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
+		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
+		<gd:who email="FredFlintstone@gmail.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">
+			<gd:attendeeStatus value="http://schemas.google.com/g/2005#event.declined"/>
+		</gd:who>
+		<gd:who email="FredFlintstone@google.com" rel="http://schemas.google.com/g/2005#event.attendee" valueString="Fred Flintstone">
+			<gd:attendeeStatus value="http://schemas.google.com/g/2005#event.invited"/>
+			<gCal:additionalGuests value="5" />
+		</gd:who>
+		<gd:who email="freg@gmail.com" rel="http://schemas.google.com/g/2005#event.organizer" valueString="Fred Flintstone">
+			<gd:attendeeStatus value="http://schemas.google.com/g/2005#event.accepted"/>
+		</gd:who>
+		<gd:when endTime="2006-11-16" startTime="2006-11-13">
+			<gd:reminder minutes="10"/>
+		</gd:when>
+		<gd:where valueString="The-where-field"/>
+	</entry>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo</id>
+		<published>2006-10-27T22:49:39.000Z</published>
+		<updated>2006-10-27T22:49:39.000Z</updated>
+		<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#event"/>
+		<title type="text">Daily for 5 days</title>
+		<content type="text">description field</content>
+		<link href="http://www.google.com/calendar/event?eid=b2RoMGhpdThwZTNwZzBpODdvNGswczhyYm9fMjAwNjExMjAgdGVzdEBjb2xkbm9zZS5uZXQ" rel="alternate" title="alternate" type="text/html"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo" rel="self" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo/63297672579" rel="edit" type="application/atom+xml"/>
+		<author>
+			<name>Fred Flintstone</name>
+			<email>fred@gmail.com</email>
+		</author>
+		<gd:visibility value="http://schemas.google.com/g/2005#event.default"/>
+		<gCal:sendEventNotifications value="true"/>
+		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
+		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
+		<gd:recurrence>DTSTART;VALUE=DATE:20061120
+DTEND;VALUE=DATE:20061121
+RRULE:FREQ=DAILY;INTERVAL=5;UNTIL=20061207;WKST=SU
+BEGIN:VTIMEZONE
+TZID:America/Los_Angeles
+X-LIC-LOCATION:America/Los_Angeles
+BEGIN:STANDARD
+TZOFFSETFROM:-0700
+TZOFFSETTO:-0800
+TZNAME:PST
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+BEGIN:DAYLIGHT
+TZOFFSETFROM:-0800
+TZOFFSETTO:-0700
+TZNAME:PDT
+DTSTART:19700405T020000
+RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=1SU
+END:DAYLIGHT
+END:VTIMEZONE</gd:recurrence>
+		<gd:where valueString="zee where box"/>
+		<gd:reminder minutes="10"/>
+	</entry>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo_20061120</id>
+		<published>2006-10-27T22:49:39.000Z</published>
+		<updated>2006-10-27T22:49:39.000Z</updated>
+		<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#event"/>
+		<title type="text">Daily for 5 days</title>
+		<content type="text">description field</content>
+		<link href="http://www.google.com/calendar/event?eid=b2RoMGhpdThwZTNwZzBpODdvNGswczhyYm9fMjAwNjExMjAgdGVzdEBjb2xkbm9zZS5uZXQ" rel="alternate" title="alternate" type="text/html"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo_20061120" rel="self" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo_20061120/63297672579" rel="edit" type="application/atom+xml"/>
+		<author>
+			<name>Fred Flintstone</name>
+			<email>fred@gmail.com</email>
+		</author>
+		<gd:visibility value="http://schemas.google.com/g/2005#event.default"/>
+		<gd:comments>
+			<gd:feedLink href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo_20061120/comments"/>
+		</gd:comments>
+		<gCal:sendEventNotifications value="true"/>
+		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
+		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
+		<gd:originalEvent href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/odh0hiu8pe3pg0i87o4k0s8rbo" id="odh0hiu8pe3pg0i87o4k0s8rbo">
+			<gd:when startTime="2006-11-20"/>
+		</gd:originalEvent>
+		<gd:when endTime="2006-11-21" startTime="2006-11-20">
+			<gd:reminder minutes="10"/>
+		</gd:when>
+		<gd:where valueString="zee where box"/>
+	</entry>
+	<entry>
+		<id>http://www.google.com/calendar/feeds/test%40gmail.com/private/full/uh10eta2vgq3e62u4md1q6iabc</id>
+		<published>2006-09-26T22:14:14.000Z</published>
+		<updated>2006-09-26T22:14:14.000Z</updated>
+		<category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/g/2005#event"/>
+		<title type="text">Wicked- Paramount Theater</title>
+		<content type="text"/>
+		<link href="http://www.google.com/calendar/event?eid=dWgxMGV0YTJ2Z3EzZTYydTRtZDFxNmlhYmMgdGVzdEBjb2xkbm9zZS5uZXQ" rel="alternate" title="alternate" type="text/html"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/uh10eta2vgq3e62u4md1q6iabc" rel="self" type="application/atom+xml"/>
+		<link href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/uh10eta2vgq3e62u4md1q6iabc/63294992054" rel="edit" type="application/atom+xml"/>
+		<author>
+			<name>Fred Flintstone</name>
+			<email>fred@gmail.com</email>
+		</author>
+		<gd:visibility value="http://schemas.google.com/g/2005#event.default"/>
+		<gd:comments>
+			<gd:feedLink href="http://www.google.com/calendar/feeds/test%40gmail.com/private/full/uh10eta2vgq3e62u4md1q6iabc/comments"/>
+		</gd:comments>
+		<gCal:sendEventNotifications value="true"/>
+		<gd:transparency value="http://schemas.google.com/g/2005#event.opaque"/>
+		<gd:eventStatus value="http://schemas.google.com/g/2005#event.confirmed"/>
+		<gd:when endTime="2006-09-30T16:30:00.000-07:00" startTime="2006-09-30T14:00:00.000-07:00">
+			<gd:reminder minutes="10"/>
+		</gd:when>
+		<gd:deleted/>
+		<gCal:guestsCanModify value="true"/>
+		<gCal:guestsCanInviteOthers value="true"/>
+		<gCal:guestsCanSeeGuests value="true"/>
+		<gCal:anyoneCanAddSelf value="true"/>
+		<gd:where valueString="Seattle"/>
+	</entry>
+</feed>

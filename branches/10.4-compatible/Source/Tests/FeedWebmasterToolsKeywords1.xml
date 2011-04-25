@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed gd:etag="W/&quot;A0YDR304eSp7ImA9WxJVEEg.&quot;"
+    xmlns="http://www.w3.org/2005/Atom"
+    xmlns:gd="http://schemas.google.com/g/2005" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>https://www.google.com/webmasters/tools/feeds/http%3A%2F%2Fwww.example.net%2F/keywords</id>
+    <updated>2009-06-26T23:32:56.331Z</updated>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/webmasters/tools/2007#keyword_entry"/>
+    <title>Keywords</title>
+    <link
+        href="https://www.google.com/webmasters/tools/feeds/http%3A%2F%2Fwww.example.net%2F/keywords"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="https://www.google.com/webmasters/tools/feeds/http%3A%2F%2Fwww.example.net%2F/keywords"
+        rel="self" type="application/atom+xml"/>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <wt:keyword source="external" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">example net</wt:keyword>
+    <wt:keyword source="external" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">example</wt:keyword>
+    <wt:keyword source="external" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">net</wt:keyword>
+    <wt:keyword source="internal" xmlns:wt="http://schemas.google.com/webmasters/tools/2007">example</wt:keyword>
+</feed>

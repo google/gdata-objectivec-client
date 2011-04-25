@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+    xmlns:batch="http://schemas.google.com/gdata/batch"
+    xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#"
+    xmlns:georss="http://www.georss.org/georss"
+    xmlns:gml="http://www.opengis.net/gml"
+    xmlns:gphoto="http://schemas.google.com/photos/2007"
+    xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:photo="http://www.pheed.com/pheed/">
+    <gphoto:maxPhotosPerAlbum>500</gphoto:maxPhotosPerAlbum>
+    <gphoto:quotacurrent>108303</gphoto:quotacurrent>
+    <gphoto:thumbnail>http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo/AAAAAAAAAAA/LRLjNgdEmmU/TestdomainTestAccount.jpg?imgmax=64&amp;crop=1</gphoto:thumbnail>
+    <gphoto:nickname>Greg</gphoto:nickname>
+    <gphoto:quotalimit>1073741824</gphoto:quotalimit>
+    <gphoto:user>TestdomainTestAccount</gphoto:user>
+    <id>http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net</id>
+    <generator version="1.00" uri="http://photos.google.com/">Google Photos</generator>
+    <title type="text">TestdomainTestAccount</title>
+    <subtitle type="text"/>
+    <icon>http://lh3.google.com/image/TestdomainTestAccount/AAAAUbcFQeo/AAAAAAAAAAA/LRLjNgdEmmU/TestdomainTestAccount.jpg?imgmax=64&amp;crop=1</icon>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/TestdomainTestAccount"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link href="http://photos.googleapis.com/TestdomainTestAccount"
+        rel="alternate" type="text/html"/>
+    <link
+        href="http://photos.googleapis.com/data/feed/api/user/test%40testdomain.net?start-index=1&amp;max-results=1000&amp;kind=tag"
+        rel="self" type="application/atom+xml"/>
+    <author>
+        <name>Greg</name>
+        <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
+    </author>
+    <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#user"/>
+    <updated>2007-05-22T00:17:56Z</updated>
+    <openSearch:totalResults>2</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <openSearch:itemsPerPage>1000</openSearch:itemsPerPage>
+    <entry>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/tag/headlight</id>
+        <title type="text">headlight</title>
+        <summary type="text">headlight</summary>
+        <updated>1970-01-01T00:00:19Z</updated>
+        <link
+            href="/lh/searchbrowse?q=headlight&amp;psc=G&amp;uname=TestdomainTestAccount&amp;filter=0"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/tag/headlight"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>Greg</name>
+            <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
+        </author>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#tag"/>
+    </entry>
+    <entry>
+        <id>http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/tag/red+car</id>
+        <title type="text">red car</title>
+        <summary type="text">red car</summary>
+        <updated>1970-01-01T00:00:19Z</updated>
+        <link
+            href="/lh/searchbrowse?q=red+car&amp;psc=G&amp;uname=TestdomainTestAccount&amp;filter=0"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://photos.googleapis.com/data/entry/api/user/TestdomainTestAccount/tag/red+car"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>Greg</name>
+            <uri>http://photos.googleapis.com/TestdomainTestAccount</uri>
+        </author>
+        <category scheme="http://schemas.google.com/g/2005#kind" term="http://schemas.google.com/photos/2007#tag"/>
+    </entry>
+</feed>

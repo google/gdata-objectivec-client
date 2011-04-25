@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:openSearch="http://a9.com/-/spec/opensearch/1.1/">
+    <id>http://spreadsheets.google.com/feeds/spreadsheets/private/full</id>
+    <updated>2007-03-22T23:53:26.423Z</updated>
+    <category scheme="fool me once" />
+    <category term="fool me once more" />
+    <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#spreadsheet"/>
+    <title type="text">Available Spreadsheets - test@foo.net</title>
+    <link href="http://docs.google.com" rel="alternate" type="text/html"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/spreadsheets/private/full"
+        rel="http://schemas.google.com/g/2005#feed" type="application/atom+xml"/>
+    <link
+        href="http://spreadsheets.google.com/feeds/spreadsheets/private/full?tfe="
+        rel="self" type="application/atom+xml"/>
+    <openSearch:totalResults>1</openSearch:totalResults>
+    <openSearch:startIndex>1</openSearch:startIndex>
+    <entry>
+        <id>http://spreadsheets.google.com/feeds/spreadsheets/private/full/o04181601172097104111.497668944883620000</id>
+        <updated>2007-03-22T23:25:53.055Z</updated>
+        <category term="fool me twice"/>
+        <category scheme="fool me twice more"/>
+        <category scheme="http://schemas.google.com/spreadsheets/2006" term="http://schemas.google.com/spreadsheets/2006#spreadsheet"/>
+        <title type="text">My Test Spreadsheet</title>
+        <content type="text">My Test Spreadsheet</content>
+        <link
+            href="http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full"
+            rel="http://schemas.google.com/spreadsheets/2006#worksheetsfeed" type="application/atom+xml"/>
+        <link
+            href="http://spreadsheets.google.com/ccc?key=o04181601172097104111.497668944883620000"
+            rel="alternate" type="text/html"/>
+        <link
+            href="http://spreadsheets.google.com/feeds/spreadsheets/private/full/o04181601172097104111.497668944883620000"
+            rel="self" type="application/atom+xml"/>
+        <author>
+            <name>test</name>
+            <email>test@foo.net</email>
+        </author>
+        <unknownXMLThang><wazzit>fish hat</wazzit></unknownXMLThang>
+    </entry>
+</feed>
