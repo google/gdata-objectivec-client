@@ -17,11 +17,6 @@
 
 #ifndef SKIP_GDATA_DEFINES
   #import "GDataDefines.h"
-#else
-  #ifndef GDATA_FOREACH
-    #define GDATA_FOREACH(element, collection) for (element in collection)
-    #define GDATA_FOREACH_KEY(key, dict) for (key in dict)
-  #endif
 #endif
 
 // helper functions for implementing isEqual:

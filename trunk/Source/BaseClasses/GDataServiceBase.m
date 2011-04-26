@@ -47,11 +47,11 @@ static NSString* const kFetcherCallbackRunLoopModesKey = @"_runLoopModes";
 
 NSString* const kFetcherRetryInvocationKey = @"_retryInvocation";
 
-const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
+static const NSUInteger kMaxNumberOfNextLinksFollowed = 25;
 
 // we'll enforce 50K chunks minimum just to avoid the server getting hit
 // with too many small upload chunks
-const NSUInteger kMinimumUploadChunkSize = 50000;
+static const NSUInteger kMinimumUploadChunkSize = 50000;
 
 // XorPlainMutableData is a simple way to keep passwords held in heap objects
 // from being visible as plain-text
@@ -70,27 +70,27 @@ static void XorPlainMutableData(NSMutableData *mutableData) {
 
 
 // category to provide opaque access to tickets stored in fetcher properties
-@implementation GDataHTTPFetcher (GDataServiceTicketAdditions)
+@implementation GTMHTTPFetcher (GDataServiceTicketAdditions)
 - (id)ticket {
   return [self propertyForKey:kFetcherTicketKey];
 }
 @end
 
-// If GDataHTTPUploadFetcher is available, it can be used for chunked uploads
+// If GTMHTTPUploadFetcher is available, it can be used for chunked uploads
 //
-// We locally declare some methods of GDataHTTPUploadFetcher so we
+// We locally declare some methods of GTMHTTPUploadFetcher so we
 // do not need to import the header, as some projects may not have it available
-@interface GDataHTTPUploadFetcher : GDataHTTPFetcher
-+ (GDataHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
-                                          uploadData:(NSData *)data
-                                      uploadMIMEType:(NSString *)uploadMIMEType
-                                           chunkSize:(NSUInteger)chunkSize;
-+ (GDataHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
-                                    uploadFileHandle:(NSFileHandle *)uploadFileHandle
-                                      uploadMIMEType:(NSString *)uploadMIMEType
-                                           chunkSize:(NSUInteger)chunkSize;
+@interface GTMHTTPUploadFetcher : GTMHTTPFetcher
++ (GTMHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
+                                        uploadData:(NSData *)data
+                                    uploadMIMEType:(NSString *)uploadMIMEType
+                                         chunkSize:(NSUInteger)chunkSize;
++ (GTMHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
+                                  uploadFileHandle:(NSFileHandle *)uploadFileHandle
+                                    uploadMIMEType:(NSString *)uploadMIMEType
+                                         chunkSize:(NSUInteger)chunkSize;
 - (void)pauseFetching;
-- (void)resumeFetchingWithDelegate:(id)delegate;
+- (void)resumeFetching;
 - (BOOL)isPaused;
 @end
 
@@ -106,24 +106,25 @@ static void XorPlainMutableData(NSMutableData *mutableData) {
                       ticket:(GDataServiceTicketBase *)ticket;
 
 - (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
-                                   contentType:(NSString *)contentType;
+                                   contentType:(NSString *)contentType
+                              previousUserInfo:(NSDictionary *)previousUserInfo;
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
-     finishedWithData:(NSData *)data;
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
-     failedWithStatus:(NSInteger)status data:(NSData *)data;
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
-failedWithNetworkError:(NSError *)error;
-- (BOOL)objectFetcher:(GDataHTTPFetcher *)fetcher
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher
+     finishedWithData:(NSData *)data
+                error:(NSError *)error;
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher
+       failedWithData:(NSData *)data
+                error:(NSError *)error;
+- (BOOL)objectFetcher:(GTMHTTPFetcher *)fetcher
             willRetry:(BOOL)willRetry
              forError:(NSError *)error;
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher
          didSendBytes:(NSInteger)bytesSent
        totalBytesSent:(NSInteger)totalBytesSent
 totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
-- (void)parseObjectFromDataOfFetcher:(GDataHTTPFetcher *)fetcher;
-- (void)handleParsedObjectForFetcher:(GDataHTTPFetcher *)fetcher;
+- (void)parseObjectFromDataOfFetcher:(GTMHTTPFetcher *)fetcher;
+- (void)handleParsedObjectForFetcher:(GTMHTTPFetcher *)fetcher;
 
 - (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
                  hasDeliveredBytes:(unsigned long long)numReadSoFar
@@ -142,7 +143,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
 #if GDATA_IPHONE || (MAC_OS_X_VERSION_MIN_REQUIRED > MAC_OS_X_VERSION_10_5)
     operationQueue_ = [[NSOperationQueue alloc] init];
-#elif (MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4) && !GDATA_SKIP_PARSE_THREADING
+#elif !GDATA_SKIP_PARSE_THREADING
     // Avoid NSOperationQueue prior to 10.5.6, per
     // http://www.mikeash.com/?page=pyblog/use-nsoperationqueue.html
     SInt32 bcdSystemVersion = 0;
@@ -156,7 +157,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
     // on the current thread
 #endif
 
-    fetchHistory_ = [[GDataHTTPFetchHistory alloc] init];
+    fetcherService_ = [[GTMHTTPFetcherService alloc] init];
     cookieStorageMethod_ = -1;
 
     NSUInteger chunkSize = [[self class] defaultServiceUploadChunkSize];
@@ -170,7 +171,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
   [serviceVersion_ release];
   [userAgent_ release];
-  [fetchHistory_ release];
+  [fetcherService_ release];
   [runLoopModes_ release];
 
   [username_ release];
@@ -183,6 +184,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 #if NS_BLOCKS_AVAILABLE
   [serviceUploadProgressBlock_ release];
 #endif
+  [authorizer_ release];
 
   [super dealloc];
 }
@@ -406,7 +408,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                           retryInvocationValue:(NSValue *)retryInvocationValue
                                         ticket:(GDataServiceTicketBase *)ticket {
 
-  AssertSelectorNilOrImplementedWithArguments(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), @encode(NSError *), 0);
+  GTMAssertSelectorNilOrImplementedWithArgs(delegate, finishedSelector, @encode(GDataServiceTicketBase *), @encode(GDataObject *), @encode(NSError *), 0);
 
   // The completionHandler argument is declared as an id, not as a block
   // pointer, so this can be built with the 10.6 SDK and still run on 10.5.
@@ -434,16 +436,15 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                                                 httpMethod:httpMethod
                                                     ticket:ticket];
 
-  AssertSelectorNilOrImplementedWithArguments(delegate, [ticket uploadProgressSelector],
+  GTMAssertSelectorNilOrImplementedWithArgs(delegate, [ticket uploadProgressSelector],
       @encode(GDataServiceTicketBase *), @encode(unsigned long long),
       @encode(unsigned long long), 0);
-  AssertSelectorNilOrImplementedWithArguments(delegate, [ticket retrySelector],
+  GTMAssertSelectorNilOrImplementedWithArgs(delegate, [ticket retrySelector],
       @encode(GDataServiceTicketBase *), @encode(BOOL), @encode(NSError *), 0);
 
   //
   // package the object's XML and any upload data
   //
-  SEL finishedSel = @selector(objectFetcher:finishedWithData:);
 
   NSInputStream *streamToPost = nil;
   NSData *dataToPost = nil;
@@ -468,7 +469,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
     uploadProperties = [NSMutableDictionary dictionary];
 
-    BOOL doesSupportSentData = [GDataHTTPFetcher doesSupportSentDataCallback];
+    BOOL doesSupportSentData = [GTMHTTPFetcher doesSupportSentDataCallback];
 
     uploadData = [objectToPost uploadData];
     uploadFileHandle = [objectToPost uploadFileHandle];
@@ -539,8 +540,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
     if (contentHeaders) {
       // add the content-specific headers, if any
-      NSString *key;
-      GDATA_FOREACH_KEY(key, contentHeaders) {
+      for (NSString *key in contentHeaders) {
         NSString *value = [contentHeaders objectForKey:key];
         [request setValue:value forHTTPHeaderField:key];
       }
@@ -584,7 +584,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   // now that we have all the request header info ready,
   // create and set up the fetcher for this request
   //
-  GDataHTTPFetcher* fetcher = nil;
+  GTMHTTPFetcher* fetcher = nil;
 
   if (isUploadingDataChunked) {
     // hang on to the user's requested chunk size, and ensure it's not tiny
@@ -596,11 +596,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 #ifdef GDATA_TARGET_NAMESPACE
     // prepend the class name prefix
     Class uploadClass = NSClassFromString(@GDATA_TARGET_NAMESPACE_STRING
-                                          "_GDataHTTPUploadFetcher");
+                                          "_GTMHTTPUploadFetcher");
 #else
-    Class uploadClass = NSClassFromString(@"GDataHTTPUploadFetcher");
+    Class uploadClass = NSClassFromString(@"GTMHTTPUploadFetcher");
 #endif
-    GDATA_ASSERT(uploadClass != nil, @"GDataHTTPUploadFetcher needed");
+    GDATA_ASSERT(uploadClass != nil, @"GTMHTTPUploadFetcher needed");
 
     NSString *uploadMIMEType = [objectToPost uploadMIMEType];
 
@@ -616,13 +616,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                                             chunkSize:uploadChunkSize];
     }
   } else {
-    fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+    fetcher = [fetcherService_ fetcherWithRequest:request];
   }
 
   [fetcher setRunLoopModes:[self runLoopModes]];
-
-  // add cookie and last-modified-since history
-  [fetcher setFetchHistory:[self fetchHistory]];
 
   // allow the user to specify static app-wide cookies for fetching
   NSInteger cookieStorageMethod = [self cookieStorageMethod];
@@ -630,13 +627,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
     [fetcher setCookieStorageMethod:cookieStorageMethod];
   }
 
-  // with dated data caching enabled, when the server gives us a "Not Modified"
-  // error, have the fetcher just pass us the cached data from the previous
-  // call, if any
-  [fetcher setShouldCacheDatedData:[self shouldCacheDatedData]];
-
   // copy the ticket's retry settings into the fetcher
-  [fetcher setIsRetryEnabled:[ticket isRetryEnabled]];
+  [fetcher setRetryEnabled:[ticket isRetryEnabled]];
   [fetcher setMaxRetryInterval:[ticket maxRetryInterval]];
 
   if ([ticket retrySelector]) {
@@ -681,7 +673,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   [fetcher setSentDataSelector:sentDataSel];
   [fetcher addPropertiesFromDictionary:uploadProperties];
 
-  // add username/password
+  // attach OAuth authorization object, if any
+  [fetcher setAuthorizer:[ticket authorizer]];
+
+  // add username/password, if any
   [self addAuthenticationToFetcher:fetcher];
 
   if (finishedSelector) {
@@ -690,9 +685,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
   // failed fetches call the failure selector, which will delete the ticket
   BOOL didFetch = [fetcher beginFetchWithDelegate:self
-                                didFinishSelector:finishedSel
-                        didFailWithStatusSelector:@selector(objectFetcher:failedWithStatus:data:)
-                         didFailWithErrorSelector:@selector(objectFetcher:failedWithNetworkError:)];
+                                didFinishSelector:@selector(objectFetcher:finishedWithData:error:)];
 
   // If something weird happens and the networking callbacks have been called
   // already synchronously, we don't want to return the ticket since the caller
@@ -715,7 +708,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   SEL progressSelector = [ticket uploadProgressSelector];
   if (progressSelector) {
 
-    GDataHTTPFetcher *fetcher = [ticket objectFetcher];
+    GTMHTTPFetcher *fetcher = [ticket objectFetcher];
     id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
 
     NSMethodSignature *signature = [delegate methodSignatureForSelector:progressSelector];
@@ -738,7 +731,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 }
 
 // sentData callback from fetcher
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher
          didSendBytes:(NSInteger)bytesSent
        totalBytesSent:(NSInteger)totalBytesSent
 totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
@@ -761,7 +754,12 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
                              totalBytes:total];
 }
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error) {
+    [self objectFetcher:fetcher failedWithData:data error:error];
+    return;
+  }
+
   // we now have the XML data for a feed or entry
 
   // save the current thread into the fetcher, since we'll handle additional
@@ -786,14 +784,12 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   SEL parseSel = @selector(parseObjectFromDataOfFetcher:);
   if (operationQueue_ != nil) {
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
     NSInvocationOperation *op;
     op = [[[NSInvocationOperation alloc] initWithTarget:self
                                                selector:parseSel
                                                  object:fetcher] autorelease];
     [operationQueue_ addOperation:op];
     // the fetcher now belongs to the parsing thread
-#endif
   } else {
     // parse on the current thread, on Mac OS X 10.4 through 10.5.7
     // or when the project defines GDATA_SKIP_PARSE_THREADING
@@ -802,7 +798,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   }
 }
 
-- (void)parseObjectFromDataOfFetcher:(GDataHTTPFetcher *)fetcher {
+- (void)parseObjectFromDataOfFetcher:(GTMHTTPFetcher *)fetcher {
 
   // this may be invoked in a separate thread
   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -877,7 +873,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   SEL parseDoneSel = @selector(handleParsedObjectForFetcher:);
 
   if (operationQueue_ != nil) {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
     // call back on the caller's original thread
     NSThread *callbackThread = [[[fetcher propertyForKey:kFetcherCallbackThreadKey] retain] autorelease];
 
@@ -900,7 +895,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
               waitUntilDone:NO];
     }
     // the fetcher now belongs to the callback thread
-#endif
   } else {
     // in 10.4, there's no performSelector:onThread:
     [self performSelector:parseDoneSel withObject:fetcher];
@@ -911,7 +905,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [pool drain];
 }
 
-- (void)handleParsedObjectForFetcher:(GDataHTTPFetcher *)fetcher {
+- (void)handleParsedObjectForFetcher:(GTMHTTPFetcher *)fetcher {
 
   // after parsing is complete, this is invoked on the thread that the
   // fetch was performed on
@@ -1048,14 +1042,14 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [ticket setCurrentFetcher:nil];
 }
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data {
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher failedWithData:(NSData *)data error:(NSError *)error {
 
 #if DEBUG
   NSString *dataString = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
   if (dataString) {
    NSLog(@"serviceBase:%@ objectFetcher:%@ failedWithStatus:%d data:%@",
-         self, fetcher, (int)status, dataString);
+         self, fetcher, [error code], dataString);
   }
 #endif
 
@@ -1066,49 +1060,18 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSString *finishedSelectorStr = [fetcher propertyForKey:kFetcherFinishedSelectorKey];
   SEL finishedSelector = finishedSelectorStr ? NSSelectorFromString(finishedSelectorStr) : NULL;
 
-  // determine the type of server response, since we will need to know if it
-  // is structured XML
-  NSDictionary *responseHeaders = [fetcher responseHeaders];
-  NSString *contentType = [responseHeaders objectForKey:@"Content-Type"];
+  if (error != nil) {
+    // create structured errors in the userInfo, if appropriate
+    NSDictionary *responseHeaders = [fetcher responseHeaders];
+    NSString *contentType = [responseHeaders objectForKey:@"Content-Type"];
 
-  NSDictionary *userInfo = [self userInfoForErrorResponseData:data
-                                                  contentType:contentType];
-
-  NSError *error = [NSError errorWithDomain:kGDataServiceErrorDomain
-                                       code:status
-                                   userInfo:userInfo];
-  if (finishedSelector) {
-    [[self class] invokeCallback:finishedSelector
-                          target:delegate
-                          ticket:ticket
-                          object:nil
-                           error:error];
+    NSDictionary *newUserInfo = [self userInfoForErrorResponseData:data
+                                                    contentType:contentType
+                                                  previousUserInfo:[error userInfo]];
+    error = [NSError errorWithDomain:[error domain]
+                                code:[error code]
+                            userInfo:newUserInfo];
   }
-
-#if NS_BLOCKS_AVAILABLE
-  GDataServiceCompletionHandler completionHandler;
-
-  completionHandler = [fetcher propertyForKey:kFetcherCompletionHandlerKey];
-  if (completionHandler) {
-    completionHandler(ticket, nil, error);
-  }
-#endif
-
-  [fetcher setProperties:nil];
-
-  [ticket setFetchError:error];
-  [ticket setHasCalledCallback:YES];
-  [ticket setCurrentFetcher:nil];
-}
-
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithNetworkError:(NSError *)error {
-
-  id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
-
-  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
-
-  NSString *finishedSelectorStr = [fetcher propertyForKey:kFetcherFinishedSelectorKey];
-  SEL finishedSelector = finishedSelectorStr ? NSSelectorFromString(finishedSelectorStr) : NULL;
 
   if (finishedSelector) {
     [[self class] invokeCallback:finishedSelector
@@ -1139,8 +1102,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 // create an error userInfo dictionary containing a useful reason string and,
 // for structured XML errors, a server error group object
 - (NSDictionary *)userInfoForErrorResponseData:(NSData *)data
-                                   contentType:(NSString *)contentType {
-
+                                   contentType:(NSString *)contentType
+                              previousUserInfo:(NSDictionary *)previousUserInfo {
   // NSError's default localizedReason value looks like
   //   "(com.google.GDataServiceDomain error -4.)"
   //
@@ -1149,7 +1112,12 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   // we'll try to store a more useful reason in the userInfo dictionary
 
   NSString *reasonStr = nil;
-  NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
+  NSMutableDictionary *userInfo;
+  if (previousUserInfo) {
+    userInfo = [NSMutableDictionary dictionaryWithDictionary:previousUserInfo];
+  } else {
+    userInfo = [NSMutableDictionary dictionary];
+  }
 
   if ([data length] > 0) {
 
@@ -1211,7 +1179,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
 // The object fetcher may call into this retry method; this one invokes the
 // selector provided by the user.
-- (BOOL)objectFetcher:(GDataHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
+- (BOOL)objectFetcher:(GTMHTTPFetcher *)fetcher willRetry:(BOOL)willRetry forError:(NSError *)error {
 
   id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
   GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
@@ -1236,7 +1204,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
   if ([delegate respondsToSelector:retrySelector]) {
 
-    // Unlike the retry selector invocation in GDataHTTPFetcher, this invocation
+    // Unlike the retry selector invocation in GTMHTTPFetcher, this invocation
     // passes the ticket rather than the fetcher as argument 2
     NSMethodSignature *signature = [delegate methodSignatureForSelector:retrySelector];
     NSInvocation *retryInvocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -1252,7 +1220,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   return willRetry;
 }
 
-- (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher {
+- (void)addAuthenticationToFetcher:(GTMHTTPFetcher *)fetcher {
   NSString *username = [self username];
   NSString *password = [self password];
 
@@ -1545,7 +1513,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 
     // username changed; discard history so we're not caching for the wrong
     // user
-    [fetchHistory_ clearHistory];
+    [fetcherService_ clearHistory];
   }
 
   [username_ release];
@@ -1580,37 +1548,60 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   return nil;
 }
 
+- (id)authorizer {
+  return authorizer_;
+}
+
+- (void)setAuthorizer:(id)obj {
+  if (obj != nil) {
+    // clear any existing username/password
+    [self setUserCredentialsWithUsername:nil
+                                password:nil];
+  }
+
+  if (obj != authorizer_) {
+    [self clearResponseDataCache];
+
+    [authorizer_ autorelease];
+    authorizer_ = [obj retain];
+
+    GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:delegate:didFinishSelector:)]
+                       || obj == nil, @"invalid authorization object");
+  }
+}
+
 // Turn on data caching to receive a copy of previously-retrieved objects.
-// Otherwise, fetches may return status 304 (No Change) rather than actual data
-- (void)setShouldCacheDatedData:(BOOL)flag {
-  [fetchHistory_ setShouldCacheDatedData:flag];
+// Otherwise, fetches may return status 304 (Not Modified) rather than actual
+// data
+- (void)setShouldCacheResponseData:(BOOL)flag {
+  [fetcherService_ setShouldCacheETaggedData:flag];
 }
 
-- (BOOL)shouldCacheDatedData {
-  return [fetchHistory_ shouldCacheDatedData];
+- (BOOL)shouldCacheResponseData {
+  return [fetcherService_ shouldCacheETaggedData];
 }
 
-- (void)setDatedDataCacheCapacity:(NSUInteger)totalBytes {
-  [fetchHistory_ setMemoryCapacity:totalBytes];
+- (void)setResponseDataCacheCapacity:(NSUInteger)totalBytes {
+  [[fetcherService_ fetchHistory] setMemoryCapacity:totalBytes];
 }
 
-- (NSUInteger)datedDataCacheCapacity {
-  return [fetchHistory_ memoryCapacity];
+- (NSUInteger)responseDataCacheCapacity {
+  return [[fetcherService_ fetchHistory] memoryCapacity];
 }
 
-// reset the last modified dates to avoid getting a Not Modified status
+// reset the cache to avoid getting a Not Modified status
 // based on prior queries
-- (void)clearLastModifiedDates {
-  [fetchHistory_ clearDatedDataCache];
+- (void)clearResponseDataCache {
+  [fetcherService_ clearETaggedDataCache];
 }
 
-- (void)setFetchHistory:(GDataHTTPFetchHistory *)obj {
-  [fetchHistory_ autorelease];
-  fetchHistory_ = [obj retain];
+- (void)setFetcherService:(GTMHTTPFetcherService *)obj {
+  [fetcherService_ autorelease];
+  fetcherService_ = [obj retain];
 }
 
-- (GDataHTTPFetchHistory *)fetchHistory {
-  return fetchHistory_;
+- (GTMHTTPFetcherService *)fetcherService {
+  return fetcherService_;
 }
 
 - (void)setCookieStorageMethod:(NSInteger)method {
@@ -1733,7 +1724,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
     // determine an appropriate upload chunk size for the system
 
 #if GDATA_IPHONE
-    if (![GDataHTTPFetcher doesSupportSentDataCallback]) {
+    if (![GTMHTTPFetcher doesSupportSentDataCallback]) {
       // for iPhone 2, we need a small upload chunk size so there
       // are frequent intrachunk callbacks for progress monitoring
       //
@@ -1744,30 +1735,26 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
     }
 #else
     if (NSFoundationVersionNumber >= 751.00) {
-      // Mac OS X 10.6
+      // Mac OS X 10.6 and later
       //
       // we'll pick a huge upload chunk size, which minimizes http overhead
       // and server effort, and we'll hope that NSURLConnection can finally
       // handle big uploads reliably
       val = 25*1024*1024;
-    } else if (NSFoundationVersionNumber >= 677.00) {
+    } else {
       // Mac OS X 10.5
       //
       // NSURLConnection is more reliable on POSTs in 10.5 than it was in
       // 10.4, but it still fails mysteriously on big uploads on some
       // systems, so we'll limit the chunks to a megabyte
       val = 1024*1024;
-    } else {
-      // Tiger cannot handle the upload protocol's 308 status responses;
-      // it just gives "redirected to nowhere" errors
-      val = 0;
     }
 #endif
   }
   uploadChunkSize_ = val;
 }
 
-// retrying; see comments on retry support at the top of GDataHTTPFetcher
+// retrying; see comments on retry support at the top of GTMHTTPFetcher
 - (BOOL)isServiceRetryEnabled {
   return isServiceRetryEnabled_;
 }
@@ -1874,6 +1861,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 #if NS_BLOCKS_AVAILABLE
     [self setUploadProgressHandler:[service serviceUploadProgressHandler]];
 #endif
+    [self setAuthorizer:[service authorizer]];
   }
   return self;
 }
@@ -1896,6 +1884,8 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   [accumulatedFeed_ release];
   [fetchError_ release];
 
+  [authorizer_ release];
+
   [super dealloc];
 }
 
@@ -1910,16 +1900,16 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   GDATA_DEBUG_ASSERT(canPause, @"unpauseable ticket");
 
   if (canPause) {
-    [(GDataHTTPUploadFetcher *)objectFetcher_ pauseFetching];
+    [(GTMHTTPUploadFetcher *)objectFetcher_ pauseFetching];
   }
 }
 
 - (void)resumeUpload {
-  BOOL canResume = [objectFetcher_ respondsToSelector:@selector(resumeFetchingWithDelegate:)];
+  BOOL canResume = [objectFetcher_ respondsToSelector:@selector(resumeFetching)];
   GDATA_DEBUG_ASSERT(canResume, @"unresumable ticket");
 
   if (canResume) {
-    [(GDataHTTPUploadFetcher *)objectFetcher_ resumeFetchingWithDelegate:[self service]];
+    [(GTMHTTPUploadFetcher *)objectFetcher_ resumeFetching];
   }
 }
 
@@ -1928,7 +1918,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   GDATA_DEBUG_ASSERT(isPausable, @"unpauseable ticket");
 
   if (isPausable) {
-    return [(GDataHTTPUploadFetcher *)objectFetcher_ isPaused];
+    return [(GTMHTTPUploadFetcher *)objectFetcher_ isPaused];
   }
   return NO;
 }
@@ -2084,20 +2074,20 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   maxRetryInterval_ = secs;
 }
 
-- (GDataHTTPFetcher *)currentFetcher {
+- (GTMHTTPFetcher *)currentFetcher {
   return [[currentFetcher_ retain] autorelease];
 }
 
-- (void)setCurrentFetcher:(GDataHTTPFetcher *)fetcher {
+- (void)setCurrentFetcher:(GTMHTTPFetcher *)fetcher {
   [currentFetcher_ autorelease];
   currentFetcher_ = [fetcher retain];
 }
 
-- (GDataHTTPFetcher *)objectFetcher {
+- (GTMHTTPFetcher *)objectFetcher {
   return [[objectFetcher_ retain] autorelease];
 }
 
-- (void)setObjectFetcher:(GDataHTTPFetcher *)fetcher {
+- (void)setObjectFetcher:(GTMHTTPFetcher *)fetcher {
   [objectFetcher_ autorelease];
   objectFetcher_ = [fetcher retain];
 }
@@ -2169,9 +2159,8 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
     // addEntry:.
 
     NSArray *newEntries = [newFeed entries];
-    GDataEntryBase *entry;
 
-    GDATA_FOREACH(entry, newEntries) {
+    for (GDataEntryBase *entry in newEntries) {
       [entry setParent:nil];
       [accumulatedFeed addEntry:entry];
     }
@@ -2184,6 +2173,19 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 
 - (NSUInteger)nextLinksFollowedCounter {
   return nextLinksFollowedCounter_;
+}
+
+// OAuth support
+- (id)authorizer {
+  return authorizer_;
+}
+
+- (void)setAuthorizer:(id)obj {
+  [authorizer_ autorelease];
+  authorizer_ = [obj retain];
+
+  GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:delegate:didFinishSelector:)]
+                     || obj == nil, @"invalid authorization object");
 }
 
 @end

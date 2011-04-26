@@ -176,8 +176,7 @@ static NSString *const kLengthAttr = @"length";
 
   NSMutableArray *names = nil;
 
-  GDataLink *dataLink;
-  GDATA_FOREACH(dataLink, links) {
+  for (GDataLink *dataLink in links) {
 
     NSString *rel = [dataLink rel];
     NSString *displayName;
@@ -206,8 +205,7 @@ static NSString *const kLengthAttr = @"length";
                       type:(NSString *)typeValue
                  fromLinks:(NSArray *)array {
 
-  GDataLink *dataLink;
-  GDATA_FOREACH(dataLink, array) {
+  for (GDataLink *dataLink in array) {
 
     NSString *foundRelValue = [dataLink rel];
     NSString *foundTypeValue = [dataLink type];
@@ -223,8 +221,7 @@ static NSString *const kLengthAttr = @"length";
 + (GDataLink *)linkWithRelAttributeSuffix:(NSString *)relSuffix
                                 fromLinks:(NSArray *)array {
 
-  GDataLink *dataLink;
-  GDATA_FOREACH(dataLink, array) {
+  for (GDataLink *dataLink in array) {
 
     NSString *attrValue = [dataLink rel];
     if (attrValue && [attrValue hasSuffix:relSuffix]) {

@@ -85,15 +85,7 @@
 
     numBytesRead_ += numRead;
 
-    // we can only call back on another thread on 10.5 and later
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
-    SEL performSel = @selector(performSelector:onThread:withObject:waitUntilDone:);
-
-    BOOL isOnOriginalThread = [thread_ isEqual:[NSThread currentThread]]
-      || ![NSObject instancesRespondToSelector:performSel];
-#else
-    BOOL isOnOriginalThread = YES;
-#endif
+    BOOL isOnOriginalThread = [thread_ isEqual:[NSThread currentThread]];
 
     if (monitorDelegate_) {
 
@@ -111,7 +103,6 @@
         if (isOnOriginalThread) {
           [invocation invoke];
         } else if (runLoopModes_) {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
           [invocation performSelector:@selector(invoke)
                              onThread:thread_
                            withObject:nil
@@ -122,7 +113,6 @@
                              onThread:thread_
                            withObject:nil
                         waitUntilDone:NO];
-#endif
         }
       }
 
@@ -138,7 +128,6 @@
                                         freeWhenDone:NO];
           [self performSelector:sel withObject:data];
         } else {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
           // copy the buffer into an NSData to be retained by the
           // performSelector, and invoke on the proper thread
           NSData *data = [NSData dataWithBytes:buffer length:numRead];
@@ -154,7 +143,6 @@
                        withObject:data
                     waitUntilDone:NO];
           }
-#endif
         }
       }
     }

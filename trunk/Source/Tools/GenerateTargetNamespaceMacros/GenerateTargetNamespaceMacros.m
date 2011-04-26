@@ -17,7 +17,7 @@
 #import <objc/runtime.h>
 
 // This tool takes the path to the GData framework, and searches it
-// for classes with the "GData" prefix.
+// for classes with the "GData" or "GTM" prefix.
 //
 // If any GData classes are found, it writes to the output path the contents
 // of the file GDataTargetNamespace.h, like
@@ -149,7 +149,7 @@ static int DoGDataClassSearch(NSBundle *targetBundle, NSString *outputPath) {
 
   while ((className = [nameEnum nextObject]) != nil) {
 
-    if ([className hasPrefix:@"GData"]) {
+    if ([className hasPrefix:@"GData"] || [className hasPrefix:@"GTM"]) {
       Class classObj = NSClassFromString(className);
 
       NSBundle *classBundle = [NSBundle bundleForClass:classObj];

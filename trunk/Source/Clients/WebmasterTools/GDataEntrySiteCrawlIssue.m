@@ -221,8 +221,7 @@
   // remove any current URLs
   [self setObject:nil forExtensionClass:[GDataSiteCrawlIssueLinkedFrom class]];
 
-  NSString *str;
-  GDATA_FOREACH(str, array) {
+  for (NSString *str in array) {
     [self addIssueLinkedFromURLString:str];
   }
 }

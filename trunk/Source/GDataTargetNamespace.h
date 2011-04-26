@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (571 classes) 2011-04-06 14:26:24 -0700
+// com.google.GDataFramework v. 1.12 (573 classes) 2011-04-26 13:26:23 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -78,7 +78,6 @@
   #define GDataBloggerConstants                   _GDATA_NS_SYMBOL(GDataBloggerConstants)
   #define GDataBookConstants                      _GDATA_NS_SYMBOL(GDataBookConstants)
   #define GDataBoolValueConstruct                 _GDATA_NS_SYMBOL(GDataBoolValueConstruct)
-  #define GDataCachedURLResponse                  _GDATA_NS_SYMBOL(GDataCachedURLResponse)
   #define GDataCalendarBusy                       _GDATA_NS_SYMBOL(GDataCalendarBusy)
   #define GDataCalendarSettingsProperty           _GDATA_NS_SYMBOL(GDataCalendarSettingsProperty)
   #define GDataCalendarTimeRange                  _GDATA_NS_SYMBOL(GDataCalendarTimeRange)
@@ -119,7 +118,6 @@
   #define GDataContactWebsiteLink                 _GDATA_NS_SYMBOL(GDataContactWebsiteLink)
   #define GDataContactYomiName                    _GDATA_NS_SYMBOL(GDataContactYomiName)
   #define GDataContinuityOfCareRecord             _GDATA_NS_SYMBOL(GDataContinuityOfCareRecord)
-  #define GDataCookieStorage                      _GDATA_NS_SYMBOL(GDataCookieStorage)
   #define GDataCostBasis                          _GDATA_NS_SYMBOL(GDataCostBasis)
   #define GDataCustomProperty                     _GDATA_NS_SYMBOL(GDataCustomProperty)
   #define GDataDateTime                           _GDATA_NS_SYMBOL(GDataDateTime)
@@ -316,9 +314,6 @@
   #define GDataHealthConstants                    _GDATA_NS_SYMBOL(GDataHealthConstants)
   #define GDataHealthContainerObject              _GDATA_NS_SYMBOL(GDataHealthContainerObject)
   #define GDataHiddenProperty                     _GDATA_NS_SYMBOL(GDataHiddenProperty)
-  #define GDataHTTPFetcher                        _GDATA_NS_SYMBOL(GDataHTTPFetcher)
-  #define GDataHTTPFetchHistory                   _GDATA_NS_SYMBOL(GDataHTTPFetchHistory)
-  #define GDataHTTPUploadFetcher                  _GDATA_NS_SYMBOL(GDataHTTPUploadFetcher)
   #define GDataICalUIDProperty                    _GDATA_NS_SYMBOL(GDataICalUIDProperty)
   #define GDataIM                                 _GDATA_NS_SYMBOL(GDataIM)
   #define GDataImplicitValueConstruct             _GDATA_NS_SYMBOL(GDataImplicitValueConstruct)
@@ -354,9 +349,6 @@
   #define GDataNameSuffix                         _GDATA_NS_SYMBOL(GDataNameSuffix)
   #define GDataNameValueConstruct                 _GDATA_NS_SYMBOL(GDataNameValueConstruct)
   #define GDataNormalPlayTime                     _GDATA_NS_SYMBOL(GDataNormalPlayTime)
-  #define GDataOAuthAuthentication                _GDATA_NS_SYMBOL(GDataOAuthAuthentication)
-  #define GDataOAuthSignIn                        _GDATA_NS_SYMBOL(GDataOAuthSignIn)
-  #define GDataOAuthWindowController              _GDATA_NS_SYMBOL(GDataOAuthWindowController)
   #define GDataObject                             _GDATA_NS_SYMBOL(GDataObject)
   #define GDataOpenSearchItemsPerPage             _GDATA_NS_SYMBOL(GDataOpenSearchItemsPerPage)
   #define GDataOpenSearchStartIndex               _GDATA_NS_SYMBOL(GDataOpenSearchStartIndex)
@@ -530,7 +522,6 @@
   #define GDataTranslationSourceLanguage          _GDATA_NS_SYMBOL(GDataTranslationSourceLanguage)
   #define GDataTranslationTargetLanguage          _GDATA_NS_SYMBOL(GDataTranslationTargetLanguage)
   #define GDataTransparency                       _GDATA_NS_SYMBOL(GDataTransparency)
-  #define GDataURLCache                           _GDATA_NS_SYMBOL(GDataURLCache)
   #define GDataUtilities                          _GDATA_NS_SYMBOL(GDataUtilities)
   #define GDataValueConstruct                     _GDATA_NS_SYMBOL(GDataValueConstruct)
   #define GDataValueElementConstruct              _GDATA_NS_SYMBOL(GDataValueElementConstruct)
@@ -595,5 +586,16 @@
   #define GDataYouTubeUploadedDate                _GDATA_NS_SYMBOL(GDataYouTubeUploadedDate)
   #define GDataYouTubeUsername                    _GDATA_NS_SYMBOL(GDataYouTubeUsername)
   #define GDataYouTubeVideoID                     _GDATA_NS_SYMBOL(GDataYouTubeVideoID)
+  #define GTMCachedURLResponse                    _GDATA_NS_SYMBOL(GTMCachedURLResponse)
+  #define GTMCookieStorage                        _GDATA_NS_SYMBOL(GTMCookieStorage)
+  #define GTMHTTPFetcher                          _GDATA_NS_SYMBOL(GTMHTTPFetcher)
+  #define GTMHTTPFetcherService                   _GDATA_NS_SYMBOL(GTMHTTPFetcherService)
+  #define GTMHTTPFetchHistory                     _GDATA_NS_SYMBOL(GTMHTTPFetchHistory)
+  #define GTMHTTPUploadFetcher                    _GDATA_NS_SYMBOL(GTMHTTPUploadFetcher)
+  #define GTMOAuth2Authentication                 _GDATA_NS_SYMBOL(GTMOAuth2Authentication)
+  #define GTMOAuth2AuthorizationArgs              _GDATA_NS_SYMBOL(GTMOAuth2AuthorizationArgs)
+  #define GTMOAuth2SignIn                         _GDATA_NS_SYMBOL(GTMOAuth2SignIn)
+  #define GTMOAuth2WindowController               _GDATA_NS_SYMBOL(GTMOAuth2WindowController)
+  #define GTMURLCache                             _GDATA_NS_SYMBOL(GTMURLCache)
 
 #endif

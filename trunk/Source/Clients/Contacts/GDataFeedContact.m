@@ -72,8 +72,7 @@
   NSArray *entries = [self entries];
   NSMutableArray *array = [NSMutableArray array];
 
-  GDataEntryContact *entry;
-  GDATA_FOREACH(entry, entries) {
+  for (GDataEntryContact *entry in entries) {
 
     if ([entry groupMembershipInfoWithHref:href] != nil) {
       [array addObject:entry];

@@ -39,11 +39,9 @@
 
   NSString *propsDescValue = nil;
   NSMutableArray *propsDisplayArray = nil;
-  GDataAnalyticsProperty *prop;
 
   // display properties as "(name=value, name2=value2)"
-
-  GDATA_FOREACH(prop, array) {
+  for (GDataAnalyticsProperty *prop in array) {
     NSString *propDisplay = [NSString stringWithFormat:@"%@=%@",
                              [prop name], [prop stringValue]];
     if (propsDisplayArray == nil) {

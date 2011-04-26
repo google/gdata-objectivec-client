@@ -137,8 +137,7 @@
     NSArray *errorElems = [errorsElem elementsForLocalName:@"error"
                                                        URI:kGDataNamespaceGData];
 
-    NSXMLElement *errorElem;
-    GDATA_FOREACH(errorElem, errorElems) {
+    for (NSXMLElement *errorElem in errorElems) {
 
       GDataServerError *serverError;
 

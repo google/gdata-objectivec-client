@@ -17,7 +17,7 @@
 //  GDataAuthenticationFetcher.h
 //
 
-#import "GDataHTTPFetcher.h"
+#import "GTMHTTPFetcher.h"
 
 @interface GDataAuthenticationFetcher : NSObject
 
@@ -49,17 +49,18 @@
 // The callback data may be parsed with +dictionaryWithResponseData
 // from GDataUtilities, as in
 //
-// - (void)authFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-//   NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
-//   ...
+// - (void)authFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+//   if (error == nil) {
+//     NSDictionary *responseDict = [GDataUtilities dictionaryWithResponseData:data];
+//     ...
 //
 
-+ (GDataHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
-                                          password:(NSString *)password
-                                           service:(NSString *)serviceID
-                                            source:(NSString *)source
-                                      signInDomain:(NSString *)domain
-                                       accountType:(NSString *)accountType
-                              additionalParameters:(NSDictionary *)params
-                                     customHeaders:(NSDictionary *)headers;
++ (GTMHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
+                                        password:(NSString *)password
+                                         service:(NSString *)serviceID
+                                          source:(NSString *)source
+                                    signInDomain:(NSString *)domain
+                                     accountType:(NSString *)accountType
+                            additionalParameters:(NSDictionary *)params
+                                   customHeaders:(NSDictionary *)headers;
 @end

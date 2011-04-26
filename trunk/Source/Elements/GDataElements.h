@@ -22,10 +22,11 @@
 #import "GDataFramework.h"
 
 // utility classes
+#import "GTMHTTPFetcher.h"
+#import "GTMHTTPFetcherLogging.h"
+#import "GTMHTTPUploadFetcher.h"
+
 #import "GDataDateTime.h"
-#import "GDataHTTPFetcher.h"
-#import "GDataHTTPFetcherLogging.h"
-#import "GDataHTTPUploadFetcher.h"
 #import "GDataProgressMonitorInputStream.h"
 #import "GDataGatherInputStream.h"
 #import "GDataMIMEDocument.h"

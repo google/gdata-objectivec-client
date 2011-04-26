@@ -163,8 +163,7 @@ static NSString* const kRealmAttr = @"realm";
   // step through all elements in the XML children and make a dictionary
   // entry for each
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  id xmlNode;
-  GDATA_FOREACH(xmlNode, xmlNodes) {
+  for (id xmlNode in xmlNodes) {
 
     NSString *qualifiedName = [xmlNode name];
     NSString *value = [xmlNode stringValue];
@@ -179,8 +178,7 @@ static NSString* const kRealmAttr = @"realm";
   NSMutableArray *nodes = [NSMutableArray array];
 
   // replace the XML child elements with elements from the dictionary
-  NSString *key;
-  GDATA_FOREACH_KEY(key, dict) {
+  for (NSString *key in dict) {
     NSString *value = [dict objectForKey:key];
     NSXMLNode *node = [NSXMLNode elementWithName:key
                                      stringValue:value];

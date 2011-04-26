@@ -28,7 +28,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
   CFStringRef leaveUnescaped = NULL;
 
   CFStringRef escapedStr;
-  const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+  static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
   escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                        originalString,
@@ -41,15 +41,15 @@ static NSString* StringByURLEncodingString(NSString *str) {
   return resultStr;
 }
 
-+ (GDataHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
-                                          password:(NSString *)password
-                                           service:(NSString *)serviceID // code for the service to be used, like "cl"
-                                            source:(NSString *)source // companyName-applicationName-versionID
-                                      signInDomain:(NSString *)domain // nil for www.google.com
-                                       accountType:(NSString *)accountType // nil for HOSTED_OR_GOOGLE
-                              additionalParameters:(NSDictionary *)params
-                                     customHeaders:(NSDictionary *)headers { // nil or map of custom headers to set
-
++ (GTMHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
+                                        password:(NSString *)password
+                                         service:(NSString *)serviceID // code for the service to be used, like "cl"
+                                          source:(NSString *)source // companyName-applicationName-versionID
+                                    signInDomain:(NSString *)domain // nil for www.google.com
+                                     accountType:(NSString *)accountType // nil for HOSTED_OR_GOOGLE
+                            additionalParameters:(NSDictionary *)params
+                                   customHeaders:(NSDictionary *)headers { // nil or map of custom headers to set
+  
   if ([username length] == 0 || [password length] == 0) return nil;
 
   if ([domain length] == 0) {
@@ -100,7 +100,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
                   key, StringByURLEncodingString(value)];
   }
 
-  GDataHTTPFetcher* fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+  GTMHTTPFetcher* fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
   [fetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
 
   // We're avoiding +[NSURCredential credentialWithUser:password:persistence:]
@@ -112,7 +112,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
                                     persistence:NSURLCredentialPersistenceForSession] autorelease];
   [fetcher setCredential:cred];
 
-  [fetcher setIsRetryEnabled:YES];
+  [fetcher setRetryEnabled:YES];
 
   return fetcher;
 }

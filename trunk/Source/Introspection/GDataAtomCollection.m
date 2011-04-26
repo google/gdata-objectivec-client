@@ -134,8 +134,7 @@ static NSString *const kTitleAttr = @"title";
 
     objArray = [NSMutableArray arrayWithCapacity:numberOfStrings];
 
-    NSString *str;
-    GDATA_FOREACH(str, array) {
+    for (NSString *str in array) {
       [objArray addObject:[GDataAtomAccept valueWithString:str]];
     }
   }

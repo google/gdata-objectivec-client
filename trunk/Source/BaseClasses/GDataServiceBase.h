@@ -17,7 +17,8 @@
 //  GDataServiceBase.h
 //
 
-#import "GDataHTTPFetcher.h"
+#import "GTMHTTPFetcherService.h"
+
 #import "GDataEntryBase.h"
 #import "GDataFeedBase.h"
 #import "GDataQuery.h"
@@ -95,8 +96,8 @@ typedef void *GDataServiceUploadProgressHandler;
   NSMutableDictionary *ticketProperties_;
   NSDictionary *surrogates_;
 
-  GDataHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
-  GDataHTTPFetcher *objectFetcher_;
+  GTMHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
+  GTMHTTPFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
   BOOL shouldFollowNextLinks_;
   BOOL shouldFeedsIgnoreUnknowns_;
@@ -118,6 +119,9 @@ typedef void *GDataServiceUploadProgressHandler;
   NSError *fetchError_;
   BOOL hasCalledCallback_;
   NSUInteger nextLinksFollowedCounter_;
+
+  // OAuth support
+  id authorizer_;
 }
 
 + (id)ticketForService:(GDataServiceBase *)service;
@@ -151,11 +155,11 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSDictionary *)surrogates;
 - (void)setSurrogates:(NSDictionary *)dict;
 
-- (GDataHTTPFetcher *)currentFetcher; // object or auth fetcher, if active
-- (void)setCurrentFetcher:(GDataHTTPFetcher *)fetcher;
+- (GTMHTTPFetcher *)currentFetcher; // object or auth fetcher, if active
+- (void)setCurrentFetcher:(GTMHTTPFetcher *)fetcher;
 
-- (GDataHTTPFetcher *)objectFetcher;
-- (void)setObjectFetcher:(GDataHTTPFetcher *)fetcher;
+- (GTMHTTPFetcher *)objectFetcher;
+- (void)setObjectFetcher:(GTMHTTPFetcher *)fetcher;
 
 - (void)setUploadProgressSelector:(SEL)progressSelector;
 - (SEL)uploadProgressSelector;
@@ -203,11 +207,16 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSUInteger)nextLinksFollowedCounter;
 
 - (NSInteger)statusCode;  // server status from object fetch
+
+// OAuth support
+- (id)authorizer;
+- (void)setAuthorizer:(id)obj;
+
 @end
 
 
 // category to provide opaque access to tickets stored in fetcher properties
-@interface GDataHTTPFetcher (GDataServiceTicketAdditions)
+@interface GTMHTTPFetcher (GDataServiceTicketAdditions)
 - (id)ticket;
 @end
 
@@ -217,15 +226,11 @@ typedef void *GDataServiceUploadProgressHandler;
 //
 
 @interface GDataServiceBase : NSObject {
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
   NSOperationQueue *operationQueue_;
-#else
-  id operationQueue_;
-#endif
 
   NSString *serviceVersion_;
   NSString *userAgent_;
-  GDataHTTPFetchHistory *fetchHistory_;
+  GTMHTTPFetcherService *fetcherService_;
   NSArray *runLoopModes_;
 
   NSString *username_;
@@ -254,8 +259,11 @@ typedef void *GDataServiceUploadProgressHandler;
   SEL serviceRetrySEL_;             // optional; set with setServiceRetrySelector
   NSTimeInterval serviceMaxRetryInterval_; // default to 600. seconds
 
-  NSInteger cookieStorageMethod_;   // constant GDataHTTPFetcher.h
+  NSInteger cookieStorageMethod_;   // constant from GTMHTTPFetcher.h
   BOOL serviceShouldFollowNextLinks_;
+
+  // OAuth support
+  id authorizer_;
 }
 
 // Applications should call setUserAgent: with a string of the form
@@ -364,31 +372,31 @@ typedef void *GDataServiceUploadProgressHandler;
                                        completionHandler:(void (^)(GDataServiceTicketBase *ticket, GDataFeedBase *feed, NSError *error))handler;
 #endif
 
-// reset the last modified dates to avoid getting a Not Modified status
+// reset the response cache to avoid getting a Not Modified status
 // based on prior queries
-- (void)clearLastModifiedDates;
+- (void)clearResponseDataCache;
 
-// Turn on data caching to receive a copy of previously-retrieved objects rather
-// than a Status 304 (Not Modified) from the server rather than the actual
-// data.
-- (void)setShouldCacheDatedData:(BOOL)flag;
-- (BOOL)shouldCacheDatedData;
+// Turn on data caching to receive a copy of previously-retrieved objects.
+// Otherwise, fetches may return status 304 (Not Modifier) rather than actual
+// data
+- (void)setShouldCacheResponseData:(BOOL)flag;
+- (BOOL)shouldCacheResponseData;
 
 // If dated data caching is on, this specifies the capacity of the cache.
 // Default is 15MB for Mac and 1 MB for iPhone.
-- (void)setDatedDataCacheCapacity:(NSUInteger)totalBytes;
-- (NSUInteger)datedDataCacheCapacity;
+- (void)setResponseDataCacheCapacity:(NSUInteger)totalBytes;
+- (NSUInteger)responseDataCacheCapacity;
 
-// Fetch history accessor, if necessary for sharing cookies and dated data
+// Fetcher service, if necessary for sharing cookies and dated data
 // cache with standalone http fetchers
-- (void)setFetchHistory:(GDataHTTPFetchHistory *)obj;
-- (GDataHTTPFetchHistory *)fetchHistory;
+- (void)setFetcherService:(GTMHTTPFetcherService *)obj;
+- (GTMHTTPFetcherService *)fetcherService;
 
 // Default storage for cookies is in the service object's fetchHistory.
 //
 // Apps that want to share cookies between all standalone fetchers and the
 // service object may specify static application-wide cookie storage,
-// kGDataHTTPFetcherCookieStorageMethodStatic.
+// kGTMHTTPFetcherCookieStorageMethodStatic.
 - (void)setCookieStorageMethod:(NSInteger)method;
 - (NSInteger)cookieStorageMethod;
 
@@ -483,7 +491,7 @@ typedef void *GDataServiceUploadProgressHandler;
 #endif
 
 
-// retrying; see comments on retry support at the top of GDataHTTPFetcher.
+// retrying; see comments on retry support at the top of GTMHTTPFetcher.
 - (BOOL)isServiceRetryEnabled;
 - (void)setIsServiceRetryEnabled:(BOOL)flag;
 
@@ -491,7 +499,7 @@ typedef void *GDataServiceUploadProgressHandler;
 //
 // If present, it should have the signature:
 //   -(BOOL)ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
-// and return YES to cause a retry.  Note that unlike the GDataHTTPFetcher retry
+// and return YES to cause a retry.  Note that unlike the GTMHTTPFetcher retry
 // selector, this selector's first argument is a ticket, not a fetcher.
 // The current fetcher can be retrived with [ticket currentFetcher]
 
@@ -511,6 +519,10 @@ typedef void *GDataServiceUploadProgressHandler;
                               password:(NSString *)password;
 - (NSString *)username;
 - (NSString *)password;
+
+// OAuth support
+- (id)authorizer;
+- (void)setAuthorizer:(id)obj;
 
 // Subclasses typically override defaultServiceVersion to specify the expected
 // version of the feed, but clients may also explicitly set the version
@@ -542,9 +554,9 @@ typedef void *GDataServiceUploadProgressHandler;
 // internal utilities
 //
 
-- (void)addAuthenticationToFetcher:(GDataHTTPFetcher *)fetcher;
+- (void)addAuthenticationToFetcher:(GTMHTTPFetcher *)fetcher;
 
-- (void)objectFetcher:(GDataHTTPFetcher *)fetcher failedWithStatus:(NSInteger)status data:(NSData *)data;
+- (void)objectFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error;
 
 + (NSString *)defaultApplicationIdentifier;
 
