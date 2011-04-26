@@ -110,8 +110,7 @@
   NSArray *rawWordArray = [commaSeparatedString componentsSeparatedByString:@","];
 
   NSMutableArray *keywordArray = nil;
-  NSString *word;
-  GDATA_FOREACH(word, rawWordArray) {
+  for (NSString *word in rawWordArray) {
 
     // trim each word in the array, and if a trimmed word is non-empty,
     // add it to the array

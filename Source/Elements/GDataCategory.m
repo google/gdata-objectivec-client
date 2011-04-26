@@ -121,9 +121,8 @@ static NSString* const kLangAttr = @"xml:lang";
 + (NSArray *)categoriesWithSchemePrefix:(NSString *)prefix
                          fromCategories:(NSArray *)array {
   NSMutableArray *matches = [NSMutableArray array];
-  GDataCategory *category;
 
-  GDATA_FOREACH(category, array) {
+  for (GDataCategory *category in array) {
     NSString *scheme = [category scheme];
     if (scheme != nil && [scheme hasPrefix:prefix]) {
       [matches addObject:category];
@@ -135,9 +134,8 @@ static NSString* const kLangAttr = @"xml:lang";
 + (NSArray *)categoryLabelsFromCategories:(NSArray *)array {
 
   NSMutableArray *labels = [NSMutableArray array];
-  GDataCategory *category;
 
-  GDATA_FOREACH(category, array) {
+  for (GDataCategory *category in array) {
     NSString *label = [category label];
     if (label != nil && ![labels containsObject:label]) {
       [labels addObject:label];
@@ -151,8 +149,7 @@ containsCategoryWithScheme:(NSString *)scheme
               term:(NSString *)term
              label:(NSString *)label {
   // nil argument means "don't care"
-  GDataCategory *category;
-  GDATA_FOREACH(category, array) {
+  for (GDataCategory *category in array) {
     if ((scheme == nil || AreEqualOrBothNil([category scheme], scheme))
         && (term == nil || AreEqualOrBothNil([category term], term))
         && (label == nil || AreEqualOrBothNil([category label], label))) {

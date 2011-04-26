@@ -145,11 +145,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
       [partialKeyPathList removeAllObjects];
 
       if ([thisKey isEqual:@"@count"]) {
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-        targetObj = [NSNumber numberWithInt:[targetArray count]];
-#else
         targetObj = [NSNumber numberWithUnsignedInteger:[targetArray count]];
-#endif
       } else {
         int arrayIndex = [thisKey intValue];
         targetObj = [targetArray objectAtIndex:arrayIndex];
@@ -447,14 +443,9 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"name", @"fred" },
     { @"XMLValues.0.XMLString", @"<mozq><lepper x=\"1\"></lepper></mozq>" },
     { @"XMLValues.1.XMLString", @"<frizq></frizq>" },
-#if MAC_OS_X_VERSION_MAX_ALLOWED > MAC_OS_X_VERSION_10_4
     // GDataExtendedProperty explicitly overrides the default namespace for its
     // children so that there's no default namespace (prefix "" = URI "")
-    //
-    // Skip this test under the 10.4 SDK because 10.4's KVC can't interpret
-    // an empty string as the last part of the KVC path
     { @"namespaces.", @"" },
-#endif
     { @"unknownChildren.@count.stringValue", @"0" },
     { @"", @"" },
         

@@ -153,8 +153,7 @@ static NSString* const kURLAttr = @"url";
   // step through all preferences and add their name/values to a dictionary
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
   
-  GDataWebContentGadgetPref *pref;
-  GDATA_FOREACH(pref, [self gadgetPreferences]) {
+  for (GDataWebContentGadgetPref *pref in [self gadgetPreferences]) {
     [dictionary setObject:[pref value] forKey:[pref name]];
   }
 

@@ -268,11 +268,7 @@
 }
 
 static inline BOOL ScanInteger(NSScanner *scanner, NSInteger *targetInteger) {
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-  return [scanner scanInt:targetInteger];
-#else
   return [scanner scanInteger:targetInteger];
-#endif
 }
 
 - (void)setFromRFC3339String:(NSString *)str {

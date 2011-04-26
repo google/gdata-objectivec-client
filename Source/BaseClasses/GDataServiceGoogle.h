@@ -64,18 +64,16 @@ enum {
 // GDataServiceTicket is the version of a ticket that supports
 // Google authentication
 @interface GDataServiceTicket : GDataServiceTicketBase {
-  GDataHTTPFetcher *authFetcher_;
+  GTMHTTPFetcher *authFetcher_;
   NSString *authToken_;
   NSDate *credentialDate_;
-
-  id authorizer_;
 }
 
 - (void)cancelTicket; // stops fetches in progress
 
 // ClientLogin support
-- (GDataHTTPFetcher *)authFetcher;
-- (void)setAuthFetcher:(GDataHTTPFetcher *)fetcher;
+- (GTMHTTPFetcher *)authFetcher;
+- (void)setAuthFetcher:(GTMHTTPFetcher *)fetcher;
 
 - (NSString *)authToken;
 - (void)setAuthToken:(NSString *)str;
@@ -83,9 +81,6 @@ enum {
 - (NSDate *)credentialDate;
 - (void)setCredentialDate:(NSDate *)date;
 
-// OAuth support
-- (id)authorizer;
-- (void)setAuthorizer:(id)obj;
 @end
 
 // GDataServiceGoogle is the version of the service class that supports
@@ -101,16 +96,13 @@ enum {
   // AuthSub support
   NSString *authSubToken_;
 
-  // OAuth support
-  id authorizer_;
-
   NSString *accountType_; // hosted or google
 
   NSString *signInDomain_;
 
   NSString *serviceID_; // typically supplied by the subclass overriding -serviceID
 
-  GDataHTTPFetcher *pendingAuthFetcher_;
+  GTMHTTPFetcher *pendingAuthFetcher_;
 
   NSDate *credentialDate_;
 
@@ -264,11 +256,6 @@ enum {
 - (NSString *)authSubToken;
 - (void)setAuthSubToken:(NSString *)str;
 
-// the authorizer object must implement
-// - (void)authorizeRequest:(NSMutableURLRequest *)request
-- (id)authorizer;
-- (void)setAuthorizer:(id)obj;
-
 + (NSString *)authorizationScope;
 
 // default account type is HOSTED_OR_GOOGLE
@@ -296,8 +283,8 @@ enum {
 // when the entries lack explicit root-level namespaces
 + (NSDictionary *)standardServiceNamespaces;
 
-- (GDataHTTPFetcher *)pendingAuthFetcher;
-- (void)setPendingAuthFetcher:(GDataHTTPFetcher *)fetcher;
+- (GTMHTTPFetcher *)pendingAuthFetcher;
+- (void)setPendingAuthFetcher:(GTMHTTPFetcher *)fetcher;
 
 // the date the credentials were set
 - (NSDate *)credentialDate;

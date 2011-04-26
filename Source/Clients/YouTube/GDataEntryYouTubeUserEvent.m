@@ -137,8 +137,7 @@
   // as in the Java interfaces
   NSArray *eventCats = [self categoriesWithScheme:kGDataSchemeYouTubeUserEvents];
 
-  GDataCategory *cat;
-  GDATA_FOREACH(cat, eventCats) {
+  for (GDataCategory *cat in eventCats) {
     [self removeCategory:cat];
   }
 

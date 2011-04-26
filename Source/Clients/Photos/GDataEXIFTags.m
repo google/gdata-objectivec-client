@@ -139,9 +139,9 @@
 
 - (GDataEXIFTag *)tagWithName:(NSString *)name {
   NSArray *tags = [self tags];
-  GDataEXIFTag *tag;
+  GDataEXIFTag *tag = nil;
 
-  GDATA_FOREACH(tag, tags) {
+  for (tag in tags) {
     if (AreEqualOrBothNil([tag name], name)) {
       break;
     }

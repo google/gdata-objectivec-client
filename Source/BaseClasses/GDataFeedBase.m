@@ -632,8 +632,7 @@ forCategoryWithScheme:scheme
 
   // step through the entries, ensure that none have other parents,
   // make each have this feed as parent
-  GDataObject* entry;
-  GDATA_FOREACH(entry, entries_) {
+  for (GDataObject* entry in entries_) {
 #if !NS_BLOCK_ASSERTIONS
     GDataObject *oldParent = [entry parent];
     GDATA_ASSERT(oldParent == self || oldParent == nil,
@@ -670,9 +669,7 @@ forCategoryWithScheme:scheme
   if (entries != nil) {
     entries_ = [[NSMutableArray alloc] initWithCapacity:[entries count]];
 
-    GDataObject* entry;
-
-    GDATA_FOREACH(entry, entries) {
+    for (GDataObject *entry in entries) {
       GDataEntryBase *entryCopy = [[entry copy] autorelease]; // clears parent in copy
       [entryCopy setParent:self];
       [entries_ addObject:entryCopy];

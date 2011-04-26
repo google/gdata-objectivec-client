@@ -161,8 +161,7 @@
 
   NSArray *extns = [self objectsForExtensionClass:theClass];
 
-  GDataObject *obj;
-  GDATA_FOREACH(obj, extns) {
+  for (GDataObject *obj in extns) {
     if ([(id)obj isPrimary]) return obj;
   }
   return nil;
@@ -171,10 +170,9 @@
 - (void)setPrimaryObject:(GDataObject *)newPrimaryObj
        forExtensionClass:(Class)theClass {
   NSArray *extns =  [self objectsForExtensionClass:theClass];
-  GDataObject *obj;
 
   BOOL foundIt = NO;
-  GDATA_FOREACH(obj, extns) {
+  for (GDataObject *obj in extns) {
     BOOL isPrimary = [newPrimaryObj isEqual:obj];
     [(id)obj setIsPrimary:isPrimary];
 

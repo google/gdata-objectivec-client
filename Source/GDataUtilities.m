@@ -207,8 +207,7 @@
   // classes of objects
 
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-  id key;
-  GDATA_FOREACH_KEY(key, source) {
+  for (id key in source) {
 
     id origObj = [source objectForKey:key];
     id copyObj;
@@ -240,7 +239,7 @@
 //
 // Reference: http://www.ietf.org/rfc/rfc3986.txt
 
-const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 + (NSString *)stringByURLEncodingForURI:(NSString *)str {
 
@@ -351,9 +350,8 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
   // the key path, and see if it's equal to the
   // desired value
   NSMutableArray *results = [NSMutableArray array];
-  id obj;
 
-  GDATA_FOREACH(obj, sourceArray) {
+  for (id obj in sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
 
@@ -368,8 +366,7 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
                  withValue:(id)desiredValue
                 forKeyPath:(NSString *)keyPath {
 
-  id obj;
-  GDATA_FOREACH(obj, sourceArray) {
+  for (id obj in sourceArray) {
     id val = [obj valueForKeyPath:keyPath];
     if (AreEqualOrBothNil(val, desiredValue)) {
 
@@ -392,8 +389,7 @@ const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
   responseDict = [NSMutableDictionary dictionaryWithCapacity:[allLines count]];
 
-  NSString *line;
-  GDATA_FOREACH(line, allLines) {
+  for (NSString *line in allLines) {
     NSScanner *scanner = [NSScanner scannerWithString:line];
     NSString *key;
     NSString *value;

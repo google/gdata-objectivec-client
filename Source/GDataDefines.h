@@ -35,9 +35,6 @@
 
 // Define later OS versions when building on earlier versions
 #ifdef MAC_OS_X_VERSION_10_0
-  #ifndef MAC_OS_X_VERSION_10_5
-    #define MAC_OS_X_VERSION_10_5 1050
-  #endif
   #ifndef MAC_OS_X_VERSION_10_6
     #define MAC_OS_X_VERSION_10_6 1060
   #endif
@@ -137,27 +134,6 @@
 
 
 //
-// macro to allow fast enumeration when building for 10.5 or later, and
-// reliance on NSEnumerator for 10.4
-//
-#ifndef GDATA_FOREACH
-  #if TARGET_OS_IPHONE || (MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5)
-    #define GDATA_FOREACH(element, collection) \
-      for (element in collection)
-    #define GDATA_FOREACH_KEY(key, dict) \
-      for (key in dict)
-  #else
-    #define GDATA_FOREACH(element, collection) \
-      for (NSEnumerator* _ ## element ## _enum = [collection objectEnumerator]; \
-          (element = [_ ## element ## _enum nextObject]) != nil; )
-    #define GDATA_FOREACH_KEY(key, dict) \
-      for (NSEnumerator* _ ## key ## _enum = [dict keyEnumerator]; \
-          (key = [_ ## key ## _enum nextObject]) != nil; )
-  #endif
-#endif
-
-
-//
 // To reduce code size on iPhone release builds, we compile out the helpful
 // description methods for GData objects
 //
@@ -176,23 +152,3 @@
     #define STRIP_GDATA_FETCH_LOGGING 0
   #endif
 #endif
-
-
-// To simplify support for 64bit (and Leopard in general), we provide the type
-// defines for non Leopard SDKs
-#if MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4
-  // NSInteger/NSUInteger and Max/Mins
-  #ifndef NSINTEGER_DEFINED
-    #if __LP64__ || NS_BUILD_32_LIKE_64
-      typedef long NSInteger;
-      typedef unsigned long NSUInteger;
-    #else
-      typedef int NSInteger;
-      typedef unsigned int NSUInteger;
-    #endif
-    #define NSIntegerMax    LONG_MAX
-    #define NSIntegerMin    LONG_MIN
-    #define NSUIntegerMax   ULONG_MAX
-    #define NSINTEGER_DEFINED 1
-  #endif  // NSINTEGER_DEFINED
-#endif  // MAC_OS_X_VERSION_MAX_ALLOWED <= MAC_OS_X_VERSION_10_4

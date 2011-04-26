@@ -477,8 +477,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   NSDictionary *parentNamespaces = [parent_ completeNamespaces];
 
-  NSString *prefix;
-  GDATA_FOREACH_KEY(prefix, namespaces_) {
+  for (NSString *prefix in namespaces_) {
 
     NSString *ownURI = [namespaces_ objectForKey:prefix];
     NSString *parentURI = [parentNamespaces objectForKey:prefix];
@@ -717,9 +716,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // we keep namespaces in a dictionary with prefixes
   // as keys.  We'll step through our namespaces and convert them
   // to NSXML-stype namespaces.
-
-  NSString *prefix;
-  GDATA_FOREACH_KEY(prefix, namespaces_) {
+  for (NSString *prefix in namespaces_) {
 
     NSString *uri = [namespaces_ objectForKey:prefix];
 
@@ -741,8 +738,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   // step through each extension, by class, and add those
   // objects to the XML element
-  Class oneClass;
-  GDATA_FOREACH_KEY(oneClass, extensions) {
+  for (Class oneClass in extensions) {
 
     id objectOrArray = [extensions_ objectForKey:oneClass];
 
@@ -764,13 +760,11 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
 
   // we have to copy the children so they don't point at the previous parent
   // nodes
-  NSXMLNode *child;
-  GDATA_FOREACH(child, unknownChildren_) {
+  for (NSXMLNode *child in unknownChildren_) {
     [element addChild:[[child copy] autorelease]];
   }
 
-  NSXMLNode *attr;
-  GDATA_FOREACH(attr, unknownAttributes_) {
+  for (NSXMLNode *attr in unknownAttributes_) {
 
     GDATA_DEBUG_ASSERT([element attributeForName:[attr name]] == nil,
               @"adding duplicate of attribute %@ (perhaps an object parsed with"
@@ -925,9 +919,7 @@ attributeValueIfNonNil:str
 // call the XMLElement method for each object in the array
 - (void)addToElement:(NSXMLElement *)element
  XMLElementsForArray:(NSArray *)arrayOfGDataObjects {
-
-  id item;
-  GDATA_FOREACH(item, arrayOfGDataObjects) {
+  for(id item in arrayOfGDataObjects) {
     [self addToElement:element XMLElementForObject:item];
   }
 }
@@ -1071,8 +1063,7 @@ objectDescriptionIfNonNil:(id)obj
 
   // add attribute descriptions in the order the attributes were declared
   NSArray *attributeDeclarations = [self attributeDeclarations];
-  NSString *name;
-  GDATA_FOREACH(name, attributeDeclarations) {
+  for (NSString *name in attributeDeclarations) {
 
     NSString *value = [attributes_ valueForKey:name];
     [self addToArray:stringItems objectDescriptionIfNonNil:value withName:name];
@@ -1115,8 +1106,7 @@ objectDescriptionIfNonNil:(id)obj
   //   {extensions:(gCal:color,link(3),gd:etag,id,updated)}
   NSMutableArray *extnsItems = [NSMutableArray array];
 
-  Class extClass;
-  GDATA_FOREACH_KEY(extClass, extensions_) {
+  for (Class extClass in extensions_) {
 
     // add the qualified XML name for each extension, followed by (n) when
     // there is more than one instance
@@ -1179,8 +1169,7 @@ objectDescriptionIfNonNil:(id)obj
     NSSet *namesSet = [NSSet setWithArray:names];
     NSMutableArray *fmtNames = [NSMutableArray arrayWithCapacity:[namesSet count]];
 
-    NSString *name;
-    GDATA_FOREACH(name, namesSet) {
+    for (NSString *name in namesSet) {
       NSString *fmtName = [NSString stringWithFormat:@"<%@>", name];
       [fmtNames addObject:fmtName];
     }
@@ -1316,8 +1305,7 @@ objectDescriptionIfNonNil:(id)obj
                            withPrefix:(NSString *)prefix {
   NSArray *allChildren = [parentElement children];
   NSMutableArray *matchingChildren = [NSMutableArray array];
-  NSXMLNode *childNode;
-  GDATA_FOREACH(childNode, allChildren) {
+  for (NSXMLNode *childNode in allChildren) {
     if ([childNode kind] == NSXMLElementKind
         && [[childNode prefix] isEqual:prefix]) {
 
@@ -1374,8 +1362,7 @@ objectDescriptionIfNonNil:(id)obj
   Class entryBaseClass = [GDataEntryBase class];
 
   // step through all child elements and create an appropriate GData object
-  NSXMLElement *objElement;
-  GDATA_FOREACH(objElement, objElements) {
+  for (NSXMLElement *objElement in objElements) {
 
     Class elementClass = objectClass;
     if (elementClass == nil) {
@@ -1493,8 +1480,7 @@ objectDescriptionIfNonNil:(id)obj
     // rather than use NSMutableArray's removeObjects:, it's faster to iterate and
     // and use removeObjectIdenticalTo: since it avoids comparing the underlying
     // XML for equality
-    NSXMLNode* element;
-    GDATA_FOREACH(element, array) {
+    for (NSXMLNode* element in array) {
       [unknownChildren_ removeObjectIdenticalTo:element];
     }
 
@@ -1522,9 +1508,8 @@ objectDescriptionIfNonNil:(id)obj
   //
   // in most cases, there is only one text node, so we'll optimize for that
   NSArray *children = [element children];
-  NSXMLNode *childNode;
 
-  GDATA_FOREACH(childNode, children) {
+  for (NSXMLNode *childNode in children) {
     if ([childNode kind] == NSXMLTextKind) {
 
       NSString *newNodeString = [childNode stringValue];
@@ -1899,8 +1884,7 @@ objectDescriptionIfNonNil:(id)obj
 
   if (objects) {
     // be sure each object has an element name so we can generate XML for it
-    GDataObject *obj;
-    GDATA_FOREACH(obj, objects) {
+    for (GDataObject *obj in objects) {
       [self ensureObject:obj hasXMLNameForExtensionClass:theClass];
     }
     [extensions_ setObject:objects forKey:theClass];
@@ -2013,29 +1997,11 @@ objectDescriptionIfNonNil:(id)obj
   // this for attribute extensions since those are so rare (most attributes
   // are parsed just by local declaration in parseAttributesForElement:.)
 
-#if GDATA_USES_LIBXML || MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_5
   NSArray *childLocalNames = [element valueForKeyPath:@"children.localName"];
 
   // allow wildcard lookups
   childLocalNames = [childLocalNames arrayByAddingObject:@"*"];
-#else
-  // Unfortunately, [element valueForKeyPath:@"children.localName"]
-  // causes an exception on 10.4/PPC, where children may not
-  // be an NSArray but an NSXMLChildren object which doesn't properly
-  // handle KVC array operators.
-  NSArray *children = [element children];
-  NSMutableArray *childLocalNames = [NSMutableArray arrayWithCapacity:[children count]];
-  NSXMLNode *child;
-  GDATA_FOREACH(child, children) {
-    NSString *localName = [child localName];
-    if ([localName length] > 0) {
-      [childLocalNames addObject:localName];
-    }
-  }
 
-  // allow wildcard lookups
-  [childLocalNames addObject:@"*"];
-#endif
   Class arrayClass = [NSArray class];
 
   for (GDataObject * currentExtensionSupplier = self;
@@ -2046,8 +2012,7 @@ objectDescriptionIfNonNil:(id)obj
     NSArray *extnDecls = [currentExtensionSupplier extensionDeclarationsForParentClass:classBeingParsed];
 
     if (extnDecls) {
-      GDataExtensionDeclaration *decl;
-      GDATA_FOREACH(decl, extnDecls) {
+      for (GDataExtensionDeclaration *decl in extnDecls) {
         // if we've not already found this class when parsing at an earlier supplier
         Class extensionClass = [decl childClass];
         if ([extensions_ objectForKey:extensionClass] == nil) {
@@ -2131,8 +2096,7 @@ objectDescriptionIfNonNil:(id)obj
   // emitted manually, or be declared as GDataAttribute extensions;
   // they cannot be handled as local attributes, since this class makes no
   // attempt to keep track of namespace URIs for local attributes
-  NSString *attr;
-  GDATA_FOREACH(attr, attributeLocalNames) {
+  for (NSString *attr in attributeLocalNames) {
     GDATA_ASSERT([attr rangeOfString:@":"].location == NSNotFound
                  || [attr hasPrefix:@"xml:"],
                  @"invalid namespaced local attribute: %@", attr);
@@ -2189,18 +2153,11 @@ objectDescriptionIfNonNil:(id)obj
 
   NSString *str = [self stringValueForAttribute:name];
   if (str) {
-    // when we can assume 10.5 or later, change this to use
-    // NSString's -longLongValue
-    long long val;
-    NSScanner *scanner = [NSScanner scannerWithString:str];
-
-    if ([scanner scanLongLong:&val]) {
-      NSNumber *number = [NSNumber numberWithLongLong:val];
-      return number;
-    }
+    long long val = [str longLongValue];
+    NSNumber *number = [NSNumber numberWithLongLong:val];
+    return number;
   }
   return nil;
-
 }
 
 - (NSDecimalNumber *)decimalNumberForAttribute:(NSString *)name {
@@ -2209,13 +2166,9 @@ objectDescriptionIfNonNil:(id)obj
   if ([str length] > 0) {
 
     // require periods as the separator
-    //
-    // Leopard requires that we use an NSLocale object instead of explicitly
-    // setting NSDecimalSeparator in a dictionary.
-
     NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
     NSDecimalNumber *number = [NSDecimalNumber decimalNumberWithString:str
-                                    locale:(id)usLocale]; // cast for 10.4
+                                    locale:usLocale];
     return number;
   }
   return nil;
@@ -2281,13 +2234,9 @@ objectDescriptionIfNonNil:(id)obj
 
   // for most NSNumbers, just calling -stringValue is fine, but for decimal
   // numbers we want to specify that a period be the separator
-  //
-  // Leopard requires that we use an NSLocale object instead of explicitly
-  // setting NSDecimalSeparator in a dictionary.
-
   NSLocale *usLocale = [[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"] autorelease];
 
-  NSString *str = [num descriptionWithLocale:(id)usLocale]; // cast for 10.4
+  NSString *str = [num descriptionWithLocale:usLocale];
   [self setStringValue:str forAttribute:name];
 }
 
@@ -2304,10 +2253,9 @@ objectDescriptionIfNonNil:(id)obj
   // for better performance, look up the values for declared attributes only
   // if they are really present in the node
   NSArray *attributes = [element attributes];
-  NSXMLNode *attribute;
   NSArray *attributeDeclarations = [self attributeDeclarations];
 
-  GDATA_FOREACH(attribute, attributes) {
+  for (NSXMLNode *attribute in attributes) {
 
     NSString *attrName = [attribute name];
     if ([attributeDeclarations containsObject:attrName]) {
@@ -2325,8 +2273,7 @@ objectDescriptionIfNonNil:(id)obj
 // XML generator for local attributes
 - (void)addAttributesToElement:(NSXMLElement *)element {
 
-  NSString *name;
-  GDATA_FOREACH_KEY(name, attributes_) {
+  for (NSString *name in attributes_) {
 
     NSString *value = [attributes_ valueForKey:name];
     if (value != nil) {
@@ -2353,8 +2300,7 @@ objectDescriptionIfNonNil:(id)obj
   // step through attributes, comparing each non-ignored attribute
   // to look for a mismatch
   NSArray *attributeDeclarations = [self attributeDeclarations];
-  NSString *attrKey;
-  GDATA_FOREACH(attrKey, attributeDeclarations) {
+  for (NSString *attrKey in attributeDeclarations) {
 
     if (![attributesToIgnore containsObject:attrKey]) {
 
@@ -2486,9 +2432,7 @@ objectDescriptionIfNonNil:(id)obj
     if (children != nil) {
 
       // save only top-level nodes that are elements
-      NSXMLNode *childNode;
-
-      GDATA_FOREACH(childNode, children) {
+      for (NSXMLNode *childNode in children) {
         if ([childNode kind] == NSXMLElementKind) {
           if (childXMLElements_ == nil) {
             childXMLElements_ = [[NSMutableArray alloc] init];
@@ -2511,8 +2455,7 @@ objectDescriptionIfNonNil:(id)obj
     NSArray *childXMLElements = [self childXMLElements];
     if (childXMLElements != nil) {
 
-      NSXMLNode *child;
-      GDATA_FOREACH(child, childXMLElements) {
+      for (NSXMLNode *child in childXMLElements) {
         [element addChild:child];
       }
     }
@@ -2670,8 +2613,7 @@ forCategoryWithScheme:(NSString *)scheme
         }
       }
 
-      NSXMLElement *categoryNode;
-      GDATA_FOREACH(categoryNode, categories) {
+      for (NSXMLElement *categoryNode in categories) {
 
         NSString *scheme = [[categoryNode attributeForName:@"scheme"] stringValue];
         NSString *term = [[categoryNode attributeForName:@"term"] stringValue];

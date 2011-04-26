@@ -256,11 +256,7 @@
 - (GDataMediaContent *)mediaContentWithFormatNumber:(NSInteger)formatNumber {
   NSArray *mediaContents = [self mediaContents];
 
-#if MAC_OS_X_VERSION_MIN_REQUIRED <= MAC_OS_X_VERSION_10_4
-  NSNumber *formatNum = [NSNumber numberWithInt:formatNumber];
-#else
   NSNumber *formatNum = [NSNumber numberWithInteger:formatNumber];
-#endif
 
   GDataMediaContent *content;
   content = [GDataUtilities firstObjectFromArray:mediaContents

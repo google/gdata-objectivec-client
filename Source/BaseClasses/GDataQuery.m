@@ -1,17 +1,17 @@
 /* Copyright (c) 2007 Google Inc.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 //
 //  GDataQuery.m
@@ -132,8 +132,7 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
   NSMutableString *result = [NSMutableString string];
 
   // append include categories
-  GDataCategory *cat;
-  GDATA_FOREACH(cat, categories_) {
+  for (GDataCategory *cat in categories_) {
     if ([result length] > 0) {
       [result appendString:@"|"];
     }
@@ -141,7 +140,7 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
   }
 
   // append exclude categories, preceded by "-"
-  GDATA_FOREACH(cat, excludeCategories_) {
+  for (GDataCategory *cat in excludeCategories_) {
     if ([result length] > 0) {
       [result appendString:@"|"];
     }
@@ -586,8 +585,7 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
   if ([categoryFilters_ count] > 0) {
     [pathStr appendString:@"-"];
 
-    id filter;
-    GDATA_FOREACH(filter, categoryFilters_) {
+    for (id filter in categoryFilters_) {
       NSString *filterValue = [filter stringValue];
       NSString *filterStr = [GDataUtilities stringByURLEncodingForURI:filterValue];
       if ([filterStr length] > 0) {
@@ -611,8 +609,7 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
   NSArray *customKeys = [customParameters allKeys];
   NSArray *sortedCustomKeys = [customKeys sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 
-  id paramKey;
-  GDATA_FOREACH(paramKey, sortedCustomKeys) {
+  for (id paramKey in sortedCustomKeys) {
     NSString *paramValue = [customParameters valueForKey:paramKey];
 
     NSString *paramItem = [NSString stringWithFormat:@"%@=%@",
