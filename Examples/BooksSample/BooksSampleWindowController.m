@@ -298,7 +298,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -320,7 +320,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 
     service = [[GDataServiceGoogleBooks alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 
@@ -448,8 +448,7 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
     // load the pop-up menu of collections
     [mCollectionPopup removeAllItems];
 
-    GDataEntryCollection *entry;
-    GDATA_FOREACH(entry, [feed entries]) {
+    for (GDataEntryCollection *entry in [feed entries]) {
       NSString *collectionName = [[entry title] stringValue];
       NSMenuItem *newMenuItem = [[mCollectionPopup menu] addItemWithTitle:collectionName
                                                                    action:NULL
@@ -548,31 +547,27 @@ static BooksSampleWindowController* gBooksSampleWindowController = nil;
 }
 
 - (void)fetchURLString:(NSString *)urlString forImageView:(NSImageView *)view {
-
-  NSURL *imageURL = [NSURL URLWithString:urlString];
-  NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+  GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];
 
   // use the fetcher's userData to remember which view we'll display
   // this in once the fetch completes
   [fetcher setUserData:view];
 
   [fetcher beginFetchWithDelegate:self
-                didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                  didFailSelector:@selector(imageFetcher:failedWithError:)];
+                didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // got the data; display it in the image view
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data  error:(NSError *)error {
+  if (error == nil) {
+    // got the data; display it in the image view
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
 
-  NSImageView *view = (NSImageView *)[fetcher userData];
+    NSImageView *view = (NSImageView *)[fetcher userData];
 
-  [view setImage:image];
-}
-
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);
+    [view setImage:image];
+  } else {
+    NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);
+  }
 }
 
 #pragma mark Update Web View

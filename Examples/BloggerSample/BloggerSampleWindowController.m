@@ -249,7 +249,7 @@
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -268,7 +268,7 @@
   if (!service) {
     service = [[GDataServiceGoogleBlogger alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

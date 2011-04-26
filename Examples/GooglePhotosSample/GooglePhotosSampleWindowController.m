@@ -187,11 +187,9 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 - (void)fetchURLString:(NSString *)urlString
           forImageView:(NSImageView *)view
                  title:(NSString *)title {
-  
-  NSURL *imageURL = [NSURL URLWithString:urlString];
-  NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-  
+
+  GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];
+
   // use the fetcher's userData to remember which image view we'll display
   // this in once the fetch completes
   [fetcher setUserData:view];
@@ -200,20 +198,19 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [fetcher setCommentWithFormat:@"thumbnail for %@", title];
 
   [fetcher beginFetchWithDelegate:self
-                didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                  didFailSelector:@selector(imageFetcher:failedWithError:)];
+                didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // got the data; display it in the image view
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-  
-  NSImageView *view = (NSImageView *)[fetcher userData];
-  [view setImage:image];
-}
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error == nil) {
+    // got the data; display it in the image view
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
+    NSImageView *view = (NSImageView *)[fetcher userData];
+    [view setImage:image];
+  } else {
+    NSLog(@"imageFetcher:%@ error:%@", fetcher,  error);
+  }
 }
 
 #pragma mark -
@@ -420,7 +417,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
 }
 #pragma mark -
 
@@ -437,8 +434,8 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   
   if (!service) {
     service = [[GDataServiceGooglePhotos alloc] init];
-    
-    [service setShouldCacheDatedData:YES];
+
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 
@@ -518,7 +515,6 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 - (void)albumListFetchTicket:(GDataServiceTicket *)ticket
             finishedWithFeed:(GDataFeedPhotoUser *)feed
                        error:(NSError *)error {
-
   [self setAlbumFeed:feed];
   [self setAlbumFetchError:error];
   [self setAlbumFetchTicket:nil];
@@ -544,7 +540,6 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // fetch the photos feed
     NSURL *feedURL = [[album feedLink] URL];
     if (feedURL) {
-
       [self setPhotoFeed:nil];
       [self setPhotoFetchError:nil];
       [self setPhotoFetchTicket:nil];
@@ -861,21 +856,22 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     if (imageContent) {
       NSURL *downloadURL = [NSURL URLWithString:[imageContent URLString]];
 
-      // the service object creates an authenticated request for us
+      // requestForURL:ETag:httpMethod: sets the user agent header of the
+      // request and, when using ClientLogin, adds the authorization header
       GDataServiceGooglePhotos *service = [self googlePhotosService];
       NSMutableURLRequest *request = [service requestForURL:downloadURL
                                                        ETag:nil
                                                  httpMethod:nil];
       // fetch the request
-      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+      [fetcher setAuthorizer:[service authorizer]];
 
       // http logs are easier to read when fetchers have comments
       [fetcher setCommentWithFormat:@"downloading %@",
        [[photoEntry title] stringValue]];
 
       [fetcher beginFetchWithDelegate:self
-                    didFinishSelector:@selector(downloadFetcher:finishedWithData:)
-                      didFailSelector:@selector(downloadFetcher:failedWithError:)];
+                    didFinishSelector:@selector(downloadFetcher:finishedWithData:error:)];
 
       [fetcher setProperty:savePath forKey:@"save path"];
       [fetcher setProperty:photoEntry forKey:@"photo entry"];
@@ -890,42 +886,42 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
   }
 }
 
-- (void)downloadFetcher:(GDataHTTPFetcher *)fetcher
-       finishedWithData:(NSData *)data {
-  // successfully retrieved this photo's data; save it to disk
-  NSString *savePath = [fetcher propertyForKey:@"save path"];
-  GDataEntryPhoto *photoEntry = [fetcher propertyForKey:@"photo entry"];
+- (void)downloadFetcher:(GTMHTTPFetcher *)fetcher
+       finishedWithData:(NSData *)data
+                  error:(NSError *)error {
+  if (error == nil) {
+    // successfully retrieved this photo's data; save it to disk
+    NSString *savePath = [fetcher propertyForKey:@"save path"];
+    GDataEntryPhoto *photoEntry = [fetcher propertyForKey:@"photo entry"];
 
-  NSError *error = nil;
-  BOOL didSave = [data writeToFile:savePath
-                           options:NSAtomicWrite
-                             error:&error];
-  if (didSave) {
-    // we'll set the file date to match the photo entry's date
-    NSDate *photoDate = [[photoEntry timestamp] dateValue];
-    if (photoDate) {
-      NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
-                            photoDate, NSFileCreationDate,
-                            photoDate, NSFileModificationDate, nil];
-      NSFileManager *fileMgr = [NSFileManager defaultManager];
-      [fileMgr changeFileAttributes:attr atPath:savePath];
+    NSError *error = nil;
+    BOOL didSave = [data writeToFile:savePath
+                             options:NSAtomicWrite
+                               error:&error];
+    if (didSave) {
+      // we'll set the file date to match the photo entry's date
+      NSDate *photoDate = [[photoEntry timestamp] dateValue];
+      if (photoDate) {
+        NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys:
+                              photoDate, NSFileCreationDate,
+                              photoDate, NSFileModificationDate, nil];
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        [fileMgr changeFileAttributes:attr atPath:savePath];
+      }
+      NSBeginAlertSheet(@"Saved", nil, nil, nil,
+                        [self window], nil, nil, nil, nil,
+                        @"Saved photo: %@", savePath);
+    } else {
+      // error saving file.  Perhaps out of space?  Write permissions error?
+      NSBeginAlertSheet(@"Save failed", nil, nil, nil,
+                        [self window], nil, nil, nil, nil,
+                        @"Saving photo to disk failed: %@", error);
     }
-    NSBeginAlertSheet(@"Saved", nil, nil, nil,
-                      [self window], nil, nil, nil, nil,
-                      @"Saved photo: %@", savePath);
   } else {
-    // error saving file.  Perhaps out of space?  Write permissions error?
-    NSBeginAlertSheet(@"Save failed", nil, nil, nil,
+    NSBeginAlertSheet(@"Download failed", nil, nil, nil,
                       [self window], nil, nil, nil, nil,
-                      @"Saving photo to disk failed: %@", error);
+                      @"Downloading photo failed: %@", error);
   }
-}
-
-- (void)downloadFetcher:(GDataHTTPFetcher *)fetcher
-        failedWithError:(NSError *)error {
-  NSBeginAlertSheet(@"Download failed", nil, nil, nil,
-                    [self window], nil, nil, nil, nil,
-                    @"Downloading photo failed: %@", error);
 }
 
 #pragma mark Move a photo to another album

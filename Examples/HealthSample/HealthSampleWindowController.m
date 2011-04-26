@@ -198,7 +198,7 @@ static HealthSampleWindowController* gWindowController = nil;
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark IBActions
@@ -261,7 +261,7 @@ static HealthSampleWindowController* gWindowController = nil;
     [service release];
     service = [[mServiceClass alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

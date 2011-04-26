@@ -362,35 +362,36 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
         // get an NSURLRequest object with an auth token
         NSURL *imageURL = [photoLink URL];
         GDataServiceGoogleContact *service = [self contactService];
+
+        // requestForURL:ETag:httpMethod: sets the user agent header of the
+        // request and, when using ClientLogin, adds the authorization header
         NSMutableURLRequest *request = [service requestForURL:imageURL
                                                          ETag:nil
                                                    httpMethod:nil];
 
         [request setValue:@"image/*" forHTTPHeaderField:@"Accept"];
 
-        GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-
+        GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+        [fetcher setAuthorizer:[service authorizer]];
         [fetcher beginFetchWithDelegate:self
-                      didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                        didFailSelector:@selector(imageFetcher:failedWithError:)];
+                      didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
       }
     }
   }
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // got the data; display it in the image view.  Because this is sample
-  // code, we won't be rigorous about verifying that the selected contact hasn't
-  // changed between when the fetch began and now.
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error == nil) {
+    // got the data; display it in the image view.  Because this is sample
+    // code, we won't be rigorous about verifying that the selected contact hasn't
+    // changed between when the fetch began and now.
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
 
-  [mContactImageView setImage:image];
+    [mContactImageView setImage:image];
+  } else {
+    NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);
+  }
 }
-
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
-}
-
 
 #pragma mark IBActions
 
@@ -475,7 +476,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
 }
 
 #pragma mark -
@@ -494,7 +495,7 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleContact alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

@@ -299,7 +299,7 @@ enum {
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -318,7 +318,7 @@ enum {
   if (!service) {
     service = [[GDataServiceGoogleTranslation alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 
@@ -760,39 +760,40 @@ enum {
 
     NSURL *sourceURL = [[selectedEntry content] sourceURL];
 
-    // use the service to make an authenticated request for the entry source
     GDataServiceGoogleTranslation *service = [self translationService];
 
+    // requestForURL:ETag:httpMethod: sets the user agent header of the
+    // request and, when using ClientLogin, adds the authorization header
     NSURLRequest *request = [service requestForURL:sourceURL
                                               ETag:nil
                                         httpMethod:nil];
 
-    GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [fetcher setAuthorizer:[service authorizer]];
     [fetcher setUserData:savePath];
     [fetcher beginFetchWithDelegate:self
-                  didFinishSelector:@selector(fetcher:finishedWithData:)
-                    didFailSelector:@selector(fetcher:failedWithError:)];
+                  didFinishSelector:@selector(fetcher:finishedWithData:error:)];
   }
 }
 
-- (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // save the file to the local path specified by the user
-  NSString *savePath = [fetcher userData];
-  NSError *error = nil;
-  BOOL didWrite = [data writeToFile:savePath
-                            options:NSAtomicWrite
-                              error:&error];
-  if (!didWrite) {
-    NSLog(@"Error saving file: %@", error);
-    NSBeep();
+- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error == nil) {
+    // save the file to the local path specified by the user
+    NSString *savePath = [fetcher userData];
+    NSError *error = nil;
+    BOOL didWrite = [data writeToFile:savePath
+                              options:NSAtomicWrite
+                                error:&error];
+    if (!didWrite) {
+      NSLog(@"Error saving file: %@", error);
+      NSBeep();
+    } else {
+      // successfully saved the document
+    }
   } else {
-    // successfully saved the document
+    NSLog(@"Fetcher error: %@", error);
+    NSBeep();
   }
-}
-
-- (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"Fetcher error: %@", error);
-  NSBeep();
 }
 
 #pragma mark Rename an entry
@@ -963,8 +964,7 @@ enum {
   }
 
   // step through all glossary or memory items and list them in the pop-up menu
-  GDataEntryBase *entry;
-  GDATA_FOREACH(entry, [feed entries]) {
+  for (GDataEntryBase *entry in [feed entries]) {
     NSString *title = [[entry title] stringValue];
     NSString *entryID = [entry identifier];
 

@@ -188,7 +188,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
 }
 
 #pragma mark IBActions
@@ -260,7 +260,7 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleFinance alloc] init];
     
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

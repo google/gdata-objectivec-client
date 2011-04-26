@@ -251,7 +251,7 @@
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -270,7 +270,7 @@
   if (!service) {
     service = [[GDataServiceGoogleMaps alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

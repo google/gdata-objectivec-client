@@ -22,14 +22,15 @@
 #import "GData/GData.h"
 
 @interface CalendarSampleWindowController : NSWindowController {
-  IBOutlet NSTextField *mUsernameField;
-  IBOutlet NSSecureTextField *mPasswordField;
-  
+ @private
+  IBOutlet NSTextField *mSignedInField;
+  IBOutlet NSButton *mSignedInButton;
+
   IBOutlet NSTableView *mCalendarTable;
   IBOutlet NSProgressIndicator *mCalendarProgressIndicator;
   IBOutlet NSTextView *mCalendarResultTextField;
   IBOutlet NSButton *mCalendarCancelButton;
-  
+
   IBOutlet NSSegmentedControl *mCalendarSegmentedControl;
   IBOutlet NSButton *mAddCalendarButton;
   IBOutlet NSButton *mRenameCalendarButton;
@@ -40,19 +41,25 @@
   IBOutlet NSProgressIndicator *mEventProgressIndicator;
   IBOutlet NSTextView *mEventResultTextField;
   IBOutlet NSButton *mEventCancelButton;
-  
+
   IBOutlet NSButton *mAddEventButton;
   IBOutlet NSButton *mDeleteEventButton;
   IBOutlet NSButton *mEditEventButton;
   IBOutlet NSButton *mQueryTodayEventButton;
   IBOutlet NSButton *mQueryFreeBusyButton;
-  
+
   IBOutlet NSSegmentedControl *mEntrySegmentedControl;
-  
+
+  IBOutlet NSButton *mClientIDButton;
+  IBOutlet NSTextField *mClientIDRequiredTextField;
+  IBOutlet NSWindow *mClientIDSheet;
+  IBOutlet NSTextField *mClientIDField;
+  IBOutlet NSTextField *mClientSecretField;
+
   GDataFeedCalendar *mCalendarFeed;
   GDataServiceTicket *mCalendarFetchTicket;
   NSError *mCalendarFetchError;
-    
+
   GDataFeedCalendarEvent *mEventFeed;
   GDataServiceTicket *mEventFetchTicket;
   NSError *mEventFetchError;
@@ -67,6 +74,8 @@
 }
 
 + (CalendarSampleWindowController *)sharedCalendarSampleWindowController;
+
+- (IBAction)signInClicked:(id)sender;
 
 - (IBAction)getCalendarClicked:(id)sender;
 
@@ -87,5 +96,10 @@
 - (IBAction)entrySegmentClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
+
+// Client ID sheet
+- (IBAction)clientIDClicked:(id)sender;
+- (IBAction)clientIDDoneClicked:(id)sender;
+- (IBAction)APIConsoleClicked:(id)sender;
 
 @end

@@ -17,6 +17,8 @@
 		4FA6F2CA1034AB7100C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C41034AB7100C5DFA5 /* MainMenu.xib */; };
 		4FA6F2CB1034AB7100C5DFA5 /* CalendarSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F2C61034AB7100C5DFA5 /* CalendarSampleWindow.xib */; };
 		4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAB41B30BAA215D00FBBDC9 /* GData.framework */; };
+		4FE5D42D135F9EA80003E5EC /* GTMOAuth2Window.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FE5D42C135F9EA80003E5EC /* GTMOAuth2Window.xib */; };
+		4FE5D443135F9EE40003E5EC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FE5D442135F9EE40003E5EC /* WebKit.framework */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -27,7 +29,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */;
+			remoteGlobalIDString = 4F85E018103B83B700B4C418;
 			remoteInfo = GDataIPhoneUnitTests;
 		};
 		4FA6F2BC1034AB5F00C5DFA5 /* PBXContainerItemProxy */ = {
@@ -103,6 +105,8 @@
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
 		4FD0F04B0CBC5C5600059DC1 /* buildCopyScript */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildCopyScript; sourceTree = "<group>"; };
 		4FD0F04C0CBC5C5600059DC1 /* buildStripHeaders */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.script.sh; path = buildStripHeaders; sourceTree = "<group>"; };
+		4FE5D42C135F9EA80003E5EC /* GTMOAuth2Window.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GTMOAuth2Window.xib; path = ../../Source/OAuth2/Mac/GTMOAuth2Window.xib; sourceTree = SOURCE_ROOT; };
+		4FE5D442135F9EE40003E5EC /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* CalendarSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -114,6 +118,7 @@
 			files = (
 				4FAB41E10BAA22C000FBBDC9 /* GData.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				4FE5D443135F9EE40003E5EC /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,6 +143,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FE5D442135F9EE40003E5EC /* WebKit.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -187,6 +193,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				4FE5D42C135F9EA80003E5EC /* GTMOAuth2Window.xib */,
 				4FA6F2C41034AB7100C5DFA5 /* MainMenu.xib */,
 				4FA6F2C61034AB7100C5DFA5 /* CalendarSampleWindow.xib */,
 				4FA6F2C01034AB7100C5DFA5 /* EditEventWindow.xib */,
@@ -259,7 +266,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "CalendarSample" */;
 			compatibilityVersion = "Xcode 3.0";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
 			projectDirPath = "";
 			projectReferences = (
@@ -268,6 +282,7 @@
 					ProjectRef = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* CalendarSample */,
 			);
@@ -322,6 +337,7 @@
 				4FA6F2C91034AB7100C5DFA5 /* EditACLWindow.xib in Resources */,
 				4FA6F2CA1034AB7100C5DFA5 /* MainMenu.xib in Resources */,
 				4FA6F2CB1034AB7100C5DFA5 /* CalendarSampleWindow.xib in Resources */,
+				4FE5D42D135F9EA80003E5EC /* GTMOAuth2Window.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,7 +493,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DDEBUG=1";
 				PREBINDING = NO;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;

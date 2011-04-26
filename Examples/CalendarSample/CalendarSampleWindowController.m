@@ -22,6 +22,8 @@
 #import "EditEventWindowController.h"
 #import "EditACLWindowController.h"
 
+#import "GData/GTMOAuth2WindowController.h"
+
 @interface CalendarSampleWindowController (PrivateMethods)
 - (void)updateUI;
 
@@ -106,6 +108,7 @@ enum {
 
 static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
+static NSString *const kKeychainItemName = @"CalendarSample: Google Calendar";
 
 + (CalendarSampleWindowController *)sharedCalendarSampleWindowController {
 
@@ -124,6 +127,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 }
 
 - (void)awakeFromNib {
+  // Load the OAuth token from the keychain, if it was previously saved
+  NSString *clientID = [mClientIDField stringValue];
+  NSString *clientSecret = [mClientSecretField stringValue];
+
+  GTMOAuth2Authentication *auth;
+  auth = [GTMOAuth2WindowController authForGoogleFromKeychainForName:kKeychainItemName
+                                                            clientID:clientID
+                                                        clientSecret:clientSecret];
+  [[self calendarService] setAuthorizer:auth];
+
   // Set the result text fields to have a distinctive color and mono-spaced font
   // to aid in understanding of each calendar and event query operation.
   [mCalendarResultTextField setTextColor:[NSColor darkGrayColor]];
@@ -161,7 +174,78 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 #pragma mark -
 
+- (NSString *)signedInUsername {
+  // Get the email address of the signed-in user
+  GTMOAuth2Authentication *auth = [[self calendarService] authorizer];
+  BOOL isSignedIn = auth.canAuthorize;
+  if (isSignedIn) {
+    return auth.userEmail;
+  } else {
+    return nil;
+  }
+}
+
+- (BOOL)isSignedIn {
+  NSString *name = [self signedInUsername];
+  return (name != nil);
+}
+
+- (void)runSigninThenInvokeSelector:(SEL)signInDoneSel {
+  // Applications should have client ID and client secret strings
+  // hardcoded into the source, but the sample application asks the
+  // developer for the strings
+  NSString *clientID = [mClientIDField stringValue];
+  NSString *clientSecret = [mClientSecretField stringValue];
+
+  if ([clientID length] == 0 || [clientSecret length] == 0) {
+    // Remind the developer that client ID and client secret are needed
+    [mClientIDButton performSelector:@selector(performClick:)
+                          withObject:self
+                          afterDelay:0.5];
+    return;
+  }
+
+  // Show the OAuth 2 sign-in controller
+  NSString *scope = [GDataServiceGoogleCalendar authorizationScope];
+
+  NSBundle *frameworkBundle = [NSBundle bundleForClass:[GTMOAuth2WindowController class]];
+  GTMOAuth2WindowController *windowController;
+  windowController = [[[GTMOAuth2WindowController alloc] initWithScope:scope
+                                                              clientID:clientID
+                                                          clientSecret:clientSecret
+                                                      keychainItemName:kKeychainItemName
+                                                        resourceBundle:frameworkBundle] autorelease];
+
+  [windowController setUserData:NSStringFromSelector(signInDoneSel)];
+  [windowController signInSheetModalForWindow:[self window]
+                                     delegate:self
+                             finishedSelector:@selector(windowController:finishedWithAuth:error:)];
+}
+
+- (void)windowController:(GTMOAuth2WindowController *)windowController
+        finishedWithAuth:(GTMOAuth2Authentication *)auth
+                   error:(NSError *)error {
+  // Callback from OAuth 2 sign-in
+  if (error == nil) {
+    [[self calendarService] setAuthorizer:auth];
+
+    NSString *selStr = [windowController userData];
+    if (selStr) {
+      [self performSelector:NSSelectorFromString(selStr)];
+    }
+  } else {
+    [self setCalendarFetchError:error];
+    [self updateUI];
+  }
+}
+
+#pragma mark -
+
 - (void)updateUI {
+  BOOL isSignedIn = [self isSignedIn];
+  NSString *username = [self signedInUsername];
+  [mSignedInButton setTitle:(isSignedIn ? @"Sign Out" : @"Sign In")];
+  [mSignedInField setStringValue:(isSignedIn ? username : @"No")];
 
   // calendar list display
   [mCalendarTable reloadData];
@@ -301,9 +385,6 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [mQueryTodayEventButton setEnabled:NO];
   }
 
-  GDataServiceGoogleCalendar *service = [self calendarService];
-  BOOL isSignedIn = ([[service username] length] > 0
-                     && [[service password] length] > 0);
   [mQueryFreeBusyButton setEnabled:isSignedIn];
 
   // enable or disable the Events/ACL segment buttons
@@ -313,6 +394,25 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                           forSegment:kSettingsSegment];
   [mEntrySegmentedControl setEnabled:doesSelectedCalendarHaveACLFeed
                           forSegment:kACLSegment];
+
+  // Show or hide the text indicating that the client ID or client secret are
+  // needed
+  BOOL hasClientIDStrings = [[mClientIDField stringValue] length] > 0
+    && [[mClientSecretField stringValue] length] > 0;
+  [mClientIDRequiredTextField setHidden:hasClientIDStrings];
+}
+
+- (void)displayAlert:(NSString *)title format:(NSString *)format, ... {
+  NSString *result = format;
+  if (format) {
+    va_list argList;
+    va_start(argList, format);
+    result = [[[NSString alloc] initWithFormat:format
+                                     arguments:argList] autorelease];
+    va_end(argList);
+  }
+  NSBeginAlertSheet(title, nil, nil, nil, [self window], nil, nil,
+                    nil, nil, result);
 }
 
 - (NSString *)displayStringForACLEntry:(GDataEntryACL *)aclEntry  {
@@ -363,21 +463,26 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
 #pragma mark IBActions
 
-- (IBAction)getCalendarClicked:(id)sender {
+- (IBAction)signInClicked:(id)sender {
+  if (![self isSignedIn]) {
+    // Sign in
+    [self runSigninThenInvokeSelector:@selector(updateUI)];
+  } else {
+    // Sign out
+    GDataServiceGoogleCalendar *service = [self calendarService];
 
-  NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
-  NSString *username = [mUsernameField stringValue];
-  username = [username stringByTrimmingCharactersInSet:whitespace];
-
-  if ([username rangeOfString:@"@"].location == NSNotFound) {
-    // if no domain was supplied, add @gmail.com
-    username = [username stringByAppendingString:@"@gmail.com"];
+    [GTMOAuth2WindowController removeAuthFromKeychainForName:kKeychainItemName];
+    [service setAuthorizer:nil];
+    [self updateUI];
   }
+}
 
-  [mUsernameField setStringValue:username];
-
-  [self fetchAllCalendars];
+- (IBAction)getCalendarClicked:(id)sender {
+  if (![self isSignedIn]) {
+    [self runSigninThenInvokeSelector:@selector(fetchAllCalendars)];
+  } else {
+    [self fetchAllCalendars];
+  }
 }
 
 - (IBAction)calendarSegmentClicked:(id)sender {
@@ -445,8 +550,13 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   [self fetchSelectedCalendar];
 }
 
+- (IBAction)APIConsoleClicked:(id)sender {
+  NSURL *url = [NSURL URLWithString:@"https://code.google.com/apis/console"];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
+
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 // logEntryXML is called when the user double-clicks on a calendar,
@@ -484,16 +594,10 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleCalendar alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
+    [service setIsServiceRetryEnabled:YES];
   }
-
-  // update the username/password each time the service is requested
-  NSString *username = [mUsernameField stringValue];
-  NSString *password = [mPasswordField stringValue];
-
-  [service setUserCredentialsWithUsername:username
-                                 password:password];
 
   return service;
 }
@@ -621,9 +725,8 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                     error:(NSError *)error {
   if (error == nil) {
     // tell the user that the add worked
-    NSBeginAlertSheet(@"Added Calendar", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar added");
+    [self displayAlert:@"Added Calendar"
+                format:@"Calendar added"];
 
     [mCalendarNameField setStringValue:@""];
 
@@ -632,9 +735,8 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     [self updateUI];
   } else {
     // add failed
-    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar add failed: %@", error);
+    [self displayAlert:@"Add failed"
+                format:@"Calendar add failed: %@", error];
   }
 }
 
@@ -680,18 +782,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                        error:(NSError *)error {
   if (error == nil) {
     // tell the user that the rename worked
-    NSBeginAlertSheet(@"Renamed Calendar", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar renamed");
+    [self displayAlert:@"Renamed Calendar"
+                format:@"Calendar renamed"];
 
     // refetch the current calendars
     [self fetchAllCalendars];
     [self updateUI];
   } else {
     // rename failed
-    NSBeginAlertSheet(@"Rename failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar rename failed: %@", error);
+    [self displayAlert:@"Rename failed"
+                format:@"Calendar rename failed: %@", error];
   }
 }
 
@@ -732,17 +832,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                        error:(NSError *)error {
   if (error == nil) {
     // tell the user that the delete worked
-    NSBeginAlertSheet(@"Deleted Calendar", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar deleted");
+    [self displayAlert:@"Deleted Calendar"
+                format:@"Calendar deleted"];
 
     // refetch the current calendars
     [self fetchAllCalendars];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Calendar delete failed: %@", error);
+    [self displayAlert:@"Delete failed"
+                format:@"Calendar delete failed: %@", error];
   }
 }
 
@@ -948,18 +1046,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                  error:(NSError *)error {
   if (error == nil) {
     // tell the user that the add worked
-    NSBeginAlertSheet(@"Added Event", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event added");
+    [self displayAlert:@"Added Event"
+                format:@"Event added"];
 
     // refetch the current calendar's events
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
     // the add failed
-    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event add failed: %@", error);
+    [self displayAlert:@"Add failed"
+                format:@"Event add failed: %@", error];
   }
 }
 
@@ -1000,18 +1096,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                   error:(NSError *)error {
   if (error == nil) {
     // tell the user that the update worked
-    NSBeginAlertSheet(@"Updated Event", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event updated");
+    [self displayAlert:@"Updated Event"
+                format:@"Event updated"];
 
     // re-fetch the selected calendar's events
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
     // failed
-    NSBeginAlertSheet(@"Update failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event update failed: %@", error);
+    [self displayAlert:@"Update failed"
+                format:@"Event update failed: %@", error];
   }
 }
 
@@ -1067,18 +1161,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
         deletedEntry:(GDataFeedCalendarEvent *)nilObject
                error:(NSError *)error {
   if (error == nil) {
-    NSBeginAlertSheet(@"Deleted Event", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event deleted");
+    [self displayAlert:@"Deleted Event"
+                format:@"Event deleted"];
 
     // re-fetch the selected calendar's events
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
     // failed
-    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Event delete failed: %@", error);
+    [self displayAlert:@"Delete failed"
+                format:@"Event delete failed: %@", error];
   }
 }
 
@@ -1178,18 +1270,16 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
       [reportStr appendString:@"\n"];
     }
 
-    NSBeginAlertSheet(@"Batch delete completed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Delete completed.\n%@", reportStr);
+    [self displayAlert:@"Batch delete completed"
+                format:@"Delete completed.\n%@", reportStr];
 
     // re-fetch the selected calendar's events
     [self fetchSelectedCalendar];
 
   } else {
     // fetch failed
-    NSBeginAlertSheet(@"Batch delete failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Delete failed: %@", error);
+    [self displayAlert:@"Batch delete failed"
+                format:@"Delete failed: %@", error];
   }
   [self updateUI];
 }
@@ -1268,14 +1358,12 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
     NSString *resultStr = [titles componentsJoinedByString:@", "];
 
-    NSBeginAlertSheet(@"Query ", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Query result: %@", resultStr);
+    [self displayAlert:@"Query "
+                format:@"Query result: %@", resultStr];
   } else {
     // query failed
-    NSBeginAlertSheet(@"Query failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Query failed: %@", error);
+    [self displayAlert:@"Query failed"
+                format:@"Query failed: %@", error];
   }
 }
 
@@ -1294,8 +1382,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
   // make the free/busy query
   GDataServiceGoogleCalendar *service = [self calendarService];
-  NSString *username = [service username];
-  NSURL *feedURL = [GDataServiceGoogleCalendar freeBusyURLForUsername:username];
+  NSURL *feedURL = [GDataServiceGoogleCalendar freeBusyURLForUsername:[self signedInUsername]];
 
   GDataQueryCalendar* queryCal = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal setMinimumStartTime:nowDateTime];
@@ -1334,15 +1421,13 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
     }
     NSString *resultStr = [periodStrings componentsJoinedByString:@", "];
 
-    NSBeginAlertSheet(@"Query ", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Busy times: %@", resultStr);
+    [self displayAlert:@"Query "
+                format:@"Busy times: %@", resultStr];
 
   } else {
     // query failed
-    NSBeginAlertSheet(@"Query failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Query failed: %@", error);
+    [self displayAlert:@"Query failed"
+                format:@"Query failed: %@", error];
   }
 }
 
@@ -1436,17 +1521,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                     error:(NSError *)error {
   if (error == nil) {
     // tell the user that the add worked
-    NSBeginAlertSheet(@"Added ACL Entry", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACL Entry added");
+    [self displayAlert:@"Added ACL Entry"
+                format:@"ACL Entry added"];
 
     // refetch the current calendar's ACL entries
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Add failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACL Entry add failed: %@", error);
+    [self displayAlert:@"Add failed"
+                format:@"ACL Entry add failed: %@", error];
   }
 }
 
@@ -1490,17 +1573,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                      error:(NSError *)error {
   if (error == nil) {
     // tell the user that the update worked
-    NSBeginAlertSheet(@"Updated ACLEntry", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACL Entry updated");
+    [self displayAlert:@"Updated ACLEntry"
+                format:@"ACL Entry updated"];
 
     // re-fetch the selected calendar's ACLEntries
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Update failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACLEntry update failed: %@", error);
+    [self displayAlert:@"Update failed"
+                format:@"ACLEntry update failed: %@", error];
   }
 }
 
@@ -1544,17 +1625,15 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
                 deletedEntry:(GDataFeedACL *)object
                        error:(NSError *)error {
   if (error == nil) {
-    NSBeginAlertSheet(@"Deleted ACLEntry", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACL Entry deleted");
+    [self displayAlert:@"Deleted ACLEntry"
+                format:@"ACL Entry deleted"];
 
     // re-fetch the selected calendar's events
     [self fetchSelectedCalendar];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"ACL Entry delete failed: %@", error);
+    [self displayAlert:@"Delete failed"
+                format:@"ACL Entry delete failed: %@", error];
   }
 }
 
@@ -1566,7 +1645,7 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   GDataEntryCalendar *calendar = [self selectedCalendar];
   if (calendar) {
 
-    NSString *username = [mUsernameField stringValue];
+    NSString *username = [self signedInUsername];
 
     NSURL *settingsFeedURL = [GDataServiceGoogleCalendar settingsFeedURLForUsername:username];
     if (settingsFeedURL) {
@@ -1578,8 +1657,6 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
 
       GDataServiceGoogleCalendar *service = [self calendarService];
       GDataServiceTicket *ticket;
-
-      // temporary fetch call, waiting until settings feed has kind categories, http://b/1694419
       ticket = [service fetchFeedWithURL:settingsFeedURL
                                 delegate:self
                        didFinishSelector:@selector(calendarSettingsTicket:finishedWithFeed:error:)];
@@ -1669,6 +1746,37 @@ static CalendarSampleWindowController* gCalendarSampleWindowController = nil;
   // settings entry
   GDataEntryCalendarSettings *settingsEntry = [[mSettingsFeed entries] objectAtIndex:row];
   return [self displayStringForSettingsEntry:settingsEntry];
+}
+
+#pragma mark Client ID Sheet
+
+// Client ID and Client Secret Sheet
+//
+// Sample apps need this sheet to ask for the client ID and client secret
+// strings
+//
+// Your application will just hardcode the client ID and client secret strings
+// into the source rather than ask the user for them.
+//
+// The string values are obtained from the API Console,
+// https://code.google.com/apis/console
+
+- (IBAction)clientIDClicked:(id)sender {
+  // Show the sheet for developers to enter their client ID and client secret
+  [NSApp beginSheet:mClientIDSheet
+     modalForWindow:[self window]
+      modalDelegate:self
+     didEndSelector:@selector(clientIDSheetDidEnd:returnCode:contextInfo:)
+        contextInfo:NULL];
+}
+
+- (IBAction)clientIDDoneClicked:(id)sender {
+  [NSApp endSheet:mClientIDSheet returnCode:NSOKButton];
+}
+
+- (void)clientIDSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+  [sheet orderOut:self];
+  [self updateUI];
 }
 
 #pragma mark Control delegate methods
