@@ -27,6 +27,13 @@ The Examples directory contains example applications showing typical interaction
 
 BuildingTheLibrary explains how to add the library to a Mac or iPhone application project.
 
+== Authentication and Authorization ==
+
+*Authentication* is the confiramation of a user's identity via her username, password, and possibly other data, such as captcha answers or 2-step codes provided via mobile phone. Authentication can be done in one of two ways:
+
+  * OAuth 2 is an industry-standard protocol for allowing the server to authenticate the user by providing html login pages. The Google Data API library can use the authorization object provided by the [http://code.google.com/p/gtm-oauth2/ GTM OAuth 2 controllers]. The API library service class method setAuthorizer: takes the authorization object. See the CalendarSample example application for a demonstration of OAuth 2 sign-in. OAuth 2 is the recommended method for supporting sign-in.
+  * !ClientLogin is an older Google-specific protocol for signing in users by asking for their username and password. The application asks the users for the username and password. The application is responsible for secure storage of the password in the system keychain, and must also provide code for handling captcha requests and proxy dialogs, as described below in "Authentication Errors". !ClientLogin cannot be used for user accounts that have [http://www.google.com/support/accounts/bin/static.py?page=guide.cs&guide=1056283&topic=1056284 2-step verification] enabled unless the user creates an application-specific password.
+
 == Google Data APIs Basics ==
 
 Servers respond to client GData requests with *feeds* that include lists of *entries*. For example, a request for all of a user's calendars would return a Calendar feed with a list of entries, where each entry represents one calendar.  A request for all events in one calendar would return a Calendar Event feed with a list of entries, with each entry representing one of the user's scheduled events.
@@ -457,7 +464,7 @@ Setting the run loop modes will have no effect for service objects on Mac OS X 1
 
 == Authentication errors ==
 
-If your application authenticates the user via OAuthSignInControllers, then no additional handling of authentication errors is needed.
+If your application authenticates the user via [http://code.google.com/p/gtm-oauth2/ OAuth 2 controller], then no additional handling of authentication errors is needed: invalid username and password, captchas, and 2-step verification are handled automatically.
 
 [http://code.google.com/apis/gdata/auth.html Authentication] by asking the user for Google account username and password is called !ClientLogin. Authenticating the user via !ClientLogin with Google's services is handled mostly transparently by the framework.  If your application sends the  `setUserCredentialsWithUsername:password:` message to the service object, the service object will sign in prior to fetching the requested object.
 
