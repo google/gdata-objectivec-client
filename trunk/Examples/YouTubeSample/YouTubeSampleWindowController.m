@@ -156,25 +156,20 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 }
 
 - (void)fetchEntryImageURLString:(NSString *)urlString {
-  
-  NSURL *imageURL = [NSURL URLWithString:urlString];
-  NSURLRequest *request = [NSURLRequest requestWithURL:imageURL];
-  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-  
+  GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];
   [fetcher beginFetchWithDelegate:self
-                didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                  didFailSelector:@selector(imageFetcher:failedWithError:)];
+                didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // got the data; display it in the image view
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-  
-  [mEntryImageView setImage:image];
-}
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error == nil) {
+    // got the data; display it in the image view
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);       
+    [mEntryImageView setImage:image];
+  } else {
+    NSLog(@"imageFetcher:%@ failedWithError:%@", fetcher,  error);
+  }
 }
 
 #pragma mark -
@@ -256,7 +251,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
 }
 
 - (IBAction)chooseFileClicked:(id)sender {
@@ -325,7 +320,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleYouTube alloc] init];
     
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
     [service setIsServiceRetryEnabled:YES];
   }
@@ -574,22 +569,23 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 #pragma mark Fetch the Categories
 
 - (void)fetchStandardCategories {
-  
+
   // This method initiates a fetch and parse of the assignable categories.
   // If successful, the callback loads the category pop-up with the
   // categories.
-  
+
   NSURL *categoriesURL = [NSURL URLWithString:kGDataSchemeYouTubeCategory];
-  NSURLRequest *request = [NSURLRequest requestWithURL:categoriesURL];
-  GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
-    
+  GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:categoriesURL];
   [fetcher beginFetchWithDelegate:self
-                didFinishSelector:@selector(categoryFetcher:finishedWithData:)
-                  didFailSelector:@selector(categoryFetcher:failedWithError:)];
+                didFinishSelector:@selector(categoryFetcher:finishedWithData:error:)];
 }
 
 
-- (void)categoryFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
+- (void)categoryFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error) {
+    NSLog(@"categoryFetcher:%@ failedWithError:%@", fetcher, error);
+    return;
+  }
 
   // The categories document looks like
   //  <app:categories>
@@ -602,23 +598,22 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   // We only want the categories which are assignable. We'll use XPath to
   // select those, then get the string value of the resulting term attribute
   // nodes.
-  
+
   NSString *const path = @"app:categories/atom:category[yt:assignable]";
-  
-  NSError *error = nil;
+
   NSXMLDocument *xmlDoc = [[[NSXMLDocument alloc] initWithData:data
                                                        options:0
                                                          error:&error] autorelease];
   if (xmlDoc == nil) {
-    NSLog(@"category fetch could not parse XML: %@", error);       
+    NSLog(@"category fetch could not parse XML: %@", error);
   } else {
     NSArray *nodes = [xmlDoc nodesForXPath:path
                                      error:&error];
     unsigned int numberOfNodes = [nodes count];
     if (numberOfNodes == 0) {
-      NSLog(@"category fetch could not find nodes: %@", error);       
+      NSLog(@"category fetch could not find nodes: %@", error);
     } else {
-      
+
       // add the category labels as menu items, and the category terms as
       // the menu item representedObjects.
       [mCategoryPopup removeAllItems];
@@ -626,12 +621,12 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 
       for (int idx = 0; idx < numberOfNodes; idx++) {
         NSXMLElement *category = [nodes objectAtIndex:idx];
-                   
+
         NSString *term = [[category attributeForName:@"term"] stringValue];
         NSString *label = [[category attributeForName:@"label"] stringValue];
-        
+
         if (label == nil) label = term;
-        
+
         NSMenuItem *item = [menu addItemWithTitle:label
                                            action:nil
                                     keyEquivalent:@""];
@@ -639,10 +634,6 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
       }
     }
   }
-}
-
-- (void)categoryFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"categoryFetcher:%@ failedWithError:%@", fetcher, error);       
 }
 
 #pragma mark Setters and Getters

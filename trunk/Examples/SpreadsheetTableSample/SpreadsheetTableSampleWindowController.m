@@ -106,11 +106,11 @@
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self
          selector:@selector(fetchStateChanged:)
-             name:kGDataHTTPFetcherStartedNotification
+             name:kGTMHTTPFetcherStartedNotification
            object:nil];
   [nc addObserver:self
          selector:@selector(fetchStateChanged:)
-             name:kGDataHTTPFetcherStoppedNotification
+             name:kGTMHTTPFetcherStoppedNotification
            object:nil];
 
   [self updateUI];
@@ -304,7 +304,7 @@
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -323,7 +323,7 @@
   if (!service) {
     service = [[GDataServiceGoogleSpreadsheet alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
 
     // iPhone apps will typically disable caching dated data or will call
@@ -668,11 +668,9 @@
                       @"clouds", @"moon", @"sun", @"mars", @"venus", nil];
 
     // for each field in each record, assign a random word
-    GDataEntrySpreadsheetRecord *recordEntry;
-    GDATA_FOREACH(recordEntry, [mRecordFeed entries]) {
+    for (GDataEntrySpreadsheetRecord *recordEntry in [mRecordFeed entries]) {
 
-      GDataSpreadsheetField *field;
-      GDATA_FOREACH(field, [recordEntry fields]) {
+      for (GDataSpreadsheetField *field in [recordEntry fields]) {
 
         NSString *word = [words objectAtIndex:(random() % [words count])];
         [field setValue:word];
@@ -722,11 +720,11 @@
   //
   // If we turn on fetch retries in the service or the ticket, we can also
   // display an indicator of fetch retry delays by observing
-  // kGDataHTTPFetcherRetryDelayStartedNotification and
-  // kGDataHTTPFetcherRetryDelayStoppedNotification
+  // kGTMHTTPFetcherRetryDelayStartedNotification and
+  // kGTMHTTPFetcherRetryDelayStoppedNotification
 
   static int gCounter = 0;
-  if ([[note name] isEqual:kGDataHTTPFetcherStartedNotification]) {
+  if ([[note name] isEqual:kGTMHTTPFetcherStartedNotification]) {
     // started
     ++gCounter;
   } else {

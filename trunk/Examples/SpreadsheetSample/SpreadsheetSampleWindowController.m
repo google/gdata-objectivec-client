@@ -195,7 +195,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
 }
 
 #pragma mark -
@@ -214,7 +214,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   if (!service) {
     service = [[GDataServiceGoogleSpreadsheet alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
   }
 

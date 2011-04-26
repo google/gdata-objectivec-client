@@ -33,8 +33,7 @@ enum {
 - (void)updateUI;
 - (void)updateChangeFolderPopup;
 - (void)updateSelectedDocumentThumbnailImage;
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data;
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error;
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error;
 
 - (void)fetchDocList;
 - (void)fetchRevisionsForSelectedDoc;
@@ -321,25 +320,22 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [mDocListImageView setImage:nil];
 
     if ([newImageURLStr length] > 0) {
-      NSURL *url = [NSURL URLWithString:newImageURLStr];
-      NSURLRequest *request = [NSURLRequest requestWithURL:url];
-      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:newImageURLStr];
       [fetcher beginFetchWithDelegate:self
-                    didFinishSelector:@selector(imageFetcher:finishedWithData:)
-                      didFailSelector:@selector(imageFetcher:failedWithError:)];
+                    didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
     }
   }
 }
 
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher
-    finishedWithData:(NSData *)data {
-  NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-  [mDocListImageView setImage:image];
-}
-
-- (void)imageFetcher:(GDataHTTPFetcher *)fetcher
-     failedWithError:(NSError *)error {
-  NSLog(@"Error %@ loading image %@", error, [[fetcher request] URL]);
+- (void)imageFetcher:(GTMHTTPFetcher *)fetcher
+    finishedWithData:(NSData *)data
+               error:(NSError *)error {
+  if (error == nil) {
+    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+    [mDocListImageView setImage:image];
+  } else {
+    NSLog(@"Error %@ loading image %@", error, [[fetcher mutableRequest] URL]);
+  }
 }
 
 #pragma mark IBActions
@@ -512,28 +508,31 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:savePath];
 
       // read the document's contents asynchronously from the network
+
+      // requestForURL:ETag:httpMethod: sets the user agent header of the
+      // request and, when using ClientLogin, adds the authorization header
       NSURLRequest *request = [service requestForURL:downloadURL
                                                 ETag:nil
                                           httpMethod:nil];
 
-      GDataHTTPFetcher *fetcher = [GDataHTTPFetcher httpFetcherWithRequest:request];
+      GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+      [fetcher setAuthorizer:[service authorizer]];
       [fetcher setDownloadFileHandle:fileHandle];
       [fetcher beginFetchWithDelegate:self
-                    didFinishSelector:@selector(fetcher:finishedWithData:)
-                      didFailSelector:@selector(fetcher:failedWithError:)];
+                    didFinishSelector:@selector(fetcher:finishedWithData:error:)];
     } else {
       NSLog(@"Error creating file at %@: %@", savePath, error);
     }
   }
 }
 
-- (void)fetcher:(GDataHTTPFetcher *)fetcher finishedWithData:(NSData *)data {
-  // successfully saved the document
-}
-
-- (void)fetcher:(GDataHTTPFetcher *)fetcher failedWithError:(NSError *)error {
-  NSLog(@"Fetcher error: %@", error);
-  NSBeep();
+- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
+  if (error == nil) {
+    // successfully saved the document
+  } else {
+    NSLog(@"Error saving document: %@", error);
+    NSBeep();
+  }
 }
 
 - (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
@@ -925,7 +924,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark -
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GDataHTTPFetcher setIsLoggingEnabled:[sender state]];
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -944,7 +943,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (!service) {
     service = [[GDataServiceGoogleDocs alloc] init];
 
-    [service setShouldCacheDatedData:YES];
+    [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
     [service setIsServiceRetryEnabled:YES];
   }
@@ -1050,7 +1049,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 - (void)docListFetchTicket:(GDataServiceTicket *)ticket
           finishedWithFeed:(GDataFeedDocList *)feed
                      error:(NSError *)error {
-
   [self setDocListFeed:feed];
   [self setDocListFetchError:error];
   [self setDocListFetchTicket:nil];

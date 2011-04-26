@@ -1,0 +1,7 @@
+The tables and records feeds are no longer being developed, and will eventually be turned off.
+
+For more information, see 
+
+http://googleappsdeveloper.blogspot.com/2011/03/deprecating-tables-and-records-feeds-in.html
+
+New applications should not be developed using the tables and records feeds.
