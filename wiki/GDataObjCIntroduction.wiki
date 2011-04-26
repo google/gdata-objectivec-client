@@ -17,7 +17,7 @@ The Google Data APIs Objective-C Client Library is a Cocoa framework that enable
 
 == Requirements ==
 
-The Google Data APIs Objective-C Client Library requires Mac OS X 10.4 or later due to its use of NSXMLDocument, or iPhone OS 2.0.
+The Google Data APIs Objective-C Client Library requires iOS 3 or Mac OS X 10.5 or later. Applications running on 10.4 may use the "10.4-compatible" branch.
 
 == Example Applications ==
 
@@ -29,10 +29,15 @@ BuildingTheLibrary explains how to add the library to a Mac or iPhone applicatio
 
 == Authentication and Authorization ==
 
-*Authentication* is the confiramation of a user's identity via her username, password, and possibly other data, such as captcha answers or 2-step codes provided via mobile phone. Authentication can be done in one of two ways:
+*Authentication* is the confirmation of a user's identity via her username, password, and possibly other data, such as captcha answers or 2-step codes provided via mobile phone. Authentication can be done in one of two ways:
 
-  * OAuth 2 is an industry-standard protocol for allowing the server to authenticate the user by providing html login pages. The Google Data API library can use the authorization object provided by the [http://code.google.com/p/gtm-oauth2/ GTM OAuth 2 controllers]. The API library service class method setAuthorizer: takes the authorization object. See the CalendarSample example application for a demonstration of OAuth 2 sign-in. OAuth 2 is the recommended method for supporting sign-in.
-  * !ClientLogin is an older Google-specific protocol for signing in users by asking for their username and password. The application asks the users for the username and password. The application is responsible for secure storage of the password in the system keychain, and must also provide code for handling captcha requests and proxy dialogs, as described below in "Authentication Errors". !ClientLogin cannot be used for user accounts that have [http://www.google.com/support/accounts/bin/static.py?page=guide.cs&guide=1056283&topic=1056284 2-step verification] enabled unless the user creates an application-specific password.
+  * OAuth 2 is an industry-standard protocol for allowing the server to authenticate the user by providing html login pages. The Google Data API library can use the authorization object provided by the [http://code.google.com/p/gtm-oauth2/ GTM OAuth 2 controllers]. See the !CalendarSample example application for a demonstration of OAuth 2 sign-in. OAuth 2 is the recommended method for supporting sign-in.
+  * !ClientLogin is an older Google-specific protocol for signing in users by asking for their username and password. The application is responsible for secure storage of the password in the system keychain. See "Authentication Errors" below for additional sign-in errors that the application may need to handle. !ClientLogin cannot be used for user accounts that have [http://www.google.com/support/accounts/bin/static.py?page=guide.cs&guide=1056283&topic=1056284 2-step verification] enabled unless the user creates an application-specific password.
+
+*Authorization* is the use of access tokens for specific requests. Authorization of API requests is handled by the service class.
+
+  * OAuth 2 authorization requires an OAuth2Authentication object be supplied to the service class's `setAuthorizer:` method.
+  * !ClientLogin authorization requires the username and password be supplied to the service class's `setUserCredentialsWithUsername:password:` method.
 
 == Google Data APIs Basics ==
 
@@ -434,7 +439,7 @@ Your service delegate will see the "Not modified" response in its callback metho
     // fetch succeeded
   } else {
     // fetch failed
-    if ([error code] == kGDataHTTPFetcherStatusNotModified) { // status 304
+    if ([error code] == kGTMHTTPFetcherStatusNotModified) { // status 304
       // no change since previous request
     } else {
       // some unexpected error occurred
@@ -459,8 +464,6 @@ NSArray *modes = [NSArray arrayWithObjects:
   NSDefaultRunLoopMode, NSModalPanelRunLoopMode, nil];
 [service setRunLoopModes:modes];
 }}}
-
-Setting the run loop modes will have no effect for service objects on Mac OS X 10.4.
 
 == Authentication errors ==
 
@@ -518,7 +521,7 @@ To handle captchas, the fetch callback method might look something like this:
         NSString *captchaToken = [userInfo captchaToken];
       
         // a synchronous read of the image is simple, as shown here,
-        // but to be nice to users, you can use GDataHTTPFetcher for
+        // but to be nice to users, you can use GTMHTTPFetcher for
         // an easy asynchronous fetch of the data instead
         NSData *imageData = [NSData dataWithContentsOfURL:captchaURL];
         if (imageData) {
@@ -549,7 +552,7 @@ Documentation on authentication for Google data APIs is available [http://code.g
 
 == Automatic retry of failed fetches ==
 
-GData service classes and the GDataHTTPFetcher class provide a mechanism for automatic retry of a few common network and server errors, with appropriate increasing delays between each attempt.  You can turn on the automatic retry support for a GData service by calling `[service setIsServiceRetryEnabled:YES]`.  
+GData service classes and the GTMHTTPFetcher class provide a mechanism for automatic retry of a few common network and server errors, with appropriate increasing delays between each attempt.  You can turn on the automatic retry support for a GData service by calling `[service setIsServiceRetryEnabled:YES]`.  
 
 The default errors retried are http status 408 (request timeout), 503 (service unavailable), and 504 (gateway timeout), and NSURLErrorTimedOut.  You may specify a maximum retry interval other than the default of 10 minutes, and can provide an optional retry selector to customize the criteria for each retry attempt.
 
@@ -564,11 +567,11 @@ In corporate or institutional settings where a password-protected proxy is in us
     // fetch succeeded
   } else {
     // fetch failed
-    if ([error code] == kGDataHTTPFetcherErrorAuthenticationChallengeFailed
-        && [[error domain] isEqual:kGDataHTTPFetcherErrorDomain]) {
+    if ([error code] == kGTMHTTPFetcherErrorAuthenticationChallengeFailed
+        && [[error domain] isEqual:kGTMHTTPFetcherErrorDomain]) {
 
       NSURLAuthenticationChallenge *challenge;
-      challenge = [[error userInfo] objectForKey:kGDataHTTPFetcherErrorChallengeKey];
+      challenge = [[error userInfo] objectForKey:kGTMHTTPFetcherErrorChallengeKey];
     }
   }
   ...
@@ -594,10 +597,10 @@ if (proxyAccountName && proxyPassword) {
 Debugging GData transactions is often easier when you can browse the XML being sent back and forth over the network.  To make this convenient, the framework can save copies of the server traffic, including http headers, to files in a local directory.  Your application should call
 
 {{{
-[GDataHTTPFetcher setIsLoggingEnabled:YES]
+[GTMHTTPFetcher setLoggingEnabled:YES]
 }}}
 
-to turn on logging.  Normally, logs are written to the directory GDataHTTPDebugLogs in the current user's Desktop folder, though the path to another folder can be specified with the `+setLoggingDirectory:` method.
+to turn on logging.  Normally, logs are written to the directory GTMHTTPDebugLogs in the current user's Desktop folder, though the path to another folder can be specified with the `+setLoggingDirectory:` method.
 
 In the iPhone simulator, the default logs location is the user's home directory. On the iPhone device, the default location is the application's documents folder on the device.
 
