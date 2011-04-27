@@ -30,7 +30,7 @@
 
 }
 
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed {
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
   return YES;
 }
 
