@@ -30,4 +30,8 @@
   [windowController showWindow:self];
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+  return YES;
+}
+
 @end
