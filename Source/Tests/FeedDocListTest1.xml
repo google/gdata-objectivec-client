@@ -42,6 +42,7 @@
         <gd:quotaBytesUsed>12345</gd:quotaBytesUsed>
         <docs:description>cherry soda</docs:description>
         <docs:writersCanInvite value="true"/>
+        <docs:md5Checksum>2b01142f7481c7b056c4b410d28f33cf</docs:md5Checksum>
         <category label="hidden"
             scheme="http://schemas.google.com/g/2005/labels" term="http://schemas.google.com/g/2005/labels#hidden"/>
     </entry>
