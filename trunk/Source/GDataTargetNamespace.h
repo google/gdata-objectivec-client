@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (573 classes) 2011-04-26 13:26:23 -0700
+// com.google.GDataFramework v. 1.12 (574 classes) 2011-05-02 19:09:54 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -140,6 +140,7 @@
   #define GDataDocFeatureRate                     _GDATA_NS_SYMBOL(GDataDocFeatureRate)
   #define GDataDocImportFormat                    _GDATA_NS_SYMBOL(GDataDocImportFormat)
   #define GDataDocMaxUploadSize                   _GDATA_NS_SYMBOL(GDataDocMaxUploadSize)
+  #define GDataDocMD5Checksum                     _GDATA_NS_SYMBOL(GDataDocMD5Checksum)
   #define GDataDocPublish                         _GDATA_NS_SYMBOL(GDataDocPublish)
   #define GDataDocPublishAuto                     _GDATA_NS_SYMBOL(GDataDocPublishAuto)
   #define GDataDocPublishOutsideDomain            _GDATA_NS_SYMBOL(GDataDocPublishOutsideDomain)
