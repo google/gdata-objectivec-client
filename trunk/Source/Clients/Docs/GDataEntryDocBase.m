@@ -49,6 +49,15 @@
 + (NSString *)extensionElementLocalName { return @"description"; }
 @end
 
+@interface GDataDocMD5Checksum : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataDocMD5Checksum
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"md5Checksum"; }
+@end
+
 @implementation GDataEntryDocBase
 
 + (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
@@ -77,6 +86,7 @@
    [GDataLastModifiedBy class],
    [GDataQuotaBytesUsed class],
    [GDataDocDescription class],
+   [GDataDocMD5Checksum class],
    nil];
 }
 
@@ -89,6 +99,7 @@
     { @"lastModifiedBy",   @"lastModifiedBy",      kGDataDescValueLabeled },
     { @"quotaUsed",        @"quotaBytesUsed",      kGDataDescValueLabeled },
     { @"desc",             @"documentDescription", kGDataDescValueLabeled },
+    { @"md5",              @"MD5Checksum",         kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -148,6 +159,17 @@
 - (void)setDocumentDescription:(NSString *)str {
   GDataDocDescription *obj = [GDataDocDescription valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataDocDescription class]];
+}
+
+- (NSString *)MD5Checksum {
+  GDataDocMD5Checksum *obj;
+  obj = [self objectForExtensionClass:[GDataDocMD5Checksum class]];
+  return [obj stringValue];
+}
+
+- (void)setMD5Checksum:(NSString *)str {
+  GDataDocDescription *obj = [GDataDocMD5Checksum valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataDocMD5Checksum class]];
 }
 
 #pragma mark -

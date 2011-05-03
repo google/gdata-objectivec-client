@@ -43,6 +43,9 @@
 - (NSString *)documentDescription;
 - (void)setDocumentDescription:(NSString *)str;
 
+- (NSString *)MD5Checksum;
+- (void)setMD5Checksum:(NSString *)str;
+
 // categories
 - (BOOL)isStarred;
 - (void)setIsStarred:(BOOL)flag;
