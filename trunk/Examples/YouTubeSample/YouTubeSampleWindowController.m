@@ -157,6 +157,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 
 - (void)fetchEntryImageURLString:(NSString *)urlString {
   GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:urlString];
+  [fetcher setComment:@"thumbnail"];
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
 }
@@ -432,7 +433,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   
   // load the file data
   NSString *path = [mFilePathField stringValue];
-  NSData *data = [NSData dataWithContentsOfFile:path];
+  NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:path];
   NSString *filename = [path lastPathComponent];
   
   // gather all the metadata needed for the mediaGroup
@@ -461,10 +462,10 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
   NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:path
                                              defaultMIMEType:@"video/mp4"];
   
-  // create the upload entry with the mediaGroup and the file data
+  // create the upload entry with the mediaGroup and the file
   GDataEntryYouTubeUpload *entry;
   entry = [GDataEntryYouTubeUpload uploadEntryWithMediaGroup:mediaGroup
-                                                        data:data
+                                                  fileHandle:fileHandle
                                                     MIMEType:mimeType
                                                         slug:filename];
   
@@ -576,6 +577,7 @@ static YouTubeSampleWindowController* gYouTubeSampleWindowController = nil;
 
   NSURL *categoriesURL = [NSURL URLWithString:kGDataSchemeYouTubeCategory];
   GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURL:categoriesURL];
+  [fetcher setComment:@"YouTube categories"];
   [fetcher beginFetchWithDelegate:self
                 didFinishSelector:@selector(categoryFetcher:finishedWithData:error:)];
 }
