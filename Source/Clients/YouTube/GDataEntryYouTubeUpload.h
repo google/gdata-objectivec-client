@@ -25,6 +25,11 @@
 @interface GDataEntryYouTubeUpload : GDataEntryBase
 
 + (GDataEntryYouTubeUpload *)uploadEntryWithMediaGroup:(GDataYouTubeMediaGroup *)mediaGroup
+                                            fileHandle:(NSFileHandle *)fileHandle
+                                              MIMEType:(NSString *)mimeType
+                                                  slug:(NSString *)fileName;
+
++ (GDataEntryYouTubeUpload *)uploadEntryWithMediaGroup:(GDataYouTubeMediaGroup *)mediaGroup
                                                   data:(NSData *)data
                                               MIMEType:(NSString *)mimeType
                                                   slug:(NSString *)fileName;

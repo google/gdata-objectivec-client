@@ -28,19 +28,32 @@
 @implementation GDataEntryYouTubeUpload
 
 + (GDataEntryYouTubeUpload *)uploadEntryWithMediaGroup:(GDataYouTubeMediaGroup *)mediaGroup
-                                                  data:(NSData *)data
+                                            fileHandle:(NSFileHandle *)fileHandle
                                               MIMEType:(NSString *)mimeType
                                                   slug:(NSString *)fileName {
-  
+
   GDataEntryYouTubeUpload *entry = [[[self alloc] init] autorelease];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   [entry setMediaGroup:mediaGroup];
-  [entry setUploadData:data];
+  [entry setUploadFileHandle:fileHandle];
   [entry setUploadMIMEType:mimeType];
   [entry setUploadSlug:fileName];
-  
+
+  return entry;
+}
+
++ (GDataEntryYouTubeUpload *)uploadEntryWithMediaGroup:(GDataYouTubeMediaGroup *)mediaGroup
+                                                  data:(NSData *)data
+                                              MIMEType:(NSString *)mimeType
+                                                  slug:(NSString *)fileName {
+
+  GDataEntryYouTubeUpload *entry = [self uploadEntryWithMediaGroup:mediaGroup
+                                                        fileHandle:nil
+                                                          MIMEType:mimeType
+                                                              slug:fileName];
+  [entry setUploadData:data];
   return entry;
 }
 
