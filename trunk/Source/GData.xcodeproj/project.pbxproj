@@ -2644,7 +2644,7 @@
 		4F00C3791355026B00DEC154 /* GTMOAuth2Authentication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2Authentication.m; path = OAuth2/GTMOAuth2Authentication.m; sourceTree = "<group>"; };
 		4F00C37A1355026B00DEC154 /* GTMOAuth2SignIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2SignIn.h; path = OAuth2/GTMOAuth2SignIn.h; sourceTree = "<group>"; };
 		4F00C37B1355026B00DEC154 /* GTMOAuth2SignIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2SignIn.m; path = OAuth2/GTMOAuth2SignIn.m; sourceTree = "<group>"; };
-		4F00C3881355028700DEC154 /* GTMOAuth2Framework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GTMOAuth2Framework-Info.plist"; path = "../../gtm-oauth2/Source/Mac/GTMOAuth2Framework-Info.plist"; sourceTree = "<group>"; };
+		4F00C3881355028700DEC154 /* GTMOAuth2Framework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GTMOAuth2Framework-Info.plist"; path = "OAuth2/Mac/GTMOAuth2Framework-Info.plist"; sourceTree = "<group>"; };
 		4F00C3891355028700DEC154 /* GTMOAuth2Window.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = GTMOAuth2Window.xib; path = OAuth2/Mac/GTMOAuth2Window.xib; sourceTree = "<group>"; };
 		4F00C38A1355028700DEC154 /* GTMOAuth2WindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMOAuth2WindowController.h; path = OAuth2/Mac/GTMOAuth2WindowController.h; sourceTree = "<group>"; };
 		4F00C38B1355028700DEC154 /* GTMOAuth2WindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMOAuth2WindowController.m; path = OAuth2/Mac/GTMOAuth2WindowController.m; sourceTree = "<group>"; };
@@ -2792,7 +2792,7 @@
 		4F175CE90FB382AD00FE3D7B /* GDataEntryContactBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryContactBase.m; path = Clients/Contacts/GDataEntryContactBase.m; sourceTree = "<group>"; };
 		4F175CEA0FB382AD00FE3D7B /* GDataEntryContactBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryContactBase.h; path = Clients/Contacts/GDataEntryContactBase.h; sourceTree = "<group>"; };
 		4F18174C1134982E009F7FD1 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = /System/Library/Frameworks/Security.framework; sourceTree = "<absolute>"; };
-		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "compiled.mach-o.executable"; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = DevelopmentTestTool; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1AD90C0B71607400DC0485 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Tests/main.m; sourceTree = "<group>"; };
 		4F1C03430F5DF3BD002597A6 /* FeedCalendarEventTest0.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedCalendarEventTest0.xml; path = Tests/FeedCalendarEventTest0.xml; sourceTree = "<group>"; };
 		4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGDataTouchStaticLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2910,7 +2910,7 @@
 		4F36EE5B0FFD7ABD00980D30 /* GDataEntryYouTubeCaptionTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeCaptionTrack.h; path = Clients/YouTube/GDataEntryYouTubeCaptionTrack.h; sourceTree = "<group>"; };
 		4F36EE7A0FFD7D4100980D30 /* GDataFeedYouTubeCaptionTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFeedYouTubeCaptionTrack.m; path = Clients/YouTube/GDataFeedYouTubeCaptionTrack.m; sourceTree = "<group>"; };
 		4F36EE8E0FFD7DAD00980D30 /* GDataFeedYouTubeCaptionTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedYouTubeCaptionTrack.h; path = Clients/YouTube/GDataFeedYouTubeCaptionTrack.h; sourceTree = "<group>"; };
-		4F38F6A60B66E91D00B24B81 /* GData */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = GData; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F38F6A60B66E91D00B24B81 /* GData.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = GData.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F38F8520B66F98500B24B81 /* GDataWhen.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataWhen.h; path = Elements/GDataWhen.h; sourceTree = "<group>"; };
 		4F3C881F0EC2469E009C18C4 /* GDataTargetNamespace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTargetNamespace.h; sourceTree = "<group>"; };
 		4F45A7ED0D4E950100004F37 /* GDataEntryYouTubeVideoMessage.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeVideoMessage.m; path = Clients/YouTube/GDataEntryYouTubeVideoMessage.m; sourceTree = "<group>"; };
@@ -3464,7 +3464,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F38F6A60B66E91D00B24B81 /* GData */,
+				4F38F6A60B66E91D00B24B81 /* GData.framework */,
 				4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */,
 				4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */,
 				4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */,
@@ -4966,7 +4966,7 @@
 			);
 			name = GDataFramework;
 			productName = GDataFramework;
-			productReference = 4F38F6A60B66E91D00B24B81 /* GData */;
+			productReference = 4F38F6A60B66E91D00B24B81 /* GData.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		4F85DEE0103B83B700B4C418 /* GDataIPhoneUnitTests */ = {
