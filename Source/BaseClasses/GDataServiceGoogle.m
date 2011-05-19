@@ -234,7 +234,7 @@ enum {
     }
 
 #if NS_BLOCKS_AVAILABLE
-    GDataServiceCompletionHandler completionHandler;
+    GDataServiceGoogleCompletionHandler completionHandler;
     [invocation getArgument:&completionHandler
                     atIndex:kInvocationCompletionHandlerIndex];
 
@@ -329,7 +329,7 @@ enum {
     }
 
 #if NS_BLOCKS_AVAILABLE
-    GDataServiceCompletionHandler completionHandler;
+    GDataServiceGoogleCompletionHandler completionHandler;
     [invocation getArgument:&completionHandler
                     atIndex:kInvocationCompletionHandlerIndex];
 
@@ -434,7 +434,7 @@ enum {
                                              httpMethod:(NSString *)httpMethod
                                                delegate:(id)delegate
                                       didFinishSelector:(SEL)finishedSelector
-                                      completionHandler:(GDataServiceCompletionHandler)completionHandler {
+                                      completionHandler:(GDataServiceGoogleCompletionHandler)completionHandler {
 
   // make an invocation for this call
   GDataServiceTicket *result = nil;
@@ -920,7 +920,7 @@ enum {
 
 #if NS_BLOCKS_AVAILABLE
 - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL
-                       completionHandler:(GDataServiceFeedBaseCompletionHandler)handler {
+                       completionHandler:(GDataServiceGoogleFeedBaseCompletionHandler)handler {
 
   return [self fetchAuthenticatedObjectWithURL:feedURL
                                    objectClass:kGDataUseRegisteredClass
@@ -929,7 +929,7 @@ enum {
                                     httpMethod:nil
                                       delegate:nil
                              didFinishSelector:NULL
-                             completionHandler:(GDataServiceCompletionHandler)handler];
+                             completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 
 - (GDataServiceTicket *)fetchFeedWithQuery:(GDataQuery *)query
@@ -940,7 +940,7 @@ enum {
 
 
 - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
-                        completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+                        completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
 
   return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:kGDataUseRegisteredClass
@@ -949,12 +949,12 @@ enum {
                                     httpMethod:nil
                                       delegate:nil
                              didFinishSelector:NULL
-                             completionHandler:(GDataServiceCompletionHandler)handler];
+                             completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 
 - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
                                         forFeedURL:(NSURL *)feedURL
-                                 completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+                                 completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
   NSString *etag = [entryToInsert ETag];
 
   // objects being uploaded will always need some namespaces at the root level
@@ -967,11 +967,11 @@ enum {
                                     httpMethod:@"POST"
                                       delegate:nil
                              didFinishSelector:NULL
-                             completionHandler:(GDataServiceCompletionHandler)handler];
+                             completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 
 - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
-                                completionHandler:(GDataServiceEntryBaseCompletionHandler)handler {
+                                completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
   // Entries should be updated only if they contain copies of any unparsed XML
   // (unknown children and attributes) or if fields to update are explicitly
   // specified in the gd:field attribute.
@@ -1002,7 +1002,7 @@ enum {
                                     httpMethod:httpMethod
                                       delegate:nil
                              didFinishSelector:NULL
-                             completionHandler:(GDataServiceCompletionHandler)handler];
+                             completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 
 - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete
@@ -1017,7 +1017,7 @@ enum {
 
 - (GDataServiceTicket *)deleteResourceURL:(NSURL *)resourceEditURL
                                      ETag:(NSString *)etag
-                        completionHandler:(GDataServiceCompletionHandler)handler {
+                        completionHandler:(GDataServiceGoogleCompletionHandler)handler {
   GDATA_ASSERT(resourceEditURL != nil, @"deleting unspecified resource");
 
   return [self fetchAuthenticatedObjectWithURL:resourceEditURL
@@ -1027,7 +1027,7 @@ enum {
                                     httpMethod:@"DELETE"
                                       delegate:nil
                              didFinishSelector:NULL
-                             completionHandler:(GDataServiceCompletionHandler)handler];
+                             completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 
 #endif // NS_BLOCKS_AVAILABLE
@@ -1057,7 +1057,7 @@ enum {
                                forBatchFeedURL:(NSURL *)feedURL
                                       delegate:(id)delegate
                              didFinishSelector:(SEL)finishedSelector
-                             completionHandler:(GDataServiceCompletionHandler)completionHandler {
+                             completionHandler:(GDataServiceGoogleCompletionHandler)completionHandler {
   // internal routine, used for both callback and blocks style of batch feed
   // fetches
 
@@ -1111,7 +1111,7 @@ enum {
                       forBatchFeedURL:feedURL
                              delegate:nil
                     didFinishSelector:NULL
-                    completionHandler:(GDataServiceCompletionHandler)handler];
+                    completionHandler:(GDataServiceGoogleCompletionHandler)handler];
 }
 #endif
 
