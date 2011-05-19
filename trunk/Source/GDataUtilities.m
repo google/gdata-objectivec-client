@@ -66,7 +66,7 @@
 
 #if DEBUG
       NSLog(@"GDataObject: Removing char 0x%lx from XML element string \"%@\"",
-            [mutableStr characterAtIndex:range.location], str);
+            (unsigned long) [mutableStr characterAtIndex:range.location], str);
 #endif
 
       [mutableStr deleteCharactersInRange:range];

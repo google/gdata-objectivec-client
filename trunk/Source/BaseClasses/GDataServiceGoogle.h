@@ -60,6 +60,17 @@ enum {
 @end
 
 @class GDataServiceGoogle;
+@class GDataServiceTicket;
+
+#if NS_BLOCKS_AVAILABLE
+typedef void (^GDataServiceGoogleCompletionHandler)(GDataServiceTicket *ticket, id object, NSError *error);
+typedef void (^GDataServiceGoogleFeedBaseCompletionHandler)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error);
+typedef void (^GDataServiceGoogleEntryBaseCompletionHandler)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error);
+#else
+typedef void *GDataServiceGoogleCompletionHandler;
+typedef void *GDataServiceGoogleFeedBaseCompletionHandler;
+typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
+#endif
 
 // GDataServiceTicket is the version of a ticket that supports
 // Google authentication
