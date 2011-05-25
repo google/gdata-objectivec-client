@@ -96,6 +96,9 @@ _EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
 - (void)setShouldOCRUpload:(BOOL)flag;
 - (BOOL)shouldOCRUpload;
 
+- (void)setShouldCreateNewRevision:(BOOL)flag;
+- (BOOL)shouldCreateNewRevision;
+
 - (NSString *)sourceLanguage;
 - (void)setSourceLanguage:(NSString *)str;
 

@@ -23,8 +23,9 @@
 #import "GData/GDataSpreadsheet.h"
 
 @interface DocsSampleWindowController : NSWindowController {
-  IBOutlet NSTextField *mUsernameField;
-  IBOutlet NSSecureTextField *mPasswordField;
+ @private
+  IBOutlet NSTextField *mSignedInField;
+  IBOutlet NSButton *mSignedInButton;
   
   IBOutlet NSTableView *mDocListTable;
   IBOutlet NSProgressIndicator *mDocListProgressIndicator;
@@ -60,6 +61,12 @@
   IBOutlet NSButton *mPublishOutsideDomainCheckbox;
   IBOutlet NSButton *mUpdatePublishingButton;
 
+  IBOutlet NSButton *mClientIDButton;
+  IBOutlet NSTextField *mClientIDRequiredTextField;
+  IBOutlet NSWindow *mClientIDSheet;
+  IBOutlet NSTextField *mClientIDField;
+  IBOutlet NSTextField *mClientSecretField;
+
   GDataFeedDocList *mDocListFeed;
   GDataServiceTicket *mDocListFetchTicket;
   NSError *mDocListFetchError;
@@ -74,6 +81,8 @@
 }
 
 + (DocsSampleWindowController *)sharedDocsSampleWindowController;
+
+- (IBAction)signInClicked:(id)sender;
 
 - (IBAction)getDocListClicked:(id)sender;
 - (IBAction)cancelDocListFetchClicked:(id)sender;
@@ -97,4 +106,10 @@
 - (IBAction)updatePublishingClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
+
+// Client ID sheet
+- (IBAction)clientIDClicked:(id)sender;
+- (IBAction)clientIDDoneClicked:(id)sender;
+- (IBAction)APIConsoleClicked:(id)sender;
+
 @end

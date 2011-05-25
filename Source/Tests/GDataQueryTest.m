@@ -417,9 +417,10 @@
   [query4 setSourceLanguage:@"en"];
   [query4 setTargetLanguage:@"de"];
   [query4 setShouldOCRUpload:YES];
+  [query4 setShouldCreateNewRevision:YES];
   NSURL *resultURL4 = [query4 URL];
   NSString *expected4 = @"https://docs.google.com/feeds/default/private/full?"
-    "convert=false&delete=true&ocr=true&showroot=true&"
+    "convert=false&delete=true&new-revision=true&ocr=true&showroot=true&"
     "sourceLanguage=en&targetLanguage=de";
   STAssertEqualObjects([resultURL4 absoluteString], expected4,
                        @"Docs query 4 generation error");
