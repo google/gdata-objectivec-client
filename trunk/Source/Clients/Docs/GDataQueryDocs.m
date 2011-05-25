@@ -39,6 +39,7 @@ static NSString *const kSourceLanguageParamName = @"sourceLanguage";
 static NSString *const kDeleteParamName         = @"delete";
 static NSString *const kConvertParamName        = @"convert";
 static NSString *const kOCRParamName            = @"ocr";
+static NSString *const kNewRevisionParamName    = @"new-revision";
 
 
 @implementation GDataQueryDocs
@@ -191,6 +192,17 @@ static NSString *const kOCRParamName            = @"ocr";
 
 - (BOOL)shouldOCRUpload {
   return [self boolValueForParameterWithName:kOCRParamName
+                                defaultValue:NO];
+}
+
+- (void)setShouldCreateNewRevision:(BOOL)flag {
+  [self addCustomParameterWithName:kNewRevisionParamName
+                         boolValue:flag
+                      defaultValue:NO];
+}
+
+- (BOOL)shouldCreateNewRevision {
+  return [self boolValueForParameterWithName:kNewRevisionParamName
                                 defaultValue:NO];
 }
 

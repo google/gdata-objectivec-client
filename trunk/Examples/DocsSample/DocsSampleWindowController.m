@@ -19,6 +19,8 @@
 
 #import "DocsSampleWindowController.h"
 
+#import "GData/GTMOAuth2WindowController.h"
+
 enum {
   // upload pop-up menu items
   kUploadAsGoogleDoc = 0,
@@ -67,9 +69,13 @@ enum {
 
 - (GDataServiceTicket *)uploadTicket;
 - (void)setUploadTicket:(GDataServiceTicket *)ticket;
+
+- (void)displayAlert:(NSString *)title format:(NSString *)format, ...;
 @end
 
 @implementation DocsSampleWindowController
+
+static NSString *const kKeychainItemName = @"DocsSample: Google Docs";
 
 static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
@@ -90,6 +96,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 }
 
 - (void)awakeFromNib {
+  // Load the OAuth token from the keychain, if it was previously saved
+  NSString *clientID = [mClientIDField stringValue];
+  NSString *clientSecret = [mClientSecretField stringValue];
+
+  GTMOAuth2Authentication *auth;
+  auth = [GTMOAuth2WindowController authForGoogleFromKeychainForName:kKeychainItemName
+                                                            clientID:clientID
+                                                        clientSecret:clientSecret];
+  [[self docsService] setAuthorizer:auth];
+
   // Set the result text field to have a distinctive color and mono-spaced font
   // to aid in understanding of each operation.
   [mDocListResultTextField setTextColor:[NSColor darkGrayColor]];
@@ -119,7 +135,78 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
 #pragma mark -
 
+- (NSString *)signedInUsername {
+  // Get the email address of the signed-in user
+  GTMOAuth2Authentication *auth = [[self docsService] authorizer];
+  BOOL isSignedIn = auth.canAuthorize;
+  if (isSignedIn) {
+    return auth.userEmail;
+  } else {
+    return nil;
+  }
+}
+
+- (BOOL)isSignedIn {
+  NSString *name = [self signedInUsername];
+  return (name != nil);
+}
+
+- (void)runSigninThenInvokeSelector:(SEL)signInDoneSel {
+  // Applications should have client ID and client secret strings
+  // hardcoded into the source, but the sample application asks the
+  // developer for the strings
+  NSString *clientID = [mClientIDField stringValue];
+  NSString *clientSecret = [mClientSecretField stringValue];
+
+  if ([clientID length] == 0 || [clientSecret length] == 0) {
+    // Remind the developer that client ID and client secret are needed
+    [mClientIDButton performSelector:@selector(performClick:)
+                          withObject:self
+                          afterDelay:0.5];
+    return;
+  }
+
+  // Show the OAuth 2 sign-in controller
+  NSString *scope = [GDataServiceGoogleDocs authorizationScope];
+
+  NSBundle *frameworkBundle = [NSBundle bundleForClass:[GTMOAuth2WindowController class]];
+  GTMOAuth2WindowController *windowController;
+  windowController = [[[GTMOAuth2WindowController alloc] initWithScope:scope
+                                                              clientID:clientID
+                                                          clientSecret:clientSecret
+                                                      keychainItemName:kKeychainItemName
+                                                        resourceBundle:frameworkBundle] autorelease];
+
+  [windowController setUserData:NSStringFromSelector(signInDoneSel)];
+  [windowController signInSheetModalForWindow:[self window]
+                                     delegate:self
+                             finishedSelector:@selector(windowController:finishedWithAuth:error:)];
+}
+
+- (void)windowController:(GTMOAuth2WindowController *)windowController
+        finishedWithAuth:(GTMOAuth2Authentication *)auth
+                   error:(NSError *)error {
+  // Callback from OAuth 2 sign-in
+  if (error == nil) {
+    [[self docsService] setAuthorizer:auth];
+
+    NSString *selStr = [windowController userData];
+    if (selStr) {
+      [self performSelector:NSSelectorFromString(selStr)];
+    }
+  } else {
+    [self setDocListFetchError:error];
+    [self updateUI];
+  }
+}
+
+#pragma mark -
+
 - (void)updateUI {
+  BOOL isSignedIn = [self isSignedIn];
+  NSString *username = [self signedInUsername];
+  [mSignedInButton setTitle:(isSignedIn ? @"Sign Out" : @"Sign In")];
+  [mSignedInField setStringValue:(isSignedIn ? username : @"No")];
 
   // docList list display
   [mDocListTable reloadData];
@@ -254,6 +341,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     uploadingStr = [NSString stringWithFormat:@"Uploading: %@", uploadingTitle];
   }
   [mUploadingTextField setStringValue:uploadingStr];
+
+  // Show or hide the text indicating that the client ID or client secret are
+  // needed
+  BOOL hasClientIDStrings = [[mClientIDField stringValue] length] > 0
+    && [[mClientSecretField stringValue] length] > 0;
+  [mClientIDRequiredTextField setHidden:hasClientIDStrings];
 }
 
 - (void)updateChangeFolderPopup {
@@ -338,23 +431,41 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 }
 
+- (void)displayAlert:(NSString *)title format:(NSString *)format, ... {
+  NSString *result = format;
+  if (format) {
+    va_list argList;
+    va_start(argList, format);
+    result = [[[NSString alloc] initWithFormat:format
+                                     arguments:argList] autorelease];
+    va_end(argList);
+  }
+  NSBeginAlertSheet(title, nil, nil, nil, [self window], nil, nil,
+                    nil, nil, result);
+}
+
 #pragma mark IBActions
 
-- (IBAction)getDocListClicked:(id)sender {
+- (IBAction)signInClicked:(id)sender {
+  if (![self isSignedIn]) {
+    // Sign in
+    [self runSigninThenInvokeSelector:@selector(updateUI)];
+  } else {
+    // Sign out
+    GDataServiceGoogleDocs *service = [self docsService];
 
-  NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-
-  NSString *username = [mUsernameField stringValue];
-  username = [username stringByTrimmingCharactersInSet:whitespace];
-
-  if ([username rangeOfString:@"@"].location == NSNotFound) {
-    // if no domain was supplied, add @gmail.com
-    username = [username stringByAppendingString:@"@gmail.com"];
+    [GTMOAuth2WindowController removeAuthFromKeychainForName:kKeychainItemName];
+    [service setAuthorizer:nil];
+    [self updateUI];
   }
+}
 
-  [mUsernameField setStringValue:username];
-
-  [self fetchDocList];
+- (IBAction)getDocListClicked:(id)sender {
+  if (![self isSignedIn]) {
+    [self runSigninThenInvokeSelector:@selector(fetchDocList)];
+  } else {
+    [self fetchDocList];
+  }
 }
 
 - (IBAction)cancelDocListFetchClicked:(id)sender {
@@ -658,17 +769,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
             finishedWithEntry:(GDataEntryDocRevision *)entry
                         error:(NSError *)error {
   if (error == nil) {
-    NSBeginAlertSheet(@"Updated", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Updated publish status for \"%@\"",
-                      [[entry title] stringValue]);
+    [self displayAlert:@"Updated"
+                format:@"Updated publish status for \"%@\"", [[entry title] stringValue]];
 
     // re-fetch the document list
     [self fetchRevisionsForSelectedDoc];
   } else {
-    NSBeginAlertSheet(@"Updated failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Failed to update publish status: %@", error);
+    [self displayAlert:@"Updated failed"
+                format:@"Failed to update publish status: %@", error];
   }
 }
 
@@ -696,18 +804,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
          finishedWithEntry:(GDataEntryFolderDoc *)entry
                      error:(NSError *)error {
   if (error == nil) {
-    NSBeginAlertSheet(@"Created folder", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Created folder \"%@\"",
-                      [[entry title] stringValue]);
+    [self displayAlert:@"Created folder"
+                format:@"Created folder \"%@\"", [[entry title] stringValue]];
 
     // re-fetch the document list
     [self fetchDocList];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Create failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Folder create failed: %@", error);
+    [self displayAlert:@"Create failed"
+                format:@"Folder create failed: %@", error];
   }
 }
 
@@ -749,17 +854,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                        error:(NSError *)error {
   if (error == nil) {
     // note: object is nil in the delete callback
-    NSBeginAlertSheet(@"Deleted Doc", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Document deleted");
+    [self displayAlert:@"Deleted Doc"
+                format:@"Document deleted"];
 
     // re-fetch the document list
     [self fetchDocList];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Delete failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Document delete failed: %@", error);
+    [self displayAlert:@"Delete failed"
+                format:@"Document delete failed: %@", error];
   }
 }
 
@@ -795,18 +898,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
               finishedWithEntry:(GDataEntryDocBase *)newEntry
                        error:(NSError *)error {
   if (error == nil) {
-    NSBeginAlertSheet(@"Copied Doc", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Document duplicate \"%@\" created",
-                      [[newEntry title] stringValue]);
+    [self displayAlert:@"Copied Doc"
+                format:@"Document duplicate \"%@\" created", [[newEntry title] stringValue]];
 
     // re-fetch the document list
     [self fetchDocList];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Copy failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Document duplicate failed: %@", error);
+    [self displayAlert:@"Copy failed"
+                format:@"Document duplicate failed: %@", error];
   }
 }
 
@@ -870,9 +970,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     }
   } else {
     // failed to fetch feed of folders
-    NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Fetch of folder feed failed: %@", error);
+    [self displayAlert:@"Fetch failed"
+                format:@"Fetch of folder feed failed: %@", error];
 
   }
 }
@@ -884,18 +983,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (error == nil) {
     GDataFeedDocList *feed = [ticket userData];
 
-    NSBeginAlertSheet(@"Added", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Added document \"%@\" to feed \"%@\"",
-                      [[entry title] stringValue], [[feed title] stringValue]);
+    [self displayAlert:@"Added"
+                format:@"Added document \"%@\" to feed \"%@\"",
+     [[entry title] stringValue], [[feed title] stringValue]];
 
     // re-fetch the document list
     [self fetchDocList];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Insert failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Insert to folder feed failed: %@", error);
+    [self displayAlert:@"Insert failed"
+                format:@"Insert to folder feed failed: %@", error];
   }
 }
 
@@ -906,22 +1003,24 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (error == nil) {
     GDataFeedDocList *feed = [ticket userData];
 
-    NSBeginAlertSheet(@"Removed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Removed document from feed \"%@\"",
-                      [[feed title] stringValue]);
+    [self displayAlert:@"Removed"
+                format:@"Removed document from feed \"%@\"", [[feed title] stringValue]];
 
     // re-fetch the document list
     [self fetchDocList];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Fetch failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Remove from folder feed failed: %@", error);
+    [self displayAlert:@"Fetch failed"
+                format:@"Remove from folder feed failed: %@", error];
   }
 }
 
 #pragma mark -
+
+- (IBAction)APIConsoleClicked:(id)sender {
+  NSURL *url = [NSURL URLWithString:@"https://code.google.com/apis/console"];
+  [[NSWorkspace sharedWorkspace] openURL:url];
+}
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
   [GTMHTTPFetcher setLoggingEnabled:[sender state]];
@@ -946,18 +1045,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [service setShouldCacheResponseData:YES];
     [service setServiceShouldFollowNextLinks:YES];
     [service setIsServiceRetryEnabled:YES];
-  }
-
-  // update the username/password each time the service is requested
-  NSString *username = [mUsernameField stringValue];
-  NSString *password = [mPasswordField stringValue];
-
-  if ([username length] && [password length]) {
-    [service setUserCredentialsWithUsername:username
-                                   password:password];
-  } else {
-    [service setUserCredentialsWithUsername:nil
-                                   password:nil];
   }
 
   return service;
@@ -1251,9 +1338,8 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   if (errorMsg) {
     // we're currently in the middle of the file selection sheet, so defer our
     // error sheet
-    NSBeginAlertSheet(@"Upload Error", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, errorMsg);
+    [self displayAlert:@"Upload Error"
+                format:@"%@", errorMsg];
   }
 
   [self updateUI];
@@ -1282,15 +1368,43 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [self fetchDocList];
 
     // tell the user that the add worked
-    NSBeginAlertSheet(@"Uploaded file", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"File uploaded: %@",
-                      [[entry title] stringValue]);
+    [self displayAlert:@"Uploaded file"
+                format:@"File uploaded: %@", [[entry title] stringValue]];
   } else {
-    NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"File upload failed: %@", error);
+    [self displayAlert:@"Upload failed"
+                format:@"File upload failed: %@", error];
   }
+  [self updateUI];
+}
+
+#pragma mark Client ID Sheet
+
+// Client ID and Client Secret Sheet
+//
+// Sample apps need this sheet to ask for the client ID and client secret
+// strings
+//
+// Your application will just hardcode the client ID and client secret strings
+// into the source rather than ask the user for them.
+//
+// The string values are obtained from the API Console,
+// https://code.google.com/apis/console
+
+- (IBAction)clientIDClicked:(id)sender {
+  // Show the sheet for developers to enter their client ID and client secret
+  [NSApp beginSheet:mClientIDSheet
+     modalForWindow:[self window]
+      modalDelegate:self
+     didEndSelector:@selector(clientIDSheetDidEnd:returnCode:contextInfo:)
+        contextInfo:NULL];
+}
+
+- (IBAction)clientIDDoneClicked:(id)sender {
+  [NSApp endSheet:mClientIDSheet returnCode:NSOKButton];
+}
+
+- (void)clientIDSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo {
+  [sheet orderOut:self];
   [self updateUI];
 }
 

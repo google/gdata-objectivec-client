@@ -11,6 +11,7 @@
 		4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FA1CB850C03C08C006D556A /* GData.framework */; };
 		4FA6F31B1034ACFB00C5DFA5 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F3171034ACFB00C5DFA5 /* MainMenu.xib */; };
 		4FA6F31C1034ACFB00C5DFA5 /* DocsSampleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4FA6F3191034ACFB00C5DFA5 /* DocsSampleWindow.xib */; };
+		4FB25C49138C8BF200B5C1AE /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB25C48138C8BF200B5C1AE /* WebKit.framework */; };
 		4FBA21560C5A87210050D502 /* DocsSampleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBA21520C5A87210050D502 /* DocsSampleWindowController.m */; };
 		4FBA21570C5A87210050D502 /* DocsSampleWindowController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4FBA21530C5A87210050D502 /* DocsSampleWindowController.h */; };
 		4FBA21580C5A87210050D502 /* DocsSampleAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBA21540C5A87210050D502 /* DocsSampleAppController.m */; };
@@ -91,6 +92,7 @@
 		4FA6F3181034ACFB00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		4FA6F31A1034ACFB00C5DFA5 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/DocsSampleWindow.xib; sourceTree = "<group>"; };
 		4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GData.xcodeproj; path = ../../Source/GData.xcodeproj; sourceTree = SOURCE_ROOT; };
+		4FB25C48138C8BF200B5C1AE /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = /System/Library/Frameworks/WebKit.framework; sourceTree = "<absolute>"; };
 		4FBA21520C5A87210050D502 /* DocsSampleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DocsSampleWindowController.m; sourceTree = "<group>"; };
 		4FBA21530C5A87210050D502 /* DocsSampleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = DocsSampleWindowController.h; sourceTree = "<group>"; };
 		4FBA21540C5A87210050D502 /* DocsSampleAppController.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = DocsSampleAppController.m; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			files = (
 				4FA1CBE10C03C15C006D556A /* GData.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				4FB25C49138C8BF200B5C1AE /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +130,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FB25C48138C8BF200B5C1AE /* WebKit.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -245,7 +249,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DocsSample" */;
 			compatibilityVersion = "Xcode 3.0";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CalendarSample */;
 			projectDirPath = "";
 			projectReferences = (
@@ -254,6 +265,7 @@
 					ProjectRef = 4FAB41AC0BAA215D00FBBDC9 /* GData.xcodeproj */;
 				},
 			);
+			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* DocsSample */,
 			);
