@@ -44,7 +44,6 @@ enum {
 - (void)showDownloadPanelForEntry:(GDataEntryBase *)entry suggestedTitle:(NSString *)title;
 - (void)saveDocumentEntry:(GDataEntryBase *)docEntry toPath:(NSString *)path;
 - (void)saveDocEntry:(GDataEntryBase *)entry toPath:(NSString *)savePath exportFormat:(NSString *)exportFormat authService:(GDataServiceGoogle *)service;
-- (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry toPath:(NSString *)savePath;
 
 - (GDataServiceGoogleDocs *)docsService;
 - (GDataEntryDocBase *)selectedDoc;
@@ -167,7 +166,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 
   // Show the OAuth 2 sign-in controller
-  NSString *scope = [GDataServiceGoogleDocs authorizationScope];
+  NSString *scope = [GTMOAuth2Authentication scopeWithStrings:
+                     [GDataServiceGoogleDocs authorizationScope],
+                     [GDataServiceGoogleSpreadsheet authorizationScope],
+                     nil];
 
   NSBundle *frameworkBundle = [NSBundle bundleForClass:[GTMOAuth2WindowController class]];
   GTMOAuth2WindowController *windowController;
@@ -573,26 +575,16 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     classProperty = [docEntry class];
   }
 
-  BOOL isSpreadsheet = [classProperty isEqual:[GDataEntrySpreadsheetDoc class]];
-  if (isSpreadsheet) {
-    // to save a spreadsheet, we need to authenticate a spreadsheet service
-    // object, and then download the spreadsheet file
-    [self saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
-                   toPath:savePath];
-  } else {
-    // since the user has already fetched the doc list, the service object
-    // has the proper authentication token.  We'll use the service object
-    // to generate an NSURLRequest with the auth token in the header, and
-    // then fetch that asynchronously.
-    GDataServiceGoogleDocs *docsService = [self docsService];
+  // since the user has already fetched the doc list, the service object
+  // has the proper authentication token.
+  GDataServiceGoogleDocs *docsService = [self docsService];
 
-    BOOL isDrawing = [classProperty isEqual:[GDataEntryDrawingDoc class]];
-    NSString *exportFormat = (isDrawing ? @"pdf" : @"txt");
-    [self saveDocEntry:docEntry
-                toPath:savePath
-          exportFormat:exportFormat
-           authService:docsService];
-  }
+  BOOL isDrawing = [classProperty isEqual:[GDataEntryDrawingDoc class]];
+  NSString *exportFormat = (isDrawing ? @"pdf" : @"txt");
+  [self saveDocEntry:docEntry
+              toPath:savePath
+        exportFormat:exportFormat
+         authService:docsService];
 }
 
 - (void)saveDocEntry:(GDataEntryBase *)entry
@@ -646,6 +638,13 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 }
 
+/* When signing in with ClientLogin, we need to create a SpreadsheetService
+   instance to do an authenticated download of spreadsheet documents.
+ 
+   Since this sample signs in with OAuth 2, which allows multiple scopes,
+   we do not need to use a SpreadsheetService, but here is what it looks
+   like for ClientLogin.
+
 - (void)saveSpreadsheet:(GDataEntrySpreadsheetDoc *)docEntry
                  toPath:(NSString *)savePath {
   // to download a spreadsheet document, we need a spreadsheet service object,
@@ -684,6 +683,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     return;
   }
 }
+*/
 
 #pragma mark -
 
