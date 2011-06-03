@@ -7,6 +7,10 @@
 
 The Google Data APIs Objective-C Client Library is provided as a built framework, suitable for inclusion in a Mac application bundle's Frameworks folder, and as a static library for iPhone applications.  Alternatively, the sources may also be compiled directly into a Mac or an iPhone application.
 
+== Checking Out Sources ==
+
+Check out the top-of-trunk sources using the command line sources shown [http://code.google.com/p/gdata-objectivec-client/source/checkout here].
+
 == Linking to the Mac OS X Framework ==
 
 To add the framework to an Xcode project, drag GData.framework to the project's Linked Frameworks source group, then drag the GData framework from the  Linked Frameworks group folder to the Link Binary With Library phase inside of the application target.  
