@@ -231,7 +231,6 @@ typedef void *GDataServiceUploadProgressHandler;
   NSString *serviceVersion_;
   NSString *userAgent_;
   GTMHTTPFetcherService *fetcherService_;
-  NSArray *runLoopModes_;
 
   NSString *username_;
   NSMutableData *password_;
@@ -275,8 +274,11 @@ typedef void *GDataServiceUploadProgressHandler;
 // Run loop modes are used for scheduling NSURLConnections on 10.5 and later.
 //
 // The default value, nil, schedules connections using the current run
-// loop mode.  To use the service during a modal dialog, be sure to specify
-// NSModalPanelRunLoopMode as one of the modes.
+// loop mode.  To use the service during a modal dialog, specify
+// an array with NSRunLoopCommonModes.
+//
+// These methods just call through to the fetcher service object's
+// runLoopModes property.
 - (NSArray *)runLoopModes;
 - (void)setRunLoopModes:(NSArray *)modes;
 

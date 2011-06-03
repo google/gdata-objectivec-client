@@ -158,6 +158,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 #endif
 
     fetcherService_ = [[GTMHTTPFetcherService alloc] init];
+    [fetcherService_ setShouldRememberETags:YES];
+
     cookieStorageMethod_ = -1;
 
     NSUInteger chunkSize = [[self class] defaultServiceUploadChunkSize];
@@ -172,7 +174,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   [serviceVersion_ release];
   [userAgent_ release];
   [fetcherService_ release];
-  [runLoopModes_ release];
 
   [username_ release];
   [password_ release];
@@ -615,11 +616,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                                        uploadMIMEType:uploadMIMEType
                                             chunkSize:uploadChunkSize];
     }
+    [fetcher setRunLoopModes:[self runLoopModes]];
   } else {
     fetcher = [fetcherService_ fetcherWithRequest:request];
   }
-
-  [fetcher setRunLoopModes:[self runLoopModes]];
 
   // allow the user to specify static app-wide cookies for fetching
   NSInteger cookieStorageMethod = [self cookieStorageMethod];
@@ -1498,12 +1498,11 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 
 - (NSArray *)runLoopModes {
-  return runLoopModes_;
+  return [fetcherService_ runLoopModes];
 }
 
 - (void)setRunLoopModes:(NSArray *)modes {
-  [runLoopModes_ autorelease];
-  runLoopModes_ = [modes retain];
+  [fetcherService_ setRunLoopModes:modes];
 }
 
 // save the username and password, converting the password to non-plaintext
