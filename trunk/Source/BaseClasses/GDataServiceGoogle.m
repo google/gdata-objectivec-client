@@ -285,7 +285,7 @@ enum {
     userInfo = [NSDictionary dictionaryWithObject:data
                                            forKey:kGTMHTTPFetcherStatusDataKey];
     NSError *error = [NSError errorWithDomain:kGTMHTTPFetcherStatusDomain
-                                         code:kGDataBadAuthentication
+                                         code:kGTMHTTPFetcherStatusForbidden
                                      userInfo:userInfo];
 
     [self authFetcher:fetcher failedWithError:error data:data];
@@ -529,10 +529,10 @@ enum {
 
 // override the base class's failure handler to look for a session expired error
 - (void)objectFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
-
-  const NSInteger kTokenExpired = 401;
-
-  if ([error code] == kTokenExpired) {
+  // check for an expired token
+  NSInteger code = [error code];
+  if (code == kGTMHTTPFetcherStatusUnauthorized
+      || code == kGTMHTTPFetcherStatusForbidden) {
 
     NSInvocation *retryInvocation = [fetcher propertyForKey:kFetcherRetryInvocationKey];
     if (retryInvocation) {
@@ -675,7 +675,7 @@ enum {
     [fetcher setProperties:nil];
   } else {
     // failed: there was no auth token
-    NSError *error = [self errorForAuthFetcherStatus:kGDataBadAuthentication
+    NSError *error = [self errorForAuthFetcherStatus:kGTMHTTPFetcherStatusForbidden
                                                 data:data];
     [self standaloneAuthFetcher:fetcher failedWithError:error data:data];
   }
