@@ -37,6 +37,7 @@ _EXTERN NSString* const kGDataYouTubeAccessControlComment      _INITIALIZE_AS(@"
 _EXTERN NSString* const kGDataYouTubeAccessControlCommentVote  _INITIALIZE_AS(@"commentVote");
 _EXTERN NSString* const kGDataYouTubeAccessControlVideoRespond _INITIALIZE_AS(@"videoRespond");
 _EXTERN NSString* const kGDataYouTubeAccessControlEmbed        _INITIALIZE_AS(@"embed");
+_EXTERN NSString* const kGDataYouTubeAccessControlList         _INITIALIZE_AS(@"list");
 _EXTERN NSString* const kGDataYouTubeAccessControlSyndicate    _INITIALIZE_AS(@"syndicate");
 
 // permissions
