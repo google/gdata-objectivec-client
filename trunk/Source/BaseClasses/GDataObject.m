@@ -1008,14 +1008,14 @@ attributeValueIfNonNil:str
         break;
 
       case kGDataDescArrayCount:
-        if ([value count] > 0) {
-          str = [NSString stringWithFormat:@"%lu", (unsigned long) [value count]];
+        if ([(NSArray *)value count] > 0) {
+          str = [NSString stringWithFormat:@"%lu", (unsigned long) [(NSArray *)value count]];
           [self addToArray:items objectDescriptionIfNonNil:str withName:label];
         }
         break;
 
       case kGDataDescArrayDescs:
-        if ([value count] > 0) {
+        if ([(NSArray *)value count] > 0) {
           [self addToArray:items objectDescriptionIfNonNil:value withName:label];
         }
         break;
@@ -1810,7 +1810,7 @@ objectDescriptionIfNonNil:(id)obj
   id obj = [extensions_ objectForKey:theClass];
 
   if ([obj isKindOfClass:[NSArray class]]) {
-    if ([obj count] > 0) {
+    if ([(NSArray *)obj count] > 0) {
       return [obj objectAtIndex:0];
     }
     // an empty array
@@ -1953,9 +1953,9 @@ objectDescriptionIfNonNil:(id)obj
   if ([previousObjOrArray isKindOfClass:[NSArray class]]) {
 
     // remove from the array
-    [previousObjOrArray removeObject:object];
+    [(NSMutableArray *)previousObjOrArray removeObject:object];
 
-  } else if ([object isEqual:previousObjOrArray]) {
+  } else if ([(GDataObject *)object isEqual:previousObjOrArray]) {
 
     // no array, so remove if it matches the sole object
     [extensions_ removeObjectForKey:theClass];
@@ -2052,7 +2052,7 @@ objectDescriptionIfNonNil:(id)obj
             }
 
             if ([objectOrArray isKindOfClass:arrayClass]) {
-              if ([objectOrArray count] > 0) {
+              if ([(NSArray *)objectOrArray count] > 0) {
 
                 // save the non-empty array of extensions
                 [self setObjects:objectOrArray forExtensionClass:extensionClass];
