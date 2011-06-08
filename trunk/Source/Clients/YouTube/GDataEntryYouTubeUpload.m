@@ -64,33 +64,34 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   // YouTubeMediaGroup encapsulates YouTubeMediaContent
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataYouTubeMediaGroup class]];
+                                 childClasses:
+   [GDataYouTubeMediaGroup class],
+   [GDataYouTubeAccessControl class],
+   [GDataYouTubeIncomplete class],
+   nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
-  NSMutableArray *items = [super itemsForDescription];
-  
-  [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];
+  static struct GDataDescriptionRecord descRecs[] = {
+    { @"mediaGroup",      @"mediaGroup",      kGDataDescValueLabeled   },
+    { @"incomplete",      @"isIncomplete",    kGDataDescBooleanPresent },
+    { @"accessControls",  @"accessControls",  kGDataDescArrayDescs     },
+    { nil, nil, (GDataDescRecTypes)0 }
+  };
 
+  NSMutableArray *items = [super itemsForDescription];
+  [self addDescriptionRecords:descRecs toItems:items];
   return items;
 }
 #endif
-
-- (id)init {
-  self = [super init];
-  if (self) {
-  }
-  return self;
-}
 
 #pragma mark -
 
@@ -101,6 +102,33 @@
 - (void)setMediaGroup:(GDataYouTubeMediaGroup *)obj {
   [self setObject:obj forExtensionClass:[GDataYouTubeMediaGroup class]];
 }
+
+- (NSArray *)accessControls {
+  return [self objectsForExtensionClass:[GDataYouTubeAccessControl class]];
+}
+
+- (void)setAccessControls:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataYouTubeAccessControl class]];
+}
+
+- (void)addAccessControl:(GDataYouTubeAccessControl *)obj {
+  [self addObject:obj forExtensionClass:[GDataYouTubeAccessControl class]];
+}
+
+- (BOOL)isIncomplete {
+  GDataYouTubeIncomplete *obj;
+  obj = [self objectForExtensionClass:[GDataYouTubeIncomplete class]];
+  return (obj != nil);
+}
+
+- (void)setIsIncomplete:(BOOL)flag {
+  GDataYouTubeIncomplete *obj = nil;
+  if (flag) {
+    obj = [GDataYouTubeIncomplete implicitValue];
+  }
+  [self setObject:obj forExtensionClass:[GDataYouTubeIncomplete class]];
+}
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
