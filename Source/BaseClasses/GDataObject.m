@@ -222,7 +222,7 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
       [self addExtensionDeclarations];
     }
 
-    NSArray *prevAttrDecls = [attributeDeclarationsCache_ objectForKey:currClass];
+    NSMutableArray *prevAttrDecls = [attributeDeclarationsCache_ objectForKey:currClass];
     if (prevAttrDecls == nil) {
       [self addParseDeclarations];
       // if any parse declarations are added, attributeDeclarations_ will be set
