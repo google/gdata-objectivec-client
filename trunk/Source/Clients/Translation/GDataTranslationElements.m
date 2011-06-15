@@ -58,7 +58,7 @@
 + (NSString *)extensionElementLocalName { return @"glossary"; }
 
 + (GDataTranslationGlossary *)glossaryWithLink:(GDataLink *)translationLink {
-  GDataTranslationGlossary *obj = [[[self alloc] init] autorelease];
+  GDataTranslationGlossary *obj = [self object];
   [obj addLink:translationLink];
   return obj;
 }
@@ -70,7 +70,7 @@
 + (NSString *)extensionElementLocalName { return @"translationMemory"; }
 
 + (GDataTranslationMemory *)memoryWithLink:(GDataLink *)translationLink {
-  GDataTranslationMemory *obj = [[[self alloc] init] autorelease];
+  GDataTranslationMemory *obj = [self object];
   [obj addLink:translationLink];
   return obj;
 }

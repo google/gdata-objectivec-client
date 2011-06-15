@@ -29,7 +29,7 @@
 
 + (GDataFeedSitemap *)sitemapFeed {
   
-  GDataFeedSitemap *feed = [[[self alloc] init] autorelease];
+  GDataFeedSitemap *feed = [self object];
   
   [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   

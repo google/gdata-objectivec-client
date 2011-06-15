@@ -27,7 +27,7 @@
 
 + (GDataFeedAnalyticsAccount *)accountFeed {
 
-  GDataFeedAnalyticsAccount *feed = [[[self alloc] init] autorelease];
+  GDataFeedAnalyticsAccount *feed = [self object];
 
   [feed setNamespaces:[GDataAnalyticsConstants analyticsNamespaces]];
 

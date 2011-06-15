@@ -28,7 +28,7 @@
 + (GDataEntryFinancePosition *)positionEntry {
   
   GDataEntryFinancePosition *obj;
-  obj = [[[GDataEntryFinancePosition alloc] init] autorelease];
+  obj = [self object];
   
   [obj setNamespaces:[GDataEntryFinancePortfolio financeNamespaces]];
   

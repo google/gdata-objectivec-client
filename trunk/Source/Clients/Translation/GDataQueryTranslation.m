@@ -27,7 +27,7 @@ static NSString *const kScopeParamName = @"scope";
 @implementation GDataQueryTranslation
 
 + (GDataQueryTranslation *)translationQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
+  return [self queryWithFeedURL:feedURL];
 }
 
 #pragma mark -

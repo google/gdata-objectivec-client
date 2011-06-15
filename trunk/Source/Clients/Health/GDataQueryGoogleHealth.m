@@ -33,7 +33,7 @@ static NSString *const kStartIndexInGroupParamName = @"start-index-in-group";
 @implementation GDataQueryGoogleHealth
 
 + (GDataQueryGoogleHealth *)healthQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
+  return [self queryWithFeedURL:feedURL];
 }
 
 - (void)setIsDigest:(BOOL)flag {

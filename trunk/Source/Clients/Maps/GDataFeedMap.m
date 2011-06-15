@@ -27,7 +27,7 @@
 
 + (GDataFeedMap *)mapFeed {
 
-  GDataFeedMap *feed = [[[self alloc] init] autorelease];
+  GDataFeedMap *feed = [self object];
 
   [feed setNamespaces:[GDataMapConstants mapsNamespaces]];
 

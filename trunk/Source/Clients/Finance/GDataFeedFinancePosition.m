@@ -28,7 +28,7 @@
 
 + (GDataFeedFinancePosition *)positionFeed {
   
-  GDataFeedFinancePosition *feed = [[[self alloc] init] autorelease];
+  GDataFeedFinancePosition *feed = [self object];
   
   [feed setNamespaces:[GDataEntryFinancePortfolio financeNamespaces]];
   

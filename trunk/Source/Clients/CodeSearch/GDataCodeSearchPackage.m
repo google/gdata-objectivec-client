@@ -38,7 +38,7 @@
 + (id)packageWithName:(NSString *)name
                   URI:(NSString *)uri {
 
-  GDataCodeSearchPackage *obj = [[[GDataCodeSearchPackage alloc] init] autorelease];
+  GDataCodeSearchPackage *obj = [self object];
   [obj setName:name];
   [obj setURI:uri];
   return obj;

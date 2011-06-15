@@ -29,7 +29,7 @@
 
 + (GDataFeedAnalyticsData *)dataFeed {
 
-  GDataFeedAnalyticsData *feed = [[[self alloc] init] autorelease];
+  GDataFeedAnalyticsData *feed = [self object];
 
   [feed setNamespaces:[GDataAnalyticsConstants analyticsNamespaces]];
 

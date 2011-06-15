@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeVideo *)videoEntry {
   
-  GDataEntryYouTubeVideo *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeVideo *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

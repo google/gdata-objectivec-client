@@ -55,7 +55,7 @@
 }
 
 + (id)revisionEntry {
-  GDataEntryDocRevision *obj = [[[self alloc] init] autorelease];
+  GDataEntryDocRevision *obj = [self object];
 
   [obj setNamespaces:[GDataDocConstants baseDocumentNamespaces]];
 

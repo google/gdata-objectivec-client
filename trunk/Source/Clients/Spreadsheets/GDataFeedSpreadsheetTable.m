@@ -35,7 +35,7 @@
 }
 
 + (GDataFeedSpreadsheetTable *)spreadsheetTableFeed {
-  GDataFeedSpreadsheetTable *feed = [[[self alloc] init] autorelease];
+  GDataFeedSpreadsheetTable *feed = [self object];
   [feed setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return feed;
 }

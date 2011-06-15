@@ -28,7 +28,7 @@
 
 + (id)profileEntry {
 
-  GDataEntryHealthProfile *obj = [[[self alloc] init] autorelease];
+  GDataEntryHealthProfile *obj = [self object];
 
   [obj setNamespaces:[GDataHealthConstants healthNamespaces]];
 

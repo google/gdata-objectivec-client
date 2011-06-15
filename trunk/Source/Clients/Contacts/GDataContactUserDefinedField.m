@@ -34,7 +34,7 @@
 
   GDataContactUserDefinedField *obj;
 
-  obj = [[[self alloc] init] autorelease];
+  obj = [self object];
   [obj setKey:key];
   [obj setStringValue:value];
   return obj;

@@ -28,7 +28,7 @@
 + (GDataEntryTranslationMemory *)documentWithTitle:(NSString *)title
                                              scope:(NSString *)scope {
 
-  GDataEntryTranslationMemory *obj = [[[self alloc] init] autorelease];
+  GDataEntryTranslationMemory *obj = [self object];
 
   [obj setTitleWithString:title];
   [obj setScope:scope];

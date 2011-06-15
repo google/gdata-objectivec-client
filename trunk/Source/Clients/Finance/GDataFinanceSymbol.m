@@ -43,7 +43,7 @@ static NSString* const kSymbolAttr = @"symbol";
                                 fullName:(NSString *)fullName
                                 exchange:(NSString *)exchange {
   
-  GDataFinanceSymbol *obj = [[[GDataFinanceSymbol alloc] init] autorelease];
+  GDataFinanceSymbol *obj = [self object];
   [obj setSymbol:symbol];
   [obj setFullName:fullName];
   [obj setExchange:exchange];

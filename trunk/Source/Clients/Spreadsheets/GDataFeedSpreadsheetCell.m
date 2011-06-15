@@ -32,11 +32,11 @@
 }
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
+  return [[[self alloc] feedWithXMLData:data] autorelease];
 }
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeed {
-  GDataFeedSpreadsheetCell *feed = [[[self alloc] init] autorelease];
+  GDataFeedSpreadsheetCell *feed = [self object];
   [feed setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return feed;
 }

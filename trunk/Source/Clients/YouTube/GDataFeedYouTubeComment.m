@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeComment *)commentFeed {
   
-  GDataFeedYouTubeComment *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeComment *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

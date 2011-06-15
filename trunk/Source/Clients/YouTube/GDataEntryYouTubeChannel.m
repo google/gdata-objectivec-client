@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeChannel *)channelEntry {
 
-  GDataEntryYouTubeChannel *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeChannel *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

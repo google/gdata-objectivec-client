@@ -27,7 +27,7 @@
 
 + (GDataEntryPhotoComment *)commentEntryWithString:(NSString *)commentStr {
   
-  GDataEntryPhotoComment *entry = [[[GDataEntryPhotoComment alloc] init] autorelease];
+  GDataEntryPhotoComment *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   

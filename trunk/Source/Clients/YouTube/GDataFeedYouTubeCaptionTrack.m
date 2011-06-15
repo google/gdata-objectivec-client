@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeCaptionTrack *)captionTrackFeed {
 
-  GDataFeedYouTubeCaptionTrack *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeCaptionTrack *feed = [self object];
 
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

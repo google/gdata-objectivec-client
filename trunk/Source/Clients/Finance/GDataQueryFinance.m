@@ -30,7 +30,7 @@ static NSString *const kTransactionsParamName = @"transactions";
 @implementation GDataQueryFinance
 
 + (GDataQueryFinance *)financeQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [self queryWithFeedURL:feedURL];   
 }
 
 #pragma mark -

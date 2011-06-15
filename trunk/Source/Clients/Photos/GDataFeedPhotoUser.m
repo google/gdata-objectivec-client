@@ -26,7 +26,7 @@
 
 + (GDataFeedPhotoUser *)userFeed {
   
-  GDataFeedPhotoUser *feed = [[[GDataFeedPhotoUser alloc] init] autorelease];
+  GDataFeedPhotoUser *feed = [self object];
   
   [feed setNamespaces:[GDataPhotoConstants photoNamespaces]];
   

@@ -39,7 +39,7 @@
 }
 
 + (GDataFeedContactProfile *)contactProfileFeed {
-  GDataFeedContactProfile *obj = [[[self alloc] init] autorelease];
+  GDataFeedContactProfile *obj = [self object];
 
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
 

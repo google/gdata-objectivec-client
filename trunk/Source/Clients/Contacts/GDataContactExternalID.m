@@ -38,7 +38,7 @@ static NSString* const kValueAttr = @"value";
                   label:(NSString *)label
                   value:(NSString *)value {
 
-  GDataContactExternalID *obj = [[[self alloc] init] autorelease];
+  GDataContactExternalID *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
   [obj setStringValue:value];

@@ -63,7 +63,7 @@
 + (id)sitemapEntry {
   
   GDataEntrySitemapBase *obj;
-  obj = [[[self alloc] init] autorelease];
+  obj = [self object];
   
   [obj setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   

@@ -28,11 +28,11 @@
 @implementation GDataFeedCodeSearch
 
 + (GDataFeedCodeSearch *)codeSearchFeed {
-  return [[[GDataFeedCodeSearch alloc] init] autorelease];
+  return [self object];
 }
 
 + (GDataFeedCodeSearch *)codeSearchFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
+  return [self feedWithXMLData:data];
 }
 
 + (NSString *)standardFeedKind {

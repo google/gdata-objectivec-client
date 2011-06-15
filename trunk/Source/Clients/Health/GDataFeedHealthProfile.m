@@ -26,7 +26,7 @@
 
 + (GDataFeedHealthProfile *)healthProfileFeed {
 
-  GDataFeedHealthProfile *feed = [[[self alloc] init] autorelease];
+  GDataFeedHealthProfile *feed = [self object];
 
   [feed setNamespaces:[GDataHealthConstants healthNamespaces]];
 

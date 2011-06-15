@@ -32,7 +32,7 @@
 }
 
 + (GDataFeedContactGroup *)contactGroupFeed {
-  GDataFeedContactGroup *obj = [[[self alloc] init] autorelease];
+  GDataFeedContactGroup *obj = [self object];
 
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
 

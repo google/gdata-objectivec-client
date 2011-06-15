@@ -103,7 +103,7 @@
 + (GDataEntrySite *)siteEntry {
 
   GDataEntrySite *obj;
-  obj = [[[GDataEntrySite alloc] init] autorelease];
+  obj = [self object];
 
   [obj setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
 

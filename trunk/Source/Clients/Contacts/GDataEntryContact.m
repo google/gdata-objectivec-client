@@ -36,7 +36,7 @@
 
 + (GDataEntryContact *)contactEntryWithName:(GDataName *)name {
 
-  GDataEntryContact *obj = [[[GDataEntryContact alloc] init] autorelease];
+  GDataEntryContact *obj = [self object];
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
   [obj setName:name];
   return obj;
@@ -50,7 +50,7 @@
 
 + (GDataEntryContact *)contactEntryWithTitle:(NSString *)title {
 
-  GDataEntryContact *obj = [[[self alloc] init] autorelease];
+  GDataEntryContact *obj = [self object];
 
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
 

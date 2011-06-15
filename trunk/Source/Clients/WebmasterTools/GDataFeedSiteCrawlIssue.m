@@ -26,7 +26,7 @@
 
 + (GDataFeedSiteCrawlIssue *)crawlIssueFeed {
 
-  GDataFeedSiteCrawlIssue *feed = [[[self alloc] init] autorelease];
+  GDataFeedSiteCrawlIssue *feed = [self object];
 
   [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
 

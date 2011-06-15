@@ -27,7 +27,7 @@
 
 + (GDataEntryPhotoTag *)tagEntryWithString:(NSString *)tagStr {
   
-  GDataEntryPhotoTag *entry = [[[GDataEntryPhotoTag alloc] init] autorelease];
+  GDataEntryPhotoTag *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   

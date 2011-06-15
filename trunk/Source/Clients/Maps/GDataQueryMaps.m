@@ -33,7 +33,7 @@ static NSString *const kSortByParamName = @"sortby";
 @implementation GDataQueryMaps
 
 + (GDataQueryMaps *)mapsQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
+  return [self queryWithFeedURL:feedURL];
 }
 
 - (NSString *)prevID {

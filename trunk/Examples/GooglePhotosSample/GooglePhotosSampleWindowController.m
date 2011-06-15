@@ -906,7 +906,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                               photoDate, NSFileCreationDate,
                               photoDate, NSFileModificationDate, nil];
         NSFileManager *fileMgr = [NSFileManager defaultManager];
-        [fileMgr changeFileAttributes:attr atPath:savePath];
+        [fileMgr setAttributes:attr ofItemAtPath:savePath error:NULL];
       }
       NSBeginAlertSheet(@"Saved", nil, nil, nil,
                         [self window], nil, nil, nil, nil,

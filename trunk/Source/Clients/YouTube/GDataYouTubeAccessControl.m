@@ -41,7 +41,7 @@ static NSString *const kTypeAttr       = @"type";
 
 + (GDataYouTubeAccessControl *)accessControlWithAction:(NSString *)action
                                             permission:(NSString *)permission {
-  GDataYouTubeAccessControl *obj = [[[self alloc] init] autorelease];
+  GDataYouTubeAccessControl *obj = [self object];
   [obj setAction:action];
   [obj setPermission:permission];
   return obj;

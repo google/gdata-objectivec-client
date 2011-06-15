@@ -34,7 +34,7 @@ static NSString* const kPrimaryAttr = @"primary";
             label:(NSString *)label
              href:(NSString *)href {
   
-  GDataContactLink *obj = [[[self alloc] init] autorelease];
+  GDataContactLink *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
   [obj setHref:href];

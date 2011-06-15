@@ -28,7 +28,7 @@ static NSString *const kEBookParamName = @"ebook";
 @implementation GDataQueryBooks
 
 + (GDataQueryBooks *)booksQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [self queryWithFeedURL:feedURL];   
 }
 
 #pragma mark -

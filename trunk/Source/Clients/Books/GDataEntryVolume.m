@@ -71,7 +71,7 @@
 + (GDataEntryVolume *)volumeEntry {
   
   GDataEntryVolume *obj;
-  obj = [[[self alloc] init] autorelease];
+  obj = [self object];
   
   [obj setNamespaces:[GDataBookConstants booksNamespaces]];
   

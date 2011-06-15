@@ -26,7 +26,7 @@
 
 + (GDataFeedSite *)siteFeed {
   
-  GDataFeedSite *feed = [[[self alloc] init] autorelease];
+  GDataFeedSite *feed = [self object];
   
   [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
   

@@ -26,8 +26,7 @@
 
 + (GDataEntryCollection *)collectionEntryWithTitle:(NSString *)str {
 
-  GDataEntryCollection *obj;
-  obj = [[[[self class] alloc] init] autorelease];
+  GDataEntryCollection *obj = [self object];
 
   [obj setTitleWithString:str];
   [obj setNamespaces:[GDataBookConstants booksNamespaces]];

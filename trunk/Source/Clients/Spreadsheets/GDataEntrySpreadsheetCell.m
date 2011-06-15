@@ -35,7 +35,7 @@
 
 + (GDataEntrySpreadsheetCell *)spreadsheetCellEntryWithCell:(GDataSpreadsheetCell *)cell {
   
-  GDataEntrySpreadsheetCell *entry = [[[GDataEntrySpreadsheetCell alloc] init] autorelease];
+  GDataEntrySpreadsheetCell *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   

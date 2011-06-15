@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeSubscription *)subscriptionFeed {
   
-  GDataFeedYouTubeSubscription *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeSubscription *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

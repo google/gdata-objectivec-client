@@ -26,7 +26,7 @@
 
 + (GDataEntryYouTubeFavorite *)favoriteEntry {
 
-  GDataEntryYouTubeFavorite *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeFavorite *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

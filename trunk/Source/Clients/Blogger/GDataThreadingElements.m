@@ -53,7 +53,7 @@ static NSString* const kTypeAttr = @"type";
                                   ref:(NSString *)ref
                                source:(NSString *)source
                                  type:(NSString *)type {
-  GDataInReplyTo* obj = [[[self alloc] init] autorelease];
+  GDataInReplyTo* obj = [self object];
   [obj setHref:href];
   [obj setRef:ref];
   [obj setSource:source];

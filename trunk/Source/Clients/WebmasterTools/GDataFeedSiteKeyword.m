@@ -26,7 +26,7 @@
 
 + (GDataFeedSiteKeyword *)siteKeywordFeed {
 
-  GDataFeedSiteKeyword *feed = [[[self alloc] init] autorelease];
+  GDataFeedSiteKeyword *feed = [self object];
 
   [feed setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
 

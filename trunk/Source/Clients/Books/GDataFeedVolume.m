@@ -27,7 +27,7 @@
 
 + (GDataFeedVolume *)volumeFeed {
   
-  GDataFeedVolume *feed = [[[self alloc] init] autorelease];
+  GDataFeedVolume *feed = [self object];
   
   [feed setNamespaces:[GDataBookConstants booksNamespaces]];
   

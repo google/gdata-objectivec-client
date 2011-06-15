@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeRating *)ratingFeed {
   
-  GDataFeedYouTubeRating *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeRating *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

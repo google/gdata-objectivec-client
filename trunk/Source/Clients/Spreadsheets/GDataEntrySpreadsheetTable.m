@@ -46,7 +46,7 @@
 
 + (GDataEntrySpreadsheetTable *)tableEntry {
 
-  GDataEntrySpreadsheetTable *entry = [[[self alloc] init] autorelease];
+  GDataEntrySpreadsheetTable *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;

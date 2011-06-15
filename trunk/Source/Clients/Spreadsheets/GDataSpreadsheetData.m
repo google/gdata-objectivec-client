@@ -45,7 +45,7 @@ static NSString* const kStartRowAttr = @"startRow";
                                            numberOfRows:(int)numRows
                                           insertionMode:(NSString *)insertionMode {
 
-  GDataSpreadsheetData *obj = [[[self alloc] init] autorelease];
+  GDataSpreadsheetData *obj = [self object];
 
   [obj setStartIndex:[NSNumber numberWithInt:startRow]];
   [obj setNumberOfRows:[NSNumber numberWithInt:numRows]];

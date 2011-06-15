@@ -29,12 +29,14 @@
 
 static inline NSMutableDictionary *GDataCreateStaticDictionary(void) {
   NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+#if !GDATA_IPHONE
   Class cls = NSClassFromString(@"NSGarbageCollector");
   if (cls) {
     id collector = [cls performSelector:@selector(defaultCollector)];
     [collector performSelector:@selector(disableCollectorForPointer:)
                     withObject:dict];
   }
+#endif
   return dict;
 }
 
@@ -129,6 +131,10 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   // Initialize gQualifiedNameMap early so we can @synchronize on accesses
   // to it
   gQualifiedNameMap = GDataCreateStaticDictionary();
+}
+
++ (id)object {
+  return [[[self alloc] init] autorelease];
 }
 
 - (id)init {

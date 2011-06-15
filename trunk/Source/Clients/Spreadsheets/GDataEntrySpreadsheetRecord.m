@@ -28,7 +28,7 @@
 
 + (GDataEntrySpreadsheetRecord *)recordEntry {
 
-  GDataEntrySpreadsheetRecord *entry = [[[self alloc] init] autorelease];
+  GDataEntrySpreadsheetRecord *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;

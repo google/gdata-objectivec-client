@@ -41,7 +41,7 @@
 
 + (GDataEntryCodeSearch *)codeSearchEntryWithFile:(GDataCodeSearchFile *)file
                                           package:(GDataCodeSearchPackage *)package {
-  GDataEntryCodeSearch *obj = [[[GDataEntryCodeSearch alloc] init] autorelease];
+  GDataEntryCodeSearch *obj = [self object];
   [obj setFile:file];
   [obj setPackage:package];
   return obj;

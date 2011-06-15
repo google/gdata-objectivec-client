@@ -35,7 +35,7 @@ static NSString *const kCodeAttr = @"code";
 + (id)languageWithCode:(NSString *)code
                  label:(NSString *)label {
   
-  GDataContactLanguage *obj = [[[self alloc] init] autorelease];
+  GDataContactLanguage *obj = [self object];
   [obj setLabel:label];
   [obj setCode:code];
   return obj;

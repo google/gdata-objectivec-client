@@ -26,7 +26,7 @@
 
 + (GDataEntryYouTubePlaylist *)playlistEntry {
   
-  GDataEntryYouTubePlaylist *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubePlaylist *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

@@ -38,7 +38,7 @@ static NSString* const kIndexAttr = @"index";
 + (GDataSpreadsheetColumn *)columnWithIndexString:(NSString *)indexStr
                                              name:(NSString *)name {
 
-  GDataSpreadsheetColumn *obj = [[[self alloc] init] autorelease];
+  GDataSpreadsheetColumn *obj = [self object];
   [obj setIndexString:indexStr];
   [obj setName:name];
   return obj;

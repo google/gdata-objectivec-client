@@ -84,7 +84,7 @@
 }
 
 + (GDataEntryCalendar *)calendarEntry {
-  GDataEntryCalendar *entry = [[[GDataEntryCalendar alloc] init] autorelease];
+  GDataEntryCalendar *entry = [self object];
 
   [entry setNamespaces:[GDataEntryCalendar calendarNamespaces]];
   return entry;

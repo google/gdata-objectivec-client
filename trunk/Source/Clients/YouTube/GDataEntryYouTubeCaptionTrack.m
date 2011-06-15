@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeCaptionTrack *)captionTrackEntry {
 
-  GDataEntryYouTubeCaptionTrack *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeCaptionTrack *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

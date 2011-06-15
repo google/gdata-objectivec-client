@@ -27,7 +27,7 @@
 
 + (GDataFeedYouTubeFriend *)friendFeed {
   
-  GDataFeedYouTubeFriend *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeFriend *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

@@ -28,7 +28,7 @@
   
   GDataEntryYouTubeVideoMessage *entry;
   
-  entry = [[[self alloc] init] autorelease];
+  entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

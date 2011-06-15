@@ -49,7 +49,7 @@ static NSString* const kTypeAttr = @"type";
 
 + (GDataVolumePrice *)volumePriceWithType:(NSString *)type
                                     money:(GDataMoney *)money {
-  GDataVolumePrice *obj = [[[self alloc] init] autorelease];
+  GDataVolumePrice *obj = [self object];
   [obj setType:type];
   [obj setMoney:money];
   return obj;

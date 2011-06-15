@@ -27,7 +27,7 @@
 
 + (GDataFeedCollection *)collectionFeed {
 
-  GDataFeedCollection *feed = [[[self alloc] init] autorelease];
+  GDataFeedCollection *feed = [self object];
 
   [feed setNamespaces:[GDataBookConstants booksNamespaces]];
 

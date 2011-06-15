@@ -27,7 +27,7 @@
 @implementation GDataFeedACL
 
 + (id)ACLFeed {
-  GDataFeedACL *feed = [[[self alloc] init] autorelease];
+  GDataFeedACL *feed = [self object];
   
   [feed setNamespaces:[GDataEntryACL ACLNamespaces]];
   
@@ -35,7 +35,7 @@
 }
 
 + (id)ACLFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
+  return [self feedWithXMLData:data];
 }
 
 + (NSString *)standardFeedKind {
