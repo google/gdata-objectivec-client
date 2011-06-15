@@ -30,7 +30,7 @@
 }
 
 + (GDataEntrySpreadsheetList *)listEntry {
-  GDataEntrySpreadsheetList *entry = [[[self alloc] init] autorelease];
+  GDataEntrySpreadsheetList *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;

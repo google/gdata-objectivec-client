@@ -52,7 +52,7 @@ static NSString* const kInUseAttr = @"in-use";
                          isInUse:(BOOL)isInUse {
   
   GDataSiteVerificationMethod *obj;
-  obj = [[[GDataSiteVerificationMethod alloc] init] autorelease];
+  obj = [self object];
   
   [obj setType:type];
   [obj setValue:value];

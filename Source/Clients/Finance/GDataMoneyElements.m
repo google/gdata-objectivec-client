@@ -70,7 +70,7 @@
 + (id)moneyGroupWithMoney:(GDataMoney *)money {
   
   GDataMoneyElementBase *obj;
-  obj = [[[GDataMoneyElementBase alloc] init] autorelease];
+  obj = [self object];
   
   [obj addMoney:money];
   

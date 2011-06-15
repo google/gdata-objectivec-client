@@ -34,7 +34,7 @@ static NSString* const kURLAttr = @"url";
 + (GDataTranslationDocumentSource *)documentSourceWithType:(NSString *)type
                                                  URLString:(NSString *)urlString {
 
-  GDataTranslationDocumentSource *obj = [[[self alloc] init] autorelease];
+  GDataTranslationDocumentSource *obj = [self object];
   [obj setType:type];
   [obj setURLString:urlString];
   return obj;

@@ -26,7 +26,7 @@
 
 + (id)versionEntry {
 
-  GDataEntryMapVersion *obj = [[[self alloc] init] autorelease];
+  GDataEntryMapVersion *obj = [self object];
 
   [obj setNamespaces:[GDataMapConstants mapsNamespaces]];
 

@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeFavorite *)favoriteFeed {
 
-  GDataFeedYouTubeFavorite *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeFavorite *feed = [self object];
 
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

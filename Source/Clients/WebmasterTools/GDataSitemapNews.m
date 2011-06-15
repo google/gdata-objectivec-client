@@ -49,7 +49,7 @@
 + (id)sitemapNews {
   
   GDataSitemapNews *obj;
-  obj = [[[GDataSitemapNews alloc] init] autorelease];
+  obj = [self object];
   return obj;
 }
 

@@ -27,7 +27,7 @@
 
 + (GDataFeedMapVersion *)versionFeed {
 
-  GDataFeedMapVersion *feed = [[[self alloc] init] autorelease];
+  GDataFeedMapVersion *feed = [self object];
 
   [feed setNamespaces:[GDataMapConstants mapsNamespaces]];
 

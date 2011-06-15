@@ -42,7 +42,7 @@ static NSString* const kHrefAttr = @"href";
                                        href:(NSString *)feedHref
                           originalStartTime:(GDataWhen *)startTime {
   
-  GDataOriginalEvent *obj = [[[GDataOriginalEvent alloc] init] autorelease];
+  GDataOriginalEvent *obj = [self object];
   [obj setHref:feedHref];
   [obj setOriginalID:originalID];
   [obj setOriginalStartTime:startTime];

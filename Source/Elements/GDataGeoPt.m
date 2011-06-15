@@ -34,12 +34,12 @@
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }
 + (NSString *)extensionElementLocalName { return @"geoPt"; }
 
-- (GDataGeoPt *)geoPtWithLabel:(NSString *)label
++ (GDataGeoPt *)geoPtWithLabel:(NSString *)label
                            lat:(NSNumber *)lat
                            lon:(NSNumber *)lon
                           elev:(NSNumber *)elev
                           time:(GDataDateTime *)aTime {
-  GDataGeoPt *obj = [[[GDataGeoPt alloc] init] autorelease];
+  GDataGeoPt *obj = [self object];
   [obj setLabel:label];
   [obj setLat:lat];
   [obj setLon:lon];

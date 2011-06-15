@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeUserProfile *)userProfileFeed {
   
-  GDataFeedYouTubeUserProfile *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeUserProfile *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

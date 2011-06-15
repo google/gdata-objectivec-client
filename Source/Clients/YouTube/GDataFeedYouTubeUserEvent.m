@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeUserEvent *)userEventFeed {
 
-  GDataFeedYouTubeUserEvent *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeUserEvent *feed = [self object];
 
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

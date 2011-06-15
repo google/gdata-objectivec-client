@@ -25,7 +25,7 @@
 @implementation GDataEntrySpreadsheet
 
 + (GDataEntrySpreadsheet *)spreadsheetEntry {
-  GDataEntrySpreadsheet *entry = [[[self alloc] init] autorelease];
+  GDataEntrySpreadsheet *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;

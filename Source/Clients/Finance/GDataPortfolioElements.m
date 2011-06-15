@@ -50,7 +50,8 @@ static NSString *const kSharesAttr = @"shares";
 + (NSString *)extensionElementLocalName { return @"portfolioData"; }
 
 + (GDataPortfolioData *)portfolioData {
-  return [[[self alloc] init] autorelease];
+  GDataPortfolioData *obj = [self object];
+  return obj;
 }
 
 - (void)addParseDeclarations {
@@ -81,7 +82,8 @@ static NSString *const kSharesAttr = @"shares";
 + (NSString *)extensionElementLocalName { return @"positionData"; }
 
 + (GDataPositionData *)positionData {
-  return [[[self alloc] init] autorelease];
+  GDataPositionData *obj = [self object];
+  return obj;
 }
 
 - (void)addParseDeclarations {

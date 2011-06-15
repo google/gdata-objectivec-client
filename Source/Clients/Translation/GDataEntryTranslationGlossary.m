@@ -26,7 +26,7 @@
 
 + (GDataEntryTranslationGlossary *)glossaryWithTitle:(NSString *)title {
 
-  GDataEntryTranslationGlossary *obj = [[[self alloc] init] autorelease];
+  GDataEntryTranslationGlossary *obj = [self object];
 
   [obj setTitleWithString:title];
 

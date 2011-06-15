@@ -63,7 +63,7 @@
 + (NSString *)extensionElementLocalName { return @"tags"; }
 
 + (GDataEXIFTags *)EXIFTags {
-  GDataEXIFTags *obj = [[[GDataEXIFTags alloc] init] autorelease];
+  GDataEXIFTags *obj = [self object];
   return obj;
 }
 

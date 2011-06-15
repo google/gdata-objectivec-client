@@ -38,7 +38,7 @@ static NSString *const kMaxAttendeesParamName = @"max-attendees";
 @implementation GDataQueryCalendar
 
 + (GDataQueryCalendar *)calendarQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [self queryWithFeedURL:feedURL];   
 }
 
 - (GDataDateTime *)minimumStartTime {

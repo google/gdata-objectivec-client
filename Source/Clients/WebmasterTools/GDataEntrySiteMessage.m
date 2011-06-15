@@ -73,7 +73,7 @@
 @implementation GDataEntrySiteMessage
 
 + (id)messageEntry {
-  GDataEntrySiteMessage *obj = [[[self alloc] init] autorelease];
+  GDataEntrySiteMessage *obj = [self object];
 
   [obj setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
 

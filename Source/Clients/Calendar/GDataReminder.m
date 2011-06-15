@@ -41,7 +41,7 @@ static NSString* const kAbsoluteTimeAttr = @"absoluteTime";
 + (NSString *)extensionElementLocalName { return @"reminder"; }
 
 + (GDataReminder *)reminder {
-  return [[[GDataReminder alloc] init] autorelease];
+  return [self object];
 }
 
 - (void)addParseDeclarations {

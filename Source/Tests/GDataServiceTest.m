@@ -80,6 +80,8 @@
 - (NSString *)mySurrogateLinkName;
 @end
 
+NSTask *StartHTTPServerTask(int portNumber) NS_RETURNS_RETAINED;
+
 // StartHTTPServerTask is used below and in GTMHTTPFetcherTest
 NSTask *StartHTTPServerTask(int portNumber) NS_RETURNS_RETAINED {
   // run the python http server, located in the Tests directory

@@ -31,11 +31,11 @@
 }
 
 + (GDataFeedSpreadsheetList *)spreadsheetListFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
+  return [self feedWithXMLData:data];
 }
 
 + (GDataFeedSpreadsheetList *)spreadsheetListFeed {
-  GDataFeedSpreadsheetList *feed = [[[self alloc] init] autorelease];
+  GDataFeedSpreadsheetList *feed = [self object];
   [feed setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return feed;
 }

@@ -39,7 +39,7 @@ static NSString* const kFormulaAttr = @"formula";
 + (GDataSpreadsheetField *)fieldWithName:(NSString *)name
                                    value:(NSString *)value {
 
-  GDataSpreadsheetField *obj = [[[self alloc] init] autorelease];
+  GDataSpreadsheetField *obj = [self object];
   [obj setName:name];
   [obj setValue:value];
   return obj;

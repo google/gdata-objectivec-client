@@ -37,7 +37,7 @@ static NSString* const kLabelAttr = @"label";
                 label:(NSString *)label
                 value:(NSString *)value {
   
-  GDataContactRelation *obj = [[[self alloc] init] autorelease];
+  GDataContactRelation *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
   [obj setStringValue:value];

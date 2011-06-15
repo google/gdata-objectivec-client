@@ -38,7 +38,7 @@
 + (GDataSpreadsheetCustomElement *)elementWithName:(NSString *)name
                                        stringValue:(NSString *)stringValue {
   
-  GDataSpreadsheetCustomElement *obj = [[[GDataSpreadsheetCustomElement alloc] init] autorelease];
+  GDataSpreadsheetCustomElement *obj = [self object];
   [obj setName:name];
   [obj setStringValue:stringValue];
   

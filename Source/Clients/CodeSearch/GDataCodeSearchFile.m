@@ -36,7 +36,7 @@
 
 + (id)fileWithName:(NSString *)name {
 
-  GDataCodeSearchFile *obj = [[[GDataCodeSearchFile alloc] init] autorelease];
+  GDataCodeSearchFile *obj = [self object];
   [obj setName:name];
   return obj;
 }

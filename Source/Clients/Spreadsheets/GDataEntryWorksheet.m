@@ -30,7 +30,7 @@
 
 
 + (GDataEntryWorksheet *)worksheetEntry {
-  GDataEntryWorksheet *entry = [[[GDataEntryWorksheet alloc] init] autorelease];
+  GDataEntryWorksheet *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
   return entry;

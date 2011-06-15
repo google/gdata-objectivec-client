@@ -27,7 +27,7 @@
 
 + (GDataFeedPhotoAlbum *)albumFeed {
   
-  GDataFeedPhotoAlbum *entry = [[[GDataFeedPhotoAlbum alloc] init] autorelease];
+  GDataFeedPhotoAlbum *entry = [self object];
   
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   

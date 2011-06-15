@@ -43,7 +43,7 @@ static NSString* const kValueAttr       = @"value";
                                    applicationName:(NSString *)name
                                               time:(GDataDateTime *)dateTime
                                              value:(NSString *)value {
-  GDataVolumeReadingPosition *obj = [[[self alloc] init] autorelease];
+  GDataVolumeReadingPosition *obj = [self object];
   [obj setAction:action];
   [obj setApplicationName:name];
   [obj setValue:value];

@@ -34,7 +34,7 @@ static NSString* const kRelAttr = @"rel";
 
 + (id)priorityWithRel:(NSString *)rel {
 
-  GDataContactPriority *obj = [[[self alloc] init] autorelease];
+  GDataContactPriority *obj = [self object];
   [obj setRel:rel];
   return obj;
 }

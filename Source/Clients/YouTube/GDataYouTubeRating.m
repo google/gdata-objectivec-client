@@ -36,7 +36,7 @@ static NSString* const kNumDislikesAttr = @"numDislikes";
 + (NSString *)extensionElementLocalName { return @"rating"; }
 
 + (GDataYouTubeRating *)ratingWithValue:(NSString *)str {
-  GDataYouTubeRating *obj = [[[self alloc] init] autorelease];
+  GDataYouTubeRating *obj = [self object];
   [obj setValue:str];
   return obj;
 }

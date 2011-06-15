@@ -32,7 +32,7 @@
                                               MIMEType:(NSString *)mimeType
                                                   slug:(NSString *)fileName {
 
-  GDataEntryYouTubeUpload *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeUpload *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubeComplaint *)complaintFeed {
   
-  GDataFeedYouTubeComplaint *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubeComplaint *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeFriend *)friendEntry {
   
-  GDataEntryYouTubeFriend *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeFriend *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

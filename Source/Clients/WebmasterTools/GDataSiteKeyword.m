@@ -36,7 +36,7 @@ static NSString* const kSourceAttr = @"source";
 + (GDataSiteKeyword *)keywordWithSource:(NSString *)source
                             stringValue:(NSString *)value {
 
-  GDataSiteKeyword *obj = [[[self alloc] init] autorelease];
+  GDataSiteKeyword *obj = [self object];
   [obj setSource:source];
   [obj setStringValue:value];
   return obj;

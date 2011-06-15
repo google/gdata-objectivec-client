@@ -42,7 +42,7 @@ static NSString* const kLineNumberAttr = @"lineNumber";
                       type:(NSString *)type
           lineNumberString:(NSString *)lineNumberStr {
 
-  GDataCodeSearchMatch *obj = [[[GDataCodeSearchMatch alloc] init] autorelease];
+  GDataCodeSearchMatch *obj = [self object];
   [obj setStringValue:valueStr];
   [obj setType:type];
   [obj setLineNumberString:lineNumberStr];

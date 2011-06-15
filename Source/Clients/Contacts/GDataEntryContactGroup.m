@@ -51,7 +51,7 @@
 }
 
 + (GDataEntryContactGroup *)contactGroupEntryWithTitle:(NSString *)title {
-  GDataEntryContactGroup *obj = [[[GDataEntryContactGroup alloc] init] autorelease];
+  GDataEntryContactGroup *obj = [self object];
   
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
   

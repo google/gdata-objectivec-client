@@ -26,7 +26,7 @@
 
 + (id)featureEntryWithTitle:(NSString *)str {
 
-  GDataEntryMapFeature *obj = [[[self alloc] init] autorelease];
+  GDataEntryMapFeature *obj = [self object];
 
   [obj setNamespaces:[GDataMapConstants mapsNamespaces]];
 

@@ -81,7 +81,7 @@
 @implementation GDataEntrySiteCrawlIssue
 
 + (id)crawlIssueEntry {
-  GDataEntrySiteCrawlIssue *obj = [[[self alloc] init] autorelease];
+  GDataEntrySiteCrawlIssue *obj = [self object];
 
   [obj setNamespaces:[GDataWebmasterToolsConstants webmasterToolsNamespaces]];
 

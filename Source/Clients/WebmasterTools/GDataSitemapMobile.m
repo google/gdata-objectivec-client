@@ -47,7 +47,7 @@
 + (id)sitemapMobile {
   
   GDataSitemapMobile *obj;
-  obj = [[[GDataSitemapMobile alloc] init] autorelease];
+  obj = [self object];
   return obj;
 }
 

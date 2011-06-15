@@ -30,7 +30,7 @@
 + (GDataEntryFinanceTransaction *)transactionEntry {
   
   GDataEntryFinanceTransaction *obj;
-  obj = [[[GDataEntryFinanceTransaction alloc] init] autorelease];
+  obj = [self object];
   
   [obj setNamespaces:[GDataEntryFinancePortfolio financeNamespaces]];
   

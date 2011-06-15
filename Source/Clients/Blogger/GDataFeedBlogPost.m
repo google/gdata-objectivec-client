@@ -28,7 +28,7 @@
 
 + (GDataFeedBlogPost *)blogPostFeed {
 
-  GDataFeedBlogPost *feed = [[[self alloc] init] autorelease];
+  GDataFeedBlogPost *feed = [self object];
 
   [feed setNamespaces:[GDataBloggerConstants bloggerNamespaces]];
 

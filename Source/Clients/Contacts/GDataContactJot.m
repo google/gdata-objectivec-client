@@ -35,7 +35,7 @@ static NSString* const kRelAttr = @"rel";
 + (id)jotWithRel:(NSString *)rel
            value:(NSString *)value {
   
-  GDataContactJot *obj = [[[self alloc] init] autorelease];
+  GDataContactJot *obj = [self object];
   [obj setRel:rel];
   [obj setStringValue:value];
   return obj;

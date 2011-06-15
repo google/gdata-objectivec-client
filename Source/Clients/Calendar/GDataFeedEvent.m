@@ -28,7 +28,7 @@
 @implementation GDataFeedEvent
 
 + (GDataFeedEvent *)eventFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] initWithData:data] autorelease];
+  return [self feedWithXMLData:data];
 }
 
 - (void)addExtensionDeclarations {

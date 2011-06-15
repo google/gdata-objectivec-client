@@ -38,7 +38,7 @@
   NSNumber *elev_;
   GDataDateTime* time_;
 }
-- (GDataGeoPt *)geoPtWithLabel:(NSString *)label
++ (GDataGeoPt *)geoPtWithLabel:(NSString *)label
                            lat:(NSNumber *)lat
                            lon:(NSNumber *)lon
                           elev:(NSNumber *)elev

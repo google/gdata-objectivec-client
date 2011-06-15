@@ -41,7 +41,7 @@
 }
 
 + (GDataFeedContact *)contactFeed {
-  GDataFeedContact *obj = [[[self alloc] init] autorelease];
+  GDataFeedContact *obj = [self object];
 
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
 

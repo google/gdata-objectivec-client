@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeUserEvent *)userEventEntry {
 
-  GDataEntryYouTubeUserEvent *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeUserEvent *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

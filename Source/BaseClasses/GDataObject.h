@@ -260,6 +260,8 @@ typedef struct GDataDescriptionRecord {
 // These methods are intended for users of the library
 //
 
++ (id)object;
+
 - (id)copyWithZone:(NSZone *)zone;
 
 - (id)initWithServiceVersion:(NSString *)serviceVersion;

@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeUserProfile *)userProfileEntry {
   
-  GDataEntryYouTubeUserProfile *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeUserProfile *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

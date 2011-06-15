@@ -31,7 +31,7 @@
                                       sourceLanguage:(NSString *)sourceLanguage
                                       targetLanguage:(NSString *)targetLanguage {
 
-  GDataEntryTranslationDocument *obj = [[[self alloc] init] autorelease];
+  GDataEntryTranslationDocument *obj = [self object];
 
   [obj setTitleWithString:title];
   [obj setSourceLanguage:sourceLanguage];

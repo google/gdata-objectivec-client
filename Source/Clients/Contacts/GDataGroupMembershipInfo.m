@@ -39,7 +39,7 @@ static NSString* const kDeletedAttr = @"deleted";
 
 + (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)str {
   
-  GDataGroupMembershipInfo *obj = [[[self alloc] init] autorelease];
+  GDataGroupMembershipInfo *obj = [self object];
   [obj setHref:str];
   return obj;
 }

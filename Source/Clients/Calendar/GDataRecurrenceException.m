@@ -40,7 +40,7 @@
 + (GDataRecurrenceException *)recurrenceExceptionWithEntryLink:(GDataEntryLink *)entryLink
                                                  originalEvent:(GDataOriginalEvent *)originalEvent
                                                  isSpecialized:(BOOL)isSpecialized {
-  GDataRecurrenceException *obj = [[[GDataRecurrenceException alloc] init] autorelease];
+  GDataRecurrenceException *obj = [self object];
   [obj setEntryLink:entryLink];
   [obj setOriginalEvent:originalEvent];
   [obj setIsSpecialized:isSpecialized];

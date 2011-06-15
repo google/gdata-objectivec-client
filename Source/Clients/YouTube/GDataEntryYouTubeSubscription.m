@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeSubscription *)subscriptionEntry {
   
-  GDataEntryYouTubeSubscription *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeSubscription *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

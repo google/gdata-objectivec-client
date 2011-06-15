@@ -52,7 +52,7 @@ static NSString* const kURLAttr = @"url";
 + (GDataWebContent *)webContentWithURL:(NSString *)urlString
                                  width:(int)width
                                 height:(int)height {
-  GDataWebContent *obj = [[[GDataWebContent alloc] init] autorelease];
+  GDataWebContent *obj = [self object];
   [obj setURLString:urlString];
   [obj setWidth:[NSNumber numberWithInt:width]];
   [obj setHeight:[NSNumber numberWithInt:height]];

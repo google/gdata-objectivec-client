@@ -27,7 +27,7 @@
 
 + (GDataEntryYouTubeComment *)commentEntry {
 
-  GDataEntryYouTubeComment *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeComment *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
 

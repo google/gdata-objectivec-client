@@ -37,7 +37,7 @@
 
 
 + (GDataColumnCount *)columnCountWithInt:(NSInteger)val {
-  GDataColumnCount *obj = [[[GDataColumnCount alloc] init] autorelease];
+  GDataColumnCount *obj = [self object];
   [obj setCount:val];
   return obj;
 }
@@ -52,7 +52,7 @@
 
 
 + (GDataRowCount *)rowCountWithInt:(NSInteger)val {
-  GDataRowCount *obj = [[[GDataRowCount alloc] init] autorelease];
+  GDataRowCount *obj = [self object];
   [obj setCount:val];
   return obj;
 }

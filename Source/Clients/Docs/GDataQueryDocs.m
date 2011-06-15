@@ -45,7 +45,7 @@ static NSString *const kNewRevisionParamName    = @"new-revision";
 @implementation GDataQueryDocs
 
 + (GDataQueryDocs *)documentQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
+  return [self queryWithFeedURL:feedURL];
 }
 
 - (NSString *)titleQuery {

@@ -26,7 +26,7 @@
 
 + (id)mapEntryWithTitle:(NSString *)str {
 
-  GDataEntryMap *obj = [[[self alloc] init] autorelease];
+  GDataEntryMap *obj = [self object];
 
   [obj setNamespaces:[GDataMapConstants mapsNamespaces]];
   [obj setTitleWithString:str];

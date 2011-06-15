@@ -27,7 +27,7 @@
 
 + (GDataFeedTranslationMemory *)memoryFeed {
 
-  GDataFeedTranslationMemory *feed = [[[self alloc] init] autorelease];
+  GDataFeedTranslationMemory *feed = [self object];
 
   [feed setNamespaces:[GDataTranslationConstants translationNamespaces]];
 

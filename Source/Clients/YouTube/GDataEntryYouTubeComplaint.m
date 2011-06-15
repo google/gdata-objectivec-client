@@ -26,7 +26,7 @@
 
 + (GDataEntryYouTubeComplaint *)complaintEntry {
   
-  GDataEntryYouTubeComplaint *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeComplaint *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

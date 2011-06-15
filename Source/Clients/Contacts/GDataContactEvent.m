@@ -37,7 +37,7 @@ static NSString* const kLabelAttr = @"label";
              label:(NSString *)label
               when:(GDataWhen *)when {
 
-  GDataContactEvent *obj = [[[self alloc] init] autorelease];
+  GDataContactEvent *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
   [obj setWhen:when];

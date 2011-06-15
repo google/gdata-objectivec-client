@@ -25,7 +25,7 @@
 @implementation GDataEntryYouTubeRating
 
 + (GDataEntryYouTubeRating *)ratingEntryWithValue:(NSString *)value {
-  GDataEntryYouTubeRating *entry = [[[self alloc] init] autorelease];
+  GDataEntryYouTubeRating *entry = [self object];
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   [entry setRating:[GDataYouTubeRating ratingWithValue:value]];
   return entry;

@@ -50,7 +50,7 @@ static NSString* const kNotesAttr = @"notes";
 
 + (GDataFinanceTransactionData *)transactionDataWithType:(NSString *)str {
   
-  GDataFinanceTransactionData *obj = [[[GDataFinanceTransactionData alloc] init] autorelease];
+  GDataFinanceTransactionData *obj = [self object];
   [obj setType:str];
   return obj;
 }

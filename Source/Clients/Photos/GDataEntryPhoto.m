@@ -27,7 +27,7 @@
 
 + (GDataEntryPhoto *)photoEntry {
   
-  GDataEntryPhoto *entry = [[[GDataEntryPhoto alloc] init] autorelease];
+  GDataEntryPhoto *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
   

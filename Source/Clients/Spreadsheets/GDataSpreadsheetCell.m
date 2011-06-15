@@ -41,7 +41,7 @@
                          numericValue:(NSNumber *)numericValue
                          resultString:(NSString *)resultStr {
   
-  GDataSpreadsheetCell *obj = [[[GDataSpreadsheetCell alloc] init] autorelease];
+  GDataSpreadsheetCell *obj = [self object];
   [obj setRow:row];
   [obj setColumn:column];
   [obj setInputString:inputStr];

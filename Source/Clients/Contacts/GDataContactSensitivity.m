@@ -34,7 +34,7 @@ static NSString* const kRelAttr = @"rel";
 
 + (id)sensitivityWithRel:(NSString *)rel  {
 
-  GDataContactSensitivity *obj = [[[self alloc] init] autorelease];
+  GDataContactSensitivity *obj = [self object];
   [obj setRel:rel];
   return obj;
 }

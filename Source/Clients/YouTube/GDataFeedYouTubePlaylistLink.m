@@ -26,7 +26,7 @@
 
 + (GDataFeedYouTubePlaylistLink *)playlistLinkFeed {
   
-  GDataFeedYouTubePlaylistLink *feed = [[[self alloc] init] autorelease];
+  GDataFeedYouTubePlaylistLink *feed = [self object];
   
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
   

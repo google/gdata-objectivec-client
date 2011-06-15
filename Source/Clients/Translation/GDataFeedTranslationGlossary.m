@@ -27,7 +27,7 @@
 
 + (GDataFeedTranslationGlossary *)glossaryFeed {
 
-  GDataFeedTranslationGlossary *feed = [[[self alloc] init] autorelease];
+  GDataFeedTranslationGlossary *feed = [self object];
 
   [feed setNamespaces:[GDataTranslationConstants translationNamespaces]];
 

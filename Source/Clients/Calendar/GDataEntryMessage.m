@@ -25,7 +25,7 @@
 @implementation GDataEntryMessage
 
 + (GDataEntryMessage *)message {
-  GDataEntryMessage *entry = [[[GDataEntryMessage alloc] init] autorelease];
+  GDataEntryMessage *entry = [self object];
   
   [entry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
 

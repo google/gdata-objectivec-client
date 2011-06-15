@@ -33,7 +33,7 @@ static NSString *const kSegmentParamName    = @"segment";
 @implementation GDataQueryAnalytics
 
 + (GDataQueryAnalytics *)analyticsQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];
+  return [self queryWithFeedURL:feedURL];
 }
 
 + (GDataQueryAnalytics *)analyticsDataQueryWithTableID:(NSString *)tableID

@@ -40,7 +40,7 @@
 + (NSString *)extensionElementLocalName { return @"recurrence"; }
 
 + (GDataRecurrence *)recurrenceWithString:(NSString *)str {
-  GDataRecurrence* obj = [[[GDataRecurrence alloc] init] autorelease];
+  GDataRecurrence* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

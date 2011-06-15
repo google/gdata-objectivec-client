@@ -27,7 +27,7 @@
 
 + (id)registerEntry {
 
-  GDataEntryHealthRegister *obj = [[[self alloc] init] autorelease];
+  GDataEntryHealthRegister *obj = [self object];
 
   [obj setNamespaces:[GDataHealthConstants healthNamespaces]];
 

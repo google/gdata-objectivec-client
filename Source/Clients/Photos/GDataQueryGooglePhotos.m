@@ -35,7 +35,7 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
 @implementation GDataQueryGooglePhotos
 
 + (GDataQueryGooglePhotos *)photoQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [self queryWithFeedURL:feedURL];   
 }
 
 + (GDataQueryGooglePhotos *)photoQueryForUserID:(NSString *)userID

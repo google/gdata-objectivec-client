@@ -25,7 +25,7 @@
 @implementation GDataEntryContactProfile
 
 + (id)contactProfileEntry {
-  GDataEntryContactProfile *obj = [[[self alloc] init] autorelease];
+  GDataEntryContactProfile *obj = [self object];
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
   return obj;
 }

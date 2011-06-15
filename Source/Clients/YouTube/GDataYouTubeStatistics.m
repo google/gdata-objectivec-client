@@ -39,7 +39,7 @@ static NSString* const kTotalUploadViewsAttr = @"totalUploadViews";
 + (NSString *)extensionElementLocalName { return @"statistics"; }
 
 + (GDataYouTubeStatistics *)youTubeStatistics {
-  GDataYouTubeStatistics *obj = [[[self alloc] init] autorelease];
+  GDataYouTubeStatistics *obj = [self object];
   return obj;
 }
 

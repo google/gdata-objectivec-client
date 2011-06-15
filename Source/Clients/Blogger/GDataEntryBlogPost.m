@@ -28,7 +28,7 @@
 
 + (GDataEntryBlogPost *)postEntry {
 
-  GDataEntryBlogPost *obj = [[[self alloc] init] autorelease];
+  GDataEntryBlogPost *obj = [self object];
 
   [obj setNamespaces:[GDataBloggerConstants bloggerNamespaces]];
 

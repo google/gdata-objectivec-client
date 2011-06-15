@@ -35,7 +35,7 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 @implementation GDataQuerySpreadsheet
 
 + (GDataQuerySpreadsheet *)spreadsheetQueryWithFeedURL:(NSURL *)feedURL {
-  return [[[self alloc] initWithFeedURL:feedURL] autorelease];   
+  return [self queryWithFeedURL:feedURL];   
 }
 
 - (NSString *)titleQuery {
