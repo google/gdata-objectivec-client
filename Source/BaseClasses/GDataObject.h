@@ -199,7 +199,7 @@ typedef struct GDataDescriptionRecord {
   // element name from original XML, used for later XML generation
   NSString *elementName_;
 
-  GDataObject *parent_;  // WEAK, parent in tree of GData objects
+  __weak GDataObject *parent_;  // parent in tree of GData objects
 
   // GDataObjects keep namespaces as {key:prefix value:URI} dictionary entries
   NSMutableDictionary *namespaces_;
