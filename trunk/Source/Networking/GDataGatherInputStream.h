@@ -42,11 +42,11 @@
 
 @interface GDataGatherInputStream : NSInputStream GDATA_NSSTREAM_DELEGATE {
 
-  NSArray* dataArray_;   // NSDatas that should be "gathered" and streamed.
-  NSUInteger arrayIndex_;       // Index in the array of the current NSData.
-  long long dataOffset_; // Offset in the current NSData we are processing.
+  NSArray* dataArray_;    // NSDatas that should be "gathered" and streamed.
+  NSUInteger arrayIndex_; // Index in the array of the current NSData.
+  long long dataOffset_;  // Offset in the current NSData we are processing.
 
-  id delegate_;          // WEAK, not retained: stream delegate, defaults to self
+  __weak id delegate_;       // stream delegate, defaults to self
 
   // Since various undocumented methods get called on a stream, we'll
   // use a 1-byte dummy stream object to handle all unexpected messages.
