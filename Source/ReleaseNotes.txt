@@ -18,6 +18,8 @@ Changes
 
 - Feed objects now support NSFastEnumeration of entries
 
+- YouTube uploads now return a GDataEntryYouTubeVideo object
+
 Bugs Fixed
 
 

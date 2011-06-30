@@ -24,7 +24,20 @@
 
 #import "GDataYouTubeConstants.h"
 #import "GDataQueryYouTube.h"
+#import "GDataEntryYouTubeVideo.h"
+#import "GDataEntryYouTubeUpload.h"
 
+@interface GDataServiceGoogle (PrivateMethods)
+// The YouTube service will be overriding this private superclass method
+- (GDataServiceTicket *)fetchAuthenticatedObjectWithURL:(NSURL *)objectURL
+                                            objectClass:(Class)objectClass
+                                           objectToPost:(GDataObject *)objectToPost
+                                                   ETag:(NSString *)etag
+                                             httpMethod:(NSString *)httpMethod
+                                               delegate:(id)delegate
+                                      didFinishSelector:(SEL)finishedSelector
+                                      completionHandler:(GDataServiceGoogleCompletionHandler)completionHandler;
+@end
 
 @implementation GDataServiceGoogleYouTube
 
@@ -189,6 +202,29 @@
 - (NSDictionary *)customAuthenticationRequestHeaders {
   return [NSDictionary dictionaryWithObject:@"application/x-www-form-urlencoded"
                                      forKey:@"Content-Type"];
+}
+
+- (GDataServiceTicket *)fetchAuthenticatedObjectWithURL:(NSURL *)objectURL
+                                            objectClass:(Class)objectClass
+                                           objectToPost:(GDataObject *)objectToPost
+                                                   ETag:(NSString *)etag
+                                             httpMethod:(NSString *)httpMethod
+                                               delegate:(id)delegate
+                                      didFinishSelector:(SEL)finishedSelector
+                                      completionHandler:(GDataServiceGoogleCompletionHandler)completionHandler {
+  if ([objectClass isSubclassOfClass:[GDataEntryYouTubeUpload class]]) {
+    // when uploading, expect a full video entry back
+    objectClass = [GDataEntryYouTubeVideo class];
+  }
+
+  return [super fetchAuthenticatedObjectWithURL:objectURL
+                                    objectClass:objectClass
+                                   objectToPost:objectToPost
+                                           ETag:etag
+                                     httpMethod:httpMethod
+                                       delegate:delegate
+                              didFinishSelector:finishedSelector
+                              completionHandler:completionHandler];
 }
 
 + (NSString *)serviceID {
