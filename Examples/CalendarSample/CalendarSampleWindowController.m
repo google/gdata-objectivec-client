@@ -1247,10 +1247,7 @@ static NSString *const kKeychainItemName = @"CalendarSample: Google Calendar";
     NSMutableString *reportStr = [NSMutableString stringWithFormat:format,
                                   [ticket statusCode]];
 
-    NSArray *responseEntries = [feed entries];
-    for (int idx = 0; idx < [responseEntries count]; idx++) {
-
-      GDataEntryCalendarEvent *entry = [responseEntries objectAtIndex:idx];
+    for (GDataEntryCalendarEvent *entry in feed) {
       GDataBatchID *batchID = [entry batchID];
 
       // report the batch ID, entry title, and status for each item
@@ -1343,13 +1340,10 @@ static NSString *const kKeychainItemName = @"CalendarSample: Google Calendar";
               error:(NSError *)error {
   if (error == nil) {
     // query succeeded
-    NSArray *entries = [feed entries];
-
+    //
     // make a comma-separate list of the event titles to display
     NSMutableArray *titles = [NSMutableArray array];
-
-    for (int idx = 0; idx < [entries count]; idx++) {
-      GDataEntryCalendarEvent *event = [entries objectAtIndex:idx];
+    for (GDataEntryCalendarEvent *event in feed) {
       NSString *title = [[event title] stringValue];
       if ([title length] > 0) {
         [titles addObject:title];

@@ -312,11 +312,8 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [mChangeAlbumPopupButton setMenu:menu];
  
   GDataFeedPhotoUser *feed = [self albumFeed];
-  NSArray *entries = [feed entries];
-  
-  for (int idx = 0; idx < [entries count]; idx++) {
-    GDataEntryPhotoAlbum *albumEntry = [entries objectAtIndex:idx];
-    
+
+  for (GDataEntryPhotoAlbum *albumEntry in feed) {
     NSString *title = [[albumEntry title] stringValue];
     NSMenuItem *item = [menu addItemWithTitle:title
                                        action:@selector(changeAlbumSelected:)

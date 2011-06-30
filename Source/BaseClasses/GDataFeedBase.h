@@ -44,7 +44,7 @@
 // for an appropriate match
 _EXTERN Class const kUseRegisteredEntryClass _INITIALIZE_AS(nil);
 
-@interface GDataFeedBase : GDataObject {
+@interface GDataFeedBase : GDataObject <NSFastEnumeration> {
 
   // generator is parsed manually to avoid comparison along with other
   // extensions
