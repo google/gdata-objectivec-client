@@ -16,6 +16,8 @@ Changes
 
 - Replaced GDataOAuth with GTMOAuth2
 
+- Feed objects now support NSFastEnumeration of entries
+
 Bugs Fixed
 
 

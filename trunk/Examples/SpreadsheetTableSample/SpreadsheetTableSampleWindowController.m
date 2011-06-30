@@ -668,7 +668,7 @@
                       @"clouds", @"moon", @"sun", @"mars", @"venus", nil];
 
     // for each field in each record, assign a random word
-    for (GDataEntrySpreadsheetRecord *recordEntry in [mRecordFeed entries]) {
+    for (GDataEntrySpreadsheetRecord *recordEntry in mRecordFeed) {
 
       for (GDataSpreadsheetField *field in [recordEntry fields]) {
 

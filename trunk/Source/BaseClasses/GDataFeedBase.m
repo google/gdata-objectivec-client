@@ -777,6 +777,16 @@ forCategoryWithScheme:scheme
   return kindEntries;
 }
 
+// NSFastEnumeration protocol
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                  objects:(id *)stackbuf
+                                    count:(NSUInteger)len {
+  NSUInteger result = [entries_ countByEnumeratingWithState:state
+                                                    objects:stackbuf
+                                                      count:len];
+  return result;
+}
+
 @end
 
 
