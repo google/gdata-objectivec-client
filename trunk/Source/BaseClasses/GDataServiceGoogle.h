@@ -75,6 +75,7 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 // GDataServiceTicket is the version of a ticket that supports
 // Google authentication
 @interface GDataServiceTicket : GDataServiceTicketBase {
+ @private
   GTMHTTPFetcher *authFetcher_;
   NSString *authToken_;
   NSDate *credentialDate_;
@@ -82,13 +83,15 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 
 - (void)cancelTicket; // stops fetches in progress
 
-// ClientLogin support
+// ClientLogin support; not used with OAuth 1 & 2 authorizers
 - (GTMHTTPFetcher *)authFetcher;
 - (void)setAuthFetcher:(GTMHTTPFetcher *)fetcher;
 
+// ClientLogin support; not used with OAuth 1 & 2 authorizers
 - (NSString *)authToken;
 - (void)setAuthToken:(NSString *)str;
 
+// ClientLogin support; not used with OAuth 1 & 2 authorizers
 - (NSDate *)credentialDate;
 - (void)setCredentialDate:(NSDate *)date;
 
@@ -97,7 +100,7 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 // GDataServiceGoogle is the version of the service class that supports
 // Google authentication.
 @interface GDataServiceGoogle : GDataServiceBase {
-
+ @private
   // ClientLogin support
   NSString *captchaToken_;
   NSString *captchaAnswer_;
