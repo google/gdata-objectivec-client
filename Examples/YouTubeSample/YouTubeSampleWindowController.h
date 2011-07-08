@@ -24,8 +24,9 @@
 #import "GData/GDataFeedPhoto.h"
 
 @interface YouTubeSampleWindowController : NSWindowController {
-  IBOutlet NSTextField *mUsernameField;
-  IBOutlet NSSecureTextField *mPasswordField;
+  IBOutlet NSTextField *mSignedInField;
+  IBOutlet NSButton *mSignedInButton;
+
   IBOutlet NSPopUpButton *mUserFeedPopup;
   IBOutlet NSTextField *mEntryCountField;
   
@@ -50,6 +51,12 @@
   IBOutlet NSButton *mStopUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
 
+  IBOutlet NSButton *mClientIDButton;
+  IBOutlet NSTextField *mClientIDRequiredTextField;
+  IBOutlet NSWindow *mClientIDSheet;
+  IBOutlet NSTextField *mClientIDField;
+  IBOutlet NSTextField *mClientSecretField;
+
   GDataFeedYouTubeVideo *mEntriesFeed; // user feed of album entries
   GDataServiceTicket *mEntriesFetchTicket;
   NSError *mEntriesFetchError;
@@ -60,6 +67,8 @@
 
 + (YouTubeSampleWindowController *)sharedYouTubeSampleWindowController;
 
+- (IBAction)signInClicked:(id)sender;
+
 - (IBAction)getEntriesClicked:(id)sender;
 - (IBAction)cancelEntriesFetchClicked:(id)sender;
 
@@ -69,4 +78,9 @@
 - (IBAction)stopUploadClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
+
+// Client ID sheet
+- (IBAction)clientIDClicked:(id)sender;
+- (IBAction)clientIDDoneClicked:(id)sender;
+- (IBAction)APIConsoleClicked:(id)sender;
 @end
