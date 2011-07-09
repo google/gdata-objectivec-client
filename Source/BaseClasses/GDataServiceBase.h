@@ -282,6 +282,16 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSArray *)runLoopModes;
 - (void)setRunLoopModes:(NSArray *)modes;
 
+// On iOS 4 and later, the fetch may optionally continue in the background
+// until finished or stopped by OS expiration
+//
+// The default value is NO
+//
+// For Mac OS X, background fetches are always supported, and this property
+// is ignored
+- (BOOL)shouldFetchInBackground;
+- (void)setShouldFetchInBackground:(BOOL)flag;
+
 // The request user agent includes the library and OS version appended to the
 // base userAgent
 - (NSString *)requestUserAgent;
