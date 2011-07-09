@@ -1505,6 +1505,14 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   [fetcherService_ setRunLoopModes:modes];
 }
 
+- (BOOL)shouldFetchInBackground {
+  return [fetcherService_ shouldFetchInBackground];
+}
+
+- (void)setShouldFetchInBackground:(BOOL)flag {
+  [fetcherService_ setShouldFetchInBackground:flag];
+}
+
 // save the username and password, converting the password to non-plaintext
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password {

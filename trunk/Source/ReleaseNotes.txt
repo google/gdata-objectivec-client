@@ -10,6 +10,8 @@ Additions
 
 - Added MD5Checksum to document entries
 
+- Added fetcher shouldFetchInBackground property to service objects
+
 Changes
 
 - Replaced GDataHTTPFetcher with GTMHTTPFetcher
