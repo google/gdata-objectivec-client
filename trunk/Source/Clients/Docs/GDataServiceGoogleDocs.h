@@ -71,6 +71,8 @@ _EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"
 
 + (NSURL *)metadataEntryURLForUserID:(NSString *)userID;
 
++ (NSURL *)changesFeedURLForUserID:(NSString *)userID;
+
 + (NSString *)serviceRootURLString;
 
 // clients may use these fetch methods of GDataServiceGoogle

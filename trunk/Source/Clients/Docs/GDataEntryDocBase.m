@@ -58,6 +58,25 @@
 + (NSString *)extensionElementLocalName { return @"md5Checksum"; }
 @end
 
+@interface GDataDocChangestamp : GDataValueConstruct <GDataExtension>
+@end
+
+@implementation GDataDocChangestamp
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"changestamp"; }
+@end
+
+@interface GDataDocRemoved : GDataImplicitValueConstruct <GDataExtension>
+@end
+
+@implementation GDataDocRemoved
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"removed"; }
+@end
+
+
 @implementation GDataEntryDocBase
 
 + (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
@@ -87,6 +106,8 @@
    [GDataQuotaBytesUsed class],
    [GDataDocDescription class],
    [GDataDocMD5Checksum class],
+   [GDataDocChangestamp class],
+   [GDataDocRemoved class],
    nil];
 }
 
@@ -100,6 +121,8 @@
     { @"quotaUsed",        @"quotaBytesUsed",      kGDataDescValueLabeled },
     { @"desc",             @"documentDescription", kGDataDescValueLabeled },
     { @"md5",              @"MD5Checksum",         kGDataDescValueLabeled },
+    { @"changestamp",      @"changestamp",         kGDataDescValueLabeled },
+    { @"removed",          @"removed",             kGDataDescBooleanPresent },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -168,8 +191,29 @@
 }
 
 - (void)setMD5Checksum:(NSString *)str {
-  GDataDocDescription *obj = [GDataDocMD5Checksum valueWithString:str];
+  GDataDocMD5Checksum *obj = [GDataDocMD5Checksum valueWithString:str];
   [self setObject:obj forExtensionClass:[GDataDocMD5Checksum class]];
+}
+
+- (NSNumber *)changestamp {
+  GDataDocChangestamp *obj;
+  obj = [self objectForExtensionClass:[GDataDocChangestamp class]];
+  return [obj longLongNumberValue];
+}
+
+- (void)setChangestamp:(NSNumber *)num {
+  GDataDocChangestamp *obj = [GDataDocChangestamp valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataDocChangestamp class]];
+}
+
+- (BOOL)isRemoved {
+  GDataDocRemoved *obj = [self objectForExtensionClass:[GDataDocRemoved class]];
+  return (obj != nil);
+}
+
+- (void)setIsRemoved:(BOOL)flag {
+  GDataDocRemoved *private = flag ? [GDataDocRemoved implicitValue] : nil;
+  [self setObject:private forExtensionClass:[GDataDocRemoved class]];
 }
 
 #pragma mark -

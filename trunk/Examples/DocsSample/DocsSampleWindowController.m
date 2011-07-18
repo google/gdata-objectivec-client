@@ -181,25 +181,20 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   [windowController setUserData:NSStringFromSelector(signInDoneSel)];
   [windowController signInSheetModalForWindow:[self window]
-                                     delegate:self
-                             finishedSelector:@selector(windowController:finishedWithAuth:error:)];
-}
+                            completionHandler:^(GTMOAuth2Authentication *auth, NSError *error) {
+                              // callback
+                              if (error == nil) {
+                                [[self docsService] setAuthorizer:auth];
 
-- (void)windowController:(GTMOAuth2WindowController *)windowController
-        finishedWithAuth:(GTMOAuth2Authentication *)auth
-                   error:(NSError *)error {
-  // Callback from OAuth 2 sign-in
-  if (error == nil) {
-    [[self docsService] setAuthorizer:auth];
-
-    NSString *selStr = [windowController userData];
-    if (selStr) {
-      [self performSelector:NSSelectorFromString(selStr)];
-    }
-  } else {
-    [self setDocListFetchError:error];
-    [self updateUI];
-  }
+                                NSString *selStr = [windowController userData];
+                                if (selStr) {
+                                  [self performSelector:NSSelectorFromString(selStr)];
+                                }
+                              } else {
+                                [self setDocListFetchError:error];
+                                [self updateUI];
+                              }
+                            }];
 }
 
 #pragma mark -
@@ -281,6 +276,10 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [mDeleteSelectedDocButton setEnabled:doesDocHaveEditLink];
 
   [mDuplicateSelectedDocButton setEnabled:isSelectedDocAStandardGDocsType];
+
+  // enable the "Show Changes" button
+  BOOL hasFeed = (mDocListFeed != nil);
+  [mShowChangesButton setEnabled:hasFeed];
 
   // enable the publishing checkboxes when a publishable revision is selected
   BOOL isRevisionSelected = (selectedRevision != nil);
@@ -416,20 +415,17 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     if ([newImageURLStr length] > 0) {
       GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:newImageURLStr];
-      [fetcher beginFetchWithDelegate:self
-                    didFinishSelector:@selector(imageFetcher:finishedWithData:error:)];
+      [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        // callback
+        if (error == nil) {
+          NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
+          [mDocListImageView setImage:image];
+        } else {
+          NSLog(@"Error %@ loading image %@",
+                error, [[fetcher mutableRequest] URL]);
+        }
+      }];
     }
-  }
-}
-
-- (void)imageFetcher:(GTMHTTPFetcher *)fetcher
-    finishedWithData:(NSData *)data
-               error:(NSError *)error {
-  if (error == nil) {
-    NSImage *image = [[[NSImage alloc] initWithData:data] autorelease];
-    [mDocListImageView setImage:image];
-  } else {
-    NSLog(@"Error %@ loading image %@", error, [[fetcher mutableRequest] URL]);
   }
 }
 
@@ -621,26 +617,24 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
       [fetcher setAuthorizer:[service authorizer]];
       [fetcher setDownloadFileHandle:fileHandle];
-      [fetcher beginFetchWithDelegate:self
-                    didFinishSelector:@selector(fetcher:finishedWithData:error:)];
+      [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+        // callback
+        if (error == nil) {
+          // successfully saved the document
+        } else {
+          NSLog(@"Error saving document: %@", error);
+          NSBeep();
+        }
+      }];
     } else {
       NSLog(@"Error creating file at %@: %@", savePath, error);
     }
   }
 }
 
-- (void)fetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
-  if (error == nil) {
-    // successfully saved the document
-  } else {
-    NSLog(@"Error saving document: %@", error);
-    NSBeep();
-  }
-}
-
 /* When signing in with ClientLogin, we need to create a SpreadsheetService
    instance to do an authenticated download of spreadsheet documents.
- 
+
    Since this sample signs in with OAuth 2, which allows multiple scopes,
    we do not need to use a SpreadsheetService, but here is what it looks
    like for ClientLogin.
@@ -761,29 +755,26 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [revisionCopy setPublishOutsideDomain:[NSNumber numberWithBool:shouldPublishExternally]];
 
   [service fetchEntryByUpdatingEntry:revisionCopy
-                            delegate:self
-                   didFinishSelector:@selector(publishRevisionTicket:finishedWithEntry:error:)];
-}
+                   completionHandler:^(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error) {
+                     // callback
+                     if (error == nil) {
+                       [self displayAlert:@"Updated"
+                                   format:@"Updated publish status for \"%@\"",
+                        [[entry title] stringValue]];
 
-- (void)publishRevisionTicket:(GDataServiceTicket *)ticket
-            finishedWithEntry:(GDataEntryDocRevision *)entry
-                        error:(NSError *)error {
-  if (error == nil) {
-    [self displayAlert:@"Updated"
-                format:@"Updated publish status for \"%@\"", [[entry title] stringValue]];
-
-    // re-fetch the document list
-    [self fetchRevisionsForSelectedDoc];
-  } else {
-    [self displayAlert:@"Updated failed"
-                format:@"Failed to update publish status: %@", error];
-  }
+                       // re-fetch the document list
+                       [self fetchRevisionsForSelectedDoc];
+                     } else {
+                       [self displayAlert:@"Updated failed"
+                                   format:@"Failed to update publish status: %@",
+                        error];
+                     }
+                   }];
 }
 
 #pragma mark -
 
 - (IBAction)createFolderClicked:(id)sender {
-
   GDataServiceGoogleDocs *service = [self docsService];
 
   GDataEntryFolderDoc *docEntry = [GDataEntryFolderDoc documentEntry];
@@ -795,24 +786,117 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   [service fetchEntryByInsertingEntry:docEntry
                            forFeedURL:postURL
-                             delegate:self
-                    didFinishSelector:@selector(createFolderTicket:finishedWithEntry:error:)];
+                    completionHandler:^(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error) {
+                      // callback
+                      if (error == nil) {
+                        [self displayAlert:@"Created folder"
+                                    format:@"Created folder \"%@\"",
+                         [[entry title] stringValue]];
+
+                        // re-fetch the document list
+                        [self fetchDocList];
+                        [self updateUI];
+                      } else {
+                        [self displayAlert:@"Create failed"
+                                    format:@"Folder create failed: %@", error];
+                      }
+                    }];
 }
 
-// folder create callback
-- (void)createFolderTicket:(GDataServiceTicket *)ticket
-         finishedWithEntry:(GDataEntryFolderDoc *)entry
-                     error:(NSError *)error {
-  if (error == nil) {
-    [self displayAlert:@"Created folder"
-                format:@"Created folder \"%@\"", [[entry title] stringValue]];
+#pragma mark -
 
-    // re-fetch the document list
-    [self fetchDocList];
-    [self updateUI];
+static long long gLargestPriorChangestamp = 0;
+
+- (IBAction)showChangesClicked:(id)sender {
+  NSURL *changesFeedURL = [GDataServiceGoogleDocs changesFeedURLForUserID:kGDataServiceDefaultUser];
+  GDataServiceGoogleDocs *service = [self docsService];
+
+  if (gLargestPriorChangestamp == 0) {
+    // First click
+    //
+    // We have not previously fetched the changes feed, so request it without
+    // entries to determine a benchmark changestamp
+    GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:changesFeedURL];
+
+    // The server currently ignores zero as a max-results value (b/5027926),
+    // so we'll request one entry and ignore it
+    [query setMaxResults:1];
+
+    GDataServiceTicket *ticket;
+    ticket = [service fetchFeedWithQuery:query
+                       completionHandler:^(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error) {
+                         // callback
+                         if (error == nil) {
+                           GDataFeedDocChange *changeFeed = (GDataFeedDocChange *)feed;
+                           NSNumber *num = [changeFeed largestChangestamp];
+                           [self displayAlert:@"Initial changestamp obtained"
+                                       format:@"Value: %@", num];
+                           gLargestPriorChangestamp = [num longLongValue];
+                         } else {
+                           [self displayAlert:@"Fetch failed"
+                                       format:@"Fetch of changes failed: %@",
+                            error];
+                         }
+                       }];
+    // We don't want additional pages of this feed, since we only care about
+    // the changestamp benchmark
+    [ticket setShouldFollowNextLinks:NO];
   } else {
-    [self displayAlert:@"Create failed"
-                format:@"Folder create failed: %@", error];
+    // Second and later clicks
+    //
+    // We have previously fetched the changes feed, so request all changes
+    // since that benchmark changestamp
+    GDataQueryDocs *query = [GDataQueryDocs documentQueryWithFeedURL:changesFeedURL];
+    [query setStartIndex:(1 + gLargestPriorChangestamp)];
+
+    // We'll reduce the number pages fetches needed to obtain the entire feed
+    // by requesting a large page size. A large page size and automatic next
+    // link following are not really practical on mobile devices, though, as
+    // the entries of the changes feed are big.
+    [query setMaxResults:100];
+
+    [service fetchFeedWithQuery:query
+              completionHandler:^(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error) {
+                // callback
+                if (error == nil) {
+                  // We obtained a feed of changes
+                  //
+                  // Report the titles of added and updated docs, and the
+                  // entry identifier of removed docs
+                  GDataFeedDocChange *changeFeed = (GDataFeedDocChange *)feed;
+
+                  NSMutableString *output = [NSMutableString stringWithFormat:
+                                             @"Changed entries (%lu):",
+                                             (unsigned long) [[feed entries] count]];
+                  for (GDataEntryDocBase *entry in changeFeed) {
+                    if ([entry isRemoved]) {
+                      // Removed
+                      [output appendFormat:@"\nRemoved (%@)", [entry identifier]];
+                    } else {
+                      // Added or updated
+                      [output appendFormat:@"\n%@", [[entry title] stringValue]];
+                    }
+                  }
+                  NSNumber *num = [changeFeed largestChangestamp];
+                  [self displayAlert:@"Changed entries"
+                              format:@"%@", output];
+
+                  // Update the benchmark value
+                  //
+                  // The server currently doesn't guarantee that the largest
+                  // changestamp element actually returns the largest
+                  // changestamp, so we'll also check the value of the last
+                  // entry's changestamp. (b/5028309)
+                  long long newMax;
+                  newMax = MAX([num longLongValue], gLargestPriorChangestamp);
+                  newMax = MAX(newMax, [[changeFeed lastEntryChangestamp] longLongValue]);
+                  gLargestPriorChangestamp = newMax;
+                } else {
+                  [self displayAlert:@"Fetch failed"
+                              format:@"Fetch of changes since %lld failed: %@",
+                   gLargestPriorChangestamp, error];
+                }
+              }];
   }
 }
 
@@ -888,25 +972,20 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
     [service fetchEntryByInsertingEntry:newEntry
                              forFeedURL:postURL
-                               delegate:self
-                      didFinishSelector:@selector(duplicateDocEntryTicket:finishedWithEntry:error:)];
-  }
-}
+                      completionHandler:^(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error) {
+                        // callback
+                        if (error == nil) {
+                          [self displayAlert:@"Copied Doc"
+                                      format:@"Document duplicate \"%@\" created", [[newEntry title] stringValue]];
 
-// document copying callback
-- (void)duplicateDocEntryTicket:(GDataServiceTicket *)ticket
-              finishedWithEntry:(GDataEntryDocBase *)newEntry
-                       error:(NSError *)error {
-  if (error == nil) {
-    [self displayAlert:@"Copied Doc"
-                format:@"Document duplicate \"%@\" created", [[newEntry title] stringValue]];
-
-    // re-fetch the document list
-    [self fetchDocList];
-    [self updateUI];
-  } else {
-    [self displayAlert:@"Copy failed"
-                format:@"Document duplicate failed: %@", error];
+                          // re-fetch the document list
+                          [self fetchDocList];
+                          [self updateUI];
+                        } else {
+                          [self displayAlert:@"Copy failed"
+                                      format:@"Document duplicate failed: %@", error];
+                        }
+                      }];
   }
 }
 
@@ -958,60 +1037,45 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
       ticket2 = [service fetchEntryByInsertingEntry:docEntry
                                          forFeedURL:postURL
-                                           delegate:self
-                                  didFinishSelector:@selector(addToFolderTicket:finishedWithEntry:error:)];
-      [ticket2 setUserData:feed];
+                                  completionHandler:^(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error) {
+                                    // callback
+                                    if (error == nil) {
+                                      [self displayAlert:@"Added"
+                                                  format:@"Added document \"%@\" to feed \"%@\"",
+                                       [[entry title] stringValue],
+                                       [[feed title] stringValue]];
+
+                                      // re-fetch the document list
+                                      [self fetchDocList];
+                                      [self updateUI];
+                                    } else {
+                                      [self displayAlert:@"Insert failed"
+                                                  format:@"Insert to folder feed failed: %@", error];
+                                    }
+                                  }];
     } else {
       // the doc is alrady in the folder's feed, so remove it
       ticket2 = [service deleteEntry:foundEntry
-                            delegate:self
-                   didFinishSelector:@selector(removeFromFolderTicket:finishedWithEntry:error:)];
-      [ticket2 setUserData:feed];
+                   completionHandler:^(GDataServiceTicket *ticket, id nilObject, NSError *error) {
+                     // callback
+                     if (error == nil) {
+                       [self displayAlert:@"Removed"
+                                   format:@"Removed document from feed \"%@\"", [[feed title] stringValue]];
+
+                       // re-fetch the document list
+                       [self fetchDocList];
+                       [self updateUI];
+                     } else {
+                       [self displayAlert:@"Fetch failed"
+                                   format:@"Remove from folder feed failed: %@",
+                        error];
+                     }
+                   }];
     }
   } else {
     // failed to fetch feed of folders
     [self displayAlert:@"Fetch failed"
                 format:@"Fetch of folder feed failed: %@", error];
-
-  }
-}
-
-// add to folder callback
-- (void)addToFolderTicket:(GDataServiceTicket *)ticket
-        finishedWithEntry:(GDataEntryDocBase *)entry
-                    error:(NSError *)error {
-  if (error == nil) {
-    GDataFeedDocList *feed = [ticket userData];
-
-    [self displayAlert:@"Added"
-                format:@"Added document \"%@\" to feed \"%@\"",
-     [[entry title] stringValue], [[feed title] stringValue]];
-
-    // re-fetch the document list
-    [self fetchDocList];
-    [self updateUI];
-  } else {
-    [self displayAlert:@"Insert failed"
-                format:@"Insert to folder feed failed: %@", error];
-  }
-}
-
-// remove from folder callback
-- (void)removeFromFolderTicket:(GDataServiceTicket *)ticket
-             finishedWithEntry:(GDataEntryDocBase *)entry
-                         error:(NSError *)error {
-  if (error == nil) {
-    GDataFeedDocList *feed = [ticket userData];
-
-    [self displayAlert:@"Removed"
-                format:@"Removed document from feed \"%@\"", [[feed title] stringValue]];
-
-    // re-fetch the document list
-    [self fetchDocList];
-    [self updateUI];
-  } else {
-    [self displayAlert:@"Fetch failed"
-                format:@"Remove from folder feed failed: %@", error];
   }
 }
 
@@ -1080,21 +1144,17 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   NSURL *entryURL = [GDataServiceGoogleDocs metadataEntryURLForUserID:kGDataServiceDefaultUser];
   GDataServiceGoogleDocs *service = [self docsService];
   [service fetchEntryWithURL:entryURL
-                    delegate:self
-           didFinishSelector:@selector(metadataTicket:finishedWithEntry:error:)];
-}
+           completionHandler:^(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error) {
+             // callback
+             [self setMetadataEntry:(GDataEntryDocListMetadata *)entry];
 
-- (void)metadataTicket:(GDataServiceTicket *)ticket
-     finishedWithEntry:(GDataEntryDocListMetadata *)entry
-                 error:(NSError *)error {
-  [self setMetadataEntry:entry];
+             // enable or disable features
+             [self updateUI];
 
-  // enable or disable features
-  [self updateUI];
-
-  if (error != nil) {
-    NSLog(@"Error fetching user metadata: %@", error);
-  }
+             if (error != nil) {
+               NSLog(@"Error fetching user metadata: %@", error);
+             }
+           }];
 }
 
 #pragma mark Fetch doc list
@@ -1121,24 +1181,19 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   [query setShouldShowFolders:YES];
 
   ticket = [service fetchFeedWithQuery:query
-                              delegate:self
-                     didFinishSelector:@selector(docListFetchTicket:finishedWithFeed:error:)];
+                     completionHandler:^(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error) {
+                       // callback
+                       [self setDocListFeed:(GDataFeedDocList *)feed];
+                       [self setDocListFetchError:error];
+                       [self setDocListFetchTicket:nil];
+
+                       [self updateUI];
+                     }];
 
   [self setDocListFetchTicket:ticket];
 
   // update our metadata entry for this user
   [self fetchMetadataEntry];
-
-  [self updateUI];
-}
-
-// docList list fetch callback
-- (void)docListFetchTicket:(GDataServiceTicket *)ticket
-          finishedWithFeed:(GDataFeedDocList *)feed
-                     error:(NSError *)error {
-  [self setDocListFeed:feed];
-  [self setDocListFetchError:error];
-  [self setDocListFetchTicket:nil];
 
   [self updateUI];
 }
@@ -1159,24 +1214,18 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     GDataServiceGoogleDocs *service = [self docsService];
     GDataServiceTicket *ticket;
     ticket = [service fetchFeedWithURL:revisionFeedURL
-                              delegate:self
-                     didFinishSelector:@selector(revisionFetchTicket:finishedWithFeed:error:)];
+                     completionHandler:^(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error) {
+                       // callback
+                       [self setRevisionFeed:(GDataFeedDocRevision *)feed];
+                       [self setRevisionFetchError:error];
+                       [self setRevisionFetchTicket:nil];
+
+                       [self updateUI];
+                     }];
 
     [self setRevisionFetchTicket:ticket];
 
   }
-
-  [self updateUI];
-}
-
-// revisions list fetch callback
-- (void)revisionFetchTicket:(GDataServiceTicket *)ticket
-           finishedWithFeed:(GDataFeedDocRevision *)feed
-                      error:(NSError *)error {
-
-  [self setRevisionFeed:feed];
-  [self setRevisionFetchError:error];
-  [self setRevisionFetchTicket:nil];
 
   [self updateUI];
 }
@@ -1325,8 +1374,13 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                                         forFeedURL:uploadURL
                                           delegate:self
                                  didFinishSelector:@selector(uploadFileTicket:finishedWithEntry:error:)];
-      SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
-      [ticket setUploadProgressSelector:progressSel];
+
+      [ticket setUploadProgressHandler:^(GDataServiceTicketBase *ticket, unsigned long long numberOfBytesRead, unsigned long long dataLength) {
+        // progress callback
+        [mUploadProgressIndicator setMinValue:0.0];
+        [mUploadProgressIndicator setMaxValue:(double)dataLength];
+        [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
+      }];
 
       // we turned automatic retry on when we allocated the service, but we
       // could also turn it on just for this ticket
@@ -1343,16 +1397,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   }
 
   [self updateUI];
-}
-
-// progress callback
-- (void)ticket:(GDataServiceTicket *)ticket
-   hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
-   ofTotalByteCount:(unsigned long long)dataLength {
-
-  [mUploadProgressIndicator setMinValue:0.0];
-  [mUploadProgressIndicator setMaxValue:(double)dataLength];
-  [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
 }
 
 // upload finished callback
