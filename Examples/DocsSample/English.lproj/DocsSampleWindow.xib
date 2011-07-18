@@ -1327,6 +1327,29 @@
 								<reference key="NSTextColor" ref="256247667"/>
 							</object>
 						</object>
+						<object class="NSButton" id="918250311">
+							<reference key="NSNextResponder" ref="259934551"/>
+							<int key="NSvFlags">289</int>
+							<string key="NSFrame">{{439, 290}, {104, 28}}</string>
+							<reference key="NSSuperview" ref="259934551"/>
+							<bool key="NSEnabled">YES</bool>
+							<object class="NSButtonCell" key="NSCell" id="815226507">
+								<int key="NSCellFlags">67239424</int>
+								<int key="NSCellFlags2">134348800</int>
+								<string key="NSContents">Show Changes</string>
+								<reference key="NSSupport" ref="26"/>
+								<reference key="NSControlView" ref="918250311"/>
+								<int key="NSButtonFlags">-2038284033</int>
+								<int key="NSButtonFlags2">1</int>
+								<reference key="NSAlternateImage" ref="725328310"/>
+								<string key="NSAlternateContents"/>
+								<object class="NSMutableString" key="NSKeyEquivalent">
+									<characters key="NS.bytes"/>
+								</object>
+								<int key="NSPeriodicDelay">200</int>
+								<int key="NSPeriodicInterval">25</int>
+							</object>
+						</object>
 					</object>
 					<string key="NSFrameSize">{566, 672}</string>
 					<reference key="NSSuperview"/>
@@ -2023,6 +2046,22 @@
 					</object>
 					<int key="connectionID">403</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">showChangesClicked:</string>
+						<reference key="source" ref="920687348"/>
+						<reference key="destination" ref="918250311"/>
+					</object>
+					<int key="connectionID">407</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">mShowChangesButton</string>
+						<reference key="source" ref="920687348"/>
+						<reference key="destination" ref="918250311"/>
+					</object>
+					<int key="connectionID">408</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -2081,11 +2120,9 @@
 							<reference ref="1009485389"/>
 							<reference ref="977001796"/>
 							<reference ref="794816453"/>
-							<reference ref="688533844"/>
 							<reference ref="769770917"/>
 							<reference ref="28171352"/>
 							<reference ref="566810299"/>
-							<reference ref="795395346"/>
 							<reference ref="576872375"/>
 							<reference ref="144907090"/>
 							<reference ref="927396649"/>
@@ -2102,6 +2139,9 @@
 							<reference ref="388608597"/>
 							<reference ref="573249674"/>
 							<reference ref="941281927"/>
+							<reference ref="795395346"/>
+							<reference ref="918250311"/>
+							<reference ref="688533844"/>
 						</object>
 						<reference key="parent" ref="471987556"/>
 					</object>
@@ -2871,6 +2911,20 @@
 						<reference key="object" ref="183578798"/>
 						<reference key="parent" ref="815887624"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">404</int>
+						<reference key="object" ref="918250311"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="815226507"/>
+						</object>
+						<reference key="parent" ref="259934551"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">405</int>
+						<reference key="object" ref="815226507"/>
+						<reference key="parent" ref="918250311"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -2905,6 +2959,7 @@
 					<string>206.IBPluginDependency</string>
 					<string>206.ImportedFromIB2</string>
 					<string>212.IBPluginDependency</string>
+					<string>212.IBViewBoundsToFrameTransform</string>
 					<string>212.ImportedFromIB2</string>
 					<string>24.IBPluginDependency</string>
 					<string>24.IBViewBoundsToFrameTransform</string>
@@ -2938,6 +2993,7 @@
 					<string>268.IBPluginDependency</string>
 					<string>268.ImportedFromIB2</string>
 					<string>269.IBPluginDependency</string>
+					<string>269.IBViewBoundsToFrameTransform</string>
 					<string>269.ImportedFromIB2</string>
 					<string>270.IBPluginDependency</string>
 					<string>270.IBShouldRemoveOnLegacySave</string>
@@ -2967,6 +3023,7 @@
 					<string>296.ImportedFromIB2</string>
 					<string>297.IBPluginDependency</string>
 					<string>303.IBPluginDependency</string>
+					<string>303.IBViewBoundsToFrameTransform</string>
 					<string>304.IBPluginDependency</string>
 					<string>305.IBEditorWindowLastContentRect</string>
 					<string>305.IBPluginDependency</string>
@@ -3040,6 +3097,10 @@
 					<string>389.IBPluginDependency</string>
 					<string>40.IBPluginDependency</string>
 					<string>40.ImportedFromIB2</string>
+					<string>404.IBPluginDependency</string>
+					<string>404.IBViewBoundsToFrameTransform</string>
+					<string>404.ImportedFromIB2</string>
+					<string>405.IBPluginDependency</string>
 					<string>44.IBPluginDependency</string>
 					<string>44.ImportedFromIB2</string>
 					<string>5.IBEditorWindowLastContentRect</string>
@@ -3088,6 +3149,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABD44AAw6qAAA</bytes>
+					</object>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<object class="NSAffineTransform">
@@ -3123,6 +3187,9 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBoAAAww4AAA</bytes>
+					</object>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
@@ -3152,6 +3219,9 @@
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABBmAAAw5wAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{26, 704}, {156, 93}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3244,10 +3314,16 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<boolean value="YES"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAABD3wAAw54AAA</bytes>
+					</object>
 					<boolean value="YES"/>
-					<string>{{123, 184}, {566, 672}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{123, 184}, {566, 672}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<boolean value="YES"/>
+					<string>{{149, 425}, {566, 672}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>{{149, 425}, {566, 672}}</string>
 					<boolean value="YES"/>
 					<boolean value="YES"/>
 					<string>{566, 640}</string>
@@ -3285,7 +3361,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">403</int>
+			<int key="maxID">408</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -3311,6 +3387,7 @@
 							<string>loggingCheckboxClicked:</string>
 							<string>pauseUploadClicked:</string>
 							<string>publishCheckboxClicked:</string>
+							<string>showChangesClicked:</string>
 							<string>signInClicked:</string>
 							<string>stopUploadClicked:</string>
 							<string>updatePublishingClicked:</string>
@@ -3319,6 +3396,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -3358,6 +3436,7 @@
 							<string>loggingCheckboxClicked:</string>
 							<string>pauseUploadClicked:</string>
 							<string>publishCheckboxClicked:</string>
+							<string>showChangesClicked:</string>
 							<string>signInClicked:</string>
 							<string>stopUploadClicked:</string>
 							<string>updatePublishingClicked:</string>
@@ -3423,6 +3502,10 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
+								<string key="name">showChangesClicked:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
 								<string key="name">signInClicked:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -3472,6 +3555,7 @@
 							<string>mRevisionsProgressIndicator</string>
 							<string>mRevisionsResultTextField</string>
 							<string>mRevisionsTable</string>
+							<string>mShowChangesButton</string>
 							<string>mSignedInButton</string>
 							<string>mSignedInField</string>
 							<string>mStopUploadButton</string>
@@ -3508,6 +3592,7 @@
 							<string>NSProgressIndicator</string>
 							<string>NSTextView</string>
 							<string>NSTableView</string>
+							<string>NSButton</string>
 							<string>NSButton</string>
 							<string>NSTextField</string>
 							<string>NSButton</string>
@@ -3547,6 +3632,7 @@
 							<string>mRevisionsProgressIndicator</string>
 							<string>mRevisionsResultTextField</string>
 							<string>mRevisionsTable</string>
+							<string>mShowChangesButton</string>
 							<string>mSignedInButton</string>
 							<string>mSignedInField</string>
 							<string>mStopUploadButton</string>
@@ -3654,6 +3740,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">mRevisionsTable</string>
 								<string key="candidateClassName">NSTableView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">mShowChangesButton</string>
+								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">mSignedInButton</string>
@@ -4112,6 +4202,76 @@
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebDownload.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebEditingDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebFrameLoadDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebJavaPlugIn.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebPlugin.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebPluginContainer.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebPolicyDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebResourceLoadDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebScriptObject.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">WebKit.framework/Headers/WebUIDelegate.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">NSPopUpButton</string>
 					<string key="superclassName">NSButton</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -4301,7 +4461,7 @@
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.macosx</string>
-			<integer value="1050" key="NS.object.0"/>
+			<integer value="1060" key="NS.object.0"/>
 		</object>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin.InterfaceBuilder3</string>

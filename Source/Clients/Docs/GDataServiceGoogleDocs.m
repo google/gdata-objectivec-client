@@ -103,6 +103,18 @@
   return [NSURL URLWithString:urlString];
 }
 
++ (NSURL *)changesFeedURLForUserID:(NSString *)userID {
+  NSString *encodedUser = [GDataUtilities stringByURLEncodingForURI:userID];
+  NSString *const kTemplate = @"%@%@/private/changes";
+
+  NSString *root = [self serviceRootURLString];
+  NSString *urlString = [NSString stringWithFormat:kTemplate,
+                         root, encodedUser];
+
+  return [NSURL URLWithString:urlString];
+}
+
+
 #pragma mark -
 
 // updating a document entry with data requires the editMediaLink rather than

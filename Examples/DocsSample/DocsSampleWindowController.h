@@ -43,6 +43,7 @@
   IBOutlet NSButton *mDownloadSelectedDocButton;
   IBOutlet NSButton *mDuplicateSelectedDocButton;
   IBOutlet NSButton *mCreateFolderButton;
+  IBOutlet NSButton *mShowChangesButton;
 
   IBOutlet NSButton *mDownloadSelectedRevisionButton;
 
@@ -95,6 +96,8 @@
 - (IBAction)downloadSelectedRevisionClicked:(id)sender;
 
 - (IBAction)createFolderClicked:(id)sender;
+
+- (IBAction)showChangesClicked:(id)sender;
 
 - (IBAction)deleteSelectedDocClicked:(id)sender;
 

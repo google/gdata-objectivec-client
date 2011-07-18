@@ -46,6 +46,12 @@
 - (NSString *)MD5Checksum;
 - (void)setMD5Checksum:(NSString *)str;
 
+- (NSNumber *)changestamp; // long long
+- (void)setChangestamp:(NSNumber *)num;
+
+- (BOOL)isRemoved;
+- (void)setIsRemoved:(BOOL)flag;
+
 // categories
 - (BOOL)isStarred;
 - (void)setIsStarred:(BOOL)flag;
