@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -2711,7 +2711,7 @@
 		4F13881D114859F4005C3893 /* GDataYouTubeAccessControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataYouTubeAccessControl.m; path = Clients/YouTube/GDataYouTubeAccessControl.m; sourceTree = "<group>"; };
 		4F138823114859FC005C3893 /* GDataYouTubeAccessControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataYouTubeAccessControl.h; path = Clients/YouTube/GDataYouTubeAccessControl.h; sourceTree = "<group>"; };
 		4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GDataUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = /System/Library/Frameworks/SenTestingKit.framework; sourceTree = "<absolute>"; };
+		4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDateTime.h; path = Elements/GDataDateTime.h; sourceTree = "<group>"; };
 		4F14ABEB0B12897B0072EBB8 /* GDataLink.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataLink.m; path = Elements/GDataLink.m; sourceTree = "<group>"; };
 		4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataDateTime.m; path = Elements/GDataDateTime.m; sourceTree = "<group>"; };
@@ -5020,7 +5020,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
-			compatibilityVersion = "Xcode 2.4";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -6764,7 +6764,7 @@
 				DEPLOYMENT_POSTPROCESSING = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_ENABLE_OBJC_GC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6796,7 +6796,7 @@
 				DEPLOYMENT_POSTPROCESSING = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_ENABLE_OBJC_GC = YES;
+				GCC_ENABLE_OBJC_GC = supported;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = s;
@@ -6869,7 +6869,7 @@
 		4F1AD9090B71606100DC0485 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = NO;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_LDFLAGS = "-lxml2";
@@ -6881,7 +6881,7 @@
 		4F1AD90A0B71606100DC0485 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = NO;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_LDFLAGS = "-lxml2";
@@ -6893,9 +6893,8 @@
 		4F1C6E101027B3CF00B46459 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_BIT_PRE_XCODE_3_1 = "ppc i386";
-				GCC_ENABLE_OBJC_GC = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_ENABLE_OBJC_GC = unsupported;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -6910,7 +6909,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				GCC_ENABLE_OBJC_GC = NO;
+				GCC_ENABLE_OBJC_GC = unsupported;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = (
 					"$(inherited)",
