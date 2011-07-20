@@ -91,9 +91,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   return [self initWithWindowNibName:@"DocsSampleWindow"];
 }
 
-- (void)windowDidLoad {
-}
-
 - (void)awakeFromNib {
   // Load the OAuth token from the keychain, if it was previously saved
   NSString *clientID = [mClientIDField stringValue];
@@ -877,20 +874,11 @@ static long long gLargestPriorChangestamp = 0;
                       [output appendFormat:@"\n%@", [[entry title] stringValue]];
                     }
                   }
-                  NSNumber *num = [changeFeed largestChangestamp];
                   [self displayAlert:@"Changed entries"
                               format:@"%@", output];
 
                   // Update the benchmark value
-                  //
-                  // The server currently doesn't guarantee that the largest
-                  // changestamp element actually returns the largest
-                  // changestamp, so we'll also check the value of the last
-                  // entry's changestamp. (b/5028309)
-                  long long newMax;
-                  newMax = MAX([num longLongValue], gLargestPriorChangestamp);
-                  newMax = MAX(newMax, [[changeFeed lastEntryChangestamp] longLongValue]);
-                  gLargestPriorChangestamp = newMax;
+                  gLargestPriorChangestamp = [[changeFeed largestChangestamp] longLongValue];
                 } else {
                   [self displayAlert:@"Fetch failed"
                               format:@"Fetch of changes since %lld failed: %@",
