@@ -20,7 +20,7 @@
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataEntryDocBase.h"
-#import "GDataDocumentElements.h"
+#import "GDataDocElements.h"
 
 @interface GDataLastViewed : GDataValueElementConstruct <GDataExtension>
 @end
@@ -76,6 +76,32 @@
 + (NSString *)extensionElementLocalName { return @"removed"; }
 @end
 
+@interface GDataDocFilename : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataDocFilename
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"filename"; }
+@end
+
+@interface GDataDocSuggestedFilename : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataDocSuggestedFilename
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"suggestedFilename"; }
+@end
+
+@interface GDataDocLastCommented : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataDocLastCommented
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"lastCommented"; }
+@end
 
 @implementation GDataEntryDocBase
 
@@ -107,6 +133,9 @@
    [GDataDocDescription class],
    [GDataDocMD5Checksum class],
    [GDataDocChangestamp class],
+   [GDataDocFilename class],
+   [GDataDocSuggestedFilename class],
+   [GDataDocLastCommented class],
    [GDataDocRemoved class],
    nil];
 }
@@ -115,14 +144,17 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"lastViewed",       @"lastViewed",          kGDataDescValueLabeled },
-    { @"writersCanInvite", @"writersCanInvite",    kGDataDescValueLabeled },
-    { @"lastModifiedBy",   @"lastModifiedBy",      kGDataDescValueLabeled },
-    { @"quotaUsed",        @"quotaBytesUsed",      kGDataDescValueLabeled },
-    { @"desc",             @"documentDescription", kGDataDescValueLabeled },
-    { @"md5",              @"MD5Checksum",         kGDataDescValueLabeled },
-    { @"changestamp",      @"changestamp",         kGDataDescValueLabeled },
-    { @"removed",          @"removed",             kGDataDescBooleanPresent },
+    { @"lastViewed",        @"lastViewed",          kGDataDescValueLabeled },
+    { @"writersCanInvite",  @"writersCanInvite",    kGDataDescValueLabeled },
+    { @"lastModifiedBy",    @"lastModifiedBy",      kGDataDescValueLabeled },
+    { @"quotaUsed",         @"quotaBytesUsed",      kGDataDescValueLabeled },
+    { @"desc",              @"documentDescription", kGDataDescValueLabeled },
+    { @"md5",               @"MD5Checksum",         kGDataDescValueLabeled },
+    { @"changestamp",       @"changestamp",         kGDataDescValueLabeled },
+    { @"filename",          @"filename",            kGDataDescValueLabeled },
+    { @"suggestedFilename", @"suggestedFilename",   kGDataDescValueLabeled },
+    { @"lastCommented",     @"lastCommented",       kGDataDescValueLabeled },
+    { @"removed",           @"removed",             kGDataDescBooleanPresent },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -195,6 +227,39 @@
   [self setObject:obj forExtensionClass:[GDataDocMD5Checksum class]];
 }
 
+- (NSString *)filename {
+  GDataDocFilename *obj;
+  obj = [self objectForExtensionClass:[GDataDocFilename class]];
+  return [obj stringValue];
+}
+
+- (void)setFilename:(NSString *)str {
+  GDataDocFilename *obj = [GDataDocFilename valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataDocFilename class]];
+}
+
+- (NSString *)suggestedFilename {
+  GDataDocSuggestedFilename *obj;
+  obj = [self objectForExtensionClass:[GDataDocSuggestedFilename class]];
+  return [obj stringValue];
+}
+
+- (void)setSuggestedFilename:(NSString *)str {
+  GDataDocSuggestedFilename *obj = [GDataDocSuggestedFilename valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataDocSuggestedFilename class]];
+}
+
+- (GDataDateTime *)lastCommented {
+  GDataDocLastCommented *obj;
+  obj = [self objectForExtensionClass:[GDataDocLastCommented class]];
+  return [obj dateTimeValue];
+}
+
+- (void)setLastCommented:(GDataDateTime *)dateTime {
+  GDataDocLastCommented *obj = [GDataDocLastCommented valueWithDateTime:dateTime];
+  [self setObject:obj forExtensionClass:[GDataDocLastCommented class]];
+}
+
 - (NSNumber *)changestamp {
   GDataDocChangestamp *obj;
   obj = [self objectForExtensionClass:[GDataDocChangestamp class]];
@@ -241,6 +306,21 @@
 
 - (void)setIsHidden:(BOOL)flag {
   GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelHidden];
+  if (flag) {
+    [self addCategory:cat];
+  } else {
+    [self removeCategory:cat];
+  }
+}
+
+- (BOOL)isViewed {
+  BOOL flag = [GDataCategory categories:[self categories]
+              containsCategoryWithLabel:kGDataCategoryLabelViewed];
+  return flag;
+}
+
+- (void)setIsViewed:(BOOL)flag {
+  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelViewed];
   if (flag) {
     [self addCategory:cat];
   } else {

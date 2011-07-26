@@ -43,6 +43,9 @@
         <docs:description>cherry soda</docs:description>
         <docs:writersCanInvite value="true"/>
         <docs:md5Checksum>2b01142f7481c7b056c4b410d28f33cf</docs:md5Checksum>
+        <docs:filename>hi mom.txt</docs:filename>
+        <docs:suggestedFilename>Hi Mom.txt</docs:suggestedFilename>
+        <docs:lastCommented>2007-08-02T20:09:40Z</docs:lastCommented>
         <docs:removed/>
         <docs:changestamp value="1234"/>
         <category label="hidden"

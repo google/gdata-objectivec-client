@@ -32,7 +32,7 @@
 }
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeedWithXMLData:(NSData *)data {
-  return [[[self alloc] feedWithXMLData:data] autorelease];
+  return [self feedWithXMLData:data];
 }
 
 + (GDataFeedSpreadsheetCell *)spreadsheetCellFeed {

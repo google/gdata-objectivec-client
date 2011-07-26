@@ -549,6 +549,13 @@
 		4F2082970FC7697B00F547BB /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2082960FC7697B00F547BB /* GDataMapConstants.m */; };
 		4F2082980FC7697B00F547BB /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2082960FC7697B00F547BB /* GDataMapConstants.m */; };
 		4F2082990FC7697B00F547BB /* GDataMapConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F2082960FC7697B00F547BB /* GDataMapConstants.m */; };
+		4F21393E13DE3A4900A835BA /* GDataDocElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F21393C13DE3A4900A835BA /* GDataDocElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F21393F13DE3A4900A835BA /* GDataDocElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F21393D13DE3A4900A835BA /* GDataDocElements.m */; };
+		4F21394013DE3A4900A835BA /* GDataDocElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F21393D13DE3A4900A835BA /* GDataDocElements.m */; };
+		4F21394113DE3A4900A835BA /* GDataDocElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F21393D13DE3A4900A835BA /* GDataDocElements.m */; };
+		4F21394213DE3A4900A835BA /* GDataDocElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F21393D13DE3A4900A835BA /* GDataDocElements.m */; };
+		4F21394313DE3A4900A835BA /* GDataDocElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F21393D13DE3A4900A835BA /* GDataDocElements.m */; };
+		4F21394813DE3A6D00A835BA /* GDataDocElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F21393C13DE3A4900A835BA /* GDataDocElements.h */; };
 		4F25E9FC0BE9667B007C0836 /* GDataEntryACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */; };
 		4F25E9FD0BE9667B007C0836 /* GDataFeedACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F70BE9667B007C0836 /* GDataFeedACL.m */; };
 		4F25E9FE0BE9667B007C0836 /* GDataACLScope.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25E9F90BE9667B007C0836 /* GDataACLScope.m */; };
@@ -1021,7 +1028,6 @@
 		4F4DF41213746F4000F5C554 /* GDataDocMaxUploadSize.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71C75113C897C00169801 /* GDataDocMaxUploadSize.h */; };
 		4F4DF41313746F4000F5C554 /* GDataDocs.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FFF313C0D6BA16100CD9B59 /* GDataDocs.h */; };
 		4F4DF41413746F4000F5C554 /* GDataDocTransferFormat.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FB71C72113C897C00169801 /* GDataDocTransferFormat.h */; };
-		4F4DF41513746F4000F5C554 /* GDataDocumentElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FE6415C10E02193007D2F65 /* GDataDocumentElements.h */; };
 		4F4DF41613746F4000F5C554 /* GDataDublinCore.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F0D05910E19C10E009E0AC2 /* GDataDublinCore.h */; };
 		4F4DF41713746F4000F5C554 /* GDataElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FFF31170D6B9E7700CD9B59 /* GDataElements.h */; };
 		4F4DF41813746F4000F5C554 /* GDataEmail.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F14AFAE0B13999D0072EBB8 /* GDataEmail.h */; };
@@ -1079,9 +1085,6 @@
 		4F4DF44C13746F4000F5C554 /* GDataEntrySpreadsheetRecord.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F82A3F50FCDE52A00C477D4 /* GDataEntrySpreadsheetRecord.h */; };
 		4F4DF44D13746F4000F5C554 /* GDataEntrySpreadsheetTable.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F82A3FB0FCDE53500C477D4 /* GDataEntrySpreadsheetTable.h */; };
 		4F4DF44E13746F4000F5C554 /* GDataEntryStandardDoc.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F4B93E60C5045020064B6F6 /* GDataEntryStandardDoc.h */; };
-		4F4DF44F13746F4000F5C554 /* GDataEntryTranslationDocument.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD5F10F3E5F5004BD81E /* GDataEntryTranslationDocument.h */; };
-		4F4DF45013746F4000F5C554 /* GDataEntryTranslationGlossary.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6110F3E5F5004BD81E /* GDataEntryTranslationGlossary.h */; };
-		4F4DF45113746F4000F5C554 /* GDataEntryTranslationMemory.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6310F3E5F5004BD81E /* GDataEntryTranslationMemory.h */; };
 		4F4DF45213746F4000F5C554 /* GDataEntryVolume.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F0D05290E19A2B4009E0AC2 /* GDataEntryVolume.h */; };
 		4F4DF45313746F4000F5C554 /* GDataEntryWorksheet.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA6950BB362E5005710DA /* GDataEntryWorksheet.h */; };
 		4F4DF45413746F4000F5C554 /* GDataEntryYouTubeCaptionTrack.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F36EE5B0FFD7ABD00980D30 /* GDataEntryYouTubeCaptionTrack.h */; };
@@ -1145,9 +1148,6 @@
 		4F4DF48E13746F4000F5C554 /* GDataFeedSpreadsheetList.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA69B0BB362E5005710DA /* GDataFeedSpreadsheetList.h */; };
 		4F4DF48F13746F4000F5C554 /* GDataFeedSpreadsheetRecord.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F82A3C30FCCCE4A00C477D4 /* GDataFeedSpreadsheetRecord.h */; };
 		4F4DF49013746F4000F5C554 /* GDataFeedSpreadsheetTable.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F82A3C10FCCCE4A00C477D4 /* GDataFeedSpreadsheetTable.h */; };
-		4F4DF49113746F4000F5C554 /* GDataFeedTranslationDocument.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6510F3E5F5004BD81E /* GDataFeedTranslationDocument.h */; };
-		4F4DF49213746F4000F5C554 /* GDataFeedTranslationGlossary.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6710F3E5F5004BD81E /* GDataFeedTranslationGlossary.h */; };
-		4F4DF49313746F4000F5C554 /* GDataFeedTranslationMemory.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6910F3E5F5004BD81E /* GDataFeedTranslationMemory.h */; };
 		4F4DF49413746F4000F5C554 /* GDataFeedVolume.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F0D059B0E19C3F4009E0AC2 /* GDataFeedVolume.h */; };
 		4F4DF49513746F4000F5C554 /* GDataFeedWorksheet.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA69D0BB362E5005710DA /* GDataFeedWorksheet.h */; };
 		4F4DF49613746F4000F5C554 /* GDataFeedYouTubeCaptionTrack.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F36EE8E0FFD7DAD00980D30 /* GDataFeedYouTubeCaptionTrack.h */; };
@@ -1218,7 +1218,6 @@
 		4F4DF4D713746F4000F5C554 /* GDataQueryGooglePhotos.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F5C294A0D9C60D100C647A5 /* GDataQueryGooglePhotos.h */; };
 		4F4DF4D813746F4000F5C554 /* GDataQueryMaps.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F2081D70FC7457000F547BB /* GDataQueryMaps.h */; };
 		4F4DF4D913746F4000F5C554 /* GDataQuerySpreadsheet.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA69F0BB362E5005710DA /* GDataQuerySpreadsheet.h */; };
-		4F4DF4DA13746F4000F5C554 /* GDataQueryTranslation.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6B10F3E5F5004BD81E /* GDataQueryTranslation.h */; };
 		4F4DF4DB13746F4000F5C554 /* GDataQueryYouTube.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F69E7440D4AD9B60084991B /* GDataQueryYouTube.h */; };
 		4F4DF4DC13746F4000F5C554 /* GDataRating.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F14B0170B139CD60072EBB8 /* GDataRating.h */; };
 		4F4DF4DD13746F4000F5C554 /* GDataRecurrence.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FA3B2090F144A1200740CB1 /* GDataRecurrence.h */; };
@@ -1240,7 +1239,6 @@
 		4F4DF4ED13746F4000F5C554 /* GDataServiceGoogleMaps.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F2081D50FC7457000F547BB /* GDataServiceGoogleMaps.h */; };
 		4F4DF4EE13746F4000F5C554 /* GDataServiceGooglePhotos.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F5C293E0D9C60BC00C647A5 /* GDataServiceGooglePhotos.h */; };
 		4F4DF4EF13746F4000F5C554 /* GDataServiceGoogleSpreadsheet.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FEBA6A30BB362E5005710DA /* GDataServiceGoogleSpreadsheet.h */; };
-		4F4DF4F013746F4000F5C554 /* GDataServiceGoogleTranslation.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h */; };
 		4F4DF4F113746F4000F5C554 /* GDataServiceGoogleWebmasterTools.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F66E1F00E11C897005DD84C /* GDataServiceGoogleWebmasterTools.h */; };
 		4F4DF4F213746F4000F5C554 /* GDataServiceGoogleYouTube.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F69E6DD0D4AD3310084991B /* GDataServiceGoogleYouTube.h */; };
 		4F4DF4F313746F4000F5C554 /* GDataServiceIntrospection.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F10BD6E0F1FEEF5002AE29A /* GDataServiceIntrospection.h */; };
@@ -1260,10 +1258,6 @@
 		4F4DF50113746F4000F5C554 /* GDataTargetNamespace.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F3C881F0EC2469E009C18C4 /* GDataTargetNamespace.h */; };
 		4F4DF50213746F4000F5C554 /* GDataTextConstruct.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F14AF590B13970E0072EBB8 /* GDataTextConstruct.h */; };
 		4F4DF50313746F4000F5C554 /* GDataThreadingElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FA551720FD5BDDA006FDC8B /* GDataThreadingElements.h */; };
-		4F4DF50413746F4000F5C554 /* GDataTranslation.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6F10F3E5F5004BD81E /* GDataTranslation.h */; };
-		4F4DF50513746F4000F5C554 /* GDataTranslationConstants.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7010F3E5F5004BD81E /* GDataTranslationConstants.h */; };
-		4F4DF50613746F4000F5C554 /* GDataTranslationDocumentSource.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7210F3E5F5004BD81E /* GDataTranslationDocumentSource.h */; };
-		4F4DF50713746F4000F5C554 /* GDataTranslationElements.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7410F3E5F5004BD81E /* GDataTranslationElements.h */; };
 		4F4DF50813746F4000F5C554 /* GDataUtilities.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F7098B60D790F71003CEFDF /* GDataUtilities.h */; };
 		4F4DF50913746F4000F5C554 /* GDataValueConstruct.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F14AF670B13975E0072EBB8 /* GDataValueConstruct.h */; };
 		4F4DF50A13746F4000F5C554 /* GDataVolumePrice.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F7AB18210AB9F8D0075EB10 /* GDataVolumePrice.h */; };
@@ -1988,73 +1982,6 @@
 		4FBF38230F57419900E1EFD9 /* GDataEntryYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */; };
 		4FBF38240F57419900E1EFD9 /* GDataFeedYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381A0F57419800E1EFD9 /* GDataFeedYouTubeUserEvent.m */; };
 		4FBF38250F57419900E1EFD9 /* GDataEntryYouTubeUserEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */; };
-		4FC2BD7610F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */; };
-		4FC2BD7710F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */; };
-		4FC2BD7810F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */; };
-		4FC2BD7910F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */; };
-		4FC2BD7A10F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */; };
-		4FC2BD7B10F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */; };
-		4FC2BD7C10F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */; };
-		4FC2BD7D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */; };
-		4FC2BD7E10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */; };
-		4FC2BD7F10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */; };
-		4FC2BD8010F3E5F5004BD81E /* GDataTranslationElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */; };
-		4FC2BD8110F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */; };
-		4FC2BD8210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */; };
-		4FC2BD8310F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */; };
-		4FC2BD8410F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */; };
-		4FC2BD8510F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */; };
-		4FC2BD8610F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */; };
-		4FC2BD8710F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */; };
-		4FC2BD8810F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */; };
-		4FC2BD8910F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */; };
-		4FC2BD8A10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */; };
-		4FC2BD8B10F3E5F5004BD81E /* GDataTranslationElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */; };
-		4FC2BD8C10F3E5F5004BD81E /* GDataEntryTranslationDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD5F10F3E5F5004BD81E /* GDataEntryTranslationDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD8D10F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */; };
-		4FC2BD8E10F3E5F5004BD81E /* GDataEntryTranslationGlossary.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6110F3E5F5004BD81E /* GDataEntryTranslationGlossary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD8F10F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */; };
-		4FC2BD9010F3E5F5004BD81E /* GDataEntryTranslationMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6310F3E5F5004BD81E /* GDataEntryTranslationMemory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9110F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */; };
-		4FC2BD9210F3E5F5004BD81E /* GDataFeedTranslationDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6510F3E5F5004BD81E /* GDataFeedTranslationDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9310F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */; };
-		4FC2BD9410F3E5F5004BD81E /* GDataFeedTranslationGlossary.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6710F3E5F5004BD81E /* GDataFeedTranslationGlossary.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9510F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */; };
-		4FC2BD9610F3E5F5004BD81E /* GDataFeedTranslationMemory.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6910F3E5F5004BD81E /* GDataFeedTranslationMemory.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9710F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */; };
-		4FC2BD9810F3E5F5004BD81E /* GDataQueryTranslation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6B10F3E5F5004BD81E /* GDataQueryTranslation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9910F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */; };
-		4FC2BD9A10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9B10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */; };
-		4FC2BD9C10F3E5F5004BD81E /* GDataTranslation.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD6F10F3E5F5004BD81E /* GDataTranslation.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9D10F3E5F5004BD81E /* GDataTranslationConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7010F3E5F5004BD81E /* GDataTranslationConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BD9E10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */; };
-		4FC2BD9F10F3E5F5004BD81E /* GDataTranslationDocumentSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7210F3E5F5004BD81E /* GDataTranslationDocumentSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BDA010F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */; };
-		4FC2BDA110F3E5F5004BD81E /* GDataTranslationElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FC2BD7410F3E5F5004BD81E /* GDataTranslationElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FC2BDA210F3E5F5004BD81E /* GDataTranslationElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */; };
-		4FC2BDA310F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */; };
-		4FC2BDA410F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */; };
-		4FC2BDA510F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */; };
-		4FC2BDA610F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */; };
-		4FC2BDA710F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */; };
-		4FC2BDA810F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */; };
-		4FC2BDA910F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */; };
-		4FC2BDAA10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */; };
-		4FC2BDAB10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */; };
-		4FC2BDAC10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */; };
-		4FC2BDAD10F3E5F5004BD81E /* GDataTranslationElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */; };
-		4FC2BDAE10F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */; };
-		4FC2BDAF10F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */; };
-		4FC2BDB010F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */; };
-		4FC2BDB110F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */; };
-		4FC2BDB210F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */; };
-		4FC2BDB310F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */; };
-		4FC2BDB410F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */; };
-		4FC2BDB510F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */; };
-		4FC2BDB610F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */; };
-		4FC2BDB710F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */; };
-		4FC2BDB810F3E5F5004BD81E /* GDataTranslationElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */; };
 		4FD23A470B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */; };
 		4FD23A480B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */; };
 		4FD23A490B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */; };
@@ -2212,12 +2139,6 @@
 		4FE6410010E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640FB10E00EEF007D2F65 /* GDataAnalyticsStep.m */; };
 		4FE6410110E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640FB10E00EEF007D2F65 /* GDataAnalyticsStep.m */; };
 		4FE6410210E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640FB10E00EEF007D2F65 /* GDataAnalyticsStep.m */; };
-		4FE6415D10E02193007D2F65 /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */; };
-		4FE6415E10E02193007D2F65 /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */; };
-		4FE6415F10E02193007D2F65 /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */; };
-		4FE6416010E02193007D2F65 /* GDataDocumentElements.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE6415C10E02193007D2F65 /* GDataDocumentElements.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE6416110E02193007D2F65 /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */; };
-		4FE6416210E02193007D2F65 /* GDataDocumentElements.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */; };
 		4FE81F710B250E8600D8C135 /* GDataQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE81F700B250E8600D8C135 /* GDataQuery.m */; };
 		4FE8203F0B26104600D8C135 /* GDataQueryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8203E0B26104600D8C135 /* GDataQueryTest.m */; };
 		4FE8216F0B262DA000D8C135 /* GDataQueryCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE8216E0B262DA000D8C135 /* GDataQueryCalendar.m */; };
@@ -2314,6 +2235,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4F21394813DE3A6D00A835BA /* GDataDocElements.h in Copy Static Library Headers */,
 				4F4DF52E13746F9200F5C554 /* GTMOAuth2ViewControllerTouch.h in Copy Static Library Headers */,
 				4F4DF52A13746F8400F5C554 /* GDataXMLNode.h in Copy Static Library Headers */,
 				4F4DF3D813746F4000F5C554 /* GData.h in Copy Static Library Headers */,
@@ -2379,7 +2301,6 @@
 				4F4DF41213746F4000F5C554 /* GDataDocMaxUploadSize.h in Copy Static Library Headers */,
 				4F4DF41313746F4000F5C554 /* GDataDocs.h in Copy Static Library Headers */,
 				4F4DF41413746F4000F5C554 /* GDataDocTransferFormat.h in Copy Static Library Headers */,
-				4F4DF41513746F4000F5C554 /* GDataDocumentElements.h in Copy Static Library Headers */,
 				4F4DF41613746F4000F5C554 /* GDataDublinCore.h in Copy Static Library Headers */,
 				4F4DF41713746F4000F5C554 /* GDataElements.h in Copy Static Library Headers */,
 				4F4DF41813746F4000F5C554 /* GDataEmail.h in Copy Static Library Headers */,
@@ -2437,9 +2358,6 @@
 				4F4DF44C13746F4000F5C554 /* GDataEntrySpreadsheetRecord.h in Copy Static Library Headers */,
 				4F4DF44D13746F4000F5C554 /* GDataEntrySpreadsheetTable.h in Copy Static Library Headers */,
 				4F4DF44E13746F4000F5C554 /* GDataEntryStandardDoc.h in Copy Static Library Headers */,
-				4F4DF44F13746F4000F5C554 /* GDataEntryTranslationDocument.h in Copy Static Library Headers */,
-				4F4DF45013746F4000F5C554 /* GDataEntryTranslationGlossary.h in Copy Static Library Headers */,
-				4F4DF45113746F4000F5C554 /* GDataEntryTranslationMemory.h in Copy Static Library Headers */,
 				4F4DF45213746F4000F5C554 /* GDataEntryVolume.h in Copy Static Library Headers */,
 				4F4DF45313746F4000F5C554 /* GDataEntryWorksheet.h in Copy Static Library Headers */,
 				4F4DF45413746F4000F5C554 /* GDataEntryYouTubeCaptionTrack.h in Copy Static Library Headers */,
@@ -2503,9 +2421,6 @@
 				4F4DF48E13746F4000F5C554 /* GDataFeedSpreadsheetList.h in Copy Static Library Headers */,
 				4F4DF48F13746F4000F5C554 /* GDataFeedSpreadsheetRecord.h in Copy Static Library Headers */,
 				4F4DF49013746F4000F5C554 /* GDataFeedSpreadsheetTable.h in Copy Static Library Headers */,
-				4F4DF49113746F4000F5C554 /* GDataFeedTranslationDocument.h in Copy Static Library Headers */,
-				4F4DF49213746F4000F5C554 /* GDataFeedTranslationGlossary.h in Copy Static Library Headers */,
-				4F4DF49313746F4000F5C554 /* GDataFeedTranslationMemory.h in Copy Static Library Headers */,
 				4F4DF49413746F4000F5C554 /* GDataFeedVolume.h in Copy Static Library Headers */,
 				4F4DF49513746F4000F5C554 /* GDataFeedWorksheet.h in Copy Static Library Headers */,
 				4F4DF49613746F4000F5C554 /* GDataFeedYouTubeCaptionTrack.h in Copy Static Library Headers */,
@@ -2576,7 +2491,6 @@
 				4F4DF4D713746F4000F5C554 /* GDataQueryGooglePhotos.h in Copy Static Library Headers */,
 				4F4DF4D813746F4000F5C554 /* GDataQueryMaps.h in Copy Static Library Headers */,
 				4F4DF4D913746F4000F5C554 /* GDataQuerySpreadsheet.h in Copy Static Library Headers */,
-				4F4DF4DA13746F4000F5C554 /* GDataQueryTranslation.h in Copy Static Library Headers */,
 				4F4DF4DB13746F4000F5C554 /* GDataQueryYouTube.h in Copy Static Library Headers */,
 				4F4DF4DC13746F4000F5C554 /* GDataRating.h in Copy Static Library Headers */,
 				4F4DF4DD13746F4000F5C554 /* GDataRecurrence.h in Copy Static Library Headers */,
@@ -2598,7 +2512,6 @@
 				4F4DF4ED13746F4000F5C554 /* GDataServiceGoogleMaps.h in Copy Static Library Headers */,
 				4F4DF4EE13746F4000F5C554 /* GDataServiceGooglePhotos.h in Copy Static Library Headers */,
 				4F4DF4EF13746F4000F5C554 /* GDataServiceGoogleSpreadsheet.h in Copy Static Library Headers */,
-				4F4DF4F013746F4000F5C554 /* GDataServiceGoogleTranslation.h in Copy Static Library Headers */,
 				4F4DF4F113746F4000F5C554 /* GDataServiceGoogleWebmasterTools.h in Copy Static Library Headers */,
 				4F4DF4F213746F4000F5C554 /* GDataServiceGoogleYouTube.h in Copy Static Library Headers */,
 				4F4DF4F313746F4000F5C554 /* GDataServiceIntrospection.h in Copy Static Library Headers */,
@@ -2618,10 +2531,6 @@
 				4F4DF50113746F4000F5C554 /* GDataTargetNamespace.h in Copy Static Library Headers */,
 				4F4DF50213746F4000F5C554 /* GDataTextConstruct.h in Copy Static Library Headers */,
 				4F4DF50313746F4000F5C554 /* GDataThreadingElements.h in Copy Static Library Headers */,
-				4F4DF50413746F4000F5C554 /* GDataTranslation.h in Copy Static Library Headers */,
-				4F4DF50513746F4000F5C554 /* GDataTranslationConstants.h in Copy Static Library Headers */,
-				4F4DF50613746F4000F5C554 /* GDataTranslationDocumentSource.h in Copy Static Library Headers */,
-				4F4DF50713746F4000F5C554 /* GDataTranslationElements.h in Copy Static Library Headers */,
 				4F4DF50813746F4000F5C554 /* GDataUtilities.h in Copy Static Library Headers */,
 				4F4DF50913746F4000F5C554 /* GDataValueConstruct.h in Copy Static Library Headers */,
 				4F4DF50A13746F4000F5C554 /* GDataVolumePrice.h in Copy Static Library Headers */,
@@ -2837,6 +2746,8 @@
 		4F2082940FC7697300F547BB /* GDataMapConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataMapConstants.h; path = Clients/Maps/GDataMapConstants.h; sourceTree = "<group>"; };
 		4F2082960FC7697B00F547BB /* GDataMapConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataMapConstants.m; path = Clients/Maps/GDataMapConstants.m; sourceTree = "<group>"; };
 		4F2083940FC7823300F547BB /* FeedMapFeaturesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedMapFeaturesTest1.xml; path = Tests/FeedMapFeaturesTest1.xml; sourceTree = "<group>"; };
+		4F21393C13DE3A4900A835BA /* GDataDocElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocElements.h; path = Clients/Docs/GDataDocElements.h; sourceTree = "<group>"; };
+		4F21393D13DE3A4900A835BA /* GDataDocElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocElements.m; path = Clients/Docs/GDataDocElements.m; sourceTree = "<group>"; };
 		4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryACL.h; path = ACL/GDataEntryACL.h; sourceTree = "<group>"; };
 		4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryACL.m; path = ACL/GDataEntryACL.m; sourceTree = "<group>"; };
 		4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedACL.h; path = ACL/GDataFeedACL.h; sourceTree = "<group>"; };
@@ -3232,29 +3143,6 @@
 		4FBF381C0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryYouTubeUserEvent.m; path = Clients/YouTube/GDataEntryYouTubeUserEvent.m; sourceTree = "<group>"; };
 		4FBF381D0F57419800E1EFD9 /* GDataEntryYouTubeUserEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryYouTubeUserEvent.h; path = Clients/YouTube/GDataEntryYouTubeUserEvent.h; sourceTree = "<group>"; };
 		4FBF38A80F5765A300E1EFD9 /* FeedYouTubeUserEventTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedYouTubeUserEventTest1.xml; path = Tests/FeedYouTubeUserEventTest1.xml; sourceTree = "<group>"; };
-		4FC2BD5F10F3E5F5004BD81E /* GDataEntryTranslationDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryTranslationDocument.h; sourceTree = "<group>"; };
-		4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryTranslationDocument.m; sourceTree = "<group>"; };
-		4FC2BD6110F3E5F5004BD81E /* GDataEntryTranslationGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryTranslationGlossary.h; sourceTree = "<group>"; };
-		4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryTranslationGlossary.m; sourceTree = "<group>"; };
-		4FC2BD6310F3E5F5004BD81E /* GDataEntryTranslationMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataEntryTranslationMemory.h; sourceTree = "<group>"; };
-		4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataEntryTranslationMemory.m; sourceTree = "<group>"; };
-		4FC2BD6510F3E5F5004BD81E /* GDataFeedTranslationDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedTranslationDocument.h; sourceTree = "<group>"; };
-		4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedTranslationDocument.m; sourceTree = "<group>"; };
-		4FC2BD6710F3E5F5004BD81E /* GDataFeedTranslationGlossary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedTranslationGlossary.h; sourceTree = "<group>"; };
-		4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedTranslationGlossary.m; sourceTree = "<group>"; };
-		4FC2BD6910F3E5F5004BD81E /* GDataFeedTranslationMemory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataFeedTranslationMemory.h; sourceTree = "<group>"; };
-		4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataFeedTranslationMemory.m; sourceTree = "<group>"; };
-		4FC2BD6B10F3E5F5004BD81E /* GDataQueryTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataQueryTranslation.h; sourceTree = "<group>"; };
-		4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataQueryTranslation.m; sourceTree = "<group>"; };
-		4FC2BD6D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataServiceGoogleTranslation.h; sourceTree = "<group>"; };
-		4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataServiceGoogleTranslation.m; sourceTree = "<group>"; };
-		4FC2BD6F10F3E5F5004BD81E /* GDataTranslation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTranslation.h; sourceTree = "<group>"; };
-		4FC2BD7010F3E5F5004BD81E /* GDataTranslationConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTranslationConstants.h; sourceTree = "<group>"; };
-		4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataTranslationConstants.m; sourceTree = "<group>"; };
-		4FC2BD7210F3E5F5004BD81E /* GDataTranslationDocumentSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTranslationDocumentSource.h; sourceTree = "<group>"; };
-		4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataTranslationDocumentSource.m; sourceTree = "<group>"; };
-		4FC2BD7410F3E5F5004BD81E /* GDataTranslationElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataTranslationElements.h; sourceTree = "<group>"; };
-		4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataTranslationElements.m; sourceTree = "<group>"; };
 		4FD23A400B8FDB2A007C0AD4 /* FeedGoogleBaseSnippetTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseSnippetTest1.xml; path = Tests/FeedGoogleBaseSnippetTest1.xml; sourceTree = "<group>"; };
 		4FD23A410B8FDB2A007C0AD4 /* FeedGoogleBaseItemTypesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemTypesTest1.xml; path = Tests/FeedGoogleBaseItemTypesTest1.xml; sourceTree = "<group>"; };
 		4FD23A420B8FDB2A007C0AD4 /* FeedGoogleBaseItemCountsTest1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedGoogleBaseItemCountsTest1.xml; path = Tests/FeedGoogleBaseItemCountsTest1.xml; sourceTree = "<group>"; };
@@ -3336,8 +3224,6 @@
 		4FE640EC10E00ED4007D2F65 /* GDataAnalyticsSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsSegment.h; path = Clients/Analytics/GDataAnalyticsSegment.h; sourceTree = "<group>"; };
 		4FE640FB10E00EEF007D2F65 /* GDataAnalyticsStep.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsStep.m; path = Clients/Analytics/GDataAnalyticsStep.m; sourceTree = "<group>"; };
 		4FE640FC10E00EEF007D2F65 /* GDataAnalyticsStep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsStep.h; path = Clients/Analytics/GDataAnalyticsStep.h; sourceTree = "<group>"; };
-		4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataDocumentElements.m; path = Elements/GDataDocumentElements.m; sourceTree = "<group>"; };
-		4FE6415C10E02193007D2F65 /* GDataDocumentElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocumentElements.h; path = Elements/GDataDocumentElements.h; sourceTree = "<group>"; };
 		4FE81F6F0B250E8600D8C135 /* GDataQuery.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQuery.h; path = BaseClasses/GDataQuery.h; sourceTree = "<group>"; };
 		4FE81F700B250E8600D8C135 /* GDataQuery.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQuery.m; path = BaseClasses/GDataQuery.m; sourceTree = "<group>"; };
 		4FE8203E0B26104600D8C135 /* GDataQueryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataQueryTest.m; path = Tests/GDataQueryTest.m; sourceTree = "<group>"; };
@@ -3509,7 +3395,6 @@
 				4F2081C60FC7454800F547BB /* Maps */,
 				4F35DE750C023B880038AE68 /* Photos */,
 				4FEBA68E0BB362E5005710DA /* Spreadsheets */,
-				4FC2BD5E10F3E5F5004BD81E /* Translation */,
 				4F66E0B10E106924005DD84C /* Webmaster Tools */,
 				4F69E5700D4A96900084991B /* YouTube */,
 			);
@@ -3706,8 +3591,6 @@
 				4F4C2EB10E3ABFC900B0B226 /* GDataBaseElements.m */,
 				4FA3BE940B97A169001C1943 /* GDataAtomPubControl.h */,
 				4FA3BE8E0B97A15F001C1943 /* GDataAtomPubControl.m */,
-				4FE6415C10E02193007D2F65 /* GDataDocumentElements.h */,
-				4FE6415B10E02193007D2F65 /* GDataDocumentElements.m */,
 				4F14ABED0B12897B0072EBB8 /* GDataLink.h */,
 				4F14ABEB0B12897B0072EBB8 /* GDataLink.m */,
 				4F14AE700B12A8920072EBB8 /* GDataPerson.h */,
@@ -4064,6 +3947,8 @@
 				4FB71C70113C897C00169801 /* GDataDocFeature.m */,
 				4FB71C75113C897C00169801 /* GDataDocMaxUploadSize.h */,
 				4FB71C71113C897C00169801 /* GDataDocMaxUploadSize.m */,
+				4F21393C13DE3A4900A835BA /* GDataDocElements.h */,
+				4F21393D13DE3A4900A835BA /* GDataDocElements.m */,
 				4FB71C72113C897C00169801 /* GDataDocTransferFormat.h */,
 				4FB71C74113C897C00169801 /* GDataDocTransferFormat.m */,
 				4F4B93DF0C5045020064B6F6 /* GDataEntryDocBase.h */,
@@ -4404,37 +4289,6 @@
 				4F4E917B0EBA85D900C59A7E /* GDataServerError.m */,
 			);
 			name = Networking;
-			sourceTree = "<group>";
-		};
-		4FC2BD5E10F3E5F5004BD81E /* Translation */ = {
-			isa = PBXGroup;
-			children = (
-				4FC2BD6F10F3E5F5004BD81E /* GDataTranslation.h */,
-				4FC2BD7010F3E5F5004BD81E /* GDataTranslationConstants.h */,
-				4FC2BD7110F3E5F5004BD81E /* GDataTranslationConstants.m */,
-				4FC2BD5F10F3E5F5004BD81E /* GDataEntryTranslationDocument.h */,
-				4FC2BD6010F3E5F5004BD81E /* GDataEntryTranslationDocument.m */,
-				4FC2BD6110F3E5F5004BD81E /* GDataEntryTranslationGlossary.h */,
-				4FC2BD6210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m */,
-				4FC2BD6310F3E5F5004BD81E /* GDataEntryTranslationMemory.h */,
-				4FC2BD6410F3E5F5004BD81E /* GDataEntryTranslationMemory.m */,
-				4FC2BD6510F3E5F5004BD81E /* GDataFeedTranslationDocument.h */,
-				4FC2BD6610F3E5F5004BD81E /* GDataFeedTranslationDocument.m */,
-				4FC2BD6710F3E5F5004BD81E /* GDataFeedTranslationGlossary.h */,
-				4FC2BD6810F3E5F5004BD81E /* GDataFeedTranslationGlossary.m */,
-				4FC2BD6910F3E5F5004BD81E /* GDataFeedTranslationMemory.h */,
-				4FC2BD6A10F3E5F5004BD81E /* GDataFeedTranslationMemory.m */,
-				4FC2BD7210F3E5F5004BD81E /* GDataTranslationDocumentSource.h */,
-				4FC2BD7310F3E5F5004BD81E /* GDataTranslationDocumentSource.m */,
-				4FC2BD7410F3E5F5004BD81E /* GDataTranslationElements.h */,
-				4FC2BD7510F3E5F5004BD81E /* GDataTranslationElements.m */,
-				4FC2BD6D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h */,
-				4FC2BD6E10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m */,
-				4FC2BD6B10F3E5F5004BD81E /* GDataQueryTranslation.h */,
-				4FC2BD6C10F3E5F5004BD81E /* GDataQueryTranslation.m */,
-			);
-			name = Translation;
-			path = Clients/Translation;
 			sourceTree = "<group>";
 		};
 		4FD23A390B8FDB17007C0AD4 /* XML Files */ = {
@@ -4885,19 +4739,6 @@
 				4FE640EE10E00ED4007D2F65 /* GDataAnalyticsDestination.h in Headers */,
 				4FE640F010E00ED4007D2F65 /* GDataAnalyticsSegment.h in Headers */,
 				4FE640FE10E00EEF007D2F65 /* GDataAnalyticsStep.h in Headers */,
-				4FE6416010E02193007D2F65 /* GDataDocumentElements.h in Headers */,
-				4FC2BD8C10F3E5F5004BD81E /* GDataEntryTranslationDocument.h in Headers */,
-				4FC2BD8E10F3E5F5004BD81E /* GDataEntryTranslationGlossary.h in Headers */,
-				4FC2BD9010F3E5F5004BD81E /* GDataEntryTranslationMemory.h in Headers */,
-				4FC2BD9210F3E5F5004BD81E /* GDataFeedTranslationDocument.h in Headers */,
-				4FC2BD9410F3E5F5004BD81E /* GDataFeedTranslationGlossary.h in Headers */,
-				4FC2BD9610F3E5F5004BD81E /* GDataFeedTranslationMemory.h in Headers */,
-				4FC2BD9810F3E5F5004BD81E /* GDataQueryTranslation.h in Headers */,
-				4FC2BD9A10F3E5F5004BD81E /* GDataServiceGoogleTranslation.h in Headers */,
-				4FC2BD9C10F3E5F5004BD81E /* GDataTranslation.h in Headers */,
-				4FC2BD9D10F3E5F5004BD81E /* GDataTranslationConstants.h in Headers */,
-				4FC2BD9F10F3E5F5004BD81E /* GDataTranslationDocumentSource.h in Headers */,
-				4FC2BDA110F3E5F5004BD81E /* GDataTranslationElements.h in Headers */,
 				4FB71C7E113C897C00169801 /* GDataDocTransferFormat.h in Headers */,
 				4FB71C7F113C897C00169801 /* GDataDocFeature.h in Headers */,
 				4FB71C81113C897C00169801 /* GDataDocMaxUploadSize.h in Headers */,
@@ -4919,6 +4760,7 @@
 				4FE5D569135FA0320003E5EC /* SBJSON.h in Headers */,
 				4FDA899213D47D390024AB5F /* GDataEntryDocChange.h in Headers */,
 				4FDA899A13D47D450024AB5F /* GDataFeedDocChange.h in Headers */,
+				4F21393E13DE3A4900A835BA /* GDataDocElements.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5418,18 +5260,6 @@
 				4FE640F310E00ED4007D2F65 /* GDataAnalyticsDestination.m in Sources */,
 				4FE640F410E00ED4007D2F65 /* GDataAnalyticsSegment.m in Sources */,
 				4FE6410010E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */,
-				4FE6415E10E02193007D2F65 /* GDataDocumentElements.m in Sources */,
-				4FC2BD8110F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */,
-				4FC2BD8210F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */,
-				4FC2BD8310F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */,
-				4FC2BD8410F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */,
-				4FC2BD8510F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */,
-				4FC2BD8610F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */,
-				4FC2BD8710F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */,
-				4FC2BD8810F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */,
-				4FC2BD8910F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */,
-				4FC2BD8A10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */,
-				4FC2BD8B10F3E5F5004BD81E /* GDataTranslationElements.m in Sources */,
 				4FB71C79113C897C00169801 /* GDataDocFeature.m in Sources */,
 				4FB71C7A113C897C00169801 /* GDataDocMaxUploadSize.m in Sources */,
 				4FB71C7B113C897C00169801 /* GDataDocTransferFormat.m in Sources */,
@@ -5450,6 +5280,7 @@
 				4FE5D56C135FA0320003E5EC /* SBJSON.m in Sources */,
 				4FDA899113D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899913D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
+				4F21394113DE3A4900A835BA /* GDataDocElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5737,18 +5568,6 @@
 				4FE640F710E00ED4007D2F65 /* GDataAnalyticsDestination.m in Sources */,
 				4FE640F810E00ED4007D2F65 /* GDataAnalyticsSegment.m in Sources */,
 				4FE6410210E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */,
-				4FE6416210E02193007D2F65 /* GDataDocumentElements.m in Sources */,
-				4FC2BDAE10F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */,
-				4FC2BDAF10F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */,
-				4FC2BDB010F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */,
-				4FC2BDB110F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */,
-				4FC2BDB210F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */,
-				4FC2BDB310F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */,
-				4FC2BDB410F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */,
-				4FC2BDB510F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */,
-				4FC2BDB610F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */,
-				4FC2BDB710F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */,
-				4FC2BDB810F3E5F5004BD81E /* GDataTranslationElements.m in Sources */,
 				4FB71C85113C897C00169801 /* GDataDocFeature.m in Sources */,
 				4FB71C86113C897C00169801 /* GDataDocMaxUploadSize.m in Sources */,
 				4FB71C87113C897C00169801 /* GDataDocTransferFormat.m in Sources */,
@@ -5770,6 +5589,7 @@
 				4FE5D56E135FA0320003E5EC /* SBJSON.m in Sources */,
 				4FDA899513D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899D13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
+				4F21394313DE3A4900A835BA /* GDataDocElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6056,18 +5876,6 @@
 				4FE640F110E00ED4007D2F65 /* GDataAnalyticsDestination.m in Sources */,
 				4FE640F210E00ED4007D2F65 /* GDataAnalyticsSegment.m in Sources */,
 				4FE640FF10E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */,
-				4FE6416110E02193007D2F65 /* GDataDocumentElements.m in Sources */,
-				4FC2BDA310F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */,
-				4FC2BDA410F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */,
-				4FC2BDA510F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */,
-				4FC2BDA610F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */,
-				4FC2BDA710F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */,
-				4FC2BDA810F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */,
-				4FC2BDA910F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */,
-				4FC2BDAA10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */,
-				4FC2BDAB10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */,
-				4FC2BDAC10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */,
-				4FC2BDAD10F3E5F5004BD81E /* GDataTranslationElements.m in Sources */,
 				4FB71C82113C897C00169801 /* GDataDocFeature.m in Sources */,
 				4FB71C83113C897C00169801 /* GDataDocMaxUploadSize.m in Sources */,
 				4FB71C84113C897C00169801 /* GDataDocTransferFormat.m in Sources */,
@@ -6089,6 +5897,7 @@
 				4FE5D56B135FA0320003E5EC /* SBJSON.m in Sources */,
 				4FDA899613D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899E13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
+				4F21394013DE3A4900A835BA /* GDataDocElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6374,18 +6183,6 @@
 				4FE640ED10E00ED4007D2F65 /* GDataAnalyticsDestination.m in Sources */,
 				4FE640EF10E00ED4007D2F65 /* GDataAnalyticsSegment.m in Sources */,
 				4FE640FD10E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */,
-				4FE6415F10E02193007D2F65 /* GDataDocumentElements.m in Sources */,
-				4FC2BD8D10F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */,
-				4FC2BD8F10F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */,
-				4FC2BD9110F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */,
-				4FC2BD9310F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */,
-				4FC2BD9510F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */,
-				4FC2BD9710F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */,
-				4FC2BD9910F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */,
-				4FC2BD9B10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */,
-				4FC2BD9E10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */,
-				4FC2BDA010F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */,
-				4FC2BDA210F3E5F5004BD81E /* GDataTranslationElements.m in Sources */,
 				4FB71C7C113C897C00169801 /* GDataDocFeature.m in Sources */,
 				4FB71C7D113C897C00169801 /* GDataDocMaxUploadSize.m in Sources */,
 				4FB71C80113C897C00169801 /* GDataDocTransferFormat.m in Sources */,
@@ -6407,6 +6204,7 @@
 				4FE5D56A135FA0320003E5EC /* SBJSON.m in Sources */,
 				4FDA899313D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899B13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
+				4F21393F13DE3A4900A835BA /* GDataDocElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6706,18 +6504,6 @@
 				4FE640F510E00ED4007D2F65 /* GDataAnalyticsDestination.m in Sources */,
 				4FE640F610E00ED4007D2F65 /* GDataAnalyticsSegment.m in Sources */,
 				4FE6410110E00EEF007D2F65 /* GDataAnalyticsStep.m in Sources */,
-				4FE6415D10E02193007D2F65 /* GDataDocumentElements.m in Sources */,
-				4FC2BD7610F3E5F5004BD81E /* GDataEntryTranslationDocument.m in Sources */,
-				4FC2BD7710F3E5F5004BD81E /* GDataEntryTranslationGlossary.m in Sources */,
-				4FC2BD7810F3E5F5004BD81E /* GDataEntryTranslationMemory.m in Sources */,
-				4FC2BD7910F3E5F5004BD81E /* GDataFeedTranslationDocument.m in Sources */,
-				4FC2BD7A10F3E5F5004BD81E /* GDataFeedTranslationGlossary.m in Sources */,
-				4FC2BD7B10F3E5F5004BD81E /* GDataFeedTranslationMemory.m in Sources */,
-				4FC2BD7C10F3E5F5004BD81E /* GDataQueryTranslation.m in Sources */,
-				4FC2BD7D10F3E5F5004BD81E /* GDataServiceGoogleTranslation.m in Sources */,
-				4FC2BD7E10F3E5F5004BD81E /* GDataTranslationConstants.m in Sources */,
-				4FC2BD7F10F3E5F5004BD81E /* GDataTranslationDocumentSource.m in Sources */,
-				4FC2BD8010F3E5F5004BD81E /* GDataTranslationElements.m in Sources */,
 				4FB71C76113C897C00169801 /* GDataDocFeature.m in Sources */,
 				4FB71C77113C897C00169801 /* GDataDocMaxUploadSize.m in Sources */,
 				4FB71C78113C897C00169801 /* GDataDocTransferFormat.m in Sources */,
@@ -6738,6 +6524,7 @@
 				4FE5D56D135FA0320003E5EC /* SBJSON.m in Sources */,
 				4FDA899413D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899C13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
+				4F21394213DE3A4900A835BA /* GDataDocElements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

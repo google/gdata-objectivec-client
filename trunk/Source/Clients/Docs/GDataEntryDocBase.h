@@ -46,6 +46,15 @@
 - (NSString *)MD5Checksum;
 - (void)setMD5Checksum:(NSString *)str;
 
+- (NSString *)filename;
+- (void)setFilename:(NSString *)str;
+
+- (NSString *)suggestedFilename;
+- (void)setSuggestedFilename:(NSString *)str;
+
+- (GDataDateTime *)lastCommented;
+- (void)setLastCommented:(GDataDateTime *)str;
+
 - (NSNumber *)changestamp; // long long
 - (void)setChangestamp:(NSNumber *)num;
 
@@ -58,6 +67,9 @@
 
 - (BOOL)isHidden;
 - (void)setIsHidden:(BOOL)flag;
+
+- (BOOL)isViewed;
+- (void)setIsViewed:(BOOL)flag;
 
 // convenience accessors
 - (NSArray *)parentLinks;

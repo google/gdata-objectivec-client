@@ -21,15 +21,7 @@
 
 #import "GDataFeedDocChange.h"
 #import "GDataEntryDocChange.h"
-
-@interface GDataDocLargestChangestamp : GDataValueConstruct <GDataExtension>
-@end
-
-@implementation GDataDocLargestChangestamp
-+ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
-+ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
-+ (NSString *)extensionElementLocalName { return @"largestChangestamp"; }
-@end
+#import "GDataDocElements.h"
 
 @implementation GDataFeedDocChange
 
