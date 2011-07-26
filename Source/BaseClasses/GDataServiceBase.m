@@ -185,7 +185,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 #if NS_BLOCKS_AVAILABLE
   [serviceUploadProgressBlock_ release];
 #endif
-  [authorizer_ release];
 
   [super dealloc];
 }
@@ -674,6 +673,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   [fetcher addPropertiesFromDictionary:uploadProperties];
 
   // attach OAuth authorization object, if any
+  //
+  // the fetcher already has this authorizer from the fetcher service, but this
+  // lets the client remove the authorizer from the ticket to make an
+  // unauthorized request
   [fetcher setAuthorizer:[ticket authorizer]];
 
   // add username/password, if any
@@ -1556,7 +1559,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 
 - (id)authorizer {
-  return authorizer_;
+  return [fetcherService_ authorizer];
 }
 
 - (void)setAuthorizer:(id)obj {
@@ -1566,14 +1569,10 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
                                 password:nil];
   }
 
-  if (obj != authorizer_) {
+  if (obj != [fetcherService_ authorizer]) {
     [self clearResponseDataCache];
 
-    [authorizer_ autorelease];
-    authorizer_ = [obj retain];
-
-    GDATA_DEBUG_ASSERT([obj respondsToSelector:@selector(authorizeRequest:delegate:didFinishSelector:)]
-                       || obj == nil, @"invalid authorization object");
+    [fetcherService_ setAuthorizer:obj];
   }
 }
 

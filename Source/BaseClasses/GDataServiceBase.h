@@ -90,6 +90,7 @@ typedef void *GDataServiceUploadProgressHandler;
 // ticket base class
 //
 @interface GDataServiceTicketBase : NSObject {
+ @protected
   GDataServiceBase *service_;
 
   id userData_;
@@ -260,9 +261,6 @@ typedef void *GDataServiceUploadProgressHandler;
 
   NSInteger cookieStorageMethod_;   // constant from GTMHTTPFetcher.h
   BOOL serviceShouldFollowNextLinks_;
-
-  // OAuth support
-  id authorizer_;
 }
 
 // Applications should call setUserAgent: with a string of the form

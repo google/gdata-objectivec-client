@@ -57,6 +57,7 @@
    [GDataQuotaBytesTotal class],
    [GDataQuotaBytesUsed class],
    [GDataQuotaBytesUsedInTrash class],
+   [GDataDocLargestChangestamp class],
    nil];
 }
 
@@ -64,13 +65,14 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"quotaTotal",   @"quotaBytesTotal",       kGDataDescValueLabeled },
-    { @"quotaUsed",    @"quotaBytesUsed",        kGDataDescValueLabeled },
-    { @"quotaInTrash", @"quotaBytesUsedInTrash", kGDataDescValueLabeled },
-    { @"features",     @"features",              kGDataDescArrayDescs   },
-    { @"uploadSize",   @"maxUploadSizes",        kGDataDescValueLabeled },
-    { @"export",       @"exportFormats",         kGDataDescArrayDescs   },
-    { @"import",       @"importFormats",         kGDataDescArrayDescs   },
+    { @"quotaTotal",         @"quotaBytesTotal",       kGDataDescValueLabeled },
+    { @"quotaUsed",          @"quotaBytesUsed",        kGDataDescValueLabeled },
+    { @"quotaInTrash",       @"quotaBytesUsedInTrash", kGDataDescValueLabeled },
+    { @"features",           @"features",              kGDataDescArrayDescs   },
+    { @"uploadSize",         @"maxUploadSizes",        kGDataDescValueLabeled },
+    { @"export",             @"exportFormats",         kGDataDescArrayDescs   },
+    { @"import",             @"importFormats",         kGDataDescArrayDescs   },
+    { @"largestChangestamp", @"largestChangestamp",    kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -157,6 +159,18 @@
 - (void)setQuotaBytesUsedInTrash:(NSNumber *)num {
   GDataQuotaBytesUsedInTrash *obj = [GDataQuotaBytesUsedInTrash valueWithNumber:num];
   [self setObject:obj forExtensionClass:[GDataQuotaBytesUsedInTrash class]];
+}
+
+- (NSNumber *)largestChangestamp {
+  GDataDocLargestChangestamp *obj;
+  obj = [self objectForExtensionClass:[GDataDocLargestChangestamp class]];
+  return [obj longLongNumberValue];
+}
+
+- (void)setLargestChangestamp:(NSNumber *)num {
+  GDataDocLargestChangestamp *obj;
+  obj = [GDataDocLargestChangestamp valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataDocLargestChangestamp class]];
 }
 
 #pragma mark -

@@ -1,4 +1,4 @@
-/* Copyright (c) 2009 Google Inc.
+/* Copyright (c) 2011 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,12 @@
  */
 
 //
-// GDataDocumentElements.m
+// GDataDocElements.m
 //
-// Elements used by the Docs API and Translation Toolkit API
+// Elements used by the Docs API
 //
 
-#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE
+#if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataPerson.h"
 #import "GDataValueConstruct.h"
@@ -33,5 +33,7 @@
 @interface GDataQuotaBytesUsed : GDataValueElementConstruct <GDataExtension>
 @end
 
-#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE || GDATA_INCLUDE_TRANSLATION_SERVICE
+@interface GDataDocLargestChangestamp : GDataValueConstruct <GDataExtension>
+@end
 
+#endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE

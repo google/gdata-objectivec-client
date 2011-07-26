@@ -21,7 +21,7 @@
 
 #import "GDataEntryBase.h"
 #import "GDataDocConstants.h"
-#import "GDataDocumentElements.h"
+#import "GDataDocElements.h"
 #import "GDataDocFeature.h"
 #import "GDataDocMaxUploadSize.h"
 #import "GDataDocTransferFormat.h" // importFormat/exportFormat
@@ -50,6 +50,9 @@
 
 - (NSNumber *)quotaBytesUsedInTrash; // long long
 - (void)setQuotaBytesUsedInTrash:(NSNumber *)num;
+
+- (NSNumber *)largestChangestamp; // long long
+- (void)setLargestChangestamp:(NSNumber *)num;
 
 // convenience accessors
 - (GDataDocMaxUploadSize *)maxUploadSizeForKind:(NSString *)uploadKind;
