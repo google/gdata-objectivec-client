@@ -86,7 +86,7 @@ static NSString* StringOrNilIfBlank(NSString *str) {
 + (NSString *)extensionElementLocalName { return @"organization"; }
 
 + (GDataOrganization *)organizationWithName:(NSString *)str {
-  GDataOrganization *obj = [[[GDataOrganization alloc] init] autorelease];
+  GDataOrganization *obj = [self object];
   [obj setOrgName:str];
   return obj;
 }

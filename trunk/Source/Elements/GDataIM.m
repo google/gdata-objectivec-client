@@ -45,7 +45,7 @@ static NSString* const kPrimaryAttr = @"primary";
                       label:(NSString *)label
                     address:(NSString *)address {
 
-  GDataIM *obj = [[[GDataIM alloc] init] autorelease];
+  GDataIM *obj = [self object];
   [obj setProtocol:protocol];
   [obj setRel:rel];
   [obj setLabel:label];

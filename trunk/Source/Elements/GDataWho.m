@@ -55,7 +55,7 @@ static NSString* const kEmailAttr = @"email";
 + (GDataWho *)whoWithRel:(NSString *)rel
                     name:(NSString *)valueString
                    email:(NSString *)email {
-  GDataWho *obj = [[[GDataWho alloc] init] autorelease];
+  GDataWho *obj = [self object];
   [obj setRel:rel];
   [obj setStringValue:valueString];
   [obj setEmail:email];

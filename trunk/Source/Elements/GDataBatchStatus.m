@@ -51,7 +51,7 @@ static NSString *const kContentTypeAttr = @"content-type";
 
 + (GDataBatchStatus *)batchStatusWithCode:(NSInteger)code
                                    reason:(NSString *)reason {
-  GDataBatchStatus* obj = [[[GDataBatchStatus alloc] init] autorelease];
+  GDataBatchStatus* obj = [self object];
   [obj setReason:reason];
   [obj setCode:[NSNumber numberWithInt:(int)code]];
   return obj;

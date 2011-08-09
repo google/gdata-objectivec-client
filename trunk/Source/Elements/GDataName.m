@@ -94,7 +94,7 @@ static NSString* const kYomiAttr = @"yomi";
   // the contacts API does not want empty name elements
   if ([str length] == 0) return nil;
   
-  GDataNameElement *obj = [[[self alloc] init] autorelease];
+  GDataNameElement *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }
@@ -104,7 +104,7 @@ static NSString* const kYomiAttr = @"yomi";
 // methods specifying localName, etc
 
 + (id)nameElementWithNameElement:(GDataNameElement *)source {
-  GDataNameElement *obj = [[[self alloc] init] autorelease];
+  GDataNameElement *obj = [self object];
   [obj setStringValue:[source stringValue]];
   [obj setYomi:[source yomi]];
   return obj;
@@ -150,12 +150,12 @@ static NSString* const kYomiAttr = @"yomi";
 + (NSString *)extensionElementLocalName { return @"name"; }
 
 + (GDataName *)name {
-  GDataName* obj = [[[self alloc] init] autorelease];
+  GDataName* obj = [self object];
   return obj;
 }
 
 + (GDataName *)nameWithFullNameString:(NSString *)str {
-  GDataName* obj = [[[self alloc] init] autorelease];
+  GDataName* obj = [self object];
   [obj setFullNameWithString:str];
   return obj;
 }
@@ -165,7 +165,7 @@ static NSString* const kYomiAttr = @"yomi";
              additionalString:(NSString *)middle
                  familyString:(NSString *)last
                        suffix:(NSString *)suffix {
-  GDataName* obj = [[[self alloc] init] autorelease];
+  GDataName* obj = [self object];
 
   [obj setNamePrefix:prefix];
   [obj setGivenNameWithString:first];

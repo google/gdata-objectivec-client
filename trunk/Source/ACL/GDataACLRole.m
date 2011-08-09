@@ -39,7 +39,7 @@ static NSString* const kValueAttr = @"value";
 + (NSString *)extensionElementLocalName { return @"role"; }
 
 + (GDataACLRole *)roleWithValue:(NSString *)value {
-  GDataACLRole *obj = [[[self alloc] init] autorelease];
+  GDataACLRole *obj = [self object];
   [obj setValue:value];
   return obj;
 }

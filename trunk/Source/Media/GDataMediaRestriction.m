@@ -38,7 +38,7 @@ static NSString* const kTypeAttr = @"type";
 + (GDataMediaRestriction *)mediaRestrictionWithString:(NSString *)str
                                          relationship:(NSString *)rel
                                                  type:(NSString *)type {
-  GDataMediaRestriction* obj = [[[GDataMediaRestriction alloc] init] autorelease];
+  GDataMediaRestriction* obj = [self object];
   [obj setStringValue:str];
   [obj setRelationship:rel];
   [obj setType:type];

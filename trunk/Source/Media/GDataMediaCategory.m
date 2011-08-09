@@ -36,7 +36,7 @@ static NSString* const kLabelAttr = @"label";
 + (NSString *)extensionElementLocalName { return @"category"; }
 
 + (GDataMediaCategory *)mediaCategoryWithString:(NSString *)str {
-  GDataMediaCategory* obj = [[[GDataMediaCategory alloc] init] autorelease];
+  GDataMediaCategory* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

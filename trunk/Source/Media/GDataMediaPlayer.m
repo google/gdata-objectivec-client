@@ -37,7 +37,7 @@ static NSString* const kWidthAttr = @"width";
 + (NSString *)extensionElementLocalName { return @"player"; }
 
 + (GDataMediaPlayer *)mediaPlayerWithURLString:(NSString *)str {
-  GDataMediaPlayer* obj = [[[GDataMediaPlayer alloc] init] autorelease];
+  GDataMediaPlayer* obj = [self object];
   [obj setURLString:str];
   return obj;
 }

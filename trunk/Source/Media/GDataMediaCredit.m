@@ -35,7 +35,7 @@ static NSString* const kRoleAttr = @"role";
 + (NSString *)extensionElementLocalName { return @"credit"; }
 
 + (GDataMediaCredit *)mediaCreditWithString:(NSString *)str {
-  GDataMediaCredit* obj = [[[GDataMediaCredit alloc] init] autorelease];
+  GDataMediaCredit* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

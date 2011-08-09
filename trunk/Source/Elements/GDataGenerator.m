@@ -33,7 +33,7 @@ static NSString* const kURIAttr = @"uri";
 + (GDataGenerator *)generatorWithName:(NSString *)name
                               version:(NSString *)version
                                   URI:(NSString *)uri {
-  GDataGenerator *obj = [[[GDataGenerator alloc] init] autorelease];
+  GDataGenerator *obj = [self object];
   [obj setName:name];
   [obj setVersion:version];
   [obj setURI:uri];

@@ -35,7 +35,7 @@ static NSString* const kContentTypeAttr = @"content-type";
 + (NSString *)extensionElementLocalName { return @"interrupted"; }
 
 + (GDataBatchInterrupted *)batchInterrupted {
-  GDataBatchInterrupted* obj = [[[GDataBatchInterrupted alloc] init] autorelease];
+  GDataBatchInterrupted* obj = [self object];
   return obj;
 }
 

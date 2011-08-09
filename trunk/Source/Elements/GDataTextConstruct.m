@@ -26,7 +26,7 @@ static NSString* const kTypeAttr = @"type";
 // For typed text, like: <title type="text">Event title</title>
 
 + (id)textConstructWithString:(NSString *)str {
-  GDataTextConstruct *obj = [[[self alloc] init] autorelease];
+  GDataTextConstruct *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

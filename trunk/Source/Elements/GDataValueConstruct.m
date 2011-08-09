@@ -35,7 +35,7 @@
 + (id)valueWithString:(NSString *)str {
   if (str == nil) return nil;
 
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }
@@ -43,31 +43,31 @@
 + (id)valueWithNumber:(NSNumber *)num {
   if (num == nil) return nil;
 
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setStringValue:[num stringValue]];
   return obj;
 }
 
 + (id)valueWithInt:(int)val {
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setIntValue:val];
   return obj;
 }
 
 + (id)valueWithLongLong:(long long)val {
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setLongLongValue:val];
   return obj;
 }
 
 + (id)valueWithDouble:(double)val {
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setDoubleValue:val];
   return obj;
 }
 
 + (id)valueWithBool:(BOOL)flag {
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setBoolValue:flag];
   return obj;
 }
@@ -75,7 +75,7 @@
 + (id)valueWithDateTime:(GDataDateTime *)dateTime {
   if (dateTime == nil) return nil;
 
-  GDataValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataValueConstruct* obj = [self object];
   [obj setDateTimeValue:dateTime];
   return obj;
 }
@@ -222,7 +222,7 @@
 + (id)valueWithName:(NSString *)name stringValue:(NSString *)value {
   if (name == nil && value == nil) return nil;
 
-  GDataNameValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataNameValueConstruct* obj = [self object];
   [obj setStringValue:value];
   [obj setName:name];
   return obj;
@@ -272,7 +272,7 @@
 // This derives from GDataValueElementConstruct
 @implementation GDataImplicitValueConstruct
 + (id)implicitValue {
-  GDataImplicitValueConstruct* obj = [[[self alloc] init] autorelease];
+  GDataImplicitValueConstruct* obj = [self object];
   return obj;
 }
 

@@ -43,7 +43,7 @@ static NSString* const kNumRatersAttr = @"numRaters";
 + (GDataRating *)ratingWithValue:(NSInteger)value
                              max:(NSInteger)max
                              min:(NSInteger)min {
-  GDataRating *obj = [[[GDataRating alloc] init] autorelease];
+  GDataRating *obj = [self object];
   [obj setValue:[NSNumber numberWithInt:(int)value]];
   [obj setMax:[NSNumber numberWithInt:(int)max]];
   [obj setMin:[NSNumber numberWithInt:(int)min]];

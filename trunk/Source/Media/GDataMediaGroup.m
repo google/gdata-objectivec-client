@@ -59,8 +59,7 @@
 #pragma mark -
 
 + (id)mediaGroup {
-                      
-  GDataMediaGroup *obj = [[[self alloc] init] autorelease];
+  GDataMediaGroup *obj = [self object];
   return obj;
 }
 

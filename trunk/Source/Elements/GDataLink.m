@@ -41,7 +41,7 @@ static NSString *const kLengthAttr = @"length";
 + (GDataLink *)linkWithRel:(NSString *)rel
                       type:(NSString *)type
                       href:(NSString *)href {
-  GDataLink *dataLink = [[[GDataLink alloc] init] autorelease];
+  GDataLink *dataLink = [self object];
   [dataLink setRel:rel];
   [dataLink setType:type];
   [dataLink setHref:href];

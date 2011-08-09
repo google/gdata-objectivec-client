@@ -34,7 +34,7 @@ static NSString* const kSchemeAttr = @"scheme";
 + (NSString *)extensionElementLocalName { return @"rating"; }
 
 + (GDataMediaRating *)mediaRatingWithString:(NSString *)str {
-  GDataMediaRating* obj = [[[GDataMediaRating alloc] init] autorelease];
+  GDataMediaRating* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

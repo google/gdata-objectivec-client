@@ -42,7 +42,7 @@ static NSString* const kUnitAttr = @"unit";
                                           value:(NSString *)value
                                            unit:(NSString *)unit {
 
-  GDataCustomProperty *obj = [[[self alloc] init] autorelease];
+  GDataCustomProperty *obj = [self object];
   [obj setName:name];
   [obj setType:type];
   [obj setUnit:unit];

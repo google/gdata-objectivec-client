@@ -37,7 +37,7 @@ static NSString* const kRelAttr = @"rel";
 + (NSString *)extensionElementLocalName { return @"comments"; }
 
 + (GDataComment *)commentWithFeedLink:(GDataFeedLink *)feedLink {
-  GDataComment *obj = [[[GDataComment alloc] init] autorelease];
+  GDataComment *obj = [self object];
   [obj setFeedLink:feedLink];
   return obj;
 }

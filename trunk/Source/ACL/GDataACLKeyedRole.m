@@ -40,7 +40,7 @@ static NSString* const kKeyAttr = @"key";
 
 + (GDataACLKeyedRole *)keyedRoleWithKey:(NSString *)key
                                   value:(NSString *)value {
-  GDataACLKeyedRole *obj = [[[self alloc] init] autorelease];
+  GDataACLKeyedRole *obj = [self object];
   [obj setKey:key];
   [obj setRole:[GDataACLRole roleWithValue:value]];
   return obj;

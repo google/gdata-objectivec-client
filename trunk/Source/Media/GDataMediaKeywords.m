@@ -36,14 +36,14 @@
 + (NSString *)extensionElementLocalName { return @"keywords"; }
 
 + (GDataMediaKeywords *)keywordsWithStrings:(NSArray *)array {
-  GDataMediaKeywords* obj = [[[GDataMediaKeywords alloc] init] autorelease];
+  GDataMediaKeywords* obj = [self object];
   [obj setKeywords:array];
   return obj;
 }
 
 + (GDataMediaKeywords *)keywordsWithString:(NSString *)str {
   // takes a string with a comma-separated list of keywords
-  GDataMediaKeywords* obj = [[[GDataMediaKeywords alloc] init] autorelease];
+  GDataMediaKeywords* obj = [self object];
   
   NSArray *array = [GDataMediaKeywords keywordsFromString:str];
   [obj setKeywords:array];

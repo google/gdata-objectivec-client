@@ -32,7 +32,7 @@ static NSString* const kYomiAttr = @"yomi";
 + (NSString *)extensionElementLocalName { return @"orgName"; }
 
 + (id)organizationNameWithString:(NSString *)str {
-  GDataOrganizationName *obj = [[[self alloc] init] autorelease];
+  GDataOrganizationName *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

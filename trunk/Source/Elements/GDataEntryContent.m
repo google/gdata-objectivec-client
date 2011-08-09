@@ -45,14 +45,14 @@ static BOOL IsTypeEqualToText(NSString *str) {
   // RFC4287 Sec 4.1.3.1. says that omitted type attributes are assumed to be
   // "text", so we don't need to explicitly set it to text
 
-  GDataEntryContent *obj = [[[self alloc] init] autorelease];
+  GDataEntryContent *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }
 
 + (id)contentWithSourceURI:(NSString *)str type:(NSString *)type {
 
-  GDataEntryContent *obj = [[[self alloc] init] autorelease];
+  GDataEntryContent *obj = [self object];
   [obj setSourceURI:str];
   [obj setType:type];
   return obj;
@@ -60,7 +60,7 @@ static BOOL IsTypeEqualToText(NSString *str) {
 
 + (id)contentWithXMLValue:(NSXMLNode *)node type:(NSString *)type {
 
-  GDataEntryContent *obj = [[[self alloc] init] autorelease];
+  GDataEntryContent *obj = [self object];
 
   // declare that we'll be using child elements as XML values
   [obj addChildXMLElementsDeclaration];
