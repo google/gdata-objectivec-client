@@ -492,7 +492,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   GDataEntryDocBase *docEntry = [self selectedDoc];
 
-  NSString *saveTitle = [[[self selectedDoc] title] stringValue];
+  NSString *saveTitle = [[docEntry title] stringValue];
 
   [self showDownloadPanelForEntry:docEntry
                    suggestedTitle:saveTitle];
@@ -524,11 +524,14 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSString *sourceURI = [[entry content] sourceURI];
   if (sourceURI) {
+    // We will download drawings as pdf and other files as text
     BOOL isDrawing = [entry isKindOfClass:[GDataEntryDrawingDoc class]];
+    NSString *filename = title;
     NSString *fileExtension = (isDrawing ? @"pdf" : @"txt");
-    NSString *filename = [NSString stringWithFormat:@"%@.%@",
-                          title, fileExtension];
-
+    if (![[title pathExtension] isEqual:fileExtension]) {
+      // The title string needs the file extension to be a file name
+      filename = [title stringByAppendingPathExtension:fileExtension];
+    }
     SEL endSel = @selector(saveSheetDidEnd:returnCode:contextInfo:);
 
     NSSavePanel *savePanel = [NSSavePanel savePanel];
@@ -588,7 +591,6 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
   // the content src attribute is used for downloading
   NSURL *exportURL = [[entry content] sourceURL];
   if (exportURL != nil) {
-
     // we'll use GDataQuery as a convenient way to append the exportFormat
     // parameter of the docs export API to the content src URL
     GDataQuery *query = [GDataQuery queryWithFeedURL:exportURL];
@@ -596,36 +598,29 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
                                 value:exportFormat];
     NSURL *downloadURL = [query URL];
 
-    // create a file for saving the document
-    NSError *error = nil;
-    if ([[NSData data] writeToFile:savePath
-                           options:NSAtomicWrite
-                             error:&error]) {
-      NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:savePath];
+    // Read the document's contents asynchronously from the network
 
-      // read the document's contents asynchronously from the network
-
-      // requestForURL:ETag:httpMethod: sets the user agent header of the
-      // request and, when using ClientLogin, adds the authorization header
-      NSURLRequest *request = [service requestForURL:downloadURL
+    // requestForURL:ETag:httpMethod: sets the user agent header of the
+    // request and, when using ClientLogin, adds the authorization header
+    NSURLRequest *request = [service requestForURL:downloadURL
                                                 ETag:nil
-                                          httpMethod:nil];
+                                        httpMethod:nil];
 
-      GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
-      [fetcher setAuthorizer:[service authorizer]];
-      [fetcher setDownloadFileHandle:fileHandle];
-      [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
-        // callback
-        if (error == nil) {
-          // successfully saved the document
-        } else {
-          NSLog(@"Error saving document: %@", error);
-          NSBeep();
-        }
-      }];
-    } else {
-      NSLog(@"Error creating file at %@: %@", savePath, error);
-    }
+    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
+    [fetcher setAuthorizer:[service authorizer]];
+    [fetcher setDownloadPath:savePath];
+    [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
+      // callback
+      if (error == nil) {
+        // Successfully saved the document
+        //
+        // Since a downloadPath property was specified, the data argument is
+        // nil, and the file data has been written to disk.
+      } else {
+        NSLog(@"Error saving document: %@", error);
+        NSBeep();
+      }
+    }];
   }
 }
 
