@@ -40,7 +40,7 @@ static NSString* const kPrimaryAttr = @"primary";
 + (NSString *)extensionElementLocalName { return @"phoneNumber"; }
 
 + (GDataPhoneNumber *)phoneNumberWithString:(NSString *)str {
-  GDataPhoneNumber *obj = [[[GDataPhoneNumber alloc] init] autorelease];
+  GDataPhoneNumber *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

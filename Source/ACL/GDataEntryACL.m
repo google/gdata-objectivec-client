@@ -42,7 +42,7 @@
 + (id)ACLEntryWithScope:(GDataACLScope *)scope
                    role:(GDataACLRole *)role {
 
-  GDataEntryACL *obj = [[[self alloc] init] autorelease];
+  GDataEntryACL *obj = [self object];
   [obj setNamespaces:[self ACLNamespaces]];
   [obj setScope:scope];
   [obj setRole:role];

@@ -56,7 +56,7 @@ static NSString* const kRealmAttr = @"realm";
 + (id)propertyWithName:(NSString *)name
                  value:(NSString *)value {
 
-  GDataExtendedProperty* obj = [[[GDataExtendedProperty alloc] init] autorelease];
+  GDataExtendedProperty* obj = [self object];
   [obj setName:name];
   [obj setValue:value];
   [obj addEmptyDefaultNamespace];

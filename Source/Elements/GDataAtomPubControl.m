@@ -42,7 +42,7 @@
 + (NSString *)extensionElementLocalName { return @"control"; }
 
 + (GDataAtomPubControl *)atomPubControl {
-  GDataAtomPubControl *obj = [[[self alloc] init] autorelease];
+  GDataAtomPubControl *obj = [self object];
 
   // add the "app" namespace
   NSString *nsURI = [[self class] extensionElementURI];

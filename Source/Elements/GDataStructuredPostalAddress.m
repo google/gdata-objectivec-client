@@ -172,7 +172,7 @@ static NSString* const kUsageAttr = @"usage";
 + (NSString *)extensionElementLocalName { return @"structuredPostalAddress"; }
 
 + (id)structuredPostalAddress {
-  GDataStructuredPostalAddress *obj = [[[self alloc] init] autorelease];
+  GDataStructuredPostalAddress *obj = [self object];
   return obj;
 }
 

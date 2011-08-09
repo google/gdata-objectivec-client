@@ -35,7 +35,7 @@ static NSString* const kRelAttr = @"rel";
 
 + (GDataEntryLink *)entryLinkWithHref:(NSString *)href
                            isReadOnly:(BOOL)isReadOnly {
-  GDataEntryLink* entryLink = [[[GDataEntryLink alloc] init] autorelease];
+  GDataEntryLink* entryLink = [self object];
   [entryLink setHref:href];
   [entryLink setIsReadOnly:isReadOnly];
   return entryLink;

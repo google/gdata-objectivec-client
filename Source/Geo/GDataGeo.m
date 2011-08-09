@@ -225,7 +225,7 @@ childWithStringValueIfNonEmpty:valueListStr
 
 + (id)geoWithLatitude:(double)latitude
             longitude:(double)longitude {
-  GDataGeo* obj = [[[self alloc] init] autorelease];
+  GDataGeo* obj = [self object];
 
   NSNumber *latNum = [NSNumber numberWithDouble:latitude];
   NSNumber *longNum = [NSNumber numberWithDouble:longitude];

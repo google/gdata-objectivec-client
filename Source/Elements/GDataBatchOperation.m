@@ -31,7 +31,7 @@ static NSString* const kTypeAttr = @"type";
 + (NSString *)extensionElementLocalName { return @"operation"; }
 
 + (GDataBatchOperation *)batchOperationWithType:(NSString *)type {
-  GDataBatchOperation* obj = [[[GDataBatchOperation alloc] init] autorelease];
+  GDataBatchOperation* obj = [self object];
   [obj setType:type];
   return obj;
 }

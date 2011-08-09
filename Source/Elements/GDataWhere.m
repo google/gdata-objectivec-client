@@ -42,7 +42,7 @@ static NSString* const kLabelAttr = @"label";
 + (NSString *)extensionElementLocalName { return @"where"; }
 
 + (GDataWhere *)whereWithString:(NSString *)str {
-  GDataWhere* obj = [[[GDataWhere alloc] init] autorelease];
+  GDataWhere* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

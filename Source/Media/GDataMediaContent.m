@@ -66,7 +66,7 @@ static NSString* const kLangAttr = @"lang";
 
 + (GDataMediaContent *)mediaContentWithURLString:(NSString *)urlString {
   
-  GDataMediaContent *obj = [[[GDataMediaContent alloc] init] autorelease];
+  GDataMediaContent *obj = [self object];
   [obj setURLString:urlString];
   return obj;
 }

@@ -64,7 +64,7 @@ static NSString *const kLangAttr = @"xml:lang";
 + (NSString *)extensionElementLocalName { return @"author"; }
 
 + (GDataPerson *)personWithName:(NSString *)name email:(NSString *)email {
-  GDataPerson* obj = [[[GDataPerson alloc] init] autorelease];
+  GDataPerson* obj = [self object];
   [obj setName:name];
   [obj setEmail:email];
   return obj;

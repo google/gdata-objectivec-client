@@ -38,7 +38,7 @@ static NSString* const kPrimaryAttr = @"primary";
 
 + (GDataEmail *)emailWithLabel:(NSString *)label
                        address:(NSString *)address {
-  GDataEmail *obj = [[[self alloc] init] autorelease];
+  GDataEmail *obj = [self object];
   [obj setLabel:label];
   [obj setAddress:address];
   return obj;

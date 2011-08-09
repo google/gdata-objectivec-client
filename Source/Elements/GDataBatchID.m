@@ -30,7 +30,7 @@
 
 
 + (GDataBatchID *)batchIDWithString:(NSString *)str {
-  GDataBatchID *obj = [[[GDataBatchID alloc] init] autorelease];
+  GDataBatchID *obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

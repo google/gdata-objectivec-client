@@ -39,7 +39,7 @@ static NSString* const kPrimaryAttr = @"primary";
 + (NSString *)extensionElementLocalName { return @"postalAddress"; }
 
 + (GDataPostalAddress *)postalAddressWithString:(NSString *)str {
-  GDataPostalAddress* obj = [[[GDataPostalAddress alloc] init] autorelease];
+  GDataPostalAddress* obj = [self object];
   [obj setStringValue:str];
   return obj;
 }

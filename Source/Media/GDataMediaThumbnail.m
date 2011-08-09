@@ -43,7 +43,7 @@ static NSString* const kTimeAttr = @"time";
 
 + (GDataMediaThumbnail *)mediaContentWithURL:(NSString *)urlString {
   
-  GDataMediaThumbnail *obj = [[[GDataMediaThumbnail alloc] init] autorelease];
+  GDataMediaThumbnail *obj = [self object];
   [obj setURLString:urlString];
   return obj;
 }

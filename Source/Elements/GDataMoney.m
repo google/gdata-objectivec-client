@@ -34,7 +34,7 @@ static NSString* const kCurrencyCodeAttr = @"currencyCode";
 
 + (GDataMoney *)moneyWithAmount:(NSNumber *)amount
                    currencyCode:(NSString *)currencyCode {
-  GDataMoney *obj = [[[GDataMoney alloc] init] autorelease];
+  GDataMoney *obj = [self object];
   [obj setAmount:amount];
   [obj setCurrencyCode:currencyCode];
   return obj;

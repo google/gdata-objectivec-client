@@ -38,7 +38,7 @@ static NSString* const kEndTimeAttr = @"endTime";
 
 + (GDataWhen *)whenWithStartTime:(GDataDateTime *)startTime
                          endTime:(GDataDateTime *)endTime {
-  GDataWhen *obj = [[[GDataWhen alloc] init] autorelease];
+  GDataWhen *obj = [self object];
   [obj setStartTime:startTime];
   [obj setEndTime:endTime];
   return obj;

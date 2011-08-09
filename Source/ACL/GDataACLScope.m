@@ -40,7 +40,7 @@ static NSString* const kValueAttr = @"value";
 + (NSString *)extensionElementLocalName { return @"scope"; }
 
 + (GDataACLScope *)scopeWithType:(NSString *)type value:(NSString *)value {
-  GDataACLScope *obj = [[[self alloc] init] autorelease];
+  GDataACLScope *obj = [self object];
   [obj setType:type];
   [obj setValue:value];
   return obj;

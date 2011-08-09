@@ -64,7 +64,7 @@
 }
 
 + (id)entry {
-  GDataEntryBase *entry = [[[self alloc] init] autorelease];
+  GDataEntryBase *entry = [self object];
 
   [entry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
   return entry;
