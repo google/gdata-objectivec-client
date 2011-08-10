@@ -532,29 +532,21 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
       // The title string needs the file extension to be a file name
       filename = [title stringByAppendingPathExtension:fileExtension];
     }
-    SEL endSel = @selector(saveSheetDidEnd:returnCode:contextInfo:);
 
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    [savePanel beginSheetForDirectory:nil
-                                 file:filename
-                       modalForWindow:[self window]
-                        modalDelegate:self
-                       didEndSelector:endSel
-                          contextInfo:[entry retain]];
+    [savePanel setNameFieldStringValue:filename];
+    [savePanel beginSheetModalForWindow:[self window]
+                      completionHandler:^(NSInteger result) {
+                        // callback
+                        if (result == NSOKButton) {
+                          // user clicked OK
+                          NSString *savePath = [[savePanel URL] path];
+                          [self saveDocumentEntry:entry
+                                           toPath:savePath];
+                        }
+                      }];
   } else {
     NSBeep();
-  }
-}
-
-- (void)saveSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-
-  GDataEntryBase *entry = [(GDataEntryBase *)contextInfo autorelease];
-
-  if (returnCode == NSOKButton) {
-    // user clicked OK
-    NSString *savePath = [panel filename];
-    [self saveDocumentEntry:entry
-                     toPath:savePath];
   }
 }
 
@@ -674,32 +666,23 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 #pragma mark -
 
 - (IBAction)uploadFileClicked:(id)sender {
-
   // ask the user to choose a file
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
-
-  SEL endSel = @selector(openSheetDidEnd:returnCode:contextInfo:);
-  [openPanel beginSheetForDirectory:nil
-                               file:nil
-                              types:nil // upload any file type
-                     modalForWindow:[self window]
-                      modalDelegate:self
-                     didEndSelector:endSel
-                      contextInfo:nil];
-}
-
-- (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-
-  if (returnCode == NSOKButton) {
-    // user chose a file and clicked OK
-
-    // start uploading (deferred to the main thread since we currently have
-    // a sheet displayed)
-    [self performSelectorOnMainThread:@selector(uploadFileAtPath:)
-                           withObject:[panel filename]
-                        waitUntilDone:NO];
-  }
+  [openPanel beginSheetModalForWindow:[self window]
+                    completionHandler:^(NSInteger result) {
+                      // callback
+                      if (result == NSOKButton) {
+                        // user chose a file and clicked OK
+                        //
+                        // start uploading (deferred to the main thread since
+                        // we currently have a sheet displayed)
+                        NSString *path = [[openPanel URL] path];
+                        [self performSelectorOnMainThread:@selector(uploadFileAtPath:)
+                                               withObject:path
+                                            waitUntilDone:NO];
+                      }
+                    }];
 }
 
 - (IBAction)pauseUploadClicked:(id)sender {
