@@ -613,39 +613,31 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 #pragma mark Add a photo
 
 - (void)addAPhotoToUploadURL:(NSURL *)uploadURL {
-  
+
   // see the API documentation for the current list of file types accepted
   // for uploading
   NSArray *fileTypes = [NSArray arrayWithObjects:
                         // image types
                         @"jpeg", @"jpg", @"png", @"gif", @"bmp",
-                        
+
                         // movies types
                         @"mov", @"mpeg", @"avi", @"mpg", @"wmv", @"mp4", @"qt",
                         nil];
-  
+
   // ask the user to choose an image file
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Upload"];
-  [openPanel beginSheetForDirectory:nil
-                               file:nil
-                              types:fileTypes
-                     modalForWindow:[self window]
-                      modalDelegate:self
-                     didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
-                        contextInfo:[uploadURL retain]];
-}
-
-- (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  // balance the retain done when we called beginSheet
-  NSURL *uploadURL = (NSURL *)contextInfo;
-  [uploadURL autorelease];
-
-  if (returnCode == NSOKButton) {
-    // user chose a photo and clicked OK
-    [self uploadPhotoAtPath:[panel filename]
-                  uploadURL:uploadURL];
-  }
+  [openPanel setAllowedFileTypes:fileTypes];
+  [openPanel beginSheetModalForWindow:[self window]
+                    completionHandler:^(NSInteger result) {
+                      // callback
+                      if (result == NSOKButton) {
+                        // user chose a photo and clicked OK
+                        NSString *path = [[openPanel URL] path];
+                        [self uploadPhotoAtPath:path
+                                      uploadURL:uploadURL];
+                      }
+                    }];
 }
 
 - (void)uploadPhotoAtPath:(NSString *)photoPath
@@ -792,44 +784,36 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
     // display a save panel to let the user pick the directory and
     // name for saving the image
     NSSavePanel *savePanel = [NSSavePanel savePanel];
-    [savePanel beginSheetForDirectory:nil
-                                 file:[[photoEntry title] stringValue]
-                       modalForWindow:[self window]
-                        modalDelegate:self
-                       didEndSelector:@selector(saveSheetDidEnd:returnCode:contextInfo:)
-                          contextInfo:[photoEntry retain]];
-  }
-}
+    [savePanel setNameFieldStringValue:[[photoEntry title] stringValue]];
+    [savePanel beginSheetModalForWindow:[self window]
+                      completionHandler:^(NSInteger result) {
+                        // callback
+                        if (result == NSOKButton) {
+                          // the user clicked Save
+                          //
+                          // the feed may not have images in the original size, so we'll re-fetch the
+                          // photo entry with a query specifying that we want the original size
+                          // for downloading
+                          NSString *savePath = [[savePanel URL] path];
 
-- (void)saveSheetDidEnd:(NSOpenPanel *)panel
-             returnCode:(int)returnCode
-            contextInfo:(void *)contextInfo {
-  GDataEntryPhoto *photoEntry = [(GDataEntryPhoto *)contextInfo autorelease];
+                          NSURL *entryURL = [[photoEntry selfLink] URL];
 
-  if (returnCode == NSOKButton) {
-    // the user clicked Save
-    //
-    // the feed may not have images in the original size, so we'll re-fetch the
-    // photo entry with a query specifying that we want the original size
-    // for downloading
-    NSString *savePath = [panel filename];
+                          GDataQueryGooglePhotos *query;
+                          query = [GDataQueryGooglePhotos photoQueryWithFeedURL:entryURL];
 
-    NSURL *entryURL = [[photoEntry selfLink] URL];
+                          // this specifies "imgmax=d" as described at
+                          // http://code.google.com/apis/picasaweb/docs/2.0/reference.html#Parameters
+                          [query setImageSize:kGDataGooglePhotosImageSizeDownloadable];
 
-    GDataQueryGooglePhotos *query;
-    query = [GDataQueryGooglePhotos photoQueryWithFeedURL:entryURL];
+                          GDataServiceGooglePhotos *service = [self googlePhotosService];
+                          GDataServiceTicket *ticket;
+                          ticket = [service fetchEntryWithURL:[query URL]
+                                                     delegate:self
+                                            didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
 
-    // this specifies "imgmax=d" as described at
-    // http://code.google.com/apis/picasaweb/docs/2.0/reference.html#Parameters
-    [query setImageSize:kGDataGooglePhotosImageSizeDownloadable];
-
-    GDataServiceGooglePhotos *service = [self googlePhotosService];
-    GDataServiceTicket *ticket;
-    ticket = [service fetchEntryWithURL:[query URL]
-                               delegate:self
-                      didFinishSelector:@selector(fetchEntryTicket:finishedWithEntry:error:)];
-
-    [ticket setProperty:savePath forKey:@"save path"];
+                          [ticket setProperty:savePath forKey:@"save path"];
+                        }
+                      }];
   }
 }
 

@@ -819,30 +819,24 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 #pragma mark Set contact image
 
 - (void)setContactImage {
-  
   // ask the user to choose an image file
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Set"];
-  [openPanel beginSheetForDirectory:nil
-                               file:nil
-                              types:[NSImage imageFileTypes]
-                     modalForWindow:[self window]
-                      modalDelegate:self
-                     didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
-                        contextInfo:nil];
-}
-
-- (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-  
-  if (returnCode == NSOKButton) {
-    // user chose a photo and clicked OK
-    //
-    // start uploading (deferred to the main thread since we currently have
-    // a sheet displayed)
-    [self performSelectorOnMainThread:@selector(setSelectedContactPhotoAtPath:)
-                           withObject:[panel filename]
-                        waitUntilDone:NO];
-  }
+  [openPanel setAllowedFileTypes:[NSImage imageFileTypes]];
+  [openPanel beginSheetModalForWindow:[self window]
+                    completionHandler:^(NSInteger result) {
+                      // callback
+                      if (result == NSOKButton) {
+                        // user chose a photo and clicked OK
+                        //
+                        // start uploading (deferred to the main thread since we currently have
+                        // a sheet displayed)
+                        NSString *path = [[openPanel URL] path];
+                        [self performSelectorOnMainThread:@selector(setSelectedContactPhotoAtPath:)
+                                               withObject:path
+                                            waitUntilDone:NO];
+                      }
+                    }];
 }
 
 - (void)setSelectedContactPhotoAtPath:(NSString *)path {

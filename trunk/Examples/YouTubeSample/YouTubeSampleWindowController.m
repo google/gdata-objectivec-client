@@ -367,25 +367,19 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 
   NSArray *movieTypes = [NSArray arrayWithObjects:@"mov", @"mp4", nil];
 
-  [openPanel beginSheetForDirectory:nil
-                               file:nil
-                              types:movieTypes
-                     modalForWindow:[self window]
-                      modalDelegate:self
-                     didEndSelector:@selector(openSheetDidEnd:returnCode:contextInfo:)
-                        contextInfo:nil];
-}
+  [openPanel setAllowedFileTypes:movieTypes];
+  [openPanel beginSheetModalForWindow:[self window]
+                    completionHandler:^(NSInteger result) {
+                      // callback
+                      if (result == NSOKButton) {
+                        // the user chose a file
+                        NSString *path = [[openPanel URL] path];
 
-- (void)openSheetDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+                        [mFilePathField setStringValue:path];
 
-  if (returnCode == NSOKButton) {
-    // the user chose a file
-    NSString *path = [panel filename];
-
-    [mFilePathField setStringValue:path];
-
-    [self updateUI]; // update UI in case we need to enable the upload button
-  }
+                        [self updateUI]; // update UI in case we need to enable the upload button
+                      }
+                    }];
 }
 
 - (IBAction)uploadClicked:(id)sender {
