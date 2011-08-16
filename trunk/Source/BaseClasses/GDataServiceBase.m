@@ -1051,8 +1051,8 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSString *dataString = [[[NSString alloc] initWithData:data
                                             encoding:NSUTF8StringEncoding] autorelease];
   if (dataString) {
-   NSLog(@"serviceBase:%@ objectFetcher:%@ failedWithStatus:%d data:%@",
-         self, fetcher, [error code], dataString);
+   NSLog(@"serviceBase:%@ objectFetcher:%@ failedWithStatus:%ld data:%@",
+         self, fetcher, (long) [error code], dataString);
   }
 #endif
 
