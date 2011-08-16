@@ -13,6 +13,8 @@ Additions
 
 - Added Docs Changes feed
 
+- Added 3d query parameter for YouTube
+
 - Added fetcher shouldFetchInBackground property to service objects
 
 Changes

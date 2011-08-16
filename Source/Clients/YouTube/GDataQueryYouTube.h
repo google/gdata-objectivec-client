@@ -85,6 +85,9 @@ _EXTERN NSString* const kGDataYouTubeCaptionTrackFormatSubrip     _INITIALIZE_AS
 - (void)setHasCaptions:(BOOL)flag;
 - (BOOL)hasCaptions;
 
+- (void)setShouldRequire3D:(BOOL)flag;
+- (BOOL)shouldRequire3D;
+
 // put video entries into link elements for activity feed entries
 - (void)setShouldInline:(BOOL)flag;
 - (BOOL)shouldInline;
