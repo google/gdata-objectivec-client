@@ -28,7 +28,6 @@
 
 #define GDATASERVICEBASE_DEFINE_GLOBALS 1
 #import "GDataServiceBase.h"
-#import "GDataProgressMonitorInputStream.h"
 #import "GDataServerError.h"
 #import "GDataFramework.h"
 
@@ -125,10 +124,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
 - (void)parseObjectFromDataOfFetcher:(GTMHTTPFetcher *)fetcher;
 - (void)handleParsedObjectForFetcher:(GTMHTTPFetcher *)fetcher;
-
-- (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
-                 hasDeliveredBytes:(unsigned long long)numReadSoFar
-                      ofTotalBytes:(unsigned long long)total;
 @end
 
 @implementation GDataServiceBase
@@ -557,25 +552,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
         // or we're using an upload fetcher which can always call us
         // back
         sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
-      } else if (contentInputStream != nil) {
-        // there's no sentData callback support, so we need a monitored input
-        // stream
-        //
-        // wrap the input stream with an input stream that will call back to the
-        // delegate's progress selector
-        GDataProgressMonitorInputStream* monitoredInputStream;
-
-        monitoredInputStream = [GDataProgressMonitorInputStream inputStreamWithStream:contentInputStream
-                                                                               length:contentLength];
-
-        SEL sel = @selector(progressMonitorInputStream:hasDeliveredBytes:ofTotalBytes:);
-        [monitoredInputStream setDelegate:nil];
-        [monitoredInputStream setMonitorDelegate:self];
-        [monitoredInputStream setMonitorSelector:sel];
-        [monitoredInputStream setMonitorSource:ticket];
-        [monitoredInputStream setRunLoopModes:[self runLoopModes]];
-
-        streamToPost = monitoredInputStream;
       }
     }
   }
@@ -744,17 +720,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   [self invokeProgressCallbackForTicket:ticket
                          deliveredBytes:(unsigned long long)totalBytesSent
                              totalBytes:(unsigned long long)totalBytesExpected];
-}
-
-// progress callback from monitorInputStream
-- (void)progressMonitorInputStream:(GDataProgressMonitorInputStream *)stream
-                 hasDeliveredBytes:(unsigned long long)numReadSoFar
-                      ofTotalBytes:(unsigned long long)total {
-  id monitorSource = [stream monitorSource];
-
-  [self invokeProgressCallbackForTicket:(GDataServiceTicketBase *)monitorSource
-                         deliveredBytes:numReadSoFar
-                             totalBytes:total];
 }
 
 - (void)objectFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error {
@@ -2012,11 +1977,6 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   // if the user is turning on the progress selector in the ticket after the
   // ticket's fetcher has been created, we need to give the fetcher our sentData
   // callback.
-  //
-  // The progress monitor must be set in the service prior to creation of the
-  // ticket on 10.4 and iPhone 2.0, since on those systems the upload data must
-  // be wrapped with a ProgressMonitorInputStream prior to the creation of the
-  // fetcher.
   if (progressSelector != NULL) {
     SEL sentDataSel = @selector(objectFetcher:didSendBytes:totalBytesSent:totalBytesExpectedToSend:);
     [[self objectFetcher] setSentDataSelector:sentDataSel];
