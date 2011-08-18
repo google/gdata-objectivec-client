@@ -29,6 +29,10 @@ Changes
 
 - Removed Translator Toolkit support
 
+- Remove upload callbacks on systems without NSURLConnection's didSendBodyData:
+  support (only affects users running early releases of Mac OS X 10.5)
+
+
 Bugs Fixed
 
 

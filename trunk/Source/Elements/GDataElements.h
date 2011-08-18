@@ -27,7 +27,6 @@
 #import "GTMHTTPUploadFetcher.h"
 
 #import "GDataDateTime.h"
-#import "GDataProgressMonitorInputStream.h"
 #import "GDataGatherInputStream.h"
 #import "GDataMIMEDocument.h"
 #import "GDataServerError.h"

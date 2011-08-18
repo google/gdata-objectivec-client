@@ -1805,6 +1805,13 @@
 		4F85E010103B83B700B4C418 /* GDataHealthConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F25FC1A1028E5F40035D678 /* GDataHealthConstants.m */; };
 		4F85E011103B83B700B4C418 /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0935121030D682004C7DC1 /* GDataAuthenticationFetcher.m */; };
 		4F85E013103B83B700B4C418 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
+		4F8DB68B13FDB3450001DD6C /* GTMReadMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8DB68913FDB3450001DD6C /* GTMReadMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F8DB68C13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */; };
+		4F8DB68D13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */; };
+		4F8DB68E13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */; };
+		4F8DB68F13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */; };
+		4F8DB69013FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */; };
+		4F8DB69113FDB3550001DD6C /* GTMReadMonitorInputStream.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F8DB68913FDB3450001DD6C /* GTMReadMonitorInputStream.h */; };
 		4F9044470F2694F7000097B1 /* GDataServiceACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9044460F2694F7000097B1 /* GDataServiceACL.m */; };
 		4F9044480F2694F7000097B1 /* GDataServiceACL.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F9044460F2694F7000097B1 /* GDataServiceACL.m */; };
 		4F9044490F2694F7000097B1 /* GDataServiceACL.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F9044450F2694F7000097B1 /* GDataServiceACL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2100,7 +2107,7 @@
 		4FE5D569135FA0320003E5EC /* SBJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5D567135FA0320003E5EC /* SBJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE5D56A135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
 		4FE5D56B135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
-		4FE5D56C135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
+		4FE5D56C135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; settings = {COMPILER_FLAGS = "-Wno-parentheses"; }; };
 		4FE5D56D135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
 		4FE5D56E135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
 		4FE640C310E00E46007D2F65 /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640C110E00E46007D2F65 /* GDataAnalyticsCustomVariable.m */; };
@@ -2235,6 +2242,7 @@
 			dstPath = Headers;
 			dstSubfolderSpec = 16;
 			files = (
+				4F8DB69113FDB3550001DD6C /* GTMReadMonitorInputStream.h in Copy Static Library Headers */,
 				4F21394813DE3A6D00A835BA /* GDataDocElements.h in Copy Static Library Headers */,
 				4F4DF52E13746F9200F5C554 /* GTMOAuth2ViewControllerTouch.h in Copy Static Library Headers */,
 				4F4DF52A13746F8400F5C554 /* GDataXMLNode.h in Copy Static Library Headers */,
@@ -3043,6 +3051,8 @@
 		4F82A8F80FD0869100C477D4 /* FeedSpreadsheetTableTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedSpreadsheetTableTest1.xml; path = Tests/FeedSpreadsheetTableTest1.xml; sourceTree = "<group>"; };
 		4F848C6D0D887A2A007ECFCD /* GDataDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataDefines.h; sourceTree = "<group>"; };
 		4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GDataIPhoneUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F8DB68913FDB3450001DD6C /* GTMReadMonitorInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMReadMonitorInputStream.h; path = HTTPFetcher/GTMReadMonitorInputStream.h; sourceTree = SOURCE_ROOT; };
+		4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMReadMonitorInputStream.m; path = HTTPFetcher/GTMReadMonitorInputStream.m; sourceTree = SOURCE_ROOT; };
 		4F9044450F2694F7000097B1 /* GDataServiceACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceACL.h; path = ACL/GDataServiceACL.h; sourceTree = "<group>"; };
 		4F9044460F2694F7000097B1 /* GDataServiceACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceACL.m; path = ACL/GDataServiceACL.m; sourceTree = "<group>"; };
 		4F9044680F26973A000097B1 /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataACL.h; path = ACL/GDataACL.h; sourceTree = "<group>"; };
@@ -4000,6 +4010,8 @@
 				4F61C6A91353A654009CEDA4 /* GTMHTTPFetcherService.m */,
 				4F61C6AA1353A654009CEDA4 /* GTMHTTPFetchHistory.h */,
 				4F61C6AB1353A654009CEDA4 /* GTMHTTPFetchHistory.m */,
+				4F8DB68913FDB3450001DD6C /* GTMReadMonitorInputStream.h */,
+				4F8DB68A13FDB3450001DD6C /* GTMReadMonitorInputStream.m */,
 				4F61C6AC1353A654009CEDA4 /* GTMHTTPUploadFetcher.h */,
 				4F61C6AD1353A654009CEDA4 /* GTMHTTPUploadFetcher.m */,
 			);
@@ -4761,6 +4773,7 @@
 				4FDA899213D47D390024AB5F /* GDataEntryDocChange.h in Headers */,
 				4FDA899A13D47D450024AB5F /* GDataFeedDocChange.h in Headers */,
 				4F21393E13DE3A4900A835BA /* GDataDocElements.h in Headers */,
+				4F8DB68B13FDB3450001DD6C /* GTMReadMonitorInputStream.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5281,6 +5294,7 @@
 				4FDA899113D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899913D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
 				4F21394113DE3A4900A835BA /* GDataDocElements.m in Sources */,
+				4F8DB68E13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5590,6 +5604,7 @@
 				4FDA899513D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899D13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
 				4F21394313DE3A4900A835BA /* GDataDocElements.m in Sources */,
+				4F8DB69013FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5898,6 +5913,7 @@
 				4FDA899613D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899E13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
 				4F21394013DE3A4900A835BA /* GDataDocElements.m in Sources */,
+				4F8DB68D13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6205,6 +6221,7 @@
 				4FDA899313D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899B13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
 				4F21393F13DE3A4900A835BA /* GDataDocElements.m in Sources */,
+				4F8DB68C13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6525,6 +6542,7 @@
 				4FDA899413D47D390024AB5F /* GDataEntryDocChange.m in Sources */,
 				4FDA899C13D47D450024AB5F /* GDataFeedDocChange.m in Sources */,
 				4F21394213DE3A4900A835BA /* GDataDocElements.m in Sources */,
+				4F8DB68F13FDB3450001DD6C /* GTMReadMonitorInputStream.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
