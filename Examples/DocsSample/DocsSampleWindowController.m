@@ -170,12 +170,12 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
 
   NSBundle *frameworkBundle = [NSBundle bundleForClass:[GTMOAuth2WindowController class]];
   GTMOAuth2WindowController *windowController;
-  windowController = [[[GTMOAuth2WindowController alloc] initWithScope:scope
-                                                              clientID:clientID
-                                                          clientSecret:clientSecret
-                                                      keychainItemName:kKeychainItemName
-                                                        resourceBundle:frameworkBundle] autorelease];
-
+  windowController = [GTMOAuth2WindowController controllerWithScope:scope
+                                                           clientID:clientID
+                                                       clientSecret:clientSecret
+                                                   keychainItemName:kKeychainItemName
+                                                     resourceBundle:frameworkBundle];
+  
   [windowController setUserData:NSStringFromSelector(signInDoneSel)];
   [windowController signInSheetModalForWindow:[self window]
                             completionHandler:^(GTMOAuth2Authentication *auth, NSError *error) {
