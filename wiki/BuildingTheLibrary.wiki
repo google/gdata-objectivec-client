@@ -75,7 +75,13 @@ With the source files compiled directly in your project, refer directly to the h
 
 `#import "GDataCalendar.h"`
 
-*_Notes for iPhone apps compiling the source files directly_*: 
+*_ARC Compatibility:_*
+
+When the library source files are added directly to a project that uses ARC, then ARC must be disabled for the library sources.
+
+To disable ARC for source files in Xcode 4, select the project and the target in Xcode. Under the target "Build Phases" tab, expand the Compile Sources build phase, select the library source files, then press Enter to open an edit field, and type  -fno-objc-arc  as the compiler flag for those files.
+
+*_Notes for iPhone apps compiling the source files directly:_*
 
 Be sure that the files GDataXMLNode.m and GDataXMLNode.h in the Common/Optional/XMLSupport group are included in your project.  They are required for iPhone builds.
 
