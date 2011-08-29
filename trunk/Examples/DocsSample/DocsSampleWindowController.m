@@ -411,7 +411,15 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     [mDocListImageView setImage:nil];
 
     if ([newImageURLStr length] > 0) {
-      GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithURLString:newImageURLStr];
+      // We need an authorized fetcher to download the document thumbnail, as
+      // the fetch requires authentication.
+      //
+      // We could attach an authorizer to the fetcher, but it's simpler to
+      // use the GData service's fetcherService to make the new fetcher, as
+      // that will already have the authorizer attached.
+      GTMHTTPFetcherService *fetcherService = [[self docsService] fetcherService];
+      GTMHTTPFetcher *fetcher = [fetcherService fetcherWithURLString:newImageURLStr];
+      [fetcher setCommentWithFormat:@"thumbnail for \"%@\"", [[doc title] stringValue]];
       [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
         // callback
         if (error == nil) {
@@ -601,6 +609,7 @@ static DocsSampleWindowController* gDocsSampleWindowController = nil;
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
     [fetcher setAuthorizer:[service authorizer]];
     [fetcher setDownloadPath:savePath];
+    [fetcher setCommentWithFormat:@"downloading \"%@\"", [[entry title] stringValue]];
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
       // callback
       if (error == nil) {
