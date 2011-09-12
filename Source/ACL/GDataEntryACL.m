@@ -70,6 +70,7 @@
    [GDataACLRole class],
    [GDataACLScope class],
    [GDataACLKeyedRole class],
+   [GDataACLAdditionalRole class],
    nil];
 }
 
@@ -77,9 +78,10 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"role",      @"role",      kGDataDescValueLabeled },
-    { @"keyedRole", @"keyedRole", kGDataDescValueLabeled },
-    { @"scope",     @"scope",     kGDataDescValueLabeled },
+    { @"role",       @"role",            kGDataDescValueLabeled },
+    { @"keyedRole",  @"keyedRole",       kGDataDescValueLabeled },
+    { @"scope",      @"scope",           kGDataDescValueLabeled },
+    { @"additional", @"additionalRoles", kGDataDescArrayDescs },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -105,6 +107,18 @@
 
 - (GDataACLKeyedRole *)keyedRole {
   return [self objectForExtensionClass:[GDataACLKeyedRole class]];
+}
+
+- (NSArray *)additionalRoles {
+  return [self objectsForExtensionClass:[GDataACLAdditionalRole class]];
+}
+
+- (void)setAdditionalRoles:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataACLAdditionalRole class]];
+}
+
+- (void)addAdditionalRole:(GDataACLAdditionalRole *)obj {
+  [self addObject:obj forExtensionClass:[GDataACLAdditionalRole class]];
 }
 
 - (void)setScope:(GDataACLScope *)obj {

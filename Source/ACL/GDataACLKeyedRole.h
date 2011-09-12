@@ -38,6 +38,11 @@
 
 - (GDataACLRole *)role;
 - (void)setRole:(GDataACLRole *)obj;
+
+- (NSArray *)additionalRoles;
+- (void)setAdditionalRoles:(NSArray *)array;
+- (void)addAdditionalRole:(GDataACLAdditionalRole *)obj;
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*

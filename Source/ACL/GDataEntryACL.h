@@ -43,6 +43,7 @@ _EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://sc
 @class GDataACLRole;
 @class GDataACLScope;
 @class GDataACLKeyedRole;
+@class GDataACLAdditionalRole;
 
 #import "GDataCategory.h"
 
@@ -58,6 +59,10 @@ _EXTERN NSString* const kGDataLinkRelControlledObject _INITIALIZE_AS(@"http://sc
 
 - (void)setKeyedRole:(GDataACLKeyedRole *)obj;
 - (GDataACLKeyedRole *)keyedRole;
+
+- (NSArray *)additionalRoles;
+- (void)setAdditionalRoles:(NSArray *)array;
+- (void)addAdditionalRole:(GDataACLAdditionalRole *)obj;
 
 - (void)setScope:(GDataACLScope *)obj;
 - (GDataACLScope *)scope;
