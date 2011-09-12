@@ -424,6 +424,12 @@ static NSMutableDictionary *gQualifiedNameMap = nil;
   return nil;
 }
 
+- (NSURL *)uploadLocationURL {
+  // subclasses may return a resumable upload location URL for restarting
+  // uploads
+  return nil;
+}
+
 - (BOOL)shouldUploadDataOnly {
   return NO;
 }

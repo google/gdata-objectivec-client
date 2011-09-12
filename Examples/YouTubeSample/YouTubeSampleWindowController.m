@@ -38,6 +38,7 @@ static NSString* const kMostPopularFeed = @"most popular";
 - (GDataEntryBase *)selectedEntry;
 - (void)fetchAllEntries;
 - (void)uploadVideoFile;
+- (void)restartUpload;
 
 - (GDataFeedBase *)entriesFeed;
 - (void)setEntriesFeed:(GDataFeedBase *)feed;
@@ -54,7 +55,14 @@ static NSString* const kMostPopularFeed = @"most popular";
 - (GDataServiceTicket *)uploadTicket;
 - (void)setUploadTicket:(GDataServiceTicket *)ticket;
 
+- (NSURL *)uploadLocationURL;
+- (void)setUploadLocationURL:(NSURL *)url;
+
 - (GDataServiceGoogleYouTube *)youTubeService;
+
+- (void)ticket:(GDataServiceTicket *)ticket
+  hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
+  ofTotalByteCount:(unsigned long long)dataLength;
 
 - (void)fetchStandardCategories;
 @end
@@ -130,6 +138,7 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
   [mEntryImageURLString release];
 
   [mUploadTicket release];
+  [mUploadLocationURL release];
 
   [super dealloc];
 }
@@ -304,12 +313,14 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
     && hasTitle && hasPath;
 
   BOOL isUploading = (mUploadTicket != nil);
+  BOOL canRestartUpload = !isUploading && (mUploadLocationURL != nil);
+  BOOL isUploadPaused = [mUploadTicket isUploadPaused];
 
   [mUploadButton setEnabled:(canUpload && !isUploading)];
   [mPauseUploadButton setEnabled:isUploading];
   [mStopUploadButton setEnabled:isUploading];
+  [mRestartUploadButton setEnabled:canRestartUpload];
 
-  BOOL isUploadPaused = [mUploadTicket isUploadPaused];
   NSString *pauseTitle = (isUploadPaused ? @"Resume" : @"Pause");
   [mPauseUploadButton setTitle:pauseTitle];
 
@@ -318,6 +329,19 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
   BOOL hasClientIDStrings = [[mClientIDField stringValue] length] > 0
     && [[mClientSecretField stringValue] length] > 0;
   [mClientIDRequiredTextField setHidden:hasClientIDStrings];
+}
+
+- (void)displayAlert:(NSString *)title format:(NSString *)format, ... {
+  NSString *result = format;
+  if (format) {
+    va_list argList;
+    va_start(argList, format);
+    result = [[[NSString alloc] initWithFormat:format
+                                     arguments:argList] autorelease];
+    va_end(argList);
+  }
+  NSBeginAlertSheet(title, nil, nil, nil, [self window], nil, nil,
+                    nil, nil, result);
 }
 
 #pragma mark IBActions
@@ -389,10 +413,13 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 
 - (IBAction)pauseUploadClicked:(id)sender {
   if ([mUploadTicket isUploadPaused]) {
+    // Resume from pause
     [mUploadTicket resumeUpload];
   } else {
+    // Pause
     [mUploadTicket pauseUpload];
   }
+
   [self updateUI];
 }
 
@@ -402,6 +429,10 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 
   [mUploadProgressIndicator setDoubleValue:0.0];
   [self updateUI];
+}
+
+- (IBAction)restartUploadClicked:(id)sender {
+  [self restartUpload];
 }
 
 #pragma mark -
@@ -554,17 +585,67 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
   SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
   [service setServiceUploadProgressSelector:progressSel];
 
-  // YouTube's upload URL is not yet https; we need to explicitly set the
-  // authorizer to allow authorizing an http URL
-  [[service authorizer] setShouldAuthorizeAllRequests:YES];
-
   GDataServiceTicket *ticket;
   ticket = [service fetchEntryByInsertingEntry:entry
                                     forFeedURL:url
                                       delegate:self
                              didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
-  
   [self setUploadTicket:ticket];
+
+  // To allow restarting after stopping, we need to track the upload location
+  // URL. The location URL will be a different address than the upload URL that
+  // is used to start a new upload.
+  //
+  // For compatibility with systems that do not support Objective-C blocks
+  // (iOS 3 and Mac OS X 10.5), the location URL may also be obtained in the
+  // progress callback as ((GTMHTTPUploadFetcher *)[ticket objectFetcher]).locationURL
+  // 
+  GTMHTTPUploadFetcher *uploadFetcher = (GTMHTTPUploadFetcher *)[ticket objectFetcher];
+  [uploadFetcher setLocationChangeBlock:^(NSURL *url) {
+    [self setUploadLocationURL:url];
+    [self updateUI];
+  }];
+
+  [self updateUI];
+}
+
+- (void)restartUpload {
+  // Restart a stopped upload, using the location URL from the previous
+  // upload attempt
+  if (mUploadLocationURL == nil) return;
+
+  GDataServiceGoogleYouTube *service = [self youTubeService];
+
+  NSString *path = [mFilePathField stringValue];
+  NSFileHandle *fileHandle = [NSFileHandle fileHandleForReadingAtPath:path];
+  NSString *mimeType = [GDataUtilities MIMETypeForFileAtPath:path
+                                             defaultMIMEType:@"video/mp4"];
+
+  GDataEntryYouTubeUpload *entry;
+  entry = [GDataEntryYouTubeUpload uploadEntryWithMediaGroup:nil
+                                                  fileHandle:fileHandle
+                                                    MIMEType:mimeType
+                                                        slug:nil];
+  [entry setUploadLocationURL:mUploadLocationURL];
+
+  SEL progressSel = @selector(ticket:hasDeliveredByteCount:ofTotalByteCount:);
+  [service setServiceUploadProgressSelector:progressSel];
+
+  GDataServiceTicket *ticket;
+  ticket = [service fetchEntryByInsertingEntry:entry
+                                    forFeedURL:nil
+                                      delegate:self
+                             didFinishSelector:@selector(uploadTicket:finishedWithEntry:error:)];
+  [self setUploadTicket:ticket];
+
+  // To allow restarting after stopping, we need to track the upload location
+  // URL.
+  GTMHTTPUploadFetcher *uploadFetcher = (GTMHTTPUploadFetcher *)[ticket objectFetcher];
+  [uploadFetcher setLocationChangeBlock:^(NSURL *url) {
+    [self setUploadLocationURL:url];
+    [self updateUI];
+  }];
+
   [self updateUI];
 }
 
@@ -572,7 +653,6 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 - (void)ticket:(GDataServiceTicket *)ticket
    hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
    ofTotalByteCount:(unsigned long long)dataLength {
-
   [mUploadProgressIndicator setMinValue:0.0];
   [mUploadProgressIndicator setMaxValue:(double)dataLength];
   [mUploadProgressIndicator setDoubleValue:(double)numberOfBytesRead];
@@ -584,19 +664,17 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
                error:(NSError *)error {
   if (error == nil) {
     // tell the user that the add worked
-    NSBeginAlertSheet(@"Uploaded", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Uploaded video: %@",
-                      [[videoEntry title] stringValue]);
+    [self displayAlert:@"Uploaded"
+                format:@"Uploaded video: %@",
+     [[videoEntry title] stringValue]];
 
     // refetch the current entries, in case the list of uploads
     // has changed
     [self fetchAllEntries];
     [self updateUI];
   } else {
-    NSBeginAlertSheet(@"Upload failed", nil, nil, nil,
-                      [self window], nil, nil,
-                      nil, nil, @"Upload failed: %@", error);
+    [self displayAlert:@"Upload failed"
+                format:@"Upload failed: %@", error];
   }
   [mUploadProgressIndicator setDoubleValue:0.0];
 
@@ -799,6 +877,15 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 - (void)setUploadTicket:(GDataServiceTicket *)ticket {
   [mUploadTicket release];
   mUploadTicket = [ticket retain];
+}
+
+- (NSURL *)uploadLocationURL {
+  return mUploadLocationURL;
+}
+
+- (void)setUploadLocationURL:(NSURL *)url {
+  [mUploadLocationURL release];
+  mUploadLocationURL = [url retain];
 }
 
 @end

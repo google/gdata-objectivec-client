@@ -139,6 +139,7 @@
 - (void)dealloc {
   [uploadData_ release];
   [uploadFileHandle_ release];
+  [uploadLocationURL_ release];
   [uploadMIMEType_ release];
   [uploadSlug_ release];
 
@@ -161,6 +162,7 @@
 
   [newEntry setUploadData:[self uploadData]];
   [newEntry setUploadFileHandle:[self uploadFileHandle]];
+  [newEntry setUploadLocationURL:[self uploadLocationURL]];
   [newEntry setUploadMIMEType:[self uploadMIMEType]];
   [newEntry setUploadSlug:[self uploadSlug]];
   [newEntry setShouldUploadDataOnly:[self shouldUploadDataOnly]];
@@ -593,6 +595,15 @@ forCategoryWithScheme:scheme
 - (void)setUploadFileHandle:(NSFileHandle *)data {
   [uploadFileHandle_ autorelease];
   uploadFileHandle_ = [data retain];
+}
+
+- (NSURL *)uploadLocationURL {
+  return uploadLocationURL_;
+}
+
+- (void)setUploadLocationURL:(NSURL *)url {
+  [uploadLocationURL_ autorelease];
+  uploadLocationURL_ = [url retain];
 }
 
 - (NSString *)uploadMIMEType {

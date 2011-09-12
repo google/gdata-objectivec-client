@@ -49,6 +49,7 @@
   IBOutlet NSButton *mUploadButton;
   IBOutlet NSButton *mPauseUploadButton;
   IBOutlet NSButton *mStopUploadButton;
+  IBOutlet NSButton *mRestartUploadButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
 
   IBOutlet NSButton *mClientIDButton;
@@ -63,6 +64,7 @@
   NSString *mEntryImageURLString;
 
   GDataServiceTicket *mUploadTicket;
+  NSURL *mUploadLocationURL;
 }
 
 + (YouTubeSampleWindowController *)sharedYouTubeSampleWindowController;
@@ -76,6 +78,7 @@
 - (IBAction)uploadClicked:(id)sender;
 - (IBAction)pauseUploadClicked:(id)sender;
 - (IBAction)stopUploadClicked:(id)sender;
+- (IBAction)restartUploadClicked:(id)sender;
 
 - (IBAction)loggingCheckboxClicked:(id)sender;
 

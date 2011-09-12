@@ -147,7 +147,7 @@
 
 + (NSURL *)youTubeUploadURLForUserID:(NSString *)userID {
   // Make a URL like
-  //   http://uploads.gdata.youtube.com/feeds/api/users/username/uploads
+  //   https://uploads.gdata.youtube.com/feeds/api/users/username/uploads
   //
   // userID may be "default" to indicate the currently authenticated user
 
@@ -236,7 +236,7 @@
 }
 
 + (NSString *)serviceUploadRootURLString {
-  return @"http://uploads.gdata.youtube.com/resumable/feeds/";
+  return @"https://uploads.gdata.youtube.com/resumable/feeds/";
 }
 
 + (NSString *)defaultServiceVersion {
