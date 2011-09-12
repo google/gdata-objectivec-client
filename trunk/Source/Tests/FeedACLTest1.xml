@@ -56,6 +56,10 @@
             <email>wilma@example.com</email>
         </author>
         <gAcl:scope type="user" value="wilma@example.com" name="wilma" />
-        <gAcl:withKey key="A123B"><gAcl:role value="reader"/></gAcl:withKey>
+        <gAcl:withKey key="A123B">
+          <gAcl:role value="reader"/>
+          <gAcl:additionalRole value="eagle"/>
+          <gAcl:additionalRole value="pigeon"/>
+        </gAcl:withKey>
     </entry>
 </feed>

@@ -52,7 +52,10 @@ static NSString* const kKeyAttr = @"key";
 
   // this element may contain a gAcl:role element
   [self addExtensionDeclarationForParentClass:[self class]
-                                   childClass:[GDataACLRole class]];
+                                 childClasses:
+   [GDataACLRole class],
+   [GDataACLAdditionalRole class],
+   nil];
 }
 
 - (void)addParseDeclarations {
@@ -64,7 +67,8 @@ static NSString* const kKeyAttr = @"key";
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"role", @"role", kGDataDescValueLabeled },
+    { @"role",       @"role",            kGDataDescValueLabeled },
+    { @"additional", @"additionalRoles", kGDataDescArrayDescs },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -92,6 +96,18 @@ static NSString* const kKeyAttr = @"key";
 
 - (void)setRole:(GDataACLRole *)obj {
   [self setObject:obj forExtensionClass:[GDataACLRole class]];
+}
+
+- (NSArray *)additionalRoles {
+  return [self objectsForExtensionClass:[GDataACLAdditionalRole class]];
+}
+
+- (void)setAdditionalRoles:(NSArray *)array {
+  [self setObjects:array forExtensionClass:[GDataACLAdditionalRole class]];
+}
+
+- (void)addAdditionalRole:(GDataACLAdditionalRole *)obj {
+  [self addObject:obj forExtensionClass:[GDataACLAdditionalRole class]];
 }
 
 @end

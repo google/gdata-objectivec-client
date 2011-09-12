@@ -2069,6 +2069,7 @@
     { @"entries.1.scope.name", @"wilma" },
     { @"entries.1.keyedRole.key", @"A123B" },
     { @"entries.1.keyedRole.role.value", @"reader" },
+    { @"entries.1.keyedRole.additionalRoles.1.value", @"pigeon" },
 
     { @"entries.1.unknownAttributes.@count", @"0" },
     { @"entries.1.unknownChildren.@count", @"0" },

@@ -23,10 +23,7 @@
 #define GDATAACLROLE_DEFINE_GLOBALS 1
 
 #import "GDataACLRole.h"
-
 #import "GDataEntryACL.h" // for namespace
-
-static NSString* const kValueAttr = @"value";
 
 @implementation GDataACLRole
 // an element with a value attribute, as in
@@ -37,25 +34,28 @@ static NSString* const kValueAttr = @"value";
 + (NSString *)extensionElementURI       { return kGDataNamespaceACL; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceACLPrefix; }
 + (NSString *)extensionElementLocalName { return @"role"; }
+@end
 
-+ (GDataACLRole *)roleWithValue:(NSString *)value {
+@implementation GDataACLAdditionalRole
++ (NSString *)extensionElementURI       { return kGDataNamespaceACL; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceACLPrefix; }
++ (NSString *)extensionElementLocalName { return @"additionalRole"; }
+@end
+
+@implementation GDataACLRoleBase
+
++ (id)roleWithValue:(NSString *)value {
   GDataACLRole *obj = [self object];
-  [obj setValue:value];
+  [obj setStringValue:value];
   return obj;
 }
 
-- (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObject:kValueAttr];
-  [self addLocalAttributeDeclarations:attrs];
-}
-
 - (NSString *)value {
-  return [self stringValueForAttribute:kValueAttr];
+  return [self stringValue];
 }
 
 - (void)setValue:(NSString *)str {
-  [self setStringValue:str forAttribute:kValueAttr];
+  [self setStringValue:str];
 }
 
 @end

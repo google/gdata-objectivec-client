@@ -21,6 +21,7 @@
   || GDATA_INCLUDE_CALENDAR_SERVICE || GDATA_INCLUDE_DOCS_SERVICE
 
 #import "GDataObject.h"
+#import "GDataValueConstruct.h"
 
 #undef _EXTERN
 #undef _INITIALIZE_AS
@@ -45,13 +46,17 @@ _EXTERN NSString* const kGDataRoleCommenter _INITIALIZE_AS(@"commenter");
 //  http://code.google.com/apis/calendar/reference.html#gacl_reference
 
 
-@interface GDataACLRole : GDataObject <GDataExtension>
-
-+ (GDataACLRole *)roleWithValue:(NSString *)value;
+@interface GDataACLRoleBase : GDataValueConstruct
++ (id)roleWithValue:(NSString *)value;
 
 - (NSString *)value;
 - (void)setValue:(NSString *)str; 
+@end
 
+@interface GDataACLRole : GDataACLRoleBase <GDataExtension>
+@end
+
+@interface GDataACLAdditionalRole : GDataACLRoleBase <GDataExtension>
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDE || GDATA_INCLUDE_*
