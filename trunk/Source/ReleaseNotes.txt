@@ -17,6 +17,8 @@ Additions
 
 - Added fetcher shouldFetchInBackground property to service objects
 
+- Added code to the YouTube sample showing how to restart a stopped upload
+
 Changes
 
 - Replaced GDataHTTPFetcher with GTMHTTPFetcher
@@ -27,11 +29,12 @@ Changes
 
 - YouTube uploads now return a GDataEntryYouTubeVideo object
 
+- The YouTube upload URL is now https
+
 - Removed Translator Toolkit support
 
 - Remove upload callbacks on systems without NSURLConnection's didSendBodyData:
   support (only affects users running early releases of Mac OS X 10.5)
-
 
 Bugs Fixed
 

@@ -88,6 +88,10 @@ static void XorPlainMutableData(NSMutableData *mutableData) {
                                   uploadFileHandle:(NSFileHandle *)uploadFileHandle
                                     uploadMIMEType:(NSString *)uploadMIMEType
                                          chunkSize:(NSUInteger)chunkSize;
++ (GTMHTTPUploadFetcher *)uploadFetcherWithLocation:(NSURL *)locationURL
+                                   uploadFileHandle:(NSFileHandle *)uploadFileHandle
+                                     uploadMIMEType:(NSString *)uploadMIMEType
+                                          chunkSize:(NSUInteger)chunkSize;
 - (void)pauseFetching;
 - (void)resumeFetching;
 - (BOOL)isPaused;
@@ -411,13 +415,18 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
   // fetchObjectWithURL: created in GDataServiceGoogle would cause an exception
   // since 10.5's NSInvocation cannot deal with encoding of block pointers.
 
-  // if no URL was supplied, treat this as if the fetch failed (below)
-  // and immediately return a nil ticket, skipping the callbacks
+  NSURL *uploadLocationURL = [objectToPost uploadLocationURL];
+
+  // if no URL was supplied, and we're not resuming an upload, treat this as
+  // if the fetch failed (below) and immediately return a nil ticket, skipping
+  // the callbacks
   //
   // this might be considered normal (say, updating a read-only entry
   // that lacks an edit link) though higher-level calls may assert or
   // returns errors depending on the specific usage
-  if (feedURL == nil) return nil;
+  if (feedURL == nil && uploadLocationURL == nil) {
+    return nil;
+  }
 
   // we need to create a ticket unless one was created earlier (like during
   // authentication)
@@ -425,11 +434,14 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
     ticket = [[[self class] ticketClass] ticketForService:self];
   }
 
-  NSMutableURLRequest *request = [self objectRequestForURL:feedURL
-                                                    object:objectToPost
-                                                      ETag:etag
-                                                httpMethod:httpMethod
-                                                    ticket:ticket];
+  NSMutableURLRequest *request = nil;
+  if (feedURL) {
+    request = [self objectRequestForURL:feedURL
+                                 object:objectToPost
+                                   ETag:etag
+                             httpMethod:httpMethod
+                                 ticket:ticket];
+  }
 
   GTMAssertSelectorNilOrImplementedWithArgs(delegate, [ticket uploadProgressSelector],
       @encode(GDataServiceTicketBase *), @encode(unsigned long long),
@@ -468,9 +480,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
 
     uploadData = [objectToPost uploadData];
     uploadFileHandle = [objectToPost uploadFileHandle];
+
     isUploadingDataChunked = ((uploadData != nil || uploadFileHandle != nil)
                               && shouldUploadDataChunked);
-    BOOL shouldUploadDataOnly = [objectToPost shouldUploadDataOnly];
+    BOOL shouldUploadDataOnly = ([objectToPost shouldUploadDataOnly]
+                                 || uploadLocationURL != nil);
 
     BOOL shouldReportUploadProgress;
 #if NS_BLOCKS_AVAILABLE
@@ -585,6 +599,11 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
                                            uploadData:uploadData
                                        uploadMIMEType:uploadMIMEType
                                             chunkSize:uploadChunkSize];
+    } else if (uploadLocationURL) {
+      fetcher = [uploadClass uploadFetcherWithLocation:uploadLocationURL
+                                      uploadFileHandle:uploadFileHandle
+                                        uploadMIMEType:uploadMIMEType
+                                             chunkSize:uploadChunkSize];
     } else {
       fetcher = [uploadClass uploadFetcherWithRequest:request
                                      uploadFileHandle:uploadFileHandle
