@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (564 classes) 2011-07-25 17:00:54 -0700
+// com.google.GDataFramework v. 1.12 (566 classes) 2011-09-12 15:57:08 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -25,8 +25,10 @@
   #define GDATA_TARGET_NAMESPACE_STRING _GDATA_NS_STRING_MIDDLE(GDATA_TARGET_NAMESPACE)
 
   #define GDataAccessLevelProperty                _GDATA_NS_SYMBOL(GDataAccessLevelProperty)
+  #define GDataACLAdditionalRole                  _GDATA_NS_SYMBOL(GDataACLAdditionalRole)
   #define GDataACLKeyedRole                       _GDATA_NS_SYMBOL(GDataACLKeyedRole)
   #define GDataACLRole                            _GDATA_NS_SYMBOL(GDataACLRole)
+  #define GDataACLRoleBase                        _GDATA_NS_SYMBOL(GDataACLRoleBase)
   #define GDataACLScope                           _GDATA_NS_SYMBOL(GDataACLScope)
   #define GDataAdditionalGuests                   _GDATA_NS_SYMBOL(GDataAdditionalGuests)
   #define GDataAnalyticsAggregateGroup            _GDATA_NS_SYMBOL(GDataAnalyticsAggregateGroup)
@@ -417,7 +419,6 @@
   #define GDataPrice                              _GDATA_NS_SYMBOL(GDataPrice)
   #define GDataPrivateCopyProperty                _GDATA_NS_SYMBOL(GDataPrivateCopyProperty)
   #define GDataProfileMetaData                    _GDATA_NS_SYMBOL(GDataProfileMetaData)
-  #define GDataProgressMonitorInputStream         _GDATA_NS_SYMBOL(GDataProgressMonitorInputStream)
   #define GDataQuery                              _GDATA_NS_SYMBOL(GDataQuery)
   #define GDataQueryAnalytics                     _GDATA_NS_SYMBOL(GDataQueryAnalytics)
   #define GDataQueryBooks                         _GDATA_NS_SYMBOL(GDataQueryBooks)
@@ -587,6 +588,7 @@
   #define GTMOAuth2AuthorizationArgs              _GDATA_NS_SYMBOL(GTMOAuth2AuthorizationArgs)
   #define GTMOAuth2SignIn                         _GDATA_NS_SYMBOL(GTMOAuth2SignIn)
   #define GTMOAuth2WindowController               _GDATA_NS_SYMBOL(GTMOAuth2WindowController)
+  #define GTMReadMonitorInputStream               _GDATA_NS_SYMBOL(GTMReadMonitorInputStream)
   #define GTMURLCache                             _GDATA_NS_SYMBOL(GTMURLCache)
 
 #endif
