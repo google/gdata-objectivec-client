@@ -361,7 +361,7 @@ Some services allow uploading of a file when inserting an entry into a feed.  Up
 
 Some services just allow uploads to be done in a single fetch. Those use the URL of the feed's postLink for inserting a new entry and its data, and the URL of an entry's editLink or editMediaLink for replacing or deleting the data.
 
-Services that support uploads of very large files (Google Docs and !YouTube) use a *chunked upload* protocol. Those services provide a separate uploadLink in feeds, and an uploadEditLink in entries, but otherwise use the same fetch calls for uploading files. In addition, chunked uploads may be paused and resumed by invoking the ticket's `pauseUpload` and `resumeUpload` methods.
+Services that support uploads of very large files (Google Docs, Google Photos, and !YouTube) use a *chunked upload* protocol. Those services provide a separate uploadLink in feeds, and an uploadEditLink in entries, but otherwise use the same fetch calls for uploading files. In addition, chunked uploads may be paused and resumed by invoking the ticket's `pauseUpload` and `resumeUpload` methods.
 
 This snippet shows the basic steps for uploading a spreadsheet document using the Google Docs API.
 
