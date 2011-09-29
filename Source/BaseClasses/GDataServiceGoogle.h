@@ -233,6 +233,12 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                 completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
 
+// update an entry, authenticated (use this for updating via chunked uploads,
+// with the URL from the entry's uploadEditLink)
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                      forEntryURL:(NSURL *)entryURL
+                                completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+
 // delete an entry, authenticated
 // (on success, callback will have receive nil pointers for both object and error)
 - (GDataServiceTicket *)deleteEntry:(GDataEntryBase *)entryToDelete

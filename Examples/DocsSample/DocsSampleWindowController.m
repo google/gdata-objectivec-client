@@ -1344,6 +1344,10 @@ static long long gLargestPriorChangestamp = 0;
       GDataServiceGoogleDocs *service = [self docsService];
 
       // insert the entry into the docList feed
+      //
+      // to update (replace) an existing entry by uploading a new file,
+      // use the fetchEntryByUpdatingEntry:forEntryURL: with the URL from
+      // the entry's uploadEditLink
       GDataServiceTicket *ticket;
       ticket = [service fetchEntryByInsertingEntry:newEntry
                                         forFeedURL:uploadURL
