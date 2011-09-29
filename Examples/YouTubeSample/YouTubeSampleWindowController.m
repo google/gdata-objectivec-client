@@ -671,7 +671,6 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
     // refetch the current entries, in case the list of uploads
     // has changed
     [self fetchAllEntries];
-    [self updateUI];
   } else {
     [self displayAlert:@"Upload failed"
                 format:@"Upload failed: %@", error];
@@ -679,6 +678,7 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
   [mUploadProgressIndicator setDoubleValue:0.0];
 
   [self setUploadTicket:nil];
+  [self updateUI];
 }
 
 // Setting likes/dislikes
