@@ -972,6 +972,16 @@ enum {
 
 - (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
                                 completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
+  NSURL *editURL = [[entryToUpdate editLink] URL];
+
+  return [self fetchEntryByUpdatingEntry:entryToUpdate
+                             forEntryURL:editURL
+                       completionHandler:handler];
+}
+
+- (GDataServiceTicket *)fetchEntryByUpdatingEntry:(GDataEntryBase *)entryToUpdate
+                                      forEntryURL:(NSURL *)entryURL
+                                completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
   // Entries should be updated only if they contain copies of any unparsed XML
   // (unknown children and attributes) or if fields to update are explicitly
   // specified in the gd:field attribute.
@@ -991,11 +1001,9 @@ enum {
   // objects being uploaded will always need some namespaces at the root level
   [self addNamespacesIfNoneToObject:entryToUpdate];
 
-  NSURL *editURL = [[entryToUpdate editLink] URL];
-
   NSString *httpMethod = (fieldSelection == nil ? @"PUT" : @"PATCH");
 
-  return [self fetchAuthenticatedObjectWithURL:editURL
+  return [self fetchAuthenticatedObjectWithURL:entryURL
                                    objectClass:[entryToUpdate class]
                                   objectToPost:entryToUpdate
                                           ETag:[entryToUpdate ETag]
