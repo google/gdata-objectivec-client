@@ -121,6 +121,8 @@ typedef void *GDataServiceUploadProgressHandler;
   BOOL hasCalledCallback_;
   NSUInteger nextLinksFollowedCounter_;
 
+  NSOperation *parseOperation_;
+
   // OAuth support
   id authorizer_;
 }
@@ -208,6 +210,9 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSUInteger)nextLinksFollowedCounter;
 
 - (NSInteger)statusCode;  // server status from object fetch
+
+- (NSOperation *)parseOperation;
+- (void)setParseOperation:(NSOperation *)op;
 
 // OAuth support
 - (id)authorizer;

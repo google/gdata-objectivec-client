@@ -775,6 +775,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     op = [[[NSInvocationOperation alloc] initWithTarget:self
                                                selector:parseSel
                                                  object:fetcher] autorelease];
+    [ticket setParseOperation:op];
     [operationQueue_ addOperation:op];
     // the fetcher now belongs to the parsing thread
   } else {
@@ -798,13 +799,32 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   NSError *error = nil;
   GDataObject* object = nil;
 
-  Class objectClass = (Class)[fetcher propertyForKey:kFetcherObjectClassKey];
-  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+  // Generally protect the fetcher properties, since canceling a ticket would
+  // release the fetcher properties dictionary
+  NSMutableDictionary *properties = [[[fetcher properties] retain] autorelease];
+
+  // The callback thread is retaining the fetcher, so the fetcher shouldn't keep
+  // retaining the callback thread
+  NSThread *callbackThread = [properties valueForKey:kFetcherCallbackThreadKey];
+  [[callbackThread retain] autorelease];
+  [properties removeObjectForKey:kFetcherCallbackThreadKey];
+
+  GDataServiceTicketBase *ticket = [properties valueForKey:kFetcherTicketKey];
+  [[ticket retain] autorelease];
+
+  NSDictionary *responseHeaders = [fetcher responseHeaders];
+  [[responseHeaders retain] autorelease];
+
+  NSOperation *parseOperation = [ticket parseOperation];
+
+  Class objectClass = (Class)[properties objectForKey:kFetcherObjectClassKey];
 
   NSData *data = [fetcher downloadedData];
   NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithData:data
                                                             options:0
                                                               error:&error] autorelease];
+  if ([parseOperation isCancelled]) return;
+
   if (xmlDocument) {
 
     NSXMLElement* root = [xmlDocument rootElement];
@@ -822,7 +842,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     }
 
     // use the actual service version indicated by the response headers
-    NSDictionary *responseHeaders = [fetcher responseHeaders];
     NSString *serviceVersion = [responseHeaders objectForKey:@"Gdata-Version"];
 
     // feeds may optionally be instantiated without unknown elements tracked
@@ -844,10 +863,10 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
 #if GDATA_USES_LIBXML
     // retain the document so that pointers to internal nodes remain valid
-    [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
+    [properties setValue:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
 #endif
 
-    [fetcher setProperty:object forKey:kFetcherParsedObjectKey];
+    [properties setValue:object forKey:kFetcherParsedObjectKey];
     [object release];
 
 #if GDATA_LOG_PERFORMANCE
@@ -855,19 +874,14 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
     NSLog(@"allocation of %@ took %f seconds", objectClass, secs2 - secs1);
 #endif
   }
-  [fetcher setProperty:error forKey:kFetcherParseErrorKey];
+  [properties setValue:error forKey:kFetcherParseErrorKey];
+
+  if ([parseOperation isCancelled]) return;
 
   SEL parseDoneSel = @selector(handleParsedObjectForFetcher:);
 
   if (operationQueue_ != nil) {
-    // call back on the caller's original thread
-    NSThread *callbackThread = [[[fetcher propertyForKey:kFetcherCallbackThreadKey] retain] autorelease];
-
-    // the callback thread is retaining the fetcher, so the fetcher shouldn't
-    // keep retaining the callback thread
-    [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
-
-    NSArray *runLoopModes = [fetcher propertyForKey:kFetcherCallbackRunLoopModesKey];
+    NSArray *runLoopModes = [properties valueForKey:kFetcherCallbackRunLoopModesKey];
     if (runLoopModes) {
       [self performSelector:parseDoneSel
                    onThread:callbackThread
@@ -885,7 +899,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
   } else {
     // in 10.4, there's no performSelector:onThread:
     [self performSelector:parseDoneSel withObject:fetcher];
-    [fetcher setProperty:nil forKey:kFetcherCallbackThreadKey];
+    [properties removeObjectForKey:kFetcherCallbackThreadKey];
   }
 
   // We drain here to keep the clang static analyzer quiet.
@@ -896,6 +910,9 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
   // after parsing is complete, this is invoked on the thread that the
   // fetch was performed on
+
+  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
+  [ticket setParseOperation:nil];
 
   // unpack the callback parameters
   id delegate = [fetcher propertyForKey:kFetcherDelegateKey];
@@ -909,8 +926,6 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 #else
   completionHandler = NULL;
 #endif
-
-  GDataServiceTicketBase *ticket = [fetcher propertyForKey:kFetcherTicketKey];
 
   NSNotificationCenter *defaultNC = [NSNotificationCenter defaultCenter];
   [defaultNC postNotificationName:kGDataServiceTicketParsingStoppedNotification
@@ -1874,6 +1889,8 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
   [accumulatedFeed_ release];
   [fetchError_ release];
 
+  [parseOperation_ release];
+
   [authorizer_ release];
 
   [super dealloc];
@@ -1914,6 +1931,10 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 
 - (void)cancelTicket {
+  NSOperation *op = [self parseOperation];
+  [op cancel];
+  [self setParseOperation:nil];
+
   [objectFetcher_ stopFetching];
   [objectFetcher_ setProperties:nil];
 
@@ -2158,6 +2179,15 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 
 - (NSUInteger)nextLinksFollowedCounter {
   return nextLinksFollowedCounter_;
+}
+
+- (NSOperation *)parseOperation {
+  return parseOperation_;
+}
+
+- (void)setParseOperation:(NSOperation *)op {
+  [parseOperation_ autorelease];
+  parseOperation_ = [op retain];
 }
 
 // OAuth support
