@@ -38,7 +38,7 @@ Changes
 - Renamed GDataYouTubePublicationState's "state" method to "name" to avoid a
   compiler warning under Xcode 4
 
-- Removed Translator Toolkit support
+- Removed Translator Toolkit and Google Health support
 
 - Remove upload callbacks on systems without NSURLConnection's didSendBodyData:
   support (only affects users running early releases of Mac OS X 10.5)
