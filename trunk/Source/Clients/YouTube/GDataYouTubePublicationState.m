@@ -55,11 +55,11 @@ static NSString *const kHelpURLAttr = @"helpUrl";
 
 #pragma mark -
 
-- (NSString *)state {
+- (NSString *)name {
   return [self stringValueForAttribute:kNameAttr];
 }
 
-- (void)setState:(NSString *)str {
+- (void)setName:(NSString *)str {
   [self setStringValue:str forAttribute:kNameAttr];
 }
 

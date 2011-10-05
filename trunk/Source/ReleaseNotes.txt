@@ -35,6 +35,9 @@ Changes
 
 - The YouTube upload URL is now https
 
+- Renamed GDataYouTubePublicationState's "state" method to "name" to avoid a
+  compiler warning under Xcode 4
+
 - Removed Translator Toolkit support
 
 - Remove upload callbacks on systems without NSURLConnection's didSendBodyData:
