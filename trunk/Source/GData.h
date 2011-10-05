@@ -29,7 +29,6 @@
 #import "GDataCodeSearch.h"
 #import "GDataDocs.h"
 #import "GDataFinance.h"
-#import "GDataHealth.h"
 #import "GDataMaps.h"
 #import "GDataPhotos.h"
 #import "GDataSpreadsheet.h"
