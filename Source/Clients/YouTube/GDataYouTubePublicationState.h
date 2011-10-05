@@ -49,8 +49,8 @@ _EXTERN NSString* const kGDataYouTubePubStateRestricted _INITIALIZE_AS(@"restric
 
 @interface GDataYouTubePublicationState : GDataObject <GDataExtension>
 
-- (NSString *)state;
-- (void)setState:(NSString *)str;
+- (NSString *)name;  // this method was previously "state"
+- (void)setName:(NSString *)str;
 
 - (NSString *)reasonCode;
 - (void)setReasonCode:(NSString *)str;

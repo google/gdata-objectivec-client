@@ -40,8 +40,8 @@ static NSString* const kMostPopularFeed = @"most popular";
 - (void)uploadVideoFile;
 - (void)restartUpload;
 
-- (GDataFeedBase *)entriesFeed;
-- (void)setEntriesFeed:(GDataFeedBase *)feed;
+- (GDataFeedYouTubeVideo *)entriesFeed;
+- (void)setEntriesFeed:(GDataFeedYouTubeVideo *)feed;
 
 - (NSError *)entriesFetchError;
 - (void)setEntriesFetchError:(NSError *)error;
@@ -523,7 +523,7 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 
 // feed fetch callback
 - (void)entryListFetchTicket:(GDataServiceTicket *)ticket
-            finishedWithFeed:(GDataFeedBase *)feed
+            finishedWithFeed:(GDataFeedYouTubeVideo *)feed
                        error:(NSError *)error {
 
   [self setEntriesFeed:feed];
@@ -834,11 +834,11 @@ static NSString *const kKeychainItemName = @"YouTubeSample: YouTube";
 
 #pragma mark Setters and Getters
 
-- (GDataFeedBase *)entriesFeed {
+- (GDataFeedYouTubeVideo *)entriesFeed {
   return mEntriesFeed;
 }
 
-- (void)setEntriesFeed:(GDataFeedBase *)feed {
+- (void)setEntriesFeed:(GDataFeedYouTubeVideo *)feed {
   [mEntriesFeed autorelease];
   mEntriesFeed = [feed retain];
 }

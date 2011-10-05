@@ -1652,7 +1652,7 @@
     { @"entries.0.mediaGroup.mediaRatings.0.youTubeCountry", @"KR" },
     { @"entries.0.mediaGroup.mediaThumbnails.0.height", @"97" },
     { @"entries.0.mediaGroup.mediaThumbnails.0.youTubeName", @"abc987" },
-    { @"entries.0.publicationState.state", @"rejected" },
+    { @"entries.0.publicationState.name", @"rejected" },
     { @"entries.0.publicationState.reasonCode", @"32" },
     { @"entries.0.publicationState.helpURLString", @"http://www.youtube.com/" },
     { @"entries.0.publicationState.errorDescription", @"incorrect format" },
@@ -1756,7 +1756,7 @@
     { @"entries.0.title", @"captrack name" },
     { @"entries.0.categories.0.term", kGDataCategoryYouTubeCaptionTrack },
 
-    { @"entries.0.publicationState.state", @"failed" },
+    { @"entries.0.publicationState.name", @"failed" },
     { @"entries.0.publicationState.reasonCode", @"invalidFormat" },
     { @"entries.0.derived", kGDataYouTubeDerivedSpeechRecogniion },
 

@@ -47,8 +47,8 @@
 - (NSError *)positionFetchError;
 - (void)setPositionFetchError:(NSError *)error;
 
-- (GDataFeedBase *)transactionFeed;
-- (void)setTransactionFeed:(GDataFeedBase *)feed;
+- (GDataFeedFinanceTransaction *)transactionFeed;
+- (void)setTransactionFeed:(GDataFeedFinanceTransaction *)feed;
 - (NSError *)transactionFetchError;
 - (void)setTransactionFetchError:(NSError *)error;
 @end
@@ -770,11 +770,11 @@ static FinanceSampleWindowController* gFinanceSampleWindowController = nil;
 }
 
 
-- (GDataFeedBase *)transactionFeed {
+- (GDataFeedFinanceTransaction *)transactionFeed {
   return mTransactionFeed; 
 }
 
-- (void)setTransactionFeed:(GDataFeedBase *)feed {
+- (void)setTransactionFeed:(GDataFeedFinanceTransaction *)feed {
   [mTransactionFeed autorelease];
   mTransactionFeed = [feed retain];
 }
