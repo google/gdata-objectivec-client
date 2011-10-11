@@ -57,6 +57,9 @@
     </entry>
     <entry>
         <yt:countHint>10</yt:countHint>
+        <media:group>
+          <media:thumbnail url="http://i.ytimg.com/vi/L-PzCdlQ5aY/default.jpg"/>
+        </media:group>
         <content type="application/atom+xml" src="http://gdata.youtube.com/feeds/api/playlists/BBA2B78EF2F08B10" />
         <id>http://gdata.youtube.com/feeds/api/users/testaccount/playlists/BBA2B78EF2F08B10</id>
         <title type="text">MyPlaylist</title>

@@ -35,6 +35,8 @@ Changes
 
 - The YouTube upload URL is now https
 
+- GDataEntryYouTubeFeedLinkBase now has a mediaGroup wrapping the mediaThumbnail
+
 - Renamed GDataYouTubePublicationState's "state" method to "name" to avoid a
   compiler warning under Xcode 4
 
