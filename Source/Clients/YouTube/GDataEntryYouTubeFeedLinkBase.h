@@ -21,7 +21,7 @@
 
 #import "GDataEntryBase.h"
 #import "GDataFeedLink.h"
-#import "GDataMediaThumbnail.h"
+#import "GDataMediaGroup.h"
 #import "GDataYouTubeElements.h"
 
 // this is the superclass for GDataEntryYouTubeSubscription and
@@ -29,8 +29,8 @@
 
 @interface GDataEntryYouTubeFeedLinkBase : GDataEntryBase
 
-- (GDataMediaThumbnail *)thumbnail;
-- (void)setThumbnail:(GDataMediaThumbnail *)obj;
+- (GDataMediaGroup *)mediaGroup;
+- (void)setMediaGroup:(GDataMediaGroup *)obj;
 
 - (NSString *)countHint;
 - (void)setCountHint:(NSString *)str;

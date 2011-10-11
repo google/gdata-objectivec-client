@@ -44,7 +44,7 @@
    [GDataFeedLink class],
 
    // media extensions
-   [GDataMediaThumbnail class],
+   [GDataMediaGroup class],
    nil];
 }
 
@@ -52,8 +52,8 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"thumbnail",                @"thumbnail",          kGDataDescValueLabeled },
-    { @"countHint",                @"countHint",          kGDataDescValueLabeled },
+    { @"mediaGroup", @"mediaGroup", kGDataDescValueLabeled },
+    { @"countHint",  @"countHint",  kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -69,13 +69,13 @@
 
 #pragma mark -
 
-- (GDataMediaThumbnail *)thumbnail {
-  GDataMediaThumbnail *obj = [self objectForExtensionClass:[GDataMediaThumbnail class]];
+- (GDataMediaGroup *)mediaGroup {
+  GDataMediaGroup *obj = [self objectForExtensionClass:[GDataMediaGroup class]];
   return obj;
 }
 
-- (void)setThumbnail:(GDataMediaThumbnail *)obj {
-  [self setObject:obj forExtensionClass:[GDataMediaThumbnail class]];
+- (void)setMediaGroup:(GDataMediaGroup *)obj {
+  [self setObject:obj forExtensionClass:[GDataMediaGroup class]];
 }
 
 - (NSString *)countHint {

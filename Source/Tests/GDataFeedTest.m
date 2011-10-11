@@ -1691,6 +1691,7 @@
     { @"entries.1.categories.0.term", @"PlaylistTags" },
     { @"entries.1.categories.1.term", kGDataCategoryYouTubePlaylistLink },
     { @"entries.1.isPrivate", @"0" },
+    { @"entries.1.mediaGroup.mediaThumbnails.0.URLString", @"http://i.ytimg.com/vi/L-PzCdlQ5aY/default.jpg" },
     
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
