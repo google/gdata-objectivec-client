@@ -20,8 +20,8 @@
 #define GDATAENTRYBASE_DEFINE_GLOBALS 1
 
 #import "GDataEntryBase.h"
-#import "GDataMIMEDocument.h"
 #import "GDataBaseElements.h"
+#import "GTMMIMEDocument.h"
 
 @implementation GDataEntryBase
 
@@ -287,7 +287,7 @@
     uploadMIMEType, @"Content-Type",
     @"binary", @"Content-Transfer-Encoding", nil];
 
-  GDataMIMEDocument* doc = [GDataMIMEDocument MIMEDocument];
+  GTMMIMEDocument* doc = [GTMMIMEDocument MIMEDocument];
 
   [doc addPartWithHeaders:xmlHeader body:xmlBody];
   [doc addPartWithHeaders:binHeader body:uploadData];

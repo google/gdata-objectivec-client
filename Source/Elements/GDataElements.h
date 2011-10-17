@@ -25,10 +25,10 @@
 #import "GTMHTTPFetcher.h"
 #import "GTMHTTPFetcherLogging.h"
 #import "GTMHTTPUploadFetcher.h"
+#import "GTMGatherInputStream.h"
+#import "GTMMIMEDocument.h"
 
 #import "GDataDateTime.h"
-#import "GDataGatherInputStream.h"
-#import "GDataMIMEDocument.h"
 #import "GDataServerError.h"
 
 // base classes

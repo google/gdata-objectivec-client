@@ -25,7 +25,8 @@ Additions
 
 Changes
 
-- Replaced GDataHTTPFetcher with GTMHTTPFetcher
+- Replaced GDataHTTPFetcher with GTMHTTPFetcher, GDataGatherInputStream with
+  GTMGatherInputStream, and GDataMIMEDocument with GTMMIMEDocument
 
 - Replaced GDataOAuth with GTMOAuth2
 
