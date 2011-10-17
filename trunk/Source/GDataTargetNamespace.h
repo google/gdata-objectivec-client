@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (555 classes) 2011-10-05 13:30:08 -0700
+// com.google.GDataFramework v. 1.12 (555 classes) 2011-10-17 12:53:33 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -298,7 +298,6 @@
   #define GDataFinanceSymbol                      _GDATA_NS_SYMBOL(GDataFinanceSymbol)
   #define GDataFinanceTransactionData             _GDATA_NS_SYMBOL(GDataFinanceTransactionData)
   #define GDataGain                               _GDATA_NS_SYMBOL(GDataGain)
-  #define GDataGatherInputStream                  _GDATA_NS_SYMBOL(GDataGatherInputStream)
   #define GDataGenerator                          _GDATA_NS_SYMBOL(GDataGenerator)
   #define GDataGeo                                _GDATA_NS_SYMBOL(GDataGeo)
   #define GDataGeoPt                              _GDATA_NS_SYMBOL(GDataGeoPt)
@@ -333,8 +332,6 @@
   #define GDataMediaRestriction                   _GDATA_NS_SYMBOL(GDataMediaRestriction)
   #define GDataMediaThumbnail                     _GDATA_NS_SYMBOL(GDataMediaThumbnail)
   #define GDataMediaTitle                         _GDATA_NS_SYMBOL(GDataMediaTitle)
-  #define GDataMIMEDocument                       _GDATA_NS_SYMBOL(GDataMIMEDocument)
-  #define GDataMIMEPart                           _GDATA_NS_SYMBOL(GDataMIMEPart)
   #define GDataMoney                              _GDATA_NS_SYMBOL(GDataMoney)
   #define GDataMoneyElementBase                   _GDATA_NS_SYMBOL(GDataMoneyElementBase)
   #define GDataName                               _GDATA_NS_SYMBOL(GDataName)
@@ -569,10 +566,13 @@
   #define GDataYouTubeVideoID                     _GDATA_NS_SYMBOL(GDataYouTubeVideoID)
   #define GTMCachedURLResponse                    _GDATA_NS_SYMBOL(GTMCachedURLResponse)
   #define GTMCookieStorage                        _GDATA_NS_SYMBOL(GTMCookieStorage)
+  #define GTMGatherInputStream                    _GDATA_NS_SYMBOL(GTMGatherInputStream)
   #define GTMHTTPFetcher                          _GDATA_NS_SYMBOL(GTMHTTPFetcher)
   #define GTMHTTPFetcherService                   _GDATA_NS_SYMBOL(GTMHTTPFetcherService)
   #define GTMHTTPFetchHistory                     _GDATA_NS_SYMBOL(GTMHTTPFetchHistory)
   #define GTMHTTPUploadFetcher                    _GDATA_NS_SYMBOL(GTMHTTPUploadFetcher)
+  #define GTMMIMEDocument                         _GDATA_NS_SYMBOL(GTMMIMEDocument)
+  #define GTMMIMEPart                             _GDATA_NS_SYMBOL(GTMMIMEPart)
   #define GTMOAuth2Authentication                 _GDATA_NS_SYMBOL(GTMOAuth2Authentication)
   #define GTMOAuth2AuthorizationArgs              _GDATA_NS_SYMBOL(GTMOAuth2AuthorizationArgs)
   #define GTMOAuth2SignIn                         _GDATA_NS_SYMBOL(GTMOAuth2SignIn)
