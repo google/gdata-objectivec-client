@@ -83,15 +83,18 @@ static void XorPlainMutableData(NSMutableData *mutableData) {
 + (GTMHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
                                         uploadData:(NSData *)data
                                     uploadMIMEType:(NSString *)uploadMIMEType
-                                         chunkSize:(NSUInteger)chunkSize;
+                                         chunkSize:(NSUInteger)chunkSize
+                                    fetcherService:(GTMHTTPFetcherService *)fetcherService;
 + (GTMHTTPUploadFetcher *)uploadFetcherWithRequest:(NSURLRequest *)request
                                   uploadFileHandle:(NSFileHandle *)uploadFileHandle
                                     uploadMIMEType:(NSString *)uploadMIMEType
-                                         chunkSize:(NSUInteger)chunkSize;
+                                         chunkSize:(NSUInteger)chunkSize
+                                    fetcherService:(GTMHTTPFetcherService *)fetcherService;
 + (GTMHTTPUploadFetcher *)uploadFetcherWithLocation:(NSURL *)locationURL
                                    uploadFileHandle:(NSFileHandle *)uploadFileHandle
                                      uploadMIMEType:(NSString *)uploadMIMEType
-                                          chunkSize:(NSUInteger)chunkSize;
+                                          chunkSize:(NSUInteger)chunkSize
+                                     fetcherService:(GTMHTTPFetcherService *)fetcherService;
 - (void)pauseFetching;
 - (void)resumeFetching;
 - (BOOL)isPaused;
@@ -598,19 +601,21 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected;
       fetcher = [uploadClass uploadFetcherWithRequest:request
                                            uploadData:uploadData
                                        uploadMIMEType:uploadMIMEType
-                                            chunkSize:uploadChunkSize];
+                                            chunkSize:uploadChunkSize
+                                       fetcherService:fetcherService_];
     } else if (uploadLocationURL) {
       fetcher = [uploadClass uploadFetcherWithLocation:uploadLocationURL
                                       uploadFileHandle:uploadFileHandle
                                         uploadMIMEType:uploadMIMEType
-                                             chunkSize:uploadChunkSize];
+                                             chunkSize:uploadChunkSize
+                                        fetcherService:fetcherService_];
     } else {
       fetcher = [uploadClass uploadFetcherWithRequest:request
                                      uploadFileHandle:uploadFileHandle
                                        uploadMIMEType:uploadMIMEType
-                                            chunkSize:uploadChunkSize];
+                                            chunkSize:uploadChunkSize
+                                       fetcherService:fetcherService_];
     }
-    [fetcher setRunLoopModes:[self runLoopModes]];
   } else {
     fetcher = [fetcherService_ fetcherWithRequest:request];
   }
