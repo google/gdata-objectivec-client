@@ -43,7 +43,7 @@ Next, add the [http://developer.apple.com/mac/library/qa/qa2006/qa1490.html ObjC
 
 Also add the compile flags described below in "Removing Unneeded Code".
 
-The static library build creates a directory of header files (in its build products directory) that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
+The static library build creates a directory of header files (in its build products directory, `~/Library/Developer/Xcode/DerivedData`) that should be dragged into your application project. With the static library linked into your project, refer directly to the headers by omitting the framework name, like
 
 `#import "GDataCalendar.h"`
 
