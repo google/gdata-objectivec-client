@@ -29,6 +29,8 @@ To facilitate debugging, you may choose to include the GData.xcodeproj project f
 
 == Linking to the iPhone Static Library ==
 
+_*Tip*: Developer hoishing has published helpful tips, including photographs, for building the static library in Xcode 4 in [http://hoishing.wordpress.com/2011/08/23/gdata-static-library-for-specific-api/ his blog]._
+
 The library project includes a target for building a static library for iPhone and iPod Touch apps; this avoids dragging individual library source files into the iPhone application's project.
 
 To build with the static library, drag the GData project file itself into an iPhone project to make a cross-project reference, and add the GDataTouchStaticLib target as a dependency for building the app.
