@@ -186,8 +186,8 @@ typedef enum GDataDescRecTypes {
 } GDataDescRecTypes;
 
 typedef struct GDataDescriptionRecord {
-  NSString *label;
-  NSString *keyPath;
+  NSString GDATA_UNSAFE_UNRETAINED *label;
+  NSString GDATA_UNSAFE_UNRETAINED *keyPath;
   GDataDescRecTypes reportType;
 } GDataDescriptionRecord;
 
@@ -199,7 +199,7 @@ typedef struct GDataDescriptionRecord {
   // element name from original XML, used for later XML generation
   NSString *elementName_;
 
-  __weak GDataObject *parent_;  // parent in tree of GData objects
+  GDataObject GDATA_UNSAFE_UNRETAINED *parent_;  // weak: parent in tree of GData objects
 
   // GDataObjects keep namespaces as {key:prefix value:URI} dictionary entries
   NSMutableDictionary *namespaces_;
