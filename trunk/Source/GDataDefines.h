@@ -132,6 +132,24 @@
   #endif
 #endif
 
+//
+// Simple macros to allow building headers for non-ARC files
+// into ARC apps
+//
+
+#ifndef GDATA_REQUIRES_ARC
+  #if defined(__clang__)
+    #if __has_feature(objc_arc)
+      #define GDATA_REQUIRES_ARC 1
+    #endif
+  #endif
+#endif
+
+#if GDATA_REQUIRES_ARC
+  #define GDATA_UNSAFE_UNRETAINED __unsafe_unretained
+#else
+  #define GDATA_UNSAFE_UNRETAINED
+#endif
 
 //
 // To reduce code size on iPhone release builds, we compile out the helpful
