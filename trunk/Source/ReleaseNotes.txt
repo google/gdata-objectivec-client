@@ -48,6 +48,9 @@ Changes
 
 Bugs Fixed
 
+- Fixed retain of libxml document needed for safely persisting object
+  unknownChildren.
+
 
 Release 1.12.0
 8-April-2011

@@ -868,7 +868,7 @@ totalBytesExpectedToSend:(NSInteger)totalBytesExpected {
 
 #if GDATA_USES_LIBXML
     // retain the document so that pointers to internal nodes remain valid
-    [properties setValue:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
+    [object setProperty:xmlDocument forKey:kGDataXMLDocumentPropertyKey];
 #endif
 
     [properties setValue:object forKey:kFetcherParsedObjectKey];
