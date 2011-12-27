@@ -60,6 +60,7 @@ _EXTERN NSString* const kGDataServiceTicketParsingStoppedNotification _INITIALIZ
 
 enum {
   kGDataCouldNotConstructObjectError = -100,
+  kGDataWaitTimedOutError            = -101
 };
 
 @class GDataServiceTicketBase;
