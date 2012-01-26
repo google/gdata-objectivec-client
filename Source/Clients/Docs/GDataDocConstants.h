@@ -48,6 +48,7 @@ _EXTERN NSString* const kGDataCategoryFolderDoc         _INITIALIZE_AS(@"http://
 _EXTERN NSString* const kGDataCategoryFileDoc           _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#file");
 _EXTERN NSString* const kGDataCategoryPDFDoc            _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#pdf");
 _EXTERN NSString* const kGDataCategoryPresentationDoc   _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#presentation");
+_EXTERN NSString* const kGDataCategorySiteDoc           _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#site");
 _EXTERN NSString* const kGDataCategorySpreadsheetDoc    _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#spreadsheet");
 _EXTERN NSString* const kGDataCategoryStandardDoc       _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#document");
 

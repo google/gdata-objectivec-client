@@ -28,10 +28,6 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // utility for removing non-whitespace control characters
 + (NSString *)stringWithControlsFilteredForString:(NSString *)str;
 
-// utility for replacing whitespace and removing unsafe symbols for a
-// user-agent string
-+ (NSString *)userAgentStringForString:(NSString *)str;
-
 // utility for converting NSNumber to/from string, including inf/-inf
 //
 // an empty string returns a nil NSNumber

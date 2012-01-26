@@ -11,7 +11,7 @@ Additions
 - Added service method fetchEntryByUpdatingEntry:forEntryURL:completionHandler:
 
 - Added MD5Checksum, GDataDocFilename, GDataDocSuggestedFilename,
-  GDataDocLastCommented to document entries
+  GDataDocLastCommented, GDataSharedWithMe, GDataLastModifiedByMe to document entries
 
 - Added Docs Changes feed
 
@@ -45,6 +45,8 @@ Changes
 
 - Remove upload callbacks on systems without NSURLConnection's didSendBodyData:
   support (only affects users running early releases of Mac OS X 10.5)
+
+- Replaced +userAgentStringForString with utility functions from GTMHTTPFetcher
 
 Bugs Fixed
 
