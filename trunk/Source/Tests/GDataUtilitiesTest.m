@@ -57,24 +57,6 @@
   STAssertEqualObjects(output, expected, @"all-chars failure");
 }
 
-- (void)testUserAgentStringCleansing {
-
-  NSString *input;
-  NSString *output;
-
-  input = nil;
-  output = [GDataUtilities userAgentStringForString:input];
-  STAssertNil(output, @"nil test");
-
-  input = @"";
-  output = [GDataUtilities userAgentStringForString:input];
-  STAssertEqualObjects(output, @"", @"empty string");
-
-  input = @"\\iPod ({Touch])\n\r";
-  output = [GDataUtilities userAgentStringForString:input];
-  STAssertEqualObjects(output, @"iPod_Touch", @"user agent is unclean");
-}
-
 - (void)testPercentEncodingUTF8 {
   
   NSString *input;

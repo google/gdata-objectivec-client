@@ -31,6 +31,12 @@
 - (GDataDateTime *)lastViewed;
 - (void)setLastViewed:(GDataDateTime *)dateTime;
 
+- (GDataDateTime *)sharedWithMe;
+- (void)setSharedWithMe:(GDataDateTime *)dateTime;
+
+- (GDataDateTime *)lastModifiedByMe;
+- (void)setLastModifiedByMe:(GDataDateTime *)dateTime;
+
 - (NSNumber *)writersCanInvite; // bool
 - (void)setWritersCanInvite:(NSNumber *)num;
 

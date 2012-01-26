@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (555 classes) 2011-10-17 12:53:33 -0700
+// com.google.GDataFramework v. 1.12 (556 classes) 2011-10-14 18:18:17 -0700
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -199,6 +199,7 @@
   #define GDataEntryPresentationDoc               _GDATA_NS_SYMBOL(GDataEntryPresentationDoc)
   #define GDataEntrySite                          _GDATA_NS_SYMBOL(GDataEntrySite)
   #define GDataEntrySiteCrawlIssue                _GDATA_NS_SYMBOL(GDataEntrySiteCrawlIssue)
+  #define GDataEntrySiteDoc                       _GDATA_NS_SYMBOL(GDataEntrySiteDoc)
   #define GDataEntrySitemapBase                   _GDATA_NS_SYMBOL(GDataEntrySitemapBase)
   #define GDataEntrySitemapMobile                 _GDATA_NS_SYMBOL(GDataEntrySitemapMobile)
   #define GDataEntrySitemapNews                   _GDATA_NS_SYMBOL(GDataEntrySitemapNews)
