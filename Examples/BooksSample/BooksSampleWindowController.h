@@ -17,6 +17,21 @@
 //  BooksSampleWindowController.h
 //
 
+//
+// IMPORTANT:
+//
+// The XML-based API for Google Books has been replaced with a more efficient
+// and easier-to-use JSON API.  The new API is documented at
+//
+//   http://code.google.com/apis/books/
+//
+// See the new Objective-C client library and sample code at
+//   http://code.google.com/p/google-api-objectivec-client/
+//
+// This sample application and library support for the XML-based Books
+// API will eventually be removed.
+//
+
 #import <Cocoa/Cocoa.h>
 #import <WebKit/WebKit.h>
 
