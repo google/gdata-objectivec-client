@@ -66,6 +66,12 @@
   return kUseRegisteredEntryClass;
 }
 
+// A changefeed is a list of Documents that have changed
+// therefore we return a DocBase as a default class for this feed.
++ (Class)defaultClassForEntries {
+  return [GDataEntryDocBase class];
+}
+
 #pragma mark -
 
 - (NSNumber *)largestChangestamp {
