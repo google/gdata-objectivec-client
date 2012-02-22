@@ -11,7 +11,7 @@
 //
 
 //
-// com.google.GDataFramework v. 1.12 (556 classes) 2011-10-14 18:18:17 -0700
+// com.google.GDataFramework v. 1.12 (559 classes) 2012-02-22 10:53:16 -0800
 //
 
 #if defined(__OBJC__) && defined(GDATA_TARGET_NAMESPACE)
@@ -212,6 +212,7 @@
   #define GDataEntrySpreadsheetRecord             _GDATA_NS_SYMBOL(GDataEntrySpreadsheetRecord)
   #define GDataEntrySpreadsheetTable              _GDATA_NS_SYMBOL(GDataEntrySpreadsheetTable)
   #define GDataEntryStandardDoc                   _GDATA_NS_SYMBOL(GDataEntryStandardDoc)
+  #define GDataEntryTableDoc                      _GDATA_NS_SYMBOL(GDataEntryTableDoc)
   #define GDataEntryVolume                        _GDATA_NS_SYMBOL(GDataEntryVolume)
   #define GDataEntryWorksheet                     _GDATA_NS_SYMBOL(GDataEntryWorksheet)
   #define GDataEntryYouTubeCaptionTrack           _GDATA_NS_SYMBOL(GDataEntryYouTubeCaptionTrack)
@@ -318,6 +319,7 @@
   #define GDataInReplyTo                          _GDATA_NS_SYMBOL(GDataInReplyTo)
   #define GDataKindAttribute                      _GDATA_NS_SYMBOL(GDataKindAttribute)
   #define GDataLastModifiedBy                     _GDATA_NS_SYMBOL(GDataLastModifiedBy)
+  #define GDataLastModifiedByMe                   _GDATA_NS_SYMBOL(GDataLastModifiedByMe)
   #define GDataLastViewed                         _GDATA_NS_SYMBOL(GDataLastViewed)
   #define GDataLink                               _GDATA_NS_SYMBOL(GDataLink)
   #define GDataMapConstants                       _GDATA_NS_SYMBOL(GDataMapConstants)
@@ -453,6 +455,7 @@
   #define GDataServiceGoogleYouTube               _GDATA_NS_SYMBOL(GDataServiceGoogleYouTube)
   #define GDataServiceTicket                      _GDATA_NS_SYMBOL(GDataServiceTicket)
   #define GDataServiceTicketBase                  _GDATA_NS_SYMBOL(GDataServiceTicketBase)
+  #define GDataSharedWithMe                       _GDATA_NS_SYMBOL(GDataSharedWithMe)
   #define GDataSiteCrawledDate                    _GDATA_NS_SYMBOL(GDataSiteCrawledDate)
   #define GDataSiteCrawlIssueDateDetected         _GDATA_NS_SYMBOL(GDataSiteCrawlIssueDateDetected)
   #define GDataSiteCrawlIssueDetail               _GDATA_NS_SYMBOL(GDataSiteCrawlIssueDetail)
