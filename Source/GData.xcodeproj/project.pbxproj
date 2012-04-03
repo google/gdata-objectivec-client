@@ -1251,7 +1251,6 @@
 		4F4DF51E13746F4000F5C554 /* GTMHTTPUploadFetcher.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F61C6AC1353A654009CEDA4 /* GTMHTTPUploadFetcher.h */; };
 		4F4DF51F13746F4000F5C554 /* GTMOAuth2Authentication.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F00C3781355026B00DEC154 /* GTMOAuth2Authentication.h */; };
 		4F4DF52013746F4000F5C554 /* GTMOAuth2SignIn.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F00C37A1355026B00DEC154 /* GTMOAuth2SignIn.h */; };
-		4F4DF52213746F4000F5C554 /* SBJSON.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4FE5D567135FA0320003E5EC /* SBJSON.h */; };
 		4F4DF52A13746F8400F5C554 /* GDataXMLNode.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F93A5FD0DBD773A0067AE7E /* GDataXMLNode.h */; };
 		4F4DF52E13746F9200F5C554 /* GTMOAuth2ViewControllerTouch.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F00C3911355029900DEC154 /* GTMOAuth2ViewControllerTouch.h */; };
 		4F4E8DA50EB7E97800C59A7E /* GDataFeedYouTubeFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4E8DA30EB7E97800C59A7E /* GDataFeedYouTubeFavorite.m */; };
@@ -1345,6 +1344,27 @@
 		4F63FFEA0C1F595500C65F18 /* GDataCodeSearchPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F63FFD40C1F595500C65F18 /* GDataCodeSearchPackage.m */; };
 		4F63FFEB0C1F595500C65F18 /* GDataCodeSearchFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F63FFD60C1F595500C65F18 /* GDataCodeSearchFile.m */; };
 		4F651C900E198BB50011A477 /* GDataWebmasterTools.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F651C8F0E198BB50011A477 /* GDataWebmasterTools.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F6607EB152BAFE700D8776E /* SBJsonBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E5152BAFE700D8776E /* SBJsonBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F6607EC152BAFE700D8776E /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E6152BAFE700D8776E /* SBJsonBase.m */; };
+		4F6607ED152BAFE700D8776E /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E6152BAFE700D8776E /* SBJsonBase.m */; };
+		4F6607EE152BAFE700D8776E /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E6152BAFE700D8776E /* SBJsonBase.m */; };
+		4F6607EF152BAFE700D8776E /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E6152BAFE700D8776E /* SBJsonBase.m */; };
+		4F6607F0152BAFE700D8776E /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E6152BAFE700D8776E /* SBJsonBase.m */; };
+		4F6607F1152BAFE700D8776E /* SBJsonParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E7152BAFE700D8776E /* SBJsonParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F6607F2152BAFE700D8776E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E8152BAFE700D8776E /* SBJsonParser.m */; };
+		4F6607F3152BAFE700D8776E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E8152BAFE700D8776E /* SBJsonParser.m */; };
+		4F6607F4152BAFE700D8776E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E8152BAFE700D8776E /* SBJsonParser.m */; };
+		4F6607F5152BAFE700D8776E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E8152BAFE700D8776E /* SBJsonParser.m */; };
+		4F6607F6152BAFE700D8776E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607E8152BAFE700D8776E /* SBJsonParser.m */; };
+		4F6607F7152BAFE700D8776E /* SBJsonWriter.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E9152BAFE700D8776E /* SBJsonWriter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4F6607F8152BAFE700D8776E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607EA152BAFE700D8776E /* SBJsonWriter.m */; };
+		4F6607F9152BAFE700D8776E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607EA152BAFE700D8776E /* SBJsonWriter.m */; };
+		4F6607FA152BAFE700D8776E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607EA152BAFE700D8776E /* SBJsonWriter.m */; };
+		4F6607FB152BAFE700D8776E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607EA152BAFE700D8776E /* SBJsonWriter.m */; };
+		4F6607FC152BAFE700D8776E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F6607EA152BAFE700D8776E /* SBJsonWriter.m */; };
+		4F6607FD152BB04000D8776E /* SBJsonBase.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E5152BAFE700D8776E /* SBJsonBase.h */; };
+		4F6607FE152BB04600D8776E /* SBJsonParser.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E7152BAFE700D8776E /* SBJsonParser.h */; };
+		4F6607FF152BB04900D8776E /* SBJsonWriter.h in Copy Static Library Headers */ = {isa = PBXBuildFile; fileRef = 4F6607E9152BAFE700D8776E /* SBJsonWriter.h */; };
 		4F66E0B30E106943005DD84C /* GDataEntrySite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F66E0B20E106943005DD84C /* GDataEntrySite.m */; };
 		4F66E0B40E106943005DD84C /* GDataEntrySite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F66E0B20E106943005DD84C /* GDataEntrySite.m */; };
 		4F66E0B50E106943005DD84C /* GDataEntrySite.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F66E0B20E106943005DD84C /* GDataEntrySite.m */; };
@@ -2041,12 +2061,6 @@
 		4FE289310C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
 		4FE289320C078E7200F12BDB /* GDataDeleted.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE2892F0C078E7200F12BDB /* GDataDeleted.m */; };
 		4FE289360C078E7C00F12BDB /* GDataDeleted.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE289350C078E7C00F12BDB /* GDataDeleted.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE5D569135FA0320003E5EC /* SBJSON.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5D567135FA0320003E5EC /* SBJSON.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE5D56A135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
-		4FE5D56B135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
-		4FE5D56C135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
-		4FE5D56D135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
-		4FE5D56E135FA0320003E5EC /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5D568135FA0320003E5EC /* SBJSON.m */; };
 		4FE640C310E00E46007D2F65 /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640C110E00E46007D2F65 /* GDataAnalyticsCustomVariable.m */; };
 		4FE640C410E00E46007D2F65 /* GDataAnalyticsCustomVariable.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE640C210E00E46007D2F65 /* GDataAnalyticsCustomVariable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE640C510E00E46007D2F65 /* GDataAnalyticsCustomVariable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE640C110E00E46007D2F65 /* GDataAnalyticsCustomVariable.m */; };
@@ -2493,7 +2507,9 @@
 				4F4DF51E13746F4000F5C554 /* GTMHTTPUploadFetcher.h in Copy Static Library Headers */,
 				4F4DF51F13746F4000F5C554 /* GTMOAuth2Authentication.h in Copy Static Library Headers */,
 				4F4DF52013746F4000F5C554 /* GTMOAuth2SignIn.h in Copy Static Library Headers */,
-				4F4DF52213746F4000F5C554 /* SBJSON.h in Copy Static Library Headers */,
+				4F6607FD152BB04000D8776E /* SBJsonBase.h in Copy Static Library Headers */,
+				4F6607FE152BB04600D8776E /* SBJsonParser.h in Copy Static Library Headers */,
+				4F6607FF152BB04900D8776E /* SBJsonWriter.h in Copy Static Library Headers */,
 			);
 			name = "Copy Static Library Headers";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2901,6 +2917,12 @@
 		4F63FFD60C1F595500C65F18 /* GDataCodeSearchFile.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataCodeSearchFile.m; path = Clients/CodeSearch/GDataCodeSearchFile.m; sourceTree = "<group>"; };
 		4F63FFD70C1F595500C65F18 /* GDataEntryCodeSearch.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryCodeSearch.h; path = Clients/CodeSearch/GDataEntryCodeSearch.h; sourceTree = "<group>"; };
 		4F651C8F0E198BB50011A477 /* GDataWebmasterTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataWebmasterTools.h; path = Clients/WebmasterTools/GDataWebmasterTools.h; sourceTree = "<group>"; };
+		4F6607E5152BAFE700D8776E /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SBJsonBase.h; path = JSON/SBJsonBase.h; sourceTree = "<group>"; };
+		4F6607E6152BAFE700D8776E /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJsonBase.m; path = JSON/SBJsonBase.m; sourceTree = "<group>"; };
+		4F6607E7152BAFE700D8776E /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SBJsonParser.h; path = JSON/SBJsonParser.h; sourceTree = "<group>"; };
+		4F6607E8152BAFE700D8776E /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJsonParser.m; path = JSON/SBJsonParser.m; sourceTree = "<group>"; };
+		4F6607E9152BAFE700D8776E /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SBJsonWriter.h; path = JSON/SBJsonWriter.h; sourceTree = "<group>"; };
+		4F6607EA152BAFE700D8776E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJsonWriter.m; path = JSON/SBJsonWriter.m; sourceTree = "<group>"; };
 		4F66E0B20E106943005DD84C /* GDataEntrySite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntrySite.m; path = Clients/WebmasterTools/GDataEntrySite.m; sourceTree = "<group>"; };
 		4F66E0B60E106955005DD84C /* GDataSiteVerificationMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataSiteVerificationMethod.m; path = Clients/WebmasterTools/GDataSiteVerificationMethod.m; sourceTree = "<group>"; };
 		4F66E0B70E106955005DD84C /* GDataEntrySite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntrySite.h; path = Clients/WebmasterTools/GDataEntrySite.h; sourceTree = "<group>"; };
@@ -3128,8 +3150,6 @@
 		4FDFC1B50DDB69E30089A011 /* GDataFinanceTransactionData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataFinanceTransactionData.m; path = Clients/Finance/GDataFinanceTransactionData.m; sourceTree = "<group>"; };
 		4FE2892F0C078E7200F12BDB /* GDataDeleted.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataDeleted.m; path = Elements/GDataDeleted.m; sourceTree = "<group>"; };
 		4FE289350C078E7C00F12BDB /* GDataDeleted.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDeleted.h; path = Elements/GDataDeleted.h; sourceTree = "<group>"; };
-		4FE5D567135FA0320003E5EC /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SBJSON.h; path = JSON/SBJSON.h; sourceTree = "<group>"; };
-		4FE5D568135FA0320003E5EC /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SBJSON.m; path = JSON/SBJSON.m; sourceTree = "<group>"; };
 		4FE640C110E00E46007D2F65 /* GDataAnalyticsCustomVariable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsCustomVariable.m; path = Clients/Analytics/GDataAnalyticsCustomVariable.m; sourceTree = "<group>"; };
 		4FE640C210E00E46007D2F65 /* GDataAnalyticsCustomVariable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataAnalyticsCustomVariable.h; path = Clients/Analytics/GDataAnalyticsCustomVariable.h; sourceTree = "<group>"; };
 		4FE640D410E00E8F007D2F65 /* GDataAnalyticsGoal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataAnalyticsGoal.m; path = Clients/Analytics/GDataAnalyticsGoal.m; sourceTree = "<group>"; };
@@ -4241,8 +4261,12 @@
 		4FE5D562135F9FF30003E5EC /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				4FE5D567135FA0320003E5EC /* SBJSON.h */,
-				4FE5D568135FA0320003E5EC /* SBJSON.m */,
+				4F6607E5152BAFE700D8776E /* SBJsonBase.h */,
+				4F6607E6152BAFE700D8776E /* SBJsonBase.m */,
+				4F6607E7152BAFE700D8776E /* SBJsonParser.h */,
+				4F6607E8152BAFE700D8776E /* SBJsonParser.m */,
+				4F6607E9152BAFE700D8776E /* SBJsonWriter.h */,
+				4F6607EA152BAFE700D8776E /* SBJsonWriter.m */,
 			);
 			name = JSON;
 			sourceTree = "<group>";
@@ -4644,7 +4668,6 @@
 				4F00C3841355026B00DEC154 /* GTMOAuth2Authentication.h in Headers */,
 				4F00C3861355026B00DEC154 /* GTMOAuth2SignIn.h in Headers */,
 				4F00C38F1355028700DEC154 /* GTMOAuth2WindowController.h in Headers */,
-				4FE5D569135FA0320003E5EC /* SBJSON.h in Headers */,
 				4F2EA5CB13AAD74000E9C96E /* GDataFeedDocChange.h in Headers */,
 				4F2EA5DA13AAE6EE00E9C96E /* GDataEntryDocChange.h in Headers */,
 				4F71B1F313DA13E500B955AC /* GDataDocElements.h in Headers */,
@@ -4653,6 +4676,9 @@
 				4F91A295144CBB90005DCACA /* GTMMIMEDocument.h in Headers */,
 				4F6956C714D1EBDC006EC12E /* GDataEntrySiteDoc.h in Headers */,
 				4F59F99F14F570B00088C031 /* GDataEntryTableDoc.h in Headers */,
+				4F6607EB152BAFE700D8776E /* SBJsonBase.h in Headers */,
+				4F6607F1152BAFE700D8776E /* SBJsonParser.h in Headers */,
+				4F6607F7152BAFE700D8776E /* SBJsonWriter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5149,7 +5175,6 @@
 				4F61C6BC1353A654009CEDA4 /* GTMHTTPUploadFetcher.m in Sources */,
 				4F00C3801355026B00DEC154 /* GTMOAuth2Authentication.m in Sources */,
 				4F00C3811355026B00DEC154 /* GTMOAuth2SignIn.m in Sources */,
-				4FE5D56C135FA0320003E5EC /* SBJSON.m in Sources */,
 				4F2EA5CE13AAD74000E9C96E /* GDataFeedDocChange.m in Sources */,
 				4F2EA5DD13AAE6EE00E9C96E /* GDataEntryDocChange.m in Sources */,
 				4F71B1F213DA13E500B955AC /* GDataDocElements.m in Sources */,
@@ -5158,6 +5183,9 @@
 				4F91A29A144CBB90005DCACA /* GTMMIMEDocument.m in Sources */,
 				4F6956CA14D1EBDC006EC12E /* GDataEntrySiteDoc.m in Sources */,
 				4F59F9A214F570B00088C031 /* GDataEntryTableDoc.m in Sources */,
+				4F6607EE152BAFE700D8776E /* SBJsonBase.m in Sources */,
+				4F6607F4152BAFE700D8776E /* SBJsonParser.m in Sources */,
+				4F6607FA152BAFE700D8776E /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5452,7 +5480,6 @@
 				4F00C37C1355026B00DEC154 /* GTMOAuth2Authentication.m in Sources */,
 				4F00C37D1355026B00DEC154 /* GTMOAuth2SignIn.m in Sources */,
 				4F00C38C1355028700DEC154 /* GTMOAuth2WindowController.m in Sources */,
-				4FE5D56E135FA0320003E5EC /* SBJSON.m in Sources */,
 				4F2EA5D013AAD74000E9C96E /* GDataFeedDocChange.m in Sources */,
 				4F2EA5DF13AAE6EE00E9C96E /* GDataEntryDocChange.m in Sources */,
 				4F71B1F713DA13E500B955AC /* GDataDocElements.m in Sources */,
@@ -5461,6 +5488,9 @@
 				4F91A29E144CBB90005DCACA /* GTMMIMEDocument.m in Sources */,
 				4F6956CC14D1EBDC006EC12E /* GDataEntrySiteDoc.m in Sources */,
 				4F59F9A414F570B00088C031 /* GDataEntryTableDoc.m in Sources */,
+				4F6607F0152BAFE700D8776E /* SBJsonBase.m in Sources */,
+				4F6607F6152BAFE700D8776E /* SBJsonParser.m in Sources */,
+				4F6607FC152BAFE700D8776E /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5754,7 +5784,6 @@
 				4F00C3821355026B00DEC154 /* GTMOAuth2Authentication.m in Sources */,
 				4F00C3831355026B00DEC154 /* GTMOAuth2SignIn.m in Sources */,
 				4F00C3941355029900DEC154 /* GTMOAuth2ViewControllerTouch.m in Sources */,
-				4FE5D56B135FA0320003E5EC /* SBJSON.m in Sources */,
 				4F2EA5CD13AAD74000E9C96E /* GDataFeedDocChange.m in Sources */,
 				4F2EA5DC13AAE6EE00E9C96E /* GDataEntryDocChange.m in Sources */,
 				4F71B1F513DA13E500B955AC /* GDataDocElements.m in Sources */,
@@ -5763,6 +5792,9 @@
 				4F91A298144CBB90005DCACA /* GTMMIMEDocument.m in Sources */,
 				4F6956C914D1EBDC006EC12E /* GDataEntrySiteDoc.m in Sources */,
 				4F59F9A114F570B00088C031 /* GDataEntryTableDoc.m in Sources */,
+				4F6607ED152BAFE700D8776E /* SBJsonBase.m in Sources */,
+				4F6607F3152BAFE700D8776E /* SBJsonParser.m in Sources */,
+				4F6607F9152BAFE700D8776E /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6055,7 +6087,6 @@
 				4F00C3851355026B00DEC154 /* GTMOAuth2Authentication.m in Sources */,
 				4F00C3871355026B00DEC154 /* GTMOAuth2SignIn.m in Sources */,
 				4F00C3901355028700DEC154 /* GTMOAuth2WindowController.m in Sources */,
-				4FE5D56A135FA0320003E5EC /* SBJSON.m in Sources */,
 				4F2EA5CC13AAD74000E9C96E /* GDataFeedDocChange.m in Sources */,
 				4F2EA5DB13AAE6EE00E9C96E /* GDataEntryDocChange.m in Sources */,
 				4F71B1F413DA13E500B955AC /* GDataDocElements.m in Sources */,
@@ -6064,6 +6095,9 @@
 				4F91A296144CBB90005DCACA /* GTMMIMEDocument.m in Sources */,
 				4F6956C814D1EBDC006EC12E /* GDataEntrySiteDoc.m in Sources */,
 				4F59F9A014F570B00088C031 /* GDataEntryTableDoc.m in Sources */,
+				4F6607EC152BAFE700D8776E /* SBJsonBase.m in Sources */,
+				4F6607F2152BAFE700D8776E /* SBJsonParser.m in Sources */,
+				4F6607F8152BAFE700D8776E /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6366,7 +6400,6 @@
 				4F61C6B71353A654009CEDA4 /* GTMHTTPUploadFetcher.m in Sources */,
 				4F00C37E1355026B00DEC154 /* GTMOAuth2Authentication.m in Sources */,
 				4F00C37F1355026B00DEC154 /* GTMOAuth2SignIn.m in Sources */,
-				4FE5D56D135FA0320003E5EC /* SBJSON.m in Sources */,
 				4F2EA5CF13AAD74000E9C96E /* GDataFeedDocChange.m in Sources */,
 				4F2EA5DE13AAE6EE00E9C96E /* GDataEntryDocChange.m in Sources */,
 				4F71B1F613DA13E500B955AC /* GDataDocElements.m in Sources */,
@@ -6375,6 +6408,9 @@
 				4F91A29C144CBB90005DCACA /* GTMMIMEDocument.m in Sources */,
 				4F6956CB14D1EBDC006EC12E /* GDataEntrySiteDoc.m in Sources */,
 				4F59F9A314F570B00088C031 /* GDataEntryTableDoc.m in Sources */,
+				4F6607EF152BAFE700D8776E /* SBJsonBase.m in Sources */,
+				4F6607F5152BAFE700D8776E /* SBJsonParser.m in Sources */,
+				4F6607FB152BAFE700D8776E /* SBJsonWriter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
