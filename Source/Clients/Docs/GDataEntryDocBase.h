@@ -77,6 +77,9 @@
 - (BOOL)isViewed;
 - (void)setIsViewed:(BOOL)flag;
 
+- (BOOL)isShared;
+- (void)setIsShared:(BOOL)flag;
+
 // convenience accessors
 - (NSArray *)parentLinks;
 
