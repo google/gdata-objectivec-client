@@ -13,6 +13,8 @@ Additions
 - Added MD5Checksum, GDataDocFilename, GDataDocSuggestedFilename,
   GDataDocLastCommented, GDataSharedWithMe, GDataLastModifiedByMe to document entries
 
+- Added GDataCategoryLabelShared as a label for document entries.
+
 - Added Docs Changes feed
 
 - Added GDataACLAdditionalRole

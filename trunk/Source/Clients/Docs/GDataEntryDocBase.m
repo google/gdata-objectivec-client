@@ -372,6 +372,21 @@
   }
 }
 
+- (BOOL)isShared {
+  BOOL flag = [GDataCategory categories:[self categories]
+              containsCategoryWithLabel:kGDataCategoryLabelShared];
+  return flag;
+}
+
+- (void)setIsShared:(BOOL)flag {
+  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelShared];
+  if (flag) {
+    [self addCategory:cat];
+  } else {
+    [self removeCategory:cat];
+  }
+}
+
 #pragma mark -
 
 - (NSArray *)parentLinks {
@@ -426,7 +441,7 @@
 + (NSString *)defaultServiceVersion {
   return kGDataDocsDefaultServiceVersion;
 }
-  
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_DOCS_SERVICE
