@@ -390,23 +390,17 @@
 #pragma mark -
 
 - (NSArray *)parentLinks {
-
-  NSArray *links = [self links];
-  if (links == nil) return nil;
-
-  NSArray *parentLinks = [GDataUtilities objectsFromArray:links
-                                                withValue:kGDataCategoryDocParent
-                                               forKeyPath:@"rel"];
-  return parentLinks;
+  return [self linksWithRelAttributeValue:kGDataCategoryDocParent];
 }
 
 - (GDataLink *)thumbnailLink {
-  NSArray *links = [self links];
-  GDataLink *thumbnail = [GDataUtilities firstObjectFromArray:links
-                                                    withValue:kGDataDocsThumbnailRel
-                                                   forKeyPath:@"rel"];
-  return thumbnail;
+  return [self linkWithRelAttributeValue:kGDataDocsThumbnailRel];
 }
+
+- (GDataLink *)alternateSelfLink {
+  return [self linkWithRelAttributeValue:kGDataDocsAlternateSelfRel];
+}
+
 
 - (GDataFeedLink *)feedLinkForRel:(NSString *)rel {
 
