@@ -63,6 +63,7 @@ _EXTERN NSString* const kGDataCategoryDocRevision       _INITIALIZE_AS(@"http://
 _EXTERN NSString* const kGDataDocsPublishedRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#publish");
 _EXTERN NSString* const kGDataDocsRevisionsRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/revisions");
 _EXTERN NSString* const kGDataDocsThumbnailRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/thumbnail");
+_EXTERN NSString* const kGDataDocsAlternateSelfRel      _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#alt-self");
 
 _EXTERN NSString* const kGDataDocsRootFolderHref        _INITIALIZE_AS(@"https://docs.google.com/feeds/default/private/full/folder%3Aroot");
 

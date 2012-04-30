@@ -85,6 +85,11 @@
 
 - (GDataLink *)thumbnailLink;
 
+// An alternate self link. Used only in GDataEntryDocBase subclasses that
+// appear in GDataFeedDocChange. The value is the selfLink of the
+// GDataEntryDocBase.
+- (GDataLink *)alternateSelfLink;
+
 - (GDataFeedLink *)ACLFeedLink;
 - (GDataFeedLink *)revisionFeedLink;
 
