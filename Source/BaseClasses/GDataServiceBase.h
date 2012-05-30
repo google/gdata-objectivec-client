@@ -531,6 +531,15 @@ typedef void *GDataServiceUploadProgressHandler;
 - (void)setOperationQueue:(id)queue;
 
 // credentials
+//
+// Note: Specifying the username and password is a deprecated method
+//       of user authorization called ClientLogin, and does not work for all
+//       user accounts.
+//       Applications should instead enable users to sign in using OAuth 2,
+//       such as with the gtm-oauth2 view and window controllers.
+//
+//       http://code.google.com/p/gtm-oauth2/wiki/Introduction
+
 - (void)setUserCredentialsWithUsername:(NSString *)username
                               password:(NSString *)password;
 - (NSString *)username;
