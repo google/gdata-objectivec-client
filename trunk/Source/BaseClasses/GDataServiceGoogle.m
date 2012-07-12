@@ -940,16 +940,25 @@ enum {
 
 
 - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
                         completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
 
   return [self fetchAuthenticatedObjectWithURL:entryURL
-                                   objectClass:kGDataUseRegisteredClass
+                                   objectClass:entryClass
                                   objectToPost:nil
                                           ETag:nil
                                     httpMethod:nil
                                       delegate:nil
                              didFinishSelector:NULL
                              completionHandler:(GDataServiceGoogleCompletionHandler)handler];
+}
+
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                        completionHandler:(GDataServiceGoogleEntryBaseCompletionHandler)handler {
+
+  return [self fetchEntryWithURL:entryURL
+                      entryClass:kGDataUseRegisteredClass
+               completionHandler:handler];
 }
 
 - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert
@@ -1229,7 +1238,7 @@ enum {
     // existing token
     authToken = authToken_;
   }
-  
+
   // add the auth token to the header
   if ([authToken length] > 0) {
     NSString *value = [NSString stringWithFormat:@"GoogleLogin auth=%@",
