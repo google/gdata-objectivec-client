@@ -1335,7 +1335,7 @@
     { @"entries.0.issueType", @"http-error" },
     { @"entries.0.issueURLString", @"http://example.com/dir/" },
     { @"entries.0.issueLinkedFromURLStrings.0", @"http://example.com" },
-    { @"entries.0.issueLinkedFromURLStrings.0.className", @"NSCFString" },
+    { @"entries.0.issueLinkedFromURLStrings.0.className", @"__NSCFString" },
 
     { @"", @"" }, // end of feed
 

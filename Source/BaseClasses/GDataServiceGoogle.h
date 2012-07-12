@@ -221,8 +221,13 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
                          completionHandler:(void (^)(GDataServiceTicket *ticket, GDataFeedBase *feed, NSError *error))handler;
 
 // fetch an entry, authenticated
- - (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
                          completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
+
+// fetch an entry, authenticated, with specified class
+- (GDataServiceTicket *)fetchEntryWithURL:(NSURL *)entryURL
+                               entryClass:(Class)entryClass
+                        completionHandler:(void (^)(GDataServiceTicket *ticket, GDataEntryBase *entry, NSError *error))handler;
 
 // insert an entry, authenticated
 - (GDataServiceTicket *)fetchEntryByInsertingEntry:(GDataEntryBase *)entryToInsert

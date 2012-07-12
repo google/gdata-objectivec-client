@@ -819,24 +819,23 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
 #pragma mark Set contact image
 
 - (void)setContactImage {
+
   // ask the user to choose an image file
   NSOpenPanel *openPanel = [NSOpenPanel openPanel];
   [openPanel setPrompt:@"Set"];
   [openPanel setAllowedFileTypes:[NSImage imageFileTypes]];
   [openPanel beginSheetModalForWindow:[self window]
                     completionHandler:^(NSInteger result) {
-                      // callback
-                      if (result == NSOKButton) {
-                        // user chose a photo and clicked OK
-                        //
-                        // start uploading (deferred to the main thread since we currently have
-                        // a sheet displayed)
-                        NSString *path = [[openPanel URL] path];
-                        [self performSelectorOnMainThread:@selector(setSelectedContactPhotoAtPath:)
-                                               withObject:path
-                                            waitUntilDone:NO];
-                      }
-                    }];
+    if (result == NSOKButton) {
+      // user chose a photo and clicked OK
+      //
+      // start uploading (deferred to the main thread since we currently have
+      // a sheet displayed)
+      [self performSelectorOnMainThread:@selector(setSelectedContactPhotoAtPath:)
+                             withObject:[[openPanel URL] path]
+                          waitUntilDone:NO];
+    }
+  }];
 }
 
 - (void)setSelectedContactPhotoAtPath:(NSString *)path {

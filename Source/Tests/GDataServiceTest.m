@@ -83,7 +83,7 @@
 NSTask *StartHTTPServerTask(int portNumber) NS_RETURNS_RETAINED;
 
 // StartHTTPServerTask is used below and in GTMHTTPFetcherTest
-NSTask *StartHTTPServerTask(int portNumber) NS_RETURNS_RETAINED {
+NSTask *StartHTTPServerTask(int portNumber) {
   // run the python http server, located in the Tests directory
   NSString *currentDir = [[NSFileManager defaultManager] currentDirectoryPath];
   NSString *serverPath = [currentDir stringByAppendingPathComponent:@"Tests/GDataTestHTTPServer.py"];
