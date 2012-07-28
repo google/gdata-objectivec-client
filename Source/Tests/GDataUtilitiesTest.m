@@ -41,7 +41,7 @@
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   STAssertEqualObjects(output, input, @"plain string");
   
-  input = [NSString stringWithFormat:@"Nuts%CBolts", 0x0B]; // 0xB: vertical tab
+  input = [NSString stringWithFormat:@"Nuts%CBolts", (unichar) 0x0B]; // 0xB: vertical tab
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   STAssertEqualObjects(output, @"NutsBolts", @"vt failure");
   
@@ -74,7 +74,7 @@
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   STAssertEqualObjects(output, input, @"plain string");
   
-  input = [NSString stringWithFormat:@"The Beach at S%Cte", 0x00E8];
+  input = [NSString stringWithFormat:@"The Beach at S%Cte", (unichar) 0x00E8];
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   STAssertEqualObjects(output, @"The Beach at S%C3%A8te", @"8-bit failure");
 
@@ -83,7 +83,7 @@
   STAssertEqualObjects(output, @"%09tab%09line1%0Dline2%25percent%0Aline3", 
                        @"control char");
 
-  input = [NSString stringWithFormat:@"photo%C.jpg", 0x53C3];
+  input = [NSString stringWithFormat:@"photo%C.jpg", (unichar) 0x53C3];
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   STAssertEqualObjects(output, @"photo%E5%8F%83.jpg", @"cjk failure");
 }
