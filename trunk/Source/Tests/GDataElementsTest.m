@@ -1510,7 +1510,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 }
 
 - (void)testControlCharacterRemoval {
-  NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C%C%C", 0, 1, 2];
+  NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C%C%C",
+                   (unichar) 0, (unichar) 1, (unichar) 2];
   
   GDataTextConstruct *tc = [GDataTextConstruct textConstructWithString:str];
   NSXMLElement *elem = [tc XMLElement];
