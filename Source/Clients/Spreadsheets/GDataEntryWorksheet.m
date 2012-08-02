@@ -74,8 +74,8 @@
   
   NSMutableArray *items = [super itemsForDescription];
   
-  NSString *colStr = [NSString stringWithFormat:@"%d", [self columnCount]];
-  NSString *rowStr = [NSString stringWithFormat:@"%d", [self rowCount]];
+  NSString *colStr = [NSString stringWithFormat:@"%d", (int) [self columnCount]];
+  NSString *rowStr = [NSString stringWithFormat:@"%d", (int) [self rowCount]];
   
   [self addToArray:items objectDescriptionIfNonNil:colStr withName:@"cols"];
   [self addToArray:items objectDescriptionIfNonNil:rowStr withName:@"rows"];
