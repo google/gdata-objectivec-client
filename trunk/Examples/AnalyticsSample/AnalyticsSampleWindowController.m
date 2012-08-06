@@ -17,6 +17,21 @@
 //  AnalyticsSampleWindowController.m
 //
 
+//
+// IMPORTANT:
+//
+// The XML-based API for Google Analytics has been replaced with a more efficient
+// and easier-to-use JSON API.  The JSON API is documented at
+//
+//   https://developers.google.com/analytics
+//
+// See the new Objective-C client library and sample code at
+//   http://code.google.com/p/google-api-objectivec-client/
+//
+// This sample application and library support for the XML-based Analytics
+// API will eventually be removed.
+//
+
 #import "AnalyticsSampleWindowController.h"
 
 @interface AnalyticsSampleWindowController (PrivateMethods)

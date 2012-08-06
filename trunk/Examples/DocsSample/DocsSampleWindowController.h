@@ -17,6 +17,21 @@
 //  DocsSampleWindowController.h
 //
 
+//
+// IMPORTANT:
+//
+// The XML-based API for Google Docs has been replaced with a more efficient
+// and easier-to-use JSON API.  The JSON API is documented at
+//
+//   https://developers.google.com/drive/
+//
+// See the new Objective-C client library and sample code at
+//   http://code.google.com/p/google-api-objectivec-client/
+//
+// This sample application and library support for the XML-based Docs
+// API will eventually be removed.
+//
+
 #import <Cocoa/Cocoa.h>
 
 #import "GData/GDataDocs.h"

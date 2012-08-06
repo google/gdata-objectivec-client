@@ -17,6 +17,21 @@
 //  BloggerSampleWindowController.m
 //
 
+//
+// IMPORTANT:
+//
+// The XML-based API for Blogger has been replaced with a more efficient
+// and easier-to-use JSON API.  The JSON API is documented at
+//
+//   https://developers.google.com/blogger/
+//
+// See the new Objective-C client library and sample code at
+//   http://code.google.com/p/google-api-objectivec-client/
+//
+// This sample application and library support for the XML-based Blogger
+// API will eventually be removed.
+//
+
 #import "BloggerSampleWindowController.h"
 
 @interface BloggerSampleWindowController (PrivateMethods)
