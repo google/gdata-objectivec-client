@@ -23,7 +23,7 @@
 // The XML-based API for Google Calendar has been replaced with a more efficient
 // and easier-to-use JSON API.  The JSON API is documented at
 //
-//   http://code.google.com/apis/calendar/
+//   https://developers.google.com/google-apps/calendar/
 //
 // See the new Objective-C client library and sample code at
 //   http://code.google.com/p/google-api-objectivec-client/

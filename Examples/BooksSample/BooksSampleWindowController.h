@@ -23,7 +23,7 @@
 // The XML-based API for Google Books has been replaced with a more efficient
 // and easier-to-use JSON API.  The new API is documented at
 //
-//   http://code.google.com/apis/books/
+//   https://developers.google.com/books/
 //
 // See the new Objective-C client library and sample code at
 //   http://code.google.com/p/google-api-objectivec-client/
