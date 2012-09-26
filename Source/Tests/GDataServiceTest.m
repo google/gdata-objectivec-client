@@ -159,7 +159,7 @@ static int kServerPortNumber = 54579;
 
 - (void)fetchStateChanged:(NSNotification *)note {
   GTMHTTPFetcher *fetcher = [note object];
-  GDataServiceTicketBase *ticket = [fetcher ticket];
+  GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
   STAssertNotNil(ticket, @"cannot get ticket from fetch notification");
 
@@ -194,7 +194,7 @@ static int kServerPortNumber = 54579;
 
 - (void)retryDelayStateChanged:(NSNotification *)note {
   GTMHTTPFetcher *fetcher = [note object];
-  GDataServiceTicketBase *ticket = [fetcher ticket];
+  GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
   STAssertNotNil(ticket, @"cannot get ticket from retry delay notification");
 

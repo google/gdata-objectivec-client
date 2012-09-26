@@ -104,9 +104,8 @@ BOOL AreBoolsEqual(BOOL b1, BOOL b2);
 // file type helpers
 //
 
-// utility routine to convert a file path to the file's MIME type using
-// Mac OS X's UTI database
-+ (NSString *)MIMETypeForFileAtPath:(NSString *)path
+// utility routine to convert a file name to the file's MIME type
++ (NSString *)MIMETypeForFileAtPath:(NSString *)filename
                     defaultMIMEType:(NSString *)defaultType;
 
 
