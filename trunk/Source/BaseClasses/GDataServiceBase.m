@@ -70,7 +70,7 @@ static void XorPlainMutableData(NSMutableData *mutableData) {
 
 // category to provide opaque access to tickets stored in fetcher properties
 @implementation GTMHTTPFetcher (GDataServiceTicketAdditions)
-- (id)ticket {
+- (id)GDataTicket {
   return [self propertyForKey:kFetcherTicketKey];
 }
 @end

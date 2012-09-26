@@ -54,6 +54,9 @@ Changes
 
 - Replaced +userAgentStringForString with utility functions from GTMHTTPFetcher
 
+- The category method to get the ticket from an object fetcher was renamed from
+  -ticket to -GDataTicket to avoid conflict with the GTL library's category.
+
 Bugs Fixed
 
 - Fixed retain of libxml document needed for safely persisting object

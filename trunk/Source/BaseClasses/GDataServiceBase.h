@@ -224,7 +224,7 @@ typedef void *GDataServiceUploadProgressHandler;
 
 // category to provide opaque access to tickets stored in fetcher properties
 @interface GTMHTTPFetcher (GDataServiceTicketAdditions)
-- (id)ticket;
+- (id)GDataTicket;
 @end
 
 
