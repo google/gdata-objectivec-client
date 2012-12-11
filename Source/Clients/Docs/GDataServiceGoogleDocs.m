@@ -62,7 +62,7 @@
     projection = @"full";
   }
 
-  NSString *templateStr = @"%@%@/%@/%@";
+  NSString *const templateStr = @"%@%@/%@/%@";
   NSString *encodedUser = [GDataUtilities stringByURLEncodingForURI:userID];
   NSString *urlStr = [NSString stringWithFormat:templateStr,
                       rootURLStr, encodedUser, visibility, projection];

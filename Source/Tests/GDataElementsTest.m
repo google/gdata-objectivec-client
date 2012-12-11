@@ -104,7 +104,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   
   // skip over non-element children to find the first element
   NSXMLElement *element;
-  int index = 0;
+  NSUInteger index = 0;
   do {
     element = (NSXMLElement *) [entryXML childAtIndex:index];
     ++index;
@@ -128,7 +128,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   // step through keys in the path
   id targetObj = obj;
-  for (int idx = 0; idx < [pathList count]; idx++) {
+  for (NSUInteger idx = 0; idx < [pathList count]; idx++) {
     
     // if a key is an integer or "@count", then evaluate the array or set
     // preceding it and extract the object indexed by the integer or the count
@@ -147,7 +147,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
       if ([thisKey isEqual:@"@count"]) {
         targetObj = [NSNumber numberWithUnsignedInteger:[targetArray count]];
       } else {
-        int arrayIndex = [thisKey intValue];
+        NSUInteger arrayIndex = (NSUInteger)[thisKey intValue];
         targetObj = [targetArray objectAtIndex:arrayIndex];
       }
     } else {
@@ -348,8 +348,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   
   // Test a non-ASCII character and some html characters in a TextConstruct.  
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
-  NSString *templateStr = @"Test ellipsis (%C) and others \"<&>";
-  NSString *textConstructTestResult = [NSString stringWithFormat:templateStr, 8230];
+  NSString *const templateStr = @"Test ellipsis (%C) and others \"<&>";
+  NSString *textConstructTestResult = [NSString stringWithFormat:templateStr, (unichar)8230];
   
   // To test an inline feed, we'll read in the cells feed test file,
   // strip the <?xml...> prefix, and wrap it in a gd:feedLink
@@ -1263,8 +1263,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSString *value1 = @"horgood\nbatman";
 
   NSString *key2 = @"frubble map";
-  NSString *templateStr = @"Ellipsis (%C) and other chars \"<&>";
-  NSString *value2 = [NSString stringWithFormat:templateStr, 8230];
+  NSString *const templateStr = @"Ellipsis (%C) and other chars \"<&>";
+  NSString *value2 = [NSString stringWithFormat:templateStr, (unichar)8230];
 
   GDataExtendedProperty *extProp;
   extProp = [GDataExtendedProperty propertyWithName:@"zum" value:nil];
@@ -1328,12 +1328,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   [entry setUploadSlug:@"testfile.jpg"];
 
   NSInputStream *inputStream = nil;
-  unsigned long long streamLength = 0;
+  unsigned long long signedLength = 0;
   NSDictionary *streamHeaders = nil;
   BOOL gotStream = [entry generateContentInputStream:&inputStream
-                                              length:&streamLength
+                                              length:&signedLength
                                              headers:&streamHeaders];
   STAssertTrue(gotStream, @"generating multipart stream");
+
+  NSUInteger streamLength = (NSUInteger)signedLength;
 
   NSMutableData *streamData = [NSMutableData dataWithLength:streamLength];
   [inputStream open];
@@ -1368,10 +1370,11 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   streamLength = 0;
   streamHeaders = nil;
   gotStream = [entry generateContentInputStream:&inputStream
-                                         length:&streamLength
+                                         length:&signedLength
                                         headers:&streamHeaders];
   STAssertTrue(gotStream, @"generating multipart stream");
 
+  streamLength = (NSUInteger)signedLength;
   streamData = [NSMutableData dataWithLength:streamLength];
   [inputStream open];
   [inputStream read:[streamData mutableBytes] maxLength:streamLength];

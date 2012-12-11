@@ -1833,7 +1833,7 @@ return [self fetchPublicFeedWithBatchFeed:batchFeed
 }
 
 - (NSString *)description {
-  NSString *templateStr = @"%@ %p: {service:%@ currentFetcher:%@ userData:%@}";
+  NSString *const templateStr = @"%@ %p: {service:%@ currentFetcher:%@ userData:%@}";
   return [NSString stringWithFormat:templateStr,
     [self class], self, service_, currentFetcher_, userData_];
 }

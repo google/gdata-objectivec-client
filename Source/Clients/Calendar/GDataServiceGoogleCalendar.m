@@ -46,7 +46,7 @@
 
   NSString *rootURLString = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@%@/settings";
+  NSString *const templateStr = @"%@%@/settings";
 
   NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              rootURLString, usernameEscaped];
@@ -61,7 +61,7 @@
 
   NSString *rootURLString = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@default/freebusy/busy-times/%@";
+  NSString *const templateStr = @"%@default/freebusy/busy-times/%@";
 
   NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              rootURLString, usernameEscaped];
@@ -76,7 +76,7 @@
 
   NSString *rootURLString = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@default/freebusy/group/%@/busy-times";
+  NSString *const templateStr = @"%@default/freebusy/group/%@/busy-times";
 
   NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              rootURLString, nameEscaped];
