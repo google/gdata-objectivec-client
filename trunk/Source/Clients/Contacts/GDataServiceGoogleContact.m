@@ -35,7 +35,7 @@
 
   NSString *baseURLString = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@%@/%@/%@";
+  NSString *const templateStr = @"%@%@/%@/%@";
 
   NSString *feedURLString = [NSString stringWithFormat:templateStr,
                              baseURLString,

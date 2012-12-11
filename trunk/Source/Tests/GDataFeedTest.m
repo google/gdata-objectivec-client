@@ -982,7 +982,7 @@
 
   // Test a non-ASCII character and some html characters in a TextConstruct.
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
-  NSString *templateStr = @"Test %C Alb%Cm";
+  NSString *const templateStr = @"Test %C Alb%Cm";
   NSString *photoAlbumName = [NSString stringWithFormat:templateStr,
                               (unichar) 0x262F, (unichar) 0x00FC]; // yin yang, u with umlaut
 

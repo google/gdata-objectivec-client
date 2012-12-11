@@ -68,7 +68,7 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@api/%@";
+  NSString *const templateStr = @"%@api/%@";
 
   NSString *urlString = [NSString stringWithFormat:templateStr, root, endPart];
 
@@ -81,7 +81,7 @@
   // this is most useful as part of a query searching for text
   NSString *root = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@api/channels";
+  NSString *const templateStr = @"%@api/channels";
 
   NSString *urlString = [NSString stringWithFormat:templateStr, root];
 
@@ -91,7 +91,7 @@
 + (NSURL *)youTubeURLForChannelStandardFeedID:(NSString *)feedID {
   NSString *root = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@api/channelstandardfeeds/%@";
+  NSString *const templateStr = @"%@api/channelstandardfeeds/%@";
 
   NSString *urlString = [NSString stringWithFormat:templateStr, root, feedID];
 
@@ -116,7 +116,7 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@api/users/%@%@";
+  NSString *const templateStr = @"%@api/users/%@%@";
 
   NSString *urlString = [NSString stringWithFormat:templateStr, root,
     encodedUserID, endPart];
@@ -137,7 +137,7 @@
 
   NSString *root = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@api/events?author=%@";
+  NSString *const templateStr = @"%@api/events?author=%@";
 
   NSString *urlString = [NSString stringWithFormat:templateStr,
                          root, encodedUserID];
@@ -155,7 +155,7 @@
 
   NSString *root = [self serviceUploadRootURLString];
 
-  NSString *templateStr = @"%@api/users/%@/uploads";
+  NSString *const templateStr = @"%@api/users/%@/uploads";
 
   NSString *urlString = [NSString stringWithFormat:templateStr,
                          root, encodedUserID];

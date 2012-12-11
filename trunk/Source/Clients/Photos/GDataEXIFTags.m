@@ -180,9 +180,9 @@
 
   // Add in reverse order so the first tag in the array wins in the case of
   // duplicates.
-  for (NSInteger idx = [tags count] - 1; idx >= 0; idx--) { 
+  for (NSInteger idx = (NSInteger)[tags count] - 1; idx >= 0; idx--) {
     
-    GDataEXIFTag *tag = [tags objectAtIndex:idx];
+    GDataEXIFTag *tag = [tags objectAtIndex:(NSUInteger)idx];
     [dict setObject:[tag stringValue] forKey:[tag name]];
   }
   return dict;

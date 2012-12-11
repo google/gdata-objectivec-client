@@ -35,11 +35,11 @@
   NSString *urlStr;
 
   if (volumeID) {
-    NSString *templateStr = @"%@users/me/volumes/%@";
+    NSString *const templateStr = @"%@users/me/volumes/%@";
     urlStr = [NSString stringWithFormat:templateStr, rootURLStr, volumeID];
   } else {
     // no volume ID, so return the volumes feed URL
-    NSString *templateStr = @"%@users/me/volumes";
+    NSString *const templateStr = @"%@users/me/volumes";
     urlStr = [NSString stringWithFormat:templateStr, rootURLStr];
   }
   
@@ -50,7 +50,7 @@
 
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@users/me/collections/%@/volumes";
+  NSString *const templateStr = @"%@users/me/collections/%@/volumes";
   NSString *urlStr = [NSString stringWithFormat:templateStr,
                       rootURLStr, collectionID];
 
@@ -60,7 +60,7 @@
 + (NSURL *)collectionsURL {
   NSString *rootURLStr = [self serviceRootURLString];
 
-  NSString *templateStr = @"%@users/me/collections";
+  NSString *const templateStr = @"%@users/me/collections";
   NSString *urlStr = [NSString stringWithFormat:templateStr,
                       rootURLStr];
 

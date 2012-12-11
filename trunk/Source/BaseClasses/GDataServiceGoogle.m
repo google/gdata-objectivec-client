@@ -1350,11 +1350,11 @@ enum {
 
 - (NSString *)description {
   if (authorizer_) {
-    NSString *templateStr = @"%@ %p: {service:%@ objectFetcher:%@ authorizer:%@}";
+    NSString *const templateStr = @"%@ %p: {service:%@ objectFetcher:%@ authorizer:%@}";
     return [NSString stringWithFormat:templateStr,
             [self class], self, service_, objectFetcher_, authorizer_];
   } else {
-    NSString *templateStr = @"%@ %p: {service:%@ objectFetcher:%@ authFetcher:%@}";
+    NSString *const templateStr = @"%@ %p: {service:%@ objectFetcher:%@ authFetcher:%@}";
     return [NSString stringWithFormat:templateStr,
       [self class], self, service_, objectFetcher_, authFetcher_];
   }

@@ -64,7 +64,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
   // a domain like "localhost:8080"
   NSString *scheme = [domain hasPrefix:@"localhost:"] ? @"http" : @"https";
 
-  NSString *urlTemplate = @"%@://%@/accounts/ClientLogin";
+  NSString *const urlTemplate = @"%@://%@/accounts/ClientLogin";
   NSString *authURLString = [NSString stringWithFormat:urlTemplate,
                              scheme, domain];
 
@@ -83,7 +83,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
     [request setValue:value forHTTPHeaderField:key];
   }
 
-  NSString *postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=%@";
+  NSString *const postTemplate = @"Email=%@&Passwd=%@&source=%@&service=%@&accountType=%@";
   NSString *postString = [NSString stringWithFormat:postTemplate,
                           StringByURLEncodingString(username),
                           StringByURLEncodingString(password),

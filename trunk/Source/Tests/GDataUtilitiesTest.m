@@ -257,7 +257,7 @@
   // test that copy is mutable (isKindOfClass: will fail on the class
   // cluster, so brute-force it)
   @try {
-     [copyDict setObject:@"foo" forKey:@"bar"];
+     [(NSMutableDictionary *)copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
     STFail(@"Dict mutableCopy not mutable (%lu items)", (unsigned long) numItems);
@@ -283,7 +283,7 @@
 
   // test that copy is mutable
   @try {
-    [copyDict setObject:@"foo" forKey:@"bar"];
+    [(NSMutableDictionary *)copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
     STFail(@"Dict of arrays mutableCopy not mutable (%lu items)",

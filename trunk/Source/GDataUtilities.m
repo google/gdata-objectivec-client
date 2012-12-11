@@ -258,7 +258,7 @@ static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
   // we avoid creating an encoding string unless we encounter some characters
   // that require it
 
-  const char* utf8 = [inputStr UTF8String];
+  const unsigned char* utf8 = (const unsigned char *)[inputStr UTF8String];
   if (utf8 == NULL) {
     return nil;
   }

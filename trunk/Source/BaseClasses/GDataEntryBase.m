@@ -300,7 +300,7 @@
                     length:outLength
                   boundary:&partBoundary];
 
-  NSString *streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
+  NSString *const streamTypeTemplate = @"multipart/related; boundary=\"%@\"";
   NSString *streamType = [NSString stringWithFormat:streamTypeTemplate,
     partBoundary];
 
