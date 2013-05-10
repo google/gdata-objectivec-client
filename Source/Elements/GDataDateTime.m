@@ -19,8 +19,15 @@
 
 #import "GDataDateTime.h"
 
+static NSMutableDictionary *gCalendarsForTimeZones = nil;
 
 @implementation GDataDateTime
+
++ (void)initialize {
+  // Note that initialize is guaranteed by the runtime to be called in a
+  // thread-safe manner.
+  gCalendarsForTimeZones = [[NSMutableDictionary alloc] init];
+}
 
 + (GDataDateTime *)dateTimeWithRFC3339String:(NSString *)str {
   return [[[GDataDateTime alloc] initWithRFC3339String:str] autorelease];
@@ -152,18 +159,30 @@
   offsetSeconds_ = val;
 }
 
-- (NSCalendar *)calendar {
-  NSCalendar *cal = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
-  NSTimeZone *tz = [self timeZone];
-  if (tz) {
-    [cal setTimeZone:tz];
+- (NSCalendar *)calendarForTimeZone:(NSTimeZone *)tz {
+  NSCalendar *cal = nil;
+  @synchronized(gCalendarsForTimeZones) {
+    id tzKey = (tz ? tz : [NSNull null]);
+    cal = [gCalendarsForTimeZones objectForKey:tzKey];
+    if (cal == nil) {
+      cal = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+      if (tz) {
+        [cal setTimeZone:tz];
+      }
+      [gCalendarsForTimeZones setObject:cal forKey:tzKey];
+    }
   }
   return cal;
 }
 
+- (NSCalendar *)calendar {
+  NSTimeZone *tz = self.timeZone;
+  return [self calendarForTimeZone:tz];
+}
+
 - (NSDate *)date {
-  NSCalendar *cal = [self calendar];
   NSDateComponents *dateComponents = [self dateComponents];
+  NSCalendar *cal;
 
   if (![self hasTime]) {
     // we're not keeping track of a time, but NSDate always is based on
@@ -187,7 +206,9 @@
     dateComponents = noonDateComponents;
 
     NSTimeZone *gmt = [NSTimeZone timeZoneWithName:@"Universal"];
-    [cal setTimeZone:gmt];
+    cal = [self calendarForTimeZone:gmt];
+  } else {
+    cal = self.calendar;
   }
 
   NSDate *date = [cal dateFromComponents:dateComponents];
@@ -237,7 +258,7 @@
 }
 
 - (void)setFromDate:(NSDate *)date timeZone:(NSTimeZone *)tz {
-  NSCalendar *cal = [[[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar] autorelease];
+  NSCalendar *cal = [self calendarForTimeZone:tz];
   if (tz) {
     [cal setTimeZone:tz];
   }
