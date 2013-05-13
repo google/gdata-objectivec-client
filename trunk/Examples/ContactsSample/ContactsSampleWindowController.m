@@ -23,7 +23,7 @@
 
 #import "GData/GDataContacts.h"
 
-static const int kBallotX = 0x2717; // fancy X mark to indicate deleted items
+static const unichar kBallotX = 0x2717; // fancy X mark to indicate deleted items
 
 // use a category on the Contact entry so we can refer to the display
 // name string in a sort descriptor
@@ -1702,7 +1702,7 @@ NSString* const kBatchResultsProperty = @"BatchResults";
     
     // make the return character visible 
     NSString *returnChar = [NSString stringWithUTF8String:"\n"];
-    NSString *returnSymbol = [NSString stringWithFormat:@"%C", 0x23CE];
+    NSString *returnSymbol = [NSString stringWithFormat:@"%C", (unichar)0x23CE];
     [mutable replaceOccurrencesOfString:returnChar 
                              withString:returnSymbol
                                 options:0
