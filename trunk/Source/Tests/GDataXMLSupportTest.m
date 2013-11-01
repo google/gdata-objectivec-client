@@ -291,7 +291,7 @@
                           namespaces:nsDict
                                error:&error];
     // libxml provides error code 1207 for this
-    STAssertEquals([error code], 1207, @"error on invalid XPath: %@", error);
+    STAssertEquals([error code], (NSInteger)1207, @"error on invalid XPath: %@", error);
   }
 }
 
