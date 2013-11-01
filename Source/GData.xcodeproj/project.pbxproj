@@ -2693,10 +2693,10 @@
 		4F2EA5D813AAE6EE00E9C96E /* GDataEntryDocChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryDocChange.h; path = Clients/Docs/GDataEntryDocChange.h; sourceTree = "<group>"; };
 		4F2EA5D913AAE6EE00E9C96E /* GDataEntryDocChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryDocChange.m; path = Clients/Docs/GDataEntryDocChange.m; sourceTree = "<group>"; };
 		4F2ED9040C04C1A5007CD756 /* FeedPhotosUserEntry1.xml */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xml; name = FeedPhotosUserEntry1.xml; path = Tests/FeedPhotosUserEntry1.xml; sourceTree = "<group>"; };
-		4F2FFDFB14490B77005DF95B /* GTMMIMEDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMMIMEDocument.h; path = "HTTPFetcher/GTMMIMEDocument.h"; sourceTree = SOURCE_ROOT; };
-		4F2FFDFC14490B77005DF95B /* GTMMIMEDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMMIMEDocument.m; path = "HTTPFetcher/GTMMIMEDocument.m"; sourceTree = SOURCE_ROOT; };
-		4F2FFE3114490CAE005DF95B /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGatherInputStream.h; path = "HTTPFetcher/GTMGatherInputStream.h"; sourceTree = SOURCE_ROOT; };
-		4F2FFE3214490CAE005DF95B /* GTMGatherInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMGatherInputStream.m; path = "HTTPFetcher/GTMGatherInputStream.m"; sourceTree = SOURCE_ROOT; };
+		4F2FFDFB14490B77005DF95B /* GTMMIMEDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMMIMEDocument.h; path = HTTPFetcher/GTMMIMEDocument.h; sourceTree = SOURCE_ROOT; };
+		4F2FFDFC14490B77005DF95B /* GTMMIMEDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMMIMEDocument.m; path = HTTPFetcher/GTMMIMEDocument.m; sourceTree = SOURCE_ROOT; };
+		4F2FFE3114490CAE005DF95B /* GTMGatherInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGatherInputStream.h; path = HTTPFetcher/GTMGatherInputStream.h; sourceTree = SOURCE_ROOT; };
+		4F2FFE3214490CAE005DF95B /* GTMGatherInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMGatherInputStream.m; path = HTTPFetcher/GTMGatherInputStream.m; sourceTree = SOURCE_ROOT; };
 		4F31E9DF0F81AAA100CC4EBC /* GDataFeedCalendarSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataFeedCalendarSettings.h; path = Clients/Calendar/GDataFeedCalendarSettings.h; sourceTree = "<group>"; };
 		4F31E9E00F81AAA100CC4EBC /* GDataEntryCalendarSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryCalendarSettings.m; path = Clients/Calendar/GDataEntryCalendarSettings.m; sourceTree = "<group>"; };
 		4F31E9E10F81AAA100CC4EBC /* GDataCalendarSettingsProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataCalendarSettingsProperty.h; path = Clients/Calendar/GDataCalendarSettingsProperty.h; sourceTree = "<group>"; };
@@ -4714,6 +4714,8 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -6348,10 +6350,6 @@
 		1DEB913F08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				DEPLOYMENT_POSTPROCESSING = NO;
@@ -6379,10 +6377,6 @@
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					ppc,
-					i386,
-				);
 				COPY_PHASE_STRIP = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEPLOYMENT_POSTPROCESSING = YES;

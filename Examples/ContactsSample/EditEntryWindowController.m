@@ -210,7 +210,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   NSString *title = [self stringValueOrNilForField:mOrgTitleField];
   NSString *protocol = [self stringValueOrNilForField:mProtocolField];
   
-  GDataObject *newObj = [mObject copy];
+  GDataObject *newObj = [[mObject copy] autorelease];
   
   if (sels->valueKey)    [newObj setValue:value forKey:sels->valueKey];
   if (sels->labelKey)    [newObj setValue:label forKey:sels->labelKey];
@@ -232,7 +232,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
     // find the index of the group entry that has the title in the combo box
     NSString *str = [mGroupField stringValue];
     NSArray *titles = [mGroupFeed valueForKeyPath:@"entries.title.stringValue"];
-    int index = [titles indexOfObject:str];
+    NSUInteger index = [titles indexOfObject:str];
 
     NSString *href;
     if (index != NSNotFound) {

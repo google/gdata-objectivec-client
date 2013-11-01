@@ -876,12 +876,11 @@ static ContactsSampleWindowController* gContactsSampleWindowController = nil;
       [service setServiceUploadProgressSelector:progressSel];
       
       // insert the entry into the contacts feed
-      GDataServiceTicket *ticket;
-      ticket = [service fetchEntryByUpdatingEntry:newEntry
-                                      forEntryURL:putURL
-                                         delegate:self
-                                didFinishSelector:@selector(uploadPhotoTicket:finishedWithEntry:error:)];
-      
+      [service fetchEntryByUpdatingEntry:newEntry
+                             forEntryURL:putURL
+                                delegate:self
+                       didFinishSelector:@selector(uploadPhotoTicket:finishedWithEntry:error:)];
+
       // we don't want future tickets to always use the upload progress selector
       [service setServiceUploadProgressSelector:nil];
     }
@@ -1175,7 +1174,7 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
                     [self window], self, 
                     @selector(deleteAllSheetDidEnd:returnCode:contextInfo:),
                     nil, nil, @"Delete %u %@?",
-                    [[feed entries] count],
+                    (unsigned int) [[feed entries] count],
                     [self isDisplayingContacts] ? @"contacts" : @"groups");
 }
 
