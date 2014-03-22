@@ -60,6 +60,8 @@ _EXTERN NSString* const kGDataCategoryDocListMetadata   _INITIALIZE_AS(@"http://
 _EXTERN NSString* const kGDataCategoryDocItem           _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#item");
 _EXTERN NSString* const kGDataCategoryDocRevision       _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#revision");
 
+_EXTERN NSString* const kGDataCategoryLabelHasPathToRoot _INITIALIZE_AS(@"has-path-to-root");
+
 _EXTERN NSString* const kGDataDocsPublishedRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007#publish");
 _EXTERN NSString* const kGDataDocsRevisionsRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/revisions");
 _EXTERN NSString* const kGDataDocsThumbnailRel          _INITIALIZE_AS(@"http://schemas.google.com/docs/2007/thumbnail");

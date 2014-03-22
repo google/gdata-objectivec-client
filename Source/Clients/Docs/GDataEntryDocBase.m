@@ -325,6 +325,23 @@
   [self setObject:private forExtensionClass:[GDataDocRemoved class]];
 }
 
+- (BOOL)hasPathToRoot {
+  BOOL flag = [GDataCategory categories:[self categories]
+             containsCategoryWithScheme:nil
+                                   term:nil
+                                  label:kGDataCategoryLabelHasPathToRoot];
+  return flag;
+}
+
+- (void)setHasPathToRoot:(BOOL)flag {
+  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelHasPathToRoot];
+  if (flag) {
+    [self addCategory:cat];
+  } else {
+    [self removeCategory:cat];
+  }
+}
+
 #pragma mark -
 
 - (BOOL)isStarred {

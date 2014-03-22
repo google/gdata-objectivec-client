@@ -23,9 +23,6 @@
 #import "GDataAtomCollection.h"
 #import "GDataBaseElements.h"
 
-static NSString *const kTitleAttr = @"title";
-
-
 @implementation GDataAtomWorkspace
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceAtomPub; }
