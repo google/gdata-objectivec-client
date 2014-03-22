@@ -67,6 +67,9 @@
 - (BOOL)isRemoved;
 - (void)setIsRemoved:(BOOL)flag;
 
+- (BOOL)hasPathToRoot;
+- (void)setHasPathToRoot:(BOOL)flag;
+
 // categories
 - (BOOL)isStarred;
 - (void)setIsStarred:(BOOL)flag;

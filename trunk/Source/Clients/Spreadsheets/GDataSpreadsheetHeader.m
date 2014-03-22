@@ -23,11 +23,6 @@
 
 #import "GDataEntrySpreadsheet.h"
 
-// For spreadsheet header, like
-//    <gs:header row="1" />
-
-static NSString* const kRowAttr = @"row";
-
 @implementation GDataSpreadsheetHeader
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGSpread; }
