@@ -21,12 +21,12 @@
 // unit tests
 #if !GDATA_SKIPSERVICETEST
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GData.h"
 
 
-@interface GDataServiceTest : SenTestCase {
+@interface GDataServiceTest : XCTestCase {
   NSTask *server_;
   BOOL isServerRunning_;
 
@@ -137,7 +137,7 @@ static int kServerPortNumber = 54579;
   server_ = StartHTTPServerTask(kServerPortNumber);
   isServerRunning_ = (server_ != nil);
 
-  STAssertTrue(isServerRunning_,
+  XCTAssertTrue(isServerRunning_,
                @">>> Python http test server failed to launch; skipping service tests\n");
 
   // create the GData service object, and set it to authenticate
@@ -161,7 +161,7 @@ static int kServerPortNumber = 54579;
   GTMHTTPFetcher *fetcher = [note object];
   GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
-  STAssertNotNil(ticket, @"cannot get ticket from fetch notification");
+  XCTAssertNotNil(ticket, @"cannot get ticket from fetch notification");
 
   if ([[note name] isEqual:kGTMHTTPFetcherStartedNotification]) {
     ++fetchStartedNotificationCount_;
@@ -169,7 +169,7 @@ static int kServerPortNumber = 54579;
     ++fetchStoppedNotificationCount_;
   }
 
-  STAssertTrue(retryDelayStartedNotificationCount_ <= fetchStartedNotificationCount_,
+  XCTAssertTrue(retryDelayStartedNotificationCount_ <= fetchStartedNotificationCount_,
                @"fetch notification imbalance: starts=%d stops=%d",
                fetchStartedNotificationCount_, retryDelayStartedNotificationCount_);
 }
@@ -177,7 +177,7 @@ static int kServerPortNumber = 54579;
 - (void)parseStateChanged:(NSNotification *)note {
   GDataServiceTicketBase *ticket = [note object];
 
-  STAssertTrue([ticket isKindOfClass:[GDataServiceTicketBase class]],
+  XCTAssertTrue([ticket isKindOfClass:[GDataServiceTicketBase class]],
                @"cannot get ticket from parse notification");
 
   if ([[note name] isEqual:kGDataServiceTicketParsingStartedNotification]) {
@@ -186,7 +186,7 @@ static int kServerPortNumber = 54579;
     ++parseStoppedCount_;
   }
 
-  STAssertTrue(parseStoppedCount_ <= parseStartedCount_,
+  XCTAssertTrue(parseStoppedCount_ <= parseStartedCount_,
                @"parse notification imbalance: starts=%d stops=%d",
                parseStartedCount_,
                parseStoppedCount_);
@@ -196,7 +196,7 @@ static int kServerPortNumber = 54579;
   GTMHTTPFetcher *fetcher = [note object];
   GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
-  STAssertNotNil(ticket, @"cannot get ticket from retry delay notification");
+  XCTAssertNotNil(ticket, @"cannot get ticket from retry delay notification");
 
   if ([[note name] isEqual:kGTMHTTPFetcherRetryDelayStartedNotification]) {
     ++retryDelayStartedNotificationCount_;
@@ -204,7 +204,7 @@ static int kServerPortNumber = 54579;
     ++retryDelayStoppedNotificationCount_;
   }
 
-  STAssertTrue(retryDelayStoppedNotificationCount_ <= retryDelayStartedNotificationCount_,
+  XCTAssertTrue(retryDelayStoppedNotificationCount_ <= retryDelayStartedNotificationCount_,
                @"retry delay notification imbalance: starts=%d stops=%d",
                retryDelayStartedNotificationCount_,
                retryDelayStoppedNotificationCount_);
@@ -296,7 +296,7 @@ static int kServerPortNumber = 54579;
   }
 
   BOOL doesExist = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-  STAssertTrue(doesExist, @"Missing test file %@", filePath);
+  XCTAssertTrue(doesExist, @"Missing test file %@", filePath);
 
   return url;
 }
@@ -366,18 +366,18 @@ static int gFetchCounter = 0;
   // we'll call into the GDataObject to get its ID to confirm it's good
   NSString *sheetID = @"http://spreadsheets.google.com/feeds/spreadsheets/private/full";
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@ error %@", feedURL, fetcherError_);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
-  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
                        defaultPropertyValue, @"default property missing");
 
   // no cookies should be sent with our first request
   NSURLRequest *request = [[ticket_ objectFetcher] mutableRequest];
 
   NSString *cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
-  STAssertNil(cookiesSent, @"Cookies sent unexpectedly: %@", cookiesSent);
+  XCTAssertNil(cookiesSent, @"Cookies sent unexpectedly: %@", cookiesSent);
 
   // cookies should have been set with the response; specifically, TestCookie
   // should be set to the name of the file requested
@@ -388,15 +388,15 @@ static int gFetchCounter = 0;
   NSString *cookieExpected = [NSString stringWithFormat:@"TestCookie=%@",
                               [[feedURL path] lastPathComponent]];
 
-  STAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
+  XCTAssertEqualObjects(cookiesSetString, cookieExpected, @"Unexpected cookie");
 
   // check that the expected notifications happened
-  STAssertEquals(fetchStartedNotificationCount_, 1, @"fetch start note missing");
-  STAssertEquals(fetchStoppedNotificationCount_, 1, @"fetch stopped note missing");
-  STAssertEquals(parseStartedCount_, 1, @"parse start note missing");
-  STAssertEquals(parseStoppedCount_, 1, @"parse stopped note missing");
-  STAssertEquals(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
-  STAssertEquals(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
+  XCTAssertEqual(fetchStartedNotificationCount_, 1, @"fetch start note missing");
+  XCTAssertEqual(fetchStoppedNotificationCount_, 1, @"fetch stopped note missing");
+  XCTAssertEqual(parseStartedCount_, 1, @"parse start note missing");
+  XCTAssertEqual(parseStoppedCount_, 1, @"parse stopped note missing");
+  XCTAssertEqual(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
+  XCTAssertEqual(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
 
   // save a copy of the retrieved object to compare with our cache responses
   // later
@@ -422,13 +422,13 @@ static int gFetchCounter = 0;
   // the TestCookie set previously should be sent with this request
   request = [[ticket_ objectFetcher] mutableRequest];
   cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
-  STAssertEqualObjects(cookiesSent, cookieExpected,
+  XCTAssertEqualObjects(cookiesSent, cookieExpected,
                        @"Cookie not sent");
 
   // verify the object is unchanged from the uncached fetch
-  STAssertEqualObjects(fetchedObject_, objectCopy,
+  XCTAssertEqualObjects(fetchedObject_, objectCopy,
                        @"fetching from cache for %@", feedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   // verify the underlying fetcher got a 304 (not modified) status
 #if 0
@@ -458,12 +458,12 @@ static int gFetchCounter = 0;
   [self waitForFetch];
 
   // verify the object is unchanged from the original fetch
-  STAssertEqualObjects(fetchedObject_, objectCopy,
+  XCTAssertEqualObjects(fetchedObject_, objectCopy,
                        @"fetching from cache for %@", feedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   // verify the underlying fetcher got a 200 (good) status
-  STAssertEquals([[ticket_ objectFetcher] statusCode], (NSInteger)200,
+  XCTAssertEqual([[ticket_ objectFetcher] statusCode], (NSInteger)200,
                  @"fetching uncached copy of %@", feedURL);
 
   //
@@ -480,25 +480,25 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetching %@", feedURL);
-  STAssertEquals([fetcherError_ code], (NSInteger)499,
+  XCTAssertNil(fetchedObject_, @"fetching %@", feedURL);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)499,
                  @"fetcherError_=%@", fetcherError_);
 
   // get the error group from the error's userInfo and test the main
   // error's fields
   GDataServerErrorGroup *errorGroup =
   [[fetcherError_ userInfo] objectForKey:kGDataStructuredErrorsKey];
-  STAssertNotNil(errorGroup, @"lacks error group");
+  XCTAssertNotNil(errorGroup, @"lacks error group");
 
   GDataServerError *serverError = [errorGroup mainError];
 
-  STAssertEqualObjects([serverError domain], kGDataErrorDomainCore, @"domain");
-  STAssertEqualObjects([serverError code], @"code_499", @"code");
-  STAssertTrue([[serverError internalReason] hasPrefix:@"forced status error"],
+  XCTAssertEqualObjects([serverError domain], kGDataErrorDomainCore, @"domain");
+  XCTAssertEqualObjects([serverError code], @"code_499", @"code");
+  XCTAssertTrue([[serverError internalReason] hasPrefix:@"forced status error"],
                @"internalReason: %@", [serverError internalReason]);
-  STAssertEqualObjects([serverError extendedHelpURI], @"http://help.com",
+  XCTAssertEqualObjects([serverError extendedHelpURI], @"http://help.com",
                        @"help");
-  STAssertEqualObjects([serverError sendReportURI], @"http://report.com",
+  XCTAssertEqualObjects([serverError sendReportURI], @"http://report.com",
                        @"sendReport");
 
 
@@ -525,23 +525,23 @@ static int gFetchCounter = 0;
 
   // we'll call into the GDataObject to get its ID to confirm it's good
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", feedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   // be sure we really got an instance of the surrogate feed, entry, and
   // link classes
   MyGDataFeedSpreadsheetSurrogate *feed = (MyGDataFeedSpreadsheetSurrogate *)fetchedObject_;
-  STAssertEqualObjects([feed mySurrogateFeedName],
+  XCTAssertEqualObjects([feed mySurrogateFeedName],
                        @"mySurrogateFeedNameBar", @"fetching %@ with surrogate", feedURL);
 
   MyGDataEntrySpreadsheetSurrogate *entry = [[feed entries] objectAtIndex:0];
-  STAssertEqualObjects([entry mySurrogateEntryName],
+  XCTAssertEqualObjects([entry mySurrogateEntryName],
                        @"mySurrogateEntryNameFoo", @"fetching %@ with surrogate", feedURL);
 
   MyGDataLinkSurrogate *link = [[entry links] objectAtIndex:0];
-  STAssertEqualObjects([link mySurrogateLinkName],
+  XCTAssertEqualObjects([link mySurrogateLinkName],
                        @"mySurrogateLinkNameBaz", @"fetching %@ with surrogate", feedURL);
 
   [service_ setServiceSurrogates:nil];
@@ -567,19 +567,19 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], customUserData, @"userdata error");
-  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], customUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
                        customPropertyValue, @"custom property error");
 
   // check that the expected notifications happened for the authentication
   // fetch and the object fetch
-  STAssertEquals(fetchStartedNotificationCount_, 2, @"start note missing");
-  STAssertEquals(fetchStoppedNotificationCount_, 2, @"stopped note missing");
-  STAssertEquals(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
-  STAssertEquals(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
+  XCTAssertEqual(fetchStartedNotificationCount_, 2, @"start note missing");
+  XCTAssertEqual(fetchStoppedNotificationCount_, 2, @"stopped note missing");
+  XCTAssertEqual(retryDelayStartedNotificationCount_, 0, @"retry delay note unexpected");
+  XCTAssertEqual(retryDelayStoppedNotificationCount_, 0, @"retry delay note unexpected");
 
   //
   // test: repeat last authenticated download so we're reusing the auth token
@@ -595,9 +595,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   //
   // test: repeat last authenticated download so we're reusing the auth token,
@@ -616,9 +616,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   //
   // test: repeat last authenticated download (which ended with a valid token),
@@ -639,8 +639,8 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], (NSInteger)401,
+  XCTAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)401,
                  @"fetcherError_=%@", fetcherError_);
 
   //
@@ -663,9 +663,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   //
   // test:  download feed only, unsuccessful auth
@@ -683,11 +683,11 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], (NSInteger)403,
+  XCTAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)403,
                  @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
-  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
                        defaultPropertyValue, @"default property error");
 
 
@@ -707,8 +707,8 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], (NSInteger)403,
+  XCTAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)403,
                  @"fetcherError_=%@", fetcherError_);
 
   // get back the captcha token and partial and full URLs from the error
@@ -716,11 +716,11 @@ static int gFetchCounter = 0;
   NSString *captchaToken = [userInfo objectForKey:@"CaptchaToken"];
   NSString *captchaUrl = [userInfo objectForKey:@"CaptchaUrl"];
   NSString *captchaFullUrl = [userInfo objectForKey:@"CaptchaFullUrl"];
-  STAssertEqualObjects(captchaToken, @"CapToken", @"bad captcha token");
-  STAssertEqualObjects(captchaUrl, @"CapUrl", @"bad captcha relative url");
-  STAssertTrue([captchaFullUrl hasSuffix:@"/accounts/CapUrl"], @"bad captcha full:%@", captchaFullUrl);
+  XCTAssertEqualObjects(captchaToken, @"CapToken", @"bad captcha token");
+  XCTAssertEqualObjects(captchaUrl, @"CapUrl", @"bad captcha relative url");
+  XCTAssertTrue([captchaFullUrl hasSuffix:@"/accounts/CapUrl"], @"bad captcha full:%@", captchaFullUrl);
 
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test:  download feed only, good captcha provided
@@ -740,10 +740,10 @@ static int gFetchCounter = 0;
   [self waitForFetch];
 
   // get back the captcha token and partial and full URLs from the error
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", feedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test:  download feed only, bad captcha provided
@@ -762,8 +762,8 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], (NSInteger)403,
+  XCTAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)403,
                  @"fetcherError_=%@", fetcherError_);
 
   // get back the captcha token and partial and full URLs from the error
@@ -771,11 +771,11 @@ static int gFetchCounter = 0;
   captchaToken = [userInfo objectForKey:@"CaptchaToken"];
   captchaUrl = [userInfo objectForKey:@"CaptchaUrl"];
   captchaFullUrl = [userInfo objectForKey:@"CaptchaFullUrl"];
-  STAssertEqualObjects(captchaToken, @"CapToken", @"bad captcha token");
-  STAssertEqualObjects(captchaUrl, @"CapUrl", @"bad captcha relative url");
-  STAssertTrue([captchaFullUrl hasSuffix:@"/accounts/CapUrl"], @"bad captcha full:%@", captchaFullUrl);
+  XCTAssertEqualObjects(captchaToken, @"CapToken", @"bad captcha token");
+  XCTAssertEqualObjects(captchaUrl, @"CapUrl", @"bad captcha relative url");
+  XCTAssertTrue([captchaFullUrl hasSuffix:@"/accounts/CapUrl"], @"bad captcha full:%@", captchaFullUrl);
 
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
 
   //
@@ -798,10 +798,10 @@ static int gFetchCounter = 0;
 
   NSString *entryID = @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1";
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"updating %@", authEntryURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test:  update/download entry, successful auth
@@ -816,10 +816,10 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test:  update/download streamed entry data with progress monitoring
@@ -838,7 +838,7 @@ static int gFetchCounter = 0;
   GDataEntryPhoto *photoEntry = [GDataEntryPhoto photoEntry];
   NSImage *image = [NSImage imageNamed:@"NSApplicationIcon"];
   NSData *tiffData = [image TIFFRepresentation];
-  STAssertTrue([tiffData length] > 0, @"failed to make tiff image");
+  XCTAssertTrue([tiffData length] > 0, @"failed to make tiff image");
 
   [photoEntry setPhotoData:tiffData];
   [photoEntry setPhotoMIMEType:@"image/tiff"];
@@ -859,13 +859,13 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"fetching %@", authFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
-  STAssertTrue(lastProgressDeliveredCount_ > 0, @"no byte delivery reported");
-  STAssertEquals(lastProgressDeliveredCount_, lastProgressTotalCount_,
+  XCTAssertTrue(lastProgressDeliveredCount_ > 0, @"no byte delivery reported");
+  XCTAssertEqual(lastProgressDeliveredCount_, lastProgressTotalCount_,
                  @"unexpected byte delivery count");
 
   [GTMHTTPFetcher setLoggingEnabled:NO];
@@ -892,9 +892,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"deleting %@ returned \n%@", authEntryURL, fetchedObject_);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetchedObject_, @"deleting %@ returned \n%@", authEntryURL, fetchedObject_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test:  delete resource, successful auth, using method override header
@@ -911,9 +911,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"deleting %@ returned \n%@", authEntryURL, fetchedObject_);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertNil(fetchedObject_, @"deleting %@ returned \n%@", authEntryURL, fetchedObject_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
 
   //
   // test: fetch feed with authsub, successful
@@ -933,9 +933,9 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataFeedSpreadsheet *)fetchedObject_ identifier],
                        sheetID, @"fetching %@", authSubFeedURL);
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   //
   // test: fetch feed with authsub, bad token
@@ -953,11 +953,11 @@ static int gFetchCounter = 0;
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
-  STAssertEquals([fetcherError_ code], (NSInteger)401,
+  XCTAssertNil(fetchedObject_, @"fetchedObject_=%@", fetchedObject_);
+  XCTAssertEqual([fetcherError_ code], (NSInteger)401,
                  @"fetcherError_=%@", fetcherError_);
-  STAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
-  STAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
+  XCTAssertEqualObjects([ticket_ userData], defaultUserData, @"userdata error");
+  XCTAssertEqualObjects([ticket_ propertyForKey:testPropertyKey],
                        defaultPropertyValue, @"default property error");
 
 }
@@ -966,13 +966,13 @@ static int gFetchCounter = 0;
 
 - (void)ticket:(GDataServiceTicket *)ticket finishedWithObject:(GDataObject *)object error:(NSError *)error {
 
-  STAssertEquals(ticket, ticket_, @"Got unexpected ticket");
+  XCTAssertEqual(ticket, ticket_, @"Got unexpected ticket");
 
   if (error == nil) {
     fetchedObject_ = [object retain]; // save the fetched object, if any
   } else {
     fetcherError_ = [error retain]; // save the error
-    STAssertNil(object, @"Unexpected object in callback");
+    XCTAssertNil(object, @"Unexpected object in callback");
   }
   ++gFetchCounter;
 }
@@ -1015,19 +1015,19 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"obtained object unexpectedly");
-  STAssertEquals([fetcherError_ code], (NSInteger)503,
+  XCTAssertNil(fetchedObject_, @"obtained object unexpectedly");
+  XCTAssertEqual([fetcherError_ code], (NSInteger)503,
                  @"fetcherError_ should be 503, was %@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 3,
+  XCTAssertEqual([[ticket_ objectFetcher] retryCount], (NSUInteger) 3,
                  @"retry count should be 3, was %lu",
                  (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
   // check that the expected notifications happened for the object
   // fetches and the retries
-  STAssertEquals(fetchStartedNotificationCount_, 4, @"start note missing");
-  STAssertEquals(fetchStoppedNotificationCount_, 4, @"stopped note missing");
-  STAssertEquals(retryDelayStartedNotificationCount_, 3, @"retry delay note missing");
-  STAssertEquals(retryDelayStoppedNotificationCount_, 3, @"retry delay note missing");
+  XCTAssertEqual(fetchStartedNotificationCount_, 4, @"start note missing");
+  XCTAssertEqual(fetchStoppedNotificationCount_, 4, @"stopped note missing");
+  XCTAssertEqual(retryDelayStartedNotificationCount_, 3, @"retry delay note missing");
+  XCTAssertEqual(retryDelayStoppedNotificationCount_, 3, @"retry delay note missing");
 
   //
   // test:  retry twice, then give up
@@ -1049,10 +1049,10 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
   [self waitForFetch];
 
-  STAssertNil(fetchedObject_, @"obtained object unexpectedly");
-  STAssertEquals([fetcherError_ code], (NSInteger)503,
+  XCTAssertNil(fetchedObject_, @"obtained object unexpectedly");
+  XCTAssertEqual([fetcherError_ code], (NSInteger)503,
                  @"fetcherError_ should be 503, was %@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 2,
+  XCTAssertEqual([[ticket_ objectFetcher] retryCount], (NSUInteger) 2,
                  @"retry count should be 2, was %lu",
                  (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
@@ -1074,9 +1074,9 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
   [self waitForFetch];
 
-  STAssertNotNil(fetchedObject_, @"should have obtained fetched object");
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 1,
+  XCTAssertNotNil(fetchedObject_, @"should have obtained fetched object");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqual([[ticket_ objectFetcher] retryCount], (NSUInteger) 1,
                  @"retry count should be 1, was %lu",
                  (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
@@ -1102,9 +1102,9 @@ ofTotalByteCount:(unsigned long long)dataLength {
                                   password:@"bad"];
   [self waitForFetch];
 
-  STAssertNotNil(fetchedObject_, @"should have obtained fetched object");
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
-  STAssertEquals([[ticket_ objectFetcher] retryCount], (NSUInteger) 1,
+  XCTAssertNotNil(fetchedObject_, @"should have obtained fetched object");
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertEqual([[ticket_ objectFetcher] retryCount], (NSUInteger) 1,
                  @"retry count should be 1, was %lu",
                  (unsigned long) [[ticket_ objectFetcher] retryCount]);
 
@@ -1121,7 +1121,7 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
   BOOL shouldRetry = ((NSInteger)count < allowedRetryCount);
 
-  STAssertEquals([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]),
+  XCTAssertEqualWithAccuracy([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]), 0.001,
                  @"unexpected next retry interval (expected %f, was %f)",
                  pow(2.0, [fetcher retryCount]),
                  [fetcher nextRetryInterval]);
@@ -1134,7 +1134,7 @@ ofTotalByteCount:(unsigned long long)dataLength {
   GTMHTTPFetcher *fetcher = [ticket currentFetcher];
   [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
 
-  STAssertEquals([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]),
+  XCTAssertEqualWithAccuracy([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]), 0.001,
                  @"unexpected next retry interval (expected %f, was %f)",
                  pow(2.0, [fetcher retryCount]),
                  [fetcher nextRetryInterval]);
@@ -1215,11 +1215,11 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   [self waitForFetch];
 
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   // check that we got back the expected entry
   NSString *entryID = @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1";
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   // check the request of the final object fetcher to be sure we were uploading
@@ -1233,10 +1233,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   NSString *contentLength = [reqHdrs objectForKey:@"Content-Length"];
   NSString *contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"49000", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+  XCTAssertEqualObjects(contentLength, @"49000", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
 
   [self resetFetchResponse];
 
@@ -1254,11 +1254,11 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   [self waitForFetch];
 
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   // check that we got back the expected entry
   entryID = @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full/R1C1";
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   // check the request of the final object fetcher to be sure we were uploading
@@ -1272,10 +1272,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
   contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"49000", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+  XCTAssertEqualObjects(contentLength, @"49000", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
 
   [self resetFetchResponse];
 
@@ -1294,7 +1294,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   [ticket_ retain];
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
@@ -1305,10 +1305,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
   contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"24499", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
+  XCTAssertEqualObjects(contentLength, @"24499", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
 
   [self resetFetchResponse];
 
@@ -1329,7 +1329,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   [ticket_ retain];
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
@@ -1340,10 +1340,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
   contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"24499", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
+  XCTAssertEqualObjects(contentLength, @"24499", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 174501-198999/199000", @"range");
 
   [self resetFetchResponse];
 
@@ -1362,7 +1362,7 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   [self waitForFetch];
 
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
@@ -1373,10 +1373,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
   contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"49000", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
+  XCTAssertEqualObjects(contentLength, @"49000", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 150000-198999/199000", @"range");
 
   [self resetFetchResponse];
 
@@ -1395,10 +1395,10 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   [self waitForFetch];
 
-  STAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
+  XCTAssertNil(fetcherError_, @"fetcherError_=%@", fetcherError_);
 
   // check that we got back the expected entry
-  STAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
+  XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
   // check the request of the final (and only) object fetcher to be sure we
@@ -1411,10 +1411,10 @@ static NSString* const kOriginalURLKey = @"origURL";
   contentLength = [reqHdrs objectForKey:@"Content-Length"];
   contentRange = [reqHdrs objectForKey:@"Content-Range"];
 
-  STAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
+  XCTAssertEqualObjects([[request URL] absoluteString], uploadReqURLStr,
                        @"upload request wrong");
-  STAssertEqualObjects(contentLength, @"13", @"content length");
-  STAssertEqualObjects(contentRange, @"bytes 0-12/13", @"range");
+  XCTAssertEqualObjects(contentLength, @"13", @"content length");
+  XCTAssertEqualObjects(contentRange, @"bytes 0-12/13", @"range");
 
   [self resetFetchResponse];
 
@@ -1517,8 +1517,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
              didAuthenticateSelector:@selector(ticket:authenticatedWithError:)];
   [self waitForAuth];
 
-  STAssertTrue([authToken_ length] > 0, @"auth token missing");
-  STAssertNil(authError_, @"unexpected auth error: %@", authError_);
+  XCTAssertTrue([authToken_ length] > 0, @"auth token missing");
+  XCTAssertNil(authError_, @"unexpected auth error: %@", authError_);
 
   [self resetAuthResponse];
 
@@ -1529,8 +1529,8 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
              didAuthenticateSelector:@selector(ticket:authenticatedWithError:)];
   [self waitForAuth];
 
-  STAssertNil(authToken_, @"unexpected auth token: %@", authToken_);
-  STAssertNotNil(authError_, @"auth error missing");
+  XCTAssertNil(authToken_, @"unexpected auth token: %@", authToken_);
+  XCTAssertNotNil(authError_, @"auth error missing");
 
   [self resetAuthResponse];
 }

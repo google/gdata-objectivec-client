@@ -17,13 +17,13 @@
 //  GDataDateTimeTest.m
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GDataDateTime.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-@interface GDataDateTimeTest : SenTestCase
+@interface GDataDateTimeTest : XCTestCase
 @end
 
 @implementation GDataDateTimeTest
@@ -65,38 +65,38 @@
     GDataDateTime *dateTime = [GDataDateTime dateTimeWithRFC3339String:testString1];
     NSString *outputString = [dateTime RFC3339String];
     
-    STAssertEqualObjects(outputString, testString1, @"failed to recreate string %@ as %@", testString1, outputString); 
+    XCTAssertEqualObjects(outputString, testString1, @"failed to recreate string %@ as %@", testString1, outputString); 
 
     NSDate *outputDate = [dateTime date];
     
     NSCalendar *cal = [dateTime calendar];
     NSDateComponents *outputComponents = [cal components:kComponents 
                                                 fromDate:outputDate];
-    STAssertEquals([outputComponents year], tests[idx].year, @"bad year");
-    STAssertEquals([outputComponents month], tests[idx].month, @"bad month");
-    STAssertEquals([outputComponents day], tests[idx].day, @"bad day");
-    STAssertEquals([outputComponents hour], tests[idx].hour, @"bad hour");
-    STAssertEquals([outputComponents minute], tests[idx].minute, @"bad minute");
-    STAssertEquals([outputComponents second], tests[idx].second, @"bad second");
+    XCTAssertEqual([outputComponents year], tests[idx].year, @"bad year");
+    XCTAssertEqual([outputComponents month], tests[idx].month, @"bad month");
+    XCTAssertEqual([outputComponents day], tests[idx].day, @"bad day");
+    XCTAssertEqual([outputComponents hour], tests[idx].hour, @"bad hour");
+    XCTAssertEqual([outputComponents minute], tests[idx].minute, @"bad minute");
+    XCTAssertEqual([outputComponents second], tests[idx].second, @"bad second");
 
-    STAssertEquals([[dateTime timeZone] secondsFromGMT], tests[idx].timeZoneOffsetSeconds, @"bad timezone");
-    STAssertEquals([dateTime isUniversalTime], tests[idx].isUniversalTime, @"bad Zulu value");
-    STAssertEquals([dateTime hasTime], tests[idx].hasTime, @"bad hasTime value");
+    XCTAssertEqual([[dateTime timeZone] secondsFromGMT], tests[idx].timeZoneOffsetSeconds, @"bad timezone");
+    XCTAssertEqual([dateTime isUniversalTime], tests[idx].isUniversalTime, @"bad Zulu value");
+    XCTAssertEqual([dateTime hasTime], tests[idx].hasTime, @"bad hasTime value");
     
     if ([dateTime hasTime]) {
       // remove the time, test the output
       [dateTime setHasTime:NO];
       NSString *outputStringWithoutTime = [dateTime RFC3339String];
-      STAssertFalse([dateTime hasTime], @"should have time removed");
-      STAssertTrue([testString1 hasPrefix:outputStringWithoutTime]
+      XCTAssertFalse([dateTime hasTime], @"should have time removed");
+      XCTAssertTrue([testString1 hasPrefix:outputStringWithoutTime]
                    && [testString1 length] > [outputStringWithoutTime length],
                    @"bad string after time removed");
     } else {
       // add time, test the output
       [dateTime setHasTime:YES];
       NSString *outputStringWithTime = [dateTime RFC3339String];
-      STAssertTrue([dateTime hasTime], @"should have time added");
-      STAssertTrue([outputStringWithTime hasPrefix:testString1]
+      XCTAssertTrue([dateTime hasTime], @"should have time added");
+      XCTAssertTrue([outputStringWithTime hasPrefix:testString1]
                    && [testString1 length] < [outputStringWithTime length],
                    @"bad string after time removed");
     }
@@ -112,7 +112,7 @@
   GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:date 
                                                    timeZone:denverTZ];
   NSTimeZone *testTZ = [dateTime timeZone];
-  STAssertEqualObjects(testTZ, denverTZ, @"Time zone changed");
+  XCTAssertEqualObjects(testTZ, denverTZ, @"Time zone changed");
 }
 @end
 

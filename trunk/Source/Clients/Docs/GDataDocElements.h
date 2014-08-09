@@ -27,6 +27,9 @@
 @interface GDataLastModifiedBy : GDataPerson <GDataExtension>
 @end
 
+@interface GDataQuotaType : GDataValueElementConstruct <GDataExtension>
+@end
+
 @interface GDataQuotaBytesTotal : GDataValueElementConstruct <GDataExtension>
 @end
 

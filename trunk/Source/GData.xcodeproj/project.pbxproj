@@ -107,7 +107,6 @@
 		4F138821114859F4005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F13881D114859F4005C3893 /* GDataYouTubeAccessControl.m */; };
 		4F138822114859F4005C3893 /* GDataYouTubeAccessControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F13881D114859F4005C3893 /* GDataYouTubeAccessControl.m */; };
 		4F138824114859FC005C3893 /* GDataYouTubeAccessControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F138823114859FC005C3893 /* GDataYouTubeAccessControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4F14A9E70B1277290072EBB8 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
 		4F14ABEE0B12897B0072EBB8 /* GDataLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEB0B12897B0072EBB8 /* GDataLink.m */; };
 		4F14ABEF0B12897B0072EBB8 /* GDataDateTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */; };
 		4F14ABFE0B12899D0072EBB8 /* GDataEntryCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F14ABF60B12899D0072EBB8 /* GDataEntryCalendar.m */; };
@@ -930,6 +929,7 @@
 		4F478C280FF567EB00138739 /* GDataSiteKeyword.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F478C260FF567EB00138739 /* GDataSiteKeyword.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F478C290FF567EB00138739 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F478C250FF567EB00138739 /* GDataSiteKeyword.m */; };
 		4F478C2A0FF567EB00138739 /* GDataSiteKeyword.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F478C250FF567EB00138739 /* GDataSiteKeyword.m */; };
+		4F47EC2C19479E17007C13FA /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F47EC2B19479E17007C13FA /* XCTest.framework */; };
 		4F48F016105AE2920053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F014105AE2920053938E /* GDataEntryFileDoc.m */; };
 		4F48F017105AE2920053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F014105AE2920053938E /* GDataEntryFileDoc.m */; };
 		4F48F018105AE2920053938E /* GDataEntryFileDoc.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F48F014105AE2920053938E /* GDataEntryFileDoc.m */; };
@@ -1788,7 +1788,6 @@
 		4F85E00D103B83B700B4C418 /* GDataFeedYouTubeCaptionTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F36EE7A0FFD7D4100980D30 /* GDataFeedYouTubeCaptionTrack.m */; };
 		4F85E00E103B83B700B4C418 /* GDataPhotoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F32C993101002A500694A12 /* GDataPhotoConstants.m */; };
 		4F85E011103B83B700B4C418 /* GDataAuthenticationFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F0935121030D682004C7DC1 /* GDataAuthenticationFetcher.m */; };
-		4F85E013103B83B700B4C418 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */; };
 		4F8DB5FE13FDABF80001DD6C /* GTMReadMonitorInputStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F8DB5FC13FDABF80001DD6C /* GTMReadMonitorInputStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4F8DB5FF13FDABF80001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB5FD13FDABF80001DD6C /* GTMReadMonitorInputStream.m */; };
 		4F8DB60013FDABF80001DD6C /* GTMReadMonitorInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F8DB5FD13FDABF80001DD6C /* GTMReadMonitorInputStream.m */; };
@@ -2550,8 +2549,7 @@
 		4F10BD6E0F1FEEF5002AE29A /* GDataServiceIntrospection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceIntrospection.h; path = Introspection/GDataServiceIntrospection.h; sourceTree = "<group>"; };
 		4F13881D114859F4005C3893 /* GDataYouTubeAccessControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataYouTubeAccessControl.m; path = Clients/YouTube/GDataYouTubeAccessControl.m; sourceTree = "<group>"; };
 		4F138823114859FC005C3893 /* GDataYouTubeAccessControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataYouTubeAccessControl.h; path = Clients/YouTube/GDataYouTubeAccessControl.h; sourceTree = "<group>"; };
-		4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GDataUnitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GDataUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F14ABEA0B12897B0072EBB8 /* GDataDateTime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataDateTime.h; path = Elements/GDataDateTime.h; sourceTree = "<group>"; };
 		4F14ABEB0B12897B0072EBB8 /* GDataLink.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataLink.m; path = Elements/GDataLink.m; sourceTree = "<group>"; };
 		4F14ABEC0B12897B0072EBB8 /* GDataDateTime.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataDateTime.m; path = Elements/GDataDateTime.m; sourceTree = "<group>"; };
@@ -2838,6 +2836,7 @@
 		4F478D4C0FF59FD500138739 /* FeedWebmasterToolsKeywords1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsKeywords1.xml; path = Tests/FeedWebmasterToolsKeywords1.xml; sourceTree = "<group>"; };
 		4F478D9B0FF5B97600138739 /* FeedWebmasterToolsCrawlIssues1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsCrawlIssues1.xml; path = Tests/FeedWebmasterToolsCrawlIssues1.xml; sourceTree = "<group>"; };
 		4F478D9C0FF5B97600138739 /* FeedWebmasterToolsMessages1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsMessages1.xml; path = Tests/FeedWebmasterToolsMessages1.xml; sourceTree = "<group>"; };
+		4F47EC2B19479E17007C13FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4F48F014105AE2920053938E /* GDataEntryFileDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryFileDoc.m; path = Clients/Docs/GDataEntryFileDoc.m; sourceTree = "<group>"; };
 		4F48F015105AE2920053938E /* GDataEntryFileDoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryFileDoc.h; path = Clients/Docs/GDataEntryFileDoc.h; sourceTree = "<group>"; };
 		4F493DF00FB90BDD003B3670 /* FeedContactTest2.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedContactTest2.xml; path = Tests/FeedContactTest2.xml; sourceTree = "<group>"; };
@@ -3186,7 +3185,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F14A9E70B1277290072EBB8 /* SenTestingKit.framework in Frameworks */,
+				4F47EC2C19479E17007C13FA /* XCTest.framework in Frameworks */,
 				4F18174E1134982E009F7FD1 /* Security.framework in Frameworks */,
 				4F35D4C71177880300BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
@@ -3222,7 +3221,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4F85E013103B83B700B4C418 /* SenTestingKit.framework in Frameworks */,
 				4F18174D1134982E009F7FD1 /* Security.framework in Frameworks */,
 				4F35D4C81177880300BDFA97 /* SystemConfiguration.framework in Frameworks */,
 			);
@@ -3266,9 +3264,9 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F47EC2B19479E17007C13FA /* XCTest.framework */,
 				4F35D4B3117787F600BDFA97 /* SystemConfiguration.framework */,
 				4F18174C1134982E009F7FD1 /* Security.framework */,
-				4F14A9E60B1277290072EBB8 /* SenTestingKit.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -3280,7 +3278,7 @@
 				4F38F6A60B66E91D00B24B81 /* GData.framework */,
 				4F1AD9020B71603F00DC0485 /* DevelopmentTestTool */,
 				4F1C6E0F1027B3CE00B46459 /* libGDataTouchStaticLib.a */,
-				4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */,
+				4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.xctest */,
 				4F85E018103B83B700B4C418 /* GDataIPhoneUnitTests.octest */,
 			);
 			name = Products;
@@ -4635,8 +4633,8 @@
 			);
 			name = GDataUnitTests;
 			productName = GDataUnitTests;
-			productReference = 4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productReference = 4F14A9DD0B1276B70072EBB8 /* GDataUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4F1AD9010B71603F00DC0485 /* DevelopmentTestTool */ = {
 			isa = PBXNativeTarget;
@@ -4715,6 +4713,7 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -6367,9 +6366,20 @@
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Werror",
+					"-Wextra",
+					"-Wconversion",
 					"-Wendif-labels",
-					"-Wnewline-eof",
 					"-Wfloat-equal",
+					"-Wformat-security",
+					"-Wformat=2",
+					"-Wnewline-eof",
+					"-Wreorder",
+					"-Wsign-promo",
+					"-Wstrict-overflow",
+					"-Wstrict-selector-match",
+					"-Wundeclared-selector",
+					"-Wno-unknown-pragmas",
+					"-Wno-unused-parameter",
 				);
 			};
 			name = Debug;
@@ -6414,13 +6424,10 @@
 					"-lxml2",
 					"-framework",
 					Cocoa,
-					"-framework",
-					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataUnitTests;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
 		};
@@ -6440,13 +6447,10 @@
 					"-lxml2",
 					"-framework",
 					Cocoa,
-					"-framework",
-					SenTestingKit,
 				);
 				PRODUCT_NAME = GDataUnitTests;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
-				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
 		};

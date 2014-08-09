@@ -19,11 +19,11 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GDataNormalPlayTime.h"
 
-@interface GDataNormalPlayTimeTest : SenTestCase
+@interface GDataNormalPlayTimeTest : XCTestCase
 @end
 
 @implementation GDataNormalPlayTimeTest
@@ -55,24 +55,24 @@
     
     // ensure the ms are as expected
     long long ms = [npt timeOffsetInMilliseconds];
-    STAssertEquals(ms, tests[idx].ms, @"unexpected ms for NPT %@", tests[idx].str);
+    XCTAssertEqual(ms, tests[idx].ms, @"unexpected ms for NPT %@", tests[idx].str);
     
     // ensure seconds string is as expected
     NSString *secondsStr = [npt secondsString];  // seconds.fraction or "now"
-    STAssertEqualObjects(secondsStr, tests[idx].secondsStr, @"unexpected seconds string for NPT %@", tests[idx].str);
+    XCTAssertEqualObjects(secondsStr, tests[idx].secondsStr, @"unexpected seconds string for NPT %@", tests[idx].str);
     
     // ensure the HMS strings is as expected
     NSString *hhmmssStr = [npt HHMMSSString];  // hh:mm:ss.fraction or "now"
-    STAssertEqualObjects(hhmmssStr, tests[idx].hhmmssStr, @"unexpected HHMMSS string for NPT %@",  tests[idx].str);
+    XCTAssertEqualObjects(hhmmssStr, tests[idx].hhmmssStr, @"unexpected HHMMSS string for NPT %@",  tests[idx].str);
     
     // ensure "is now" flag is correct
     BOOL isNow = [npt isNow];
-    STAssertTrue(isNow == tests[idx].isNow, @"isNow unexpected for NPT %@", tests[idx].isNow);
+    XCTAssertTrue(isNow == tests[idx].isNow, @"isNow unexpected for NPT %d", tests[idx].isNow);
   }
   
   // garbage in, zero out
   GDataNormalPlayTime *npt = [GDataNormalPlayTime normalPlayTimeWithString:@"hooyah"];
-  STAssertEquals([npt timeOffsetInMilliseconds], 0ll,
+  XCTAssertEqual([npt timeOffsetInMilliseconds], 0ll,
                  @"NPT should return 0 for garbage string 'hooyah', got %@ (%qd ms)",
                  npt, [npt timeOffsetInMilliseconds]);
 }

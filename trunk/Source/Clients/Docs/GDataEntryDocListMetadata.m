@@ -54,6 +54,7 @@
    [GDataDocFeature class],
    [GDataDocImportFormat class],
    [GDataDocMaxUploadSize class],
+   [GDataQuotaType class],
    [GDataQuotaBytesTotal class],
    [GDataQuotaBytesUsed class],
    [GDataQuotaBytesUsedInTrash class],
@@ -123,6 +124,16 @@
 
 - (void)setMaxUploadSizes:(NSArray *)array {
   [self setObjects:array forExtensionClass:[GDataDocMaxUploadSize class]];
+}
+
+- (NSString *)quotaType {
+  GDataQuotaType *obj = [self objectForExtensionClass:[GDataQuotaType class]];
+  return [obj stringValue];
+}
+
+- (void)setQuotaType:(NSString *)type {
+  GDataQuotaType *obj = [GDataQuotaType valueWithString:type];
+  [self setObject:obj forExtensionClass:[GDataQuotaType class]];
 }
 
 - (NSNumber *)quotaBytesTotal { // long long

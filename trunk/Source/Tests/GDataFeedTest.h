@@ -17,14 +17,14 @@
 //  GDataFeedTest.h
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 typedef struct TestKeyPathValues {
   NSString *str1;
   NSString *str2;
 } TestKeyPathValues;
 
-@interface GDataFeedTest : SenTestCase {
+@interface GDataFeedTest : XCTestCase {
 
 }
 

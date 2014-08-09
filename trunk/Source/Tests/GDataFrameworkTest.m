@@ -15,11 +15,11 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GDataFramework.h"
 
-@interface GDataFrameworkTest : SenTestCase
+@interface GDataFrameworkTest : XCTestCase
 @end
 
 @implementation GDataFrameworkTest
@@ -32,9 +32,9 @@
   
   GDataFrameworkVersion(&major, &minor, &release);
 
-  STAssertTrue(major != NSUIntegerMax, @"version unset");
-  STAssertTrue(minor != NSUIntegerMax, @"version unset");
-  STAssertTrue(release != NSUIntegerMax, @"version unset");
+  XCTAssertTrue(major != NSUIntegerMax, @"version unset");
+  XCTAssertTrue(minor != NSUIntegerMax, @"version unset");
+  XCTAssertTrue(release != NSUIntegerMax, @"version unset");
   
   // Check that the Framework bundle's Info.plist has the proper version,
   // matching the GDataFrameworkVersion call
@@ -44,7 +44,7 @@
 
   NSString *plistPath = @"Resources/GDataFramework-Info.plist";
   NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
-  STAssertNotNil(infoDict, @"Could not find GDataFramework-Info.plist");
+  XCTAssertNotNil(infoDict, @"Could not find GDataFramework-Info.plist");
   
   if (infoDict) {
     
@@ -52,7 +52,7 @@
     
     NSString *plistVersionStr = [infoDict valueForKey:@"CFBundleVersion"];
 
-    STAssertEqualObjects(plistVersionStr, binaryVersionStr, 
+    XCTAssertEqualObjects(plistVersionStr, binaryVersionStr, 
                          @"Binary/plist version mismatch");
   }
 }

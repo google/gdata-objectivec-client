@@ -15,11 +15,11 @@
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GDataUtilities.h"
 
-@interface GDataUtilitiesTest : SenTestCase
+@interface GDataUtilitiesTest : XCTestCase
 @end
 
 @implementation GDataUtilitiesTest
@@ -31,19 +31,19 @@
   
   input = nil;
   output = [GDataUtilities stringWithControlsFilteredForString:input];
-  STAssertNil(output, @"nil test");
+  XCTAssertNil(output, @"nil test");
   
   input = @"";
   output = [GDataUtilities stringWithControlsFilteredForString:input];
-  STAssertEqualObjects(output, input, @"empty string");
+  XCTAssertEqualObjects(output, input, @"empty string");
   
   input = @"Fred & Wilma";
   output = [GDataUtilities stringWithControlsFilteredForString:input];
-  STAssertEqualObjects(output, input, @"plain string");
+  XCTAssertEqualObjects(output, input, @"plain string");
   
   input = [NSString stringWithFormat:@"Nuts%CBolts", (unichar) 0x0B]; // 0xB: vertical tab
   output = [GDataUtilities stringWithControlsFilteredForString:input];
-  STAssertEqualObjects(output, @"NutsBolts", @"vt failure");
+  XCTAssertEqualObjects(output, @"NutsBolts", @"vt failure");
   
   // filter a string containing all chars from 0x01 to 0x7F
   NSMutableString *allCharStr = [NSMutableString string];
@@ -54,7 +54,7 @@
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   NSString *expected = @"\t\n\r !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLM"
     "NOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
-  STAssertEqualObjects(output, expected, @"all-chars failure");
+  XCTAssertEqualObjects(output, expected, @"all-chars failure");
 }
 
 - (void)testPercentEncodingUTF8 {
@@ -64,28 +64,28 @@
   
   input = nil;
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertNil(output, @"nil test");
+  XCTAssertNil(output, @"nil test");
   
   input = @"";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertEqualObjects(output, input, @"empty string");
+  XCTAssertEqualObjects(output, input, @"empty string");
     
   input = @"Fred & Wilma";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertEqualObjects(output, input, @"plain string");
+  XCTAssertEqualObjects(output, input, @"plain string");
   
   input = [NSString stringWithFormat:@"The Beach at S%Cte", (unichar) 0x00E8];
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertEqualObjects(output, @"The Beach at S%C3%A8te", @"8-bit failure");
+  XCTAssertEqualObjects(output, @"The Beach at S%C3%A8te", @"8-bit failure");
 
   input = @"\ttab\tline1\rline2%percent\nline3";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertEqualObjects(output, @"%09tab%09line1%0Dline2%25percent%0Aline3", 
+  XCTAssertEqualObjects(output, @"%09tab%09line1%0Dline2%25percent%0Aline3", 
                        @"control char");
 
   input = [NSString stringWithFormat:@"photo%C.jpg", (unichar) 0x53C3];
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  STAssertEqualObjects(output, @"photo%E5%8F%83.jpg", @"cjk failure");
+  XCTAssertEqualObjects(output, @"photo%E5%8F%83.jpg", @"cjk failure");
 }
 
 - (void)testURLEncodingForURI {
@@ -95,26 +95,26 @@
 
   input = nil;
   output = [GDataUtilities stringByURLEncodingForURI:input];
-  STAssertNil(output, @"nil test");
+  XCTAssertNil(output, @"nil test");
 
   input = @"";
   output = [GDataUtilities stringByURLEncodingForURI:input];
-  STAssertEqualObjects(output, input, @"empty string");
+  XCTAssertEqualObjects(output, input, @"empty string");
 
   input = @"abcdef";
   output = [GDataUtilities stringByURLEncodingForURI:input];
   expected = @"abcdef";
-  STAssertEqualObjects(output, expected, @"plain string");
+  XCTAssertEqualObjects(output, expected, @"plain string");
 
   input = @"abc def";
   output = [GDataUtilities stringByURLEncodingForURI:input];
   expected = @"abc%20def";
-  STAssertEqualObjects(output, expected, @"plain string with space");
+  XCTAssertEqualObjects(output, expected, @"plain string with space");
 
   input = @"abc!*'();:@&=+$,/?%#[]def";
   output = [GDataUtilities stringByURLEncodingForURI:input];
   expected = @"abc%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%25%23%5B%5Ddef";
-  STAssertEqualObjects(output, expected, @"all chars to escape");
+  XCTAssertEqualObjects(output, expected, @"all chars to escape");
 }
 
 - (void)testURLEncodingForStringParameter {
@@ -124,26 +124,26 @@
 
   input = nil;
   output = [GDataUtilities stringByURLEncodingStringParameter:input];
-  STAssertNil(output, @"nil test");
+  XCTAssertNil(output, @"nil test");
 
   input = @"";
   output = [GDataUtilities stringByURLEncodingStringParameter:input];
-  STAssertEqualObjects(output, input, @"empty string");
+  XCTAssertEqualObjects(output, input, @"empty string");
 
   input = @"abcdef";
   output = [GDataUtilities stringByURLEncodingStringParameter:input];
   expected = @"abcdef";
-  STAssertEqualObjects(output, expected, @"plain string");
+  XCTAssertEqualObjects(output, expected, @"plain string");
 
   input = @"abc def";
   output = [GDataUtilities stringByURLEncodingStringParameter:input];
   expected = @"abc+def";
-  STAssertEqualObjects(output, expected, @"plain string with space");
+  XCTAssertEqualObjects(output, expected, @"plain string with space");
 
   input = @"abc!*'();:@&=+$,/?%#[]def";
   output = [GDataUtilities stringByURLEncodingStringParameter:input];
   expected = @"abc%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%25%23%5B%5Ddef";
-  STAssertEqualObjects(output, expected, @"all chars to escape");
+  XCTAssertEqualObjects(output, expected, @"all chars to escape");
 }
 
 #pragma mark -
@@ -154,7 +154,7 @@
   NSUInteger numItems = [testArray count];
 
   // test that we got an equal copy
-  STAssertEqualObjects(copyArray, testArray,
+  XCTAssertEqualObjects(copyArray, testArray,
                        @"Array copy failed (%lu items)",
                        (unsigned long) numItems);
 
@@ -167,7 +167,7 @@
   id objCopy = [enumCopy nextObject];
 
   while (objTest) {
-    STAssertTrue(objTest != objCopy,
+    XCTAssertTrue(objTest != objCopy,
                   @"array copy is reusing original object (%lu items)",
                  (unsigned long) numItems);
 
@@ -198,7 +198,7 @@
     [copyArray addObject:@"foo"];
   }
   @catch(NSException *exc) {
-    STFail(@"Array mutableCopy not mutable (%lu items)",
+    XCTFail(@"Array mutableCopy not mutable (%lu items)",
            (unsigned long) numItems);
   }
 }
@@ -209,7 +209,7 @@
   NSUInteger numItems = [testDict count];
 
   // test that we got an equal copy
-  STAssertEqualObjects(copyDict, testDict,
+  XCTAssertEqualObjects(copyDict, testDict,
                        @"Dict copy failed (%lu items)",
                        (unsigned long) numItems);
 
@@ -222,7 +222,7 @@
     id objTest = [testDict objectForKey:testKey];
     id objCopy = [copyDict objectForKey:testKey];
 
-    STAssertTrue(objTest != objCopy,
+    XCTAssertTrue(objTest != objCopy,
                   @"dict copy is reusing original object (%lu items)",
                  (unsigned long) numItems);
 
@@ -260,7 +260,7 @@
      [(NSMutableDictionary *)copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
-    STFail(@"Dict mutableCopy not mutable (%lu items)", (unsigned long) numItems);
+    XCTFail(@"Dict mutableCopy not mutable (%lu items)", (unsigned long) numItems);
   }
 }
 
@@ -286,7 +286,7 @@
     [(NSMutableDictionary *)copyDict setObject:@"foo" forKey:@"bar"];
   }
   @catch(NSException *exc) {
-    STFail(@"Dict of arrays mutableCopy not mutable (%lu items)",
+    XCTFail(@"Dict of arrays mutableCopy not mutable (%lu items)",
            (unsigned long) numItems);
   }
 }
