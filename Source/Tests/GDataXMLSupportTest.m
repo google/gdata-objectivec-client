@@ -17,13 +17,13 @@
 //  GDataXMLSupportTest.m
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GData/GData.h"
 
 #import "GDataXMLNode.h"
 
-@interface GDataXMLSupportTest : SenTestCase
+@interface GDataXMLSupportTest : XCTestCase
 @end
 
 @implementation GDataXMLSupportTest
@@ -41,6 +41,8 @@
 
   // create elements and attributes
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wstrict-selector-match"
   // create with URI and local name
   NSXMLElement *attr1 = [cXMLElement attributeWithName:@"foo"
                                                    URI:kGDataNamespaceGData
@@ -100,6 +102,7 @@
   NSXMLNode *nsOpenSearch = [cXMLNode namespaceWithName:@"openSearch"
                                             stringValue:kGDataNamespaceOpenSearch];
   [parent addNamespace:nsOpenSearch];
+#pragma clang diagnostic pop
 
   [parent addChild:child1];
   [parent addAttribute:attr1];
@@ -118,68 +121,68 @@
     // remove the temp child; we must obtain it from the tree, not use
     // the copy we added above
     NSArray *childrenToRemove = [parent elementsForName:@"childTemp"];
-    STAssertEquals((int)[childrenToRemove count], 1, @"childTemp not found");
+    XCTAssertEqual((int)[childrenToRemove count], 1, @"childTemp not found");
 
     GDataXMLNode *childToRemove = [childrenToRemove objectAtIndex:0];
     [(GDataXMLElement *)parent removeChild:childToRemove];
 
     childrenToRemove = [parent elementsForName:@"childTemp"];
-    STAssertEquals((int)[childrenToRemove count], 0, @"childTemp still found");
+    XCTAssertEqual((int)[childrenToRemove count], 0, @"childTemp still found");
   }
 
   // search for attr1 and child1 by qualified name, since they were
   // created by URI
   NSXMLNode *attr1Found = [parent attributeForName:@"gd:foo"];
-  STAssertEqualObjects([attr1Found stringValue], @"baz", @"attribute gd:foo");
+  XCTAssertEqualObjects([attr1Found stringValue], @"baz", @"attribute gd:foo");
 
   NSArray *elements = [parent elementsForName:@"gd:chyld"];
-  STAssertEquals((int)[elements count], 1, @"getting gd:chyld");
+  XCTAssertEqual((int)[elements count], 1, @"getting gd:chyld");
   NSXMLNode *child1Found = [elements objectAtIndex:0];
-  STAssertEqualObjects([child1Found stringValue], @"fuzz", @"child gd:chyld");
+  XCTAssertEqualObjects([child1Found stringValue], @"fuzz", @"child gd:chyld");
 
   // search for attr2 and child2 by local name and URI, since they were
   // created by qualified names
   NSXMLNode *attr2Found = [parent attributeForLocalName:@"foo"
                                                     URI:kGDataNamespaceOpenSearch];
-  STAssertEqualObjects([attr2Found stringValue], @"baz2", @"attribute openSearch:foo");
+  XCTAssertEqualObjects([attr2Found stringValue], @"baz2", @"attribute openSearch:foo");
 
   NSArray *elements2 = [parent elementsForLocalName:@"chyld"
                                                 URI:kGDataNamespaceOpenSearch];
 
-  STAssertEquals((int)[elements2 count], 1, @"getting openSearch:chyld");
+  XCTAssertEqual((int)[elements2 count], 1, @"getting openSearch:chyld");
   NSXMLNode *child2Found = [elements2 objectAtIndex:0];
-  STAssertEqualObjects([child2Found stringValue], @"fuzz2", @"child openSearch:chyld");
+  XCTAssertEqualObjects([child2Found stringValue], @"fuzz2", @"child openSearch:chyld");
 
   // search for child3 by local name
   NSArray *elements3 = [parent elementsForName:@"chyld"];
-  STAssertEquals((int)[elements3 count], 1, @"getting chyld");
+  XCTAssertEqual((int)[elements3 count], 1, @"getting chyld");
   NSXMLNode *child3Found = [elements3 objectAtIndex:0];
-  STAssertEqualObjects([child3Found stringValue], @"fuzz3", @"child chyld");
+  XCTAssertEqualObjects([child3Found stringValue], @"fuzz3", @"child chyld");
 
   // search for child3 by URI
   NSArray *elements3a = [parent elementsForLocalName:@"chyld"
                                                  URI:kGDataNamespaceAtom];
-  STAssertEquals((int)[elements3a count], 1, @"getting chyld (URI");
+  XCTAssertEqual((int)[elements3a count], 1, @"getting chyld (URI");
   NSXMLNode *child3aFound = [elements3 objectAtIndex:0];
-  STAssertEqualObjects([child3aFound stringValue], @"fuzz3", @"child chyld");
+  XCTAssertEqualObjects([child3aFound stringValue], @"fuzz3", @"child chyld");
 
   // search for attr4 and child4 by local name and URI, since they were
   // created by URI and never bound to a prefix by a namespace declaration
   NSXMLNode *attr4Found = [parent attributeForLocalName:@"zorgbot"
                                                     URI:kGDataNamespaceBatch];
-  STAssertEqualObjects([attr4Found stringValue], @"gollyfum", @"in test batch zorgbot");
+  XCTAssertEqualObjects([attr4Found stringValue], @"gollyfum", @"in test batch zorgbot");
 
   NSArray *elements4 = [parent elementsForLocalName:@"zorgtree"
                                                 URI:kGDataNamespaceBatch];
-  STAssertEquals((int)[elements4 count], 1, @"getting batch zorgtree");
+  XCTAssertEqual((int)[elements4 count], 1, @"getting batch zorgtree");
   NSXMLNode *child4Found = [elements4 objectAtIndex:0];
-  STAssertEqualObjects([child4Found stringValue], @"gollyfoo", @"in test batch zorgtree");
+  XCTAssertEqualObjects([child4Found stringValue], @"gollyfoo", @"in test batch zorgtree");
 
   // search for child 5 by local name and URI, since it has a locally-defined
   // namespace
   NSArray *elements5 = [parent elementsForLocalName:@"loner"
                                                 URI:lonerURI];
-  STAssertEquals((int)[elements5 count], 1, @"getting loner");
+  XCTAssertEqual((int)[elements5 count], 1, @"getting loner");
 
   // test output
   NSString *expectedXML;
@@ -204,7 +207,7 @@
   }
 
   NSString *actualXML = [parent XMLString];
-  STAssertEqualObjects(actualXML, expectedXML, @"unexpected xml output");
+  XCTAssertEqualObjects(actualXML, expectedXML, @"unexpected xml output");
 }
 
 
@@ -236,16 +239,16 @@
   xmlDocument = [[(NSXMLDocument *)[cXMLDocument alloc] initWithData:data
                                                               options:0
                                                                 error:&error] autorelease];
-  STAssertNotNil(xmlDocument, @"could not allocate feed from xml");
-  STAssertNil(error, @"error allocating feed from xml");
+  XCTAssertNotNil(xmlDocument, @"could not allocate feed from xml");
+  XCTAssertNil(error, @"error allocating feed from xml");
 
   // I'd like to test namespace-uri here, too, but that fails in NSXML's XPath
   NSXMLElement *root = [xmlDocument rootElement];
   NSString *path = @"*[local-name()='category']";
 
   NSArray *nodes = [root nodesForXPath:path error:&error];
-  STAssertEquals((int)[nodes count], 1, @"XPath count");
-  STAssertNil(error, @"XPath error");
+  XCTAssertEqual((int)[nodes count], 1, @"XPath count");
+  XCTAssertNil(error, @"XPath error");
 
   if (shouldUseShim) {
     // NSXML's XPath doesn't seem to deal with URI's properly
@@ -255,8 +258,8 @@
 
     nodes = [root nodesForXPath:path error:&error];
 
-    STAssertEquals((int)[nodes count], 10, @"XPath count for default ns");
-    STAssertNil(error, @"XPath error");
+    XCTAssertEqual((int)[nodes count], 10, @"XPath count for default ns");
+    XCTAssertNil(error, @"XPath error");
 
     // find elements with a non-default namespace URI
     path = @"*[namespace-uri()='http://a9.com/-/spec/opensearch/1.1/']";
@@ -264,15 +267,15 @@
     // find the opensearch nodes
     nodes = [root nodesForXPath:path error:&error];
 
-    STAssertEquals((int)[nodes count], 3, @"XPath count for opensearch ns");
-    STAssertNil(error, @"XPath error");
+    XCTAssertEqual((int)[nodes count], 3, @"XPath count for opensearch ns");
+    XCTAssertNil(error, @"XPath error");
 
     // find nodes with the default atom namespace
     path = @"_def_ns:entry/_def_ns:link"; // four entry link nodes
     nodes = [root nodesForXPath:path error:&error];
 
-    STAssertEquals((int)[nodes count], 4, @"XPath count for default ns nodes");
-    STAssertNil(error, @"XPath error");
+    XCTAssertEqual((int)[nodes count], 4, @"XPath count for default ns nodes");
+    XCTAssertNil(error, @"XPath error");
 
     // find nodes with an explicit atom namespace
     path = @"atom:entry/atom:link"; // four entry link nodes
@@ -282,8 +285,8 @@
                                      namespaces:nsDict
                                           error:&error];
 
-    STAssertEquals((int)[nodes count], 4, @"XPath count for atom ns nodes");
-    STAssertNil(error, @"XPath error");
+    XCTAssertEqual((int)[nodes count], 4, @"XPath count for atom ns nodes");
+    XCTAssertNil(error, @"XPath error");
 
     // test an illegal path string
     GDataXMLNode *emptyNode = [GDataXMLElement elementWithName:@"Abcde"];
@@ -291,7 +294,7 @@
                           namespaces:nsDict
                                error:&error];
     // libxml provides error code 1207 for this
-    STAssertEquals([error code], (NSInteger)1207, @"error on invalid XPath: %@", error);
+    XCTAssertEqual([error code], (NSInteger)1207, @"error on invalid XPath: %@", error);
   }
 }
 

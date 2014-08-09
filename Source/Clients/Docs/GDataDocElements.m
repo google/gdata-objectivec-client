@@ -30,6 +30,12 @@
 + (NSString *)extensionElementLocalName { return @"lastModifiedBy"; }
 @end
 
+@implementation GDataQuotaType
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"quotaType"; }
+@end
+
 @implementation GDataQuotaBytesTotal
 + (NSString *)extensionElementURI       { return kGDataNamespaceGData; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGDataPrefix; }

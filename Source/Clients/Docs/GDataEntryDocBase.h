@@ -40,6 +40,9 @@
 - (NSNumber *)writersCanInvite; // bool
 - (void)setWritersCanInvite:(NSNumber *)num;
 
+- (NSNumber *)plusMediaFile; // bool
+- (void)setPlusMediaFile:(NSNumber *)num;
+
 - (GDataPerson *)lastModifiedBy;
 - (void)setLastModifiedBy:(GDataPerson *)obj;
 
@@ -67,8 +70,8 @@
 - (BOOL)isRemoved;
 - (void)setIsRemoved:(BOOL)flag;
 
-- (BOOL)hasPathToRoot;
-- (void)setHasPathToRoot:(BOOL)flag;
+- (GDataPerson *)sharingUser;
+- (void)setSharingUser:(GDataPerson *)obj;
 
 // categories
 - (BOOL)isStarred;
@@ -82,6 +85,9 @@
 
 - (BOOL)isShared;
 - (void)setIsShared:(BOOL)flag;
+
+- (BOOL)hasPathToRoot;
+- (void)setHasPathToRoot:(BOOL)flag;
 
 // convenience accessors
 - (NSArray *)parentLinks;

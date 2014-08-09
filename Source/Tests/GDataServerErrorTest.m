@@ -13,12 +13,12 @@
 * limitations under the License.
 */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "GDataServerError.h"
 
 #define typeof __typeof__ // fixes http://brethorsting.com/blog/2006/02/25/stupid-issue-with-ocunit/
 
-@interface GDataServerErrorTest : SenTestCase
+@interface GDataServerErrorTest : XCTestCase
 @end
 
 @implementation GDataServerErrorTest
@@ -45,41 +45,41 @@
   // copy the group, to exercise all the copying code
   groupCopy = [[group copy] autorelease];
 
-  STAssertEquals([[groupCopy errors] count], (NSUInteger) 2,
+  XCTAssertEqual([[groupCopy errors] count], (NSUInteger) 2,
                  @"should be two errors");
 
   GDataServerError *error = [groupCopy mainError];
 
   // this error should be equal to the one in the original error group,
   // but a distinct copy
-  STAssertEqualObjects(error, [group mainError], @"copy is unequals");
-  STAssertTrue(error != [group mainError], @"copy is not distinct");
+  XCTAssertEqualObjects(error, [group mainError], @"copy is unequals");
+  XCTAssertTrue(error != [group mainError], @"copy is not distinct");
 
   // test the error fields
-  STAssertEqualObjects([error domain], @"GData domain", @"domain test");
-  STAssertEqualObjects([error code], @"code red", @"code test");
-  STAssertEqualObjects([error internalReason], @"something happened", @"reason test");
-  STAssertEqualObjects([error extendedHelpURI], @"http://domain.com?whatever=no", @"help test");
-  STAssertEqualObjects([error sendReportURI], @"http://domain.com/send", @"send test");
-  STAssertEqualObjects([error summary], @"GData domain error code red: \"something happened\"", @"summary test");
+  XCTAssertEqualObjects([error domain], @"GData domain", @"domain test");
+  XCTAssertEqualObjects([error code], @"code red", @"code test");
+  XCTAssertEqualObjects([error internalReason], @"something happened", @"reason test");
+  XCTAssertEqualObjects([error extendedHelpURI], @"http://domain.com?whatever=no", @"help test");
+  XCTAssertEqualObjects([error sendReportURI], @"http://domain.com/send", @"send test");
+  XCTAssertEqualObjects([error summary], @"GData domain error code red: \"something happened\"", @"summary test");
 
   GDataServerError *error2 = [[group errors] lastObject];
-  STAssertEqualObjects([error2 domain], @"Second domain", @"domain test");
-  STAssertEqualObjects([error2 code], @"code blue", @"code test");
-  STAssertEqualObjects([error2 internalReason], @"who knows", @"reason test");
-  STAssertNil([error2 extendedHelpURI], @"help test");
-  STAssertNil([error2 sendReportURI], @"send test");
+  XCTAssertEqualObjects([error2 domain], @"Second domain", @"domain test");
+  XCTAssertEqualObjects([error2 code], @"code blue", @"code test");
+  XCTAssertEqualObjects([error2 internalReason], @"who knows", @"reason test");
+  XCTAssertNil([error2 extendedHelpURI], @"help test");
+  XCTAssertNil([error2 sendReportURI], @"send test");
 
   // test invalid input
   xmlStr = @"abcdefg";
   xmlData = [xmlStr dataUsingEncoding:NSUTF8StringEncoding];
   group = [[GDataServerErrorGroup alloc] initWithData:xmlData];
-  STAssertNil(group, @"invalid error xml data");
+  XCTAssertNil(group, @"invalid error xml data");
 
   xmlStr = @"<errors xmlns='http://schemas.google.com/g/2005 />";
   xmlData = [xmlStr dataUsingEncoding:NSUTF8StringEncoding];
   group = [[[GDataServerErrorGroup alloc] initWithData:xmlData] autorelease];
-  STAssertNil(group, @"empty errors list data");
+  XCTAssertNil(group, @"empty errors list data");
 }
 
 @end

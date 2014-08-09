@@ -42,6 +42,9 @@
 - (NSArray *)maxUploadSizes; // array of GDataDocMaxUploadSize
 - (void)setMaxUploadSizes:(NSArray *)array;
 
+- (NSString *)quotaType;
+- (void)setQuotaType:(NSString *)type;
+
 - (NSNumber *)quotaBytesTotal; // long long
 - (void)setQuotaBytesTotal:(NSNumber *)num;
 

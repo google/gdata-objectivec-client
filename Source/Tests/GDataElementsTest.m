@@ -100,7 +100,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSError *error = nil;
   NSXMLElement *entryXML = [[[NSXMLElement alloc] initWithXMLString:wrappedXMLString
                                                               error:&error] autorelease];
-  STAssertNil(error, @"%@ on wrapped XML:%@", error, wrappedXMLString);
+  XCTAssertNil(error, @"%@ on wrapped XML:%@", error, wrappedXMLString);
   
   // skip over non-element children to find the first element
   NSXMLElement *element;
@@ -110,7 +110,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     ++index;
   } while (element != nil && ![element isKindOfClass:[NSXMLElement class]]);
   
-  STAssertNotNil(element, @"Cannot get child element of %@", entryXML);
+  XCTAssertNotNil(element, @"Cannot get child element of %@", entryXML);
 
   // allocate our GData object from the inner element
   GDataObject *obj = [[[gdataClass alloc] initWithXMLElement:element
@@ -206,7 +206,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 #endif
 
     Class gdataClass = NSClassFromString(className);
-    STAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
+    XCTAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
     
     // make a GDataObject instance with the XML
     GDataObject *obj1 = [self GDataObjectForClassName:gdataClass
@@ -215,7 +215,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     
     // make a copy of the object, and verify that it equals the original
     GDataObject *obj1copy = [[obj1 copy] autorelease];
-    STAssertTrue([obj1 isEqual:obj1copy],
+    XCTAssertTrue([obj1 isEqual:obj1copy],
                  @"Failed copy from %@ to %@\nfor class %@ and original XML string:\n  %@",
                  obj1, obj1copy, className, testXMLString);
 
@@ -242,13 +242,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     GDataObject *obj2 = [[[gdataClass alloc] initWithXMLElement:outputXML
                                                          parent:nil] autorelease];
 
-    STAssertTrue([obj2 isEqual:obj1copy],
+    XCTAssertTrue([obj2 isEqual:obj1copy],
                  @"Failed using XML to convert\n  %@\nas XML:\n  %@\nto\n  %@\nfor class %@ and original XML string:\n  %@",
                  obj1copy, outputXML, obj2, className, testXMLString);
 
     // generate a description; this can fire an exception for an invalid keyPath
     // in the description record list
-    STAssertNotNil([obj2 description], @"Could not generate description for %@",
+    XCTAssertNotNil([obj2 description], @"Could not generate description for %@",
                    className);
 
     // step through each test for this element, evaluate the key-value path,
@@ -295,7 +295,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
       }
 #endif
       
-      STAssertTrue(AreEqualOrBothNil(result, expectedValue), 
+      XCTAssertTrue(AreEqualOrBothNil(result, expectedValue), 
                    @"failed %@ testing key path %@:\n %@ \n!= \n %@", 
                    obj2, keyPath, result, expectedValue);
       
@@ -314,7 +314,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
                                 forKeyPathIncludingArrays:keyPath];
       
       // this object should have no unparsed children
-      STAssertTrue(AreEqualOrBothNil(result, expectedValue),
+      XCTAssertTrue(AreEqualOrBothNil(result, expectedValue),
                    @"failed %@ testing:\n %@ \n!= \n %@\n unknown children: %@", 
                    obj2, result, expectedValue, 
                    [GDataElementsTest valueInObject:obj2 
@@ -328,8 +328,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
                                 forKeyPathIncludingArrays:keyPath];
       
       // this object should have no unparsed attributes
-      STAssertTrue(AreEqualOrBothNil(result, expectedValue),
-                   @"failed %@ testing:\n %@ \n!= \n %@", 
+      XCTAssertTrue(AreEqualOrBothNil(result, expectedValue),
+                   @"failed %@ testing:\n %@ \n!= \n %@ \n%@",
                    obj2, result, expectedValue,
                    [GDataElementsTest valueInObject:obj2 
                           forKeyPathIncludingArrays:@"unknownAttributes"]);      
@@ -358,7 +358,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSString *inlineFeed = [NSString stringWithContentsOfFile:@"Tests/FeedSpreadsheetCellsTest1.xml"
                                                usedEncoding:&encoding
                                                       error:&error];
-  STAssertNotNil(inlineFeed, @"cannot load xml for inline feed, %@", error);
+  XCTAssertNotNil(inlineFeed, @"cannot load xml for inline feed, %@", error);
 
   inlineFeed = [inlineFeed substringFromIndex:[@"<?xml version=\"1.0\" encoding=\"UTF-8\"?>" length]];
   NSString *inlinedFeedLinkStr = [NSString stringWithFormat:@"<gd:feedLink>%@</gd:feedLink>", inlineFeed];
@@ -1273,10 +1273,10 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   [extProp setXMLValue:value2 forKey:key2];
   
   NSString *testValue1 = [extProp XMLValueForKey:key1];
-  STAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
+  XCTAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
   
   NSString *testValue2 = [extProp XMLValueForKey:key2];
-  STAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
+  XCTAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
 
   // convert to XML, then reinstantiate as a GDataObject, and test 
   // that everything was preserved
@@ -1286,17 +1286,17 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   extProp2 = [[[GDataExtendedProperty alloc] initWithXMLElement:element
                                                          parent:nil] autorelease];
   testValue1 = [extProp2 XMLValueForKey:key1];
-  STAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
+  XCTAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
 
   testValue2 = [extProp2 XMLValueForKey:key2];
-  STAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
+  XCTAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
   
   // verify that the default namespace is empty so that extended
   // properties stored as XML children won't be considered part of the
   // atom namespace
 
   NSDictionary *namespaces = [extProp2 namespaces];
-  STAssertEqualObjects([namespaces objectForKey:@""], @"", 
+  XCTAssertEqualObjects([namespaces objectForKey:@""], @"", 
                        @"Missing default namespace from GDataObject");
   
 #if !GDATA_USES_LIBXML
@@ -1306,7 +1306,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   // namespaceForPrefix method in libxml builds
   //
   NSString *nsStr = [[element namespaceForPrefix:@""] XMLString];
-  STAssertEqualObjects(nsStr, @"xmlns=\"\"",
+  XCTAssertEqualObjects(nsStr, @"xmlns=\"\"",
                        @"Missing default namespace from XML element");
 #endif
 }
@@ -1333,7 +1333,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   BOOL gotStream = [entry generateContentInputStream:&inputStream
                                               length:&signedLength
                                              headers:&streamHeaders];
-  STAssertTrue(gotStream, @"generating multipart stream");
+  XCTAssertTrue(gotStream, @"generating multipart stream");
 
   NSUInteger streamLength = (NSUInteger)signedLength;
 
@@ -1353,13 +1353,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
        "Content-Type: image/jpeg\r\n\r\n%s\r\n--END_OF_PART--\r\n",
        expectedXmlStr, dataChars];
 
-  STAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data");
+  XCTAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data");
 
   NSDictionary *expectedHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
                @"multipart/related; boundary=\"END_OF_PART\"", @"Content-Type",
                @"1.0", @"MIME-Version",
                @"testfile.jpg", @"Slug", nil];
-  STAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers");
+  XCTAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers");
 
   //
   // try again emitting only the data and headers, not the XML
@@ -1372,7 +1372,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   gotStream = [entry generateContentInputStream:&inputStream
                                          length:&signedLength
                                         headers:&streamHeaders];
-  STAssertTrue(gotStream, @"generating multipart stream");
+  XCTAssertTrue(gotStream, @"generating multipart stream");
 
   streamLength = (NSUInteger)signedLength;
   streamData = [NSMutableData dataWithLength:streamLength];
@@ -1385,14 +1385,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   expectedStr = [NSString stringWithUTF8String:dataChars];
 
-  STAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data 2");
+  XCTAssertEqualObjects(streamDataStr, expectedStr, @"unexpected stream data 2");
 
   expectedHeaders = [NSDictionary dictionaryWithObjectsAndKeys:
                      @"image/jpeg", @"Content-Type",
                      @"1.0", @"MIME-Version",
                      @"testfile.jpg", @"Slug", nil];
 
-  STAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers 2");
+  XCTAssertEqualObjects(streamHeaders, expectedHeaders, @"unexpected headers 2");
 }
 
 - (void)testChangedNamespace {
@@ -1424,21 +1424,21 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   GDataObject *obj0 = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml0
                     shouldWrapWithNamespaceAndEntry:NO];
-  STAssertNotNil(obj0, @"%@", obj0);
+  XCTAssertNotNil(obj0, @"%@", obj0);
 
   GDataObject *obj1 = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml1
                     shouldWrapWithNamespaceAndEntry:NO];
-  STAssertNotNil(obj1, @"%@", obj1);
+  XCTAssertNotNil(obj1, @"%@", obj1);
   
   GDataObject *obj2 = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml2
                     shouldWrapWithNamespaceAndEntry:NO];
-  STAssertNotNil(obj2, @"%@", obj2);
+  XCTAssertNotNil(obj2, @"%@", obj2);
   
-  STAssertEqualObjects(obj0, obj1, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
+  XCTAssertEqualObjects(obj0, obj1, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
                        [obj0 XMLElement], [obj1 XMLElement]);
-  STAssertEqualObjects(obj1, obj2, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
+  XCTAssertEqualObjects(obj1, obj2, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
                        [obj1 XMLElement], [obj2 XMLElement]);
 }
 
@@ -1463,16 +1463,16 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   NSDictionary *namespaces = [feedLink namespaces];
   NSDictionary *completeNamespaces = [feedLink completeNamespaces];
-  STAssertEquals((int) [namespaces count], 2, @"%@", namespaces);
-  STAssertEquals((int) [completeNamespaces count], 2, @"%@", completeNamespaces);
+  XCTAssertEqual((int) [namespaces count], 2, @"%@", namespaces);
+  XCTAssertEqual((int) [completeNamespaces count], 2, @"%@", completeNamespaces);
 
   // prune the duplicate atom namespace
   [feedLink pruneInheritedNamespaces];
 
   namespaces = [feedLink namespaces];
   completeNamespaces = [feedLink completeNamespaces];
-  STAssertEquals((int) [namespaces count], 1, @"%@", namespaces);
-  STAssertEquals((int) [completeNamespaces count], 2, @"%@", completeNamespaces);
+  XCTAssertEqual((int) [namespaces count], 1, @"%@", namespaces);
+  XCTAssertEqual((int) [completeNamespaces count], 2, @"%@", completeNamespaces);
 }
 
 - (void)testDescriptionGeneration {
@@ -1508,8 +1508,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   [scanner scanHexInt:nil];
   [scanner scanUpToString:@"\n" intoString:&body];
 
-  STAssertEqualObjects(className, @"GDataEntryContact", @"classname description");
-  STAssertEqualObjects(body, expectedBody, @"body description");
+  XCTAssertEqualObjects(className, @"GDataEntryContact", @"classname description");
+  XCTAssertEqualObjects(body, expectedBody, @"body description");
 }
 
 - (void)testControlCharacterRemoval {
@@ -1524,7 +1524,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSString *expectedStr = [NSString stringWithFormat:@"<%@>bunnyrabbit</%@>",
                            className, className];
 
-  STAssertEqualObjects(elemStr, expectedStr, @"failed to remove control chars");
+  XCTAssertEqualObjects(elemStr, expectedStr, @"failed to remove control chars");
 }
 
 - (void)testProperties {
@@ -1538,7 +1538,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   GDataObject *obj = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml
                     shouldWrapWithNamespaceAndEntry:NO];
-  STAssertNotNil(obj, @"%@", obj);
+  XCTAssertNotNil(obj, @"%@", obj);
   
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
     @"0", @"zero", @"1", @"one", nil];
@@ -1552,9 +1552,9 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   // delete one property
   [obj setProperty:nil forKey:@"zero"];
   
-  STAssertNil([obj propertyForKey:@"zero"], @"prop 0 problem");
-  STAssertEqualObjects([obj propertyForKey:@"one"], @"1", @"prop 1 problem");
-  STAssertEqualObjects([obj propertyForKey:@"two"], @"2", @"prop 2 problem");
+  XCTAssertNil([obj propertyForKey:@"zero"], @"prop 0 problem");
+  XCTAssertEqualObjects([obj propertyForKey:@"one"], @"1", @"prop 1 problem");
+  XCTAssertEqualObjects([obj propertyForKey:@"two"], @"2", @"prop 2 problem");
 }
 
 

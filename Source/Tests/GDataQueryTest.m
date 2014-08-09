@@ -17,14 +17,14 @@
 //  GDataQueryTest.m
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 #import "GDataQuery.h"
 #import "GData.h"
 
 #define typeof __typeof__ // fixes http://www.brethorsting.com/blog/2006/02/stupid-issue-with-ocunit.html
 
-@interface GDataQueryTest : SenTestCase
+@interface GDataQueryTest : XCTestCase
 @end
 
 @implementation GDataQueryTest
@@ -41,7 +41,7 @@
   // test query with feed URL but no params
   GDataQuery* query1 = [GDataQuery queryWithFeedURL:feedURL];
   NSURL* resultURL1 = [query1 URL];
-  STAssertEqualObjects(resultURL1, feedURL, @"Unadorned feed URL is not preserved by GDataQuery");
+  XCTAssertEqualObjects(resultURL1, feedURL, @"Unadorned feed URL is not preserved by GDataQuery");
 
   // test query with params but no categories
   GDataQuery* query2 = [GDataQuery queryWithFeedURL:feedURL];
@@ -76,7 +76,7 @@
     "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
   
-  STAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
   
   GDataCategoryFilter *categoryFilter = [GDataCategoryFilter categoryFilter];
   [categoryFilter addCategory:[GDataCategory categoryWithScheme:@"http://schemas.google.com/g/2005#kind" 
@@ -93,7 +93,7 @@
     "basic/-/%7Bhttp%3A%2F%2Fschemas.google.com%2Fg%2F2005%23kind%7Dhttp"
     "%3A%2F%2Fschemas.google.com%2Fg%2F2005%23event%7C%7BMyScheme2%7D"
     "MyTerm2%7C-MyTerm3";
-  STAssertEqualObjects([resultURL3 absoluteString], expected3, @"Category filter generation error");
+  XCTAssertEqualObjects([resultURL3 absoluteString], expected3, @"Category filter generation error");
 
 
   // finally, add the previous category filter and another category filter
@@ -114,7 +114,7 @@
     "updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
 
-  STAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
+  XCTAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
   
   //
   // test a calendar query
@@ -131,7 +131,7 @@
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
     "max-results=20&start-index=10&start-max=2006-03-30T07%3A35%3A59Z&start-min=2006-03-29T07%3A35%3A59Z";
 
-  STAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
+  XCTAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
   
   GDataQueryCalendar* queryCal2 = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal2 setRecurrenceExpansionStartTime:dateTime1];
@@ -153,7 +153,7 @@
     "recurrence-expansion-end=2006-03-29T07%3A35%3A59Z&"
     "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&"
     "showhidden=true&showinlinecomments=false&singleevents=true";
-  STAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
+  XCTAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
   
 }
 
@@ -173,7 +173,7 @@
   NSURL* resultURL1 = [query1 URL];
   NSString *expected1 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "max-col=12&max-row=7&min-col=2&min-row=3&range=A1%3AB2&return-empty=true";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Spreadsheet query 1 generation error");
 
   // list feed query tests
@@ -185,7 +185,7 @@
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "orderby=column%3Afoostuff&reverse=true&sq=ipm%3C4+and+hours%3E40";
-  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Spreadsheet query 2 generation error");
 }
 
@@ -206,9 +206,9 @@
   NSString *expected1 = @"https://photos.googleapis.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
     "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"PWA query 1 generation error");
-  STAssertEquals([pwaQuery1 imageSize], (NSInteger) 32, @"image size error");
+  XCTAssertEqual([pwaQuery1 imageSize], (NSInteger) 32, @"image size error");
   
   GDataQueryGooglePhotos *pwaQuery2; 
   pwaQuery2 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
@@ -220,19 +220,19 @@
   NSURL* resultURL2 = [pwaQuery2 URL];
   NSString *expected2 = @"https://photos.googleapis.com/data/feed/api/user/"
     "fredflintstone/album/froggy%20photos?imgmax=d";
-  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"PWA query 2 generation error");
   
   // image size special cases mapping -1 to "d" and back; test that we get back
   // -1
-  STAssertEquals([pwaQuery2 imageSize], kGDataGooglePhotosImageSizeDownloadable,
+  XCTAssertEqual([pwaQuery2 imageSize], kGDataGooglePhotosImageSizeDownloadable,
                  @"image size error (2)");
   
   // test the generator for photo contact feed URLs
   NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@example.com"];
   NSString *contactsURLString = [contactsURL absoluteString];
   NSString *expectedContactsURLString = @"https://photos.googleapis.com/data/feed/api/user/fred%40example.com/contacts?kind=user";
-  STAssertEqualObjects(contactsURLString, expectedContactsURLString, 
+  XCTAssertEqualObjects(contactsURLString, expectedContactsURLString, 
                        @"contacts URL error");
 
   // test service document request
@@ -244,7 +244,7 @@
   [pwaQuery3 setResultFormat:kGDataQueryResultServiceDocument];
   NSURL *resultURL3 = [pwaQuery3 URL];
   NSString *expected3 = @"https://photos.googleapis.com/data/feed/api/user/fredflintstone?alt=atom-service";
-  STAssertEqualObjects([resultURL3 absoluteString], expected3,
+  XCTAssertEqualObjects([resultURL3 absoluteString], expected3,
                        @"PWA query 3 generation error");
 }
 
@@ -266,7 +266,7 @@
     "box=1%2C2%2C3%2C4&lat=12.300000&lng=23.400000&"
     "mq=%5Bpool%3Atrue%5D%5Bprice%3Abudget%5D&previd=pid&"
     "radius=33.300000&sortby=distance";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Maps Query 1 generation error");
 
   mapsQuery2 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
@@ -274,7 +274,7 @@
   NSURL *resultURL2 = [mapsQuery2 URL];
   NSString *expected2 = @"https://maps.google.com/maps/feeds/maps/default/full?"
     "box=10.000000%2C20.000000%2C30.000000%2C40.000000";
-  STAssertEqualObjects([resultURL2 absoluteString], expected2,
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"Maps Query 2 generation error");
 }
 
@@ -307,7 +307,7 @@
     "location-radius=2km&lr=en&orderby=relevance&q=%22Fred+Flintstone%22&"
     "restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo";
 
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"YouTube query 1 generation error");
 }
 
@@ -320,7 +320,7 @@
   
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"https://www.google.com/m8/feeds/contacts/user%40example.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540example.com%2Fbase%2F6";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Contacts query 1 generation error");
 }
 
@@ -337,7 +337,7 @@
 
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Finance query 1 generation error");
   
   GDataQueryFinance *query2;
@@ -350,7 +350,7 @@
   NSURL *resultURL2 = [query2 URL];
   NSString *expected2 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios?positions=true&returns=true&transactions=true";
   
-  STAssertEqualObjects([resultURL2 absoluteString], expected2, 
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
                        @"Finance query 2 generation error");
 }
 
@@ -364,7 +364,7 @@
 
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"http://books.google.com/books/feeds/volumes?ebook=frogchild&min-viewability=full";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Books query 1 generation error");
 }
 
@@ -380,7 +380,7 @@
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"https://docs.google.com/feeds/default/private/full?"
     "folder=Major+Folder&showfolders=true&title=King+Of+Oceania&title-exact=true";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Docs query 1 generation error");
 
   GDataQueryDocs *query2 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
@@ -391,7 +391,7 @@
   NSString *expected2 = @"https://docs.google.com/feeds/default/private/full?"
     "owner=fred%40flintstone.com&reader=wilma%40flintstone.com%2C"
     "pebbles%40flintstone.com&writer=barney%40rubble.com%2Cbetty%40rubble.com";
-  STAssertEqualObjects([resultURL2 absoluteString], expected2,
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"Docs query 2 generation error");
 
   GDataDateTime* minDate = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-29T07:35:59.000Z"];
@@ -408,7 +408,7 @@
   NSString *expected3 = @"https://docs.google.com/feeds/default/private/full?"
     "edited-max=2006-04-30T07%3A35%3A59Z&edited-min=2006-04-29T07%3A35%3A59Z&"
     "opened-max=2006-03-30T07%3A35%3A59Z&opened-min=2006-03-29T07%3A35%3A59Z";
-  STAssertEqualObjects([resultURL3 absoluteString], expected3,
+  XCTAssertEqualObjects([resultURL3 absoluteString], expected3,
                        @"Docs query 3 generation error");
 
   GDataQueryDocs *query4 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];
@@ -423,7 +423,7 @@
   NSString *expected4 = @"https://docs.google.com/feeds/default/private/full?"
     "convert=false&delete=true&new-revision=true&ocr=true&showroot=true&"
     "sourceLanguage=en&targetLanguage=de";
-  STAssertEqualObjects([resultURL4 absoluteString], expected4,
+  XCTAssertEqualObjects([resultURL4 absoluteString], expected4,
                        @"Docs query 4 generation error");
 }
 
@@ -446,7 +446,7 @@
     "filters=ga%3Acountry%3D%3DUnited+States%2Cga%3Acountry%3D%3DCanada&"
     "ids=9876&metrics=ga%3Apageviews&segment=gaid%3A%3A3&"
     "sort=ga%3Abrowser%2Cga%3Apageviews&start-date=2001-01-01";
-  STAssertEqualObjects([resultURL1 absoluteString], expected1,
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Analytics query 1 generation error");
 }
 
@@ -493,7 +493,7 @@
 
   NSURL *resultURL1 = [query1 URL];
   NSString *expectedStr1 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y&start-index=10";
-  STAssertEqualObjects([resultURL1 absoluteString], expectedStr1,
+  XCTAssertEqualObjects([resultURL1 absoluteString], expectedStr1,
                        @"Mixed query generation error");
 
   // URL 2
@@ -504,7 +504,7 @@
 
   NSURL *resultURL2 = [query2 URL];
   NSString *expectedStr2 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y&start-index=10";
-  STAssertEqualObjects([resultURL2 absoluteString], expectedStr2,
+  XCTAssertEqualObjects([resultURL2 absoluteString], expectedStr2,
                        @"Mixed query generation error");
 
   // URL 3
@@ -515,7 +515,7 @@
 
   NSURL *resultURL3 = [query3 URL];
   NSString *expectedStr3 = @"http://domain.net/-/ferret%7C-iguana/monkey?start-index=10";
-  STAssertEqualObjects([resultURL3 absoluteString], expectedStr3,
+  XCTAssertEqualObjects([resultURL3 absoluteString], expectedStr3,
                        @"Mixed query generation error");
 
   // URL 4
@@ -526,7 +526,7 @@
 
   NSURL *resultURL4 = [query4 URL];
   NSString *expectedStr4 = @"http://domain.net/-/ferret%7C-iguana/monkey?start-index=10";
-  STAssertEqualObjects([resultURL4 absoluteString], expectedStr4,
+  XCTAssertEqualObjects([resultURL4 absoluteString], expectedStr4,
                        @"Mixed query generation error");
 
   // URL 1 again
@@ -537,7 +537,7 @@
 
   NSURL *resultURL5 = [query5 URL];
   NSString *expectedStr5 = @"http://domain.net/?x=y&start-index=10";
-  STAssertEqualObjects([resultURL5 absoluteString], expectedStr5,
+  XCTAssertEqualObjects([resultURL5 absoluteString], expectedStr5,
                        @"Mixed query generation error");
 
   // repeat the first test, but with no params added to the query
@@ -547,7 +547,7 @@
 
   NSURL *resultURL6 = [query6 URL];
   NSString *expectedStr6 = @"http://domain.net/-/ferret%7C-iguana/monkey?x=y";
-  STAssertEqualObjects([resultURL6 absoluteString], expectedStr6,
+  XCTAssertEqualObjects([resultURL6 absoluteString], expectedStr6,
                        @"Mixed query generation error");
 }
 
@@ -575,10 +575,10 @@
   NSString *resultFull, *resultParam;
   
   resultFull = [GDataUtilities stringByURLEncodingString:fullAsciiParam];
-  STAssertEqualObjects(resultFull, fullEncoded, @"URL full encoding error");
+  XCTAssertEqualObjects(resultFull, fullEncoded, @"URL full encoding error");
   
   resultParam = [GDataUtilities stringByURLEncodingStringParameter:fullAsciiParam];
-  STAssertEqualObjects(resultParam, paramEncoded, @"URL param encoding error");
+  XCTAssertEqualObjects(resultParam, paramEncoded, @"URL param encoding error");
 }
 
 @end

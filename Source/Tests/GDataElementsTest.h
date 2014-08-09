@@ -17,7 +17,7 @@
 //  GDataElementsTest.h
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
 typedef struct ElementTestKeyPathValues {
   NSString *str1;
@@ -26,7 +26,7 @@ typedef struct ElementTestKeyPathValues {
 
 
 
-@interface GDataElementsTest : SenTestCase {
+@interface GDataElementsTest : XCTestCase {
 
 }
 

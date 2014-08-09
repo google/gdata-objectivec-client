@@ -58,6 +58,15 @@
 + (NSString *)extensionElementLocalName { return @"writersCanInvite"; }
 @end
 
+@interface GDataPlusMediaFile : GDataBoolValueConstruct <GDataExtension>
+@end
+
+@implementation GDataPlusMediaFile
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"plusMediaFile"; }
+@end
+
 @interface GDataDocDescription : GDataValueElementConstruct <GDataExtension>
 @end
 
@@ -121,6 +130,15 @@
 + (NSString *)extensionElementLocalName { return @"lastCommented"; }
 @end
 
+@interface GDataSharingUser : GDataPerson <GDataExtension>
+@end
+
+@implementation GDataSharingUser
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"sharingUser"; }
+@end
+
 @implementation GDataEntryDocBase
 
 + (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
@@ -148,6 +166,7 @@
    [GDataSharedWithMe class],
    [GDataLastModifiedByMe class],
    [GDataWritersCanInvite class],
+   [GDataPlusMediaFile class],
    [GDataLastModifiedBy class],
    [GDataQuotaBytesUsed class],
    [GDataDocDescription class],
@@ -157,6 +176,7 @@
    [GDataDocSuggestedFilename class],
    [GDataDocLastCommented class],
    [GDataDocRemoved class],
+   [GDataSharingUser class],
    nil];
 }
 
@@ -168,6 +188,7 @@
     { @"sharedWithMe",      @"sharedWithMe",        kGDataDescValueLabeled },
     { @"lastModifiedByMe",  @"lastModifiedByMe",    kGDataDescValueLabeled },
     { @"writersCanInvite",  @"writersCanInvite",    kGDataDescValueLabeled },
+    { @"plusMediaFile",     @"plusMediaFile",       kGDataDescValueLabeled },
     { @"lastModifiedBy",    @"lastModifiedBy",      kGDataDescValueLabeled },
     { @"quotaUsed",         @"quotaBytesUsed",      kGDataDescValueLabeled },
     { @"desc",              @"documentDescription", kGDataDescValueLabeled },
@@ -177,6 +198,7 @@
     { @"suggestedFilename", @"suggestedFilename",   kGDataDescValueLabeled },
     { @"lastCommented",     @"lastCommented",       kGDataDescValueLabeled },
     { @"removed",           @"removed",             kGDataDescBooleanPresent },
+    { @"sharingUser",       @"sharingUser",         kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -228,6 +250,16 @@
 - (void)setWritersCanInvite:(NSNumber *)num {
   GDataWritersCanInvite *obj = [GDataWritersCanInvite valueWithNumber:num];
   [self setObject:obj forExtensionClass:[GDataWritersCanInvite class]];
+}
+
+- (NSNumber *)plusMediaFile { // bool
+  GDataPlusMediaFile *obj = [self objectForExtensionClass:[GDataPlusMediaFile class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPlusMediaFile:(NSNumber *)num {
+  GDataPlusMediaFile *obj = [GDataPlusMediaFile valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataPlusMediaFile class]];
 }
 
 - (GDataPerson *)lastModifiedBy {
@@ -325,21 +357,13 @@
   [self setObject:private forExtensionClass:[GDataDocRemoved class]];
 }
 
-- (BOOL)hasPathToRoot {
-  BOOL flag = [GDataCategory categories:[self categories]
-             containsCategoryWithScheme:nil
-                                   term:nil
-                                  label:kGDataCategoryLabelHasPathToRoot];
-  return flag;
+- (GDataPerson *)sharingUser {
+  GDataSharingUser *obj = [self objectForExtensionClass:[GDataSharingUser class]];
+  return obj;
 }
 
-- (void)setHasPathToRoot:(BOOL)flag {
-  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelHasPathToRoot];
-  if (flag) {
-    [self addCategory:cat];
-  } else {
-    [self removeCategory:cat];
-  }
+- (void)setSharingUser:(GDataPerson *)obj {
+  [self setObject:obj forExtensionClass:[GDataSharingUser class]];
 }
 
 #pragma mark -
@@ -397,6 +421,23 @@
 
 - (void)setIsShared:(BOOL)flag {
   GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelShared];
+  if (flag) {
+    [self addCategory:cat];
+  } else {
+    [self removeCategory:cat];
+  }
+}
+
+- (BOOL)hasPathToRoot {
+  BOOL flag = [GDataCategory categories:[self categories]
+             containsCategoryWithScheme:nil
+                                   term:nil
+                                  label:kGDataCategoryLabelHasPathToRoot];
+  return flag;
+}
+
+- (void)setHasPathToRoot:(BOOL)flag {
+  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelHasPathToRoot];
   if (flag) {
     [self addCategory:cat];
   } else {
