@@ -67,6 +67,24 @@
 + (NSString *)extensionElementLocalName { return @"plusMediaFile"; }
 @end
 
+@interface GDataPlusPhotosFolder : GDataBoolValueConstruct <GDataExtension>
+@end
+
+@implementation GDataPlusPhotosFolder
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"plusPhotosFolder"; }
+@end
+
+@interface GDataPlusPhotosRootFolder : GDataBoolValueConstruct <GDataExtension>
+@end
+
+@implementation GDataPlusPhotosRootFolder
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"plusPhotosRootFolder"; }
+@end
+
 @interface GDataDocDescription : GDataValueElementConstruct <GDataExtension>
 @end
 
@@ -139,6 +157,15 @@
 + (NSString *)extensionElementLocalName { return @"sharingUser"; }
 @end
 
+@interface GDataExternalAppMimeType : GDataValueElementConstruct <GDataExtension>
+@end
+
+@implementation GDataExternalAppMimeType
++ (NSString *)extensionElementURI       { return kGDataNamespaceDocuments; }
++ (NSString *)extensionElementPrefix    { return kGDataNamespaceDocumentsPrefix; }
++ (NSString *)extensionElementLocalName { return @"externalAppEntryMimeType"; }
+@end
+
 @implementation GDataEntryDocBase
 
 + (NSString *)coreProtocolVersionForServiceVersion:(NSString *)serviceVersion {
@@ -167,6 +194,8 @@
    [GDataLastModifiedByMe class],
    [GDataWritersCanInvite class],
    [GDataPlusMediaFile class],
+   [GDataPlusPhotosFolder class],
+   [GDataPlusPhotosRootFolder class],
    [GDataLastModifiedBy class],
    [GDataQuotaBytesUsed class],
    [GDataDocDescription class],
@@ -177,6 +206,7 @@
    [GDataDocLastCommented class],
    [GDataDocRemoved class],
    [GDataSharingUser class],
+   [GDataExternalAppMimeType class],
    nil];
 }
 
@@ -184,21 +214,24 @@
 - (NSMutableArray *)itemsForDescription {
 
   static struct GDataDescriptionRecord descRecs[] = {
-    { @"lastViewed",        @"lastViewed",          kGDataDescValueLabeled },
-    { @"sharedWithMe",      @"sharedWithMe",        kGDataDescValueLabeled },
-    { @"lastModifiedByMe",  @"lastModifiedByMe",    kGDataDescValueLabeled },
-    { @"writersCanInvite",  @"writersCanInvite",    kGDataDescValueLabeled },
-    { @"plusMediaFile",     @"plusMediaFile",       kGDataDescValueLabeled },
-    { @"lastModifiedBy",    @"lastModifiedBy",      kGDataDescValueLabeled },
-    { @"quotaUsed",         @"quotaBytesUsed",      kGDataDescValueLabeled },
-    { @"desc",              @"documentDescription", kGDataDescValueLabeled },
-    { @"md5",               @"MD5Checksum",         kGDataDescValueLabeled },
-    { @"changestamp",       @"changestamp",         kGDataDescValueLabeled },
-    { @"filename",          @"filename",            kGDataDescValueLabeled },
-    { @"suggestedFilename", @"suggestedFilename",   kGDataDescValueLabeled },
-    { @"lastCommented",     @"lastCommented",       kGDataDescValueLabeled },
-    { @"removed",           @"removed",             kGDataDescBooleanPresent },
-    { @"sharingUser",       @"sharingUser",         kGDataDescValueLabeled },
+    { @"lastViewed",           @"lastViewed",           kGDataDescValueLabeled },
+    { @"sharedWithMe",         @"sharedWithMe",         kGDataDescValueLabeled },
+    { @"lastModifiedByMe",     @"lastModifiedByMe",     kGDataDescValueLabeled },
+    { @"writersCanInvite",     @"writersCanInvite",     kGDataDescValueLabeled },
+    { @"plusMediaFile",        @"plusMediaFile",        kGDataDescValueLabeled },
+    { @"plusPhotosFolder",     @"plusPhotosFolder",     kGDataDescValueLabeled },
+    { @"plusPhotosRootFolder", @"plusPhotosRootFolder", kGDataDescValueLabeled },
+    { @"lastModifiedBy",       @"lastModifiedBy",       kGDataDescValueLabeled },
+    { @"quotaUsed",            @"quotaBytesUsed",       kGDataDescValueLabeled },
+    { @"desc",                 @"documentDescription",  kGDataDescValueLabeled },
+    { @"md5",                  @"MD5Checksum",          kGDataDescValueLabeled },
+    { @"changestamp",          @"changestamp",          kGDataDescValueLabeled },
+    { @"filename",             @"filename",             kGDataDescValueLabeled },
+    { @"suggestedFilename",    @"suggestedFilename",    kGDataDescValueLabeled },
+    { @"lastCommented",        @"lastCommented",        kGDataDescValueLabeled },
+    { @"removed",              @"removed",              kGDataDescBooleanPresent },
+    { @"sharingUser",          @"sharingUser",          kGDataDescValueLabeled },
+    { @"externalAppMimeType",  @"externalAppMimeType",  kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
 
@@ -260,6 +293,26 @@
 - (void)setPlusMediaFile:(NSNumber *)num {
   GDataPlusMediaFile *obj = [GDataPlusMediaFile valueWithNumber:num];
   [self setObject:obj forExtensionClass:[GDataPlusMediaFile class]];
+}
+
+- (NSNumber *)plusPhotosFolder { // bool
+  GDataPlusPhotosFolder *obj = [self objectForExtensionClass:[GDataPlusPhotosFolder class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPlusPhotosFolder:(NSNumber *)num {
+  GDataPlusPhotosFolder *obj = [GDataPlusPhotosFolder valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataPlusPhotosFolder class]];
+}
+
+- (NSNumber *)plusPhotosRootFolder { // bool
+  GDataPlusPhotosRootFolder *obj = [self objectForExtensionClass:[GDataPlusPhotosRootFolder class]];
+  return [obj boolNumberValue];
+}
+
+- (void)setPlusPhotosRootFolder:(NSNumber *)num {
+  GDataPlusPhotosRootFolder *obj = [GDataPlusPhotosRootFolder valueWithNumber:num];
+  [self setObject:obj forExtensionClass:[GDataPlusPhotosRootFolder class]];
 }
 
 - (GDataPerson *)lastModifiedBy {
@@ -428,6 +481,21 @@
   }
 }
 
+- (BOOL)isDownloadRestricted {
+  BOOL flag = [GDataCategory categories:[self categories]
+              containsCategoryWithLabel:kGDataCategoryLabelDownloadRestricted];
+  return flag;
+}
+
+- (void)setIsDownloadRestricted:(BOOL)flag {
+  GDataCategory *cat = [GDataCategory categoryWithLabel:kGDataCategoryLabelDownloadRestricted];
+  if (flag) {
+    [self addCategory:cat];
+  } else {
+    [self removeCategory:cat];
+  }
+}
+
 - (BOOL)hasPathToRoot {
   BOOL flag = [GDataCategory categories:[self categories]
              containsCategoryWithScheme:nil
@@ -443,6 +511,17 @@
   } else {
     [self removeCategory:cat];
   }
+}
+
+- (NSString *)externalAppMimeType {
+  GDataExternalAppMimeType *obj;
+  obj = [self objectForExtensionClass:[GDataExternalAppMimeType class]];
+  return [obj stringValue];
+}
+
+- (void)setExternalAppMimeType:(NSString *)str {
+  GDataExternalAppMimeType *obj = [GDataExternalAppMimeType valueWithString:str];
+  [self setObject:obj forExtensionClass:[GDataExternalAppMimeType class]];
 }
 
 #pragma mark -

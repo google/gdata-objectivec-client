@@ -41,14 +41,14 @@ static NSString* StringByURLEncodingString(NSString *str) {
   return resultStr;
 }
 
-+ (GTMHTTPFetcher *)authTokenFetcherWithUsername:(NSString *)username
-                                        password:(NSString *)password
-                                         service:(NSString *)serviceID // code for the service to be used, like "cl"
-                                          source:(NSString *)source // companyName-applicationName-versionID
-                                    signInDomain:(NSString *)domain // nil for www.google.com
-                                     accountType:(NSString *)accountType // nil for HOSTED_OR_GOOGLE
-                            additionalParameters:(NSDictionary *)params
-                                   customHeaders:(NSDictionary *)headers { // nil or map of custom headers to set
++ (GTMBridgeFetcher *)authTokenFetcherWithUsername:(NSString *)username
+                                          password:(NSString *)password
+                                           service:(NSString *)serviceID // code for the service to be used, like "cl"
+                                            source:(NSString *)source // companyName-applicationName-versionID
+                                      signInDomain:(NSString *)domain // nil for www.google.com
+                                       accountType:(NSString *)accountType // nil for HOSTED_OR_GOOGLE
+                              additionalParameters:(NSDictionary *)params
+                                     customHeaders:(NSDictionary *)headers { // nil or map of custom headers to set
   
   if ([username length] == 0 || [password length] == 0) return nil;
 
@@ -100,8 +100,8 @@ static NSString* StringByURLEncodingString(NSString *str) {
                   key, StringByURLEncodingString(value)];
   }
 
-  GTMHTTPFetcher* fetcher = [GTMHTTPFetcher fetcherWithRequest:request];
-  [fetcher setPostData:[postString dataUsingEncoding:NSUTF8StringEncoding]];
+  GTMBridgeFetcher* fetcher = [GTMBridgeFetcher fetcherWithRequest:request];
+  fetcher.bodyData = [postString dataUsingEncoding:NSUTF8StringEncoding];
 
   // We're avoiding +[NSURCredential credentialWithUser:password:persistence:]
   // because it fails to autorelease itself on OS X 10.4 .. 10.5.x

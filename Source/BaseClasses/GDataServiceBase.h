@@ -17,7 +17,25 @@
 //  GDataServiceBase.h
 //
 
-#import "GTMHTTPFetcherService.h"
+#if GTM_USE_SESSION_FETCHER
+  #define GDataUploadFetcherClass GTMSessionUploadFetcher
+  #define GDataUploadFetcherClassStr @"GTMSessionUploadFetcher"
+
+  #define kGDataFetcherStatusUnauthorized kGTMSessionFetcherStatusUnauthorized
+  #define kGDataFetcherStatusForbidden kGTMSessionFetcherStatusForbidden
+  #define kGDataFetcherStatusDataKey kGTMSessionFetcherStatusDataKey
+
+  #import "GTMSessionFetcherService.h"
+#else
+  #define GDataUploadFetcherClass GTMHTTPUploadFetcher
+  #define GDataUploadFetcherClassStr @"GTMHTTPUploadFetcher"
+
+  #define kGDataFetcherStatusUnauthorized kGTMHTTPFetcherStatusUnauthorized
+  #define kGDataFetcherStatusForbidden kGTMHTTPFetcherStatusForbidden
+  #define kGDataFetcherStatusDataKey kGTMHTTPFetcherStatusDataKey
+
+  #import "GTMHTTPFetcherService.h"
+#endif  // GTM_USE_SESSION_FETCHER
 
 #import "GDataEntryBase.h"
 #import "GDataFeedBase.h"
@@ -98,8 +116,8 @@ typedef void *GDataServiceUploadProgressHandler;
   NSMutableDictionary *ticketProperties_;
   NSDictionary *surrogates_;
 
-  GTMHTTPFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
-  GTMHTTPFetcher *objectFetcher_;
+  GTMBridgeFetcher *currentFetcher_; // object or auth fetcher if mid-fetch
+  GTMBridgeFetcher *objectFetcher_;
   SEL uploadProgressSelector_;
   BOOL shouldFollowNextLinks_;
   BOOL shouldFeedsIgnoreUnknowns_;
@@ -159,11 +177,11 @@ typedef void *GDataServiceUploadProgressHandler;
 - (NSDictionary *)surrogates;
 - (void)setSurrogates:(NSDictionary *)dict;
 
-- (GTMHTTPFetcher *)currentFetcher; // object or auth fetcher, if active
-- (void)setCurrentFetcher:(GTMHTTPFetcher *)fetcher;
+- (GTMBridgeFetcher *)currentFetcher; // object or auth fetcher, if active
+- (void)setCurrentFetcher:(GTMBridgeFetcher *)fetcher;
 
-- (GTMHTTPFetcher *)objectFetcher;
-- (void)setObjectFetcher:(GTMHTTPFetcher *)fetcher;
+- (GTMBridgeFetcher *)objectFetcher;
+- (void)setObjectFetcher:(GTMBridgeFetcher *)fetcher;
 
 - (void)setUploadProgressSelector:(SEL)progressSelector;
 - (SEL)uploadProgressSelector;
@@ -223,7 +241,7 @@ typedef void *GDataServiceUploadProgressHandler;
 
 
 // category to provide opaque access to tickets stored in fetcher properties
-@interface GTMHTTPFetcher (GDataServiceTicketAdditions)
+@interface GTMBridgeFetcher (GDataServiceTicketAdditions)
 - (id)GDataTicket;
 @end
 
@@ -237,7 +255,7 @@ typedef void *GDataServiceUploadProgressHandler;
 
   NSString *serviceVersion_;
   NSString *userAgent_;
-  GTMHTTPFetcherService *fetcherService_;
+  GTMBridgeFetcherService *fetcherService_;
 
   NSString *username_;
   NSMutableData *password_;
@@ -405,8 +423,8 @@ typedef void *GDataServiceUploadProgressHandler;
 
 // Fetcher service, if necessary for sharing cookies and dated data
 // cache with standalone http fetchers
-- (void)setFetcherService:(GTMHTTPFetcherService *)obj;
-- (GTMHTTPFetcherService *)fetcherService;
+- (void)setFetcherService:(GTMBridgeFetcherService *)obj;
+- (GTMBridgeFetcherService *)fetcherService;
 
 // Default storage for cookies is in the service object's fetchHistory.
 //
@@ -507,7 +525,7 @@ typedef void *GDataServiceUploadProgressHandler;
 #endif
 
 
-// retrying; see comments on retry support at the top of GTMHTTPFetcher.
+// retrying; see comments on retry support at the top of GTMBridgeFetcher.
 - (BOOL)isServiceRetryEnabled;
 - (void)setIsServiceRetryEnabled:(BOOL)flag;
 
@@ -515,7 +533,7 @@ typedef void *GDataServiceUploadProgressHandler;
 //
 // If present, it should have the signature:
 //   -(BOOL)ticket:(GDataServiceTicketBase *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error
-// and return YES to cause a retry.  Note that unlike the GTMHTTPFetcher retry
+// and return YES to cause a retry.  Note that unlike the GTMBridgeFetcher retry
 // selector, this selector's first argument is a ticket, not a fetcher.
 // The current fetcher can be retrived with [ticket currentFetcher]
 
@@ -579,9 +597,9 @@ typedef void *GDataServiceUploadProgressHandler;
 // internal utilities
 //
 
-- (void)addAuthenticationToFetcher:(GTMHTTPFetcher *)fetcher;
+- (void)addAuthenticationToFetcher:(GTMBridgeFetcher *)fetcher;
 
-- (void)objectFetcher:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error;
+- (void)objectFetcher:(GTMBridgeFetcher *)fetcher finishedWithData:(NSData *)data error:(NSError *)error;
 
 + (NSString *)defaultApplicationIdentifier;
 

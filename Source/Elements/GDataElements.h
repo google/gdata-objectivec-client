@@ -22,9 +22,16 @@
 #import "GDataFramework.h"
 
 // utility classes
-#import "GTMHTTPFetcher.h"
-#import "GTMHTTPFetcherLogging.h"
-#import "GTMHTTPUploadFetcher.h"
+#if GTM_USE_SESSION_FETCHER
+  #import "GTMSessionFetcher.h"
+  #import "GTMSessionFetcherLogging.h"
+  #import "GTMSessionUploadFetcher.h"
+#else
+  #import "GTMHTTPFetcher.h"
+  #import "GTMHTTPFetcherLogging.h"
+  #import "GTMHTTPUploadFetcher.h"
+#endif  // GTM_USE_SESSION_FETCHER
+
 #import "GTMGatherInputStream.h"
 #import "GTMMIMEDocument.h"
 

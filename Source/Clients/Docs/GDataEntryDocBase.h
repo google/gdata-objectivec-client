@@ -43,6 +43,12 @@
 - (NSNumber *)plusMediaFile; // bool
 - (void)setPlusMediaFile:(NSNumber *)num;
 
+- (NSNumber *)plusPhotosFolder; // bool
+- (void)setPlusPhotosFolder:(NSNumber *)num;
+
+- (NSNumber *)plusPhotosRootFolder; // bool
+- (void)setPlusPhotosRootFolder:(NSNumber *)num;
+
 - (GDataPerson *)lastModifiedBy;
 - (void)setLastModifiedBy:(GDataPerson *)obj;
 
@@ -86,8 +92,14 @@
 - (BOOL)isShared;
 - (void)setIsShared:(BOOL)flag;
 
+- (BOOL)isDownloadRestricted;
+- (void)setIsDownloadRestricted:(BOOL)flag;
+
 - (BOOL)hasPathToRoot;
 - (void)setHasPathToRoot:(BOOL)flag;
+
+- (NSString *)externalAppMimeType;
+- (void)setExternalAppMimeType:(NSString *)str;
 
 // convenience accessors
 - (NSArray *)parentLinks;

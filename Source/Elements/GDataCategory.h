@@ -40,6 +40,8 @@ _EXTERN NSString* const kGDataCategoryLabelSharedWithDomain _INITIALIZE_AS(@"sha
 _EXTERN NSString* const kGDataCategoryLabelHidden           _INITIALIZE_AS(@"hidden");
 _EXTERN NSString* const kGDataCategoryLabelViewed           _INITIALIZE_AS(@"viewed");
 _EXTERN NSString* const kGDataCategoryLabelShared           _INITIALIZE_AS(@"shared");
+_EXTERN NSString* const kGDataCategoryLabelDownloadRestricted
+    _INITIALIZE_AS(@"restricted-download");
 
 // for categories, like
 //  <category scheme="http://schemas.google.com/g/2005#kind"
