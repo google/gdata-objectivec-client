@@ -13,6 +13,12 @@
  * limitations under the License.
  */
 
+#import <libxml/tree.h>
+#import <libxml/parser.h>
+#import <libxml/xmlstring.h>
+#import <libxml/xpath.h>
+#import <libxml/xpathInternals.h>
+
 #define GDATAXMLNODE_DEFINE_GLOBALS 1
 #import "GDataXMLNode.h"
 

@@ -76,7 +76,7 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 // Google authentication
 @interface GDataServiceTicket : GDataServiceTicketBase {
  @private
-  GTMHTTPFetcher *authFetcher_;
+  GTMBridgeFetcher *authFetcher_;
   NSString *authToken_;
   NSDate *credentialDate_;
 }
@@ -84,8 +84,8 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 - (void)cancelTicket; // stops fetches in progress
 
 // ClientLogin support; not used with OAuth 1 & 2 authorizers
-- (GTMHTTPFetcher *)authFetcher;
-- (void)setAuthFetcher:(GTMHTTPFetcher *)fetcher;
+- (GTMBridgeFetcher *)authFetcher;
+- (void)setAuthFetcher:(GTMBridgeFetcher *)fetcher;
 
 // ClientLogin support; not used with OAuth 1 & 2 authorizers
 - (NSString *)authToken;
@@ -116,7 +116,7 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 
   NSString *serviceID_; // typically supplied by the subclass overriding -serviceID
 
-  GTMHTTPFetcher *pendingAuthFetcher_;
+  GTMBridgeFetcher *pendingAuthFetcher_;
 
   NSDate *credentialDate_;
 
@@ -308,8 +308,8 @@ typedef void *GDataServiceGoogleEntryBaseCompletionHandler;
 // when the entries lack explicit root-level namespaces
 + (NSDictionary *)standardServiceNamespaces;
 
-- (GTMHTTPFetcher *)pendingAuthFetcher;
-- (void)setPendingAuthFetcher:(GTMHTTPFetcher *)fetcher;
+- (GTMBridgeFetcher *)pendingAuthFetcher;
+- (void)setPendingAuthFetcher:(GTMBridgeFetcher *)fetcher;
 
 // the date the credentials were set
 - (NSDate *)credentialDate;

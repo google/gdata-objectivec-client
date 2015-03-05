@@ -35,12 +35,16 @@
 //
 //   -lxml2
 
-#import <libxml/tree.h>
-#import <libxml/parser.h>
-#import <libxml/xmlstring.h>
-#import <libxml/xpath.h>
-#import <libxml/xpathInternals.h>
+#ifndef LIBXML_VERSION
+// Forward declaration of <libxml/*.h> types when not included.
 
+struct _xmlNode;
+typedef struct _xmlNode xmlNode;
+typedef xmlNode* xmlNodePtr;
+struct _xmlDoc;
+typedef struct _xmlDoc xmlDoc;
+typedef xmlDoc *xmlDocPtr;
+#endif
 
 #ifdef GDATA_TARGET_NAMESPACE
   // we're using target namespace macros
