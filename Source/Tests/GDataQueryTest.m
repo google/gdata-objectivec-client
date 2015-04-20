@@ -248,36 +248,6 @@
                        @"PWA query 3 generation error");
 }
 
-- (void)testMapsQuery {
-  NSURL *feedURL = [GDataServiceGoogleMaps mapsFeedURLForUserID:kGDataServiceDefaultUser
-                                                     projection:kGDataMapsProjectionFull];
-  GDataQueryMaps *mapsQuery1, *mapsQuery2;
-
-  mapsQuery1 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
-  [mapsQuery1 setPrevID:@"pid"];
-  [mapsQuery1 setAttributeQueryString:@"[pool:true][price:budget]"];
-  [mapsQuery1 setBoxString:@"1,2,3,4"];
-  [mapsQuery1 setLatitude:12.3];
-  [mapsQuery1 setLongitude:23.4];
-  [mapsQuery1 setRadius:33.3];
-  [mapsQuery1 setSortBy:@"distance"];
-  NSURL *resultURL1 = [mapsQuery1 URL];
-  NSString *expected1 = @"https://maps.google.com/maps/feeds/maps/default/full?"
-    "box=1%2C2%2C3%2C4&lat=12.300000&lng=23.400000&"
-    "mq=%5Bpool%3Atrue%5D%5Bprice%3Abudget%5D&previd=pid&"
-    "radius=33.300000&sortby=distance";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
-                       @"Maps Query 1 generation error");
-
-  mapsQuery2 = [GDataQueryMaps mapsQueryWithFeedURL:feedURL];
-  [mapsQuery2 setBoxWithWest:10 south:20 east:30 north:40];
-  NSURL *resultURL2 = [mapsQuery2 URL];
-  NSString *expected2 = @"https://maps.google.com/maps/feeds/maps/default/full?"
-    "box=10.000000%2C20.000000%2C30.000000%2C40.000000";
-  XCTAssertEqualObjects([resultURL2 absoluteString], expected2,
-                       @"Maps Query 2 generation error");
-}
-
 - (void)testYouTubeQuery {
   
   NSURL *feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:@"fred"
@@ -322,36 +292,6 @@
   NSString *expected1 = @"https://www.google.com/m8/feeds/contacts/user%40example.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540example.com%2Fbase%2F6";
   XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
                        @"Contacts query 1 generation error");
-}
-
-- (void)testFinanceQuery {
-  
-  NSURL *feedURL = [GDataServiceGoogleFinance portfolioFeedURLForUserID:@"user@example.com"];
-
-  GDataQueryFinance *query1;
-  query1 = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
-  
-  [query1 setShouldIncludeReturns:NO];
-  [query1 setShouldIncludePositions:NO];
-  [query1 setShouldIncludeTransactions:NO];
-
-  NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
-                       @"Finance query 1 generation error");
-  
-  GDataQueryFinance *query2;
-  query2 = [GDataQueryFinance financeQueryWithFeedURL:feedURL];
-  
-  [query2 setShouldIncludeReturns:YES];
-  [query2 setShouldIncludePositions:YES];
-  [query2 setShouldIncludeTransactions:YES];
-  
-  NSURL *resultURL2 = [query2 URL];
-  NSString *expected2 = @"https://finance.google.com/finance/feeds/user%40example.com/portfolios?positions=true&returns=true&transactions=true";
-  
-  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
-                       @"Finance query 2 generation error");
 }
 
 - (void)testBooksQuery {
@@ -425,29 +365,6 @@
     "sourceLanguage=en&targetLanguage=de";
   XCTAssertEqualObjects([resultURL4 absoluteString], expected4,
                        @"Docs query 4 generation error");
-}
-
-- (void)testAnalyticsQuery {
-  GDataQueryAnalytics *query1;
-
-  query1 = [GDataQueryAnalytics analyticsDataQueryWithTableID:@"9876"
-                                              startDateString:@"2001-01-01"
-                                                endDateString:@"2001-12-01"];
-
-  [query1 setDimensions:@"ga:browser,ga:country"];
-  [query1 setMetrics:@"ga:pageviews"];
-  [query1 setFilters:@"ga:country==United States,ga:country==Canada"];
-  [query1 setSort:@"ga:browser,ga:pageviews"];
-  [query1 setSegment:@"gaid::3"];
-
-  NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"https://www.google.com/analytics/feeds/data?"
-    "dimensions=ga%3Abrowser%2Cga%3Acountry&end-date=2001-12-01&"
-    "filters=ga%3Acountry%3D%3DUnited+States%2Cga%3Acountry%3D%3DCanada&"
-    "ids=9876&metrics=ga%3Apageviews&segment=gaid%3A%3A3&"
-    "sort=ga%3Abrowser%2Cga%3Apageviews&start-date=2001-01-01";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
-                       @"Analytics query 1 generation error");
 }
 
 - (void)testMixedCategoryParamQueries {

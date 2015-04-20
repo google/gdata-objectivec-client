@@ -147,6 +147,10 @@ static int kServerPortNumber = 54579;
   NSString *authDomain = [NSString stringWithFormat:@"localhost:%d", kServerPortNumber];
   [service_ setSignInDomain:authDomain];
 
+  [[service_ fetcherService] setAllowLocalhostRequest:YES];
+  [[service_ fetcherService] setAllowedInsecureSchemes:@[ @"http" ]];
+
+
   // install observers for fetcher notifications
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
   [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGTMHTTPFetcherStartedNotification object:nil];
@@ -237,6 +241,8 @@ static int kServerPortNumber = 54579;
     // fetchers when we get a cached response
     [service_ clearResponseDataCache];
   }
+  [[service_ fetcherService] setAllowLocalhostRequest:YES];
+  [[service_ fetcherService] setAllowedInsecureSchemes:@[ @"http" ]];
 
   fetchStartedNotificationCount_ = 0;
   fetchStoppedNotificationCount_ = 0;

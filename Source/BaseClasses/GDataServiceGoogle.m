@@ -144,6 +144,8 @@ enum {
   [fetcher setRunLoopModes:[self runLoopModes]];
   [fetcher setFetchHistory:[fetcherService_ fetchHistory]];
 #endif
+  [fetcher setAllowedInsecureSchemes:[fetcherService_ allowedInsecureSchemes]];
+  [fetcher setAllowLocalhostRequest:[fetcherService_ allowLocalhostRequest]];
 
   [fetcher setRetryEnabled:[self isServiceRetryEnabled]];
   [fetcher setMaxRetryInterval:[self serviceMaxRetryInterval]];
