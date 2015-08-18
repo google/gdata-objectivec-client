@@ -1,8 +1,10 @@
-Google Data APIs Objective-C Client Library
-Framework Release Notes
+# Google Data APIs Objective-C Client Library #
 
-Project site:     http://code.google.com/p/gdata-objectivec-client/
-Discussion group: http://groups.google.com/group/gdata-objectivec-client-framework
+**Project site** <https://github.com/google/gtm-oauth><br>
+**Discussion group** <http://groups.google.com/group/gdata-objectivec-client-framework>
+
+
+## Release History ##
 
 Changed since 1.12.0
 
