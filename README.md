@@ -1,9 +1,9 @@
 # Google Data APIs Objective-C Client Library #
 
 **Project site** <https://github.com/google/gtm-oauth><br>
-**Discussion group** <http://groups.google.com/group/gdata-objectivec-client-framework>
+**Discussion group** <http://groups.google.com/group/gdata-objectivec-client>
 
-The [Google data APIs](http://code.google.com/apis/gdata/index.html) provide a
+The [Google data APIs](https://developers.google.com/gdata/) provide a
 simple protocol for reading and writing data on the web.  Many Google services
 provide a Google data API.
 
