@@ -7,8 +7,10 @@ The [Google data APIs](https://developers.google.com/gdata/) provide a
 simple protocol for reading and writing data on the web.  Many Google services
 provide a Google data API.
 
+---
+
 This library is for Google **XML APIs**. For **JSON APIs,** use the
-[Google APIs Client Library for Objective-C](https://github.com/google/google-api-objectivec-client).
+[Google APIs Client Library for Objective-C for REST](https://github.com/google/google-api-objectivec-client-for-rest).
 
 Each of the following Google services provides a Google Data API supported by
 this library:
@@ -16,18 +18,20 @@ this library:
 - [Picasa Web Albums](http://code.google.com/apis/picasaweb/)
 - [Spreadsheets](http://code.google.com/apis/spreadsheets/)
 
+---
+
 This library should **no longer** be used for these APIs:
-- Google Analytics (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
-- Blogger (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
-- Book Search (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
-- Calendar (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
+- Google Analytics (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
+- Blogger (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
+- Book Search (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
+- Calendar (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 - Code Search ([deprecated](http://googleblog.blogspot.com/2011/10/fall-sweep.html))
-- Documents List ([deprecated](http://googledevelopers.blogspot.com/2012/09/retiring-google-documents-list-api-v3.html); superseded by the Drive [JSON API](https://github.com/google/google-api-objectivec-client))
+- Documents List ([deprecated](http://googledevelopers.blogspot.com/2012/09/retiring-google-documents-list-api-v3.html); superseded by the Drive [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 - [Finance](http://code.google.com/apis/finance/) ([deprecated](http://googledevelopers.blogspot.com/2012/04/changes-to-deprecation-policies-and-api.html))
 - Health ([deprecated](http://googleblog.blogspot.com/2011/06/update-on-google-health-and-google.html))
 - Maps ([deprecated](http://googlegeodevelopers.blogspot.com/2010/11/maps-data-api-deprecation-announcement.html))
-- Webmaster Tools (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
-- YouTube (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client))
+- Webmaster Tools (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
+- YouTube (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 
 The Google Data APIs Objective-C Client Library provides an iPhone static
 library, a Mac OS X framework, and source code that make it easy to access data
