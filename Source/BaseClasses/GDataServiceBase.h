@@ -23,7 +23,7 @@
 
   #define kGDataFetcherStatusUnauthorized GTMSessionFetcherStatusUnauthorized
   #define kGDataFetcherStatusForbidden GTMSessionFetcherStatusForbidden
-  #define kGDataFetcherStatusDataKey GTMSessionFetcherStatusDataKey
+  #define kGDataFetcherStatusDataKey kGTMSessionFetcherStatusDataKey
 
   #import "GTMSessionFetcherService.h"
 #else
