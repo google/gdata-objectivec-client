@@ -47,11 +47,11 @@
   unsigned long long dataSize_;     // size of data in the source
   unsigned long long numBytesRead_; // bytes read from the input stream so far
 
-  id monitorDelegate_;
+  id monitorDelegate_;  //__weak
   SEL monitorSelector_;
   SEL readSelector_;
 
-  id monitorSource_;
+  id monitorSource_; // _weak
 }
 
 // length is passed to the progress callback; it may be zero
