@@ -3719,6 +3719,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastTestingUpgradeCheck = 0510;
+				LastUpgradeCheck = 0730;
 			};
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "GData" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -5012,6 +5013,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = NO;
 				DEPLOYMENT_POSTPROCESSING = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
@@ -5022,6 +5024,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG=1";
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -5071,6 +5074,7 @@
 		4F14A9E00B1276B70072EBB8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
@@ -5085,6 +5089,7 @@
 					"-framework",
 					Cocoa,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GDataUnitTests;
 				PRODUCT_NAME = GDataUnitTests;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
@@ -5094,6 +5099,7 @@
 		4F14A9E10B1276B70072EBB8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
@@ -5108,6 +5114,7 @@
 					"-framework",
 					Cocoa,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GDataUnitTests;
 				PRODUCT_NAME = GDataUnitTests;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
@@ -5117,9 +5124,9 @@
 		4F1AD9090B71606100DC0485 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = unsupported;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				OTHER_LDFLAGS = "-lxml2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.DevelopmentTestApplication;
 				PRODUCT_NAME = DevelopmentTestTool;
 				SDKROOT = macosx;
 			};
@@ -5128,9 +5135,9 @@
 		4F1AD90A0B71606100DC0485 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_OBJC_GC = unsupported;
 				INFOPLIST_FILE = "Resources/DevelopmentTestApplication-Info.plist";
 				OTHER_LDFLAGS = "-lxml2";
+				PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.DevelopmentTestApplication;
 				PRODUCT_NAME = DevelopmentTestTool;
 				SDKROOT = macosx;
 			};
@@ -5139,8 +5146,6 @@
 		4F1C6E101027B3CF00B46459 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_ENABLE_OBJC_GC = unsupported;
 				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
@@ -5156,8 +5161,6 @@
 		4F1C6E111027B3CF00B46459 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				GCC_ENABLE_OBJC_GC = unsupported;
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				OTHER_CFLAGS = (
 					"$(inherited)",
@@ -5173,6 +5176,7 @@
 		4F38F7120B66EF2C00B24B81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -5189,6 +5193,7 @@
 					"-framework",
 					AppKit,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GDataFramework;
 				PRODUCT_NAME = GData;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
@@ -5198,6 +5203,7 @@
 		4F38F7130B66EF2C00B24B81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
@@ -5212,6 +5218,7 @@
 					"-framework",
 					AppKit,
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.google.GDataFramework;
 				PRODUCT_NAME = GData;
 				SDKROOT = macosx;
 				STRIP_STYLE = "non-global";
@@ -5221,6 +5228,7 @@
 		4F85E016103B83B700B4C418 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
@@ -5251,6 +5259,7 @@
 		4F85E017103B83B700B4C418 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(value)",
 					"$(DEVELOPER_FRAMEWORKS_DIR_QUOTED)",
