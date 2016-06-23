@@ -19,16 +19,34 @@
 
 #import "GDataAuthenticationFetcher.h"
 
+#ifndef GDATA_USE_NEW_ENCODING_CALLS
+  #if (!TARGET_OS_IPHONE && defined(MAC_OS_X_VERSION_10_9) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9) \
+      || (TARGET_OS_IPHONE && defined(__IPHONE_7_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_7_0)
+    #define GDATA_USE_NEW_ENCODING_CALLS 1
+  #else
+    #define GDATA_USE_NEW_ENCODING_CALLS 0
+  #endif
+#endif
+
+
 @implementation GDataAuthenticationFetcher
 
 // same as GDataUtilities stringByURLEncodingForURI:
 static NSString* StringByURLEncodingString(NSString *str) {
+  static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
+
+#if GDATA_USE_NEW_ENCODING_CALLS
+  NSMutableCharacterSet *charSet =
+      [[[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy] autorelease];
+  [charSet removeCharactersInString:(NSString *)kCharsToForceEscape];
+
+  NSString *resultStr = [str stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+#else
   NSString *resultStr = str;
   CFStringRef originalString = (CFStringRef) str;
   CFStringRef leaveUnescaped = NULL;
 
   CFStringRef escapedStr;
-  static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
   escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                        originalString,
@@ -38,6 +56,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
   if (escapedStr) {
     resultStr = [(id)CFMakeCollectable(escapedStr) autorelease];
   }
+#endif
   return resultStr;
 }
 
