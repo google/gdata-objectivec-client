@@ -22,7 +22,6 @@
 //   #import "GData/GDataCalendar.h"
 
 #import "GDataBlogger.h"
-#import "GDataBooks.h"
 #import "GDataCalendar.h"
 #import "GDataContacts.h"
 #import "GDataDocs.h"
