@@ -284,7 +284,9 @@ static int kServerPortNumber = 54579;
 
   // just for sanity, let's make sure we see the file locally, so
   // we can expect the Python http server to find it too
-  NSString *filePath = [NSString stringWithFormat:@"Tests/%@", name];
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *filePath = [resourcesPath stringByAppendingPathComponent:name];
 
 
   // we exclude the "?status=" that would indicate that the URL

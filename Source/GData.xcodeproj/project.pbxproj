@@ -1651,6 +1651,60 @@
 		F47476A61D1C3682007C7B1A /* GTMSessionFetcherLogging.m in Sources */ = {isa = PBXBuildFile; fileRef = F474767A1D1C3658007C7B1A /* GTMSessionFetcherLogging.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F47476A71D1C3682007C7B1A /* GTMSessionFetcherService.m in Sources */ = {isa = PBXBuildFile; fileRef = F474767C1D1C3658007C7B1A /* GTMSessionFetcherService.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		F47476A81D1C3682007C7B1A /* GTMSessionUploadFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = F474767E1D1C3658007C7B1A /* GTMSessionUploadFetcher.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		F47476A91D1C3EE5007C7B1A /* FeedACLTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F7ACD29116D698F00444189 /* FeedACLTest1.xml */; };
+		F47476AA1D1C3EE6007C7B1A /* FeedACLTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F7ACD29116D698F00444189 /* FeedACLTest1.xml */; };
+		F47476AB1D1C3F70007C7B1A /* FeedBlogCommentsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555EC0FD73817006FDC8B /* FeedBlogCommentsTest1.xml */; };
+		F47476AC1D1C3F70007C7B1A /* FeedBlogTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555ED0FD73817006FDC8B /* FeedBlogTest1.xml */; };
+		F47476AD1D1C3F70007C7B1A /* FeedBlogPostTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555EE0FD73817006FDC8B /* FeedBlogPostTest1.xml */; };
+		F47476AE1D1C3F70007C7B1A /* FeedBlogCommentsTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555EC0FD73817006FDC8B /* FeedBlogCommentsTest1.xml */; };
+		F47476AF1D1C3F70007C7B1A /* FeedBlogTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555ED0FD73817006FDC8B /* FeedBlogTest1.xml */; };
+		F47476B01D1C3F70007C7B1A /* FeedBlogPostTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA555EE0FD73817006FDC8B /* FeedBlogPostTest1.xml */; };
+		F47476B11D1C3F7B007C7B1A /* FeedCalendarEventTest0.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C03430F5DF3BD002597A6 /* FeedCalendarEventTest0.xml */; };
+		F47476B21D1C3F7B007C7B1A /* FeedCalendarEventTest0.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F1C03430F5DF3BD002597A6 /* FeedCalendarEventTest0.xml */; };
+		F47476B31D1C3F80007C7B1A /* FeedContactTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F346E500D7508AC006033E0 /* FeedContactTest1.xml */; };
+		F47476B41D1C3F80007C7B1A /* FeedContactTest2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F493DF00FB90BDD003B3670 /* FeedContactTest2.xml */; };
+		F47476B51D1C3F80007C7B1A /* FeedContactTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F346E500D7508AC006033E0 /* FeedContactTest1.xml */; };
+		F47476B61D1C3F80007C7B1A /* FeedContactTest2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F493DF00FB90BDD003B3670 /* FeedContactTest2.xml */; };
+		F47476B71D1C3F8B007C7B1A /* FeedDocListTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD66B3B0EA540EB001D365E /* FeedDocListTest1.xml */; };
+		F47476B81D1C3F8B007C7B1A /* EntryDocListMetadataTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FB71E0C113CAE3300169801 /* EntryDocListMetadataTest1.xml */; };
+		F47476B91D1C3F8D007C7B1A /* FeedDocListTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FD66B3B0EA540EB001D365E /* FeedDocListTest1.xml */; };
+		F47476BA1D1C3F8D007C7B1A /* EntryDocListMetadataTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FB71E0C113CAE3300169801 /* EntryDocListMetadataTest1.xml */; };
+		F47476BB1D1C3FFF007C7B1A /* FeedPhotosPhotoComment1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C67E0C0389D4006D556A /* FeedPhotosPhotoComment1.xml */; };
+		F47476BC1D1C3FFF007C7B1A /* FeedPhotosUserTag1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C67F0C0389D4006D556A /* FeedPhotosUserTag1.xml */; };
+		F47476BD1D1C3FFF007C7B1A /* FeedPhotosUserAlbum1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C6800C0389D4006D556A /* FeedPhotosUserAlbum1.xml */; };
+		F47476BE1D1C3FFF007C7B1A /* FeedPhotosSearch1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F366A7D10165E1B0010F63F /* FeedPhotosSearch1.xml */; };
+		F47476BF1D1C4001007C7B1A /* FeedPhotosPhotoComment1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C67E0C0389D4006D556A /* FeedPhotosPhotoComment1.xml */; };
+		F47476C01D1C4001007C7B1A /* FeedPhotosUserTag1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C67F0C0389D4006D556A /* FeedPhotosUserTag1.xml */; };
+		F47476C11D1C4001007C7B1A /* FeedPhotosUserAlbum1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FA1C6800C0389D4006D556A /* FeedPhotosUserAlbum1.xml */; };
+		F47476C21D1C4001007C7B1A /* FeedPhotosSearch1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F366A7D10165E1B0010F63F /* FeedPhotosSearch1.xml */; };
+		F47476C31D1C4009007C7B1A /* FeedSpreadsheetRecordTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F82A8F70FD0868400C477D4 /* FeedSpreadsheetRecordTest1.xml */; };
+		F47476C41D1C4009007C7B1A /* FeedSpreadsheetTableTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F82A8F80FD0869100C477D4 /* FeedSpreadsheetTableTest1.xml */; };
+		F47476C51D1C400A007C7B1A /* FeedSpreadsheetRecordTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F82A8F70FD0868400C477D4 /* FeedSpreadsheetRecordTest1.xml */; };
+		F47476C61D1C400A007C7B1A /* FeedSpreadsheetTableTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F82A8F80FD0869100C477D4 /* FeedSpreadsheetTableTest1.xml */; };
+		F47476C71D1C402D007C7B1A /* FeedServiceDocTest2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F10BBB50F1E9AAA002AE29A /* FeedServiceDocTest2.xml */; };
+		F47476C81D1C402E007C7B1A /* FeedServiceDocTest2.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F10BBB50F1E9AAA002AE29A /* FeedServiceDocTest2.xml */; };
+		F47476C91D1C4773007C7B1A /* FeedYouTubeFavorites1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F4E8DC30EB7EB4800C59A7E /* FeedYouTubeFavorites1.xml */; };
+		F47476CA1D1C4773007C7B1A /* FeedYouTubeSubscriptions1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B0B00D510A8D00004F37 /* FeedYouTubeSubscriptions1.xml */; };
+		F47476CB1D1C4773007C7B1A /* FeedYouTubeUserProfile1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B1140D51204600004F37 /* FeedYouTubeUserProfile1.xml */; };
+		F47476CC1D1C4773007C7B1A /* FeedYouTubeVideo1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B1B30D51310600004F37 /* FeedYouTubeVideo1.xml */; };
+		F47476CD1D1C4773007C7B1A /* FeedYouTubeContacts1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02327E0D59372200EE6862 /* FeedYouTubeContacts1.xml */; };
+		F47476CE1D1C4773007C7B1A /* FeedYouTubeCaptionTracks1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F1EFA1C10056A640055F9FD /* FeedYouTubeCaptionTracks1.xml */; };
+		F47476CF1D1C4773007C7B1A /* FeedYouTubePlaylistLink1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02304D0D5910A600EE6862 /* FeedYouTubePlaylistLink1.xml */; };
+		F47476D01D1C4773007C7B1A /* FeedYouTubePlaylist1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02305E0D5911DA00EE6862 /* FeedYouTubePlaylist1.xml */; };
+		F47476D11D1C4773007C7B1A /* FeedYouTubeUserEventTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF38A80F5765A300E1EFD9 /* FeedYouTubeUserEventTest1.xml */; };
+		F47476D21D1C4774007C7B1A /* FeedYouTubeFavorites1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F4E8DC30EB7EB4800C59A7E /* FeedYouTubeFavorites1.xml */; };
+		F47476D31D1C4774007C7B1A /* FeedYouTubeSubscriptions1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B0B00D510A8D00004F37 /* FeedYouTubeSubscriptions1.xml */; };
+		F47476D41D1C4774007C7B1A /* FeedYouTubeUserProfile1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B1140D51204600004F37 /* FeedYouTubeUserProfile1.xml */; };
+		F47476D51D1C4774007C7B1A /* FeedYouTubeVideo1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F45B1B30D51310600004F37 /* FeedYouTubeVideo1.xml */; };
+		F47476D61D1C4774007C7B1A /* FeedYouTubeContacts1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02327E0D59372200EE6862 /* FeedYouTubeContacts1.xml */; };
+		F47476D71D1C4774007C7B1A /* FeedYouTubeCaptionTracks1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F1EFA1C10056A640055F9FD /* FeedYouTubeCaptionTracks1.xml */; };
+		F47476D81D1C4774007C7B1A /* FeedYouTubePlaylistLink1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02304D0D5910A600EE6862 /* FeedYouTubePlaylistLink1.xml */; };
+		F47476D91D1C4774007C7B1A /* FeedYouTubePlaylist1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4F02305E0D5911DA00EE6862 /* FeedYouTubePlaylist1.xml */; };
+		F47476DA1D1C4774007C7B1A /* FeedYouTubeUserEventTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4FBF38A80F5765A300E1EFD9 /* FeedYouTubeUserEventTest1.xml */; };
+		F47476DD1D1C49FF007C7B1A /* GDataTestHTTPServer.py in Resources */ = {isa = PBXBuildFile; fileRef = F47476DB1D1C49FB007C7B1A /* GDataTestHTTPServer.py */; };
+		F47476DE1D1C4A00007C7B1A /* GDataTestHTTPServer.py in Resources */ = {isa = PBXBuildFile; fileRef = F47476DB1D1C49FB007C7B1A /* GDataTestHTTPServer.py */; };
+		F47476E11D1C4C92007C7B1A /* EntrySpreadsheetCellTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F47476DF1D1C4C88007C7B1A /* EntrySpreadsheetCellTest1.xml */; };
+		F47476E21D1C4C92007C7B1A /* EntrySpreadsheetCellTest1.xml in Resources */ = {isa = PBXBuildFile; fileRef = F47476DF1D1C4C88007C7B1A /* EntrySpreadsheetCellTest1.xml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2062,7 +2116,6 @@
 		4F1FE3620E5CE9B600D6880C /* GDataEntryPDFDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryPDFDoc.m; path = Clients/Docs/GDataEntryPDFDoc.m; sourceTree = "<group>"; };
 		4F2082080FC7464000F547BB /* GDataCustomProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataCustomProperty.m; path = Elements/GDataCustomProperty.m; sourceTree = "<group>"; };
 		4F2082090FC7464000F547BB /* GDataCustomProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataCustomProperty.h; path = Elements/GDataCustomProperty.h; sourceTree = "<group>"; };
-		4F2083940FC7823300F547BB /* FeedMapFeaturesTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedMapFeaturesTest1.xml; path = Tests/FeedMapFeaturesTest1.xml; sourceTree = "<group>"; };
 		4F25E9F40BE9667A007C0836 /* GDataEntryACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataEntryACL.h; path = ACL/GDataEntryACL.h; sourceTree = "<group>"; };
 		4F25E9F50BE9667B007C0836 /* GDataEntryACL.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataEntryACL.m; path = ACL/GDataEntryACL.m; sourceTree = "<group>"; };
 		4F25E9F60BE9667B007C0836 /* GDataFeedACL.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataFeedACL.h; path = ACL/GDataFeedACL.h; sourceTree = "<group>"; };
@@ -2206,9 +2259,6 @@
 		4F45B7750D51579600004F37 /* GDataMediaRating.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaRating.m; path = Media/GDataMediaRating.m; sourceTree = "<group>"; };
 		4F45B7B80D515B6900004F37 /* GDataMediaRestriction.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataMediaRestriction.m; path = Media/GDataMediaRestriction.m; sourceTree = "<group>"; };
 		4F45B7BC0D515B7100004F37 /* GDataMediaRestriction.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataMediaRestriction.h; path = Media/GDataMediaRestriction.h; sourceTree = "<group>"; };
-		4F478D4C0FF59FD500138739 /* FeedWebmasterToolsKeywords1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsKeywords1.xml; path = Tests/FeedWebmasterToolsKeywords1.xml; sourceTree = "<group>"; };
-		4F478D9B0FF5B97600138739 /* FeedWebmasterToolsCrawlIssues1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsCrawlIssues1.xml; path = Tests/FeedWebmasterToolsCrawlIssues1.xml; sourceTree = "<group>"; };
-		4F478D9C0FF5B97600138739 /* FeedWebmasterToolsMessages1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsMessages1.xml; path = Tests/FeedWebmasterToolsMessages1.xml; sourceTree = "<group>"; };
 		4F47EC2B19479E17007C13FA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		4F48F014105AE2920053938E /* GDataEntryFileDoc.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataEntryFileDoc.m; path = Clients/Docs/GDataEntryFileDoc.m; sourceTree = "<group>"; };
 		4F48F015105AE2920053938E /* GDataEntryFileDoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataEntryFileDoc.h; path = Clients/Docs/GDataEntryFileDoc.h; sourceTree = "<group>"; };
@@ -2237,9 +2287,6 @@
 		4F4E917A0EBA85D900C59A7E /* GDataServerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServerError.h; path = Networking/GDataServerError.h; sourceTree = "<group>"; };
 		4F4E917B0EBA85D900C59A7E /* GDataServerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServerError.m; path = Networking/GDataServerError.m; sourceTree = "<group>"; };
 		4F4E93310EBBC83E00C59A7E /* GDataServerErrorTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServerErrorTest.m; path = Tests/GDataServerErrorTest.m; sourceTree = "<group>"; };
-		4F56525E0DFF5FFF00975DBD /* FeedFinancePortfolioTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePortfolioTest1.xml; path = Tests/FeedFinancePortfolioTest1.xml; sourceTree = "<group>"; };
-		4F56525F0DFF5FFF00975DBD /* FeedFinancePositionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinancePositionTest1.xml; path = Tests/FeedFinancePositionTest1.xml; sourceTree = "<group>"; };
-		4F5652600DFF5FFF00975DBD /* FeedFinanceTransactionTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedFinanceTransactionTest1.xml; path = Tests/FeedFinanceTransactionTest1.xml; sourceTree = "<group>"; };
 		4F5C293E0D9C60BC00C647A5 /* GDataServiceGooglePhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataServiceGooglePhotos.h; path = Clients/Photos/GDataServiceGooglePhotos.h; sourceTree = "<group>"; };
 		4F5C293F0D9C60BC00C647A5 /* GDataServiceGooglePhotos.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGooglePhotos.m; path = Clients/Photos/GDataServiceGooglePhotos.m; sourceTree = "<group>"; };
 		4F5C294A0D9C60D100C647A5 /* GDataQueryGooglePhotos.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataQueryGooglePhotos.h; path = Clients/Photos/GDataQueryGooglePhotos.h; sourceTree = "<group>"; };
@@ -2258,8 +2305,6 @@
 		4F69E6DF0D4AD3380084991B /* GDataServiceGoogleYouTube.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceGoogleYouTube.m; path = Clients/YouTube/GDataServiceGoogleYouTube.m; sourceTree = "<group>"; };
 		4F69E7440D4AD9B60084991B /* GDataQueryYouTube.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = GDataQueryYouTube.h; path = Clients/YouTube/GDataQueryYouTube.h; sourceTree = "<group>"; };
 		4F69E7490D4AD9BF0084991B /* GDataQueryYouTube.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataQueryYouTube.m; path = Clients/YouTube/GDataQueryYouTube.m; sourceTree = "<group>"; };
-		4F6F06B50E1438C8001F6A47 /* FeedWebmasterToolsSite1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsSite1.xml; path = Tests/FeedWebmasterToolsSite1.xml; sourceTree = "<group>"; };
-		4F6F06B60E1438C8001F6A47 /* FeedWebmasterToolsSitemap1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedWebmasterToolsSitemap1.xml; path = Tests/FeedWebmasterToolsSitemap1.xml; sourceTree = "<group>"; };
 		4F7098B60D790F71003CEFDF /* GDataUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataUtilities.h; sourceTree = "<group>"; };
 		4F7098B70D790F71003CEFDF /* GDataUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataUtilities.m; sourceTree = "<group>"; };
 		4F71B1F013DA13E500B955AC /* GDataDocElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataDocElements.h; path = Clients/Docs/GDataDocElements.h; sourceTree = "<group>"; };
@@ -2298,8 +2343,6 @@
 		4F9044460F2694F7000097B1 /* GDataServiceACL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GDataServiceACL.m; path = ACL/GDataServiceACL.m; sourceTree = "<group>"; };
 		4F9044680F26973A000097B1 /* GDataACL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataACL.h; path = ACL/GDataACL.h; sourceTree = "<group>"; };
 		4F9044D50F269B5E000097B1 /* GDataMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GDataMedia.h; path = Media/GDataMedia.h; sourceTree = "<group>"; };
-		4F91DEAB0FC4C47D008EA8A2 /* FeedAnalyticsAccountTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedAnalyticsAccountTest1.xml; path = Tests/FeedAnalyticsAccountTest1.xml; sourceTree = "<group>"; };
-		4F91DEAC0FC4C47D008EA8A2 /* FeedAnalyticsDataTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = FeedAnalyticsDataTest1.xml; path = Tests/FeedAnalyticsDataTest1.xml; sourceTree = "<group>"; };
 		4F93A5FD0DBD773A0067AE7E /* GDataXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GDataXMLNode.h; sourceTree = "<group>"; };
 		4F93A5FE0DBD773A0067AE7E /* GDataXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GDataXMLNode.m; sourceTree = "<group>"; };
 		4F9708740BC5C35100C5B1C0 /* GDataServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; name = GDataServiceTest.m; path = Tests/GDataServiceTest.m; sourceTree = "<group>"; };
@@ -2449,6 +2492,8 @@
 		F474767C1D1C3658007C7B1A /* GTMSessionFetcherService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSessionFetcherService.m; sourceTree = "<group>"; };
 		F474767D1D1C3658007C7B1A /* GTMSessionUploadFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMSessionUploadFetcher.h; sourceTree = "<group>"; };
 		F474767E1D1C3658007C7B1A /* GTMSessionUploadFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMSessionUploadFetcher.m; sourceTree = "<group>"; };
+		F47476DB1D1C49FB007C7B1A /* GDataTestHTTPServer.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = GDataTestHTTPServer.py; path = Tests/GDataTestHTTPServer.py; sourceTree = "<group>"; };
+		F47476DF1D1C4C88007C7B1A /* EntrySpreadsheetCellTest1.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = EntrySpreadsheetCellTest1.xml; path = Tests/EntrySpreadsheetCellTest1.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2656,6 +2701,7 @@
 		4F14A9E30B1277010072EBB8 /* Unit Tests */ = {
 			isa = PBXGroup;
 			children = (
+				F47476DB1D1C49FB007C7B1A /* GDataTestHTTPServer.py */,
 				4FDF27620B1F80BF00DFCF57 /* GDataElementsTest.h */,
 				4FDF27610B1F80BF00DFCF57 /* GDataElementsTest.m */,
 				4FDF2E490B21121800DFCF57 /* GDataFeedTest.h */,
@@ -3008,19 +3054,10 @@
 			name = Contacts;
 			sourceTree = "<group>";
 		};
-		4F5651E00DFF4E2A00975DBD /* Finance */ = {
-			isa = PBXGroup;
-			children = (
-				4F56525E0DFF5FFF00975DBD /* FeedFinancePortfolioTest1.xml */,
-				4F56525F0DFF5FFF00975DBD /* FeedFinancePositionTest1.xml */,
-				4F5652600DFF5FFF00975DBD /* FeedFinanceTransactionTest1.xml */,
-			);
-			name = Finance;
-			sourceTree = "<group>";
-		};
 		4F5651E10DFF4E3600975DBD /* Spreadsheet */ = {
 			isa = PBXGroup;
 			children = (
+				F47476DF1D1C4C88007C7B1A /* EntrySpreadsheetCellTest1.xml */,
 				4FEBA6F10BB36350005710DA /* FeedSpreadsheetTest1.xml */,
 				4FEBA6F30BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml */,
 				4FEBA6F00BB36350005710DA /* FeedSpreadsheetCellsTest1.xml */,
@@ -3203,27 +3240,6 @@
 			name = YouTube;
 			sourceTree = "<group>";
 		};
-		4F6F06B70E1438D1001F6A47 /* Webmaster Tools */ = {
-			isa = PBXGroup;
-			children = (
-				4F6F06B50E1438C8001F6A47 /* FeedWebmasterToolsSite1.xml */,
-				4F6F06B60E1438C8001F6A47 /* FeedWebmasterToolsSitemap1.xml */,
-				4F478D4C0FF59FD500138739 /* FeedWebmasterToolsKeywords1.xml */,
-				4F478D9B0FF5B97600138739 /* FeedWebmasterToolsCrawlIssues1.xml */,
-				4F478D9C0FF5B97600138739 /* FeedWebmasterToolsMessages1.xml */,
-			);
-			name = "Webmaster Tools";
-			sourceTree = "<group>";
-		};
-		4F91DEAA0FC4C460008EA8A2 /* Analytics */ = {
-			isa = PBXGroup;
-			children = (
-				4F91DEAB0FC4C47D008EA8A2 /* FeedAnalyticsAccountTest1.xml */,
-				4F91DEAC0FC4C47D008EA8A2 /* FeedAnalyticsDataTest1.xml */,
-			);
-			name = Analytics;
-			sourceTree = "<group>";
-		};
 		4F93A5FC0DBD773A0067AE7E /* XML Support (for iPhone) */ = {
 			isa = PBXGroup;
 			children = (
@@ -3301,19 +3317,15 @@
 		4FD23A390B8FDB17007C0AD4 /* XML Files */ = {
 			isa = PBXGroup;
 			children = (
-				4F91DEAA0FC4C460008EA8A2 /* Analytics */,
 				4FA555DB0FD737B9006FDC8B /* Blogger */,
 				4F5651E20DFF4E5000975DBD /* Calendar */,
 				4F493DEF0FB90BA3003B3670 /* Contacts */,
 				4FB71E0B113CAE1C00169801 /* Docs */,
-				4F5651E00DFF4E2A00975DBD /* Finance */,
 				4F022FD30D58FF4F00EE6862 /* Photos */,
 				4F5651E10DFF4E3600975DBD /* Spreadsheet */,
-				4F6F06B70E1438D1001F6A47 /* Webmaster Tools */,
 				4F45B0AD0D510A3100004F37 /* YouTube */,
 				4F10BBBB0F1E9AAE002AE29A /* ServiceDocuments */,
 				4F7ACD29116D698F00444189 /* FeedACLTest1.xml */,
-				4F2083940FC7823300F547BB /* FeedMapFeaturesTest1.xml */,
 				4F08A1050BC32E3D00B17DC7 /* FeedMessageTest1.xml */,
 			);
 			name = "XML Files";
@@ -3748,15 +3760,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47476BD1D1C3FFF007C7B1A /* FeedPhotosUserAlbum1.xml in Resources */,
 				4FD23A4A0B8FDB2A007C0AD4 /* FeedCalendarEventTest1.xml in Resources */,
+				F47476B11D1C3F7B007C7B1A /* FeedCalendarEventTest0.xml in Resources */,
+				F47476DA1D1C4774007C7B1A /* FeedYouTubeUserEventTest1.xml in Resources */,
+				F47476D21D1C4774007C7B1A /* FeedYouTubeFavorites1.xml in Resources */,
 				4FD23A4C0B8FDB2A007C0AD4 /* FeedCalendarTest1.xml in Resources */,
+				F47476D51D1C4774007C7B1A /* FeedYouTubeVideo1.xml in Resources */,
 				4FEBA6F40BB36350005710DA /* FeedSpreadsheetCellsTest1.xml in Resources */,
+				F47476AB1D1C3F70007C7B1A /* FeedBlogCommentsTest1.xml in Resources */,
+				F47476B41D1C3F80007C7B1A /* FeedContactTest2.xml in Resources */,
+				F47476BA1D1C3F8D007C7B1A /* EntryDocListMetadataTest1.xml in Resources */,
+				F47476D61D1C4774007C7B1A /* FeedYouTubeContacts1.xml in Resources */,
+				F47476AD1D1C3F70007C7B1A /* FeedBlogPostTest1.xml in Resources */,
+				F47476D71D1C4774007C7B1A /* FeedYouTubeCaptionTracks1.xml in Resources */,
+				F47476D81D1C4774007C7B1A /* FeedYouTubePlaylistLink1.xml in Resources */,
+				F47476C41D1C4009007C7B1A /* FeedSpreadsheetTableTest1.xml in Resources */,
+				F47476D91D1C4774007C7B1A /* FeedYouTubePlaylist1.xml in Resources */,
 				4FEBA6F50BB36350005710DA /* FeedSpreadsheetTest1.xml in Resources */,
+				F47476AC1D1C3F70007C7B1A /* FeedBlogTest1.xml in Resources */,
+				F47476A91D1C3EE5007C7B1A /* FeedACLTest1.xml in Resources */,
+				F47476DD1D1C49FF007C7B1A /* GDataTestHTTPServer.py in Resources */,
+				F47476B31D1C3F80007C7B1A /* FeedContactTest1.xml in Resources */,
+				F47476B91D1C3F8D007C7B1A /* FeedDocListTest1.xml in Resources */,
+				F47476D41D1C4774007C7B1A /* FeedYouTubeUserProfile1.xml in Resources */,
+				F47476C31D1C4009007C7B1A /* FeedSpreadsheetRecordTest1.xml in Resources */,
 				4FEBA6F60BB36350005710DA /* FeedSpreadsheetListTest1.xml in Resources */,
+				F47476BC1D1C3FFF007C7B1A /* FeedPhotosUserTag1.xml in Resources */,
 				4FEBA6F70BB36350005710DA /* FeedSpreadsheetWorksheetTest1.xml in Resources */,
+				F47476C71D1C402D007C7B1A /* FeedServiceDocTest2.xml in Resources */,
 				4F08A1060BC32E3D00B17DC7 /* FeedMessageTest1.xml in Resources */,
+				F47476BE1D1C3FFF007C7B1A /* FeedPhotosSearch1.xml in Resources */,
+				F47476D31D1C4774007C7B1A /* FeedYouTubeSubscriptions1.xml in Resources */,
 				4FA1C6D00C038E89006D556A /* FeedPhotosAlbumPhoto1.xml in Resources */,
+				F47476BB1D1C3FFF007C7B1A /* FeedPhotosPhotoComment1.xml in Resources */,
 				4F2ED9050C04C1A5007CD756 /* FeedPhotosUserEntry1.xml in Resources */,
+				F47476E11D1C4C92007C7B1A /* EntrySpreadsheetCellTest1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3773,15 +3812,42 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F47476C11D1C4001007C7B1A /* FeedPhotosUserAlbum1.xml in Resources */,
 				4F85DEE5103B83B700B4C418 /* FeedCalendarEventTest1.xml in Resources */,
+				F47476B21D1C3F7B007C7B1A /* FeedCalendarEventTest0.xml in Resources */,
+				F47476D11D1C4773007C7B1A /* FeedYouTubeUserEventTest1.xml in Resources */,
+				F47476C91D1C4773007C7B1A /* FeedYouTubeFavorites1.xml in Resources */,
 				4F85DEE6103B83B700B4C418 /* FeedCalendarTest1.xml in Resources */,
+				F47476CC1D1C4773007C7B1A /* FeedYouTubeVideo1.xml in Resources */,
 				4F85DEE7103B83B700B4C418 /* FeedSpreadsheetCellsTest1.xml in Resources */,
+				F47476AE1D1C3F70007C7B1A /* FeedBlogCommentsTest1.xml in Resources */,
+				F47476B61D1C3F80007C7B1A /* FeedContactTest2.xml in Resources */,
+				F47476B81D1C3F8B007C7B1A /* EntryDocListMetadataTest1.xml in Resources */,
+				F47476CD1D1C4773007C7B1A /* FeedYouTubeContacts1.xml in Resources */,
+				F47476B01D1C3F70007C7B1A /* FeedBlogPostTest1.xml in Resources */,
+				F47476CE1D1C4773007C7B1A /* FeedYouTubeCaptionTracks1.xml in Resources */,
+				F47476CF1D1C4773007C7B1A /* FeedYouTubePlaylistLink1.xml in Resources */,
+				F47476C61D1C400A007C7B1A /* FeedSpreadsheetTableTest1.xml in Resources */,
+				F47476D01D1C4773007C7B1A /* FeedYouTubePlaylist1.xml in Resources */,
 				4F85DEE8103B83B700B4C418 /* FeedSpreadsheetTest1.xml in Resources */,
+				F47476AF1D1C3F70007C7B1A /* FeedBlogTest1.xml in Resources */,
+				F47476AA1D1C3EE6007C7B1A /* FeedACLTest1.xml in Resources */,
+				F47476DE1D1C4A00007C7B1A /* GDataTestHTTPServer.py in Resources */,
+				F47476B51D1C3F80007C7B1A /* FeedContactTest1.xml in Resources */,
+				F47476B71D1C3F8B007C7B1A /* FeedDocListTest1.xml in Resources */,
+				F47476CB1D1C4773007C7B1A /* FeedYouTubeUserProfile1.xml in Resources */,
+				F47476C51D1C400A007C7B1A /* FeedSpreadsheetRecordTest1.xml in Resources */,
 				4F85DEE9103B83B700B4C418 /* FeedSpreadsheetListTest1.xml in Resources */,
+				F47476C01D1C4001007C7B1A /* FeedPhotosUserTag1.xml in Resources */,
 				4F85DEEA103B83B700B4C418 /* FeedSpreadsheetWorksheetTest1.xml in Resources */,
+				F47476C81D1C402E007C7B1A /* FeedServiceDocTest2.xml in Resources */,
 				4F85DEEB103B83B700B4C418 /* FeedMessageTest1.xml in Resources */,
+				F47476C21D1C4001007C7B1A /* FeedPhotosSearch1.xml in Resources */,
+				F47476CA1D1C4773007C7B1A /* FeedYouTubeSubscriptions1.xml in Resources */,
 				4F85DEED103B83B700B4C418 /* FeedPhotosAlbumPhoto1.xml in Resources */,
+				F47476BF1D1C4001007C7B1A /* FeedPhotosPhotoComment1.xml in Resources */,
 				4F85DEEE103B83B700B4C418 /* FeedPhotosUserEntry1.xml in Resources */,
+				F47476E21D1C4C92007C7B1A /* EntrySpreadsheetCellTest1.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
