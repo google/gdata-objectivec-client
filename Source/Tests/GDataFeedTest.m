@@ -67,7 +67,7 @@
     XCTAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
 
     NSString *feedPath = tests[testIndex].str2;
-    NSData *data = [NSData dataWithContentsOfFile:feedPath];
+    NSData *data = [self dataWithTestFilePath:feedPath];
     XCTAssertNotNil(data, @"Cannot read feed from %@", feedPath);
 
     // create the feed object
@@ -182,47 +182,6 @@
   }
 }
 
-- (void)testBooksFeed {
-
-  //
-  // Volumes Feed
-  //
-  TestKeyPathValues tests[] =
-  {
-    { @"GDataFeedVolume", @"Tests/FeedBooksVolumesTest1.xml" },
-
-    // GDataFeedVolume paths
-    { @"identifier", @"http://www.google.com/books/feeds/users/1728172424007912469/volumes" },
-    { @"authors.0.name", @"1728172424007912469" },
-
-    // GDataEntryVolume paths
-    { @"entries.0.creators.0", @"Jim Davis" },
-    { @"entries.0.dates.0", @"2006-01-31" },
-    { @"entries.0.volumeDescriptions.0", @"contains:Pig Out" },
-    { @"entries.0.embeddability", kGDataBooksNotEmbeddable },
-    { @"entries.0.openAccess", kGDataBooksEnabled },
-    { @"entries.0.formats.0", @"93 pages" },
-    { @"entries.0.volumeIdentifiers.0", @"_PRJAAAACAAJ" },
-    { @"entries.0.volumeIdentifiers.1", @"ISBN:0345464664" },
-    { @"entries.0.publishers.0", @"Ballantine Books" },
-    { @"entries.0.subjects.0", @"Humor" },
-    { @"entries.0.volumeTitles.0", @"Garfield Pigs Out" },
-    { @"entries.0.viewability", kGDataBooksViewNoPages },
-    { @"entries.0.thumbnailLink.href", @"hasPrefix:http://bks2.books.google.com/books?id=_PRJAAAACAAJ" },
-    { @"entries.0.previewLink.href", @"contains:id=_PRJAAAACAAJ&ie=ISO-8859-1" },
-    { @"entries.0.infoLink.href", @"contains:id=_PRJAAAACAAJ&ie=ISO-8859-1" },
-    { @"entries.0.rating.value", @"3" },
-    { @"entries.0.rating.average", @"2" },
-    { @"entries.0.review", @"Ageless? No way." },
-    { @"entries.0.contentVersion", @"1.2beta5" },
-    { @"", @"" },
-
-    { nil, nil }
-  };
-
-  [self runTests:tests];
-}
-
 - (void)testCalendarFeed {
 
   TestKeyPathValues tests[] =
@@ -230,7 +189,7 @@
     //
     // Calendar Feed
     //
-    { @"GDataFeedCalendar/2.0", @"Tests/FeedCalendarTest1.xml" },
+    { @"GDataFeedCalendar/2.0", @"FeedCalendarTest1.xml" },
 
     // GDataFeedCalendar paths
     { @"title", @"Fred Flintstone's Calendar List" },
@@ -281,7 +240,7 @@
     //
     // CalendarEvent Feed
     //
-    { @"GDataFeedCalendarEvent", @"Tests/FeedCalendarEventTest1.xml" },
+    { @"GDataFeedCalendarEvent", @"FeedCalendarEventTest1.xml" },
 
     // GDataFeedCalendarEvent paths
     { @"title", @"Fred Flintstone" },
@@ -356,7 +315,7 @@
     //
     // CalendarEvent Feed with no entries
     //
-    { @"GDataFeedCalendarEvent", @"Tests/FeedCalendarEventTest0.xml" },
+    { @"GDataFeedCalendarEvent", @"FeedCalendarEventTest0.xml" },
 
     // GDataFeedCalendarEvent paths
     { @"title", @"Fred Flintstone" },
@@ -397,7 +356,7 @@
     //
     // Contact Feed
     //
-    { @"GDataFeedContact/2.0", @"Tests/FeedContactTest1.xml" },
+    { @"GDataFeedContact/2.0", @"FeedContactTest1.xml" },
 
     // GDataFeedContact paths
     { @"title", @"Contacts" },
@@ -507,7 +466,7 @@
     //
     // Contact Feed with V3 elements
     //
-    { @"GDataFeedContact/3.0", @"Tests/FeedContactTest2.xml" },
+    { @"GDataFeedContact/3.0", @"FeedContactTest2.xml" },
 
     // GDataFeedContact paths
     { @"title", @"Fred Flintstone's Contacts" },
@@ -658,7 +617,7 @@
     //
     // Spreadsheet feed (list of user's spreadsheets)
     //
-    { @"GDataFeedSpreadsheet", @"Tests/FeedSpreadsheetTest1.xml" },
+    { @"GDataFeedSpreadsheet", @"FeedSpreadsheetTest1.xml" },
 
     // feed paths
     { @"identifier", @"http://spreadsheets.google.com/feeds/spreadsheets/private/full" },
@@ -682,7 +641,7 @@
     { @"", @"" }, // end of feed
 
     // repeat the test, with unknown children turned off
-    { @"GDataFeedSpreadsheet-ignoreUnknown", @"Tests/FeedSpreadsheetTest1.xml" },
+    { @"GDataFeedSpreadsheet-ignoreUnknown", @"FeedSpreadsheetTest1.xml" },
 
     // feed paths
     { @"identifier", @"http://spreadsheets.google.com/feeds/spreadsheets/private/full" },
@@ -703,7 +662,7 @@
     //
     // Worksheet feed (list of a spreadsheet's worksheets)
     //
-    { @"GDataFeedWorksheet", @"Tests/FeedSpreadsheetWorksheetTest1.xml" },
+    { @"GDataFeedWorksheet", @"FeedSpreadsheetWorksheetTest1.xml" },
 
     // feed paths
     { @"identifier", @"http://spreadsheets.google.com/feeds/worksheets/o04181601172097104111.497668944883620000/private/full" },
@@ -732,7 +691,7 @@
     //
     // Cells feed (all of a worksheet's cells)
     //
-    { @"GDataFeedSpreadsheetCell", @"Tests/FeedSpreadsheetCellsTest1.xml" },
+    { @"GDataFeedSpreadsheetCell", @"FeedSpreadsheetCellsTest1.xml" },
 
     // feed paths
     { @"identifier", @"http://spreadsheets.google.com/feeds/cells/o04181601172097104111.497668944883620000/od6/private/full" },
@@ -775,7 +734,7 @@
     //
 
     // feed paths
-    { @"GDataFeedSpreadsheetList", @"Tests/FeedSpreadsheetListTest1.xml" },
+    { @"GDataFeedSpreadsheetList", @"FeedSpreadsheetListTest1.xml" },
     { @"identifier", @"http://spreadsheets.google.com/feeds/list/o04181601172097104111.497668944883620000/od6/private/full" },
     { @"links.0.href", @"http://spreadsheets.google.com/ccc?key=o04181601172097104111.497668944883620000" },
     { @"categories.0.scheme", kGDataCategorySchemeSpreadsheet },
@@ -800,7 +759,7 @@
     //
 
     // feed paths
-    { @"GDataFeedSpreadsheetTable", @"Tests/FeedSpreadsheetTableTest1.xml" },
+    { @"GDataFeedSpreadsheetTable", @"FeedSpreadsheetTableTest1.xml" },
     { @"identifier", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/tables" },
     { @"categories.0.scheme", kGDataCategoryScheme },
     { @"categories.0.term", kGDataCategorySpreadsheetTable },
@@ -830,7 +789,7 @@
     //
 
     // feed paths
-    { @"GDataFeedSpreadsheetRecord", @"Tests/FeedSpreadsheetRecordTest1.xml" },
+    { @"GDataFeedSpreadsheetRecord", @"FeedSpreadsheetRecordTest1.xml" },
     { @"identifier", @"http://spreadsheets.google.com/feeds/RRHuSwAKiaEGw526z3DVYw/records/1" },
     { @"categories.0.scheme", kGDataCategoryScheme },
     { @"categories.0.term", kGDataCategorySpreadsheetRecord },
@@ -880,7 +839,7 @@
     //
     // Feed of a user's albums
     //
-    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserAlbum1.xml" },
+    { @"GDataFeedPhotoUser", @"FeedPhotosUserAlbum1.xml" },
 
     // GDataFeedPhotosAlbum paths
     { @"username", @"TestdomainTestAccount" },
@@ -931,7 +890,7 @@
     //
     // Feed of an album's photos
     //
-    { @"GDataFeedPhotoAlbum/2.0", @"Tests/FeedPhotosAlbumPhoto1.xml" },
+    { @"GDataFeedPhotoAlbum/2.0", @"FeedPhotosAlbumPhoto1.xml" },
 
     // GDataFeedPhotoAlbum - feed paths
     { @"GPhotoID", @"5067143575034336993" },
@@ -1015,7 +974,7 @@
     //
     // Feed of a photo's comments
     //
-    { @"GDataFeedPhoto/2.0", @"Tests/FeedPhotosPhotoComment1.xml" },
+    { @"GDataFeedPhoto/2.0", @"FeedPhotosPhotoComment1.xml" },
 
     // GDataFeedPhoto - feed paths
     { @"generator.URI", @"http://photos.google.com/" },
@@ -1056,7 +1015,7 @@
 
     // GDataFeedPhotoUser - feed paths
 
-    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserTag1.xml" },
+    { @"GDataFeedPhotoUser", @"FeedPhotosUserTag1.xml" },
     { @"username", @"TestdomainTestAccount" },
     { @"nickname", @"Greg" },
     { @"thumbnail", @"hasPrefix:http://lh3.google.com/image/TestdomainTestAccount" },
@@ -1097,7 +1056,7 @@
     // GDataFeedPhotoUser - feed paths (none)
 
     // GDataEntryPhotoUser - entry paths
-    { @"GDataFeedPhotoUser", @"Tests/FeedPhotosUserEntry1.xml" },
+    { @"GDataFeedPhotoUser", @"FeedPhotosUserEntry1.xml" },
 
     { @"entries.0.nickname", @"Greg" },
     { @"entries.0.username", @"TestdomainTestAccount" },
@@ -1115,7 +1074,7 @@
     //
 
     // feed paths
-    { @"GDataFeedPhoto/2.0", @"Tests/FeedPhotosSearch1.xml" },
+    { @"GDataFeedPhoto/2.0", @"FeedPhotosSearch1.xml" },
     { @"title", @"Search Results" },
 
     // entry paths
@@ -1144,7 +1103,7 @@
     //
     // Message Feed
     //
-    { @"GDataFeedMessage", @"Tests/FeedMessageTest1.xml" },
+    { @"GDataFeedMessage", @"FeedMessageTest1.xml" },
 
     // GDataFeedMessage paths
     { @"links.0.href", @"hasPrefix:http://www.google.com/calendar/feeds/default" },
@@ -1181,7 +1140,7 @@
     //
     // Docs Feed
     //
-    { @"GDataFeedDocList", @"Tests/FeedDocListTest1.xml" },
+    { @"GDataFeedDocList", @"FeedDocListTest1.xml" },
 
     { @"identifier", @"http://docs.google.com/feeds/documents/private/full" },
 
@@ -1235,7 +1194,7 @@
     //
     // DocList User Metadata Entry
     //
-    { @"GDataEntryDocListMetadata", @"Tests/EntryDocListMetadataTest1.xml" },
+    { @"GDataEntryDocListMetadata", @"EntryDocListMetadataTest1.xml" },
 
     { @"identifier", @"http://docs.google.com/feeds/metadata/fredflintstone%40example.net" },
     { @"quotaBytesTotal", @"1073741824" },
@@ -1271,7 +1230,7 @@
 
     // note that the user profile "feed" is really an entry returned by the
     // YouTube server
-    { @"GDataEntryYouTubeUserProfile/2.0", @"Tests/FeedYouTubeUserProfile1.xml" },
+    { @"GDataEntryYouTubeUserProfile/2.0", @"FeedYouTubeUserProfile1.xml" },
 
     // entry elements
     { @"identifier", @"http://gdata.youtube.com/feeds/api/users/TestAccount" },
@@ -1314,7 +1273,7 @@
     //
     // video feed
     //
-    { @"GDataFeedYouTubeVideo/2.0", @"Tests/FeedYouTubeVideo1.xml" },
+    { @"GDataFeedYouTubeVideo/2.0", @"FeedYouTubeVideo1.xml" },
 
     // video entry elements
     { @"entries.0.statistics.viewCount", @"177" },
@@ -1353,7 +1312,7 @@
     // playlist link feed, v2
     //
 
-    { @"GDataFeedYouTubePlaylistLink/2.0", @"Tests/FeedYouTubePlaylistLink1.xml" },
+    { @"GDataFeedYouTubePlaylistLink/2.0", @"FeedYouTubePlaylistLink1.xml" },
     { @"categories.0.term", kGDataCategoryYouTubePlaylistLink },
     { @"totalResults", @"2" },
     { @"startIndex", @"1" },
@@ -1381,7 +1340,7 @@
     // playlist feed
     //
 
-    { @"GDataFeedYouTubePlaylist", @"Tests/FeedYouTubePlaylist1.xml" },
+    { @"GDataFeedYouTubePlaylist", @"FeedYouTubePlaylist1.xml" },
 
     { @"categories.0.term", kGDataCategoryYouTubePlaylist },
     { @"categories.1.scheme", kGDataSchemeYouTubeTag },
@@ -1410,7 +1369,7 @@
     //
     // contacts feed
     //
-    { @"GDataFeedYouTubeFriend", @"Tests/FeedYouTubeContacts1.xml" },
+    { @"GDataFeedYouTubeFriend", @"FeedYouTubeContacts1.xml" },
 
     { @"categories.0.term", kGDataCategoryYouTubeFriend },
 
@@ -1427,7 +1386,7 @@
     //
     // caption track feed
     //
-    { @"GDataFeedYouTubeCaptionTrack", @"Tests/FeedYouTubeCaptionTracks1.xml" },
+    { @"GDataFeedYouTubeCaptionTrack", @"FeedYouTubeCaptionTracks1.xml" },
 
     { @"categories.0.term", kGDataCategoryYouTubeCaptionTrack },
 
@@ -1448,7 +1407,7 @@
     //
     // subscription feed
     //
-    { @"GDataFeedYouTubeSubscription/2.0", @"Tests/FeedYouTubeSubscriptions1.xml" },
+    { @"GDataFeedYouTubeSubscription/2.0", @"FeedYouTubeSubscriptions1.xml" },
 
     // feed elements
     { @"identifier", @"http://gdata.youtube.com/feeds/api/users/testaccount/subscriptions?start-index=1&max-results=25" },
@@ -1475,7 +1434,7 @@
     //
     // favorites feed
     //
-    { @"GDataFeedYouTubeFavorite/2.0", @"Tests/FeedYouTubeFavorites1.xml" },
+    { @"GDataFeedYouTubeFavorite/2.0", @"FeedYouTubeFavorites1.xml" },
 
     // feed elements
     { @"ETag", @"W/\"CUACQX47eCp7ImA9WxdSEkg.\"" },
@@ -1516,7 +1475,7 @@
     //
     // user events feed
     //
-    { @"GDataFeedYouTubeUserEvent/2.0", @"Tests/FeedYouTubeUserEventTest1.xml" },
+    { @"GDataFeedYouTubeUserEvent/2.0", @"FeedYouTubeUserEventTest1.xml" },
 
     // feed elements
     { @"ETag", @"W/\"AkUBRH47eCp7ImA9WxVWFkU.\"" },
@@ -1553,7 +1512,7 @@
     // Blog feed
     //
 
-    { @"GDataFeedBlog/2.0", @"Tests/FeedBlogTest1.xml" },
+    { @"GDataFeedBlog/2.0", @"FeedBlogTest1.xml" },
 
     // feed elements
     { @"title", @"TestAccount's Blogs" },
@@ -1574,7 +1533,7 @@
     // Blog post feed
     //
 
-    { @"GDataFeedBlogPost/2.0", @"Tests/FeedBlogPostTest1.xml" },
+    { @"GDataFeedBlogPost/2.0", @"FeedBlogPostTest1.xml" },
 
     // feed elements
     { @"title", @"Test Posts" },
@@ -1600,7 +1559,7 @@
     // Blog comments feed
     //
 
-    { @"GDataFeedBlogComment/2.0", @"Tests/FeedBlogCommentsTest1.xml" },
+    { @"GDataFeedBlogComment/2.0", @"FeedBlogCommentsTest1.xml" },
 
     // feed elements
     { @"title", @"Comments on Post" },
@@ -1632,7 +1591,7 @@
     //
     // ACL Feed
     //
-    { @"GDataFeedACL", @"Tests/FeedACLTest1.xml" },
+    { @"GDataFeedACL", @"FeedACLTest1.xml" },
 
     // GDataFeedACL paths
     { @"links.0.href", @"http://www.google.com/calendar/feeds/test%40gmail.com/private/full" },
@@ -1679,7 +1638,7 @@
     //
     // service document
     //
-    { @"GDataAtomServiceDocument", @"Tests/FeedServiceDocTest2.xml" },
+    { @"GDataAtomServiceDocument", @"FeedServiceDocTest2.xml" },
 
     // GDataAtomServiceDocument paths
     { @"namespaces.app", kGDataNamespaceAtomPub },
@@ -1721,7 +1680,7 @@
   // get a feed, retain the entries, release the feed, then verify that the
   // entries are usable with the feed itself gone
 
-  NSData *data = [NSData dataWithContentsOfFile:@"Tests/FeedCalendarEventTest1.xml"];
+  NSData *data = [self dataWithTestFilePath:@"FeedCalendarEventTest1.xml"];
   XCTAssertNotNil(data, @"Cannot read feed for detach test");
 
   // create the feed object
@@ -1741,6 +1700,14 @@
 
   NSString *titleType = [[firstEntry title] type];
   XCTAssertEqualObjects(titleType, @"text", @"testing an attribute in a detached entry");
+}
+
+- (NSData *)dataWithTestFilePath:(NSString *)localPath {
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *fullPath = [resourcesPath stringByAppendingPathComponent:localPath];
+  NSData *data = [NSData dataWithContentsOfFile:fullPath];
+  return data;
 }
 
 @end

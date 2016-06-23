@@ -229,7 +229,11 @@
   NSError *error = nil;
   NSStringEncoding encoding = 0;
 
-  NSString *contactFeedXML = [NSString stringWithContentsOfFile:@"Tests/FeedContactTest1.xml"
+  NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [bundle resourcePath];
+  NSString *fullPath = [resourcesPath stringByAppendingPathComponent:@"FeedContactTest1.xml"];
+
+  NSString *contactFeedXML = [NSString stringWithContentsOfFile:fullPath
                                                    usedEncoding:&encoding
                                                           error:&error];
   NSData *data = [contactFeedXML dataUsingEncoding:NSUTF8StringEncoding];

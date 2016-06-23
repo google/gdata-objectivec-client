@@ -30,13 +30,13 @@
 - (void)testGDataDateTime {
   
   const NSCalendarUnit kComponents = 
-    NSEraCalendarUnit
-    | NSYearCalendarUnit 
-    | NSMonthCalendarUnit 
-    | NSDayCalendarUnit
-    | NSHourCalendarUnit
-    | NSMinuteCalendarUnit
-    | NSSecondCalendarUnit;
+    NSCalendarUnitEra
+    | NSCalendarUnitYear
+    | NSCalendarUnitMonth
+    | NSCalendarUnitDay
+    | NSCalendarUnitHour
+    | NSCalendarUnitMinute
+    | NSCalendarUnitSecond;
   
   struct DateTimeTestRecord {
     NSString *dateTimeStr;
@@ -105,10 +105,17 @@
 
 - (void)testTimeZonePreservation {
   NSTimeZone *denverTZ = [NSTimeZone timeZoneWithName:@"America/Denver"];
-  NSCalendarDate *date = [NSCalendarDate dateWithYear:2007 month:01 day:01 
-                                                 hour:01 minute:01 second:01 
-                                             timeZone:denverTZ];
-  
+  NSDateComponents *dc = [[[NSDateComponents alloc] init] autorelease];
+  dc.year = 2007;
+  dc.month = 1;
+  dc.day = 1;
+  dc.hour = 1;
+  dc.minute = 1;
+  dc.second = 1;
+  dc.calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+  dc.timeZone = denverTZ;
+  NSDate *date = dc.date;
+
   GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:date 
                                                    timeZone:denverTZ];
   NSTimeZone *testTZ = [dateTime timeZone];

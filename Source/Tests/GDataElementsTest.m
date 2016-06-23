@@ -353,9 +353,12 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   
   // To test an inline feed, we'll read in the cells feed test file,
   // strip the <?xml...> prefix, and wrap it in a gd:feedLink
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *fullPath = [resourcesPath stringByAppendingPathComponent:@"FeedSpreadsheetCellsTest1.xml"];
   NSError *error = nil;
   NSStringEncoding encoding = 0;
-  NSString *inlineFeed = [NSString stringWithContentsOfFile:@"Tests/FeedSpreadsheetCellsTest1.xml"
+  NSString *inlineFeed = [NSString stringWithContentsOfFile:fullPath
                                                usedEncoding:&encoding
                                                       error:&error];
   XCTAssertNotNil(inlineFeed, @"cannot load xml for inline feed, %@", error);
@@ -1300,7 +1303,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   NSString * const xml1 = @"<entry xmlns='http://schemas.google.com/g/2005'>"
   " <comments xmlns:atom='http://www.w3.org/2005/Atom'"
   "           rel='http://schemas.google.com/g/2005#reviews'> "
-  "<feedLink xmlns:atom='http://www.w3.org/2005/Atom' xmlns:foo='bar'"
+  "<feedLink xmlns:atom='http://www.w3.org/2005/Atom' xmlns:foo='bar' "
   "href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
   "</feedLink> <unkElement foo=\"bar\" /> <unkElement2 /> </comments> </entry>";
 

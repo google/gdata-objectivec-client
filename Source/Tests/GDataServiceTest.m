@@ -80,13 +80,13 @@
 - (NSString *)mySurrogateLinkName;
 @end
 
-NSTask *StartHTTPServerTask(int portNumber) NS_RETURNS_RETAINED;
+NSTask *StartHTTPServerTask(int portNumber, NSBundle *testBundle) NS_RETURNS_RETAINED;
 
 // StartHTTPServerTask is used below and in GTMHTTPFetcherTest
-NSTask *StartHTTPServerTask(int portNumber) {
+NSTask *StartHTTPServerTask(int portNumber, NSBundle *testBundle) {
   // run the python http server, located in the Tests directory
-  NSString *currentDir = [[NSFileManager defaultManager] currentDirectoryPath];
-  NSString *serverPath = [currentDir stringByAppendingPathComponent:@"Tests/GDataTestHTTPServer.py"];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *serverPath = [resourcesPath stringByAppendingPathComponent:@"GDataTestHTTPServer.py"];
 
   // The framework builds as garbage collection-compatible, so unit tests run
   // with GC both enabled and disabled.  But launching the python http server
@@ -126,7 +126,11 @@ NSTask *StartHTTPServerTask(int portNumber) {
 
   NSString *expectedLaunchStr = @"started GDataTestServer.py...";
   BOOL isServerRunning = [launchStr isEqual:expectedLaunchStr];
-  return isServerRunning ? server : nil;
+  if (isServerRunning) {
+    return server;
+  }
+  [server release];
+  return nil;
 }
 
 @implementation GDataServiceTest
@@ -134,7 +138,7 @@ NSTask *StartHTTPServerTask(int portNumber) {
 static int kServerPortNumber = 54579;
 
 - (void)setUp {
-  server_ = StartHTTPServerTask(kServerPortNumber);
+  server_ = StartHTTPServerTask(kServerPortNumber, [NSBundle bundleForClass:[self class]]);
   isServerRunning_ = (server_ != nil);
 
   XCTAssertTrue(isServerRunning_,
@@ -153,21 +157,21 @@ static int kServerPortNumber = 54579;
 
   // install observers for fetcher notifications
   NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGTMHTTPFetcherStartedNotification object:nil];
-  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGTMHTTPFetcherStoppedNotification object:nil];
+  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGTMSessionFetcherStartedNotification object:nil];
+  [nc addObserver:self selector:@selector(fetchStateChanged:) name:kGTMSessionFetcherStoppedNotification object:nil];
+  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGTMSessionFetcherRetryDelayStartedNotification object:nil];
+  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGTMSessionFetcherRetryDelayStoppedNotification object:nil];
   [nc addObserver:self selector:@selector(parseStateChanged:) name:kGDataServiceTicketParsingStartedNotification object:nil];
   [nc addObserver:self selector:@selector(parseStateChanged:) name:kGDataServiceTicketParsingStoppedNotification object:nil];
-  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGTMHTTPFetcherRetryDelayStartedNotification object:nil];
-  [nc addObserver:self selector:@selector(retryDelayStateChanged:) name:kGTMHTTPFetcherRetryDelayStoppedNotification object:nil];
 }
 
 - (void)fetchStateChanged:(NSNotification *)note {
-  GTMHTTPFetcher *fetcher = [note object];
+  GTMSessionFetcher *fetcher = [note object];
   GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
   XCTAssertNotNil(ticket, @"cannot get ticket from fetch notification");
 
-  if ([[note name] isEqual:kGTMHTTPFetcherStartedNotification]) {
+  if ([[note name] isEqual:kGTMSessionFetcherStartedNotification]) {
     ++fetchStartedNotificationCount_;
   } else {
     ++fetchStoppedNotificationCount_;
@@ -197,12 +201,12 @@ static int kServerPortNumber = 54579;
 }
 
 - (void)retryDelayStateChanged:(NSNotification *)note {
-  GTMHTTPFetcher *fetcher = [note object];
+  GTMSessionFetcher *fetcher = [note object];
   GDataServiceTicketBase *ticket = [fetcher GDataTicket];
 
   XCTAssertNotNil(ticket, @"cannot get ticket from retry delay notification");
 
-  if ([[note name] isEqual:kGTMHTTPFetcherRetryDelayStartedNotification]) {
+  if ([[note name] isEqual:kGTMSessionFetcherRetryDelayStartedNotification]) {
     ++retryDelayStartedNotificationCount_;
   } else {
     ++retryDelayStoppedNotificationCount_;
@@ -280,7 +284,9 @@ static int kServerPortNumber = 54579;
 
   // just for sanity, let's make sure we see the file locally, so
   // we can expect the Python http server to find it too
-  NSString *filePath = [NSString stringWithFormat:@"Tests/%@", name];
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *filePath = [resourcesPath stringByAppendingPathComponent:name];
 
 
   // we exclude the "?status=" that would indicate that the URL
@@ -441,7 +447,7 @@ static int gFetchCounter = 0;
   // TODO: The python test server doesn't provide 304s for ETag matches
   
   STAssertEquals([[ticket_ objectFetcher] statusCode],
-                 (NSInteger)kGTMHTTPFetcherStatusNotModified,
+                 (NSInteger)kGTMSessionFetcherStatusNotModified,
                  @"fetching cached copy of %@", feedURL);
 #endif
 
@@ -833,13 +839,13 @@ static int gFetchCounter = 0;
   //
   [self resetFetchResponse];
 
-  [GTMHTTPFetcher setLoggingEnabled:YES];
-  [GTMHTTPFetcher setLoggingDirectory:NSTemporaryDirectory()];
+  [GTMSessionFetcher setLoggingEnabled:YES];
+  [GTMSessionFetcher setLoggingDirectory:NSTemporaryDirectory()];
 
   // report the logging directory (the log file names depend on the process
   // launch time, but this at least lets us manually inspect the logs)
   NSLog(@"GDataServiceTest http logging set to %@",
-        [GTMHTTPFetcher loggingDirectory]);
+        [GTMSessionFetcher loggingDirectory]);
 
   GDataEntryPhoto *photoEntry = [GDataEntryPhoto photoEntry];
   NSImage *image = [NSImage imageNamed:@"NSApplicationIcon"];
@@ -874,8 +880,8 @@ static int gFetchCounter = 0;
   XCTAssertEqual(lastProgressDeliveredCount_, lastProgressTotalCount_,
                  @"unexpected byte delivery count");
 
-  [GTMHTTPFetcher setLoggingEnabled:NO];
-  [GTMHTTPFetcher setLoggingDirectory:nil];
+  [GTMSessionFetcher setLoggingEnabled:NO];
+  [GTMSessionFetcher setLoggingDirectory:nil];
 
   [service_ setServiceUploadProgressSelector:nil];
 
@@ -1119,7 +1125,7 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
 -(BOOL)stopRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
 
-  GTMHTTPFetcher *fetcher = [ticket currentFetcher];
+  GTMSessionFetcher *fetcher = [ticket currentFetcher];
   [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
 
   NSUInteger count = [fetcher retryCount];
@@ -1136,8 +1142,7 @@ ofTotalByteCount:(unsigned long long)dataLength {
 }
 
 -(BOOL)fixRequestRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
-
-  GTMHTTPFetcher *fetcher = [ticket currentFetcher];
+  GTMSessionFetcher *fetcher = [ticket currentFetcher];
   [fetcher setMinRetryInterval:1.0]; // force exact starting interval of 1.0 sec
 
   XCTAssertEqualWithAccuracy([fetcher nextRetryInterval], pow(2.0, [fetcher retryCount]), 0.001,
@@ -1147,13 +1152,16 @@ ofTotalByteCount:(unsigned long long)dataLength {
 
   // fix it - change the request to a URL which does not have a status value
   NSURL *authFeedStatusURL = [self fileURLToTestFileName:@"FeedSpreadsheetTest1.xml"];
-  [fetcher setMutableRequest:[NSMutableURLRequest requestWithURL:authFeedStatusURL]];
-
+  [fetcher.mutableRequest setURL:authFeedStatusURL];
   return YES; // do the retry fetch; it should succeed now
 }
 
 #pragma mark Upload tests
 
+/* GTMSessionFetcher implements a different upload protocol than does the old
+   GTMHTTPFetcher, so these tests need to be rewritten. */
+
+/*
 - (NSData *)generatedUploadDataWithLength:(NSUInteger)length {
   // fill a data block with data
   NSMutableData *data = [NSMutableData dataWithLength:length];
@@ -1230,8 +1238,8 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   // check the request of the final object fetcher to be sure we were uploading
   // chunks as expected
-  GTMHTTPUploadFetcher *uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
-  GTMHTTPFetcher *fetcher = [uploadFetcher activeFetcher];
+  GTMSessionUploadFetcher *uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
+  GTMSessionFetcher *fetcher = [uploadFetcher activeFetcher];
   NSURLRequest *request = [fetcher mutableRequest];
   NSDictionary *reqHdrs = [request allHTTPHeaderFields];
 
@@ -1269,7 +1277,7 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   // check the request of the final object fetcher to be sure we were uploading
   // chunks as expected
-  uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
+  uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
   fetcher = [uploadFetcher activeFetcher];
   request = [fetcher mutableRequest];
   reqHdrs = [request allHTTPHeaderFields];
@@ -1303,7 +1311,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
-  uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
+  uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
   fetcher = [uploadFetcher activeFetcher];
   request = [fetcher mutableRequest];
   reqHdrs = [request allHTTPHeaderFields];
@@ -1338,7 +1346,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
-  uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
+  uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
   fetcher = [uploadFetcher activeFetcher];
   request = [fetcher mutableRequest];
   reqHdrs = [request allHTTPHeaderFields];
@@ -1371,7 +1379,7 @@ static NSString* const kOriginalURLKey = @"origURL";
   XCTAssertEqualObjects([(GDataEntrySpreadsheetCell *)fetchedObject_ identifier],
                        entryID, @"uploading %@", uploadURL);
 
-  uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
+  uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
   fetcher = [uploadFetcher activeFetcher];
   request = [fetcher mutableRequest];
   reqHdrs = [request allHTTPHeaderFields];
@@ -1409,7 +1417,7 @@ static NSString* const kOriginalURLKey = @"origURL";
 
   // check the request of the final (and only) object fetcher to be sure we
   // were uploading chunks as expected
-  uploadFetcher = (GTMHTTPUploadFetcher *) [ticket_ objectFetcher];
+  uploadFetcher = (GTMSessionUploadFetcher *) [ticket_ objectFetcher];
   fetcher = [uploadFetcher activeFetcher];
   request = [fetcher mutableRequest];
   reqHdrs = [request allHTTPHeaderFields];
@@ -1463,30 +1471,30 @@ hasDeliveredByteCount:(unsigned long long)numberOfBytesRead
       [ticket setProperty:nil forKey:kRetryAtKey];
 
       // save the current locationURL  before appending &status=503
-      GTMHTTPUploadFetcher *uploadFetcher = (GTMHTTPUploadFetcher *) [ticket objectFetcher];
-      NSURL *origURL = [uploadFetcher locationURL];
+      GTMSessionUploadFetcher *uploadFetcher = (GTMSessionUploadFetcher *) [ticket objectFetcher];
+      NSURL *origURL = [uploadFetcher uploadLocationURL];
       [ticket setProperty:origURL forKey:kOriginalURLKey];
 
       NSString *newURLStr = [[origURL absoluteString] stringByAppendingString:@"?status=503"];
-      [uploadFetcher setLocationURL:[NSURL URLWithString:newURLStr]];
+      [uploadFetcher setUploadLocationURL:[NSURL URLWithString:newURLStr]];
     }
   }
 }
 
 -(BOOL)uploadRetryTicket:(GDataServiceTicket *)ticket willRetry:(BOOL)suggestedWillRetry forError:(NSError *)error {
-
   // change this fetch's request (and future requests) to have the original URL,
   // not the one with status=503 appended
   NSURL *origURL = [ticket propertyForKey:kOriginalURLKey];
-  GTMHTTPUploadFetcher *uploadFetcher = (GTMHTTPUploadFetcher *) [ticket objectFetcher];
+  GTMSessionUploadFetcher *uploadFetcher = (GTMSessionUploadFetcher *) [ticket objectFetcher];
 
   [[[uploadFetcher activeFetcher] mutableRequest] setURL:origURL];
-  [uploadFetcher setLocationURL:origURL];
+  [uploadFetcher setUploadLocationURL:origURL];
 
   [ticket setProperty:nil forKey:kOriginalURLKey];
 
   return suggestedWillRetry; // do the retry fetch; it should succeed now
 }
+*/
 
 #pragma mark Standalone auth tests
 

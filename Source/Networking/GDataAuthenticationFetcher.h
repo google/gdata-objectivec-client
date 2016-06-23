@@ -17,6 +17,8 @@
 //  GDataAuthenticationFetcher.h
 //
 
+#import "GDataDefines.h"
+
 #if GTM_USE_SESSION_FETCHER
   #import "GTMSessionFetcher.h"
 #else

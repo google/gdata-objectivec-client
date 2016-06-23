@@ -17,6 +17,8 @@
 //  GDataServiceBase.h
 //
 
+#import "GDataDefines.h"
+
 #if GTM_USE_SESSION_FETCHER
   #define GDataUploadFetcherClass GTMSessionUploadFetcher
   #define GDataUploadFetcherClassStr @"GTMSessionUploadFetcher"

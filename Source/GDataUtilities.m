@@ -17,6 +17,15 @@
 
 #include <math.h>
 
+#ifndef GDATA_USE_NEW_ENCODING_CALLS
+  #if (!TARGET_OS_IPHONE && defined(MAC_OS_X_VERSION_10_9) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9) \
+      || (TARGET_OS_IPHONE && defined(__IPHONE_7_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_7_0)
+    #define GDATA_USE_NEW_ENCODING_CALLS 1
+  #else
+    #define GDATA_USE_NEW_ENCODING_CALLS 0
+  #endif
+#endif
+
 @implementation GDataUtilities
 
 + (NSString *)stringWithControlsFilteredForString:(NSString *)str {
@@ -184,7 +193,12 @@
 // URL Encoding
 
 + (NSString *)stringByURLEncodingString:(NSString *)str {
+#if GDATA_USE_NEW_ENCODING_CALLS
+  NSCharacterSet *charSet = [NSCharacterSet URLPathAllowedCharacterSet];
+  NSString *result = [str stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+#else
   NSString *result = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+#endif
   return result;
 }
 
@@ -198,8 +212,15 @@ static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
 
 + (NSString *)stringByURLEncodingForURI:(NSString *)str {
 
-  NSString *resultStr = str;
+#if GDATA_USE_NEW_ENCODING_CALLS
+  NSMutableCharacterSet *charSet =
+      [[[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy] autorelease];
+  [charSet removeCharactersInString:(NSString *)kCharsToForceEscape];
+  [charSet addCharactersInString:@" "];
 
+  NSString *resultStr = [str stringByAddingPercentEncodingWithAllowedCharacters:charSet];
+#else
+  NSString *resultStr = str;
   CFStringRef originalString = (CFStringRef) str;
   CFStringRef leaveUnescaped = NULL;
 
@@ -212,38 +233,21 @@ static const CFStringRef kCharsToForceEscape = CFSTR("!*'();:@&=+$,/?%#[]");
   if (escapedStr) {
     resultStr = [(id)CFMakeCollectable(escapedStr) autorelease];
   }
+#endif
   return resultStr;
 }
 
 + (NSString *)stringByURLEncodingStringParameter:(NSString *)str {
-
   // For parameters, we'll explicitly leave spaces unescaped now, and replace
   // them with +'s
+  NSMutableString *mutableStr = [[[self stringByURLEncodingForURI:str] mutableCopy] autorelease];
 
-  NSString *resultStr = str;
-
-  CFStringRef originalString = (CFStringRef) str;
-  CFStringRef leaveUnescaped = CFSTR(" ");
-
-  CFStringRef escapedStr;
-  escapedStr = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                       originalString,
-                                                       leaveUnescaped,
-                                                       kCharsToForceEscape,
-                                                       kCFStringEncodingUTF8);
-
-  if (escapedStr) {
-    NSMutableString *mutableStr = [NSMutableString stringWithString:(NSString *)escapedStr];
-    CFRelease(escapedStr);
-
-    // replace spaces with plusses
-    [mutableStr replaceOccurrencesOfString:@" "
-                                withString:@"+"
-                                   options:0
-                                     range:NSMakeRange(0, [mutableStr length])];
-    resultStr = mutableStr;
-  }
-  return resultStr;
+  // replace spaces with plusses
+  [mutableStr replaceOccurrencesOfString:@" "
+                              withString:@"+"
+                                 options:0
+                                   range:NSMakeRange(0, [mutableStr length])];
+  return mutableStr;
 }
 
 // percent-encoding UTF-8

@@ -294,20 +294,6 @@
                        @"Contacts query 1 generation error");
 }
 
-- (void)testBooksQuery {
-
-  NSURL *feedURL = [NSURL URLWithString:kGDataGoogleBooksVolumeFeed];
-  GDataQueryBooks *query1 = [GDataQueryBooks booksQueryWithFeedURL:feedURL];
-
-  [query1 setMinimumViewability:kGDataGoogleBooksMinViewabilityFull];
-  [query1 setEBook:@"frogchild"];
-
-  NSURL *resultURL1 = [query1 URL];
-  NSString *expected1 = @"http://books.google.com/books/feeds/volumes?ebook=frogchild&min-viewability=full";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
-                       @"Books query 1 generation error");
-}
-
 - (void)testDocsQuery {
   NSURL *feedURL = [GDataServiceGoogleDocs docsFeedURL];
   GDataQueryDocs *query1 = [GDataQueryDocs documentQueryWithFeedURL:feedURL];

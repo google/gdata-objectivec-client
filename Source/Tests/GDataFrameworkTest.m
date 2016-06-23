@@ -38,12 +38,14 @@
   
   // Check that the Framework bundle's Info.plist has the proper version,
   // matching the GDataFrameworkVersion call
-  //
-  // Note: we're assuming that the current directory when this unit
-  // test runs is the framework's Source directory/
 
-  NSString *plistPath = @"Resources/GDataFramework-Info.plist";
-  NSDictionary *infoDict = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+  // The unit test target should copy the framework bundle to the test resources directory.
+  NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
+  NSString *resourcesPath = [testBundle resourcePath];
+  NSString *frameworkPath = [resourcesPath stringByAppendingPathComponent:@"GData.framework"];
+  NSBundle *frameworkBundle = [NSBundle bundleWithPath:frameworkPath];
+  NSDictionary *infoDict = [frameworkBundle infoDictionary];
+
   XCTAssertNotNil(infoDict, @"Could not find GDataFramework-Info.plist");
   
   if (infoDict) {
