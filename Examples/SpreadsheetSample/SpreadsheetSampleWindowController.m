@@ -34,13 +34,13 @@
 - (GDataFeedSpreadsheet *)spreadsheetFeed;
 - (void)setSpreadsheetFeed:(GDataFeedSpreadsheet *)feed;
 - (NSError *)spreadsheetFetchError;
-- (void)setSpreadsheetFetchError:(NSError *)error;  
+- (void)setSpreadsheetFetchError:(NSError *)error;
 
 - (GDataFeedWorksheet *)worksheetFeed;
 - (void)setWorksheetFeed:(GDataFeedWorksheet *)feed;
 - (NSError *)worksheetFetchError;
 - (void)setWorksheetFetchError:(NSError *)error;
-  
+
 - (GDataFeedBase *)entryFeed;
 - (void)setEntryFeed:(GDataFeedBase *)feed;
 - (NSError *)entryFetchError;
@@ -54,10 +54,10 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 
 + (SpreadsheetSampleWindowController *)sharedSpreadsheetSampleWindowController {
-  
+
   if (!gSpreadsheetSampleWindowController) {
     gSpreadsheetSampleWindowController = [[SpreadsheetSampleWindowController alloc] init];
-  }  
+  }
   return gSpreadsheetSampleWindowController;
 }
 
@@ -87,29 +87,29 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 - (void)dealloc {
   [mSpreadsheetFeed release];
   [mSpreadsheetFetchError release];
-  
+
   [mWorksheetFeed release];
   [mWorksheetFetchError release];
-  
+
   [mEntryFeed release];
   [mEntryFetchError release];
-  
+
   [super dealloc];
 }
 
 #pragma mark -
 
 - (void)updateUI {
-  
+
   // spreadsheet list display
-  [mSpreadsheetTable reloadData]; 
-  
+  [mSpreadsheetTable reloadData];
+
   if (mIsSpreadsheetFetchPending) {
-    [mSpreadsheetProgressIndicator startAnimation:self];  
+    [mSpreadsheetProgressIndicator startAnimation:self];
   } else {
-    [mSpreadsheetProgressIndicator stopAnimation:self];  
+    [mSpreadsheetProgressIndicator stopAnimation:self];
   }
-  
+
   // spreadsheet fetch result or selected item
   NSString *spreadsheetResultStr = @"";
   if (mSpreadsheetFetchError) {
@@ -119,21 +119,21 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     if (spreadsheet) {
       spreadsheetResultStr = [spreadsheet description];
     } else {
-      
+
     }
   }
   [mSpreadsheetResultTextField setString:spreadsheetResultStr];
-  
-  
+
+
   // Worksheet list display
-  [mWorksheetTable reloadData]; 
-  
+  [mWorksheetTable reloadData];
+
   if (mIsWorksheetFetchPending) {
-    [mWorksheetProgressIndicator startAnimation:self];  
+    [mWorksheetProgressIndicator startAnimation:self];
   } else {
-    [mWorksheetProgressIndicator stopAnimation:self];  
+    [mWorksheetProgressIndicator stopAnimation:self];
   }
-  
+
   // Worksheet fetch result or selected item
   NSString *worksheetResultStr = @"";
   if (mWorksheetFetchError) {
@@ -145,17 +145,17 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     }
   }
   [mWorksheetResultTextField setString:worksheetResultStr];
-  
-  
+
+
   // cell/list entry display
   [mEntryTable reloadData];
-  
+
   if (mIsEntryFetchPending) {
-    [mEntryProgressIndicator startAnimation:self];  
+    [mEntryProgressIndicator startAnimation:self];
   } else {
-    [mEntryProgressIndicator stopAnimation:self];  
+    [mEntryProgressIndicator stopAnimation:self];
   }
-  
+
   // entry fetch result or selected item
   NSString *entryResultStr = @"";
   if (mEntryFetchError) {
@@ -167,23 +167,23 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
     }
   }
   [mEntryResultTextField setString:entryResultStr];
-  
+
 }
 
 #pragma mark IBActions
 
 - (IBAction)getSpreadsheetClicked:(id)sender {
-  
+
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-  
+
   NSString *username = [mUsernameField stringValue];
   username = [username stringByTrimmingCharactersInSet:whitespace];
-  
+
   if ([username rangeOfString:@"@"].location == NSNotFound) {
     // if no domain was supplied, add @gmail.com
     username = [username stringByAppendingString:@"@gmail.com"];
   }
-  
+
   [mUsernameField setStringValue:username];
 
   [self fetchFeedOfSpreadsheets];
@@ -195,7 +195,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 
 #pragma mark -
@@ -208,7 +208,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 // fetched data.)
 
 - (GDataServiceGoogleSpreadsheet *)spreadsheetService {
-  
+
   static GDataServiceGoogleSpreadsheet* service = nil;
 
   if (!service) {
@@ -221,20 +221,20 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   // username/password may change
   NSString *username = [mUsernameField stringValue];
   NSString *password = [mPasswordField stringValue];
-  
+
   [service setUserCredentialsWithUsername:username
                                  password:password];
-  
+
   return service;
 }
 
 // get the spreadsheet selected in the top list, or nil if none
 - (GDataEntrySpreadsheet *)selectedSpreadsheet {
-  
+
   NSArray *spreadsheets = [mSpreadsheetFeed entries];
   int rowIndex = [mSpreadsheetTable selectedRow];
   if ([spreadsheets count] > 0 && rowIndex > -1) {
-    
+
     GDataEntrySpreadsheet *spreadsheet = [spreadsheets objectAtIndex:rowIndex];
     return spreadsheet;
   }
@@ -243,11 +243,11 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // get the Worksheet selected in the second list, or nil if none
 - (GDataEntryWorksheet *)selectedWorksheet {
-  
+
   NSArray *Worksheets = [mWorksheetFeed entries];
   int rowIndex = [mWorksheetTable selectedRow];
   if ([Worksheets count] > 0 && rowIndex > -1) {
-    
+
     GDataEntryWorksheet *Worksheet = [Worksheets objectAtIndex:rowIndex];
     return Worksheet;
   }
@@ -256,12 +256,12 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 // get the cell or list entry selected in the bottom list
 - (GDataEntryBase *)selectedEntry {
-  
+
   NSArray *entries = [mEntryFeed entries];
-  
+
   int rowIndex = [mEntryTable selectedRow];
   if ([entries count] > 0 && rowIndex > -1) {
-    
+
     GDataEntryBase *entry = [entries objectAtIndex:rowIndex];
     return entry;
   }
@@ -310,19 +310,19 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 // for the spreadsheet selected in the top list, begin retrieving the list of
 // Worksheets
 - (void)fetchSelectedSpreadsheet {
-  
+
   GDataEntrySpreadsheet *spreadsheet = [self selectedSpreadsheet];
   if (spreadsheet) {
-    
+
     NSURL *feedURL = [spreadsheet worksheetsFeedURL];
     if (feedURL) {
-      
+
       [self setWorksheetFeed:nil];
       [self setWorksheetFetchError:nil];
       mIsWorksheetFetchPending = YES;
-      
+
       [self setEntryFeed:nil];
-      [self setEntryFetchError:nil];      
+      [self setEntryFetchError:nil];
 
       GDataServiceGoogleSpreadsheet *service = [self spreadsheetService];
       [service fetchFeedWithURL:feedURL
@@ -352,10 +352,10 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 // of its contents, depending on the segmented control's setting
 
 - (void)fetchSelectedWorksheet {
-  
+
   GDataEntryWorksheet *worksheet = [self selectedWorksheet];
   if (worksheet) {
-    
+
     // the segmented control lets the user retrieve cell entries (position 0)
     // or list entries (position 1)
     int segmentIndex = [mFeedSelectorSegments selectedSegment];
@@ -421,35 +421,35 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
   } else if (tableView == mWorksheetTable) {
     return [[mWorksheetFeed entries] count];
   } else {
-    return [[mEntryFeed entries] count]; 
+    return [[mEntryFeed entries] count];
   }
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row {
-  
+
   if (tableView == mSpreadsheetTable) {
-    
+
     // get the spreadsheet entry's title
     GDataEntrySpreadsheet *spreadsheet = [[mSpreadsheetFeed entries] objectAtIndex:row];
     return [[spreadsheet title] stringValue];
-    
+
   } else if (tableView == mWorksheetTable) {
-    
+
     // get the worksheet entry's title
     GDataEntryWorksheet *worksheetEntry = [[mWorksheetFeed entries] objectAtIndex:row];
     return [[worksheetEntry title] stringValue];
-    
+
   } else {
-    
+
     // entry table; get a string for the cell or the list item
     GDataEntryBase *entry = [[mEntryFeed entries] objectAtIndex:row];
     NSString *displayStr;
-    
+
     if ([entry isKindOfClass:[GDataEntrySpreadsheetCell class]]) {
-      
+
       // format cell entry data
       GDataSpreadsheetCell *cell = [(GDataEntrySpreadsheetCell *)entry cell];
-      
+
       NSString *resultStr = [cell resultString]; // like "3.1415926"
       NSString *inputStr = [cell inputString]; // like "=pi()"
       NSString *title = [[entry title] stringValue]; // like "A3"
@@ -457,14 +457,14 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
       // show the input string (like =pi()) only if it differs
       // from the result string
       if (!inputStr || (resultStr && [inputStr isEqual:resultStr])) {
-       inputStr = @""; 
+       inputStr = @"";
       }
-      
+
       displayStr = [NSString stringWithFormat:@"%@: %@  %@",
         title, inputStr, (resultStr ? resultStr : @"")];
-      
+
     } else {
-      
+
       // format list entry data
       //
       // a list entry we will show as a sequence of (name,value) items from
@@ -475,9 +475,9 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
       NSMutableArray *array = [NSMutableArray array];
       NSEnumerator *enumerator = [customElements objectEnumerator];
       GDataSpreadsheetCustomElement *element;
-      
+
       while ((element = [enumerator nextObject]) != nil) {
-        
+
         NSString *elemStr = [NSString stringWithFormat:@"(%@, %@)",
           [element name], [element stringValue]];
         [array addObject:elemStr];
@@ -491,7 +491,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 #pragma mark Setters and Getters
 
 - (GDataFeedSpreadsheet *)spreadsheetFeed {
-  return mSpreadsheetFeed; 
+  return mSpreadsheetFeed;
 }
 
 - (void)setSpreadsheetFeed:(GDataFeedSpreadsheet *)feed {
@@ -500,7 +500,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (NSError *)spreadsheetFetchError {
-  return mSpreadsheetFetchError; 
+  return mSpreadsheetFetchError;
 }
 
 - (void)setSpreadsheetFetchError:(NSError *)error {
@@ -510,7 +510,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 
 
 - (GDataFeedWorksheet *)worksheetFeed {
-  return mWorksheetFeed; 
+  return mWorksheetFeed;
 }
 
 - (void)setWorksheetFeed:(GDataFeedWorksheet *)feed {
@@ -519,7 +519,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (NSError *)worksheetFetchError {
-  return mWorksheetFetchError; 
+  return mWorksheetFetchError;
 }
 
 - (void)setWorksheetFetchError:(NSError *)error {
@@ -528,7 +528,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (GDataFeedBase *)entryFeed {
-  return mEntryFeed; 
+  return mEntryFeed;
 }
 
 - (void)setEntryFeed:(GDataFeedBase *)feed {
@@ -537,7 +537,7 @@ static SpreadsheetSampleWindowController* gSpreadsheetSampleWindowController = n
 }
 
 - (NSError *)entryFetchError {
-  return mEntryFetchError; 
+  return mEntryFetchError;
 }
 
 - (void)setEntryFetchError:(NSError *)error {

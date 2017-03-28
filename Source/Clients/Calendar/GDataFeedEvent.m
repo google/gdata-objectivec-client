@@ -32,12 +32,12 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class feedClass = [self class];
   [self addExtensionDeclarationForParentClass:feedClass
-                                   childClass:[GDataWhere class]];  
+                                   childClass:[GDataWhere class]];
 }
 
 - (Class)classForEntries {

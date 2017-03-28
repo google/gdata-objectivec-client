@@ -42,7 +42,7 @@
 @interface GDataSendEventNotifications : GDataBoolValueConstruct <GDataExtension>
 @end
 
-@implementation GDataSendEventNotifications 
+@implementation GDataSendEventNotifications
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"sendEventNotifications"; }
@@ -51,7 +51,7 @@
 @interface GDataPrivateCopyProperty : GDataBoolValueConstruct <GDataExtension>
 @end
 
-@implementation GDataPrivateCopyProperty 
+@implementation GDataPrivateCopyProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"privateCopy"; }
@@ -77,7 +77,7 @@
 // insert and update
 @end
 
-@implementation GDataSyncEventProperty 
+@implementation GDataSyncEventProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"syncEvent"; }
@@ -90,7 +90,7 @@
 // Currently this is only a read-only entry.
 @end
 
-@implementation GDataSequenceProperty 
+@implementation GDataSequenceProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"sequence"; }
@@ -103,7 +103,7 @@
 // Currently a read-only entry.
 @end
 
-@implementation GDataICalUIDProperty 
+@implementation GDataICalUIDProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"uid"; }
@@ -201,17 +201,17 @@
 @implementation GDataEntryCalendarEvent
 
 + (NSDictionary *)calendarEventNamespaces {
-  
+
   NSMutableDictionary *namespaces = [NSMutableDictionary dictionaryWithDictionary:
     [GDataEntryBase baseGDataNamespaces]];
-  
+
   [namespaces setObject:kGDataNamespaceGCal forKey:kGDataNamespaceGCalPrefix];
   return namespaces;
 }
 
 + (GDataEntryCalendarEvent *)calendarEvent {
   GDataEntryCalendarEvent *entry = [self object];
-  
+
   [entry setNamespaces:[GDataEntryCalendar calendarNamespaces]];
   return entry;
 }
@@ -248,7 +248,7 @@
    [GDataAnyoneCanAddSelfProperty class],
    [GDataSuppressReplyNotificationsProperty class],
    nil];
-  
+
   [self addExtensionDeclarationForParentClass:[GDataWho class]
                                  childClasses:
    [GDataResourceProperty class],
@@ -260,7 +260,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"sendEventNotifications", @"shouldSendEventNotifications",   kGDataDescBooleanPresent },
     { @"privateCopy",            @"isPrivateCopy",                  kGDataDescBooleanPresent },
@@ -276,7 +276,7 @@
     { @"suppressReplyTypes",     @"suppressReplyNotificationTypes", kGDataDescValueLabeled   },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -297,7 +297,7 @@
 // it is ambiguous whether this defaults to TRUE or FALSE, so just always
 // create the extension, to be sure.
 - (void)setShouldSendEventNotifications:(BOOL)flag {
-  GDataBoolValueConstruct *obj = [GDataSendEventNotifications boolValueWithBool:flag]; 
+  GDataBoolValueConstruct *obj = [GDataSendEventNotifications boolValueWithBool:flag];
   [self setObject:obj forExtensionClass:[GDataSendEventNotifications class]];
 }
 
@@ -372,7 +372,7 @@
   if ([str length] > 0) {
     obj = [GDataICalUIDProperty valueWithString:str];
   } else {
-    obj = nil; 
+    obj = nil;
   }
   [self setObject:obj forExtensionClass:[GDataICalUIDProperty class]];
 }
@@ -459,7 +459,7 @@
   if (num != nil) {
     obj = [GDataSequenceProperty valueWithNumber:num];
   } else {
-    obj = nil; 
+    obj = nil;
   }
   [self setObject:obj forExtensionClass:[GDataSequenceProperty class]];
 }

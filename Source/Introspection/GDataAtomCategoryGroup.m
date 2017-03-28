@@ -68,7 +68,7 @@ static NSString* const kFixedAttr = @"fixed";
     { @"categories", @"categories", kGDataDescArrayDescs },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;

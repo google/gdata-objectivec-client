@@ -38,7 +38,7 @@
 - (void)setHeight:(NSNumber *)num;
 
 - (NSNumber *)width; // int
-- (void)setWidth:(NSNumber *)num;  
+- (void)setWidth:(NSNumber *)num;
 @end
 
 #endif // #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_*_SERVICE

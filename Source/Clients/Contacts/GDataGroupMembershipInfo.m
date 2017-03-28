@@ -19,15 +19,15 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE
 
-#import "GDataGroupMembershipInfo.h" 
+#import "GDataGroupMembershipInfo.h"
 #import "GDataContactConstants.h"
 
 static NSString* const kHrefAttr = @"href";
 static NSString* const kDeletedAttr = @"deleted";
 
-@implementation GDataGroupMembershipInfo 
+@implementation GDataGroupMembershipInfo
 //
-// group membership info 
+// group membership info
 //
 // <gContact:groupMembershipInfo href="http://..." />
 //
@@ -38,7 +38,7 @@ static NSString* const kDeletedAttr = @"deleted";
 + (NSString *)extensionElementLocalName { return @"groupMembershipInfo"; }
 
 + (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)str {
-  
+
   GDataGroupMembershipInfo *obj = [self object];
   [obj setHref:str];
   return obj;
@@ -46,14 +46,14 @@ static NSString* const kDeletedAttr = @"deleted";
 
 - (void)addParseDeclarations {
   NSArray *attrs = [NSArray arrayWithObjects:kHrefAttr, kDeletedAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)href {
-  return [self stringValueForAttribute:kHrefAttr]; 
+  return [self stringValueForAttribute:kHrefAttr];
 }
 
 - (void)setHref:(NSString *)str {
@@ -61,7 +61,7 @@ static NSString* const kDeletedAttr = @"deleted";
 }
 
 - (BOOL)isDeleted {
-  return [self boolValueForAttribute:kDeletedAttr defaultValue:NO]; 
+  return [self boolValueForAttribute:kDeletedAttr defaultValue:NO];
 }
 
 - (void)setIsDeleted:(BOOL)flag {

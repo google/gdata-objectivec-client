@@ -25,13 +25,13 @@
 @implementation GDataEntryYouTubeVideoMessage
 
 + (GDataEntryYouTubeVideoMessage *)videoMessageEntry {
-  
+
   GDataEntryYouTubeVideoMessage *entry;
-  
+
   entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 

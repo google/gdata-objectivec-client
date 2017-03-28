@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubePlaylistLink
 
 + (GDataFeedYouTubePlaylistLink *)playlistLinkFeed {
-  
+
   GDataFeedYouTubePlaylistLink *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

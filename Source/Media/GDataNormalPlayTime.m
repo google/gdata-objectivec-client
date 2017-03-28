@@ -23,9 +23,9 @@ static NSString* const kNowString = @"now";
 @implementation GDataNormalPlayTime
 
 + (GDataNormalPlayTime *)normalPlayTimeWithString:(NSString *)str {
-  
+
   GDataNormalPlayTime *npt = [[[GDataNormalPlayTime alloc] init] autorelease];
-  
+
   [npt setFromString:str];
   return npt;
 }
@@ -41,29 +41,29 @@ static NSString* const kNowString = @"now";
 }
 
 - (BOOL)isNow {
-  return isNow_; 
+  return isNow_;
 }
 
 - (void)setIsNow:(BOOL)isNow {
-  isNow_ = isNow; 
+  isNow_ = isNow;
 }
 
 - (NSString *)HHMMSSString { // hh:mm:ss.fraction or "now"
   if (isNow_) {
     return kNowString;
   }
-  
+
   long fractional = (long) (ms_ % 1000LL);
   long totalSeconds = (long) (ms_ / 1000LL);
   long seconds = totalSeconds % 60L;
   long totalMinutes = totalSeconds / 60L;
   long minutes = totalMinutes % 60L;
   long hours = totalMinutes / 60L;
-  
+
   if (fractional > 0) {
     return [NSString stringWithFormat:@"%ld:%02ld:%02ld.%03ld",
       hours, minutes, seconds, fractional];
-  } 
+  }
   return [NSString stringWithFormat:@"%ld:%02ld:%02ld",
     hours, minutes, seconds];
 }
@@ -74,7 +74,7 @@ static NSString* const kNowString = @"now";
   }
   int seconds = (int) (ms_ / 1000LL);
   int fractional = (int) (ms_ % 1000LL);
-  
+
   if (fractional == 0) {
     return [NSString stringWithFormat:@"%d", seconds];
   }
@@ -84,47 +84,47 @@ static NSString* const kNowString = @"now";
 - (void)setFromString:(NSString *)str {
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
   NSString *trimmedStr = [str stringByTrimmingCharactersInSet:whitespace];
-  
+
   // handle "now"
   if ([trimmedStr caseInsensitiveCompare:@"now"] == NSOrderedSame) {
     isNow_ = YES;
     ms_ = -1;
     return;
   }
-  
+
   // parse hh:mm:ss.fff or ss.fff into milliseconds
   long seconds = 0;
   long thousandths = 0;
-  
+
   NSScanner *scanner = [NSScanner scannerWithString:str];
   NSCharacterSet *period = [NSCharacterSet characterSetWithCharactersInString:@"."];
   NSCharacterSet *colon = [NSCharacterSet characterSetWithCharactersInString:@":"];
-  
+
   int scannedInt;
   if ([scanner scanInt:&scannedInt]) {
     seconds = scannedInt;
-    
+
     if ([scanner scanCharactersFromSet:colon intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
       // push seconds to minutes
       seconds = seconds * 60 + scannedInt;
     }
-  
+
     if ([scanner scanCharactersFromSet:colon intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
       // push minutes to hours, seconds to minutes
       seconds = seconds * 60 + scannedInt;
     }
-    
+
     if ([scanner scanCharactersFromSet:period intoString:NULL]
         && [scanner scanInt:&scannedInt]) {
-      
+
       // append 000 and take the first 3 digits to create thousands
       NSString *paddedFraction = [NSString stringWithFormat:@"%d000", scannedInt];
       NSString *thousandthsStr = [paddedFraction substringToIndex:3];
       thousandths = [thousandthsStr intValue];
     }
-  }    
+  }
   ms_ = seconds * 1000 + thousandths;
   isNow_ = NO;
 }

@@ -22,7 +22,7 @@
 #import "GDataObject.h"
 
 //
-// group membership info 
+// group membership info
 //
 // <gContact:groupMembershipInfo href="http://..." />
 //

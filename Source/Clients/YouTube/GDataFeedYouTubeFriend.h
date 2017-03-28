@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubeFriend : GDataFeedBase 
+@interface GDataFeedYouTubeFriend : GDataFeedBase
 + (GDataFeedYouTubeFriend *)friendFeed;
 
 // to get the user profile link, use [[feed links] relatedLink]

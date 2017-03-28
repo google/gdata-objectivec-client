@@ -68,7 +68,7 @@ static NSString* StringByURLEncodingString(NSString *str) {
                                        accountType:(NSString *)accountType // nil for HOSTED_OR_GOOGLE
                               additionalParameters:(NSDictionary *)params
                                      customHeaders:(NSDictionary *)headers { // nil or map of custom headers to set
-  
+
   if ([username length] == 0 || [password length] == 0) return nil;
 
   if ([domain length] == 0) {

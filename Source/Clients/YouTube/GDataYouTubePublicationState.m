@@ -19,8 +19,8 @@
 
 #if !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_YOUTUBE_SERVICE
 
-// yt:state is an extension to GDataAtomPubControl for YouTube video entries, 
-// as in 
+// yt:state is an extension to GDataAtomPubControl for YouTube video entries,
+// as in
 //
 //  <app:control>
 //    <yt:state name="rejected" reasonCode="32" helpUrl="http://www.youtube.com/">
@@ -37,18 +37,18 @@ static NSString *const kNameAttr = @"name";
 static NSString *const kReasonCodeAttr = @"reasonCode";
 static NSString *const kHelpURLAttr = @"helpUrl";
 
-@implementation GDataYouTubePublicationState 
+@implementation GDataYouTubePublicationState
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"state"; }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kNameAttr, kReasonCodeAttr, kHelpURLAttr, nil];
-  
-  [self addLocalAttributeDeclarations:attrs]; 
+
+  [self addLocalAttributeDeclarations:attrs];
 
   [self addContentValueDeclaration];
 }
@@ -80,7 +80,7 @@ static NSString *const kHelpURLAttr = @"helpUrl";
 }
 
 - (NSString *)errorDescription {
-  return [self contentStringValue]; 
+  return [self contentStringValue];
 }
 
 - (void)setErrorDescription:(NSString *)str {

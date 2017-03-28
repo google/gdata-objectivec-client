@@ -93,7 +93,7 @@ static NSString* const kYomiAttr = @"yomi";
 + (id)nameElementWithString:(NSString *)str {
   // the contacts API does not want empty name elements
   if ([str length] == 0) return nil;
-  
+
   GDataNameElement *obj = [self object];
   [obj setStringValue:str];
   return obj;

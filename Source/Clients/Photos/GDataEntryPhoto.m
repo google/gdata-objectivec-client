@@ -26,11 +26,11 @@
 @implementation GDataEntryPhoto
 
 + (GDataEntryPhoto *)photoEntry {
-  
+
   GDataEntryPhoto *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
-  
+
   return entry;
 }
 
@@ -74,7 +74,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"albumID",         @"albumID",          kGDataDescValueLabeled },
     { @"checksum",        @"checksum",         kGDataDescValueLabeled },
@@ -97,7 +97,7 @@
     { @"location",        @"location",         kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -133,7 +133,7 @@
 
 - (void)setAlbumID:(NSString *)str {
   GDataObject *obj = [GDataPhotoAlbumID valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSString *)checksum {
@@ -143,7 +143,7 @@
 
 - (void)setChecksum:(NSString *)str {
   GDataObject *obj = [GDataPhotoChecksum valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSNumber *)commentCount {
@@ -154,7 +154,7 @@
 
 - (void)setCommentCount:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoCommentCount valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSNumber *)commentsEnabled {
@@ -165,7 +165,7 @@
 
 - (void)setCommentsEnabled:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoCommentingEnabled valueWithBool:[num boolValue]];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSNumber *)height {
@@ -176,7 +176,7 @@
 
 - (void)setHeight:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoHeight valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSNumber *)rotation {
@@ -187,7 +187,7 @@
 
 - (void)setRotation:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoRotation valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSNumber *)size {
@@ -198,7 +198,7 @@
 
 - (void)setSize:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoSize valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (GDataPhotoTimestamp *)timestamp {
@@ -207,7 +207,7 @@
 }
 
 - (void)setTimestamp:(GDataPhotoTimestamp *)obj {
-  [self setObject:obj forExtensionClass:[GDataPhotoTimestamp class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoTimestamp class]];
 }
 
 - (NSNumber *)width {
@@ -218,7 +218,7 @@
 
 - (void)setWidth:(NSNumber *)num {
   GDataObject *obj = [GDataPhotoWidth valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSString *)videoStatus {
@@ -228,7 +228,7 @@
 
 - (void)setVideoStatus:(NSString *)str {
   GDataPhotoVideoStatus *obj = [GDataPhotoVideoStatus valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (GDataMediaGroup *)mediaGroup {
@@ -255,7 +255,7 @@
 }
 
 - (void)setEXIFTags:(GDataEXIFTags *)tags {
-  [self setObject:tags forExtensionClass:[GDataEXIFTags class]];   
+  [self setObject:tags forExtensionClass:[GDataEXIFTags class]];
 }
 
 #pragma mark search response elements introduced in V2

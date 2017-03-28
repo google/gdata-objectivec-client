@@ -25,7 +25,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAENTRYEVENT_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -99,7 +99,7 @@ _EXTERN NSString* const kGDataEventVisibilityConfidential _INITIALIZE_AS(@"http:
 }
 
 // a side-effect of calling setRecurrence is to switch reminder elements
-// between recurrence (in the event) and non-recurrence (in the first 
+// between recurrence (in the event) and non-recurrence (in the first
 // event time)
 - (GDataRecurrence *)recurrence;
 - (void)setRecurrence:(GDataRecurrence *)obj;

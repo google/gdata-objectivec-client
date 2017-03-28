@@ -27,7 +27,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATACALENDAREVENT_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -60,7 +60,7 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 @class GDataWebContent;
 @interface GDataLink (GDataCalendarEntryEventExtensions)
 - (NSArray *)webContents;
-- (void)setWebContents:(NSArray *)arr;  
+- (void)setWebContents:(NSArray *)arr;
 - (void)addWebContent:(GDataWebContent *)obj;
 @end
 
@@ -85,7 +85,7 @@ _EXTERN NSString* const kGDataCategoryCalendarSettings _INITIALIZE_AS(@"http://s
 
 // for sync events, the iCal UID and sequence number need to be honored
 - (BOOL)isSyncEvent;
-- (void)setIsSyncEvent:(BOOL)flag;  
+- (void)setIsSyncEvent:(BOOL)flag;
 
 - (NSString *)iCalUID;
 - (void)setICalUID:(NSString *)str;

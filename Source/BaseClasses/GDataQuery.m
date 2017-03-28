@@ -534,7 +534,7 @@ static NSString *const kUpdatedMinParamName          = @"updated-min";
 
   NSString *str = [customParameters_ objectForKey:name];
   if (str != nil) return (NSInteger) [str intValue];
-  
+
   return missingVal;
 }
 

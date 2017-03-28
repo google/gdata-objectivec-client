@@ -25,7 +25,7 @@
 
 // media:thumbnail element
 //
-//   <media:thumbnail url="http://www.foo.com/keyframe.jpg" 
+//   <media:thumbnail url="http://www.foo.com/keyframe.jpg"
 //                    width="75" height="50" time="12:05:01.123" />
 //
 // http://search.yahoo.com/mrss

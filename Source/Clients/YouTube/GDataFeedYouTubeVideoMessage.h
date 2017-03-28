@@ -25,7 +25,7 @@
 // but this feed class derives just from GDataFeedBase, not from the
 // video feed class
 
-@interface GDataFeedYouTubeVideoMessage : GDataFeedBase 
+@interface GDataFeedYouTubeVideoMessage : GDataFeedBase
 + (GDataFeedYouTubeVideoMessage *)videoMessageFeed;
 @end
 

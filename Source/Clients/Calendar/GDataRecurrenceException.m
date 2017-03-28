@@ -25,7 +25,7 @@
 #import "GDataEntryLink.h"
 
 @implementation GDataRecurrenceException
-// a gd:recurrenceException link, possibly containing an entryLink or 
+// a gd:recurrenceException link, possibly containing an entryLink or
 // an originalEvent
 //<gd:recurrenceException specialized="true">
 //  <gd:entryLink>
@@ -83,7 +83,7 @@
 - (BOOL)isEqual:(GDataRecurrenceException *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataRecurrenceException class]]) return NO;
-  
+
   return [super isEqual:other]
     && AreBoolsEqual([self isSpecialized], [other isSpecialized])
     && AreEqualOrBothNil([self entryLink], [other entryLink])
@@ -93,13 +93,13 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   if ([self isSpecialized]) {
     [self addToArray:items objectDescriptionIfNonNil:@"true" withName:@"specialized"];
   }
   [self addToArray:items objectDescriptionIfNonNil:entryLink_ withName:@"entryLink"];
   [self addToArray:items objectDescriptionIfNonNil:originalEvent_ withName:@"originalEvent"];
-  
+
   return items;
 }
 #endif
@@ -107,32 +107,32 @@
 - (NSXMLElement *)XMLElement {
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gd:recurrenceException"];
-  
+
   if ([self isSpecialized]) {
     [self addToElement:element attributeValueIfNonNil:@"true" withName:@"specialized"];
-  }  
-  
+  }
+
   if ([self entryLink]) {
     [element addChild:[[self entryLink] XMLElement]];
   }
-  
+
   if ([self originalEvent]) {
     [element addChild:[[self originalEvent] XMLElement]];
   }
-  
+
   return element;
 }
 
 - (BOOL)isSpecialized {
-  return isSpecialized_; 
+  return isSpecialized_;
 }
 
 - (void)setIsSpecialized:(BOOL)isSpecialized {
-  isSpecialized_ = isSpecialized; 
+  isSpecialized_ = isSpecialized;
 }
 
 - (GDataEntryLink *)entryLink {
-  return entryLink_; 
+  return entryLink_;
 }
 
 - (void)setEntryLink:(GDataEntryLink *)entryLink {
@@ -141,11 +141,11 @@
 }
 
 - (GDataOriginalEvent *)originalEvent {
-  return originalEvent_; 
+  return originalEvent_;
 }
 
 - (void)setOriginalEvent:(GDataOriginalEvent *)originalEvent {
-  [originalEvent_ autorelease]; 
+  [originalEvent_ autorelease];
   originalEvent_ = [originalEvent retain];
 }
 

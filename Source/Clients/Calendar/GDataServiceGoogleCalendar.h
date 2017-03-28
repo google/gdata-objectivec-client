@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEGOOGLECALENDAR_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -44,10 +44,10 @@ _EXTERN NSString* const kGDataGoogleCalendarDefaultAllCalendarsFeed _INITIALIZE_
 _EXTERN NSString* const kGDataGoogleCalendarDefaultPrivateFullFeed _INITIALIZE_AS(@"https://www.google.com/calendar/feeds/default/private/full");
 
 
-// QuickAdd:  
+// QuickAdd:
 //
 // Google Calendar can parse natural language text to create a
-// Calendar entry.  Create the entry by setting the content, 
+// Calendar entry.  Create the entry by setting the content,
 // then insert it into the calendar:
 //
 //  GDataEntryCalendarEvent *newEvent = [GDataEntryCalendarEvent calendarEvent];

@@ -25,7 +25,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAPHOTOELEMENTS_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -116,16 +116,16 @@ _EXTERN NSString* const kGDataPhotoStatusFailed  _INITIALIZE_AS(@"failed");
 @interface GDataPhotoHeight : GDataValueElementConstruct <GDataExtension>
 @end
 
-// unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>  
+// unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>
 @interface GDataPhotoRotation : GDataValueElementConstruct <GDataExtension>
 @end
 
-// photo size in bytes <gphoto:size>149351</gphoto:size> 
+// photo size in bytes <gphoto:size>149351</gphoto:size>
 @interface GDataPhotoSize : GDataValueElementConstruct <GDataExtension>
 @end
 
-// photo timestamp, in milliseconds since 1-January-1970, 
-// like <gphoto:timestamp>1168640584000</gphoto:timestamp>  
+// photo timestamp, in milliseconds since 1-January-1970,
+// like <gphoto:timestamp>1168640584000</gphoto:timestamp>
 @interface GDataPhotoTimestamp : GDataValueElementConstruct <GDataExtension>
 + (GDataPhotoTimestamp *)timestampWithDate:(NSDate *)date;
 - (NSDate *)dateValue;

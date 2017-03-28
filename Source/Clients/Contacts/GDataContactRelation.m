@@ -36,7 +36,7 @@ static NSString* const kLabelAttr = @"label";
 + (id)relationWithRel:(NSString *)rel
                 label:(NSString *)label
                 value:(NSString *)value {
-  
+
   GDataContactRelation *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
@@ -46,16 +46,16 @@ static NSString* const kLabelAttr = @"label";
 
 - (void)addParseDeclarations {
   NSArray *attrs = [NSArray arrayWithObjects:
-                    kRelAttr, kLabelAttr, nil]; 
+                    kRelAttr, kLabelAttr, nil];
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 
 #pragma mark -
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
@@ -63,7 +63,7 @@ static NSString* const kLabelAttr = @"label";
 }
 
 - (NSString *)label {
-  return [self stringValueForAttribute:kLabelAttr]; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
@@ -71,7 +71,7 @@ static NSString* const kLabelAttr = @"label";
 }
 
 - (NSString *)stringValue {
-  return [self contentStringValue]; 
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {

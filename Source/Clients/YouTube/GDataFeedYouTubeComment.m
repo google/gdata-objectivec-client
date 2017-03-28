@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeComment
 
 + (GDataFeedYouTubeComment *)commentFeed {
-  
+
   GDataFeedYouTubeComment *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

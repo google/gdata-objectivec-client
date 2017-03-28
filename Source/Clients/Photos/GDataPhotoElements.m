@@ -33,14 +33,14 @@
 + (NSString *)extensionElementLocalName { return @"albumid"; }
 @end
 
-@implementation GDataPhotoCommentCount 
+@implementation GDataPhotoCommentCount
 // comment count, like <gphoto:commentCount>11</gphoto:commentCount>
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
 + (NSString *)extensionElementLocalName { return @"commentCount"; }
 @end
 
-@implementation GDataPhotoCommentingEnabled 
+@implementation GDataPhotoCommentingEnabled
 // comment count, like <gphoto:commentingEnabled>true</gphoto:commentingEnabled>
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
@@ -146,22 +146,22 @@
 + (NSString *)extensionElementLocalName { return @"height"; }
 @end
 
-// unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>  
+// unapplied rotation in int degrees, <gphoto:rotation>90</gphoto:rotation>
 @implementation GDataPhotoRotation
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
 + (NSString *)extensionElementLocalName { return @"rotation"; }
 @end
 
-// photo size in bytes <gphoto:size>149351</gphoto:size> 
+// photo size in bytes <gphoto:size>149351</gphoto:size>
 @implementation GDataPhotoSize
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
 + (NSString *)extensionElementLocalName { return @"size"; }
 @end
 
-// photo timestamp, in milliseconds since 1-January-1970, 
-// like <gphoto:timestamp>1168640584000</gphoto:timestamp>  
+// photo timestamp, in milliseconds since 1-January-1970,
+// like <gphoto:timestamp>1168640584000</gphoto:timestamp>
 @implementation GDataPhotoTimestamp
 + (NSString *)extensionElementURI       { return kGDataNamespacePhotos; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespacePhotosPrefix; }
@@ -176,17 +176,17 @@
 - (NSDate *)dateValue {
   // date in XML here is like Java's date, milliseconds since 1970
   NSTimeInterval secs = [self doubleValue] / 1000.0;
-  NSDate *date = [NSDate dateWithTimeIntervalSince1970:secs]; 
+  NSDate *date = [NSDate dateWithTimeIntervalSince1970:secs];
   return date;
 }
 
 - (void)setDateValue:(NSDate *)date {
   NSTimeInterval secs = [date timeIntervalSince1970] * 1000.0;
-  [self setDoubleValue:floor(secs)]; 
+  [self setDoubleValue:floor(secs)];
 }
 
 - (NSString *)description {
-  return [[self dateValue] description]; 
+  return [[self dateValue] description];
 }
 @end
 

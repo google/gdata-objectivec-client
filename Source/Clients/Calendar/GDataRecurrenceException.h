@@ -21,7 +21,7 @@
 
 #import "GDataObject.h"
 
-// a gd:recurrenceException link, possibly containing an entryLink or 
+// a gd:recurrenceException link, possibly containing an entryLink or
 // an originalEvent
 //<gd:recurrenceException specialized="true">
 //  <gd:entryLink>
@@ -43,7 +43,7 @@
 }
 + (GDataRecurrenceException *)recurrenceExceptionWithEntryLink:(GDataEntryLink *)entryLink
                                                  originalEvent:(GDataOriginalEvent *)originalEvent
-                                                 isSpecialized:(BOOL)isSpecialized;  
+                                                 isSpecialized:(BOOL)isSpecialized;
 - (id)initWithXMLElement:(NSXMLElement *)element
                   parent:(GDataObject *)parent;
 - (NSXMLElement *)XMLElement;

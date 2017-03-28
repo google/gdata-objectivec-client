@@ -26,11 +26,11 @@
 @implementation GDataEntryYouTubeUserProfile
 
 + (GDataEntryYouTubeUserProfile *)userProfileEntry {
-  
+
   GDataEntryYouTubeUserProfile *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,31 +45,31 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClasses:
      [GDataFeedLink class],
-     
+
      // YouTube element extensions
-     [GDataYouTubeAge class], [GDataYouTubeBooks class], 
-     [GDataYouTubeCompany class], [GDataYouTubeAboutMe class], 
-     [GDataYouTubeGender class], [GDataYouTubeHobbies class], 
-     [GDataYouTubeHometown class], [GDataYouTubeLocation class], 
-     [GDataYouTubeMovies class], [GDataYouTubeMusic class], 
-     [GDataYouTubeOccupation class], [GDataYouTubeRelationship class], 
+     [GDataYouTubeAge class], [GDataYouTubeBooks class],
+     [GDataYouTubeCompany class], [GDataYouTubeAboutMe class],
+     [GDataYouTubeGender class], [GDataYouTubeHobbies class],
+     [GDataYouTubeHometown class], [GDataYouTubeLocation class],
+     [GDataYouTubeMovies class], [GDataYouTubeMusic class],
+     [GDataYouTubeOccupation class], [GDataYouTubeRelationship class],
      [GDataYouTubeSchool class], [GDataYouTubeUsername class],
-     [GDataYouTubeFirstName class],  [GDataYouTubeLastName class], 
-     [GDataYouTubeStatistics class], 
-     
+     [GDataYouTubeFirstName class],  [GDataYouTubeLastName class],
+     [GDataYouTubeStatistics class],
+
      // media extensions
      [GDataMediaThumbnail class], nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"statistics",   @"statistics",          kGDataDescValueLabeled },
     { @"age",          @"age",                 kGDataDescValueLabeled },
@@ -91,7 +91,7 @@
     { @"feedLinks",    @"feedLinks",           kGDataDescArrayCount },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -105,11 +105,11 @@
 #pragma mark -
 
 - (NSString *)channelType {
-  
+
   NSArray *channelCats;
-  
+
   channelCats = [self categoriesWithScheme:kGDataSchemeYouTubeChannel];
-  
+
   if ([channelCats count] > 0) {
     GDataCategory *category = [channelCats objectAtIndex:0];
     NSString *term = [category term];
@@ -130,7 +130,7 @@
 
 - (NSString *)aboutMe {
   GDATA_DEBUG_ASSERT_MIN_SERVICE_V2();
-  
+
   GDataYouTubeAboutMe *obj = [self objectForExtensionClass:[GDataYouTubeAboutMe class]];
   return [obj stringValue];
 }
@@ -302,7 +302,7 @@
 }
 
 - (NSArray *)feedLinks {
-  return [self objectsForExtensionClass:[GDataFeedLink class]]; 
+  return [self objectsForExtensionClass:[GDataFeedLink class]];
 }
 
 #pragma mark Convenience accessors

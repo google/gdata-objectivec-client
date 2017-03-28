@@ -31,7 +31,7 @@ static NSString* const kTimeAttr = @"time";
 @implementation GDataMediaThumbnail
 // media:thumbnail element
 //
-//   <media:thumbnail url="http://www.foo.com/keyframe.jpg" 
+//   <media:thumbnail url="http://www.foo.com/keyframe.jpg"
 //                    width="75" height="50" time="12:05:01.123" />
 //
 // http://search.yahoo.com/mrss
@@ -42,17 +42,17 @@ static NSString* const kTimeAttr = @"time";
 + (NSString *)extensionElementLocalName { return @"thumbnail"; }
 
 + (GDataMediaThumbnail *)mediaContentWithURL:(NSString *)urlString {
-  
+
   GDataMediaThumbnail *obj = [self object];
   [obj setURLString:urlString];
   return obj;
 }
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kURLAttr, kHeightAttr, kWidthAttr, kTimeAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
@@ -83,19 +83,19 @@ static NSString* const kTimeAttr = @"time";
 }
 
 - (GDataNormalPlayTime *)time {
-  
+
   GDataNormalPlayTime *playTime = nil;
-  
+
   NSString *timeStr = [self stringValueForAttribute:kTimeAttr];
   if ([timeStr length] > 0) {
     playTime = [GDataNormalPlayTime normalPlayTimeWithString:timeStr];
   }
-  
+
   return playTime;
 }
 
 - (void)setTime:(GDataNormalPlayTime *)playTime {
-  
+
   NSString *timeStr = [[self time] HHMMSSString];
 
   [self setStringValue:timeStr forAttribute:kTimeAttr];

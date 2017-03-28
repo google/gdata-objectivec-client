@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEYOUTUBE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -68,7 +68,7 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 // how the account was created.
 
 @interface GDataServiceGoogleYouTube : GDataServiceGoogle {
-  NSString *developerKey_; // required for uploading 
+  NSString *developerKey_; // required for uploading
 }
 
 + (NSString *)serviceRootURLString;
@@ -96,11 +96,11 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 // Note:
 //
 // A developer key is required for uploading, and for updating or deleting
-// videos.  Entries in feeds retrieved without a developer key will 
-// not have edit links. 
+// videos.  Entries in feeds retrieved without a developer key will
+// not have edit links.
 - (NSString *)youTubeDeveloperKey;
 - (void)setYouTubeDeveloperKey:(NSString *)str;
-  
+
 // clients may use these fetch methods of GDataServiceGoogle
 //
 //  - (GDataServiceTicket *)fetchFeedWithURL:(NSURL *)feedURL delegate:(id)delegate didFinishSelector:(SEL)finishedSelector;
@@ -120,7 +120,7 @@ _EXTERN NSString* const kGDataYouTubeUserFeedIDRecommendations       _INITIALIZE
 //
 // The class of the returned feed or entry is determined by the URL fetched.
 
-+ (NSString *)serviceRootURLString;  
++ (NSString *)serviceRootURLString;
 
 + (NSString *)serviceUploadRootURLString;
 

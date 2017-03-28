@@ -26,7 +26,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAACLROLE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -50,7 +50,7 @@ _EXTERN NSString* const kGDataRoleCommenter _INITIALIZE_AS(@"commenter");
 + (id)roleWithValue:(NSString *)value;
 
 - (NSString *)value;
-- (void)setValue:(NSString *)str; 
+- (void)setValue:(NSString *)str;
 @end
 
 @interface GDataACLRole : GDataACLRoleBase <GDataExtension>

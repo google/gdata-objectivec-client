@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeRating
 
 + (GDataFeedYouTubeRating *)ratingFeed {
-  
+
   GDataFeedYouTubeRating *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

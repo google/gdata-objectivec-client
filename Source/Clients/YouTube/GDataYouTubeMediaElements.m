@@ -35,11 +35,11 @@
 
 @implementation GDataMediaContent (YouTubeExtensions)
 
-// media content with YouTube's addition of an integer format attribute, 
+// media content with YouTube's addition of an integer format attribute,
 // like yt:format="1"
 - (NSNumber *)youTubeFormatNumber {
   NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeFormatAttribute class]];
-  NSNumber *number = [NSNumber numberWithInt:[str intValue]]; 
+  NSNumber *number = [NSNumber numberWithInt:[str intValue]];
   return number;
 }
 
@@ -86,7 +86,7 @@
 
 @implementation GDataMediaRating (YouTubeExtensions)
 
-// media rating with YouTube's addition of a country attribute, 
+// media rating with YouTube's addition of a country attribute,
 // like yt:country="USA"
 - (NSString *)youTubeCountry {
   NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeCountryAttribute class]];
@@ -111,7 +111,7 @@
 @end
 
 @implementation GDataMediaCredit (YouTubeExtensions)
-// media credit with YouTube's addition of a type attribute, 
+// media credit with YouTube's addition of a type attribute,
 // like yt:type="partner"
 - (NSString *)youTubeCreditType {
   NSString *str = [self attributeValueForExtensionClass:[GDataYouTubeTypeAttribute class]];
@@ -129,9 +129,9 @@
 // a media group with YouTube extensions
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
    [GDataYouTubeAspectRatio class],
@@ -140,7 +140,7 @@
    [GDataYouTubeVideoID class],
    [GDataYouTubeUploadedDate class],
    nil];
-  
+
   // add the yt:format attribute to GDataMediaContent
   [self addAttributeExtensionDeclarationForParentClass:[GDataMediaContent class]
                                             childClass:[GDataYouTubeFormatAttribute class]];
@@ -205,7 +205,7 @@
 // videoID available in v2.0
 - (NSString *)videoID {
   GDataYouTubeVideoID *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataYouTubeVideoID class]];
   return [obj stringValue];
 }
@@ -218,7 +218,7 @@
 // uploadedDate available in v2.0
 - (GDataDateTime *)uploadedDate {
   GDataYouTubeUploadedDate *obj;
-  
+
   obj = [self objectForExtensionClass:[GDataYouTubeUploadedDate class]];
   return [obj dateTimeValue];
 }

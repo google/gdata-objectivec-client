@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubeComplaint : GDataFeedBase 
+@interface GDataFeedYouTubeComplaint : GDataFeedBase
 + (GDataFeedYouTubeComplaint *)complaintFeed;
 @end
 

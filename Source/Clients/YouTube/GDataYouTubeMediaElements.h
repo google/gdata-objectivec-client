@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAYOUTUBEMEDIAELEMENTS_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -38,7 +38,7 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 #import "GDataMedia.h"
 #import "GDataYouTubeElements.h"
 
-// media content with YouTube's addition of an integer format attribute, 
+// media content with YouTube's addition of an integer format attribute,
 // like yt:format="1"
 //
 // Note: iPhone seems to support playback of RTSP streams (formats 1 and 6)
@@ -48,7 +48,7 @@ _EXTERN const int kGDataYouTubeMediaContentFormatMobileRTSPStream _INITIALIZE_AS
 - (void)setYouTubeFormatNumber:(NSNumber *)num;
 @end
 
-// media rating with YouTube's addition of a country attribute, 
+// media rating with YouTube's addition of a country attribute,
 // like yt:country="USA"
 @interface GDataMediaRating (YouTubeExtensions)
 - (NSString *)youTubeCountry;

@@ -24,7 +24,7 @@
 @interface SpreadsheetSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
   IBOutlet NSSecureTextField *mPasswordField;
-  
+
   IBOutlet NSTableView *mSpreadsheetTable;
   IBOutlet NSProgressIndicator *mSpreadsheetProgressIndicator;
   IBOutlet NSTextView *mSpreadsheetResultTextField;
@@ -32,20 +32,20 @@
   IBOutlet NSTableView *mWorksheetTable;
   IBOutlet NSProgressIndicator *mWorksheetProgressIndicator;
   IBOutlet NSTextView *mWorksheetResultTextField;
-  
+
   IBOutlet NSSegmentedControl *mFeedSelectorSegments;
   IBOutlet NSTableView *mEntryTable;
   IBOutlet NSProgressIndicator *mEntryProgressIndicator;
   IBOutlet NSTextView *mEntryResultTextField;
-  
+
   GDataFeedSpreadsheet *mSpreadsheetFeed;
   BOOL mIsSpreadsheetFetchPending;
   NSError *mSpreadsheetFetchError;
-    
+
   GDataFeedWorksheet *mWorksheetFeed;
   BOOL mIsWorksheetFetchPending;
   NSError *mWorksheetFetchError;
-  
+
   GDataFeedBase *mEntryFeed;
   BOOL mIsEntryFetchPending;
   NSError *mEntryFetchError;

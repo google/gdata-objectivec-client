@@ -27,11 +27,11 @@ static NSString *const kGroupParamName = @"group";
 @implementation GDataQueryContact
 
 + (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL {
-  return [self queryWithFeedURL:feedURL];   
+  return [self queryWithFeedURL:feedURL];
 }
 
-+ (GDataQueryContact *)contactQueryForUserID:(NSString *)userID {  
-  
++ (GDataQueryContact *)contactQueryForUserID:(NSString *)userID {
+
   NSURL *url = [GDataServiceGoogleContact contactFeedURLForUserID:userID];
   return [self contactQueryWithFeedURL:url];
 }
@@ -43,7 +43,7 @@ static NSString *const kGroupParamName = @"group";
 }
 
 - (void)setGroupIdentifier:(NSString *)str {
-  
+
   [self addCustomParameterWithName:kGroupParamName
                              value:str];
 }

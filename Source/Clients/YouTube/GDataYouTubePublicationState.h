@@ -39,8 +39,8 @@ _EXTERN NSString* const kGDataYouTubePubStateDeleted    _INITIALIZE_AS(@"deleted
 _EXTERN NSString* const kGDataYouTubePubStateRestricted _INITIALIZE_AS(@"restricted");
 
 
-// yt:state is an extension to GDataAtomPubControl for YouTube video entries, 
-// as in 
+// yt:state is an extension to GDataAtomPubControl for YouTube video entries,
+// as in
 //
 //  <app:control>
 //    <yt:state name="rejected" reasonCode="32" helpUrl="http://www.youtube.com/">

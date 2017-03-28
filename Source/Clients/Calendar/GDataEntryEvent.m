@@ -72,11 +72,11 @@
 @implementation GDataEntryEvent
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // EventEntry extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
@@ -85,12 +85,12 @@
    [GDataEventStatus class], [GDataVisibility class],
    [GDataTransparency class], [GDataWho class],
    [GDataWhen class], [GDataOriginalEvent class],
-   [GDataComment class], nil];  
-  
+   [GDataComment class], nil];
+
   // a reminder may be at the event entry level (declared above) for
   // recurrence events, or inside a GDataWhen for single events
   [self addExtensionDeclarationForParentClass:[GDataWhen class]
-                                   childClass:[GDataReminder class]];  
+                                   childClass:[GDataReminder class]];
 }
 
 - (NSString *)suffixAfterPoundSign:(NSString *)str {
@@ -105,7 +105,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSString *visibility = [self suffixAfterPoundSign:[[self visibility] stringValue]];
   NSString *transparency = [self suffixAfterPoundSign:[[self transparency] stringValue]];
   NSString *eventStatus = [self suffixAfterPoundSign:[[self eventStatus] stringValue]];
@@ -133,7 +133,7 @@
     { @"comment",        @"comment",                kGDataDescLabelIfNonNil },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -173,7 +173,7 @@
 - (void)setRecurrence:(GDataRecurrence *)obj {
   BOOL hadRecurrence = ([self recurrence] != nil);
   BOOL willHaveRecurrence = (obj != nil);
-  
+
   if (hadRecurrence && !willHaveRecurrence) {
     [self setNonRecurrenceReminders:[self recurrenceReminders]];
     [self setRecurrenceReminders:nil];
@@ -181,7 +181,7 @@
     [self setRecurrenceReminders:[self nonRecurrenceReminders]];
     [self setNonRecurrenceReminders:nil];
   }
-  
+
   [self setObject:obj forExtensionClass:[GDataRecurrence class]];
 }
 
@@ -248,7 +248,7 @@
   if ([whens count] > 0) {
     GDataWhen *when = [whens objectAtIndex:0];
     [when addReminder:obj];
-  } 
+  }
 }
 
 - (NSArray *)reminders {

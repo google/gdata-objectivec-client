@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeSubscription
 
 + (GDataFeedYouTubeSubscription *)subscriptionFeed {
-  
+
   GDataFeedYouTubeSubscription *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

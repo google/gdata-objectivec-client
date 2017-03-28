@@ -25,7 +25,7 @@
 
 #import "GDataQuery.h"
 
-@interface GDataQueryContact : GDataQuery 
+@interface GDataQueryContact : GDataQuery
 
 + (GDataQueryContact *)contactQueryWithFeedURL:(NSURL *)feedURL;
 

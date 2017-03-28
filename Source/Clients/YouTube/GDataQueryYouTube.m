@@ -40,7 +40,7 @@ static NSString *const kUploaderParamName = @"uploader";
 @implementation GDataQueryYouTube
 
 + (GDataQueryYouTube *)youTubeQueryWithFeedURL:(NSURL *)feedURL {
-  return [self queryWithFeedURL:feedURL];   
+  return [self queryWithFeedURL:feedURL];
 }
 
 

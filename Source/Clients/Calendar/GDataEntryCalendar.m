@@ -30,25 +30,25 @@
 #import "GDataEntryCalendarEvent.h"
 
 // CalendarEntry extensions
-@implementation GDataHiddenProperty 
+@implementation GDataHiddenProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"hidden"; }
 @end
 
-@implementation GDataAccessLevelProperty 
+@implementation GDataAccessLevelProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"accesslevel"; }
 @end
 
-@implementation GDataSelectedProperty 
+@implementation GDataSelectedProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"selected"; }
 @end
 
-@implementation GDataOverrideNameProperty 
+@implementation GDataOverrideNameProperty
 + (NSString *)extensionElementURI       { return kGDataNamespaceGCal; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGCalPrefix; }
 + (NSString *)extensionElementLocalName { return @"overridename"; }
@@ -79,7 +79,7 @@
     [GDataEntryBase baseGDataNamespaces]];
 
   [namespaces setObject:kGDataNamespaceGCal forKey:kGDataNamespaceGCalPrefix];
-  
+
   return namespaces;
 }
 
@@ -101,12 +101,12 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
-  
+
+
   // Calendar extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClasses:
@@ -238,7 +238,7 @@
 }
 
 - (void)addWhen:(GDataWhen *)obj {
-  [self addObject:obj forExtensionClass:[obj class]]; 
+  [self addObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSArray *)locations {
@@ -250,7 +250,7 @@
 }
 
 - (void)addLocation:(GDataWhere *)obj {
-  [self addObject:obj forExtensionClass:[obj class]]; 
+  [self addObject:obj forExtensionClass:[obj class]];
 }
 
 @end

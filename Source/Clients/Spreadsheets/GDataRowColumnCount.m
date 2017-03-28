@@ -76,7 +76,7 @@
   if (self) {
     NSString *countStr = [self stringValueFromElement:element];
     if (countStr) {
-      [self setCount:[countStr intValue]];      
+      [self setCount:[countStr intValue]];
     }
   }
   return self;
@@ -95,7 +95,7 @@
 - (BOOL)isEqual:(GDataRowColumnCount *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataRowColumnCount class]]) return NO;
-  
+
   return [super isEqual:other]
     && ([self count] == [other count]);
 }
@@ -103,33 +103,33 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   NSString *str = [NSString stringWithFormat:@"%ld", (long) [self count]];
   [self addToArray:items objectDescriptionIfNonNil:str withName:@"count"];
-  
+
   return items;
 }
 #endif
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gs:count"];
-  
+
   NSInteger count = [self count];
   if (count >= 0) {
     NSString *str = [NSString stringWithFormat:@"%ld", (long) [self count]];
     [element addStringValue:str];
   }
-  
+
   return element;
 }
 
 - (NSInteger)count {
-  return count_; 
+  return count_;
 }
 
 - (void)setCount:(NSInteger)val {
-  count_ = val; 
+  count_ = val;
 }
 
 @end

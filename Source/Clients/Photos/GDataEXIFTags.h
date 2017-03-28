@@ -34,11 +34,11 @@
 @end
 
 //
-// a group of exif tags, like 
+// a group of exif tags, like
 //
-// <exif:tags> 
+// <exif:tags>
 //   <exif:fstop>0.0</exif:fstop>
-//   <exif:make>Nokia</exif:make> 
+//   <exif:make>Nokia</exif:make>
 // </exif:tags>
 //
 
@@ -58,7 +58,7 @@
                  textValue:(NSString *)value;
 
 // tagDictionary returns a dictionary of exif tags, with
-// tag names as keys, and tag values as objects.  
+// tag names as keys, and tag values as objects.
 // This is to facilitate key-value coding access to the tags.
 - (NSDictionary *)tagDictionary;
 

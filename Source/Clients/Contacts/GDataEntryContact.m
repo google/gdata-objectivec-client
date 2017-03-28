@@ -25,7 +25,7 @@
 // phonetic name
 @interface GDataContactYomiName : GDataValueElementConstruct <GDataExtension>
 @end
- 
+
 @implementation GDataContactYomiName
 + (NSString *)extensionElementURI       { return kGDataNamespaceContact; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceContactPrefix; }
@@ -69,7 +69,7 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
 
   // ContactEntry extensions
@@ -89,7 +89,7 @@
     { @"version>=3:yomi", @"yomi",                 kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -116,7 +116,7 @@
   if ([str length] > 0) {
     obj = [GDataContactYomiName valueWithString:str];
   }
-  [self setObject:obj forExtensionClass:[GDataContactYomiName class]]; 
+  [self setObject:obj forExtensionClass:[GDataContactYomiName class]];
 }
 
 
@@ -139,7 +139,7 @@
 
 - (GDataGroupMembershipInfo *)groupMembershipInfoWithHref:(NSString *)href {
   GDataGroupMembershipInfo *groupInfo;
-  
+
   groupInfo = [GDataUtilities firstObjectFromArray:[self groupMembershipInfos]
                                          withValue:href
                                         forKeyPath:@"href"];

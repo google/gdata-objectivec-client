@@ -44,7 +44,7 @@
 + (GDataMediaKeywords *)keywordsWithString:(NSString *)str {
   // takes a string with a comma-separated list of keywords
   GDataMediaKeywords* obj = [self object];
-  
+
   NSArray *array = [GDataMediaKeywords keywordsFromString:str];
   [obj setKeywords:array];
   return obj;
@@ -57,7 +57,7 @@
     { @"keywords", @"stringValue", kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;

@@ -39,13 +39,13 @@
                         " xmlns:gcs='http://schemas.google.com/codesearch/2006'"
                         " xmlns:gf='http://schemas.google.com/finance/2007'"
                         " xmlns:wt='http://schemas.google.com/webmasters/tools/2007'"
-                        " xmlns:media='http://search.yahoo.com/mrss/'" 
+                        " xmlns:media='http://search.yahoo.com/mrss/'"
                         " xmlns:gphoto='http://schemas.google.com/photos/2007'"
                         " xmlns:exif='http://schemas.google.com/photos/exif/2007'"
                         " xmlns:geo='http://www.w3.org/2003/01/geo/wgs84_pos#'"
                         " xmlns:georss='http://www.georss.org/georss'"
                         " xmlns:gml='http://www.opengis.net/gml' ";
-  
+
   return kNamespaceString;
 }
 
@@ -74,7 +74,7 @@
   return namespaces;
 }
 
-// Allocate a GDataObject of a known class, initialized from the 
+// Allocate a GDataObject of a known class, initialized from the
 // given XML.
 //
 // For XML needing but lacking namespace information, it will
@@ -83,25 +83,25 @@
 - (id)GDataObjectForClassName:(Class)gdataClass
                     XMLString:(NSString *)xmlString
 shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
-  
-  
+
+
   NSString *wrappedXMLString = xmlString;
-  
+
   if (shouldWrap) {
     // make an outer element with the namespace
     NSString * const kNamespaceWrapperString = @"<entry %@ >%@</entry>";
-    
+
     wrappedXMLString = [NSString stringWithFormat:
       kNamespaceWrapperString,
       [self entryNamespaceString], xmlString];
   }
-  
+
   // make an XML element for the wrapped XML, then extract the inner element
   NSError *error = nil;
   NSXMLElement *entryXML = [[[NSXMLElement alloc] initWithXMLString:wrappedXMLString
                                                               error:&error] autorelease];
   XCTAssertNil(error, @"%@ on wrapped XML:%@", error, wrappedXMLString);
-  
+
   // skip over non-element children to find the first element
   NSXMLElement *element;
   NSUInteger index = 0;
@@ -109,7 +109,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     element = (NSXMLElement *) [entryXML childAtIndex:index];
     ++index;
   } while (element != nil && ![element isKindOfClass:[NSXMLElement class]]);
-  
+
   XCTAssertNotNil(element, @"Cannot get child element of %@", entryXML);
 
   // allocate our GData object from the inner element
@@ -122,26 +122,26 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 // as path elements, like foo.0.bar
 + (id)valueInObject:(id)obj
   forKeyPathIncludingArrays:(NSString *)keyPath {
-  
+
   NSArray *pathList = [keyPath componentsSeparatedByString:@"."];
   NSMutableArray *partialKeyPathList = [NSMutableArray array];
 
   // step through keys in the path
   id targetObj = obj;
   for (NSUInteger idx = 0; idx < [pathList count]; idx++) {
-    
+
     // if a key is an integer or "@count", then evaluate the array or set
     // preceding it and extract the object indexed by the integer or the count
     // of array objects
     id thisKey = [pathList objectAtIndex:idx];
     if ([thisKey isEqual:@"@count"]
-        || [thisKey isEqual:@"0"] 
+        || [thisKey isEqual:@"0"]
         || [thisKey intValue] > 0) {
-      
+
       NSString *partialPathString = [partialKeyPathList componentsJoinedByString:@"."];
-      
+
       NSArray *targetArray = [targetObj valueForKeyPath:partialPathString];
-      
+
       [partialKeyPathList removeAllObjects];
 
       if ([thisKey isEqual:@"@count"]) {
@@ -158,10 +158,10 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   if ([partialKeyPathList count]) {
     // find the final target object given the accumulated keys in the path
     NSString *finalKeyPathString = [partialKeyPathList componentsJoinedByString:@"."];
-    
+
     @try {
       targetObj = [targetObj valueForKeyPath:finalKeyPathString];
-    } 
+    }
     @catch(NSException *exc) {
       NSLog(@"testing class:%@ keyPath:\"%@\"", [obj class], keyPath);
       @throw;
@@ -172,12 +172,12 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
 // runElementTests: takes an array of ElementTestKeyPathValues, where the
 // first is (class, xml) and later ones are (test path, expected value)
-// 
+//
 // Empty strings mark end-of-element, nils mark end-of-test-array
 //
 // We'll test each element this way:
 //
-// 1. Generate the NSXMLElement from an XML string (wrapped by an outer <entry> 
+// 1. Generate the NSXMLElement from an XML string (wrapped by an outer <entry>
 //    element with the namespace)
 // 2. Extract the inner element we care about
 // 3. Create a GData object for the element (obj1)
@@ -195,24 +195,24 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
   for (int testIndex = 0;
        tests[testIndex].str1 != nil;
        testIndex++) {
-    
+
     // get the GData class and the XML string from the table
     NSString *className = tests[testIndex].str1;
     NSString *testXMLString = tests[testIndex].str2;
-    
+
 #ifdef GDATA_TARGET_NAMESPACE
-    className = [NSString stringWithFormat:@"%s_%@", 
+    className = [NSString stringWithFormat:@"%s_%@",
                 GDATA_TARGET_NAMESPACE_STRING, className];
 #endif
 
     Class gdataClass = NSClassFromString(className);
     XCTAssertNotNil(gdataClass, @"Cannot make class for class name: %@", className);
-    
+
     // make a GDataObject instance with the XML
     GDataObject *obj1 = [self GDataObjectForClassName:gdataClass
                                             XMLString:testXMLString
                       shouldWrapWithNamespaceAndEntry:YES];
-    
+
     // make a copy of the object, and verify that it equals the original
     GDataObject *obj1copy = [[obj1 copy] autorelease];
     XCTAssertTrue([obj1 isEqual:obj1copy],
@@ -254,37 +254,37 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     // step through each test for this element, evaluate the key-value path,
     // and compare the result to the expected value string
     //
-    // also, track if tests of unknownChildren or unknownAttributes are 
+    // also, track if tests of unknownChildren or unknownAttributes are
     // performed
     BOOL testedForUnknownChildren = NO;
     BOOL testedForUnknownAttributes = NO;
-    
+
     while (1) {
-      
+
       ++testIndex;
-      
+
       NSString *keyPath = tests[testIndex].str1;
       NSString *expectedValue = tests[testIndex].str2;
-      
+
       if (keyPath == nil || [keyPath length] == 0) break;
-      
+
 #if GDATA_USES_LIBXML
       // skip the XMLStrings until we can normalize whitespace and closing
       // brackets and other minor differences
       if ([keyPath hasSuffix:@".XMLString"]) continue;
 #endif
-      
+
       NSString *result = [GDataElementsTest valueInObject:obj2 forKeyPathIncludingArrays:keyPath];
-      
+
       // if the result wasn't a string but responds to stringValue, then
       // invoke that to get a string
       if ([expectedValue isKindOfClass:[NSString class]]
           && ![result isKindOfClass:[NSString class]]
           && [result respondsToSelector:@selector(stringValue)]) {
-        
-        result = [(id)result stringValue];     
+
+        result = [(id)result stringValue];
       }
-      
+
 #ifdef GDATA_TARGET_NAMESPACE
       // tests for class name need the prefix added
       if ([keyPath hasSuffix:@"className"]
@@ -294,45 +294,45 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
                          GDATA_TARGET_NAMESPACE_STRING, expectedValue];
       }
 #endif
-      
-      XCTAssertTrue(AreEqualOrBothNil(result, expectedValue), 
-                   @"failed %@ testing key path %@:\n %@ \n!= \n %@", 
+
+      XCTAssertTrue(AreEqualOrBothNil(result, expectedValue),
+                   @"failed %@ testing key path %@:\n %@ \n!= \n %@",
                    obj2, keyPath, result, expectedValue);
-      
+
       if ([keyPath hasPrefix:@"unknownChildren"]) testedForUnknownChildren = YES;
       if ([keyPath hasPrefix:@"unknownAttributes"]) testedForUnknownAttributes = YES;
     }
-    
+
     // if there were no explicit tests on this test object for unknown children
     // or attributes, then verify now that there are in fact no unknown children
     // or attributes present in the object
-    
+
     if (!testedForUnknownChildren) {
       NSString *keyPath = @"unknownChildren.@count.stringValue";
       NSString *expectedValue = @"0";
-      NSString *result = [GDataElementsTest valueInObject:obj2 
+      NSString *result = [GDataElementsTest valueInObject:obj2
                                 forKeyPathIncludingArrays:keyPath];
-      
+
       // this object should have no unparsed children
       XCTAssertTrue(AreEqualOrBothNil(result, expectedValue),
-                   @"failed %@ testing:\n %@ \n!= \n %@\n unknown children: %@", 
-                   obj2, result, expectedValue, 
-                   [GDataElementsTest valueInObject:obj2 
-                          forKeyPathIncludingArrays:@"unknownChildren"]);      
+                   @"failed %@ testing:\n %@ \n!= \n %@\n unknown children: %@",
+                   obj2, result, expectedValue,
+                   [GDataElementsTest valueInObject:obj2
+                          forKeyPathIncludingArrays:@"unknownChildren"]);
     }
-    
+
     if (!testedForUnknownAttributes) {
       NSString *keyPath = @"unknownAttributes.@count.stringValue";
       NSString *expectedValue = @"0";
-      NSString *result = [GDataElementsTest valueInObject:obj2 
+      NSString *result = [GDataElementsTest valueInObject:obj2
                                 forKeyPathIncludingArrays:keyPath];
-      
+
       // this object should have no unparsed attributes
       XCTAssertTrue(AreEqualOrBothNil(result, expectedValue),
                    @"failed %@ testing:\n %@ \n!= \n %@ \n%@",
                    obj2, result, expectedValue,
-                   [GDataElementsTest valueInObject:obj2 
-                          forKeyPathIncludingArrays:@"unknownAttributes"]);      
+                   [GDataElementsTest valueInObject:obj2
+                          forKeyPathIncludingArrays:@"unknownAttributes"]);
     }
   }
 }
@@ -340,17 +340,17 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
 
 - (void)testElements {
-  
+
   // this method tests base elements, using runElementTests: above
-  
-  // The tests mostly include static strings, but we'll generate a few 
+
+  // The tests mostly include static strings, but we'll generate a few
   // strings dynamically first.
-  
-  // Test a non-ASCII character and some html characters in a TextConstruct.  
+
+  // Test a non-ASCII character and some html characters in a TextConstruct.
   // We'll allocate it dynamically since source code cannot contain non-ASCII.
   NSString *const templateStr = @"Test ellipsis (%C) and others \"<&>";
   NSString *textConstructTestResult = [NSString stringWithFormat:templateStr, (unichar)8230];
-  
+
   // To test an inline feed, we'll read in the cells feed test file,
   // strip the <?xml...> prefix, and wrap it in a gd:feedLink
   NSBundle *testBundle = [NSBundle bundleForClass:[self class]];
@@ -371,9 +371,9 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   NSString *inlinedLinkStr = [NSString stringWithFormat:@"<link"
                         " rel='fuzzrel'>%@</link>", inlinedFeedContentStr];
-  
+
   ElementTestKeyPathValues tests[] =
-  { 
+  {
     { @"GDataCategory", @"<category scheme=\"http://schemas.google.com/g/2005#kind\" "
       "term=\"http://schemas.google.com/g/2005#event\" label=\"My Category\" "
       "xml:lang=\"myLanguage\" unkAttr=\"ABCDE\" unkAttr2=\"EFGHI\" />" },
@@ -385,7 +385,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"unknownAttributes.1.XMLString", @"unkAttr2=\"EFGHI\"" },
     { @"unknownAttributes.@count", @"2" },
     { @"", @"" },
-      
+
     { @"GDataComment", @"<gd:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
       "<gd:feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
       "</gd:feedLink> <unkElement foo=\"bar\" /> <unkElement2 /> </gd:comments>" },
@@ -408,13 +408,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"unknownAttributes.@count", @"0" },
     { @"unknownChildren.@count", @"0" },
     { @"", @"" },
-        
+
     { @"GDataEmail", @"<gd:email label=\"Personal\" address=\"fubar@gmail.com\" primary='true' />" },
     { @"label", @"Personal" },
     { @"address", @"fubar@gmail.com" },
     { @"primary", @"1" },
     { @"", @"" },
-    
+
     // testing an inline contact entry
     { @"GDataEntryLink", @"<gd:entryLink href='http://gmail.com/jo/contacts/Jo'"
       " readOnly='true' rel='fizzbo'>"
@@ -432,7 +432,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"entry.emailAddresses.0.address", @"jo@example.com" },
     { @"entry.primaryPhoneNumber", @"(650) 555-1212" },
     { @"", @"" },
-  
+
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='X-MOZ-ALARM-LAST-ACK'"
       " value='2006-10-03T19:01:14Z'"
       " realm='http://schemas.google.com/g/2005#shared' />" },
@@ -451,7 +451,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"namespaces.", @"" },
     { @"unknownChildren.@count.stringValue", @"0" },
     { @"", @"" },
-        
+
     { @"GDataExtendedProperty", @"<gd:extendedProperty name='fred'><flub>"
     "cuckoo</flub><nackro>whoodle buzz</nackro></gd:extendedProperty>" },
     { @"name", @"fred" },
@@ -461,14 +461,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"XMLValuesDictionary.nackro", @"whoodle buzz" },
     { @"unknownChildren.@count.stringValue", @"0" },
     { @"", @"" },
-    
+
     { @"GDataFeedLink", @"<gd:feedLink href='http://example.com/Jo/posts/MyFirstPost/comments' "
       "countHint=\"10\" readOnly=\"true\" />" },
     { @"href", @"http://example.com/Jo/posts/MyFirstPost/comments" },
     { @"countHint", @"10" },
     { @"isReadOnly", @"1" },
     { @"", @"" },
-      
+
     // testing an inline feedLink
     { @"GDataFeedLink", inlinedFeedLinkStr },
     { @"href", nil },
@@ -477,13 +477,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"feed.columnCount", @"20" },
     { @"feed.entries.0.cell.column", @"1" },
     { @"", @"" },
-    
+
     { @"GDataGenerator", @" <generator version='1.0' uri='http://www.google.com/calendar/'>CL2</generator>" },
     { @"name", @"CL2" },
     { @"version", @"1.0" },
     { @"URI", @"http://www.google.com/calendar/" },
     { @"", @"" },
-    
+
     { @"GDataGeoPt", @"<gd:geoPt lat=\"27.98778\" lon=\"86.94444\" elev=\"8850.0\" label=\"My GeoPt\" time=\"1996-12-19T16:39:57-08:00\"/>" },
     { @"label", @"My GeoPt" },
     { @"lat", @"27.98778" },
@@ -491,7 +491,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"elev", @"8850" },
     { @"time.RFC3339String", @"1996-12-19T16:39:57-08:00" },
     { @"", @"" },
-      
+
     { @"GDataIM", @"<gd:im protocol='http://schemas.google.com/g/2005#MSN' "
        "address='foo@bar.example.com' label='Alternate' primary='true' rel='http://schemas.google.com/g/2005#other' />" },
     { @"protocol", kGDataIMProtocolMSN },
@@ -500,7 +500,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"primary", @"1" },
     { @"rel", @"http://schemas.google.com/g/2005#other" },
     { @"", @"" },
-    
+
     { @"GDataLink", @"<link rel='alternate' type='text/html' "
       "href='http://www.google.com/calendar/event?stff' title='alternate' "
       " gd:etag='abcdefg' />" },
@@ -511,7 +511,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"content", nil },
     { @"ETag", @"abcdefg" },
     { @"", @"" },
-    
+
     { @"GDataLink", inlinedLinkStr },
     { @"rel", @"fuzzrel" },
     { @"ETag", nil },
@@ -519,14 +519,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"content.childObject.className", @"GDataFeedSpreadsheetCell" },
     { @"content.childObject.categories.0.term", kGDataCategorySpreadsheetCell },
     { @"content.childObject.columnCount", @"20" },
-    { @"content.childObject.entries.0.cell.column", @"1" },    
+    { @"content.childObject.entries.0.cell.column", @"1" },
     { @"", @"" },
-        
+
     { @"GDataMoney", @"<gd:money amount='10.52' currencyCode='USD' />" },
     { @"amount", @"10.52" },
     { @"currencyCode", @"USD" },
     { @"", @"" },
-    
+
     { @"GDataName", @"<gd:name><gd:givenName>Fred</gd:givenName>"
       "<gd:additionalName>Old</gd:additionalName>"
       "<gd:familyName>Flintstone</gd:familyName>"
@@ -550,7 +550,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"originalStartTime.endTime", nil },
     { @"originalStartTime.value", nil },
     { @"", @"" },
-    
+
     { @"GDataOrganization", @"<gd:organization rel='http://schemas.google.com/g/2005#work' "
       "label='greensleeves' primary='true' >"
       "<gd:orgName yomi='ak me'>Acme Corp</gd:orgName>"
@@ -578,7 +578,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"URI", @"http://foo.com/" },
     { @"email", @"test@froo.net" },
     { @"", @"" },
-    
+
     { @"GDataPhoneNumber", @"<gd:phoneNumber rel='http://schemas.google.com/g/2005#work' "
       "label='work' primary='true'>(425) 555-8080 ext. 52585</gd:phoneNumber>" },
     { @"rel", kGDataPhoneNumberWork },
@@ -586,7 +586,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"primary", @"1" },
     { @"stringValue", @"(425) 555-8080 ext. 52585" },
     { @"", @"" },
-    
+
     { @"GDataPostalAddress", @"<gd:postalAddress label='work' primary='true'>500 West 45th Street\nNew York, NY 10036</gd:postalAddress>" },
     { @"label", @"work" },
     { @"primary", @"1" },
@@ -627,11 +627,11 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"street", @"27, rue Pasteur" },
     { @"subregion", @"County Fin" },
     { @"", @"" },
-    
+
     { @"GDataRating", @"<gd:rating rel='http://schemas.google.com/g/2005#price' value='5' min='1' max='5' average='2.3' numRaters='132' />" },
     { @"rel", kGDataRatingPrice },
     { @"value", @"5" },
-    { @"min", @"1" }, 
+    { @"min", @"1" },
     { @"max", @"5" },
     { @"average", @"2.3" },
     { @"numberOfRaters", @"132" },
@@ -641,7 +641,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
       "60314T060000\nDURATION:PT3600S</gd:recurrence>" },
     { @"stringValue", @"DTSTART;TZID=America/Los_Angeles:20060314T060000\nDURATION:PT3600S" },
     { @"", @"" },
-    
+
     { @"GDataRecurrenceException", @"<gd:recurrenceException specialized='true'> <gd:entryLink "
       "href='http://gmail.com/jo/contacts/Jo' readOnly='true' /> "
       "<gd:originalEvent id='i8fl1nrv2bl57c1qgr3f0onmgg' href='http://www.google.com/href' >"
@@ -652,7 +652,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"originalEvent.originalID", @"i8fl1nrv2bl57c1qgr3f0onmgg" },
     { @"originalEvent.originalStartTime.startTime.RFC3339String", @"2007-05-01T00:00:00Z" },
     { @"", @"" },
-    
+
     { @"GDataReminder", @"<gd:reminder minutes='15' method='email' />" },
     { @"minutes", @"15" },
     { @"method", @"email" },
@@ -663,11 +663,11 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"lang", @"en" },
     { @"type", @"text" },
     { @"", @"" },
-    
+
     { @"GDataTextConstruct", @"<title type='text'>Test ellipsis (&#8230;) and others &quot;&lt;&amp;&gt;</title>" },
     { @"stringValue", textConstructTestResult }, // defined above
-    { @"", @"" },    
-    
+    { @"", @"" },
+
     { @"GDataValueConstruct", @"<gCal:timezone value='America/Los_Angeles'/>" },
     { @"stringValue", @"America/Los_Angeles" },
     { @"", @"" },
@@ -675,31 +675,31 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"GDataValueConstruct", @"<myValue value='1.51'/>" },
     { @"doubleValue", @"1.51" },
     { @"", @"" },
-      
+
     { @"GDataValueConstruct", @"<myValue value=''/>" },
     { @"doubleValue", @"0" },
     { @"", @"" },
-    
+
     { @"GDataValueConstruct", @"<myValue value='INF'/>" },
     { @"doubleValue", (id)kCFNumberPositiveInfinity },
     { @"", @"" },
-    
+
     { @"GDataValueConstruct", @"<myValue value='-INF'/>" },
     { @"doubleValue", (id)kCFNumberNegativeInfinity },
     { @"", @"" },
-    
+
     { @"GDataValueConstruct", @"<myValue value='987654321987'/>" },
     { @"longLongValue", @"987654321987" },
     { @"", @"" },
-    
+
     { @"GDataValueElementConstruct", @"<gCal:timezone>America/Los_Angeles</gCal:timezone>" },
     { @"stringValue", @"America/Los_Angeles" },
     { @"", @"" },
-          
+
     { @"GDataBoolValueConstruct", @"<construct value='true'/>" },
     { @"boolValue", @"1" },
     { @"", @"" },
-    
+
     { @"GDataNameValueConstruct", @"<namevalue name='fred' value='flintstone' />" },
     { @"stringValue", @"flintstone" },
     { @"name", @"fred" },
@@ -709,7 +709,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"sourceURI", @"http://lh.google.com/image/Car.jpg" },
     { @"type", @"image/jpeg" },
     { @"", @"" },
-      
+
     { @"GDataEntryContent", @"<content type='text' xml:lang='en'>Event title</content>" },
     { @"stringValue", @"Event title" },
     { @"lang", @"en" },
@@ -733,12 +733,12 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"childObject.columnCount", @"20" },
     { @"childObject.entries.0.cell.column", @"1" },
     { @"", @"" },
-      
+
     { @"GDataWebContent", @"<gCal:webContent width='300' height='136' "
       "url='http://google.com/ig/modules/datetime.xml'>"
       "<gCal:webContentGadgetPref name='color' value='green' />"
       "<gCal:webContentGadgetPref name='sin' value='greed' /></gCal:webContent>" },
-      
+
     { @"height", @"136" },
     { @"width", @"300" },
     { @"URLString", @"http://google.com/ig/modules/datetime.xml" },
@@ -748,14 +748,14 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"gadgetPreferenceDictionary.color", @"green" },
     { @"gadgetPreferenceDictionary.sin", @"greed" },
     { @"", @"" },
-    
+
     { @"GDataWhen", @"<gd:when startTime='2005-06-06' endTime='2005-06-07' "
           "valueString='This weekend'/>" },
     { @"startTime.RFC3339String", @"2005-06-06" },
     { @"endTime.RFC3339String", @"2005-06-07" },
     { @"value", @"This weekend" },
     { @"", @"" },
-    
+
     { @"GDataWhere", @"<gd:where rel='http://schemas.google.com/g/2005#event' "
       "label='main' valueString='The Pub'> "
       "<gd:entryLink href='http://local.example.com/10018/JoesPub' /></gd:where>" },
@@ -764,8 +764,8 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"stringValue", @"The Pub" },
     { @"entryLink.href", @"http://local.example.com/10018/JoesPub" },
     { @"", @"" },
-    
-      
+
+
     // TODO(grobbins): test embedded entries
      { @"GDataWho", @"<gd:who rel=\"http://schemas.google.com/g/2005#event.attendee\" "
           "valueString=\"Jo\" email=\"jo@gmail.com\" >  "
@@ -780,7 +780,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"entryLink.href", @"http://gmail.com/jo/contacts/Jo" },
     { @"entryLink.isReadOnly", @"1" },
     { @"", @"" },
-    
+
     // Atom publishing control
     { @"GDataAtomPubControl", @"<app:control><app:draft>Yes</app:draft></app:control>" },
     { @"isDraft", @"1" },
@@ -793,16 +793,16 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"GDataAtomPubControl", @"<app:control><app:draft>Yes</app:draft></app:control>" },
     { @"isDraft", @"1" },
     { @"", @"" },
-    
+
     // Batch elements
     { @"GDataBatchOperation", @"<batch:operation type='insert'/>" },
     { @"type", @"insert" },
     { @"", @"" },
-    
+
     { @"GDataBatchID", @"<batch:id>item2</batch:id>" },
     { @"stringValue", @"item2" },
     { @"", @"" },
-    
+
     { @"GDataBatchStatus", @"<batch:status  code='404' reason='Bad request' "
                           "content-type='application-text'>error</batch:status>" },
     { @"code", @"404" },
@@ -810,7 +810,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"contentType", @"application-text" },
     { @"stringValue", @"error" },
     { @"", @"" },
-    
+
     { @"GDataBatchStatus", @"<batch:status  code='200' />" },
     { @"code", @"200" },
     { @"reason", nil },
@@ -826,17 +826,17 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"contentType", nil },
     { @"stringValue", @"" },
     { @"", @"" },
-    
+
     { nil, nil }
   };
-  
+
   [self runElementTests:tests];
 }
 
 - (void)testSpreadsheetElements {
-  
+
   ElementTestKeyPathValues tests[] =
-  {     
+  {
     { @"GDataSpreadsheetCell", @"<gs:cell row='2' col='4' "
       " inputValue='=FLOOR(R[0]C[-1]/(R[0]C[-2]*60),.0001)'"
       " numericValue='0.0066'>0.0033</gs:cell>" },
@@ -846,33 +846,33 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"numericValue", @"0.0066" },
     { @"resultString", @"0.0033" },
     { @"", @"" },
-      
+
     { @"GDataRowCount", @"<gs:rowCount>100</gs:rowCount>" },
     { @"count", @"100" },
     { @"", @"" },
-      
+
     { @"GDataColumnCount", @"<gs:colCount>99</gs:colCount>" },
     { @"count", @"99" },
     { @"", @"" },
-      
+
     { @"GDataSpreadsheetCustomElement", @"<gsx:e-mail "
       "xmlns:gsx='http://schemas.google.com/spreadsheets/2006/extended'>"
-      "fitzy@gmail.com</gsx:e-mail>" }, 
+      "fitzy@gmail.com</gsx:e-mail>" },
     { @"name", @"e-mail" },
     { @"stringValue", @"fitzy@gmail.com" },
     { @"", @"" },
-      
+
     { nil, nil }
   };
-  
+
   [self runElementTests:tests];
-  
+
 }
 
 - (void)testMediaElements {
-  
+
   ElementTestKeyPathValues tests[] =
-  {     
+  {
     { @"GDataMediaContent", @"<media:content url='http://www.foo.com/movie.mov' "
         " fileSize='12216320' type='video/quicktime' medium='video' isDefault='true' "
         " expression='full' bitrate='128' framerate='25.1' samplingrate='44.1'"
@@ -893,7 +893,7 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"width", @"300" },
     { @"lang", @"en" },
     { @"", @"" },
-    
+
     { @"GDataMediaThumbnail", @"<media:thumbnail url='http://www.foo.com/keyframe.jpg' "
           " width='75' height='50' time='12:05:01.123' />" },
     { @"URLString", @"http://www.foo.com/keyframe.jpg" },
@@ -901,94 +901,94 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"height", @"50" },
     { @"time.timeOffsetInMilliseconds", @"43501123" },
     { @"", @"" },
-    
+
     { @"GDataMediaKeywords", @"<media:keywords>kitty, cat, big dog, yarn, fluffy</media:keywords>" },
     { @"keywords.0", @"kitty" },
     { @"keywords.2", @"big dog" },
     { @"keywords.@count", @"5" },
     { @"", @"" },
-    
+
     { @"GDataMediaCredit", @"<media:credit role='producer' scheme='urn:ebu'>entity name</media:credit>" },
     { @"role", @"producer" },
     { @"scheme", @"urn:ebu" },
     { @"stringValue", @"entity name" },
     { @"", @"" },
-      
+
     { @"GDataMediaCategory", @"<media:category label='fred' scheme='urn:ebu'>entity name</media:category>" },
     { @"label", @"fred" },
     { @"scheme", @"urn:ebu" },
     { @"stringValue", @"entity name" },
     { @"", @"" },
-      
+
     { @"GDataMediaRating", @"<media:rating scheme='simple'>adult</media:rating>" },
     { @"scheme", @"simple" },
     { @"stringValue", @"adult" },
     { @"", @"" },
-      
+
     { @"GDataMediaPlayer", @"<media:player url='http://www.foo.com/player?id=1111' height='200' width='400' />" },
     { @"height", @"200" },
     { @"width", @"400" },
     { @"URLString", @"http://www.foo.com/player?id=1111" },
     { @"", @"" },
-      
+
     { @"GDataMediaRestriction", @"<media:restriction relationship='allow' type='country'>au us</media:restriction>" },
     { @"relationship", @"allow" },
     { @"type", @"country" },
     { @"stringValue", @"au us" },
     { @"", @"" },
-      
+
     { nil, nil }
   };
-  
+
   [self runElementTests:tests];
 
 }
 
 - (void)testPhotoElements {
-  
+
   ElementTestKeyPathValues tests[] =
-  {     
+  {
     { @"GDataPhotoAlbumID", @"<gphoto:albumid>5024425138</gphoto:albumid>" },
     { @"stringValue", @"5024425138" },
     { @"", @"" },
-      
+
     { @"GDataPhotoCommentCount", @"<gphoto:commentCount>11</gphoto:commentCount>" },
     { @"intValue", @"11" }, // test the int accessor
     { @"", @"" },
-      
+
     { @"GDataPhotoCommentingEnabled", @"<gphoto:commentingEnabled>true</gphoto:commentingEnabled>" },
     { @"stringValue", @"true" },
     { @"boolValue", @"1" }, // test the bool accessor, too
     { @"", @"" },
-      
+
     { @"GDataPhotoGPhotoID", @"<gphoto:id>512131187</gphoto:id>" },
     { @"stringValue", @"512131187" },
     { @"", @"" },
-      
+
     { @"GDataPhotoMaxPhotosPerAlbum", @"<gphoto:maxPhotosPerAlbum>1000</gphoto:maxPhotosPerAlbum>" },
     { @"intValue", @"1000" },
     { @"", @"" },
-      
+
     { @"GDataPhotoNickname", @"<gphoto:nickname>Jane Smith</gphoto:nickname>" },
     { @"stringValue", @"Jane Smith" },
     { @"", @"" },
-      
+
     { @"GDataPhotoQuotaUsed", @"<gphoto:quotacurrent>312459331</gphoto:quotacurrent>" },
     { @"longLongValue", @"312459331" },
     { @"", @"" },
-      
+
     { @"GDataPhotoQuotaLimit", @"<gphoto:quotalimit>1385222385</gphoto:quotalimit>" },
     { @"longLongValue", @"1385222385" },
     { @"", @"" },
-      
+
     { @"GDataPhotoThumbnail", @"<gphoto:thumbnail>http://picasaweb.google.com/image/.../Hello.jpg</gphoto:thumbnail>" },
     { @"stringValue", @"http://picasaweb.google.com/image/.../Hello.jpg" },
     { @"", @"" },
-      
+
     { @"GDataPhotoUser", @"<gphoto:user>Jane</gphoto:user>" },
     { @"stringValue", @"Jane" },
     { @"", @"" },
-      
+
     { @"GDataPhotoAccess", @"<gphoto:access>private</gphoto:access>" },
     { @"stringValue", @"private" },
     { @"", @"" },
@@ -996,51 +996,51 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"GDataPhotoBytesUsed", @"<gphoto:bytesUsed>11876307</gphoto:bytesUsed>" },
     { @"longLongValue", @"11876307" },
     { @"", @"" },
-      
+
     { @"GDataPhotoLocation", @"<gphoto:location>Tokyo, Japan</gphoto:location>" },
     { @"stringValue", @"Tokyo, Japan" },
     { @"", @"" },
-      
+
     { @"GDataPhotoNumberUsed", @"<gphoto:numphotos>237</gphoto:numphotos>" },
     { @"intValue", @"237" },
     { @"", @"" },
-      
+
     { @"GDataPhotoNumberLeft", @"<gphoto:numphotosremaining>763</gphoto:numphotosremaining>" },
     { @"intValue", @"763" },
     { @"", @"" },
-      
+
     { @"GDataPhotoChecksum", @"<gphoto:checksum>987123</gphoto:checksum>" },
     { @"stringValue", @"987123" },
     { @"", @"" },
-      
+
     { @"GDataPhotoHeight", @"<gphoto:height>1200</gphoto:height>" },
     { @"longLongValue", @"1200" },
     { @"", @"" },
-      
+
     { @"GDataPhotoRotation", @"<gphoto:rotation>90</gphoto:rotation>" },
     { @"intValue", @"90" },
     { @"", @"" },
-      
+
     { @"GDataPhotoSize", @"<gphoto:size>149351</gphoto:size>" },
     { @"longLongValue", @"149351" },
     { @"", @"" },
-      
+
     { @"GDataPhotoTimestamp", @"<gphoto:timestamp>1168640584000</gphoto:timestamp>" },
     { @"longLongValue", @"1168640584000" },
     { @"", @"" },
-      
+
     { @"GDataPhotoWidth", @"<gphoto:width>1600</gphoto:width>" },
     { @"longLongValue", @"1600" },
     { @"", @"" },
-      
+
     { @"GDataPhotoPhotoID", @"<gphoto:photoid>301521187</gphoto:photoid>" },
     { @"stringValue", @"301521187" },
     { @"", @"" },
-      
+
     { @"GDataPhotoWeight", @"<gphoto:weight>3</gphoto:weight>" },
     { @"intValue", @"3" },
     { @"", @"" },
-    
+
     { @"GDataEXIFTags", @"<exif:tags xmlns:exif='http://schemas.google.com/photos/exif/2007'>"
       "<exif:fstop>0.0</exif:fstop>"
       "<exif:make>Nokia</exif:make><exif:model>6133</exif:model>"
@@ -1051,17 +1051,17 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"tagDictionary.make", @"Nokia" },
     { @"tagDictionary.model", @"6133" }, // first instance of "model" tag
     { @"", @"" },
-      
+
     { nil, nil }
   };
-  
+
   [self runElementTests:tests];
-  
+
 }
 
 - (void)testGeo {
   ElementTestKeyPathValues tests[] =
-  {     
+  {
     // test explicit types - here we specify which subclass of GDataGeo
     // to instantiate
     { @"GDataGeoW3CPoint", @"<geo:Point><geo:lat>55.701</geo:lat>"
@@ -1071,20 +1071,20 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"coordinateString", @"55.701 12.552" },
     { @"isPoint", @"1" },
     { @"", @"" },
-      
+
     { @"GDataGeoRSSPoint", @"<georss:point>45.256 -71.92</georss:point>" },
     { @"latitude", @"45.256" },
     { @"longitude", @"-71.92" },
     { @"", @"" },
-      
+
     { @"GDataGeoRSSWhere", @"<georss:where><gml:Point><gml:pos>45.256 -71.92"
         "</gml:pos></gml:Point></georss:where>" },
     { @"latitude", @"45.256" },
     { @"longitude", @"-71.92" },
     { @"", @"" },
-    
+
     // test GDataGeo for implicit types - here we use
-    // a test class which incorporates uses GDataGeo's utilities for 
+    // a test class which incorporates uses GDataGeo's utilities for
     // determining the subclass of GDataGeo to instantiate
     //
     // GDataGeoTestClass is defined below in this file
@@ -1093,28 +1093,28 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
     { @"geoLocation.latitude", @"55.701" },
     { @"geoLocation.longitude", @"12.552" },
     { @"", @"" },
-      
+
     { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:point>0.256 -71.92"
         "</georss:point></GDataGeoTestClass>" }, // RSSPoint
     { @"geoLocation.latitude", @"0.256" },
     { @"geoLocation.longitude", @"-71.92" },
     { @"", @"" },
-      
+
     { @"GDataGeoTestClass", @"<GDataGeoTestClass><georss:where><gml:Point><gml:pos>-1.256 -71.92" // RSSWhere
       "</gml:pos></gml:Point></georss:where></GDataGeoTestClass>" },
     { @"geoLocation.latitude", @"-1.256" },
     { @"geoLocation.longitude", @"-71.92" },
     { @"", @"" },
-    
+
     { nil, nil }
   };
-  
+
   [self runElementTests:tests];
-  
+
 }
 
 - (void)testGDataExtendedProperty {
-  
+
   // test the XMLValue key/value APIs
   NSString *key1 = @"noxweed";
   NSString *value1 = @"horgood\nbatman";
@@ -1125,20 +1125,20 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   GDataExtendedProperty *extProp;
   extProp = [GDataExtendedProperty propertyWithName:@"zum" value:nil];
-  
+
   [extProp setXMLValue:value1 forKey:key1];
   [extProp setXMLValue:value2 forKey:key2];
-  
+
   NSString *testValue1 = [extProp XMLValueForKey:key1];
   XCTAssertEqualObjects(testValue1, value1, @"bad XML value storage 1");
-  
+
   NSString *testValue2 = [extProp XMLValueForKey:key2];
   XCTAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
 
-  // convert to XML, then reinstantiate as a GDataObject, and test 
+  // convert to XML, then reinstantiate as a GDataObject, and test
   // that everything was preserved
   NSXMLElement *element = [extProp XMLElement];
-  
+
   GDataExtendedProperty *extProp2;
   extProp2 = [[[GDataExtendedProperty alloc] initWithXMLElement:element
                                                          parent:nil] autorelease];
@@ -1147,19 +1147,19 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
   testValue2 = [extProp2 XMLValueForKey:key2];
   XCTAssertEqualObjects(testValue2, value2, @"bad XML value storage 2");
-  
+
   // verify that the default namespace is empty so that extended
   // properties stored as XML children won't be considered part of the
   // atom namespace
 
   NSDictionary *namespaces = [extProp2 namespaces];
-  XCTAssertEqualObjects([namespaces objectForKey:@""], @"", 
+  XCTAssertEqualObjects([namespaces objectForKey:@""], @"",
                        @"Missing default namespace from GDataObject");
-  
+
 #if !GDATA_USES_LIBXML
   // verify that the NSXMLElement really has the default namespace we expect
   //
-  // this is conditional to avoid a dependency on NSXMLElement's 
+  // this is conditional to avoid a dependency on NSXMLElement's
   // namespaceForPrefix method in libxml builds
   //
   NSString *nsStr = [[element namespaceForPrefix:@""] XMLString];
@@ -1253,31 +1253,31 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 }
 
 - (void)testChangedNamespace {
-  
-  // We'll allocate three objects which are equivalent except for 
+
+  // We'll allocate three objects which are equivalent except for
   // differing namespace prefix declarations.
-  
+
   // create with normal namespaces, including default of atom
   NSString * const xml0 = @"<entry xmlns=\"http://www.w3.org/2005/Atom\""
   " xmlns:gd=\"http://schemas.google.com/g/2005\"  >"
   " <gd:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
   "<gd:feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
   "</gd:feedLink> <unkElement foo=\"bar\" /> <unkElement2 /> </gd:comments> </entry>";
-  
+
   // use gx instead of gd for namespace prefix
   NSString * const xml1 = @"<entry xmlns=\"http://www.w3.org/2005/Atom\""
     " xmlns:gx=\"http://schemas.google.com/g/2005\"  >"
     " <gx:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
     "<gx:feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
     "</gx:feedLink> <unkElement foo=\"bar\" /> <unkElement2 /> </gx:comments> </entry>";
-  
+
   // make gd the default prefix, declare atom explicitly
   NSString * const xml2 = @"<entry xmlns:atom=\"http://www.w3.org/2005/Atom\""
   " xmlns=\"http://schemas.google.com/g/2005\"  >"
   " <comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
   "<feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
   "</feedLink> <unkElement foo=\"bar\" /> <unkElement2 /> </comments> </entry>";
-  
+
   GDataObject *obj0 = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml0
                     shouldWrapWithNamespaceAndEntry:NO];
@@ -1287,12 +1287,12 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
                                           XMLString:xml1
                     shouldWrapWithNamespaceAndEntry:NO];
   XCTAssertNotNil(obj1, @"%@", obj1);
-  
+
   GDataObject *obj2 = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml2
                     shouldWrapWithNamespaceAndEntry:NO];
   XCTAssertNotNil(obj2, @"%@", obj2);
-  
+
   XCTAssertEqualObjects(obj0, obj1, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
                        [obj0 XMLElement], [obj1 XMLElement]);
   XCTAssertEqualObjects(obj1, obj2, @"namespace interpretations should have made matching objects\n  %@\n!=\n  %@",
@@ -1372,11 +1372,11 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 - (void)testControlCharacterRemoval {
   NSString *str = [NSString stringWithFormat:@"bunnyrabbit%C%C%C",
                    (unichar) 0, (unichar) 1, (unichar) 2];
-  
+
   GDataTextConstruct *tc = [GDataTextConstruct textConstructWithString:str];
   NSXMLElement *elem = [tc XMLElement];
   NSString *elemStr = [elem XMLString];
-  
+
   NSString *className = [GDataTextConstruct className];
   NSString *expectedStr = [NSString stringWithFormat:@"<%@>bunnyrabbit</%@>",
                            className, className];
@@ -1385,30 +1385,30 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 }
 
 - (void)testProperties {
-    
+
   NSString * const xml = @"<entry xmlns=\"http://www.w3.org/2005/Atom\""
   " xmlns:gd=\"http://schemas.google.com/g/2005\"  >"
   " <gd:comments rel=\"http://schemas.google.com/g/2005#reviews\"> "
   "<gd:feedLink href=\"http://example.com/restaurants/SanFrancisco/432432/reviews\" > "
   "</gd:feedLink>  </gd:comments> </entry>";
-  
+
   GDataObject *obj = [self GDataObjectForClassName:[GDataComment class]
                                           XMLString:xml
                     shouldWrapWithNamespaceAndEntry:NO];
   XCTAssertNotNil(obj, @"%@", obj);
-  
+
   NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
     @"0", @"zero", @"1", @"one", nil];
-  
+
   // set all properties
   [obj setProperties:dict];
-  
+
   // change one property
   [obj setProperty:@"2" forKey:@"two"];
-  
+
   // delete one property
   [obj setProperty:nil forKey:@"zero"];
-  
+
   XCTAssertNil([obj propertyForKey:@"zero"], @"prop 0 problem");
   XCTAssertEqualObjects([obj propertyForKey:@"one"], @"1", @"prop 1 problem");
   XCTAssertEqualObjects([obj propertyForKey:@"two"], @"2", @"prop 2 problem");
@@ -1431,13 +1431,13 @@ shouldWrapWithNamespaceAndEntry:(BOOL)shouldWrap {
 
 - (void)addExtensionDeclarations {
   [super addExtensionDeclarations];
-  
+
   [GDataGeo addGeoExtensionDeclarationsToObject:self
                                  forParentClass:[self class]];
 }
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"GDataGeoTestClass"];
   return element;
 }

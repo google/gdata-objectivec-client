@@ -46,12 +46,12 @@
 }
 
 - (void)addParseDeclarations {
-  
+
   [self addContentValueDeclaration];
 }
 
 - (NSString *)stringValue {
-  return [self contentStringValue]; 
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {

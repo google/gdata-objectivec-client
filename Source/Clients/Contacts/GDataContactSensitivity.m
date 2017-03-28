@@ -40,14 +40,14 @@ static NSString* const kRelAttr = @"rel";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObject:kRelAttr]; 
+  NSArray *attrs = [NSArray arrayWithObject:kRelAttr];
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #pragma mark -
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {

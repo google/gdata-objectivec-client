@@ -34,7 +34,7 @@ static NSString* const kRelAttr = @"rel";
 
 + (id)jotWithRel:(NSString *)rel
            value:(NSString *)value {
-  
+
   GDataContactJot *obj = [self object];
   [obj setRel:rel];
   [obj setStringValue:value];
@@ -42,16 +42,16 @@ static NSString* const kRelAttr = @"rel";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObject:kRelAttr]; 
+  NSArray *attrs = [NSArray arrayWithObject:kRelAttr];
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 
 #pragma mark -
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
@@ -59,7 +59,7 @@ static NSString* const kRelAttr = @"rel";
 }
 
 - (NSString *)stringValue {
-  return [self contentStringValue]; 
+  return [self contentStringValue];
 }
 
 - (void)setStringValue:(NSString *)str {

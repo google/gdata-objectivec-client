@@ -26,7 +26,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAQUERYGOOGLEPHOTOS_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -35,7 +35,7 @@
 
 _EXTERN const NSInteger kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-1);
 
-@interface GDataQueryGooglePhotos : GDataQuery 
+@interface GDataQueryGooglePhotos : GDataQuery
 
 + (GDataQueryGooglePhotos *)photoQueryWithFeedURL:(NSURL *)feedURL;
 
@@ -63,7 +63,7 @@ _EXTERN const NSInteger kGDataGooglePhotosImageSizeDownloadable _INITIALIZE_AS(-
 
 - (void)setTag:(NSString *)tag;
 - (NSString *)tag;
-  
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_PHOTOS_SERVICE

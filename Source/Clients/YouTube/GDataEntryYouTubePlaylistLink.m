@@ -26,11 +26,11 @@
 @implementation GDataEntryYouTubePlaylistLink
 
 + (GDataEntryYouTubePlaylistLink *)playlistLinkEntry {
-  
+
   GDataEntryYouTubePlaylistLink *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,9 +45,9 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   // YouTube element extensions
@@ -57,7 +57,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
 
   if ([self isPrivate]) [items addObject:@"private"];

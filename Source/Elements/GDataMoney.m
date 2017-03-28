@@ -41,9 +41,9 @@ static NSString* const kCurrencyCodeAttr = @"currencyCode";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kAmountAttr, kCurrencyCodeAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
@@ -58,7 +58,7 @@ static NSString* const kCurrencyCodeAttr = @"currencyCode";
 }
 
 - (NSString *)currencyCode {
-  return [self stringValueForAttribute:kCurrencyCodeAttr]; 
+  return [self stringValueForAttribute:kCurrencyCodeAttr];
 }
 
 - (void)setCurrencyCode:(NSString *)str {

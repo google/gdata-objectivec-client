@@ -26,7 +26,7 @@
 @interface GooglePhotosSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
   IBOutlet NSSecureTextField *mPasswordField;
-  
+
   IBOutlet NSTableView *mAlbumTable;
   IBOutlet NSProgressIndicator *mAlbumProgressIndicator;
   IBOutlet NSTextView *mAlbumResultTextField;
@@ -42,24 +42,24 @@
   IBOutlet NSTextView *mPhotoResultTextField;
   IBOutlet NSButton *mPhotoCancelButton;
   IBOutlet NSImageView *mPhotoImageView;
-  
+
   IBOutlet NSButton *mAddTagButton;
   IBOutlet NSTextField *mTagField;
   IBOutlet NSButton *mAddCommentButton;
   IBOutlet NSTextField *mCommentField;
-  
+
   IBOutlet NSButton *mAddToAlbumButton;
   IBOutlet NSButton *mAddToDropBoxButton;
   IBOutlet NSButton *mDeletePhotoButton;
   IBOutlet NSButton *mDownloadPhotoButton;
   IBOutlet NSPopUpButton *mChangeAlbumPopupButton;
   IBOutlet NSProgressIndicator *mUploadProgressIndicator;
-  
+
   GDataFeedPhotoUser *mUserAlbumFeed; // user feed of album entries
   GDataServiceTicket *mAlbumFetchTicket;
   NSError *mAlbumFetchError;
   NSString *mAlbumImageURLString;
-    
+
   GDataFeedPhotoAlbum *mAlbumPhotosFeed; // album feed of photo entries
   GDataServiceTicket *mPhotosFetchTicket;
   NSError *mPhotosFetchError;

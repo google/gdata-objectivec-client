@@ -28,9 +28,9 @@
 
 + (id)ACLFeed {
   GDataFeedACL *feed = [self object];
-  
+
   [feed setNamespaces:[GDataEntryACL ACLNamespaces]];
-  
+
   return feed;
 }
 

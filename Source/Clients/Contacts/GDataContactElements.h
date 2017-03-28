@@ -33,7 +33,7 @@
 #define _INITIALIZE_AS(x)
 #endif
 
-// gender 
+// gender
 _EXTERN NSString* kGDataContactGenderFemale         _INITIALIZE_AS(@"female");
 _EXTERN NSString* kGDataContactGenderMale           _INITIALIZE_AS(@"male");
 
@@ -60,7 +60,7 @@ _EXTERN NSString* kGDataContactWebsiteLinkWork     _INITIALIZE_AS(@"work");
 @end
 
 // related calendar link
-@interface GDataContactCalendarLink : GDataContactLink <GDataExtension> 
+@interface GDataContactCalendarLink : GDataContactLink <GDataExtension>
 @end
 
 // directory server, like <gContact:directoryServer>directory.domain.com</gContact:directoryServer>
@@ -104,7 +104,7 @@ _EXTERN NSString* kGDataContactWebsiteLinkWork     _INITIALIZE_AS(@"work");
 @end
 
 // related website link
-@interface GDataContactWebsiteLink : GDataContactLink <GDataExtension> 
+@interface GDataContactWebsiteLink : GDataContactLink <GDataExtension>
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CONTACTS_SERVICE

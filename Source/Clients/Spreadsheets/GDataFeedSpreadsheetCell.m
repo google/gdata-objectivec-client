@@ -58,18 +58,18 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
-  
+
+
   // Worksheet extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClasses:
    [GDataColumnCount class],
    [GDataRowCount class],
-   nil];  
+   nil];
 }
 
 - (id)init {
@@ -83,15 +83,15 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   NSString *colStr = [NSString stringWithFormat:@"%d", (int) [self columnCount]];
   NSString *rowStr = [NSString stringWithFormat:@"%d", (int) [self rowCount]];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:colStr withName:@"cols"];
   [self addToArray:items objectDescriptionIfNonNil:rowStr withName:@"rows"];
-  
+
   return items;
 }
 #endif
@@ -107,16 +107,16 @@
 #pragma mark -
 
 - (NSInteger)rowCount {
-  GDataRowCount *rowCount = 
+  GDataRowCount *rowCount =
     (GDataRowCount *) [self objectForExtensionClass:[GDataRowCount class]];
-  
+
   return [rowCount count];
 }
 
 - (NSInteger)columnCount {
-  GDataColumnCount *columnCount = 
+  GDataColumnCount *columnCount =
     (GDataColumnCount *) [self objectForExtensionClass:[GDataColumnCount class]];
-  
+
   return [columnCount count];
 }
 

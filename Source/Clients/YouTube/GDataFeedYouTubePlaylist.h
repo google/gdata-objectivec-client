@@ -22,7 +22,7 @@
 #import "GDataFeedBase.h"
 #import "GDataYouTubeMediaElements.h"
 
-@interface GDataFeedYouTubePlaylist : GDataFeedBase 
+@interface GDataFeedYouTubePlaylist : GDataFeedBase
 + (GDataFeedYouTubePlaylist *)playlistFeed;
 
 - (BOOL)isPrivate;

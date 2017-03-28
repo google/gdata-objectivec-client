@@ -26,7 +26,7 @@
 
 + (GDataEntryMessage *)message {
   GDataEntryMessage *entry = [self object];
-  
+
   [entry setNamespaces:[GDataEntryBase baseGDataNamespaces]];
 
   return entry;
@@ -43,11 +43,11 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // EntryMessage extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
@@ -55,7 +55,7 @@
    [GDataRating class],
    [GDataGeoPt class],
    [GDataWho class],
-   nil];  
+   nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -82,7 +82,7 @@
 }
 
 - (void)setRating:(GDataRating *)obj {
-  [self setObject:obj forExtensionClass:[GDataRating class]]; 
+  [self setObject:obj forExtensionClass:[GDataRating class]];
 }
 
 - (GDataWhen *)time {
@@ -90,7 +90,7 @@
 }
 
 - (void)setTime:(GDataWhen *)obj {
-  [self setObject:obj forExtensionClass:[GDataWhen class]]; 
+  [self setObject:obj forExtensionClass:[GDataWhen class]];
 }
 
 - (GDataGeoPt *)geoPt {
@@ -98,7 +98,7 @@
 }
 
 - (void)setGeoPt:(GDataGeoPt *)obj {
-  [self setObject:obj forExtensionClass:[GDataGeoPt class]]; 
+  [self setObject:obj forExtensionClass:[GDataGeoPt class]];
 }
 
 - (NSArray *)participants {
@@ -106,11 +106,11 @@
 }
 
 - (void)setParticipants:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataWho class]]; 
+  [self setObjects:array forExtensionClass:[GDataWho class]];
 }
 
 - (void)addParticipant:(GDataWho *)obj {
-  [self addObject:obj forExtensionClass:[GDataWho class]]; 
+  [self addObject:obj forExtensionClass:[GDataWho class]];
 }
 
 @end

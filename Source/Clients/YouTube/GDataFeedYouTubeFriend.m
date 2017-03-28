@@ -26,11 +26,11 @@
 @implementation GDataFeedYouTubeFriend
 
 + (GDataFeedYouTubeFriend *)friendFeed {
-  
+
   GDataFeedYouTubeFriend *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

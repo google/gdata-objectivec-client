@@ -26,42 +26,42 @@
 @interface ContactsSampleWindowController : NSWindowController {
   IBOutlet NSTextField *mUsernameField;
   IBOutlet NSSecureTextField *mPasswordField;
-  
+
   IBOutlet NSButton *mShowDeletedCheckbox;
   IBOutlet NSButton *mMyContactsCheckbox;
   IBOutlet NSComboBox *mPropertyNameField;
   IBOutlet NSButton *mGetContactsButton;
-  
+
   IBOutlet NSSegmentedControl *mFeedSegmentedControl;
   IBOutlet NSTableView *mFeedTable;
   IBOutlet NSProgressIndicator *mFeedProgressIndicator;
   IBOutlet NSTextView *mFeedResultTextField;
   IBOutlet NSButton *mFeedCancelButton;
   IBOutlet NSButton *mSortFeedCheckbox;
-  
+
   IBOutlet NSImageView *mContactImageView;
   IBOutlet NSButton *mSetContactImageButton;
   IBOutlet NSButton *mDeleteContactImageButton;
   IBOutlet NSProgressIndicator *mSetContactImageProgressIndicator;
-  
+
   IBOutlet NSButton *mAddContactButton;
   IBOutlet NSTextField *mAddTitleField;
   IBOutlet NSTextField *mAddEmailField;
   IBOutlet NSButton *mDeleteContactButton;
   IBOutlet NSButton *mDeleteAllButton;
-  
+
   IBOutlet NSSegmentedControl *mEntrySegmentedControl;
 
   IBOutlet NSTableView *mEntryTable;
   IBOutlet NSTextView *mEntryResultTextField;
-  
+
   IBOutlet NSButton *mAddEntryButton;
   IBOutlet NSButton *mDeleteEntryButton;
   IBOutlet NSButton *mEditEntryButton;
   IBOutlet NSButton *mMakePrimaryEntryButton;
-  
-  IBOutlet NSTextField *mServiceURLField; 
-  
+
+  IBOutlet NSTextField *mServiceURLField;
+
   GDataFeedContact *mContactFeed;
   GDataServiceTicket *mContactFetchTicket;
   NSError *mContactFetchError;

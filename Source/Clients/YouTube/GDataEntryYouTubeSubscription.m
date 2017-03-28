@@ -26,11 +26,11 @@
 @implementation GDataEntryYouTubeSubscription
 
 + (GDataEntryYouTubeSubscription *)subscriptionEntry {
-  
+
   GDataEntryYouTubeSubscription *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,11 +45,11 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // YouTube element extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
@@ -57,7 +57,7 @@
    [GDataYouTubeQueryString class],
    [GDataYouTubePlaylistTitle class],
    nil];
-  
+
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
@@ -80,11 +80,11 @@
 #pragma mark -
 
 - (NSString *)subscriptionType {
-  
+
   NSArray *subs;
-  
+
   subs = [self categoriesWithScheme:kGDataSchemeYouTubeSubscription];
-  
+
   if ([subs count] > 0) {
     GDataCategory *subscription = [subs objectAtIndex:0];
     NSString *term = [subscription term];

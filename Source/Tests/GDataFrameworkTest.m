@@ -25,17 +25,17 @@
 @implementation GDataFrameworkTest
 
 - (void)testFrameworkVersion {
-  
+
   NSUInteger major = NSUIntegerMax;
   NSUInteger minor = NSUIntegerMax;
   NSUInteger release = NSUIntegerMax;
-  
+
   GDataFrameworkVersion(&major, &minor, &release);
 
   XCTAssertTrue(major != NSUIntegerMax, @"version unset");
   XCTAssertTrue(minor != NSUIntegerMax, @"version unset");
   XCTAssertTrue(release != NSUIntegerMax, @"version unset");
-  
+
   // Check that the Framework bundle's Info.plist has the proper version,
   // matching the GDataFrameworkVersion call
 
@@ -47,14 +47,14 @@
   NSDictionary *infoDict = [frameworkBundle infoDictionary];
 
   XCTAssertNotNil(infoDict, @"Could not find GDataFramework-Info.plist");
-  
+
   if (infoDict) {
-    
+
     NSString *binaryVersionStr = GDataFrameworkVersionString();
-    
+
     NSString *plistVersionStr = [infoDict valueForKey:@"CFBundleVersion"];
 
-    XCTAssertEqualObjects(plistVersionStr, binaryVersionStr, 
+    XCTAssertEqualObjects(plistVersionStr, binaryVersionStr,
                          @"Binary/plist version mismatch");
   }
 }

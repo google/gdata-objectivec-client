@@ -34,10 +34,10 @@ static NSString* const kURLAttr = @"url";
 + (NSString *)extensionElementLocalName { return @"webContentGadgetPref"; }
 @end
 
-@implementation GDataWebContent 
+@implementation GDataWebContent
 // Calendar Web Content element, inside a <link>, as in
 //
-// <gCal:webContent url="http://www.google.com/logos/july4th06.gif" 
+// <gCal:webContent url="http://www.google.com/logos/july4th06.gif"
 //                  width="276" height="120" >
 //      <gCal:webContentGadgetPref name="color" value="green" />
 //      <gCal:webContentGadgetPref name="military_time" value="false" />
@@ -60,49 +60,49 @@ static NSString* const kURLAttr = @"url";
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // gadget preference support
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataWebContentGadgetPref class]];
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kHeightAttr, kWidthAttr, kURLAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
-  
+
   // make an array of name=value items for gadget prefs
   NSArray *prefs = [self gadgetPreferences];
   NSMutableArray *prefsItems = [NSMutableArray array];
   NSUInteger numPrefs = [prefs count];
-  
+
   if (numPrefs) {
     for (NSUInteger idx = 0; idx < numPrefs; idx++) {
       GDataWebContentGadgetPref *pref = [prefs objectAtIndex:idx];
-      
-      NSString *str = [NSString stringWithFormat:@"%@=%@", 
+
+      NSString *str = [NSString stringWithFormat:@"%@=%@",
         [pref name], [pref value]];
-      
+
       [prefsItems addObject:str];
     }
     NSString *allPrefs = [prefsItems componentsJoinedByString:@","];
     [self addToArray:items objectDescriptionIfNonNil:allPrefs withName:@"gadgetPrefs"];
   }
-  
+
   return items;
 }
 #endif
 
 - (NSNumber *)height {
-  return [self intNumberForAttribute:kHeightAttr]; 
+  return [self intNumberForAttribute:kHeightAttr];
 }
 
 - (void)setHeight:(NSNumber *)num {
@@ -110,7 +110,7 @@ static NSString* const kURLAttr = @"url";
 }
 
 - (NSNumber *)width {
-  return [self intNumberForAttribute:kWidthAttr]; 
+  return [self intNumberForAttribute:kWidthAttr];
 }
 
 - (void)setWidth:(NSNumber *)num {
@@ -118,7 +118,7 @@ static NSString* const kURLAttr = @"url";
 }
 
 - (NSString *)URLString {
-  return [self stringValueForAttribute:kURLAttr]; 
+  return [self stringValueForAttribute:kURLAttr];
 }
 
 - (void)setURLString:(NSString *)str {
@@ -136,7 +136,7 @@ static NSString* const kURLAttr = @"url";
 // extensions
 
 - (NSArray *)gadgetPreferences {
-  return [self objectsForExtensionClass:[GDataWebContentGadgetPref class]]; 
+  return [self objectsForExtensionClass:[GDataWebContentGadgetPref class]];
 }
 
 - (void)setGadgetPreferences:(NSArray *)array {
@@ -144,15 +144,15 @@ static NSString* const kURLAttr = @"url";
 }
 
 - (void)addGadgetPreference:(GDataWebContentGadgetPref *)obj {
-  [self addObject:obj forExtensionClass:[GDataWebContentGadgetPref class]];  
+  [self addObject:obj forExtensionClass:[GDataWebContentGadgetPref class]];
 }
 
 // returning a dictionary simplifies key-value coding access
 - (NSDictionary *)gadgetPreferenceDictionary {
-  
+
   // step through all preferences and add their name/values to a dictionary
   NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-  
+
   for (GDataWebContentGadgetPref *pref in [self gadgetPreferences]) {
     [dictionary setObject:[pref value] forKey:[pref name]];
   }
