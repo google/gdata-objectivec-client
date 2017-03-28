@@ -39,7 +39,7 @@
   // spreadsheet categories do not use the standard Kind scheme
   // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
   [GDataFeedBase registerFeedClass:[self class]
-             forCategoryWithScheme:nil 
+             forCategoryWithScheme:nil
                               term:kGDataCategorySpreadsheet];
 }
 

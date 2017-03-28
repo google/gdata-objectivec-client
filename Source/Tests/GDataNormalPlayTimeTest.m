@@ -36,7 +36,7 @@
     NSString *secondsStr;
     NSString *hhmmssStr;
   };
-  
+
   struct NPTTestRecord tests[] = {
     { @"123", 123000, NO, @"123", @"0:02:03" },
     { @"123.45", 123450, NO, @"123.450", @"0:02:03.450" },
@@ -46,30 +46,30 @@
     { @"flubber", 0, NO, @"0", @"0:00:00" },
     { nil, 0, 0, 0, 0 }
   };
-  
+
   int idx;
   for (idx = 0; tests[idx].str != nil; idx++) {
-    
+
     // make an NPT object from the string
     GDataNormalPlayTime *npt = [GDataNormalPlayTime normalPlayTimeWithString:tests[idx].str];
-    
+
     // ensure the ms are as expected
     long long ms = [npt timeOffsetInMilliseconds];
     XCTAssertEqual(ms, tests[idx].ms, @"unexpected ms for NPT %@", tests[idx].str);
-    
+
     // ensure seconds string is as expected
     NSString *secondsStr = [npt secondsString];  // seconds.fraction or "now"
     XCTAssertEqualObjects(secondsStr, tests[idx].secondsStr, @"unexpected seconds string for NPT %@", tests[idx].str);
-    
+
     // ensure the HMS strings is as expected
     NSString *hhmmssStr = [npt HHMMSSString];  // hh:mm:ss.fraction or "now"
     XCTAssertEqualObjects(hhmmssStr, tests[idx].hhmmssStr, @"unexpected HHMMSS string for NPT %@",  tests[idx].str);
-    
+
     // ensure "is now" flag is correct
     BOOL isNow = [npt isNow];
     XCTAssertTrue(isNow == tests[idx].isNow, @"isNow unexpected for NPT %d", tests[idx].isNow);
   }
-  
+
   // garbage in, zero out
   GDataNormalPlayTime *npt = [GDataNormalPlayTime normalPlayTimeWithString:@"hooyah"];
   XCTAssertEqual([npt timeOffsetInMilliseconds], 0ll,

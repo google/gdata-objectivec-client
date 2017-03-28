@@ -24,20 +24,20 @@
 
 // media:content element
 //
-//  <media:content 
-//    url="http://www.foo.com/movie.mov" 
-//    fileSize="12216320" 
+//  <media:content
+//    url="http://www.foo.com/movie.mov"
+//    fileSize="12216320"
 //    type="video/quicktime"
 //    medium="video"
-//    isDefault="true" 
-//    expression="full" 
-//    bitrate="128" 
+//    isDefault="true"
+//    expression="full"
+//    bitrate="128"
 //    framerate="25"
 //    samplingrate="44.1"
 //    channels="2"
-//    duration="185" 
+//    duration="185"
 //    height="200"
-//    width="300" 
+//    width="300"
 //    lang="en" />
 //
 // http://search.yahoo.com/mrss

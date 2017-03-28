@@ -445,7 +445,7 @@ static int gFetchCounter = 0;
   // verify the underlying fetcher got a 304 (not modified) status
 #if 0
   // TODO: The python test server doesn't provide 304s for ETag matches
-  
+
   STAssertEquals([[ticket_ objectFetcher] statusCode],
                  (NSInteger)kGTMSessionFetcherStatusNotModified,
                  @"fetching cached copy of %@", feedURL);

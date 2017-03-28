@@ -34,13 +34,13 @@
 }
 
 + (GDataEntrySpreadsheetCell *)spreadsheetCellEntryWithCell:(GDataSpreadsheetCell *)cell {
-  
+
   GDataEntrySpreadsheetCell *entry = [self object];
 
   [entry setNamespaces:[GDataSpreadsheetConstants spreadsheetNamespaces]];
-  
+
   [entry setCell:cell];
-  
+
   return entry;
 }
 
@@ -56,16 +56,16 @@
   // spreadsheet categories do not use the standard Kind scheme
   // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
   [GDataEntryBase registerEntryClass:[self class]
-               forCategoryWithScheme:nil 
+               forCategoryWithScheme:nil
                                 term:kGDataCategorySpreadsheetCell];
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // SpreadsheetCell extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataSpreadsheetCell class]];
@@ -73,11 +73,11 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:[self cell] withName:@"cell"];
-  
+
   return items;
 }
 #endif
@@ -98,9 +98,9 @@
 #pragma mark -
 
 - (GDataSpreadsheetCell *)cell {
-  GDataSpreadsheetCell *obj = 
+  GDataSpreadsheetCell *obj =
     (GDataSpreadsheetCell *) [self objectForExtensionClass:[GDataSpreadsheetCell class]];
-  
+
   return obj;
 }
 
@@ -111,7 +111,7 @@
 #pragma mark -
 
 - (GDataLink *)sourceLink { // cell source
-  return [self linkWithRelAttributeValue:kGDataLinkSource]; 
+  return [self linkWithRelAttributeValue:kGDataLinkSource];
 }
 
 @end

@@ -35,7 +35,7 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 @implementation GDataQuerySpreadsheet
 
 + (GDataQuerySpreadsheet *)spreadsheetQueryWithFeedURL:(NSURL *)feedURL {
-  return [self queryWithFeedURL:feedURL];   
+  return [self queryWithFeedURL:feedURL];
 }
 
 - (NSString *)titleQuery {
@@ -82,7 +82,7 @@ static NSString *const kReturnEmptyParamName = @"return-empty";
 // cell feed parameters
 - (NSString *)stringParamOrNilForInt:(NSInteger)val {
   if (val > 0) {
-    return [NSString stringWithFormat:@"%ld", (long)val]; 
+    return [NSString stringWithFormat:@"%ld", (long)val];
   }
   return nil;
 }

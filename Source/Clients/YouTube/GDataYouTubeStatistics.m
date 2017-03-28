@@ -29,9 +29,9 @@ static NSString* const kFavoriteCountAttr = @"favoriteCount";
 static NSString* const kLastWebAccessAttr = @"lastWebAccess";
 static NSString* const kTotalUploadViewsAttr = @"totalUploadViews";
 
-@implementation GDataYouTubeStatistics 
-// <yt:statistics viewCount="2" 
-//                videoWatchCount="77" 
+@implementation GDataYouTubeStatistics
+// <yt:statistics viewCount="2"
+//                videoWatchCount="77"
 //                lastWebAccess="2008-01-26T10:32:41.000-08:00"/>
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
@@ -44,31 +44,31 @@ static NSString* const kTotalUploadViewsAttr = @"totalUploadViews";
 }
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kViewCountAttr, kVideoWatchCountAttr,
                     kSubscriberCountAttr, kFavoriteCountAttr,
                     kLastWebAccessAttr, kTotalUploadViewsAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 - (void)addAttributesToElement:(NSXMLElement *)element {
-  
+
   // this overrides the base class's method
   //
   // as in the java, skip adding attributes that are zero
-  
+
   NSString *name;
   NSDictionary *attributes = [self attributes];
   NSEnumerator *enumerator = [attributes keyEnumerator];
   while ((name = [enumerator nextObject]) != nil) {
-    
+
     NSString *value = [attributes valueForKey:name];
-    
+
     // add it if it's not "0"
     if (![value isEqual:@"0"]) {
-      
+
       [self addToElement:element attributeValueIfNonNil:value withName:name];
     }
   }
@@ -109,7 +109,7 @@ static NSString* const kTotalUploadViewsAttr = @"totalUploadViews";
 }
 
 - (GDataDateTime *)lastWebAccess {
-  return [self dateTimeForAttribute:kLastWebAccessAttr]; 
+  return [self dateTimeForAttribute:kLastWebAccessAttr];
 }
 
 - (void)setLastWebAccess:(GDataDateTime *)dateTime {

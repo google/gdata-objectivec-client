@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubePlaylistLink : GDataFeedBase 
+@interface GDataFeedYouTubePlaylistLink : GDataFeedBase
 + (GDataFeedYouTubePlaylistLink *)playlistLinkFeed;
 @end
 

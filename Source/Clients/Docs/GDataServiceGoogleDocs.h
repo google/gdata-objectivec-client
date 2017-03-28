@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEDOCS_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -50,7 +50,7 @@ _EXTERN NSString* const kGDataGoogleDocsFeedTypeRevisions      _INITIALIZE_AS(@"
 //  _EXTERN NSString* const kGDataGoogleDocsDefaultPrivateFullFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/full");
 //  _EXTERN NSString* const kGDataGoogleDocsDefaultACLExpandedFeed _INITIALIZE_AS(@"http://docs.google.com/feeds/documents/private/expandAcl");
 
-@interface GDataServiceGoogleDocs : GDataServiceGoogle 
+@interface GDataServiceGoogleDocs : GDataServiceGoogle
 
 //
 // utilities for making feed URLs

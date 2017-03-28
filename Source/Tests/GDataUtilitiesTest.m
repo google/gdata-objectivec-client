@@ -25,26 +25,26 @@
 @implementation GDataUtilitiesTest
 
 - (void)testControlsFiltering {
-  
+
   NSString *input;
   NSString *output;
-  
+
   input = nil;
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   XCTAssertNil(output, @"nil test");
-  
+
   input = @"";
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   XCTAssertEqualObjects(output, input, @"empty string");
-  
+
   input = @"Fred & Wilma";
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   XCTAssertEqualObjects(output, input, @"plain string");
-  
+
   input = [NSString stringWithFormat:@"Nuts%CBolts", (unichar) 0x0B]; // 0xB: vertical tab
   output = [GDataUtilities stringWithControlsFilteredForString:input];
   XCTAssertEqualObjects(output, @"NutsBolts", @"vt failure");
-  
+
   // filter a string containing all chars from 0x01 to 0x7F
   NSMutableString *allCharStr = [NSMutableString string];
   for (int idx = 1; idx <= 127; idx++) {
@@ -58,29 +58,29 @@
 }
 
 - (void)testPercentEncodingUTF8 {
-  
+
   NSString *input;
   NSString *output;
-  
+
   input = nil;
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   XCTAssertNil(output, @"nil test");
-  
+
   input = @"";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   XCTAssertEqualObjects(output, input, @"empty string");
-    
+
   input = @"Fred & Wilma";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   XCTAssertEqualObjects(output, input, @"plain string");
-  
+
   input = [NSString stringWithFormat:@"The Beach at S%Cte", (unichar) 0x00E8];
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
   XCTAssertEqualObjects(output, @"The Beach at S%C3%A8te", @"8-bit failure");
 
   input = @"\ttab\tline1\rline2%percent\nline3";
   output = [GDataUtilities stringByPercentEncodingUTF8ForString:input];
-  XCTAssertEqualObjects(output, @"%09tab%09line1%0Dline2%25percent%0Aline3", 
+  XCTAssertEqualObjects(output, @"%09tab%09line1%0Dline2%25percent%0Aline3",
                        @"control char");
 
   input = [NSString stringWithFormat:@"photo%C.jpg", (unichar) 0x53C3];

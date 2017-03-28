@@ -26,7 +26,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAENTRYCALENDAR_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN

@@ -26,11 +26,11 @@
 @implementation GDataEntryYouTubeVideo
 
 + (GDataEntryYouTubeVideo *)videoEntry {
-  
+
   GDataEntryYouTubeVideo *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,31 +45,31 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataComment class],
    [GDataYouTubeRating class],
-   
+
    // YouTube element extensions
    [GDataYouTubeStatistics class],
    [GDataYouTubeNonEmbeddable class],
    [GDataYouTubeLocation class],
    [GDataYouTubeRecordedDate class],
    [GDataYouTubeAccessControl class],
-   
+
    // YouTubeMediaGroup encapsulates YouTubeMediaContent
    [GDataYouTubeMediaGroup class],
    nil];
-  
+
   // Geo
   [GDataGeo addGeoExtensionDeclarationsToObject:self
-                                 forParentClass:entryClass];  
-  
+                                 forParentClass:entryClass];
+
   // the publication state element is an extension to the Atom publishing
   // control element
   Class atomPubControlClass = [GDataAtomPubControl class];
@@ -220,14 +220,14 @@
 }
 
 - (void)setGDataYouTubePublicationState:(GDataYouTubePublicationState *)obj {
-  
+
   GDataAtomPubControl *atomPubControl = [self atomPubControl];
-  
+
   if (obj != nil && atomPubControl == nil) {
     // to add the publication state, we need to make an atomPubControl element
-    atomPubControl = [GDataAtomPubControl atomPubControl]; 
+    atomPubControl = [GDataAtomPubControl atomPubControl];
   }
-  
+
   [atomPubControl setObject:obj forExtensionClass:[GDataYouTubePublicationState class]];
 }
 
@@ -271,15 +271,15 @@
 #pragma mark -
 
 - (GDataLink *)videoResponsesLink {
-  return [self linkWithRelAttributeValue:kGDataLinkYouTubeResponses]; 
+  return [self linkWithRelAttributeValue:kGDataLinkYouTubeResponses];
 }
 
 - (GDataLink *)ratingsLink {
-  return [self linkWithRelAttributeValue:kGDataLinkYouTubeRatings]; 
+  return [self linkWithRelAttributeValue:kGDataLinkYouTubeRatings];
 }
 
 - (GDataLink *)complaintsLink {
-  return [self linkWithRelAttributeValue:kGDataLinkYouTubeComplaints]; 
+  return [self linkWithRelAttributeValue:kGDataLinkYouTubeComplaints];
 }
 
 - (GDataLink *)captionTracksLink {

@@ -28,8 +28,8 @@
 
 @implementation GDataDateTimeTest
 - (void)testGDataDateTime {
-  
-  const NSCalendarUnit kComponents = 
+
+  const NSCalendarUnit kComponents =
     NSCalendarUnitEra
     | NSCalendarUnitYear
     | NSCalendarUnitMonth
@@ -37,7 +37,7 @@
     | NSCalendarUnitHour
     | NSCalendarUnitMinute
     | NSCalendarUnitSecond;
-  
+
   struct DateTimeTestRecord {
     NSString *dateTimeStr;
     NSInteger year;
@@ -50,27 +50,27 @@
     BOOL isUniversalTime;
     BOOL hasTime;
   };
-  
+
   struct DateTimeTestRecord tests[] = {
     { @"2006-10-14T15:00:00-01:00", 2006, 10, 14, 15, 0, 0, -60*60, 0, 1 },
     { @"2006-10-14T15:00:00Z", 2006, 10, 14, 15, 0, 0, 0, 1, 1 },
     { @"2006-10-14", 2006, 10, 14, 12, 0, 0, 0, 1, 0 },
     { nil, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
   };
-  
+
   int idx;
   for (idx = 0; tests[idx].dateTimeStr != nil; idx++) {
-  
+
     NSString *testString1 = tests[idx].dateTimeStr;
     GDataDateTime *dateTime = [GDataDateTime dateTimeWithRFC3339String:testString1];
     NSString *outputString = [dateTime RFC3339String];
-    
-    XCTAssertEqualObjects(outputString, testString1, @"failed to recreate string %@ as %@", testString1, outputString); 
+
+    XCTAssertEqualObjects(outputString, testString1, @"failed to recreate string %@ as %@", testString1, outputString);
 
     NSDate *outputDate = [dateTime date];
-    
+
     NSCalendar *cal = [dateTime calendar];
-    NSDateComponents *outputComponents = [cal components:kComponents 
+    NSDateComponents *outputComponents = [cal components:kComponents
                                                 fromDate:outputDate];
     XCTAssertEqual([outputComponents year], tests[idx].year, @"bad year");
     XCTAssertEqual([outputComponents month], tests[idx].month, @"bad month");
@@ -82,7 +82,7 @@
     XCTAssertEqual([[dateTime timeZone] secondsFromGMT], tests[idx].timeZoneOffsetSeconds, @"bad timezone");
     XCTAssertEqual([dateTime isUniversalTime], tests[idx].isUniversalTime, @"bad Zulu value");
     XCTAssertEqual([dateTime hasTime], tests[idx].hasTime, @"bad hasTime value");
-    
+
     if ([dateTime hasTime]) {
       // remove the time, test the output
       [dateTime setHasTime:NO];
@@ -116,7 +116,7 @@
   dc.timeZone = denverTZ;
   NSDate *date = dc.date;
 
-  GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:date 
+  GDataDateTime *dateTime = [GDataDateTime dateTimeWithDate:date
                                                    timeZone:denverTZ];
   NSTimeZone *testTZ = [dateTime timeZone];
   XCTAssertEqualObjects(testTZ, denverTZ, @"Time zone changed");

@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeVideoMessage
 
 + (GDataFeedYouTubeVideoMessage *)videoMessageFeed {
-  
+
   GDataFeedYouTubeVideoMessage *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

@@ -32,12 +32,12 @@
   IBOutlet NSButton *mDeletedCheckbox;
   IBOutlet NSComboBox *mGroupField; // group title, though user may enter group ID
 
-  id mTarget; // WEAK 
+  id mTarget; // WEAK
   SEL mDoneSEL;
   GDataObject *mObject;
   GDataFeedContactGroup *mGroupFeed;
   BOOL mWasSaveClicked;
-  
+
   NSDictionary *relsDict_;
 }
 

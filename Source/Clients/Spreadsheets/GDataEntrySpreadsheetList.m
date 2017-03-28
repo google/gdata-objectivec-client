@@ -48,17 +48,17 @@
   // spreadsheet categories do not use the standard Kind scheme
   // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
   [GDataEntryBase registerEntryClass:[self class]
-               forCategoryWithScheme:nil 
+               forCategoryWithScheme:nil
                                 term:kGDataCategorySpreadsheetList];
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
-  
+
+
   // SpreadsheetList extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataSpreadsheetCustomElement class]];
@@ -66,24 +66,24 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   // make a string of custom elements like {a:b, c:d}
   NSMutableString *str = [NSMutableString string];
   NSArray *customElements = [self customElements];
   NSEnumerator *elementEnumerator = [customElements objectEnumerator];
   GDataSpreadsheetCustomElement *obj;
-  
+
   while ((obj = [elementEnumerator nextObject]) != nil) {
     [str appendFormat:@"%@%@:%@", ([str length] == 0 ? @"" : @" "),
       [obj name], [obj stringValue]];
   }
-  
+
   if ([str length] > 0) {
     [self addToArray:items objectDescriptionIfNonNil:str withName:@"customElements"];
   }
-  
+
   return items;
 }
 #endif
@@ -117,14 +117,14 @@
 // additional convenience routines
 
 - (GDataSpreadsheetCustomElement *)customElementForName:(NSString *)name {
-  
+
   // look through the elements for a matching name, not case sensitive
   NSArray *customElements = [self customElements];
-  
+
   NSEnumerator *elementEnumerator = [customElements objectEnumerator];
   GDataSpreadsheetCustomElement *obj;
   while ((obj = [elementEnumerator nextObject]) != nil) {
-    
+
     if ([[obj name] caseInsensitiveCompare:name] == NSOrderedSame) {
       return obj;
     }
@@ -133,15 +133,15 @@
 }
 
 - (void)setCustomElement:(GDataSpreadsheetCustomElement *)obj {
-  
+
   NSString *name = [obj name];
   GDataSpreadsheetCustomElement *oldObj = [self customElementForName:name];
   if (obj != oldObj) {
-    
+
     if (oldObj) {
       [self removeObject:oldObj forExtensionClass:[GDataSpreadsheetCustomElement class]];
     }
-    
+
     if (obj) {
       [self addObject:obj forExtensionClass:[GDataSpreadsheetCustomElement class]];
     }
@@ -149,19 +149,19 @@
 }
 
 - (NSDictionary *)customElementDictionary {
-  
-  // step through the custom elements, and build a dictionary 
+
+  // step through the custom elements, and build a dictionary
   // mapping object names to objects
   NSArray *customElements = [self customElements];
-  
+
   NSMutableDictionary *dict = [NSMutableDictionary dictionary];
   NSEnumerator *elementEnumerator = [customElements objectEnumerator];
   GDataSpreadsheetCustomElement *obj;
-  
+
   while ((obj = [elementEnumerator nextObject]) != nil) {
     [dict setObject:obj forKey:[obj name]];
   }
-  return dict;  
+  return dict;
 }
 
 @end

@@ -38,7 +38,7 @@ static NSString *const kMaxAttendeesParamName = @"max-attendees";
 @implementation GDataQueryCalendar
 
 + (GDataQueryCalendar *)calendarQueryWithFeedURL:(NSURL *)feedURL {
-  return [self queryWithFeedURL:feedURL];   
+  return [self queryWithFeedURL:feedURL];
 }
 
 - (GDataDateTime *)minimumStartTime {
@@ -139,10 +139,10 @@ static NSString *const kMaxAttendeesParamName = @"max-attendees";
 }
 
 - (void)setCurrentTimeZoneName:(NSString *)str {
-  
+
   // replace underscores with spaces in the param value
   NSMutableString *mutableStr = [NSMutableString stringWithString:str];
-  
+
   [mutableStr replaceOccurrencesOfString:@" "
                               withString:@"_"
                                  options:0

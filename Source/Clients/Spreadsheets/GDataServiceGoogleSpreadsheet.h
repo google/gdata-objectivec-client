@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEGOOGLESPREADSHEET_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -34,7 +34,7 @@
 _EXTERN NSString* const kGDataGoogleSpreadsheetsPrivateFullFeed _INITIALIZE_AS(@"https://spreadsheets.google.com/feeds/spreadsheets/private/full");
 
 
-@interface GDataServiceGoogleSpreadsheet : GDataServiceGoogle 
+@interface GDataServiceGoogleSpreadsheet : GDataServiceGoogle
 
 // clients may use these fetch methods of GDataServiceGoogle
 //

@@ -26,13 +26,13 @@
 @implementation GDataEntryPhotoComment
 
 + (GDataEntryPhotoComment *)commentEntryWithString:(NSString *)commentStr {
-  
+
   GDataEntryPhotoComment *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
-  
+
   [entry setContent:[GDataEntryContent contentWithString:commentStr]];
-  
+
   return entry;
 }
 
@@ -47,12 +47,12 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // common photo extensions
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataPhotoAlbumID class],
@@ -62,12 +62,12 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:[self albumID] withName:@"albumID"];
   [self addToArray:items objectDescriptionIfNonNil:[self photoID] withName:@"photoID"];
-  
+
   return items;
 }
 #endif
@@ -81,7 +81,7 @@
 
 - (void)setAlbumID:(NSString *)str {
   GDataObject *obj = [GDataPhotoAlbumID valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 - (NSString *)photoID {
@@ -91,7 +91,7 @@
 
 - (void)setPhotoID:(NSString *)str {
   GDataObject *obj = [GDataPhotoPhotoID valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 

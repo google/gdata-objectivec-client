@@ -25,7 +25,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAACLSCOPE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -43,7 +43,7 @@ _EXTERN NSString* const kGDataScopeTypeGroup   _INITIALIZE_AS(@"group");
 //
 //  http://code.google.com/apis/calendar/reference.html#gacl_reference
 
-@interface GDataACLScope : GDataObject <GDataExtension> 
+@interface GDataACLScope : GDataObject <GDataExtension>
 
 + (GDataACLScope *)scopeWithType:(NSString *)type value:(NSString *)value;
 

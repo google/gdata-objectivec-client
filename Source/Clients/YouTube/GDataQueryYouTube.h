@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAQUERYYOUTUBE_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -50,8 +50,8 @@ _EXTERN NSString* const kGDataYouTubeCaptionTrackFormatSubrip     _INITIALIZE_AS
 
 // http://code.google.com/apis/youtube/reference.html#Parameters
 
-@interface GDataQueryYouTube : GDataQuery 
-  
+@interface GDataQueryYouTube : GDataQuery
+
 + (GDataQueryYouTube *)youTubeQueryWithFeedURL:(NSURL *)feedURL;
 
 - (void)setVideoQuery:(NSString *)str;

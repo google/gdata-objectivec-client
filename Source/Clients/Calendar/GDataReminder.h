@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAREMINDER_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -40,7 +40,7 @@ _EXTERN NSString* const kGDataReminderMethodAlert _INITIALIZE_AS(@"alert");
 _EXTERN NSString* const kGDataReminderMethodNone _INITIALIZE_AS(@"none");
 _EXTERN NSString* const kGDataReminderMethodAll _INITIALIZE_AS(@"all");
 
-// reminder, as in 
+// reminder, as in
 //   <gd:reminder absoluteTime="2005-06-06T16:55:00-08:00" method="sms" />
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdReminder

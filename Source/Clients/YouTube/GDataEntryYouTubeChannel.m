@@ -56,12 +56,12 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"feedLinks", @"feedLinks", kGDataDescArrayCount },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;
@@ -91,7 +91,7 @@
 #pragma mark -
 
 - (NSArray *)feedLinks {
-  return [self objectsForExtensionClass:[GDataFeedLink class]]; 
+  return [self objectsForExtensionClass:[GDataFeedLink class]];
 }
 
 #pragma mark Convenience accessors

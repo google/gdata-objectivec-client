@@ -25,11 +25,11 @@
 @implementation GDataEntryYouTubePlaylist
 
 + (GDataEntryYouTubePlaylist *)playlistEntry {
-  
+
   GDataEntryYouTubePlaylist *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -44,22 +44,22 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataYouTubePosition class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
 
-  [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"]; 
-    
+  [self addToArray:items objectDescriptionIfNonNil:[self position] withName:@"position"];
+
   return items;
 }
 #endif

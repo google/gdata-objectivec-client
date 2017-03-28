@@ -43,10 +43,10 @@ static NSString* const kWidthAttr = @"width";
 }
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kURLAttr, kHeightAttr, kWidthAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 

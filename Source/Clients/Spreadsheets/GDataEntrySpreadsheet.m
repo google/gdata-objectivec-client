@@ -63,7 +63,7 @@
 #pragma mark -
 
 - (GDataLink *)spreadsheetLink {
-  return [self alternateLink]; 
+  return [self alternateLink];
 }
 
 - (GDataLink *)tablesFeedLink {

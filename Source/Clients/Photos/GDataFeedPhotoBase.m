@@ -26,9 +26,9 @@
 @implementation GDataFeedPhotoBase
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // common photo extensions
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataPhotoGPhotoID class]];
@@ -36,7 +36,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addToArray:items objectDescriptionIfNonNil:[self GPhotoID] withName:@"gphotoID"];
   return items;
@@ -54,17 +54,17 @@
 #pragma mark -
 
 - (NSString *)GPhotoID {
-  
+
   GDataPhotoGPhotoID *obj = [self objectForExtensionClass:[GDataPhotoGPhotoID class]];
-  
+
   return [obj stringValue];
 }
 
 - (void)setGPhotoID:(NSString *)str {
-  
+
   if (str) {
     GDataPhotoGPhotoID *obj = [GDataPhotoGPhotoID valueWithString:str];
-    
+
     [self setObject:obj forExtensionClass:[GDataPhotoGPhotoID class]];
   } else {
     [self setObject:nil forExtensionClass:[GDataPhotoGPhotoID class]];
@@ -74,7 +74,7 @@
 // like in the Java library, we'll rename subtitle as description
 
 - (GDataTextConstruct *)photoDescription {
-  return [self subtitle]; 
+  return [self subtitle];
 }
 
 - (void)setPhotoDescription:(GDataTextConstruct *)obj {
@@ -82,7 +82,7 @@
 }
 
 - (void)setPhotoDescriptionWithString:(NSString *)str {
-  [self setSubtitle:[GDataTextConstruct textConstructWithString:str]]; 
+  [self setSubtitle:[GDataTextConstruct textConstructWithString:str]];
 }
 
 #pragma mark -

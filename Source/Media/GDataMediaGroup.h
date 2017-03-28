@@ -26,7 +26,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAMEDIAGROUP_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -61,7 +61,7 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 @end
 
 
-// for media:group, like 
+// for media:group, like
 // <media:group> <media:contents  ... /> </media:group>
 
 // TODO:  Currently, just the set needed for Google Photos is implemented
@@ -69,7 +69,7 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 //   MediaCopyright
 //   MediaHash
 //   MediaText
-//   
+//
 
 @interface GDataMediaGroup : GDataObject <GDataExtension>
 
@@ -79,11 +79,11 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 
 - (NSArray *)mediaCategories;
 - (void)setMediaCategories:(NSArray *)array;
-- (void)addMediaCategory:(GDataMediaCategory *)attribute;  
+- (void)addMediaCategory:(GDataMediaCategory *)attribute;
 
 - (NSArray *)mediaContents;
 - (void)setMediaContents:(NSArray *)array;
-- (void)addMediaContent:(GDataMediaContent *)attribute;  
+- (void)addMediaContent:(GDataMediaContent *)attribute;
 
 - (NSArray *)mediaCredits;
 - (void)setMediaCredits:(NSArray *)array;
@@ -110,7 +110,7 @@ _EXTERN NSString* const kGDataNamespaceMediaPrefix _INITIALIZE_AS(@"media");
 
 - (GDataMediaDescription *)mediaDescription;
 - (void)setMediaDescription:(GDataMediaDescription *)obj;
-  
+
 - (GDataMediaTitle *)mediaTitle;
 - (void)setMediaTitle:(GDataMediaTitle *)obj;
 

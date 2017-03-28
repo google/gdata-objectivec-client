@@ -47,7 +47,7 @@ static NSString* const kValueAttr = @"value";
 }
 
 - (void)addParseDeclarations {
-    
+
   NSArray *attrs = [NSArray arrayWithObjects:
                     kTypeAttr, kValueAttr, kNameAttr, nil];
   [self addLocalAttributeDeclarations:attrs];

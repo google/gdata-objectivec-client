@@ -19,7 +19,7 @@
 
 #import "GDataEntrySpreadsheet.h" // for namespaces
 
-@implementation GDataSpreadsheetCustomElement 
+@implementation GDataSpreadsheetCustomElement
 
 // arbitrary spreadsheet custom tag, like
 //  <gsx:e-mail>fitz@gmail.com</gsx:e-mail>
@@ -30,20 +30,20 @@
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceGSpreadCustom; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceGSpreadCustomPrefix; }
-+ (NSString *)extensionElementLocalName { 
++ (NSString *)extensionElementLocalName {
   // wildcard * matches all elements with the proper namespace URI
-  return @"*"; 
+  return @"*";
 }
 
 + (GDataSpreadsheetCustomElement *)elementWithName:(NSString *)name
                                        stringValue:(NSString *)stringValue {
-  
+
   GDataSpreadsheetCustomElement *obj = [self object];
   [obj setName:name];
   [obj setStringValue:stringValue];
-  
+
   // we don't want the element to have the default name gsx:*
-  [obj setElementName:[NSString stringWithFormat:@"%@:%@", 
+  [obj setElementName:[NSString stringWithFormat:@"%@:%@",
     [self extensionElementPrefix], name]];
   return obj;
 }
@@ -53,7 +53,7 @@
   self = [super initWithXMLElement:element
                             parent:parent];
   if (self) {
-        
+
     name_ = [[element localName] copy];
     stringValue_ = [[self stringValueFromElement:element] copy];
   }
@@ -72,18 +72,18 @@
 
 - (id)copyWithZone:(NSZone *)zone {
   GDataSpreadsheetCustomElement* newObj = [super copyWithZone:zone];
-  
+
   [newObj setName:[self name]];
   [newObj setStringValue:[self stringValue]];
-  
+
   return newObj;
 }
 
 - (BOOL)isEqual:(GDataSpreadsheetCustomElement *)other {
-  
+
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataSpreadsheetCustomElement class]]) return NO;
-  
+
   return [super isEqual:other]
     && AreEqualOrBothNil([self name], [other name])
     && AreEqualOrBothNil([self stringValue], [other stringValue]);
@@ -92,10 +92,10 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:name_ withName:@"name"];
   [self addToArray:items objectDescriptionIfNonNil:stringValue_ withName:@"stringValue"];
-  
+
   return items;
 }
 #endif
@@ -103,11 +103,11 @@
 - (NSXMLElement *)XMLElement {
 
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:[self elementName]];
-   
+
   if (stringValue_) {
     [element addStringValue:stringValue_];
   }
-  
+
   return element;
 }
 

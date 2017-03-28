@@ -42,9 +42,9 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   // YouTube element extensions
@@ -54,9 +54,9 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:[self rating] withName:@"rating"];
 
   return items;

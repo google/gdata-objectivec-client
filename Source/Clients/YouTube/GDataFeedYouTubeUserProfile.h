@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubeUserProfile : GDataFeedBase 
+@interface GDataFeedYouTubeUserProfile : GDataFeedBase
 + (GDataFeedYouTubeUserProfile *)userProfileFeed;
 @end
 

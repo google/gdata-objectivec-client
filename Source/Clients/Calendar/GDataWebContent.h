@@ -25,7 +25,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATAWEBCONTENT_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -37,7 +37,7 @@ _EXTERN NSString* const kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.
 
 // Calendar Web Content element, inside a <link>, as in
 //
-// <gCal:webContent url="http://www.google.com/logos/july4th06.gif" 
+// <gCal:webContent url="http://www.google.com/logos/july4th06.gif"
 //                  width="276" height="120" >
 //      <gCal:webContentGadgetPref name="color" value="green" />
 //      <gCal:webContentGadgetPref name="military_time" value="false" />
@@ -75,7 +75,7 @@ _EXTERN NSString* const kGDataLinkRelWebContent _INITIALIZE_AS(@"http://schemas.
 
 // returning a dictionary of prefs simplifies key-value coding access
 - (NSDictionary *)gadgetPreferenceDictionary;
-  
+
 @end
 
 #endif // !GDATA_REQUIRE_SERVICE_INCLUDES || GDATA_INCLUDE_CALENDAR_SERVICE

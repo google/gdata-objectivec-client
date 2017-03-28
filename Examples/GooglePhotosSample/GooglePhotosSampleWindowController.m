@@ -48,7 +48,7 @@
 - (GDataFeedPhotoUser *)albumFeed;
 - (void)setAlbumFeed:(GDataFeedPhotoUser *)feed;
 - (NSError *)albumFetchError;
-- (void)setAlbumFetchError:(NSError *)error;  
+- (void)setAlbumFetchError:(NSError *)error;
 - (GDataServiceTicket *)albumFetchTicket;
 - (void)setAlbumFetchTicket:(GDataServiceTicket *)ticket;
 - (NSString *)albumImageURLString;
@@ -72,10 +72,10 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 
 + (GooglePhotosSampleWindowController *)sharedGooglePhotosSampleWindowController {
-  
+
   if (!gGooglePhotosSampleWindowController) {
     gGooglePhotosSampleWindowController = [[GooglePhotosSampleWindowController alloc] init];
-  }  
+  }
   return gGooglePhotosSampleWindowController;
 }
 
@@ -96,7 +96,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   NSFont *resultTextFont = [NSFont fontWithName:@"Monaco" size:9];
   [mAlbumResultTextField setFont:resultTextFont];
   [mPhotoResultTextField setFont:resultTextFont];
-  
+
   [self updateUI];
 }
 
@@ -105,12 +105,12 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [mAlbumFetchError release];
   [mAlbumFetchTicket release];
   [mAlbumImageURLString release];
-  
+
   [mAlbumPhotosFeed release];
   [mPhotosFetchError release];
   [mPhotosFetchTicket release];
   [mPhotoImageURLString release];
-  
+
   [super dealloc];
 }
 
@@ -120,24 +120,24 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // fetch or clear the thumbnail for this specified album
 - (void)updateImageForAlbum:(GDataEntryPhotoAlbum *)album {
-  
+
   // if there's a thumbnail and it's different from the one being shown,
   // fetch it now
   if (!album) {
     // clear the image
     [mAlbumImageView setImage:nil];
     [self setAlbumImageURLString:nil];
-    
-  } else {    
+
+  } else {
     // if the new thumbnail URL string is different from the previous one,
     // save the new one, clear the image and fetch the new image
-    
+
     NSArray *thumbnails = [[album mediaGroup] mediaThumbnails];
     if ([thumbnails count] > 0) {
-      
+
       NSString *imageURLString = [[thumbnails objectAtIndex:0] URLString];
       if (!imageURLString || ![mAlbumImageURLString isEqual:imageURLString]) {
-        
+
         [self setAlbumImageURLString:imageURLString];
         [mAlbumImageView setImage:nil];
 
@@ -146,40 +146,40 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
                   forImageView:mAlbumImageView
                          title:[[album title] stringValue]];
         }
-      } 
+      }
     }
   }
 }
 
 // get or clear the thumbnail for this specified photo
 - (void)updateImageForPhoto:(GDataEntryPhoto *)photo {
-  
+
   // if there's a thumbnail and it's different from the one being shown,
   // fetch it now
   if (!photo) {
     // clear the image
     [mPhotoImageView setImage:nil];
     [self setPhotoImageURLString:nil];
-    
-  } else {    
+
+  } else {
     // if the new thumbnail URL string is different from the previous one,
     // save the new one, clear the image and fetch the new image
-    
+
     NSArray *thumbnails = [[photo mediaGroup] mediaThumbnails];
     if ([thumbnails count] > 0) {
-      
+
       NSString *imageURLString = [[thumbnails objectAtIndex:0] URLString];
       if (!imageURLString || ![mPhotoImageURLString isEqual:imageURLString]) {
-        
+
         [self setPhotoImageURLString:imageURLString];
         [mPhotoImageView setImage:nil];
-        
+
         if (imageURLString) {
           [self fetchURLString:imageURLString
                   forImageView:mPhotoImageView
                          title:[[photo title] stringValue]];
         }
-      } 
+      }
     }
   }
 }
@@ -216,16 +216,16 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 #pragma mark -
 
 - (void)updateUI {
-  
+
   // album list display
-  [mAlbumTable reloadData]; 
-  
+  [mAlbumTable reloadData];
+
   if (mAlbumFetchTicket != nil) {
-    [mAlbumProgressIndicator startAnimation:self];  
+    [mAlbumProgressIndicator startAnimation:self];
   } else {
-    [mAlbumProgressIndicator stopAnimation:self];  
+    [mAlbumProgressIndicator stopAnimation:self];
   }
-  
+
   // album fetch result or selected item
   NSString *albumResultStr = @"";
   if (mAlbumFetchError) {
@@ -240,17 +240,17 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     [self updateImageForAlbum:album];
   }
   [mAlbumResultTextField setString:albumResultStr];
-  
+
   // photo list display
-  [mPhotoTable reloadData]; 
-  
+  [mPhotoTable reloadData];
+
   // the bottom table displays photo entries
   if (mPhotosFetchTicket != nil) {
-    [mPhotoProgressIndicator startAnimation:self];  
+    [mPhotoProgressIndicator startAnimation:self];
   } else {
-    [mPhotoProgressIndicator stopAnimation:self];  
+    [mPhotoProgressIndicator stopAnimation:self];
   }
-  
+
   // display photo entry fetch result or selected item
   GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
 
@@ -266,11 +266,11 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     [self updateImageForPhoto:selectedPhoto];
   }
   [mPhotoResultTextField setString:photoResultStr];
-  
+
   // enable/disable cancel buttons
   [mAlbumCancelButton setEnabled:(mAlbumFetchTicket != nil)];
   [mPhotoCancelButton setEnabled:(mPhotosFetchTicket != nil)];
-  
+
   // enable/disable other buttons
   BOOL isAlbumSelected = ([self selectedAlbum] != nil);
   BOOL isPasswordProvided = ([[mPasswordField stringValue] length] > 0);
@@ -284,12 +284,12 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   BOOL isSelectedEntryEditable = ([selectedPhoto editLink] != nil);
   [mDeletePhotoButton setEnabled:isSelectedEntryEditable];
   [mChangeAlbumPopupButton setEnabled:isSelectedEntryEditable];
-  
+
   BOOL hasPhotoFeed = ([selectedPhoto feedLink] != nil);
-  
+
   BOOL isTagProvided = ([[mTagField stringValue] length] > 0);
   BOOL isCommentProvided = ([[mCommentField stringValue] length] > 0);
-  
+
   [mAddTagButton setEnabled:(hasPhotoFeed && isTagProvided)];
   [mAddCommentButton setEnabled:(hasPhotoFeed && isCommentProvided)];
 
@@ -300,17 +300,17 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 }
 
 - (void)updateChangeAlbumList {
-  
+
   // replace all menu items in the button with the titles and pointers
   // of the feed's entries, but preserve the title
-  
+
   NSString *title = [mChangeAlbumPopupButton title];
-  
+
   NSMenu *menu = [[[NSMenu alloc] initWithTitle:title] autorelease];
   [menu addItemWithTitle:title action:nil keyEquivalent:@""];
-  
+
   [mChangeAlbumPopupButton setMenu:menu];
- 
+
   GDataFeedPhotoUser *feed = [self albumFeed];
 
   for (GDataEntryPhotoAlbum *albumEntry in feed) {
@@ -331,13 +331,13 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   GDataEntryPhotoAlbum *menuItemAlbum = [menuItem representedObject];
 
   if ([menuItemAlbum isKindOfClass:[GDataEntryPhotoAlbum class]]) {
-    
+
     GDataEntryPhoto *selectedPhoto = [self selectedPhoto];
-    
+
     BOOL isSelectedPhotoEntryEditable = ([selectedPhoto editLink] != nil);
-    
+
     if (isSelectedPhotoEntryEditable) {
-          
+
       if (menuItemAlbum != nil
           && ![[selectedPhoto albumID] isEqual:[menuItemAlbum GPhotoID]]) {
         return YES;
@@ -345,7 +345,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     }
     return NO;
   }
-  
+
   // unknown item being validated
   return YES;
 }
@@ -353,7 +353,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 #pragma mark IBActions
 
 - (IBAction)getAlbumClicked:(id)sender {
-  
+
   NSCharacterSet *whitespace = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 
   NSString *username = [mUsernameField stringValue];
@@ -363,7 +363,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     // if no domain was supplied, add @gmail.com
     username = [username stringByAppendingString:@"@gmail.com"];
   }
-  
+
   [mUsernameField setStringValue:username];
 
   [self fetchAllAlbums];
@@ -406,15 +406,15 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 }
 
 - (IBAction)addCommentClicked:(id)sender {
-  [self addCommentToSelectedPhoto]; 
+  [self addCommentToSelectedPhoto];
 }
 
 - (IBAction)addTagClicked:(id)sender {
-  [self addTagToSelectedPhoto]; 
+  [self addTagToSelectedPhoto];
 }
 
 - (IBAction)loggingCheckboxClicked:(id)sender {
-  [GTMHTTPFetcher setLoggingEnabled:[sender state]]; 
+  [GTMHTTPFetcher setLoggingEnabled:[sender state]];
 }
 #pragma mark -
 
@@ -426,9 +426,9 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 // fetched data.)
 
 - (GDataServiceGooglePhotos *)googlePhotosService {
-  
+
   static GDataServiceGooglePhotos* service = nil;
-  
+
   if (!service) {
     service = [[GDataServiceGooglePhotos alloc] init];
 
@@ -446,17 +446,17 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
     [service setUserCredentialsWithUsername:nil
                                    password:nil];
   }
-  
+
   return service;
 }
 
 // get the album selected in the top list, or nil if none
 - (GDataEntryPhotoAlbum *)selectedAlbum {
-  
+
   NSArray *albums = [mUserAlbumFeed entries];
   int rowIndex = [mAlbumTable selectedRow];
   if ([albums count] > 0 && rowIndex > -1) {
-    
+
     GDataEntryPhotoAlbum *album = [albums objectAtIndex:rowIndex];
     return album;
   }
@@ -465,11 +465,11 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // get the photo selected in the bottom list, or nil if none
 - (GDataEntryPhoto *)selectedPhoto {
-  
+
   NSArray *photos = [mAlbumPhotosFeed entries];
   int rowIndex = [mPhotoTable selectedRow];
   if ([photos count] > 0 && rowIndex > -1) {
-    
+
     GDataEntryPhoto *photo = [photos objectAtIndex:rowIndex];
     return photo;
   }
@@ -480,17 +480,17 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
 
 // begin retrieving the list of the user's albums
 - (void)fetchAllAlbums {
-  
+
   [self setAlbumFeed:nil];
   [self setAlbumFetchError:nil];
   [self setAlbumFetchTicket:nil];
-  
+
   [self setPhotoFeed:nil];
   [self setPhotoFetchError:nil];
   [self setPhotoFetchTicket:nil];
 
   NSString *username = [mUsernameField stringValue];
-  
+
   GDataServiceGooglePhotos *service = [self googlePhotosService];
   GDataServiceTicket *ticket;
 
@@ -525,7 +525,7 @@ static GooglePhotosSampleWindowController* gGooglePhotosSampleWindowController =
   [self updateUI];
 }
 
-#pragma mark Fetch an album's photos 
+#pragma mark Fetch an album's photos
 
 // for the album selected in the top list, begin retrieving the list of
 // photos
@@ -1069,14 +1069,14 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 //
 
 - (void)tableViewSelectionDidChange:(NSNotification *)notification {
-  
+
   if ([notification object] == mAlbumTable) {
     [self fetchSelectedAlbum];
   } else {
-    // the user clicked on an entry; 
+    // the user clicked on an entry;
     // just display it below the entry table
-    
-    [self updateUI]; 
+
+    [self updateUI];
   }
 }
 
@@ -1106,7 +1106,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 #pragma mark Setters and Getters
 
 - (GDataFeedPhotoUser *)albumFeed {
-  return mUserAlbumFeed; 
+  return mUserAlbumFeed;
 }
 
 - (void)setAlbumFeed:(GDataFeedPhotoUser *)feed {
@@ -1115,7 +1115,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (NSError *)albumFetchError {
-  return mAlbumFetchError; 
+  return mAlbumFetchError;
 }
 
 - (void)setAlbumFetchError:(NSError *)error {
@@ -1124,7 +1124,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (GDataServiceTicket *)albumFetchTicket {
-  return mAlbumFetchTicket; 
+  return mAlbumFetchTicket;
 }
 
 - (void)setAlbumFetchTicket:(GDataServiceTicket *)ticket {
@@ -1142,7 +1142,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (GDataFeedPhotoAlbum *)photoFeed {
-  return mAlbumPhotosFeed; 
+  return mAlbumPhotosFeed;
 }
 
 - (void)setPhotoFeed:(GDataFeedPhotoAlbum *)feed {
@@ -1151,7 +1151,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (NSError *)photoFetchError {
-  return mPhotosFetchError; 
+  return mPhotosFetchError;
 }
 
 - (void)setPhotoFetchError:(NSError *)error {
@@ -1160,7 +1160,7 @@ static NSString* const kDestAlbumKey = @"DestAlbum";
 }
 
 - (GDataServiceTicket *)photoFetchTicket {
-  return mPhotosFetchTicket; 
+  return mPhotosFetchTicket;
 }
 
 - (void)setPhotoFetchTicket:(GDataServiceTicket *)ticket {

@@ -47,7 +47,7 @@
 @end
 
 // user's books, like <yt:books>Pride and Prejudice</yt:books>
-@implementation GDataYouTubeBooks 
+@implementation GDataYouTubeBooks
 + (NSString *)extensionElementURI       { return kGDataNamespaceYouTube; }
 + (NSString *)extensionElementPrefix    { return kGDataNamespaceYouTubePrefix; }
 + (NSString *)extensionElementLocalName { return @"books"; }

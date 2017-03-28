@@ -24,7 +24,7 @@
 #undef _EXTERN
 #undef _INITIALIZE_AS
 #ifdef GDATASERVICEGOOGLEPHOTOS_DEFINE_GLOBALS
-#define _EXTERN 
+#define _EXTERN
 #define _INITIALIZE_AS(x) =x
 #else
 #define _EXTERN GDATA_EXTERN
@@ -52,7 +52,7 @@ _EXTERN NSString* const kGDataGooglePhotosKindUser    _INITIALIZE_AS(@"user");
 _EXTERN NSString* const kGDataGooglePhotosDropBoxUploadURL _INITIALIZE_AS(@"https://photos.googleapis.com/data/upload/resumable/media/create-session/feed/api/user/default/albumid/default");
 _EXTERN NSString* const kGDataGooglePhotosDropBoxAlbumID   _INITIALIZE_AS(@"default");
 
-@interface GDataServiceGooglePhotos : GDataServiceGoogle 
+@interface GDataServiceGooglePhotos : GDataServiceGoogle
 
 + (NSString *)serviceRootURLString;
 

@@ -41,7 +41,7 @@ static NSString* const kHrefAttr = @"href";
 + (GDataOriginalEvent *)originalEventWithID:(NSString *)originalID
                                        href:(NSString *)feedHref
                           originalStartTime:(GDataWhen *)startTime {
-  
+
   GDataOriginalEvent *obj = [self object];
   [obj setHref:feedHref];
   [obj setOriginalID:originalID];
@@ -50,27 +50,27 @@ static NSString* const kHrefAttr = @"href";
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
                                    childClass:[GDataWhen class]];
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kIDAttr, kHrefAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [super itemsForDescription];
-  
-  // add extensions  
+
+  // add extensions
   [self addToArray:items objectDescriptionIfNonNil:[self originalStartTime] withName:@"startTime"];
-  
+
   return items;
 }
 #endif

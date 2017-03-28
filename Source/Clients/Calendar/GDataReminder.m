@@ -31,7 +31,7 @@ static NSString* const kAbsoluteTimeAttr = @"absoluteTime";
 
 
 @implementation GDataReminder
-// reminder, as in 
+// reminder, as in
 //   <gd:reminder absoluteTime="2005-06-06T16:55:00-08:00"/>
 //
 // http://code.google.com/apis/gdata/common-elements.html#gdReminder
@@ -45,10 +45,10 @@ static NSString* const kAbsoluteTimeAttr = @"absoluteTime";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
-                    kDaysAttr, kHoursAttr, kMinutesAttr, 
+  NSArray *attrs = [NSArray arrayWithObjects:
+                    kDaysAttr, kHoursAttr, kMinutesAttr,
                     kAbsoluteTimeAttr, kMethodAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 

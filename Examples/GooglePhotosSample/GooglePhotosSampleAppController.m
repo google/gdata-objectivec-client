@@ -23,10 +23,10 @@
 @implementation GooglePhotosSampleAppController
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notifcation {
-  
+
   GooglePhotosSampleWindowController* windowController = [GooglePhotosSampleWindowController sharedGooglePhotosSampleWindowController];
   [windowController showWindow:self];
-  
+
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

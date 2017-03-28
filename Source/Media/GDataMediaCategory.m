@@ -42,12 +42,12 @@ static NSString* const kLabelAttr = @"label";
 }
 
 - (void)addParseDeclarations {
-  
-  NSArray *attrs = [NSArray arrayWithObjects: 
+
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kLabelAttr, kSchemeAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 

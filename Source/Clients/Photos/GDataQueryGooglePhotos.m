@@ -35,13 +35,13 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
 @implementation GDataQueryGooglePhotos
 
 + (GDataQueryGooglePhotos *)photoQueryWithFeedURL:(NSURL *)feedURL {
-  return [self queryWithFeedURL:feedURL];   
+  return [self queryWithFeedURL:feedURL];
 }
 
 + (GDataQueryGooglePhotos *)photoQueryForUserID:(NSString *)userID
                                         albumID:(NSString *)albumIDorNil
                                       albumName:(NSString *)albumNameOrNil
-                                        photoID:(NSString *)photoIDorNil {  
+                                        photoID:(NSString *)photoIDorNil {
   NSURL *url;
   url = [GDataServiceGooglePhotos photoFeedURLForUserID:userID
                                                 albumID:albumIDorNil
@@ -54,7 +54,7 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
 
 - (NSString *)stringParamOrNilForInt:(NSInteger)val {
   if (val > 0) {
-    return [NSString stringWithFormat:@"%ld", (long)val]; 
+    return [NSString stringWithFormat:@"%ld", (long)val];
   }
   return nil;
 }
@@ -89,20 +89,20 @@ static NSString *const kImageSizeOriginalPhoto = @"d";
 
 - (void)setImageSize:(NSInteger)val {
   NSString *valStr;
-  
+
   if (val == kGDataGooglePhotosImageSizeDownloadable) {
     valStr = kImageSizeOriginalPhoto; // imgmax=d
   } else {
     valStr = [self stringParamOrNilForInt:val];
   }
-  
+
   [self addCustomParameterWithName:kImageSizeParamName
-                             value:valStr]; 
+                             value:valStr];
 }
 
 - (NSInteger)imageSize {
   NSString *valStr = [self valueForParameterWithName:kImageSizeParamName];
-  
+
   if ([valStr isEqual:kImageSizeOriginalPhoto]) {
     return kGDataGooglePhotosImageSizeDownloadable;
   }

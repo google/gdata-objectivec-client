@@ -21,7 +21,7 @@
 
 #import "GDataQuery.h"
 
-// Document-specific query params, per 
+// Document-specific query params, per
 //   http://code.google.com/apis/document/reference.html#Parameters
 
 #undef _EXTERN
@@ -41,7 +41,7 @@ _EXTERN NSString* const kGDataQueryDocsTitle        _INITIALIZE_AS(@"title");
 _EXTERN NSString* const kGDataQueryDocsStarred      _INITIALIZE_AS(@"starred");
 
 
-@interface GDataQueryDocs : GDataQuery 
+@interface GDataQueryDocs : GDataQuery
 
 + (GDataQueryDocs *)documentQueryWithFeedURL:(NSURL *)feedURL;
 

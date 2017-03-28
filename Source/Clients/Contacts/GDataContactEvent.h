@@ -40,7 +40,7 @@ _EXTERN NSString* kGDataContactEventOther       _INITIALIZE_AS(@"other");
 + (id)eventWithRel:(NSString *)rel
              label:(NSString *)label
               when:(GDataWhen *)when;
-  
+
 - (NSString *)label;
 - (void)setLabel:(NSString *)str;
 

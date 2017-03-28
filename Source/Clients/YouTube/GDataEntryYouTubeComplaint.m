@@ -25,11 +25,11 @@
 @implementation GDataEntryYouTubeComplaint
 
 + (GDataEntryYouTubeComplaint *)complaintEntry {
-  
+
   GDataEntryYouTubeComplaint *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 

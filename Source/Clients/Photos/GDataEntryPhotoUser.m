@@ -26,11 +26,11 @@
 @implementation GDataEntryPhotoUser
 
 + (GDataEntryPhotoUser *)userEntry {
-  
+
   GDataEntryPhotoUser *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,12 +45,12 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // common photo extensions
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataPhotoMaxPhotosPerAlbum class],
@@ -64,7 +64,7 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"maxPhotosPerAlbum", @"maxPhotosPerAlbum", kGDataDescValueLabeled },
     { @"nickname",          @"nickname",          kGDataDescValueLabeled },
@@ -74,10 +74,10 @@
     { @"username",          @"username",          kGDataDescValueLabeled },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
-  return items;  
+  return items;
 }
 #endif
 
@@ -90,7 +90,7 @@
 
 - (void)setMaxPhotosPerAlbum:(NSNumber *)num {
   GDataPhotoMaxPhotosPerAlbum *obj = [GDataPhotoMaxPhotosPerAlbum valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataPhotoMaxPhotosPerAlbum class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoMaxPhotosPerAlbum class]];
 }
 
 - (NSString *)nickname {
@@ -100,7 +100,7 @@
 
 - (void)setNickname:(NSString *)str {
   GDataPhotoNickname *obj = [GDataPhotoNickname valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoNickname class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoNickname class]];
 }
 
 - (NSString *)thumbnail {
@@ -110,7 +110,7 @@
 
 - (void)setThumbnail:(NSString *)str {
   GDataPhotoThumbnail *obj = [GDataPhotoThumbnail valueWithString:str];
-  [self setObject:obj forExtensionClass:[GDataPhotoThumbnail class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoThumbnail class]];
 }
 
 - (NSNumber *)quotaLimit { // long long
@@ -120,7 +120,7 @@
 
 - (void)setQuotaLimit:(NSNumber *)num {
   GDataPhotoQuotaLimit *obj = [GDataPhotoQuotaLimit valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataPhotoQuotaLimit class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoQuotaLimit class]];
 }
 
 - (NSNumber *)quotaUsed { // long long
@@ -130,7 +130,7 @@
 
 - (void)setQuotaUsed:(NSNumber *)num {
   GDataPhotoQuotaUsed *obj = [GDataPhotoQuotaUsed valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[GDataPhotoQuotaUsed class]];  
+  [self setObject:obj forExtensionClass:[GDataPhotoQuotaUsed class]];
 }
 
 - (NSString *)username {
@@ -140,7 +140,7 @@
 
 - (void)setUsername:(NSString *)str {
   GDataPhotoUser *obj = [GDataPhotoUser valueWithString:str];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 

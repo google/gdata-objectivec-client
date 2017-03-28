@@ -39,7 +39,7 @@
 }
 
 - (void)setIdentifier:(NSString *)str {
-  [self setStringValue:str]; 
+  [self setStringValue:str];
 }
 @end
 
@@ -52,9 +52,9 @@
 
 + (GDataEntryContactGroup *)contactGroupEntryWithTitle:(NSString *)title {
   GDataEntryContactGroup *obj = [self object];
-  
+
   [obj setNamespaces:[GDataContactConstants contactNamespaces]];
-  
+
   [obj setTitleWithString:title];
   return obj;
 }
@@ -70,29 +70,29 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // ContactEntry extensions
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                  childClasses:
    [GDataExtendedProperty class],
    [GDataContactSystemGroup class],
-   nil];  
+   nil];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   static struct GDataDescriptionRecord descRecs[] = {
     { @"systemGroup", @"systemGroup.identifier", kGDataDescValueLabeled },
     { @"extProps",    @"extendedProperties",     kGDataDescArrayCount },
     { nil, nil, (GDataDescRecTypes)0 }
   };
-  
+
   NSMutableArray *items = [super itemsForDescription];
   [self addDescriptionRecords:descRecs toItems:items];
   return items;

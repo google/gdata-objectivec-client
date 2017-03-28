@@ -34,7 +34,7 @@ static NSString *const kCodeAttr = @"code";
 
 + (id)languageWithCode:(NSString *)code
                  label:(NSString *)label {
-  
+
   GDataContactLanguage *obj = [self object];
   [obj setLabel:label];
   [obj setCode:code];
@@ -43,7 +43,7 @@ static NSString *const kCodeAttr = @"code";
 
 - (void)addParseDeclarations {
   NSArray *attrs = [NSArray arrayWithObjects:kLabelAttr, kCodeAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 

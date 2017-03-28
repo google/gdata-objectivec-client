@@ -54,13 +54,13 @@ static ItemSelectors sAllItemSelectors[] = {
 // given the object we're editing, get the list with the selectors
 // and the display name for that class of object
 static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
-  
+
   NSString *className = NSStringFromClass([obj class]);
-  
+
   for (int idx = 0; sAllItemSelectors[idx].className; idx++) {
 
     if ([className isEqual:sAllItemSelectors[idx].className]) {
-      return &sAllItemSelectors[idx]; 
+      return &sAllItemSelectors[idx];
     }
   }
   return NULL;
@@ -77,12 +77,12 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 }
 
 - (void)awakeFromNib {
-  
+
   if (mObject) {
     // copy data from the object to our dialog's controls
     [self setUIFromObject:mObject];
   }
-  
+
   // make the lists of rel values for the rel combo box, and put in a dictionary
   // according to item class.  This dictionary is used for the combo box
   // data source delegate methods
@@ -90,27 +90,27 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   // When the combo box menu's data source asks for the menu items,
   // we'll just look up the rel strings from the class of the item
   // being edited.
-  
+
   NSArray *standardRels = [NSArray arrayWithObjects:kGDataContactHome,
     kGDataContactWork, kGDataContactOther, nil];
-  
-  NSArray *orgRels = [NSArray arrayWithObjects:kGDataContactWork, 
+
+  NSArray *orgRels = [NSArray arrayWithObjects:kGDataContactWork,
     kGDataContactOther, nil];
-  
-  NSArray *phoneRels = [NSArray arrayWithObjects:kGDataPhoneNumberHome, 
+
+  NSArray *phoneRels = [NSArray arrayWithObjects:kGDataPhoneNumberHome,
     kGDataPhoneNumberMobile, kGDataPhoneNumberPager, kGDataPhoneNumberWork,
     kGDataPhoneNumberHomeFax, kGDataPhoneNumberWorkFax, kGDataPhoneNumberOther,
     nil];
 
   NSArray *noRels = [NSArray array];
-  
+
   relsDict_ = [[NSDictionary alloc] initWithObjectsAndKeys:
     orgRels, @"GDataOrganization",
     standardRels, @"GDataEmail",
     standardRels, @"GDataIM",
     phoneRels, @"GDataPhoneNumber",
-    standardRels, @"GDataStructuredPostalAddress", 
-    noRels, @"GDataGroupMembershipInfo", 
+    standardRels, @"GDataStructuredPostalAddress",
+    noRels, @"GDataGroupMembershipInfo",
     noRels, @"GDataExtendedProperty", nil];
 }
 
@@ -118,7 +118,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   [relsDict_ release];
   [mObject release];
   [mGroupFeed release];
-  [super dealloc]; 
+  [super dealloc];
 }
 
 
@@ -137,9 +137,9 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 }
 
 - (void)setUIFromObject:(GDataObject *)obj {
-  
+
   ItemSelectors *sels = ItemSelectorsForObject(obj);
-  
+
   NSString *value = [self stringValueForKey:(sels->valueKey) object:obj];
   NSString *label = [self stringValueForKey:(sels->labelKey) object:obj];
   NSString *rel = [self stringValueForKey:(sels->relKey) object:obj];
@@ -147,7 +147,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   NSString *protocol = [self stringValueForKey:(sels->protocolKey) object:obj];
 
   [mClassNameField setStringValue:(sels->classDisplayName)];
-  
+
   [mValueField setStringValue:value];
   [mLabelField setStringValue:label];
   [mRelField setStringValue:rel];
@@ -159,11 +159,11 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   [mRelField setEnabled:(sels->relKey != nil)];
   [mOrgTitleField setEnabled:(sels->titleKey != nil)];
   [mProtocolField setEnabled:(sels->protocolKey != nil)];
-  
+
   // group combo box
   if ([obj isKindOfClass:[GDataGroupMembershipInfo class]]) {
     [mGroupField setEnabled:YES];
-    
+
     // set the field text to the group namefor this object's href
     NSString *objectID = [(GDataGroupMembershipInfo *)obj href];
     if (objectID) {
@@ -174,7 +174,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   } else {
     [mGroupField setEnabled:NO];
   }
-  
+
   // "primary" checkbox
   if ([obj respondsToSelector:@selector(isPrimary)]) {
     BOOL isPrimary = [(id)obj isPrimary];
@@ -192,7 +192,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
   } else {
     [mDeletedCheckbox setEnabled:NO];
   }
-  
+
 }
 
 - (NSString *)stringValueOrNilForField:(NSTextField *)field {
@@ -201,23 +201,23 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 }
 
 - (GDataObject *)objectFromUI {
-  
+
   ItemSelectors *sels = ItemSelectorsForObject(mObject);
-  
+
   NSString *value = [self stringValueOrNilForField:mValueField];
   NSString *label = [self stringValueOrNilForField:mLabelField];
   NSString *rel = [self stringValueOrNilForField:mRelField];
   NSString *title = [self stringValueOrNilForField:mOrgTitleField];
   NSString *protocol = [self stringValueOrNilForField:mProtocolField];
-  
+
   GDataObject *newObj = [[mObject copy] autorelease];
-  
+
   if (sels->valueKey)    [newObj setValue:value forKey:sels->valueKey];
   if (sels->labelKey)    [newObj setValue:label forKey:sels->labelKey];
   if (sels->relKey)      [newObj setValue:rel forKey:sels->relKey];
   if (sels->titleKey)    [newObj setValue:title forKey:sels->titleKey];
   if (sels->protocolKey) [newObj setValue:protocol forKey:sels->protocolKey];
-  
+
   if ([mPrimaryCheckbox isEnabled]) {
     BOOL isPrimary = ([mPrimaryCheckbox state] == NSOnState);
     [(id)newObj setIsPrimary:isPrimary];
@@ -227,7 +227,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
     BOOL isDeleted = ([mDeletedCheckbox state] == NSOnState);
     [(id)newObj setIsDeleted:isDeleted];
   }
-  
+
   if ([mGroupField isEnabled]) {
     // find the index of the group entry that has the title in the combo box
     NSString *str = [mGroupField stringValue];
@@ -240,11 +240,11 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
       href = [[[mGroupFeed entries] objectAtIndex:index] identifier];
     } else {
       // it wasn't a title, so assume the user entered a group's ID
-      href = str; 
+      href = str;
     }
     [(id)newObj setHref:href];
   }
-  
+
   return newObj;
 }
 
@@ -257,12 +257,12 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
                 groupFeed:(GDataFeedContactGroup *)groupFeed
                    object:(GDataObject *)object
 {
-  
+
   mTarget = target;
   mDoneSEL = doneSelector;
   mObject = [object retain];
   mGroupFeed = [groupFeed retain];
-  
+
   [NSApp beginSheet:[self window]
      modalForWindow:[mTarget window]
       modalDelegate:self
@@ -271,14 +271,14 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 }
 
 - (void)sheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode  contextInfo:(void  *)contextInfo {
-  
+
 }
 
 - (void)closeDialog {
   // call the target to say we're done
-  [mTarget performSelector:mDoneSEL 
+  [mTarget performSelector:mDoneSEL
                 withObject:[[self retain] autorelease]];
-  
+
   [[self window] orderOut:self];
   [NSApp endSheet:[self window]];
 }
@@ -294,11 +294,11 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 
 - (GDataObject *)object {
   // copy from our dialog's controls into the object
-  return [self objectFromUI]; 
+  return [self objectFromUI];
 }
 
 - (BOOL)wasSaveClicked {
-  return mWasSaveClicked; 
+  return mWasSaveClicked;
 }
 
 #pragma mark Rel and Protocol combo box data source
@@ -309,9 +309,9 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 }
 
 - (NSArray *)protocolsForCurrentObject {
-  
+
   if ([mObject class] == [GDataIM class]) {
-    
+
     return [NSArray arrayWithObjects:
       kGDataIMProtocolAIM, kGDataIMProtocolGoogleTalk, kGDataIMProtocolICQ,
       kGDataIMProtocolJabber, kGDataIMProtocolMSN, kGDataIMProtocolYahoo, nil];
@@ -348,21 +348,21 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
 // setter that looks for a leading "<" to decide if it's an XML element
 
 - (NSString *)unifiedStringValue {
-  
+
   NSString *result = [self value];
   if (result == nil) {
     NSArray *xmlStrings  = [[self XMLValues] valueForKey:@"XMLString"];
     result = [xmlStrings componentsJoinedByString:@""];
   }
-  return result; 
+  return result;
 }
 
 - (void)setUnifiedStringValue:(NSString *)str {
   NSCharacterSet *wsSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
   NSString *trimmed = [str stringByTrimmingCharactersInSet:wsSet];
-  
+
   if ([trimmed hasPrefix:@"<"]) {
-    
+
     // set as an XML element
     NSError *error = nil;
     NSXMLElement *element;
@@ -377,7 +377,7 @@ static ItemSelectors *ItemSelectorsForObject(GDataObject *obj) {
     [self setValue:nil];
 
   } else {
-    
+
     // set as an attribute string
     [self setValue:str];
     [self setXMLValues:nil];

@@ -28,7 +28,7 @@
 
 + (GDataEntryPhoto *)photoEntry;
 
-// uploading photo data 
+// uploading photo data
 - (void)setPhotoData:(NSData *)data; // data will retained by the entry
 - (NSData *)photoData;
 
@@ -39,7 +39,7 @@
 
 // to move a photo to another album, set the photo entry's albumID
 // to the album's GPhotoID and update the photo entry (with
-// fetchPhotoEntryByUpdatingEntry:) 
+// fetchPhotoEntryByUpdatingEntry:)
 - (NSString *)albumID;
 - (void)setAlbumID:(NSString *)str;
 
@@ -68,7 +68,7 @@
 - (void)setWidth:(NSNumber *)num;
 
 - (NSString *)videoStatus;
-- (void)setVideoStatus:(NSString *)str;  
+- (void)setVideoStatus:(NSString *)str;
 
 // setGeoLocation requires an instance of a subclass of GDataGeo, not an
 // instance of GDataGeo; see GDataGeo.h

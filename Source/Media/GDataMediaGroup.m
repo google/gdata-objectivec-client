@@ -49,7 +49,7 @@
 
 
 @implementation GDataMediaGroup
-// for media:group, like 
+// for media:group, like
 // <media:group> <media:contents  ... /> </media:group>
 
 + (NSString *)extensionElementURI       { return kGDataNamespaceMedia; }
@@ -64,9 +64,9 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   [self addExtensionDeclarationForParentClass:[self class]
                                  childClasses:
    [GDataMediaContent class],
@@ -79,8 +79,8 @@
    [GDataMediaThumbnail class],
    [GDataMediaKeywords class],
    [GDataMediaTitle class],
-   nil];  
-  
+   nil];
+
   // still unsupported:
   // MediaCopyright, MediaHash, MediaText
 }
@@ -121,11 +121,11 @@
 }
 
 - (void)setMediaCategories:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaCategory class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaCategory class]];
 }
 
 - (void)addMediaCategory:(GDataMediaCategory *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaCategory class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaCategory class]];
 }
 
 // MediaContents
@@ -136,11 +136,11 @@
 }
 
 - (void)setMediaContents:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaContent class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaContent class]];
 }
 
 - (void)addMediaContent:(GDataMediaContent *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaContent class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaContent class]];
 }
 
 // MediaCredits
@@ -151,11 +151,11 @@
 }
 
 - (void)setMediaCredits:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaCredit class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaCredit class]];
 }
 
 - (void)addMediaCredit:(GDataMediaCredit *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaCredit class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaCredit class]];
 }
 
 // MediaPlayers
@@ -166,11 +166,11 @@
 }
 
 - (void)setMediaPlayers:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaPlayer class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaPlayer class]];
 }
 
 - (void)addMediaPlayer:(GDataMediaPlayer *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaPlayer class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaPlayer class]];
 }
 
 // MediaRatings
@@ -181,11 +181,11 @@
 }
 
 - (void)setMediaRatings:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaRating class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaRating class]];
 }
 
 - (void)addMediaRating:(GDataMediaRating *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaRating class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaRating class]];
 }
 
 // MediaRatings
@@ -196,11 +196,11 @@
 }
 
 - (void)setMediaRestrictions:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaRestriction class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaRestriction class]];
 }
 
 - (void)addMediaRestriction:(GDataMediaRestriction *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaRestriction class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaRestriction class]];
 }
 
 // MediaThumbnails
@@ -211,35 +211,35 @@
 }
 
 - (void)setMediaThumbnails:(NSArray *)array {
-  [self setObjects:array forExtensionClass:[GDataMediaThumbnail class]]; 
+  [self setObjects:array forExtensionClass:[GDataMediaThumbnail class]];
 }
 
 - (void)addMediaThumbnail:(GDataMediaThumbnail *)attribute {
-  [self addObject:attribute forExtensionClass:[GDataMediaThumbnail class]]; 
+  [self addObject:attribute forExtensionClass:[GDataMediaThumbnail class]];
 }
 
 // MediaKeywords
 
 - (GDataMediaKeywords *)mediaKeywords {
-  GDataMediaKeywords *obj = 
+  GDataMediaKeywords *obj =
       [self objectForExtensionClass:[GDataMediaKeywords class]];
   return obj;
 }
 
 - (void)setMediaKeywords:(GDataMediaKeywords *)obj {
-  [self setObject:obj forExtensionClass:[GDataMediaKeywords class]]; 
+  [self setObject:obj forExtensionClass:[GDataMediaKeywords class]];
 }
 
 // MediaDescription
 
 - (GDataMediaDescription *)mediaDescription {
-  GDataMediaDescription *obj = 
+  GDataMediaDescription *obj =
       [self objectForExtensionClass:[GDataMediaDescription class]];
   return obj;
 }
 
 - (void)setMediaDescription:(GDataMediaDescription *)obj {
-  [self setObject:obj forExtensionClass:[GDataMediaDescription class]]; 
+  [self setObject:obj forExtensionClass:[GDataMediaDescription class]];
 }
 
 // MediaTitle
@@ -251,7 +251,7 @@
 }
 
 - (void)setMediaTitle:(GDataMediaTitle *)obj {
-  [self setObject:obj forExtensionClass:[GDataMediaTitle class]]; 
+  [self setObject:obj forExtensionClass:[GDataMediaTitle class]];
 }
 
 @end

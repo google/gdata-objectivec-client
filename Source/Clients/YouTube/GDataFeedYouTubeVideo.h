@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubeVideo : GDataFeedBase 
+@interface GDataFeedYouTubeVideo : GDataFeedBase
 + (GDataFeedYouTubeVideo *)videoFeed;
 @end
 

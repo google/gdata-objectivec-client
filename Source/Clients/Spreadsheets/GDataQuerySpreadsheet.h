@@ -21,7 +21,7 @@
 
 #import "GDataQuery.h"
 
-@interface GDataQuerySpreadsheet : GDataQuery 
+@interface GDataQuerySpreadsheet : GDataQuery
 
 + (GDataQuerySpreadsheet *)spreadsheetQueryWithFeedURL:(NSURL *)feedURL;
 

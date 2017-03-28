@@ -52,34 +52,34 @@
   // spreadsheet categories do not use the standard Kind scheme
   // (kGDataCategoryScheme) so cannot be registered with +registerEntryClass
   [GDataEntryBase registerEntryClass:[self class]
-               forCategoryWithScheme:kGDataCategorySchemeSpreadsheet 
+               forCategoryWithScheme:kGDataCategorySchemeSpreadsheet
                                 term:kGDataCategoryWorksheet];
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
-  
+
   // Worksheet extensions
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataColumnCount class]];
   [self addExtensionDeclarationForParentClass:entryClass
-                                   childClass:[GDataRowCount class]];  
+                                   childClass:[GDataRowCount class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   NSString *colStr = [NSString stringWithFormat:@"%d", (int) [self columnCount]];
   NSString *rowStr = [NSString stringWithFormat:@"%d", (int) [self rowCount]];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:colStr withName:@"cols"];
   [self addToArray:items objectDescriptionIfNonNil:rowStr withName:@"rows"];
-  
+
   return items;
 }
 #endif
@@ -105,7 +105,7 @@
 
 - (NSInteger)rowCount {
   GDataRowCount *rowCount = [self objectForExtensionClass:[GDataRowCount class]];
-  
+
   return [rowCount count];
 }
 
@@ -116,7 +116,7 @@
 
 - (NSInteger)columnCount {
   GDataColumnCount *columnCount = [self objectForExtensionClass:[GDataColumnCount class]];
-  
+
   return [columnCount count];
 }
 
@@ -128,7 +128,7 @@
 #pragma mark -
 
 - (GDataLink *)spreadsheetLink {
-  return [self alternateLink]; 
+  return [self alternateLink];
 }
 
 - (GDataLink *)cellsLink {

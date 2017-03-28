@@ -23,10 +23,10 @@
 @implementation ContactsSampleAppController
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notifcation {
-  
+
   ContactsSampleWindowController* windowController = [ContactsSampleWindowController sharedContactsSampleWindowController];
   [windowController showWindow:self];
-  
+
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

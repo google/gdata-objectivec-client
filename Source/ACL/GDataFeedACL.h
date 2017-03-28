@@ -23,7 +23,7 @@
 #import "GDataFeedBase.h"
 #import "GDataEntryACL.h"
 
-@interface GDataFeedACL : GDataFeedBase 
+@interface GDataFeedACL : GDataFeedBase
 
 + (id)ACLFeed;
 

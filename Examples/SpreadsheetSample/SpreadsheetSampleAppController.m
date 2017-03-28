@@ -23,10 +23,10 @@
 @implementation SpreadsheetSampleAppController
 
 - (void)applicationWillFinishLaunching:(NSNotification *)notifcation {
-  
+
   SpreadsheetSampleWindowController* windowController = [SpreadsheetSampleWindowController sharedSpreadsheetSampleWindowController];
   [windowController showWindow:self];
-  
+
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

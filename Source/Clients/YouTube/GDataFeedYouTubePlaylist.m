@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubePlaylist
 
 + (GDataFeedYouTubePlaylist *)playlistFeed {
-  
+
   GDataFeedYouTubePlaylist *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 
@@ -58,9 +58,9 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   if ([self isPrivate]) [items addObject:@"private"];
 
   [self addToArray:items objectDescriptionIfNonNil:[self mediaGroup] withName:@"mediaGroup"];

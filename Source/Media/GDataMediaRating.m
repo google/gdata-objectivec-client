@@ -40,11 +40,11 @@ static NSString* const kSchemeAttr = @"scheme";
 }
 
 - (void)addParseDeclarations {
-  
+
   NSArray *attrs = [NSArray arrayWithObject:kSchemeAttr];
-  
+
   [self addLocalAttributeDeclarations:attrs];
-  
+
   [self addContentValueDeclaration];
 }
 

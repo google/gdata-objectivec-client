@@ -28,9 +28,9 @@
 @implementation GDataEntryYouTubeFeedLinkBase
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   // YouTube element extensions

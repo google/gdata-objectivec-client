@@ -33,7 +33,7 @@ static NSString* const kPrimaryAttr = @"primary";
 + (id)linkWithRel:(NSString *)rel
             label:(NSString *)label
              href:(NSString *)href {
-  
+
   GDataContactLink *obj = [self object];
   [obj setRel:rel];
   [obj setLabel:label];
@@ -42,9 +42,9 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (void)addParseDeclarations {
-  NSArray *attrs = [NSArray arrayWithObjects: 
+  NSArray *attrs = [NSArray arrayWithObjects:
                     kHrefAttr, kLabelAttr, kRelAttr, kPrimaryAttr, nil];
-  
+
   [self addLocalAttributeDeclarations:attrs];
 }
 
@@ -55,7 +55,7 @@ static NSString* const kPrimaryAttr = @"primary";
 #pragma mark -
 
 - (NSString *)label {
-  return [self stringValueForAttribute:kLabelAttr]; 
+  return [self stringValueForAttribute:kLabelAttr];
 }
 
 - (void)setLabel:(NSString *)str {
@@ -63,7 +63,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)rel {
-  return [self stringValueForAttribute:kRelAttr]; 
+  return [self stringValueForAttribute:kRelAttr];
 }
 
 - (void)setRel:(NSString *)str {
@@ -71,7 +71,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (NSString *)href {
-  return [self stringValueForAttribute:kHrefAttr]; 
+  return [self stringValueForAttribute:kHrefAttr];
 }
 
 - (void)setHref:(NSString *)str {
@@ -79,7 +79,7 @@ static NSString* const kPrimaryAttr = @"primary";
 }
 
 - (BOOL)isPrimary {
-  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO]; 
+  return [self boolValueForAttribute:kPrimaryAttr defaultValue:NO];
 }
 
 - (void)setIsPrimary:(BOOL)flag {

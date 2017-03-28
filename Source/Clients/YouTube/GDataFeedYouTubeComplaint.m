@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeComplaint
 
 + (GDataFeedYouTubeComplaint *)complaintFeed {
-  
+
   GDataFeedYouTubeComplaint *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

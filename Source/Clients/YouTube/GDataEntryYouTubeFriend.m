@@ -26,11 +26,11 @@
 @implementation GDataEntryYouTubeFriend
 
 + (GDataEntryYouTubeFriend *)friendEntry {
-  
+
   GDataEntryYouTubeFriend *entry = [self object];
 
   [entry setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return entry;
 }
 
@@ -45,9 +45,9 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   Class entryClass = [self class];
 
   // YouTube element extensions
@@ -60,9 +60,9 @@
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:[self username] withName:@"username"];
   [self addToArray:items objectDescriptionIfNonNil:[self status] withName:@"status"];
 

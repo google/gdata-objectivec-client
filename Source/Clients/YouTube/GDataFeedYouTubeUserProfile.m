@@ -25,11 +25,11 @@
 @implementation GDataFeedYouTubeUserProfile
 
 + (GDataFeedYouTubeUserProfile *)userProfileFeed {
-  
+
   GDataFeedYouTubeUserProfile *feed = [self object];
-  
+
   [feed setNamespaces:[GDataYouTubeConstants youTubeNamespaces]];
-  
+
   return feed;
 }
 

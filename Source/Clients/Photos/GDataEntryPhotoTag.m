@@ -26,13 +26,13 @@
 @implementation GDataEntryPhotoTag
 
 + (GDataEntryPhotoTag *)tagEntryWithString:(NSString *)tagStr {
-  
+
   GDataEntryPhotoTag *entry = [self object];
 
   [entry setNamespaces:[GDataPhotoConstants photoNamespaces]];
-  
+
   [entry setTitle:[GDataTextConstruct textConstructWithString:tagStr]];
-  
+
   return entry;
 }
 
@@ -47,23 +47,23 @@
 }
 
 - (void)addExtensionDeclarations {
-  
+
   [super addExtensionDeclarations];
-  
+
   // common photo extensions
   Class entryClass = [self class];
-  
+
   [self addExtensionDeclarationForParentClass:entryClass
                                    childClass:[GDataPhotoWeight class]];
 }
 
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
-  
+
   NSMutableArray *items = [super itemsForDescription];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:[self weight] withName:@"weight"];
-  
+
   return items;
 }
 #endif
@@ -78,7 +78,7 @@
 
 - (void)setWeight:(NSNumber *)num {
   GDataPhotoWeight *obj = [GDataPhotoWeight valueWithNumber:num];
-  [self setObject:obj forExtensionClass:[obj class]];  
+  [self setObject:obj forExtensionClass:[obj class]];
 }
 
 @end

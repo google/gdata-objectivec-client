@@ -22,11 +22,11 @@
 #import "GDataObject.h"
 #import "GDataDateTime.h"
 
-// <yt:statistics viewCount="2" 
-//                videoWatchCount="77" 
+// <yt:statistics viewCount="2"
+//                videoWatchCount="77"
 //                lastWebAccess="2008-01-26T10:32:41.000-08:00"/>
 
-@interface GDataYouTubeStatistics : GDataObject <GDataExtension> 
+@interface GDataYouTubeStatistics : GDataObject <GDataExtension>
 + (GDataYouTubeStatistics *)youTubeStatistics;
 
 // long long value

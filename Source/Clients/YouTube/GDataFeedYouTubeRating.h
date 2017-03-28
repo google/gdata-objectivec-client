@@ -21,7 +21,7 @@
 
 #import "GDataFeedBase.h"
 
-@interface GDataFeedYouTubeRating : GDataFeedBase 
+@interface GDataFeedYouTubeRating : GDataFeedBase
 + (GDataFeedYouTubeRating *)ratingFeed;
 @end
 

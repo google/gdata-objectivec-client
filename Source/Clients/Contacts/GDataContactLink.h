@@ -22,7 +22,7 @@
 #import "GDataObject.h"
 
 @interface GDataContactLink : GDataObject
-  
+
 + (id)linkWithRel:(NSString *)rel
             label:(NSString *)label
              href:(NSString *)href;

@@ -40,7 +40,7 @@
                           inputString:(NSString *)inputStr
                          numericValue:(NSNumber *)numericValue
                          resultString:(NSString *)resultStr {
-  
+
   GDataSpreadsheetCell *obj = [self object];
   [obj setRow:row];
   [obj setColumn:column];
@@ -81,7 +81,7 @@
 
     [self setNumericValue:[self doubleNumberForAttributeName:@"numericValue"
                                                  fromElement:element]];
-      
+
     [self setResultString:[self stringValueFromElement:element]];
 
   }
@@ -108,7 +108,7 @@
 - (BOOL)isEqual:(GDataSpreadsheetCell *)other {
   if (self == other) return YES;
   if (![other isKindOfClass:[GDataSpreadsheetCell class]]) return NO;
-  
+
   return [super isEqual:other]
     && ([self row] == [other row])
     && ([self column] == [other column])
@@ -120,17 +120,17 @@
 #if !GDATA_SIMPLE_DESCRIPTIONS
 - (NSMutableArray *)itemsForDescription {
   NSMutableArray *items = [NSMutableArray array];
-  
+
   [self addToArray:items objectDescriptionIfNonNil:inputString_ withName:@"inputString"];
   [self addToArray:items objectDescriptionIfNonNil:numericValue_ withName:@"numericValue"];
   [self addToArray:items objectDescriptionIfNonNil:resultString_ withName:@"resultString"];
-  
+
   return items;
 }
 #endif
 
 - (NSXMLElement *)XMLElement {
-  
+
   NSXMLElement *element = [self XMLElementWithExtensionsAndDefaultName:@"gs:cell"];
 
   if (row_ > 0) {
@@ -139,7 +139,7 @@
   if (column_ > 0) {
     [self addToElement:element attributeValueWithInteger:column_ withName:@"col"];
   }
-  
+
   [self addToElement:element attributeValueIfNonNil:inputString_ withName:@"inputValue"];
 
   [self addToElement:element
@@ -147,28 +147,28 @@
             withName:@"numericValue"];
 
   if ([resultString_ length] > 0) {
-    [element addStringValue:resultString_]; 
+    [element addStringValue:resultString_];
   }
-    
+
   return element;
 }
 
 - (NSInteger)row {
-  return row_; 
+  return row_;
 }
 - (void)setRow:(NSInteger)row {
-  row_ = row; 
+  row_ = row;
 }
 
 - (NSInteger)column {
-  return column_; 
+  return column_;
 }
 - (void)setColumn:(NSInteger)column {
-  column_ = column; 
+  column_ = column;
 }
 
 - (NSString *)inputString {
-  return inputString_; 
+  return inputString_;
 }
 - (void)setInputString:(NSString *)str {
   [inputString_ autorelease];
@@ -180,11 +180,11 @@
 }
 - (void)setNumericValue:(NSNumber *)num {
   [numericValue_ autorelease];
-  numericValue_ = [num copy]; 
+  numericValue_ = [num copy];
 }
 
 - (NSString *)resultString {
-  return resultString_; 
+  return resultString_;
 }
 - (void)setResultString:(NSString *)str {
   [resultString_ autorelease];
