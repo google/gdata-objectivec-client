@@ -386,7 +386,7 @@ static int gFetchCounter = 0;
                        defaultPropertyValue, @"default property missing");
 
   // no cookies should be sent with our first request
-  NSURLRequest *request = [[ticket_ objectFetcher] mutableRequest];
+  NSURLRequest *request = [[ticket_ objectFetcher] request];
 
   NSString *cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
   XCTAssertNil(cookiesSent, @"Cookies sent unexpectedly: %@", cookiesSent);
@@ -432,7 +432,7 @@ static int gFetchCounter = 0;
   [self waitForFetch];
 
   // the TestCookie set previously should be sent with this request
-  request = [[ticket_ objectFetcher] mutableRequest];
+  request = [[ticket_ objectFetcher] request];
   cookiesSent = [[request allHTTPHeaderFields] objectForKey:@"Cookie"];
   XCTAssertEqualObjects(cookiesSent, cookieExpected,
                        @"Cookie not sent");

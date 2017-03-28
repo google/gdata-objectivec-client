@@ -460,7 +460,7 @@
   NSString *fullAsciiParam = @" !\"#$%&'()*+,-./"
     "0123456789:;<=>?@"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
-    "abcdefghijklmnopqrstuvwxyz{|}~";
+    "abcdefghijklmnopqrstuvwxyz{|}~\x7F";
 
   // full URL encoding leaves +, =, and other URL-legal symbols intact
   NSString *fullEncoded = @"%20!%22%23$%25&'()*+,-./"
