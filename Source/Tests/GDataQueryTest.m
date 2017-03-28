@@ -30,14 +30,14 @@
 @implementation GDataQueryTest
 
 - (void)testGDataCalendarQuery {
-  
+
   NSURL* feedURL = [NSURL URLWithString:@"http://www.google.com/calendar/feeds/userID/private/basic"];
-  
+
   GDataDateTime* dateTime1 = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-29T07:35:59.000Z"];
   GDataDateTime* dateTime2 = [GDataDateTime dateTimeWithRFC3339String:@"2006-03-30T07:35:59.000Z"];
   GDataDateTime* dateTime3 = [GDataDateTime dateTimeWithRFC3339String:@"2006-04-29T07:35:59.000Z"];
   GDataDateTime* dateTime4 = [GDataDateTime dateTimeWithRFC3339String:@"2007-06-25T13:37:54.146+07:00"];
-  
+
   // test query with feed URL but no params
   GDataQuery* query1 = [GDataQuery queryWithFeedURL:feedURL];
   NSURL* resultURL1 = [query1 URL];
@@ -64,9 +64,9 @@
   [query2 setUpdatedMaxDateTime:dateTime4];
   [query2 addCustomParameterWithName:@"Fred" value:@"Barney"];
   [query2 addCustomParameterWithName:@"Wilma" value:@"Betty"];
-  
+
   NSURL* resultURL2 = [query2 URL];
-  
+
   NSString *expected2 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
     "author=Fred+Flintstone&Fred=Barney&hl=en&max-results=20&onlydeleted=true"
     "&orderby=random&prettyprint=true&published-max=2006-03-30T07%3A35%3A59Z"
@@ -75,11 +75,11 @@
     "&sortorder=ascending&start-index=10&strict=true"
     "&updated-max=2007-06-25T13%3A37%3A54%2B07%3A00"
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
-  
+
   XCTAssertEqualObjects([resultURL2 absoluteString], expected2, @"Parameter generation error");
-  
+
   GDataCategoryFilter *categoryFilter = [GDataCategoryFilter categoryFilter];
-  [categoryFilter addCategory:[GDataCategory categoryWithScheme:@"http://schemas.google.com/g/2005#kind" 
+  [categoryFilter addCategory:[GDataCategory categoryWithScheme:@"http://schemas.google.com/g/2005#kind"
                                                            term:@"http://schemas.google.com/g/2005#event"]];
   [categoryFilter addCategoryWithScheme:@"MyScheme2" term:@"MyTerm2"];
   [categoryFilter addExcludeCategoryWithScheme:nil term:@"MyTerm3"];
@@ -100,7 +100,7 @@
   // to the second query's parameters
   [query2 addCategoryFilter:categoryFilter];
   [query2 addCategoryFilterWithScheme:nil term:@"Zonk4"];
-  
+
   NSURL* resultURL2a = [query2 URL];
 
   NSString *expected2a = @"http://www.google.com/calendar/feeds/userID/private/"
@@ -115,7 +115,7 @@
     "&updated-min=2006-04-29T07%3A35%3A59Z&v=2.0&Wilma=Betty";
 
   XCTAssertEqualObjects([resultURL2a absoluteString], expected2a, @"Category filter generation error");
-  
+
   //
   // test a calendar query
   //
@@ -126,13 +126,13 @@
   [queryCal setMaximumStartTime:dateTime2];
   [queryCal setShouldShowInlineComments:YES];
   [queryCal setShouldShowHiddenEvents:NO];
-  
+
   NSURL* resultURLC1 = [queryCal URL];
   NSString *expectedC1 = @"http://www.google.com/calendar/feeds/userID/private/basic?"
     "max-results=20&start-index=10&start-max=2006-03-30T07%3A35%3A59Z&start-min=2006-03-29T07%3A35%3A59Z";
 
   XCTAssertEqualObjects([resultURLC1 absoluteString], expectedC1, @"Query error");
-  
+
   GDataQueryCalendar* queryCal2 = [GDataQueryCalendar calendarQueryWithFeedURL:feedURL];
   [queryCal2 setRecurrenceExpansionStartTime:dateTime1];
   [queryCal2 setRecurrenceExpansionEndTime:dateTime1];
@@ -154,13 +154,13 @@
     "recurrence-expansion-start=2006-03-29T07%3A35%3A59Z&"
     "showhidden=true&showinlinecomments=false&singleevents=true";
   XCTAssertEqualObjects([resultURLC2 absoluteString], expectedC2, @"Query error");
-  
+
 }
 
 - (void)testGDataSpreadsheetsQuery {
-  
+
   NSURL* feedURL = [NSURL URLWithString:kGDataGoogleSpreadsheetsPrivateFullFeed];
-  
+
   // cell feed query tests
   GDataQuerySpreadsheet* query1 = [GDataQuerySpreadsheet spreadsheetQueryWithFeedURL:feedURL];
   [query1 setMinimumRow:3];
@@ -169,11 +169,11 @@
   [query1 setMaximumColumn:12];
   [query1 setRange:@"A1:B2"];
   [query1 setShouldReturnEmpty:YES];
-  
+
   NSURL* resultURL1 = [query1 URL];
   NSString *expected1 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "max-col=12&max-row=7&min-col=2&min-row=3&range=A1%3AB2&return-empty=true";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Spreadsheet query 1 generation error");
 
   // list feed query tests
@@ -181,16 +181,16 @@
   [query2 setSpreadsheetQuery:@"ipm<4 and hours>40"];
   [query2 setOrderBy:@"column:foostuff"];
   [query2 setIsReverseSort:YES];
-  
+
   NSURL* resultURL2 = [query2 URL];
   NSString *expected2 = @"https://spreadsheets.google.com/feeds/spreadsheets/private/full?"
     "orderby=column%3Afoostuff&reverse=true&sq=ipm%3C4+and+hours%3E40";
-  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"Spreadsheet query 2 generation error");
 }
 
 - (void)testGooglePhotosQuery {
-  
+
   GDataQueryGooglePhotos *pwaQuery1;
   pwaQuery1 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
                                                   albumID:@"12345"
@@ -201,38 +201,38 @@
   [pwaQuery1 setThumbsize:80];
   [pwaQuery1 setImageSize:32];
   [pwaQuery1 setTag:@"dog"];
-  
+
   NSURL* resultURL1 = [pwaQuery1 URL];
   NSString *expected1 = @"https://photos.googleapis.com/data/feed/api/"
     "user/fredflintstone/albumid/12345/photoid/987654321?"
     "access=private&imgmax=32&kind=photo&tag=dog&thumbsize=80";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"PWA query 1 generation error");
   XCTAssertEqual([pwaQuery1 imageSize], (NSInteger) 32, @"image size error");
-  
-  GDataQueryGooglePhotos *pwaQuery2; 
+
+  GDataQueryGooglePhotos *pwaQuery2;
   pwaQuery2 = [GDataQueryGooglePhotos photoQueryForUserID:@"fredflintstone"
                                                   albumID:nil
                                                 albumName:@"froggy photos"
-                                                  photoID:nil];  
+                                                  photoID:nil];
   [pwaQuery2 setImageSize:kGDataGooglePhotosImageSizeDownloadable];
-  
+
   NSURL* resultURL2 = [pwaQuery2 URL];
   NSString *expected2 = @"https://photos.googleapis.com/data/feed/api/user/"
     "fredflintstone/album/froggy%20photos?imgmax=d";
-  XCTAssertEqualObjects([resultURL2 absoluteString], expected2, 
+  XCTAssertEqualObjects([resultURL2 absoluteString], expected2,
                        @"PWA query 2 generation error");
-  
+
   // image size special cases mapping -1 to "d" and back; test that we get back
   // -1
   XCTAssertEqual([pwaQuery2 imageSize], kGDataGooglePhotosImageSizeDownloadable,
                  @"image size error (2)");
-  
+
   // test the generator for photo contact feed URLs
   NSURL *contactsURL = [GDataServiceGooglePhotos photoContactsFeedURLForUserID:@"fred@example.com"];
   NSString *contactsURLString = [contactsURL absoluteString];
   NSString *expectedContactsURLString = @"https://photos.googleapis.com/data/feed/api/user/fred%40example.com/contacts?kind=user";
-  XCTAssertEqualObjects(contactsURLString, expectedContactsURLString, 
+  XCTAssertEqualObjects(contactsURLString, expectedContactsURLString,
                        @"contacts URL error");
 
   // test service document request
@@ -249,13 +249,13 @@
 }
 
 - (void)testYouTubeQuery {
-  
+
   NSURL *feedURL = [GDataServiceGoogleYouTube youTubeURLForUserID:@"fred"
                                                        userFeedID:kGDataYouTubeUserFeedIDFavorites];
-  
-  GDataQueryYouTube *ytQuery1;  
+
+  GDataQueryYouTube *ytQuery1;
   ytQuery1 = [GDataQueryYouTube youTubeQueryWithFeedURL:feedURL];
-  
+
   [ytQuery1 setVideoQuery:@"\"Fred Flintstone\""];
   [ytQuery1 setFormat:@"0,5,6"];
   [ytQuery1 setCaptionTrackFormat:kGDataYouTubeCaptionTrackFormatSubviewer];
@@ -270,27 +270,27 @@
   [ytQuery1 setShouldInline:YES];
   [ytQuery1 setShouldRequire3D:YES];
   [ytQuery1 setUploader:@"foo"];
-  
+
   NSURL* resultURL1 = [ytQuery1 URL];
   NSString *expected1 = @"https://gdata.youtube.com/feeds/api/users/fred/"
     "favorites?3d=true&caption=true&fmt=sbv&format=0%2C5%2C6&inline=true&location=Canada&"
     "location-radius=2km&lr=en&orderby=relevance&q=%22Fred+Flintstone%22&"
     "restriction=127.0.0.1&safeSearch=strict&time=this_week&uploader=foo";
 
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"YouTube query 1 generation error");
 }
 
 - (void)testContactQuery {
-  
+
   GDataQueryContact *query1;
   query1 = [GDataQueryContact contactQueryForUserID:@"user@example.com"];
-  
+
   [query1 setGroupIdentifier:@"http://www.google.com/m8/feeds/groups/user%40example.com/base/6"];
-  
+
   NSURL *resultURL1 = [query1 URL];
   NSString *expected1 = @"https://www.google.com/m8/feeds/contacts/user%40example.com/full?group=http%3A%2F%2Fwww.google.com%2Fm8%2Ffeeds%2Fgroups%2Fuser%2540example.com%2Fbase%2F6";
-  XCTAssertEqualObjects([resultURL1 absoluteString], expected1, 
+  XCTAssertEqualObjects([resultURL1 absoluteString], expected1,
                        @"Contacts query 1 generation error");
 }
 
@@ -390,7 +390,7 @@
 
   // new parameter
   [query1 setStartIndex:10];
-  
+
   // test a copy of the query
   query1 = [[query1 copy] autorelease];
 
@@ -455,19 +455,19 @@
 }
 
 - (void)testURLParameterEncoding {
-  
+
   // test all characters between 0x20 and 0x7f
   NSString *fullAsciiParam = @" !\"#$%&'()*+,-./"
     "0123456789:;<=>?@"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`"
     "abcdefghijklmnopqrstuvwxyz{|}~";
-  
+
   // full URL encoding leaves +, =, and other URL-legal symbols intact
   NSString *fullEncoded = @"%20!%22%23$%25&'()*+,-./"
     "0123456789:;%3C=%3E?@"
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60"
     "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
-  
+
   // parameter encoding encodes these too: "!*'();:@&=+$,/?%#[]"
   // and encodes a space as a plus
   NSString *paramEncoded = @"+%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F"
@@ -476,10 +476,10 @@
     "abcdefghijklmnopqrstuvwxyz%7B%7C%7D~%7F";
 
   NSString *resultFull, *resultParam;
-  
+
   resultFull = [GDataUtilities stringByURLEncodingString:fullAsciiParam];
   XCTAssertEqualObjects(resultFull, fullEncoded, @"URL full encoding error");
-  
+
   resultParam = [GDataUtilities stringByURLEncodingStringParameter:fullAsciiParam];
   XCTAssertEqualObjects(resultParam, paramEncoded, @"URL param encoding error");
 }
