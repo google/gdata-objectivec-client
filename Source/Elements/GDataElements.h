@@ -23,17 +23,17 @@
 
 // utility classes
 #if GTM_USE_SESSION_FETCHER
-  #import "GTMSessionFetcher.h"
-  #import "GTMSessionFetcherLogging.h"
-  #import "GTMSessionUploadFetcher.h"
+  #import <gtm_session_fetcher/GTMSessionFetcher.h>
+  #import <gtm_session_fetcher/GTMSessionFetcherLogging.h>
+  #import <gtm_session_fetcher/GTMSessionUploadFetcher.h>
 #else
   #import "GTMHTTPFetcher.h"
   #import "GTMHTTPFetcherLogging.h"
   #import "GTMHTTPUploadFetcher.h"
 #endif  // GTM_USE_SESSION_FETCHER
 
-#import "GTMGatherInputStream.h"
-#import "GTMMIMEDocument.h"
+#import <gtm_session_fetcher/GTMGatherInputStream.h>
+#import <gtm_session_fetcher/GTMMIMEDocument.h>
 
 #import "GDataDateTime.h"
 #import "GDataServerError.h"

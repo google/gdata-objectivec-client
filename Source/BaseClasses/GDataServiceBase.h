@@ -26,8 +26,8 @@
   #define kGDataFetcherStatusUnauthorized GTMSessionFetcherStatusUnauthorized
   #define kGDataFetcherStatusForbidden GTMSessionFetcherStatusForbidden
   #define kGDataFetcherStatusDataKey kGTMSessionFetcherStatusDataKey
-
-  #import "GTMSessionFetcherService.h"
+  #import <gtm_session_fetcher/GTMSessionFetcher.h>
+  #import <gtm_session_fetcher/GTMSessionFetcherService.h>
 #else
   #define GDataUploadFetcherClass GTMHTTPUploadFetcher
   #define GDataUploadFetcherClassStr @"GTMHTTPUploadFetcher"
