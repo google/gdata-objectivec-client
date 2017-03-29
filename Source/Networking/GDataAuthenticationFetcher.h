@@ -20,7 +20,7 @@
 #import "GDataDefines.h"
 
 #if GTM_USE_SESSION_FETCHER
-  #import "GTMSessionFetcher.h"
+  #import <gtm_session_fetcher/GTMSessionFetcher.h>
 #else
   #import "GTMHTTPFetcher.h"
 #endif  // GTM_USE_SESSION_FETCHER
