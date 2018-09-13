@@ -14,9 +14,9 @@ This library is for Google **XML APIs**. For **JSON APIs,** use the
 
 Each of the following Google services provides a Google Data API supported by
 this library:
-- [Contacts](http://code.google.com/apis/contacts/)
-- [Picasa Web Albums](http://code.google.com/apis/picasaweb/)
-- [Spreadsheets](http://code.google.com/apis/spreadsheets/)
+- [Contacts](http://code.google.com/apis/contacts/) (being superseded by
+  [People API](https://developers.google.com/people/); which is covered via the
+  [PeopleService JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 
 ---
 
@@ -30,6 +30,8 @@ This library should **no longer** be used for these APIs:
 - [Finance](http://code.google.com/apis/finance/) ([deprecated](http://googledevelopers.blogspot.com/2012/04/changes-to-deprecation-policies-and-api.html))
 - Health ([deprecated](http://googleblog.blogspot.com/2011/06/update-on-google-health-and-google.html))
 - Maps ([deprecated](http://googlegeodevelopers.blogspot.com/2010/11/maps-data-api-deprecation-announcement.html))
+- Picasa Web Albums ([deprecated](https://developers.google.com/picasa-web/docs/3.0/deprecation); [migration info](https://developers.google.com/picasa-web/docs/3.0/developers_guide_migration))
+- Spreadsheets (superseded by Sheets [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 - Webmaster Tools (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 - YouTube (superseded by a [JSON API](https://github.com/google/google-api-objectivec-client-for-rest))
 
